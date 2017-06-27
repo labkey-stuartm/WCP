@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 
 
 /**
@@ -36,6 +39,11 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	@Column(name="frequency_time")
 	private String frequencyTime;
+	
+	@Column(name = "is_used")
+	@Type(type="yes_no")
+	private boolean used = false;
+
 
 	public ActiveTaskCustomScheduleBo() {
 		// Do nothing
@@ -80,5 +88,20 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 	public void setFrequencyTime(String frequencyTime) {
 		this.frequencyTime = frequencyTime;
 	}
+
+	/**
+	 * @return the used
+	 */
+	public boolean isUsed() {
+		return used;
+	}
+
+	/**
+	 * @param used the used to set
+	 */
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+
 
 }

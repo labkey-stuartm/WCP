@@ -83,6 +83,12 @@ public class NotificationBO implements Serializable{
 	@Column(name = "modified_on")
 	private String modifiedOn;
 	
+	@Column(name="active_task_id")
+	private Integer activeTaskId;
+	
+	@Column(name="questionnarie_id")
+	private Integer questionnarieId;
+	
 	@Transient
 	private String actionPage;
 	
@@ -239,6 +245,22 @@ public class NotificationBO implements Serializable{
 
 	public void setModifiedOn(String modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+	
+	public Integer getActiveTaskId() {
+		return activeTaskId;
+	}
+
+	public void setActiveTaskId(Integer activeTaskId) {
+		this.activeTaskId = activeTaskId;
+	}
+
+	public Integer getQuestionnarieId() {
+		return questionnarieId;
+	}
+
+	public void setQuestionnarieId(Integer questionnarieId) {
+		this.questionnarieId = questionnarieId;
 	}
 
 	public String getCustomStudyId() {

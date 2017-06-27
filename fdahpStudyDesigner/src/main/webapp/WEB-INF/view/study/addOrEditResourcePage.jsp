@@ -47,7 +47,7 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
-             <div class="mt-lg">
+             <div class="mt-none">
                 <!-- form- input-->
                 <div>
                    <div class="gray-xs-f mb-xs">Title <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
@@ -60,7 +60,7 @@
                 
             <div class="clearfix"></div>
                 
-            <div class="mt-lg">
+            <div>
             <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar"> *</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
@@ -70,7 +70,6 @@
                     <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio2">Upload PDF</label>
                 </span>  
-                <!-- <div class="help-block with-errors red-txt"></div>   -->
             </div>
                 
             <div class="clearfix"></div>
@@ -86,15 +85,8 @@
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a> --%>
-<!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
-               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}">
-	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
-	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
-                </a>
+                <a href="javascript:void(0)" id="pdf_name" class="pdfClass" >${resourceBO.pdfName}</a>
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
             <div class="help-block with-errors red-txt"></div>  
@@ -103,8 +95,8 @@
             <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">   
             <div class="clearfix"></div>
                 
-            <div class="mt-xlg">
-                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span></div>
+            <div class="mt-xs">
+                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span> <span data-toggle="tooltip" data-placement="top" title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study." class="filled-tooltip"></span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
@@ -118,45 +110,58 @@
                 
             <div class="clearfix"></div>
                
-             <div class="mt-xlg resetDate">
+             <div class="mt-lg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
                 <div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
-                    <label for="inlineRadio5">Anchor Date +</label><br/>
+                    <label for="inlineRadio5">Anchor Date </label><br/>
                     <!-- <span>&nbsp;</span> -->
                 </span>
+                
+                <span>
+	                 <select class="signDropDown selectpicker sign-box" title="Select" name="xDaysSign" id="xSign">
+	                          <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
+	                          <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
+	                 </select>
+                </span>
                 <!--  selectpicker -->
-                 <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                 	 <select class="signDropDown" title="Select" name="xDaysSign" id="xSign" style="display: none;">
-                              <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
-                              <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
-                     </select>
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" 
-                     placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
+                 <span class="form-group m-none dis-inline vertical-align-middle">
+                 	
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" 
+                     placeholder="X" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
                      maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06">to  Anchor Date + </span>                   
-                    <!-- <span>&nbsp;</span> -->
+                    <span class="light-txt opacity06"> days <span style="padding-right:5px;padding-left:5px">to </span>  Anchor Date </span>                   
                  </span>
-                  <span class="form-group m-none dis-inline vertical-align-middle">
-                     <select class="signDropDown" title="Select" name="yDaysSign" id="ySign" style="display: none;">
+                 
+                 <span>
+                 	 <select class="signDropDown selectpicker sign-box" title="Select" name="yDaysSign" id="ySign">
                               <option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
                               <option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
                      </select>
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
+                 </span>
+                 
+                  <span class="form-group m-none dis-inline vertical-align-middle">
+                    
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" placeholder="Y" 
+                     	name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
+                     	
                  	 <span class="help-block with-errors red-txt"></span>
-                 </span> 
+                 </span>
+                 <span class="mb-sm pr-md">
+	                    <span class="light-txt opacity06"> days </span>                   
+	                 </span>
                  </div>
              </div>
                 
-             <div class="mt-xlg resetDate">
-                 <div class="mb-sm">
+             <div class="mt-lg resetDate">
+                 <div class="mb-none">
                      <span class="radio radio-info radio-inline pr-md">
                         <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
-                        <label for="inlineRadio6">Custom</label>
+                        <label for="inlineRadio6">Custom Date Range</label>
                     </span>
                 </div>
                  <div>
@@ -177,8 +182,8 @@
             
               <div class="clearfix"></div>
                 
-             <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
+             <div class="mt-sm">
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span> </div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" data-error="Please enter plain text of up to 250 characters max." maxlength="250" required>${resourceBO.resourceText}</textarea>
@@ -190,11 +195,28 @@
                 
             </div>
             <!--  End body tab section -->
+            <!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
+			   <div class="modal-dialog modal-lg" style="width:98%;">
+			      <!-- Modal content-->
+			      <div class="modal-content">
+			      <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			       </div>
+			         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg" >
+			            <embed id="embedPdfId" src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}" oncontextmenu="return false;" onkeydown="return false;" onmousedown="return false;" width="100%" height="500px" />
+			         </div>
+			      </div>
+			   </div>
+			</div>
         </form:form>   
         </div>
         <!-- End right Content here -->
-
 <form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
+</form:form>
+<form:form action="/fdahpStudyDesigner/downloadPdf.do"  id="pdfDownloadFormId" method="post" target="_blank" >
+	<input type="hidden" value="studyResources"  name="fileFolder"/>
+	<input type="hidden" value="${resourceBO.pdfUrl}"  name="fileName"/>
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -202,25 +224,19 @@ $(document).ready(function(){
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
 	
-	/* $('#uploadImg').change(
-            function () {
-                var fileExtension = ['pdf'];
-                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                    $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select only pdf file</li></ul>');
-                    }
-	}); */
+	$('#embedPdfId').bind('contextmenu', function(e) {
+		alert("Right click has been disabled.");
+	    return false;
+	}); 
 	
 	    $('.daysMask').mask('000');
 	
-	   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-	  //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	    $(".menuNav li").removeClass('active');
 	    $(".eighthResources").addClass('active'); 
 		$("#createStudyId").show();
         
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
-		// alert($('#richText').text());
           if( chkDaysValid(true) && isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
@@ -257,9 +273,6 @@ $(document).ready(function(){
 			 $('#richText').removeAttr('required');
 			  var file = $('#uploadImg').val();
 	          var pdfId = $('#pdfUrl').val();
-	          /* if(file || pdfId){
-	        	  $('#uploadImg').removeAttr('required');
-	          } */
 	          $('#richText').removeAttr('required');
 			  if(pdfId){
 				  $('#pdfUrl').attr('required','required');
@@ -272,7 +285,6 @@ $(document).ready(function(){
 	  
 	$('#saveResourceId').click(function() {
 		 $('#saveResourceId').prop('disabled',true);
-			/* $('.remReqOnSave').removeAttr('required'); */
 		   	$("#resourceTitle").parent().find(".help-block").empty();
 	   		$('#resourceForm').validator('destroy').validator();
 	   		var isValid = true;
@@ -280,7 +292,6 @@ $(document).ready(function(){
 		   isValid = chkDaysValid(false);
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
-    	  /*  $('.remReqOnSave').attr('required',true); */
     	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
     		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
     	}
@@ -296,7 +307,6 @@ $(document).ready(function(){
       $('#saveResourceId').prop('disabled',false);
 	});
 	
-	 /* var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, ''); */
 	 pdfUrlName = $('#pdfUrl').val();
      if(pdfUrlName != ""){
        $("#uploadPdf").text("Change PDF");
@@ -307,9 +317,7 @@ $(document).ready(function(){
      
      
  	$('.goToResourceListForm').on('click',function(){
- 		//$('#goToResourceListForm').addClass('cursor-none');
         <c:if test="${actionOn ne 'view'}">
- 		//$('#goToStudyListPage').prop('disabled',true);
  		bootbox.confirm({
 			closeButton: false,
 			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -333,16 +341,11 @@ $(document).ready(function(){
  		</c:if>
 	});
 	
-	/* $('#goToStudyListPage').on('click',function(){
-		$('#studyListForm').submit();
-	}); */
-	
 	 // File Upload    
     $(".uploadPdf,.changePdf").click(function(){               
        $("#uploadImg").click();
     });
 	 
-  //wysiwyg richText
     if($("#richText").length > 0){
     tinymce.init({
         selector: "#richText",
@@ -371,14 +374,12 @@ $(document).ready(function(){
     $(".addResource").click(function(){
         var a = $(this).val();
         if(a == '0'){
-           /*  $("#richEditor").show(); */
             $("#richEditor").removeClass("dis-none");
             $("#pdf_file").addClass("dis-none");
             $('#richText').attr('required','required');
   		  	$('#uploadImg').removeAttr('required');
   		  	$('#pdfUrl').removeAttr('required');
         }else if(a == '1'){
-           /*  $("#richEditor").hide(); */
             $("#richEditor").addClass("dis-none");
             $("#pdf_file").removeClass("dis-none");
             $('#richText').removeAttr('required');
@@ -415,6 +416,7 @@ $(document).ready(function(){
 			        }
 		       		$("#delete").removeClass("dis-none");
 		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
+		       		$('.pdfClass').off( "click");
 		    	}
     		};
     		reader.onerror = function() {
@@ -425,15 +427,6 @@ $(document).ready(function(){
     	}
         resetValidation($("#uploadImg").parents('form'));
    });
-  
-   /*  $('#uploadImg').change(
-            function () {
-                var fileExtension = ['pdf'];
-                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                    alert("Only '.pdf' formats are allowed.");
-                    return false; 
-                    }
-	}); */
   
   //Deleting Uploaded pdf
     $("#delete").click(function(){
@@ -450,7 +443,6 @@ $(document).ready(function(){
 	
 	<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
-		//$('.signDropDown').show();
 		$('.disBtn1').attr('required','required');
 		$('.disBtn2').removeAttr('required');
 		$('.disBtn2').prop('disabled',true);
@@ -459,7 +451,6 @@ $(document).ready(function(){
 		resetValidation($(this).parents('form'));
 	</c:if>
 		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
-		//$('.signDropDown').hide();
 		$('.disBtn2').attr('required','required');
 		$('.disBtn1').removeAttr('required');
 		$('.disBtn1').prop('disabled',true);
@@ -477,20 +468,22 @@ $(document).ready(function(){
         format: 'MM/DD/YYYY',
         ignoreReadonly: true,
         useCurrent :false,
-        /* minDate:new Date(), */
      });
     $('#EndDate').datetimepicker({
          format: 'MM/DD/YYYY',
          ignoreReadonly: true,
          useCurrent: false,
-        /*  minDate:new Date(), */
      }); 
      
      $(".datepicker").on("click", function (e) {
          $('#StartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
          var startDate = $("#StartDate").data("DateTimePicker").date();
          if(startDate != null && startDate != '' && typeof startDate != 'undefined'){
-        	 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+        	 if(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()) > startDate){
+        		 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate())); 
+        	 }else{
+        		 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+        	 }
          }else{
         	 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
          }
@@ -505,7 +498,6 @@ $(document).ready(function(){
         
 		$('#inlineRadio5').on('click',function(){
 			if($('#inlineRadio5').prop('checked') == true){
-			//$('.signDropDown').show();
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn2').val('');
@@ -529,7 +521,6 @@ $(document).ready(function(){
 		
 		$('#inlineRadio6').on('click',function(){
 			if($('#inlineRadio6').prop('checked') == true){
-			//$('.signDropDown').hide();
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn1').val('');
@@ -554,7 +545,6 @@ $(document).ready(function(){
 		
 	
 		if($('#inlineRadio3').prop('checked') == false){
-			//$('.signDropDown').hide();
 			$('#inlineRadio5').prop('checked',false);
 			$('#inlineRadio6').prop('checked',false);
 			$('.disRadBtn1').prop('disabled',true);
@@ -573,7 +563,6 @@ $(document).ready(function(){
 			$('.disBtn2').val('');
 				if($('#xdays').attr('oldxDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
-					//$('.signDropDown').show();
 					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
@@ -583,7 +572,6 @@ $(document).ready(function(){
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
-					//$('.signDropDown').show();
 					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
@@ -617,7 +605,6 @@ $(document).ready(function(){
 					$('.disBtn1').removeAttr('required');
 					resetValidation($('.resetDate'));
 				}
-			/* } */
 			}
 			var a = $("#inlineRadio3").val();
 			if(a ==0){
@@ -626,6 +613,9 @@ $(document).ready(function(){
 			  $(".light-txt").addClass("opacity06");
 			}
 			resetValidation($('.resetDate'));
+			
+			
+			
 		});
 		
 		if($('#inlineRadio3').prop('checked') == true){
@@ -637,14 +627,12 @@ $(document).ready(function(){
 			$('.disBtn1').removeAttr('required');
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
 			$('#inlineRadio5').prop('checked',true);
-			//$('.signDropDown').show();
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
 		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
 			$('#inlineRadio6').prop('checked',true);
-			//$('.signDropDown').hide();
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
@@ -661,7 +649,6 @@ $(document).ready(function(){
 		
 		$('#inlineRadio4').on('click',function(){
 			if($('#inlineRadio4').prop('checked') == true){
-			//$('.signDropDown').hide();
 			$('.disRadBtn1').prop('disabled',true);	
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
@@ -689,7 +676,11 @@ $(document).ready(function(){
 	$('.signDropDown').on('change',function(){
 		chkDaysValid(false);
 	});
-
+	
+	 $('.pdfClass').on('click',function(){
+		$('#pdfDownloadFormId').submit();
+		$("body").removeClass("loading");
+ 	});
 });
 function chkDaysValid(clickDone){
 	var x = $("#xdays").val();
@@ -709,8 +700,6 @@ function chkDaysValid(clickDone){
 	var valid = true;
 	if(y && x){
 		if(parseInt(x) > parseInt(y)){
-// 			$('#ydays').val('');
-			//$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			if(clickDone && isFromValid($('#ydays').parents('form')))
 				$('#ydays').focus();
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');

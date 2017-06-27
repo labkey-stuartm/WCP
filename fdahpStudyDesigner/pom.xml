@@ -25,6 +25,7 @@
                     <path>/fdahpStudyDesigner</path>
                     <username>admin</username>
                     <password>password</password>
+                    <!-- <warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory> -->
                 </configuration>
             </plugin>
       		<plugin>
@@ -32,6 +33,12 @@
                 <version>2.1.1</version>
                 <configuration>
                     <packagingExcludes>WEB-INF/web.xml,META-INF/context.xml,studylogo/,studypages/,studyResources/,questionnaire/</packagingExcludes>
+                    <encoding>UTF-8</encoding>
+			        <webResources>
+			            <resource>
+			                <directory>${project.build.directory}/${project.build.finalName}/</directory>
+			            </resource>
+        			</webResources>
                 </configuration>
             </plugin>
        		<!-- Maven compiler plugin -->
@@ -44,6 +51,24 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+		        <groupId>net.alchim31.maven</groupId>
+		        <artifactId>yuicompressor-maven-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>compress</goal>
+		            </goals>
+		          </execution>
+		        </executions>        
+		        <configuration>
+		          <excludes>
+		            <exclude>**/*min.js</exclude>
+		            <exclude>**/*min.css</exclude>
+		          </excludes>
+		          <nosuffix>true</nosuffix>
+		        </configuration>
+	    	</plugin>
 		</plugins>
     </build>
  <!-- Shared version number properties -->

@@ -8,7 +8,27 @@
          <div class="col-sm-2 col-lc p-none">
             <div class="left-content-container">
                 <ul class="menuNav">
-                <li>Create Study</li>
+                <li>
+                <div class="tit_wrapper" data-toggle="tooltip" data-placement="top" title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${not empty studyBo.name?studyBo.name:'Create Study'}</div>
+                <div class="mb-lg ${empty studyBo.status?'hide':''}">
+	                <span class="study_status 
+	                <c:if test="${studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)'}">
+	                    pre-launch_txt
+	                </c:if>
+	                <c:if test="${studyBo.status eq 'Active'}">
+	                    active_txt
+	                </c:if>
+	                <c:if test="${studyBo.status eq 'Paused'}">
+	                    paused_txt
+	                </c:if>
+	                <c:if test="${studyBo.status eq 'Deactivated'}">
+	                    deactivated_txt
+	                </c:if>
+	                ">${studyBo.status}</span>
+<%-- 	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span> --%>
+	                <c:set var="isLive">${_S}isLive</c:set> <span class="version">${not empty  sessionScope[isLive]?studyBo.studyVersionBo.studyLVersion:''}</span>
+                </div>
+                 </li>
                     <li class="first active">
                     	Basic Information 
 	                    <c:if test="${studyBo.studySequenceBo.basicInfo}">
@@ -39,17 +59,17 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent Sections
+                    <li class="sub fifthConsent commonCls"> Consent Sections
                     	<c:if test="${studyBo.studySequenceBo.consentEduInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
 	                </li>
-                    <li class="sub fifthComre commonCls cursor-none-without-event"><span class="dot"></span> Comprehension Test
+                    <li class="sub fifthComre commonCls cursor-none-without-event">Comprehension Test
                     	<c:if test="${studyBo.studySequenceBo.comprehensionTest}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent Steps
+                    <li class="sub fifthConsentReview commonCls"> Review and E-consent Steps
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
@@ -57,11 +77,11 @@
                     <li class="sixth commonCls">
                     	Study Activities
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires
+                    <li class="sub sixthQuestionnaires commonCls"> Questionnaires
                     <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                </c:if> </li>
-                    <li class="sub sixthTask commonCls "><span class="dot"></span>
+                    <li class="sub sixthTask commonCls ">
                     Active Tasks
                        <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -125,6 +145,7 @@ $("#rowId").addClass('lc-gray-bg');
    // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
    // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
    $("#myNavbar li.studyClass").addClass('active');
+   $('[data-toggle="tooltip"]').tooltip();
    
    $('.cancelBut').click(function() {
 	   <c:if test="${empty permission}">

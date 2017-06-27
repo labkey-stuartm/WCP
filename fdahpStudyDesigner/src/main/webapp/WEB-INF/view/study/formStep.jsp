@@ -38,7 +38,7 @@
 	            
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
+	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="bottom" 
 	            <c:if test="${empty questionnairesStepsBo.stepId}"> title="Please click on Next to continue." </c:if>
 	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
 	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
@@ -63,6 +63,7 @@
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
+         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <input type="hidden" name="stepType" id="stepType" value="Form">
          <input type="hidden" name="formId" id="formId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
@@ -73,9 +74,10 @@
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
-                  <div class="form-group mb-none">
-                     <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
+                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span></div>
+                  <div class="form-group">
+                     <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required 
+                     maxlength="15" <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
                   </div>
@@ -139,13 +141,13 @@
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row" id="addQuestionContainer">
-               <div class="col-md-6 p-none blue-md-f mt-sm text-uppercase">
+            <div class="row mt-lg" id="addQuestionContainer">
+               <div class="col-md-6 p-none blue-md-f mt-xs text-uppercase">
                   Questions in the Form
                </div>
                <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
+                     <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">Add New Question</button>
                   </div>
                </div>
                <div class="clearfix"></div>
@@ -166,10 +168,10 @@
                            <div>
                               <div class="text-right pos-relative">
                               	 <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
                               	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
@@ -233,6 +235,7 @@ $(document).ready(function(){
 		$('.stepLevel a').tab('show');
 	}
      $("#doneId").click(function(){
+    	 $("#doneId").attr("disabled",true);
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
     	 validateShortTitle('',function(val){
@@ -240,27 +243,63 @@ $(document).ready(function(){
 	 				if(isFromValid("#formStepId")){
 	 		    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
 	 		    		    if (!table.data().count() ) {
+	 		    		    	$("#doneId").attr("disabled",false);
 	 		      				$('#alertMsg').show();
 	 		      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
 	 		      				setTimeout(hideDisplayMessage, 4000);
 	 		      	 			$('.formLevel a').tab('show');
 	 		 	     	 	}else{
-	 		 	     	 		document.formStepId.submit();
+		 		 	     	 	var repeatable=$('input[name="repeatable"]:checked').val();
+		 		 				if(repeatable == "Yes"){
+		 		 					validateRepeatableQuestion('',function(valid){
+		 		 						if(!valid){
+		 		 							document.formStepId.submit();
+		 		 						}else{
+		 		 							$("#doneId").attr("disabled",false);
+		 		 						}
+		 		 					});
+		 		 				}else{
+		 		 					document.formStepId.submit();
+		 		 				}
 	 		 	     	    } 
 	 		    		 }else{
-	 		    			 saveFormStepQuestionnaire(this, function(val) {
-	 		  	     	    	 if(val){
-	 		  	     	    		 if (!table.data().count() ) {
-	 		  	     	      				$('#alertMsg').show();
-	 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-	 		  	     	      				setTimeout(hideDisplayMessage, 4000);
-	 		  	     	      	 			$('.formLevel a').tab('show');
-	 		  	     	 	     	 }
-	 		  	     	    	 }
-	 		  	     			});
+	 		    			var repeatable=$('input[name="repeatable"]:checked').val();
+	 		    			if(repeatable == "Yes"){
+	 		    				validateRepeatableQuestion('',function(valid){
+	 		 						if(!valid){
+	 		 							saveFormStepQuestionnaire(this, function(val) {
+	 			 		  	     	    	 if(val){
+	 			 		  	     	    		 if (!table.data().count() ) {
+	 			 		  	     	    			    $("#doneId").attr("disabled",false);
+	 			 		  	     	      				$('#alertMsg').show();
+	 			 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 			 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+	 			 		  	     	      	 			$('.formLevel a').tab('show');
+	 			 		  	     	 	     	 }
+	 			 		  	     	    	 }
+	 			 		  	     		});
+	 		 						}else{
+	 		 							$("#doneId").attr("disabled",false);
+	 		 						}
+	 		 					});
+	 		    			}else{
+	 		    				saveFormStepQuestionnaire(this, function(val) {
+		 		  	     	    	 if(val){
+		 		  	     	    		 if (!table.data().count() ) {
+		 		  	     	    			    $("#doneId").attr("disabled",false);
+		 		  	     	      				$('#alertMsg').show();
+		 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+		 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+		 		  	     	      	 			$('.formLevel a').tab('show');
+		 		  	     	 	     	 }
+		 		  	     	    	 }
+		 		  	     		});
+	 		    			}
+	 		    			 
 	 		    		 }
 	 		    		 
 	 				}else{
+	 					$("#doneId").attr("disabled",false);
 	 					var slaCount = $('#sla').find('.has-error.has-danger').length;
 	 					var flaCount = $('#fla').find('.has-error.has-danger').length;
 	 					if(parseInt(slaCount) >= 1){
@@ -270,6 +309,7 @@ $(document).ready(function(){
 	 					}
 	 				}
 	 			}else{
+	 				$("#doneId").attr("disabled",false);
 	 				var slaCount = $('#sla').find('.has-error.has-danger').length;
  					var flaCount = $('#fla').find('.has-error.has-danger').length;
  					if(parseInt(slaCount) >= 1){
@@ -331,17 +371,23 @@ $(document).ready(function(){
  		var formId = $("#instructionFormId").val();
  	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
  	        var rowData = table1.row( diff[i].node ).data();
+ 	        var r1;
  	        if(i==0){
- 	        	oldOrderNumber = $(diff[i].oldData).attr('id');
-	            newOrderNumber = $(diff[i].newData).attr('id');
- 	        }
+		        r1 = $(rowData[0]).attr('id');
+		    }	        
+		    if(i==1){
+		      if(r1 > $(rowData[0]).attr('id')){
+		        oldOrderNumber = $(diff[0].oldData).attr('id');
+		        newOrderNumber = $(diff[0].newData).attr('id');
+		      }else{
+		        oldOrderNumber = $(diff[diff.length-1].oldData).attr('id');
+		        newOrderNumber = $(diff[diff.length-1].newData).attr('id');
+		      }  	
+		    }
  	        result += rowData[1]+' updated to be in position '+
  	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
  	    }
 
- 	    console.log('oldOrderNumber:'+oldOrderNumber);
- 	    console.log('newOrderNumber:'+newOrderNumber);
- 	    console.log('formId:'+formId);
  	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
  			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
  	    	$.ajax({
@@ -359,6 +405,9 @@ $(document).ready(function(){
  					if(status == "SUCCESS"){
  						$('#alertMsg').show();
  						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+ 						if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+    					}
  					}else{
  						$('#alertMsg').show();
  						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
@@ -380,7 +429,18 @@ $(document).ready(function(){
 function saveFormStep(){
 	validateShortTitle('',function(val){
 		if(val){
-			saveFormStepQuestionnaire();
+			var repeatable=$('input[name="repeatable"]:checked').val();
+			if(repeatable == "Yes"){
+				validateRepeatableQuestion('',function(valid){
+					if(!valid){
+						saveFormStepQuestionnaire();
+					}else{
+						
+					}
+				});
+			}else{
+				saveFormStepQuestionnaire();
+			}
 		}else{
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 		    var flaCount = $('#fla').find('.has-error.has-danger').length;
@@ -505,46 +565,57 @@ function ellipseUnHover(item){
    $(item).prev().show();
 }
 function deletQuestion(formId,questionId){
-	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
-		if(result){
-			if((formId != null && formId != '' && typeof formId != 'undefined') && 
-					(questionId != null && questionId != '' && typeof questionId != 'undefined')){
-				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do?_S=${param._S}",
-	    			type: "POST",
-	    			datatype: "json",
-	    			data:{
-	    				formId: formId,
-	    				questionId: questionId,
-	    				"${_csrf.parameterName}":"${_csrf.token}",
-	    			},
-	    			success: function deleteConsentInfo(data){
-	    				 var jsonobject = eval(data);
-	    				var status = jsonobject.message;
-	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
-	    					$('#alertMsg').show();
-	    					console.log(jsonobject.questionnaireJsonObject);
-	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-	    					reloadQuestionsData(questionnaireSteps);
-	    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-	    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-	    					}
-	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
-	    					$('#alertMsg').show();
-	    	            }
-	    				setTimeout(hideDisplayMessage, 4000);
-	    			},
-	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-	    			  setTimeout(hideDisplayMessage, 4000);
-	    			}
-	    		});
-			}else{
-				bootbox.alert("Ooops..! Something went worng. Try later");
+	bootbox.confirm({
+	    message: "Are you sure you want to delete this question item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+	    buttons: {
+	        confirm: {
+	            label: 'Yes',
+	        },
+	        cancel: {
+	            label: 'No',
+	        }
+	    },
+	    callback: function (result) { 
+			if(result){
+				if((formId != null && formId != '' && typeof formId != 'undefined') && 
+						(questionId != null && questionId != '' && typeof questionId != 'undefined')){
+					$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do?_S=${param._S}",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				formId: formId,
+		    				questionId: questionId,
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteConsentInfo(data){
+		    				 var jsonobject = eval(data);
+		    				var status = jsonobject.message;
+		    				if(status == "SUCCESS"){
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+		    					$('#alertMsg').show();
+		    					console.log(jsonobject.questionnaireJsonObject);
+		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+		    					reloadQuestionsData(questionnaireSteps);
+		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+				}else{
+					bootbox.alert("Ooops..! Something went worng. Try later");
+				}
 			}
-		}
+	    }
 	});
 }
 function reloadQuestionsData(questions){
@@ -560,12 +631,12 @@ function reloadQuestionsData(questions){
 			     if(typeof value.title == "undefined"){
 			    	 datarow.push(' ');
 			     }else{
-			    	 datarow.push('<div>'+value.title+'</div>');
+			    	 datarow.push('<div class="dis-ellipsis">'+value.title+'</div>');
 			     }
 			     var dynamicAction ='<div><div class="text-right pos-relative">';
-			     if(value.responseTypeText == 'Double'  && value.lineChart == 'Yes'){
+			     if(value.responseTypeText == 'Double'  && (value.lineChart == 'Yes' || value.statData == 'Yes')){
 		    		  dynamicAction += '<span class="sprites_v3 status-blue mr-md"></span>';
-		    	 }else if(value.responseTypeText == 'Double'  && value.lineChart == 'No'){
+		    	 }else if(value.responseTypeText == 'Double'  && (value.lineChart == 'No' && value.statData == 'No')){
 		    		  dynamicAction += '<span class="sprites_v3 status-gray mr-md"></span>';
 		    	 }else if(value.responseTypeText == 'Date'  && value.useAnchorDate){
 		    		  dynamicAction += '<span class="sprites_v3 calender-blue mr-md"></span>';
@@ -594,7 +665,6 @@ function reloadQuestionsData(questions){
 	 }
 }
 function goToBackPage(item){
-	//window.history.back();
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({
@@ -631,7 +701,10 @@ function validateShortTitle(item,callback){
  	var stepType="Form";
  	var thisAttr=  $("#stepShortTitle");
  	var existedKey = $("#preShortTitleId").val();
+ 	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").html("");
  		if( existedKey !=shortTitle){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
@@ -640,7 +713,8 @@ function validateShortTitle(item,callback){
                  data: {
                  	shortTitle : shortTitle,
                  	questionnaireId : questionnaireId,
-                 	stepType : stepType
+                 	stepType : stepType,
+                 	questionnaireShortTitle : questionnaireShortTitle
                  },
                  beforeSend: function(xhr, settings){
                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
@@ -657,7 +731,7 @@ function validateShortTitle(item,callback){
                          $(thisAttr).val('');
                          $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                          $(thisAttr).parent().find(".help-block").empty();
-                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
                          callback(false);
                      }
                  },
@@ -665,9 +739,40 @@ function validateShortTitle(item,callback){
            });
  		}else{
  			 callback(true);
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").html("");
  		}
  	}else{
  		 callback(false);
  	}
+}
+function validateRepeatableQuestion(item,callback){
+	var formId = $("#formId").val();
+	if(formId != null && formId !='' && typeof formId!= 'undefined'){
+		$.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/validateRepeatableQuestion.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	formId : formId
+            },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+            },
+            success:  function getResponse(data){
+                var message = data.message;
+                console.log(message);
+                if('SUCCESS' == message){
+                    callback(true);
+                    showErrMsg("The following properties for questions cannot be used if the form is of Repeatable type:  Anchor Date, Charts/Statistics for Dashboard.");
+                }else{
+                    callback(false);
+                }
+            },
+            global : false
+      });
+	}else{
+		 callback(false);
+	}
 }
 </script>

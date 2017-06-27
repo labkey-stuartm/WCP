@@ -72,11 +72,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used get the instruction of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo getInstructionsBo(Integer instructionId) {
+	public InstructionsBo getInstructionsBo(Integer instructionId,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getInstructionsBo - Starts");
 		InstructionsBo instructionsBo = null;
 		try{
-			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId);
+			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getInstructionsBo - ERROR ", e);
 		}
@@ -98,7 +98,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != instructionsBo){
 				if(instructionsBo.getId() != null){
-					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId());
+					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),customStudyId);
 				}else{
 					addOrUpdateInstructionsBo = new InstructionsBo();
 					addOrUpdateInstructionsBo.setActive(true);
@@ -158,7 +158,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != questionnaireBo){
 				if(questionnaireBo.getId() != null){
-					addQuestionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireBo.getId());
+					addQuestionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireBo.getId(),customStudyId);
 				}else{
 					addQuestionnaireBo = new QuestionnaireBo();
 					addQuestionnaireBo.setActive(true);
@@ -246,6 +246,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getPreviousFrequency() != null){
 					addQuestionnaireBo.setPreviousFrequency(questionnaireBo.getPreviousFrequency());
 				}
+				addQuestionnaireBo.setIsChange(questionnaireBo.getIsChange());
 				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo, sessionObject,customStudyId);
 			}
 		}catch(Exception e){
@@ -283,11 +284,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the questionnaire of an study by using the questionnaireId
 	 */
 	@Override
-	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId) {
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
 		QuestionnaireBo questionnaireBo=null;
 		try{
-			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId);
+			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId, customStudyId);
 			if(null != questionnaireBo){
 				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
 					questionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
@@ -369,7 +370,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != questionsBo){
 				if(questionsBo.getId() != null){
-					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId());
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(),customStudyId);
 				}else{
 					addQuestionsBo = new QuestionsBo();
 					addQuestionsBo.setActive(true);
@@ -380,9 +381,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
-				if(questionsBo.getDescription() != null){
-					addQuestionsBo.setDescription(questionsBo.getDescription());
-				}
+				addQuestionsBo.setDescription(questionsBo.getDescription());
 				if(questionsBo.getSkippable() != null){
 					addQuestionsBo.setSkippable(questionsBo.getSkippable());
 				}
@@ -473,11 +472,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId) {
+	public QuestionsBo getQuestionsById(Integer questionId,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
 		QuestionsBo questionsBo = null;
 		try{
-			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId);
+			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
 		}
@@ -527,7 +526,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						 for(Entry<Integer, QuestionnaireStepBean> entry : questionnaireStepMap.entrySet()){
 							 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 							 if(questionResponseTypeMasterInfoBo.getId().equals(questionnaireStepBean.getResponseType())){
-								 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
+								 if(FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 								 }else{
 									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -537,7 +536,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 							 if(entry.getValue().getFromMap() != null){
 								 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 									 if(questionResponseTypeMasterInfoBo.getId().equals(entryKey.getValue().getResponseType())){
-										 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
+										 if(FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 										 }else{
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -566,11 +565,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 *
 	 */
 	@Override
-	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.checkQuestionnaireShortTitle(studyId, shortTitle);
+			message = studyQuestionnaireDAO.checkQuestionnaireShortTitle(studyId, shortTitle,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStepList - Error",e);
 		}
@@ -585,11 +584,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @param String : shortTitle
 	 */
 	@Override
-	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle) {
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle);
+			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle,questionnaireShortTitle);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Error",e);
 		}
@@ -683,11 +682,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the step information of questionnaire in a study
 	 */
 	@Override
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType) {
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
 		QuestionnairesStepsBo questionnairesStepsBo=null;
 		try{
-			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType);
+			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, customStudyId);
 					if(questionnairesStepsBo != null && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP) && questionnairesStepsBo.getFormQuestionMap() != null){
 						List<QuestionResponseTypeMasterInfoBo>	questionResponseTypeMasterInfoList =studyQuestionnaireDAO.getQuestionReponseTypeList();
 						if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty()){
@@ -695,7 +694,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 								 for(Entry<Integer, QuestionnaireStepBean> entry : questionnairesStepsBo.getFormQuestionMap().entrySet()){
 									 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 									 if(questionnaireStepBean.getResponseType()!= null && questionnaireStepBean.getResponseType().equals(questionResponseTypeMasterInfoBo.getId())){
-										 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
+										 if(FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 										 }else{
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -747,7 +746,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			QuestionsBo addQuestionsBo = null;
 			if(questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null ){
 				if(questionnairesStepsBo.getQuestionsBo().getId() != null){
-					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId());
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId(),customStudyId);
 					if(questionnairesStepsBo.getModifiedOn() != null){
 						addQuestionsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
 					}
@@ -767,9 +766,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnairesStepsBo.getQuestionsBo().getQuestion() != null){
 					addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
 				}
-				if(questionnairesStepsBo.getQuestionsBo().getDescription() != null){
-					addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
-				}
+				addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
 				if(questionnairesStepsBo.getQuestionsBo().getSkippable() != null){
 					addQuestionsBo.setSkippable(questionnairesStepsBo.getQuestionsBo().getSkippable());
 				}
@@ -842,9 +839,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 
 	@Override
-	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle) {
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - checkFromQuestionShortTitle - Starts");
-		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle);
+		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle,questionnaireShortTitle);
 	}
 
 	/**
@@ -853,9 +850,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @return Boolean true or false
 	 */
 	@Override
-	public Boolean isAnchorDateExistsForStudy(Integer studyId) {
+	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
-		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId);
+		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId,customStudyId);
 	}
 
 	/**
@@ -878,9 +875,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to check the stastic short title unique
 	 */
 	@Override
-	public String checkStatShortTitle(Integer studyId, String shortTitle) {
+	public String checkStatShortTitle(Integer studyId, String shortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkStatShortTitle - Starts");
-		return studyQuestionnaireDAO.checkStatShortTitle(studyId, shortTitle);
+		return studyQuestionnaireDAO.checkStatShortTitle(studyId, shortTitle,customStudyId);
 	}
 
 	/**
@@ -891,10 +888,34 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to validate the questionnaire have response type scale for android platform 
 	 */
 	@Override
-	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
-		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId);
-		
+		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId, customStudyId);
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @param String : frequency
+	 * @param String Success or failre
+	 */
+	@Override
+	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
+		return studyQuestionnaireDAO.validateLineChartSchedule(questionnaireId, frequency);
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : formId
+	 * @param String : Success or failure
+	 * This method is used to validate the stats information for repeatable form in questionnaire
+	 * 
+	 */
+	@Override
+	public String validateRepetableFormQuestionStats(Integer formId) {
+		logger.info("StudyQuestionnaireServiceImpl - validateRepetableFormQuestionStats - Starts");
+		return studyQuestionnaireDAO.validateRepetableFormQuestionStats(formId);
 	}
 	
 }

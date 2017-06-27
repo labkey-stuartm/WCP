@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<c:url value="/j_spring_security_logout" var="logoutUrl" />
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none white-bg hd_con">
      <div class="md-container">
          
@@ -16,7 +16,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
               </button>
-              <a class="navbar-brand" href="javascript:void(0)" id="landingScreen"><img src="/fdahpStudyDesigner/images/logo/logo-sm.png"/></a>
+              <a class="navbar-brand pt-none pb-none" href="javascript:void(0)" id="landingScreen"><img src="/fdahpStudyDesigner/images/logo/logo-sm.png"/></a>
             </div>
             <div class="collapse navbar-collapse p-none" id="myNavbar">
               <ul class="nav navbar-nav">
@@ -44,9 +44,9 @@
               <ul class="nav navbar-nav navbar-right">
 		        <li id="myAccount" class="dropdown ml-lg userLi">
 		          <a class="dropdown-toggle blue-link" data-toggle="dropdown" href="javascript:void(0)">${sessionObject.firstName} ${sessionObject.lastName} &nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a>
-		          <ul class="dropdown-menu pb-none profileBox">
+		          <ul class="dropdown-menu pb-none pt-none profileBox">
 		         
-		            <li class="linkProf"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection">My Account</a><hr align="left" width="100%"><a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a></li>
+		            <li class="linkProf"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection">My Account</a><hr align="left" width="100%"><a href="/fdahpStudyDesigner/sessionOut.do" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a></li>
 		          </ul>
 		          </li>
                </ul>
@@ -74,9 +74,8 @@
      </div>
  </div>
  
-<c:url value="/j_spring_security_logout" var="logoutUrl" />
 <form action="${logoutUrl}" method="post" id="logoutForm">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="logoutCsrf"/>
 </form>
 <form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
 </form:form>
@@ -90,28 +89,42 @@
 </form:form>
  <script type="text/javascript">
  $(document).ready(function(){
+ 	var a = document.createElement('a');
  	$('#usersSection').on('click',function(){
- 		$('#userListForm').submit();
+//  		$('#userListForm').submit();
+		a.href = "/fdahpStudyDesigner/adminUsersView/getUserList.do";
+		document.body.appendChild(a).click();
  	});
  	
  	$('#manageNotificationSection').on('click',function(){
- 		$('#manageNotificationForm').submit();
+//  		$('#manageNotificationForm').submit();
+		a.href = "/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
+		document.body.appendChild(a).click();
  	});
  	
  	$('#profileSection').on('click',function(){
- 		$('#myAccountForm').submit();
+//  		$('#myAccountForm').submit();
+		a.href = "/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
+		document.body.appendChild(a).click();
  	});
  	
  	$('#studySection').on('click',function(){
- 		$('#adminStudyDashForm').submit();
+//  		$('#adminStudyDashForm').submit();
+		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+		document.body.appendChild(a).click();
  	});
  	
  	$('#landingScreen').on('click',function(){
- 		$('#landingPageForm').submit();
+//  		$('#landingPageForm').submit();
+		a.href = "/fdahpStudyDesigner/adminDashboard/viewDashBoard.do";
+		document.body.appendChild(a).click();
  	});
  	
  });
-  function formSubmit() {
+	function formSubmit() {
 			document.getElementById("logoutForm").submit();
-		}
+// 		var a = document.createElement('a');
+// 		a.href = "fdahpStudyDesigner/${logoutUrl}";
+// 		document.body.appendChild(a).click();
+	}
  </script>

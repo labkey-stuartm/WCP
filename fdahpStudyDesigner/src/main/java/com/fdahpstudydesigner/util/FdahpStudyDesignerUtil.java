@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
@@ -195,7 +197,7 @@ public class FdahpStudyDesignerUtil {
 	public static String getCurrentDateTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME);
-		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 		 
 	}
@@ -204,14 +206,14 @@ public class FdahpStudyDesignerUtil {
 	public static String getCurrentDate() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 	}
 	
 	public static String getCurrentTime() {
 		Calendar currentDate = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 	}
 
@@ -390,11 +392,11 @@ public class FdahpStudyDesignerUtil {
 		return actualFileName + "_" + intial + "_"+ dateTime;
 	}
 	
-	public static String uploadImageFile(MultipartFile file, String fileName,String folderName) {
+	public static String uploadImageFile(MultipartFile file, String fileName,String folderName) throws IOException {
 		File serverFile;
 		String actulName = null;
-		FileOutputStream fileOutputStream;
-		BufferedOutputStream stream;
+		FileOutputStream fileOutputStream = null;
+		BufferedOutputStream stream = null;
 		if (file != null) {
 			try {
 				fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());
@@ -408,12 +410,15 @@ public class FdahpStudyDesignerUtil {
 				fileOutputStream = new FileOutputStream(serverFile);
 				stream = new BufferedOutputStream(fileOutputStream);
 				stream.write(bytes);
-				stream.close();
-				fileOutputStream.close();
 				logger.info("Server File Location="+ serverFile.getAbsolutePath());
 				actulName = fileName;
 			} catch (Exception e) {
 				logger.error("ERROR: FdahpStudyDesignerUtil.uploadImageFile()", e);
+			} finally {
+				if(null != stream)
+					stream.close();
+				if(null != fileOutputStream)
+					fileOutputStream.close();
 			}
 
 		}
@@ -550,6 +555,7 @@ public class FdahpStudyDesignerUtil {
 		String userLoginFailure = (String) configMap.get("user.login.failure");
 		String userInactiveMsg = (String) configMap.get("user.inactive.msg");
 		String alreadyLoginMsg =  (String) configMap.get("user.alreadylogin.msg");
+		String credentialExpiredException = (String) configMap.get("user.admin.forcepassword.msg");
 		String error = "";
 		if (exception instanceof BadCredentialsException) {
 			error = userLoginFailure;
@@ -557,6 +563,8 @@ public class FdahpStudyDesignerUtil {
 			error = exception.getMessage();
 		} else if (exception instanceof DisabledException) {
 			error = userInactiveMsg;
+		} else if (exception instanceof CredentialsExpiredException) {
+			error = credentialExpiredException;
 		} else if (exception instanceof SessionAuthenticationException) {
 			error = alreadyLoginMsg;
 		} else if (exception instanceof AccountStatusException) {
@@ -678,8 +686,8 @@ public class FdahpStudyDesignerUtil {
 		float diff = 0.0f;
 		try {
 			Date dt2 = new Date();
-			diff = dt2.getTime() - date.getTime();
-			diffHours = Math.round((diff / (60 * 60 * 1000)));
+			diff = (float) dt2.getTime() - date.getTime();
+			diffHours = Math.round(diff / (60 * 60 * 1000));
 		} catch (Exception e) {
 			logger.error("FdahpStudyDesignerUtil - getTimeDiffToCurrentTimeInHr() : ",
 					e);
@@ -807,4 +815,70 @@ public class FdahpStudyDesignerUtil {
 		return newSysDateTime;
 
 	}
+	
+	/**
+	 * comparing time duration with  two dates
+	 * @return
+	 */
+	public static boolean  compareDateCustomDateTime(String firstInputDateTime, String secondInputDateTime , String inputFormat, Integer duration){
+		   boolean flag = false;
+		   final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
+		   Date firstDateTime = null;
+		   Date secondDateTime = null;
+		   String diff = "";
+		    try {
+		    	firstDateTime = sdf.parse(firstInputDateTime);
+		    	secondDateTime = sdf.parse(secondInputDateTime);
+				long timeDiff = Math.abs(firstDateTime.getTime() - secondDateTime.getTime());
+				diff = String.format("%d",TimeUnit.MILLISECONDS.toSeconds(timeDiff));
+				if(StringUtils.isNotEmpty(diff) && duration.equals(Integer.valueOf(diff))){
+					flag = true;
+				}
+			} catch (ParseException e) {
+				logger.error("FdahpStudyDesignerUtil - addTimeCompareDateCustomDateTime() : ",e);
+			}
+		    return flag;
+	   }
+	
+	   public static void main(String[] args) {
+		String firstDateTime = "2017-05-05 08:44";
+		String secondDateTime = "2017-05-05 07:44";
+		
+		String hour = "00";
+		String minute = "30";
+		Integer durationSeconds = (Integer.valueOf(hour) * 60 * 60) + (Integer.valueOf(minute)* 60);
+		System.out.println(durationSeconds);
+		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));
+	}
+	   
+	public static String getTimeRangeString(String frequency){
+			String timeRange = "";
+			if(StringUtils.isNotEmpty(frequency)){
+				switch (frequency) {
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WITHIN_A_DAY:
+					timeRange = FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH+"' , '"+FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK;
+					break;
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+					timeRange = FdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+					timeRange = FdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+					timeRange =FdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+					timeRange = FdahpStudyDesignerConstants.RUN_BASED;
+					break;
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+					timeRange = "";
+					break;
+				 }
+			
+			  }
+			return timeRange;
+   }
 }

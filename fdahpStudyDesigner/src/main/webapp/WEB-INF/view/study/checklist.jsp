@@ -31,80 +31,123 @@
             <div class="new-checkbox right-content-body">
             <div>
                  <span>This checklist is meant to serve as a reminder for tasks to be completed before you launch or go-live with a study. Mark tasks as completed as and when you finish them.</span>
-            </div></br>
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox1" class="class" name="checkbox1" <c:if test="${checklist.checkbox1}">checked</c:if> required>
-                            <label for="inlineCheckbox1"> checklist1 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox2" class="class" name="checkbox2" <c:if test="${checklist.checkbox2}">checked</c:if> required>
-                            <label for="inlineCheckbox2"> checklist2 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox3" class="class" name="checkbox3" <c:if test="${checklist.checkbox3}">checked</c:if> required>
-                            <label for="inlineCheckbox3"> checklist3 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox4" class="class" name="checkbox4" <c:if test="${checklist.checkbox4}">checked</c:if> required>
-                            <label for="inlineCheckbox4"> checklist4 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox5" class="class" name="checkbox5" <c:if test="${checklist.checkbox5}">checked</c:if> required>
-                            <label for="inlineCheckbox5"> checklist5 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox6" class="class" name="checkbox6" <c:if test="${checklist.checkbox6}">checked</c:if> required>
-                            <label for="inlineCheckbox6"> checklist6 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox7" class="class" name="checkbox7" <c:if test="${checklist.checkbox7}">checked</c:if> required>
-                            <label for="inlineCheckbox7"> checklist7 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox8" class="class" name="checkbox8" <c:if test="${checklist.checkbox8}">checked</c:if> required>
-                            <label for="inlineCheckbox8"> checklist8 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox9" class="class" name="checkbox9" <c:if test="${checklist.checkbox9}">checked</c:if> required>
-                            <label for="inlineCheckbox9"> checklist9 </label>
-                      </span>
-            </div></br>
-            
-            <div>
-                       <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox10" class="class" name="checkbox10" <c:if test="${checklist.checkbox10}">checked</c:if> required>
-                            <label for="inlineCheckbox10"> checklist10	 </label>
-                      </span>
-            </div></br>
             </div>
-            <!--  End body tab section -->
-        </form:form>   
+            <div class="checkbox__container pt-lg">
+                <div class="checkbox checkbox-inline p-45 pb-md">
+                      <div>
+	                       <input type="checkbox" id="inlineCheckbox1" class="class" name="checkbox1" <c:if test="${checklist.checkbox1}">checked</c:if> required>
+	                       <label for="inlineCheckbox1"> IRB Review Completed </label>
+                      </div>
+                      <div class="pl-13">
+                      	<span class="gray-xs-f mb-xs">Final IRB approval letter received for all participating institutions</span>
+                      </div>
+                </div>
+                <div class="checkbox checkbox-inline p-45 pb-md">
+                       <div>
+                            <input type="checkbox" id="inlineCheckbox2" class="class" name="checkbox2" <c:if test="${checklist.checkbox2}">checked</c:if> required>
+                            <label for="inlineCheckbox2"> Participant Cohort Identified </label>
+                       </div>
+                       <div class=" pl-13">
+                       		<span class="gray-xs-f mb-xs">(If using pre-screened participant group)Participant cohort defined and identified for the study.</span>
+                       </div>
+               </div>
+                <div class="checkbox checkbox-inline p-45 pb-md">
+	                <div>
+	                     <input type="checkbox" id="inlineCheckbox3" class="class" name="checkbox3" <c:if test="${checklist.checkbox3}">checked</c:if> required>
+	                     <label for="inlineCheckbox3"> Platform Support and Participant Device Usage Verified </label>
+	                </div>
+                     <div class=" pl-13">
+                     	<span class="gray-xs-f mb-xs">(If using pre-screened participant group) Verified participants have smartphones corresponding to at least one of the platforms chosen for the study (iOS, Android).</span>
+              		</div> 
+              </div>
+              <div class="checkbox checkbox-inline p-45 pb-md">
+              	<div>
+                   <input type="checkbox" id="inlineCheckbox4" class="class" name="checkbox4" <c:if test="${checklist.checkbox4}">checked</c:if> required>
+                   <label for="inlineCheckbox4"> Eligibility - Tokens Generated  </label>
+                </div>
+                 <div class=" pl-13">
+                 	<span class="gray-xs-f mb-xs">(If using token validation method of eligibility), tokens generated on the Labkey portal </span>
+           		 </div>
+             </div>
+             <div class="checkbox checkbox-inline p-45 pb-md">
+              	<div>
+                   <input type="checkbox" id="inlineCheckbox5" class="class" name="checkbox5" <c:if test="${checklist.checkbox5}">checked</c:if> required>
+                   <label for="inlineCheckbox5"> Eligibility - Token Distribution </label>
+               </div>
+               <div class=" pl-13"> 
+                  <span class="gray-xs-f mb-xs">(If using token validation method of eligibility), tokens distributed to pre-screened participants </span>
+             	</div>
+             </div>
+            
+              <div class="checkbox checkbox-inline p-45 pb-md">
+              	<div> 
+                   <input type="checkbox" id="inlineCheckbox6" class="class" name="checkbox6" <c:if test="${checklist.checkbox6}">checked</c:if> required>
+                   	<label for="inlineCheckbox6"> App Install and Study Start Instructions Provided  </label>
+                </div>
+                <div class=" pl-13"> 
+                   	<span class="gray-xs-f mb-xs">Instructions provided to participants on downloading and installing the app, intimation about study start date. </span>
+             	</div>
+             </div>
+             <div class="checkbox checkbox-inline p-45 pb-md">
+            	 <div> 
+                  	<input type="checkbox" id="inlineCheckbox7" class="class" name="checkbox7" <c:if test="${checklist.checkbox7}">checked</c:if> required>
+                  	<label for="inlineCheckbox7"> Appearance of full consent document - Reviewed and Confirmed </label>
+              	</div>
+              	<div class=" pl-13"> 
+              		<span class="gray-xs-f mb-xs">Full consent document reviewed. Confirmed it matches the IRB reviewed consent</span>
+              	</div>
+            </div>
+            <div class="checkbox checkbox-inline p-45 pb-md">
+            	<div> 
+                 	<input type="checkbox" id="inlineCheckbox8" class="class" name="checkbox8" <c:if test="${checklist.checkbox8}">checked</c:if> required>
+                 	<label for="inlineCheckbox8"> Questionnaires Added </label>
+               </div>
+               <div class=" pl-13"> 
+               		<span class="gray-xs-f mb-xs">At a minimum, baseline questionnaires have been filled out and scheduled for desired time period and frequency.</span>
+           		</div>
+           </div>
+           <div class="checkbox checkbox-inline p-45 pb-md">
+           		<div> 
+                	<input type="checkbox" id="inlineCheckbox9" class="class" name="checkbox9" <c:if test="${checklist.checkbox9}">checked</c:if> required>
+                	<label for="inlineCheckbox9"> Active Tasks Added </label>
+                </div>
+                <div class=" pl-13"> 
+                	<span class="gray-xs-f mb-xs">If applicable to the study, active task added and scheduled for desired time period and frequency. </span>
+          		</div>
+          </div>
+          <div class="checkbox checkbox-inline p-45 pb-md">
+          		<div>
+              	 	<input type="checkbox" id="inlineCheckbox10" class="class" name="checkbox10" <c:if test="${checklist.checkbox10}">checked</c:if> required>
+              	 	<label for="inlineCheckbox10"> Resources Added </label>
+               	</div>
+               	<div class=" pl-13">
+               		<span class="gray-xs-f mb-xs">Baseline study resources added and reviewed for content and period of visibility.</span>
+         		</div>
+         </div>
+         <div class="checkbox checkbox-inline p-45 pb-md">
+         	<div>
+              	<input type="checkbox" id="inlineCheckbox11" class="class" name="checkbox11" <c:if test="${checklist.checkbox11}">checked</c:if> required>
+              	<label for="inlineCheckbox11"> Standalone Study App - Tested and Verified  </label>
+            </div>
+            <div class=" pl-13">
+              	<span class="gray-xs-f mb-xs">(If study created as a Standalone one), all functionality and UI has been tested and verified on the standalone test app provided by BTC.</span>
+        	</div>
         </div>
+         <div class="checkbox checkbox-inline p-45 pb-md">
+         	<div>
+              	<input type="checkbox" id="inlineCheckbox12" class="class" name="checkbox12" <c:if test="${checklist.checkbox12}">checked</c:if> required>
+              	<label for="inlineCheckbox12"> Standalone Study App - Approved and Live on App Store/Play Store</label>
+            </div>
+            <div class=" pl-13">
+            	<span class="gray-xs-f mb-xs">(If study created as a Standalone one), standalone app has been submitted to and approved by App Store/Play Store and live for participants to download from there.</span>
+        	</div>
+        </div>
+      </div>
+   </div>
+            <!--  End body tab section -->
+ </form:form>   
+        
+</div>
         <!-- End right Content here -->
 
 <script type="text/javascript">
@@ -122,11 +165,6 @@ $(document).ready(function(){
 		});
 		
 		$("#doneChecklistId").on('click', function(){
-			 /* var count = 0;
-			 $('input:checkbox.class:checked').each(function () {
-				 count++;
-			 }); */
-			 /* if(count == 10){ */
 				 bootbox.confirm({
 						closeButton: false,
 						message : 'Are you sure you have no more updates to be made in this section? Clicking Done will mark this section as Complete.',	
@@ -145,9 +183,6 @@ $(document).ready(function(){
 					        }
 					    }
 				    });
-			 /*}else{
-				 bootbox.alert("Please select all the checkboxes.");
-			 } */
 		});
 });
 

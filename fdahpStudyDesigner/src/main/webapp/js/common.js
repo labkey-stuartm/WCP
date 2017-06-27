@@ -6,7 +6,7 @@ Version: 		1.0
 
 */
 
-
+var isShift = false;
 
 /**
  * Check the given form is valid or not
@@ -75,17 +75,62 @@ $(document).ready(function(){
 	$(document).on('change', 'input[type = text] , textarea', function(e) {
 		$(this).val($.trim($(this).val()));
 	});
+	
+	document.addEventListener("keydown", keyDownTextField, false);
+	function keyDownTextField(e) {
+		var evt = (e) ? e : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if(charCode == 16)
+	    	isShift = true;
+	}
 	$('input[type = text] , textarea').keyup(function(e) {
-		var wrappedString = $(this).val();
-		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1){
+		var wrappedString = $(this).val().toLowerCase();
+		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1) {
 			e.preventDefault();
 			$(this).val('');
 			$(this).parent().addClass("has-danger").addClass("has-error");
-			$(this).parent().find(".help-block").html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+			$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
 		} else {
 			$(this).parent().find(".help-block").html("");
 		}
-	})
+		
+	});
+	$('input[type = text][custAttType != cust]').on('keyup', function(e) {
+		var evt = (e) ? e : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if(charCode == 16)
+	    	isShift = false;
+	    if(!isShift && $(this).val()) {
+			var regularExpression = /^[ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]*$/;
+			if(!regularExpression.test($(this).val())) {
+				var newVal = $(this).val().replace(/[^ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]/g, '');
+				e.preventDefault();
+				$(this).val(newVal);
+				$(this).parent().addClass("has-danger has-error");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
+			}
+	    }
+	});
+	$('input').on('drop', function() {
+	    return false;
+	});
+	$('input[type = text][custAttType = cust]').on('keyup', function(e) {
+		var evt = (e) ? e : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if(charCode == 16)
+	    	isShift = false;
+	    if(!isShift && $(this).val()) {
+	    	var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
+			if(!regularExpression.test($(this).val())) {
+				var newVal = $(this).val().replace(/[^A-Za-z0-9\*\(\)_+|:.\-]/g, '');
+				e.preventDefault();
+				$(this).val(newVal);
+				$(this).parent().addClass("has-danger has-error");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>The characters like (< >) are not allowed.</li></ul>");
+			}
+	    }
+	});
+	
 	checkboxValidate($('.form-group input:checkbox').attr('name'));
 	$('.form-group').on("click load",'input:checkbox',function(){          
 	    checkboxValidate($(this).attr('name'));
@@ -149,29 +194,29 @@ $(document).ready(function(){
     });
 	
 	
-	/*$(document).on("contextmenu",function(e){
+	$(document).on("contextmenu",function(e){
     	e.preventDefault();
     	alert("Right click has been disabled.");
     	return false;
-     });*/
+     });
 	
-    /*document.onkeypress = function (event) {
+    document.onkeypress = function (event) {
         event = (event || window.event);
         if (event.keyCode == 123) {
         	alert("This action is disabled.")
             return false;
         }
-    }*/
+    }
     
-   /* document.onmousedown = function (event) {
+    document.onmousedown = function (event) {
         event = (event || window.event);
         if (event.keyCode == 123) {
         	alert("This actoin is disabled.")
             return false;
         }
-    }*/
+    }
 	
-	/*document.onkeydown = function(e) {
+	document.onkeydown = function(e) {
 		if(e.keyCode == 123) {
 			alert("This actoin is disabled.");
 			return false;
@@ -192,7 +237,7 @@ $(document).ready(function(){
 			alert("This actoin is disabled.");
 		    return false;
 		}
-		}*/
+		}
 	
 	
 	
@@ -234,8 +279,278 @@ $(document).ready(function(){
 	        $(this).find('.dropdown-menu').first()(true).slideToggle(200)
 	    });
 	    /*common script for dropdown animation ends*/
-	    
-	})
+	    $('#signPasswordBut').click(function() {
+			$("#signUpForm").validator('validate');
+			if($("#signUpForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+				$("#signUpForm").validator('destroy');
+				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+				$('#hidePass').val($('#password').val());
+				$('#password').val('');
+				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+				$('#password').attr("pattern", "");
+				$('#password').attr("data-minlength", "");
+				$('#password').val('********************************************************************');
+				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				/*$('#password').css('font','small-caption');
+				$('#password').css('font-size','16px');*/
+			    $('#signUpForm').submit();
+			}
+			
+		});
+		
+		$('#signUpForm').keypress(function (e) {
+			  if (e.which == 13) {
+				  $("#signUpForm").validator('validate');
+					if($("#signUpForm").find(".has-danger").length > 0 ){
+						isValidLoginForm = false;
+			        }else{
+			        	isValidLoginForm = true;
+			        }
+				  if(isValidLoginForm){
+					  	$("#signUpForm").validator('destroy');
+						$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+						$('#hidePass').val($('#password').val());
+						$('#password').val('');
+						$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+						$('#password').attr("pattern", "");
+						$('#password').attr("data-minlength", "");
+						$('#password').val('********************************************************************');
+						$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+						$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#signUpForm').submit();
+					}
+			  }
+			});
+		
+		$('#resetPasswordBut').click(function() {
+			$("#passwordResetForm").validator('validate');
+			if($("#passwordResetForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+				$("#passwordResetForm").validator('destroy');
+				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+				$('#hidePass').val($('#password').val());
+				$('#password').val('');
+				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+				$('#password').attr("pattern", "");
+				$('#password').attr("data-minlength", "");
+				$('#password').val('********************************************************************');
+				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				/*$('#password').css('font','small-caption');
+				$('#password').css('font-size','16px');*/
+			    $('#passwordResetForm').submit();
+			}
+			
+		});
+		
+		$('#passwordResetForm').keypress(function (e) {
+			  if (e.which === 13) {
+				  $("#passwordResetForm").validator('validate');
+					if($("#passwordResetForm").find(".has-danger").length > 0 ){
+						isValidLoginForm = false;
+			        }else{
+			        	isValidLoginForm = true;
+			        }
+				  if(isValidLoginForm){
+					  	$("#passwordResetForm").validator('destroy');
+						$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+						$('#hidePass').val($('#password').val());
+						$('#password').val('');
+						$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+						$('#password').attr("pattern", "");
+						$('#password').attr("data-minlength", "");
+						$('#password').val('********************************************************************');
+						$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+						$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#passwordResetForm').submit();
+					}
+			  }
+			});
+		
+//		$('#resetPasswordBut').click(function() {
+//			$("#passwordResetForm").validator('validate');
+//			if($("#passwordResetForm").find(".has-danger").length > 0 ){
+//				isValidLoginForm = false;
+//	        }else{
+//	        	isValidLoginForm = true;
+//	        }
+//			if(isValidLoginForm){
+//				$("#passwordResetForm").validator('destroy');
+//				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+//				$('#hidePass').val($('#password').val());
+//				$('#password').val('');
+//				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+//				$('#password').attr("pattern", "");
+//				$('#password').attr("data-minlength", "");
+//				$('#password').val('********************************************************************');
+//				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+//				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+//				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+//				/*$('#password').css('font','small-caption');
+//				$('#password').css('font-size','16px');*/
+//			    $('#passwordResetForm').submit();
+//			}
+//			
+//		});
+//		$('#passwordResetForm').keypress(function (e) {
+//		  if (e.which === 13) {
+//			  $("#passwordResetForm").validator('validate');
+//				if($("#passwordResetForm").find(".has-danger").length > 0 ){
+//					isValidLoginForm = false;
+//		        }else{
+//		        	isValidLoginForm = true;
+//		        }
+//			  if(isValidLoginForm){
+//				  	$("#passwordResetForm").validator('destroy');
+//					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+//					$('#hidePass').val($('#password').val());
+//					$('#password').val('');
+//					$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+//					$('#password').attr("pattern", "");
+//					$('#password').attr("data-minlength", "");
+//					$('#password').val('********************************************************************');
+//					$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+//					$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+//					$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+//					$('#passwordResetForm').submit();
+//				}
+//		  }
+//		});
+		
+		$('#loginBtnId').click(function() {
+			$("#loginForm").validator('validate');
+			if($("#loginForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+//				$("#loginForm").validator('destroy');
+//				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+//				$('#hidePass').val($('#password').val());
+//					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+//				$('#password').val('********************************************************************');
+//			    $('#loginForm').submit();
+				var username = $('#email').val();
+				$('#email').val('');
+				var password = $('#password').val();
+				$('#password').val('********************************************************************');
+				$('#password').attr("type", "text").css('-webkit-text-security','disc');
+				var fdaLink = $('#fdaLink').val();
+				$("body").addClass("loading");
+				$.ajax({
+                url: fdaLink,
+                type: "POST",
+                datatype: "json",
+                data: {
+                	username : username,
+                	password : password,
+                },
+                success: function(data) {
+                    var jsonobject = data;
+                    var message = jsonobject.message;
+                    if (message == "SUCCESS") {
+                    	$('#email').val('');
+                    	$('#password').val('********************************************************************');
+                    	$('#landingId').submit();
+                    	var a = document.createElement('a');
+                    	a.href = "/fdahpStudyDesigner/adminDashboard/viewDashBoard.do?action=landing";
+    		    		document.body.appendChild(a).click();
+                    } else {
+                    	$('#password').val('');
+                    	$(".askSignInCls").addClass('hide');
+                    	$("#errMsg").html(message);
+        			   	$("#errMsg").show("fast");
+        			   	setTimeout(hideDisplayMessage, 4000);
+        			   	$('#password').attr("type", "password");
+        			   	$('#email').val(username);
+        			   	$("body").removeClass("loading");
+                    }
+                },
+                error:function() {
+//                	 alert("Please check your network connection!");
+//                	 $('#password').attr("type", "password");
+//                	 $('#password').val(password);
+//                	 $('#email').val(username);
+//                	 $("body").removeClass("loading");
+                },
+                complete : function(){ },
+                global : false
+            })
+			}
+		});
+		
+/*//		$('.askSignInCls').keypress(function (e) {
+//		  if (e.which == 13) {
+//				if(isFromValid($("#loginForm"))){
+//					isValidLoginForm = false;
+//		        }else{
+//		        	isValidLoginForm = true;
+//		        }
+//			  if(isValidLoginForm){
+////				  	$("#loginForm").validator('destroy');
+////					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+////					$('#hidePass').val($('#password').val());
+////					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+////					$('#password').val('********************************************************************');
+////				    $('#loginForm').submit();
+//				  $("body").addClass("loading");
+//				  var username = $('#email').val();
+//				  var password = $('#password').val();
+//				  $('#password').val('********************************************************************');
+//				  var fdaLink = $('#fdaLink').val();
+//					$.ajax({
+//	                  url: fdaLink,
+//	                  type: "POST",
+//	                  datatype: "json",
+//	                  data: {
+//	                  	username : username,
+//	                  	password : password,
+//	                  },
+//	                  success: function emailValid(data, status) {
+//	                      var jsonobject = eval(data);
+//	                      var message = jsonobject.message;
+//	                      if (message == "SUCCESS") {
+//	                    	  $('#email').val('');
+//	                    	  $('#password').val('********************************************************************');
+//	                    	  $('#password').attr("type", "text").css('-webkit-text-security','disc');
+//	                    	  window.location.href = '/fdahpStudyDesigner/';
+//	                      } else {
+//	                    	  $('#password').val('');
+//	                    	  $(".askSignInCls").addClass('hide');
+//	                    	  $("#errMsg").html(message);
+//	                    	  $("#errMsg").show("fast");
+//	                    	  setTimeout(hideDisplayMessage, 4000);
+//	                    	  $("body").removeClass("loading");
+//	                      }
+//	                  },
+//	                  error:function status(data, status) {
+//	                	  alert("Please check your network connection!");
+//	                	  $('#password').attr("type", "password");
+//	                	  $('#password').val('');
+//	                	  $("body").removeClass("loading");
+//	                  },
+//	                  complete : function(){ },
+//	                  global : false
+//	              })
+//				}
+//		  }
+//		});
+*/	})
 
 
 

@@ -50,11 +50,11 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 					newSession = hibernateTemplate.getSessionFactory().openSession();
 					transaction = newSession.beginTransaction();
 				}
-				if(sessionObject != null && FdahpStudyDesignerUtil.isNotEmpty(activity) && FdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
+				if(FdahpStudyDesignerUtil.isNotEmpty(activity) && FdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
 					auditLog = new AuditLogBO();
 					auditLog.setActivity(activity);
 					auditLog.setActivityDetails(activityDetails);
-					auditLog.setUserId(sessionObject.getUserId());
+					auditLog.setUserId(sessionObject != null ? sessionObject.getUserId() : 0);
 					auditLog.setClassMethodName(classsMethodName);
 					auditLog.setCreatedDateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()));
 					if(newSession != null){
@@ -143,10 +143,14 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 			if (userId != null && studyId != null) {
 				if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_STUDY).equals(actionType)) {
 					draftColumn = "hasStudyDraft = 1";
-				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY).equals(actionType)){
+				}/* else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY).equals(actionType)){
 					draftColumn = "hasActivityDraft = 1, hasStudyDraft = 1 ";
-				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONCENT).equals(actionType)){
-					draftColumn = "hasConsentDraft = 1, hasActivityDraft = 1, hasStudyDraft = 1";
+				}*/else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE).equals(actionType)){
+					draftColumn = "hasQuestionnaireDraft = 1, hasStudyDraft = 1 ";
+				}else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVETASK).equals(actionType)){
+					draftColumn = "hasActivetaskDraft = 1, hasStudyDraft = 1 ";
+				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONSCENT).equals(actionType)){
+					draftColumn = "hasConsentDraft = 1, hasActivetaskDraft = 1, hasQuestionnaireDraft=1, hasStudyDraft = 1";
 				}
 				queryString = "Update StudyBo set "+draftColumn+" , modifiedBy ="
 						+ userId

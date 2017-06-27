@@ -22,7 +22,6 @@
 <form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" 
      data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
      <input type="hidden" name="buttonType" id="buttonType">
-     <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
      <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
  
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
@@ -103,7 +102,7 @@
 	         </div>
 	         <c:if test="${empty notificationBO || notificationBO.actionPage eq 'addOrCopy'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn addNotification">Save</button>
+		             <button type="button" class="btn btn-primary blue-btn addNotification" id="immiSaveButton">Create</button>
 		         </div>
 	         </c:if>
 	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">  
@@ -113,12 +112,12 @@
 	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn updateNotification">Update</button>
+		             <button type="button" class="btn btn-primary blue-btn updateNotification" id="immiUpdateButton">Update</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn resendNotification">Resend</button>
+		             <button type="button" class="btn btn-primary blue-btn resendNotification" id="immiResendButton">Resend</button>
 		         </div>
 	         </c:if>
 	      </div>       
@@ -134,16 +133,6 @@
 $(document).ready(function(){
 	$('#rowId').parent().removeClass('white-bg');
 	$("#notification").addClass("active");
-	
-	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
-		if($('#inlineRadio1').prop('checked')){
-			$('#datetimepicker, #timepicker1').prop('disabled', false);
-			$('#datetimepicker, #timepicker1').attr('required', 'required');
-		}
-		if($('#inlineRadio2').prop('checked')){
-			$('.add_notify_option').addClass('dis-none');
-		}
-	</c:if> */
 	
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	    $('#appNotificationFormId input,textarea').prop('disabled', true);
@@ -177,9 +166,11 @@ $(document).ready(function(){
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+			$('#immiUpdateButton').html('Update');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
+			$('#immiUpdateButton').html('Send');
 		}
 	</c:if>
 	
@@ -188,9 +179,11 @@ $(document).ready(function(){
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+			$('#immiUpdateButton').html('Update');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
+			$('#immiUpdateButton').html('Send');
 		}
 	</c:if>
 	
@@ -201,10 +194,12 @@ $(document).ready(function(){
 		$('#appNotificationFormId textarea').prop('readonly', true);
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+			$('#immiResendButton').html('Save');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
 			$('#datetimepicker, #timepicker1').removeAttr('required');
+			$('#immiResendButton').html('Resend');
 		}
 		$('#buttonType').val('resend');
 	</c:if>
@@ -216,6 +211,9 @@ $(document).ready(function(){
 		 $('.add_notify_option').addClass('dis-none');
 		 resetValidation('.mandatoryForAppNotification');
 		 $('.addNotification').prop('disabled',false);
+		 $('#immiSaveButton').html('Send');
+		 $('#immiUpdateButton').html('Send');
+		 $('#immiResendButton').html('Resend');
 	 });
 	 
 	 $('#inlineRadio1').on('click',function(){
@@ -227,6 +225,9 @@ $(document).ready(function(){
 					$(this).val($(this).attr('oldValue'));
 		 });
 		 resetValidation('.mandatoryForAppNotification');
+		 $('#immiSaveButton').html('Create');
+		 $('#immiUpdateButton').html('Update');
+		 $('#immiResendButton').html('Save');
 	 });
 	
 	
@@ -254,8 +255,6 @@ $(document).ready(function(){
       	}else{
       		$('.addNotification').prop('disabled',false);
         }
-		//$('.addNotification').prop('disabled', true);
-		//$('#appNotificationFormId').submit();
 	});
 	
 	$('.updateNotification').on('click',function(){
@@ -277,7 +276,6 @@ $(document).ready(function(){
       	}else{
       		$('.updateNotification').prop('disabled',false);
         }
-		//$('#appNotificationFormId').submit();
 	});
 	
 	$('.resendNotification').on('click',function(){
@@ -311,7 +309,6 @@ $(document).ready(function(){
 	
 	$('.datepicker').datetimepicker({
         format: 'MM/DD/YYYY',
-//          minDate: new Date(),
         ignoreReadonly: true,
         useCurrent :false
     }).on('dp.change change', function(e) {
@@ -325,53 +322,18 @@ $(document).ready(function(){
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>'));
+         $('.datepicker').data("DateTimePicker").minDate(serverDate());
      });
 	 
 	 $(".timepicker").on("click", function (e) {
 		 var dt = $('#datetimepicker').val();
-		 var date = new Date();
-		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-		 var today = month + '/' +  day + '/' + date.getFullYear();
-		 if(dt != '' && dt != today){
+		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
 			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
-			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>'));
+			 $('.timepicker').data("DateTimePicker").minDate(serverDateTime());
 		 }
      });
 	 
-	 /* $('.deleteNotification').on('click',function(){
-	  	    var notificationIdForDelete = $(this).attr('notificationIdForDelete');
-	  	  	//var scheduledDate = $(this).attr('scheduledDate');
-	  	  	//var scheduledTime = $(this).attr('scheduledTime');
-	  	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
-	  		if(result){
-	  	    	if(notificationIdForDelete != '' && notificationIdForDelete != null && typeof notificationIdForDelete != 'undefined'){
-			  		$.ajax({
-			  			url : "/fdahpStudyDesigner/adminNotificationEdit/deleteNotification.do",
-			  			type : "POST",
-			  			datatype: "json",
-			  			data : {
-			  				notificationIdForDelete : notificationIdForDelete,
-			  				//scheduledDate : scheduledDate,
-			  				//scheduledTime : scheduledTime,
-			  		  		"${_csrf.parameterName}":"${_csrf.token}"
-			  			},
-			  			success:function(data){
-			  			var jsonObj = eval(data);
-								var message = jsonObj.message;
-								if(message == 'SUCCESS'){
-									alert("Success");
-								} else {
-									alert("Failed");
-								}
-			  			},
-			  		});
-	  	    	}
-	  		}
-	  	  });
-	  	}); */
 });
 function validateTime(){
 	var dt = $('#datetimepicker').val();
@@ -382,9 +344,8 @@ function validateTime(){
 		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
-		if(dt < moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+		if(dt < serverDateTime()) {
 			$('#timepicker1').val('');
-			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')
 				.html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 			valid = false;

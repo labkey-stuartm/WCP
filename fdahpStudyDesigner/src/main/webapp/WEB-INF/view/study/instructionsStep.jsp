@@ -34,12 +34,14 @@
       <!-- form- input-->
       <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
       <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
+      <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
       <input type="hidden" id="type" name="type" value="complete" />
        <input type="hidden" name="questionnairesStepsBo.stepId" id="stepId" value="${instructionsBo.questionnairesStepsBo.stepId}">
 		    <div class="col-md-6 pl-none">
-			   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
-			   <div class="form-group mb-none">
-			      <input autofocus="autofocus" type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" maxlength="15"/>
+			   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span></div>
+			   <div class="form-group">
+			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" 
+			      maxlength="15" <c:if test="${not empty instructionsBo.questionnairesStepsBo.isShorTitleDuplicate && (instructionsBo.questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
 		      	  <div class="help-block with-errors red-txt"></div>
 		      	  <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}"/>
 			   </div>
@@ -100,6 +102,7 @@ $(document).ready(function(){
 		validateShortTitle('',function(val){
 			if(val){
 				 console.log(val);
+				 $('#shortTitleId').prop('disabled', false);
 				 if(isFromValid("#basicInfoFormId")){
 					document.basicInfoFormId.submit();
 				 }else{
@@ -125,6 +128,7 @@ function validateShortTitle(item,callback){
 	var stepType="Instruction";
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
+	var questionnaireShortTitle = $("#questionnaireShortId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 		if( existedKey !=shortTitle){
 			$.ajax({
@@ -134,7 +138,8 @@ function validateShortTitle(item,callback){
                 data: {
                 	shortTitle : shortTitle,
                 	questionnaireId : questionnaireId,
-                	stepType : stepType
+                	stepType : stepType,
+                	questionnaireShortTitle : questionnaireShortTitle
                 },
                 beforeSend: function(xhr, settings){
                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
@@ -151,7 +156,7 @@ function validateShortTitle(item,callback){
                         $(thisAttr).val('');
                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                         $(thisAttr).parent().find(".help-block").empty();
-                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
                         callback(false);
                     }
                 },
@@ -227,23 +232,13 @@ function saveInstruction(item){
     		  }
 	   }); 
 	}else{
-		 /* $('#alertMsg').show();
-		 $("#alertMsg").removeClass('s-box').addClass('e-box').html("No QuestionnaireId Mapped");
-		 setTimeout(hideDisplayMessage, 4000); */
 		 $('#shortTitleId').validator('destroy').validator();
 		 if(!$('#shortTitleId')[0].checkValidity()) {
 			$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
 		 }
 	}
 }
-/* function goToBackPage(){
-	//window.history.back();
-	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
-	document.body.appendChild(a).click();
-} */
 function goToBackPage(item){
-	//window.history.back();
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({

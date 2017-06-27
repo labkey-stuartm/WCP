@@ -113,6 +113,12 @@ public class QuestionsBo implements Serializable {
 	
 	@Transient
 	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
+	
+	@Transient
+	private Integer isShorTitleDuplicate = 0;
+	
+	@Transient
+	private Integer isStatShortNameDuplicate = 0;
 
 	public Integer getId() {
 		return id;
@@ -337,6 +343,22 @@ public class QuestionsBo implements Serializable {
 	public void setQuestionResponseSubTypeList(
 			List<QuestionResponseSubTypeBo> questionResponseSubTypeList) {
 		this.questionResponseSubTypeList = questionResponseSubTypeList;
+	}
+	
+	public Integer getIsShorTitleDuplicate() {
+		return isShorTitleDuplicate;
+	}
+
+	public void setIsShorTitleDuplicate(Integer isShorTitleDuplicate) {
+		this.isShorTitleDuplicate = isShorTitleDuplicate;
+	}
+	
+	public Integer getIsStatShortNameDuplicate() {
+		return isStatShortNameDuplicate;
+	}
+
+	public void setIsStatShortNameDuplicate(Integer isStatShortNameDuplicate) {
+		this.isStatShortNameDuplicate = isStatShortNameDuplicate;
 	}
 
 	public String getShortTitle() {

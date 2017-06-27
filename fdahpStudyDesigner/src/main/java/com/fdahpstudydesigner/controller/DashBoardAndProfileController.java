@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.StudyListBean;
-import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.service.DashBoardAndProfileService;
@@ -90,6 +89,8 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		RoleBO roleBO = null;
 		String sucMsg = "";
 		String errMsg = "";
+		Integer userId = 0;
+		String accountManager = "";
 		try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -106,6 +107,12 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 					}
 					if(userSession.getUserId()!= null){
 						userBO = usersService.getUserDetails(userSession.getUserId());
+						userId = usersService.getUserPermissionByUserId(userSession.getUserId());
+							if(userId!=null && userId.equals(userSession.getUserId())){
+								accountManager = "Yes";
+							}else{
+								accountManager = "No";
+							}
 						if(null != userBO){
 							studyAndPermissionList = studyService.getStudyListByUserId(userBO.getUserId());
 							roleBO = usersService.getUserRole(userBO.getRoleId());
@@ -116,6 +123,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 					}
 					map.addAttribute("studyAndPermissionList", studyAndPermissionList);
 					map.addAttribute("userBO", userBO);
+					map.addAttribute("accountManager", accountManager);
 					mav = new ModelAndView("myAccount", map);
 		}
 	

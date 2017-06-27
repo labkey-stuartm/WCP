@@ -11,26 +11,6 @@
 .sepimgClass {
 	position: relative;
 }
-/* .dd_icon:after{
-    width: 9px;
-    content: ' ';
-    position: absolute;
-    background-image: url(../images/icons/drag.png);
-    height: 13px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-} */
-/* .dd_icon:after{
-    background: url("../images/icons/drag.png");
-    width: 9px;
-    height: 13px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-    content: ' ';
-}  */
 .tool-tip {
 	display: inline-block;
 }
@@ -44,11 +24,6 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<!-- <div class="right-content-head">
-	   <div class="text-left">
-	      <div class="black-md-f text-uppercase dis-line line34">Consent / Educational Info</div>
-	   </div>
-	</div> -->
 	<div class="right-content-head">
 		<div class="text-right">
 			<div class="black-md-f text-uppercase dis-line pull-left line34">RESOURCES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
@@ -57,7 +32,7 @@
 			</div>
 			<c:if test="${empty permission}">
 				<div class="dis-line form-group mb-none">
-					<span class="tool-tip" data-toggle="tooltip" data-placement="top"
+					<span class="tool-tip" data-toggle="tooltip" data-placement="bottom"
 						<c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if>>
 						<button type="button" class="btn btn-primary blue-btn"
 							id="markAsComp" onclick="markAsCompleted();"
@@ -77,12 +52,6 @@
 				<thead>
 					<tr>
 						<th>RESOURCE TITLE</th>
-						<!-- <th>Consent Title</th>
-                  <th>visual step</th> -->
-						<!-- <th>
-                  	 
-                  </th> -->
-
 						<th><c:if test="${empty permission}">
 								<div class="dis-line form-group mb-none mr-sm">
 									<button type="button" id="studyProtocolId"
@@ -93,8 +62,7 @@
 
 								<div class="dis-line form-group mb-none">
 									<button type="button" id="addResourceId"
-										class="btn btn-primary blue-btn" onclick="addResource();">+
-										Add Resource</button>
+										class="btn btn-primary blue-btn" onclick="addResource();">Add Resource</button>
 								</div>
 							</c:if></th>
 
@@ -129,7 +97,6 @@
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol" value="">
 	<input type="hidden" name="actionOn" id="actionOn" value="">
-	<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
 <form:form
 	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do?_S=${param._S}"
@@ -141,15 +108,9 @@
 var dataTable;
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
-	/* <c:if test="${not empty resourcesSavedList}"> */
-	/* if(document.getElementById("markAsComp").disabled){ */
 		$('[data-toggle="tooltip"]').tooltip();
-/* 	} */
-	/* </c:if> */
 	
 	 // Fancy Scroll Bar
-   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
- //   $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".eighthResources").addClass('active'); 
 	$("#createStudyId").show();
@@ -159,13 +120,9 @@ $(document).ready(function(){
 	    "paging":   false	,
 	    "order": [],
 		"columnDefs": [ { orderable: false, targets: [0] } ],
-	    /* "abColumns": [
-	       { "bSortable": true }
-	      ], */
 	    "info" : false, 
 	    "lengthChange": false, 
 	    "searching": false, 
-	   /*  "pageLength": 15, */
 	});
 });
 function deleteResourceInfo(resourceInfoId){
@@ -238,7 +195,6 @@ function addResource(){
 } 
 
 function editResourceInfo(resourceInfoId){
-	/* console.log("resourceInfoId:"+resourceInfoId); */
 	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
 		$('#editRes').addClass('cursor-none');
 		$("#resourceInfoId").val(resourceInfoId);
@@ -247,7 +203,6 @@ function editResourceInfo(resourceInfoId){
 	}
 }
 function viewResourceInfo(resourceInfoId){
-	/* console.log("resourceInfoId:"+resourceInfoId); */
 	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
 		$('#viewRes').addClass('cursor-none');
 		$("#resourceInfoId").val(resourceInfoId);

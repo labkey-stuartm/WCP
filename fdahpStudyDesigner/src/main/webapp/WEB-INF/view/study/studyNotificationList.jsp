@@ -10,7 +10,6 @@
 -->
 </style>
         <div class="col-sm-10 col-rc white-bg p-none">
-            
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -19,12 +18,8 @@
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
-                    
-                     <!-- <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
-                     </div> -->
                      <c:if test="${empty permission}">
-                     <div class="dis-line form-group mb-none" <c:if test="${not empty notificationSavedList}">data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
+                     <div class="dis-line form-group mb-none" <c:if test="${not empty notificationSavedList}">data-toggle="tooltip" data-placement="bottom" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
                          <button type="button" class="btn btn-primary blue-btn markCompleted <c:if test="${not empty notificationSavedList}">linkDis</c:if>" onclick="markAsCompleted();"
                          >Mark as Completed</button>
                      </div>
@@ -32,9 +27,6 @@
                  </div>
             </div>
             <!--  End  top tab section-->
-            
-            
-            
             <!--  Start body tab section -->
             <div class="right-content-body pt-none">
                 <div>
@@ -46,7 +38,7 @@
                                 <th>
                                     <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">+ Add Notification</button>
+                                         <button type="button" class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">Add Notification</button>
                                      </div>
                                      </c:if>
                                 </th>
@@ -58,7 +50,6 @@
 	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
 	                                <td>${studyNotification.checkNotificationSendingStatus}</td>
 	                                <td>
-	                                	
 	                                	<c:if test="${studyNotification.notificationSent}">
 	                                    	<span class="sprites-icons-2 send mr-lg hideButtonIfPaused studyNotificationDetails dis-none <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="Resend"></span>
 	                                    </c:if>
@@ -75,10 +66,6 @@
                 </div>
             </div>
             <!--  End body tab section -->
-            
-            
-            
-            
         </div>
         <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do?_S=${param._S}" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
@@ -92,13 +79,10 @@
 </form:form>        
 
 <form:form action="/fdahpStudyDesigner/adminStudies/notificationMarkAsCompleted.do?_S=${param._S}" name="notificationMarkAsCompletedForm" id="notificationMarkAsCompletedForm" method="post">
-<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
     <script>
         $(document).ready(function(){ 
         	$('[data-toggle="tooltip"]').tooltip();
-        	//$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            //$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             $(".menuNav li").removeClass('active');
             $(".eigthNotification").addClass('active'); 
             $("#createStudyId").show();
@@ -117,11 +101,6 @@
     			
     		});
         	
-        	/* $('.studyListPageFromNotification').on('click',function(){
-        		$('.studyListPageFromNotification').prop('disabled', true);
-      			$('#studyListPage').submit();
-      		}); */
-        	
              var table = $('#notification_list').DataTable({              
               "paging":   false, 
               "order": [],
@@ -129,19 +108,12 @@
               "info" : false, 
               "lengthChange": false, 
               "searching": false,
-              /* "pageLength": 15   */ 
            });
             
      });
         
         function markAsCompleted(){
-    		/* var table = $('#notification_list').DataTable()
-    		if (!table.data().count() ) {
-    		    alert( 'Add atleast one notification !' );
-    		}else{ */
     			$('.markCompleted').prop('disabled', true);
     			$("#notificationMarkAsCompletedForm").submit();
-    			//alert( 'NOT Empty table' );
-    		/* } */
     	}         
     </script>

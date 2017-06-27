@@ -17,7 +17,7 @@ import org.hibernate.annotations.NamedQuery;
 @NamedQueries({
 @NamedQuery(name = "getFormMappingBO",query = "from FormMappingBo FMBO where FMBO.questionId=:questionId"),
 @NamedQuery(name="updateFromQuestionSequenceNo",query="update FormMappingBo f set f.sequenceNo=:newOrderNumber where f.id=:id"),
-@NamedQuery(name="getFromByIdAndSequenceNo",query="From FormMappingBo FMBO where FMBO.formId=:formId and FMBO.sequenceNo=:oldOrderNumber"),
+@NamedQuery(name="getFromByIdAndSequenceNo",query="From FormMappingBo FMBO where FMBO.formId=:formId and FMBO.sequenceNo=:oldOrderNumber and FMBO.active=1"),
 @NamedQuery(name="deleteFormQuestion",query="delete from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),
 @NamedQuery(name="getFormQuestion",query="from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),
 @NamedQuery(name="getFormByFormId",query="from FormMappingBo FMBO where FMBO.formId=:formId order by id desc"),
@@ -39,6 +39,9 @@ public class FormMappingBo implements Serializable {
 	
 	@Column(name="sequence_no")
 	private Integer sequenceNo;
+	
+	@Column(name="active")
+	private Boolean active=true;
 
 	public Integer getId() {
 		return id;
@@ -71,4 +74,13 @@ public class FormMappingBo implements Serializable {
 	public void setSequenceNo(Integer sequenceNo) {
 		this.sequenceNo = sequenceNo;
 	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	
 }

@@ -1,13 +1,10 @@
 package com.fdahpstudydesigner.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -154,7 +151,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 		Session session = null;
 		NotificationBO notificationBOUpdate = null;
 		Integer notificationId = 0;
-		//NotificationHistoryBO notificationHistoryBO = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
@@ -190,11 +186,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 					notificationBOUpdate.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
 					notificationId = (Integer) session.save(notificationBOUpdate);
-					
-					/*notificationHistoryBO = new NotificationHistoryBO();
-					notificationHistoryBO.setNotificationId(notificationId);
-					session.save(notificationHistoryBO);*/
-					
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
@@ -233,13 +224,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 					session.update(notificationBOUpdate);
 					notificationId = notificationBOUpdate.getNotificationId(); 
 					session.flush();
-					
-					/*if("resend".equals(buttonType)){
-						notificationHistoryBO = new NotificationHistoryBO();
-						notificationHistoryBO.setNotificationId(notificationBOUpdate.getNotificationId());
-						session.save(notificationHistoryBO);
-						
-					}*/
 				}
 				 if(notificationId!=null){
 					 String activitydetails = "";
@@ -315,16 +299,17 @@ public class NotificationDAOImpl implements NotificationDAO{
 			trans = session.beginTransaction();
 			sb = new StringBuilder(
 					"select n.notification_id as notificationId, n.notification_text as notificationText, s.custom_study_id as customStudyId, n.notification_type as notificationType, n.notification_subType as notificationSubType ");
-			sb.append(
-					"from (notification as n) LEFT OUTER JOIN studies as s ON s.id = n.study_id AND s.status = '")
-					.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
-					.append("' where n.schedule_date ='")
-					.append(date)
-					.append("' AND n.is_anchor_date = false AND n.notification_done = true AND n.schedule_time like '")
-					.append(time).append("%'")
-					.append(" AND (n.notification_subType='")
-					.append(FdahpStudyDesignerConstants.STUDY_EVENT)
-					.append("' OR n.notification_type in ('").append(FdahpStudyDesignerConstants.NOTIFICATION_ST).append("','").append(FdahpStudyDesignerConstants.NOTIFICATION_GT).append("'))");
+			sb.append("from (notification as n) LEFT OUTER JOIN studies as s ON s.id = n.study_id")
+				.append(" where n.schedule_date ='")
+				.append(date)
+				.append("' AND n.is_anchor_date = false AND n.notification_done = true AND n.schedule_time like '")
+				.append(time).append("%'")
+				.append(" AND (n.notification_subType='")
+				.append(FdahpStudyDesignerConstants.STUDY_EVENT)
+				.append("' OR n.notification_type = '").append(FdahpStudyDesignerConstants.NOTIFICATION_GT)
+				.append("' OR  s.status = '")
+				.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
+				.append("')");
 			query = session.createSQLQuery(sb.toString())
 					.addScalar("notificationId").addScalar("notificationText")
 					.addScalar("customStudyId").addScalar("notificationType")

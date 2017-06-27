@@ -1,6 +1,8 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +14,9 @@ import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.UsersDAO;
+import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 @Service
@@ -43,11 +47,56 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
+	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession,HttpServletRequest request) {
 		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
 		String msg = FdahpStudyDesignerConstants.FAILURE;
+		List<String> superAdminEmailList = null;
+		Map<String, String> keyValueForSubject = null;
+		String dynamicContent = "";
+		UserBO userBo = null;
+		UserBO adminFullNameIfSizeOne = null;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		String customerCareMail = "";
+		String status = "";
+		
 		try{
 			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
+					superAdminEmailList = usersDAO.getSuperAdminList();
+					userBo = usersDAO.getUserDetails(userId);
+					if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
+						keyValueForSubject = new HashMap<String, String>();
+					if(superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
+						if(userStatus == 1){
+							status = "Deactivated";
+						}else{
+							status = "Active";
+						}
+						if(superAdminEmailList.size() == 1){
+							for (String email : superAdminEmailList) {
+								adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+								keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+							}
+						}else{
+							keyValueForSubject.put("$admin", "Admin");
+						}
+						keyValueForSubject.put("$userStatus", status);
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						keyValueForSubject.put("$userEmail", userBo.getUserEmail());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
+					if(userBo!=null && Integer.valueOf(userStatus).equals(0)){
+						if( !userBo.isCredentialsNonExpired()){
+							loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "ReactivateMailAfterEnforcePassChange");
+					} else {
+						customerCareMail = propMap.get("email.address.customer.service");
+						keyValueForSubject.put("$userFirstName", userBo.getFirstName());
+						keyValueForSubject.put("$customerCareMail", customerCareMail);
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForReactivatingUserContent", keyValueForSubject);
+						EmailNotification.sendEmailNotification("mailForReactivatingUserSubject", dynamicContent, userBo.getUserEmail(), null, null);
+						}
+					}
+					}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -68,6 +117,20 @@ public class UsersServiceImpl implements UsersService {
 		return userBO;
 	}
 	
+	// kanchana
+	@Override
+	public Integer getUserPermissionByUserId(Integer sessionUserId) {
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
+		Integer userId= null;
+		try{
+			userId = usersDAO.getUserPermissionByUserId(sessionUserId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserPermissionByUserId() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Ends");
+		return userId;
+	}
+	
 	
 
 	@Override
@@ -79,6 +142,11 @@ public class UsersServiceImpl implements UsersService {
 		String activity = "";
 		String activityDetail = ""; 
 		//boolean emailIdChange = false;
+		List<String> superAdminEmailList = null;
+		Map<String, String> keyValueForSubject = null;
+		String dynamicContent = "";
+		boolean flag = false;
+		UserBO adminFullNameIfSizeOne = null;
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -114,21 +182,55 @@ public class UsersServiceImpl implements UsersService {
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
 			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
-			if(addFlag){
-				activity = "User created";
-				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
-				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
-			}
-			if(!addFlag){
-				activity = "User updated";
-				activityDetail = "User details is being updated and the user get force logout if the user is active";
-				/*if(emailIdChange){
-					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
-				}else{*/
-					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
-				/*}*/
-			}
+				if(addFlag){
+					activity = "User created";
+					activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
+					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+				}
+				if(!addFlag){
+					activity = "User updated";
+					activityDetail = "User details is being updated and the user get force logout if the user is active";
+					/*if(emailIdChange){
+						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
+					}else{*/
+						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
+					/*}*/
+				}
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
+			
+				superAdminEmailList = usersDAO.getSuperAdminList();
+				if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
+					keyValueForSubject = new HashMap<String, String>();
+					if(superAdminEmailList.size() == 1){
+						for (String email : superAdminEmailList) {
+							adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+							keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName());
+						}
+					}else{
+						keyValueForSubject.put("$admin", "Admin");
+					}
+					keyValueForSubject.put("$userEmail", userBO.getUserEmail());
+					keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+					if(addFlag){
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserCreateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserCreateSubject", dynamicContent, null, superAdminEmailList, null);
+					}else{
+						String status = "";
+						if(FdahpStudyDesignerUtil.isEmpty(userBO2.getUserPassword())){
+							status = "Pending Activation";
+						}else{
+							if(userBO2.isEnabled()){
+								status = "Active";
+							}else{
+								status = "Deactivated";
+							}
+						}
+						keyValueForSubject.put("$userStatus", status);
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
+				}
+			
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
@@ -191,5 +293,31 @@ public class UsersServiceImpl implements UsersService {
 		}
 		logger.info("UsersServiceImpl - permissionsByUserId() - Ends");
 		return permissions;
+	}
+	
+	@Override
+	public List<String> getActiveUserEmailIds() {
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Starts");
+		List<String> emails = null;
+		try{
+			emails = usersDAO.getActiveUserEmailIds();
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getActiveUserEmailIds() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Ends");
+		return emails;
+	}
+
+	@Override
+	public String enforcePasswordChange(Integer userId, String email) {
+		logger.info("UsersServiceImpl - enforcePasswordChange() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = usersDAO.enforcePasswordChange(userId, email);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - enforcePasswordChange() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - enforcePasswordChange() - Ends");
+		return message;
 	}
 }

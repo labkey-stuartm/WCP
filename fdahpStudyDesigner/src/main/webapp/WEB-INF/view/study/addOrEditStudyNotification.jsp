@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
+<jsp:useBean id="date" class="java.util.Date" />
+<c:set var="tz" value="America/Los_Angeles"/>
+
  <div class="col-sm-10 col-rc white-bg p-none">
        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" 
        data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
@@ -12,13 +16,9 @@
        <div class="right-content-head"> 
            <div class="text-right">
                <div class="black-md-f dis-line pull-left line34">
-	               <!-- <span>
-	               		<img src="/fdahpStudyDesigner/images/icons/back-b.png" class="pr-md"/>
-	               </span>  -->
 	               <span class="pr-sm">
 	               		<a href="javascript:void(0)" class="goToNotificationListForm" id="goToNotificationListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a>
 	               </span>
-	               <%-- <c:if test="${notificationBO.actionPage ne 'view' && notificationBO.actionPage ne 'resend'}">Add / Edit Notification</c:if> --%>
 	               <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
 	               <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">Add Notification</c:if>
 	               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
@@ -43,12 +43,8 @@
             </div>
        </div>
        <!--  End  top tab section-->
-       
-       
-       
        <!--  Start body tab section -->
        <div class="right-content-body">
-        
            <!-- form- input-->
        <c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
 	       <div>
@@ -56,7 +52,7 @@
 	       </div>
        </c:if>
            
-       <div class="pl-none mt-xlg">
+       <div class="pl-none mt-none">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
                <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
@@ -65,8 +61,7 @@
            </div>
        </div>
        
-       <div class="mt-xlg mb-lg">
-       	<!-- <div class="form-group"> -->
+       <div class="mt-lg mb-none">
        		<div class="form-group hideOnHover">
 		            <span class="radio radio-info radio-inline p-45">
 		                <input type="radio" id="inlineRadio1" value="notImmediate" name="currentDateTime"
@@ -81,18 +76,14 @@
 		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
-		            <div class="help-block with-errors red-txt"></div>
 			            <c:if test="${not empty notificationHistoryNoDateTime}">
 				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
-				            <%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
 					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
-					       <%--  </c:if> --%>
 					        </c:forEach>
 				        </c:if>
 	        <div class="clearfix"></div>
            </div>
        </div>
-       
        
        <div class="add_notify_option mandatoryForStudyNotification">
            <div class="gray-xs-f mb-xs">Select Date <span class="requiredStar">*</span></div>
@@ -130,9 +121,6 @@
 </form:form>
 <script>
      $(document).ready(function(){  
-    	 
-    	// $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-       //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
          $(".menuNav li").removeClass('active');
          $(".eigthNotification").addClass('active'); 
          $("#createStudyId").show();
@@ -158,13 +146,7 @@
 	 	   	$('.resendBuuttonAsDone').addClass('dis-none');
      	</c:if>
      	
-     	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
-			$('#studyNotificationFormId textarea').prop('disabled', true);
-			$('[data-toggle="tooltip"]').tooltip('destroy');
-		</c:if> */
-         
 		<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
-			//$('#inlineRadio1').prop('checked','checked');
 			$('.deleteNotificationButtonHide').addClass('dis-none');
 			$('.resendBuuttonAsDone').addClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
@@ -177,7 +159,6 @@
 		</c:if>
 		
 		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">
-			//$('.deleteNotificationButtonHide').removeClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
 				$('#datetimepicker, #timepicker1').prop('disabled', false);
 				$('#datetimepicker, #timepicker1').attr('required', 'required');
@@ -189,7 +170,6 @@
 		</c:if>
 		
 		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
-			//$('#appNotificationFormId textarea').prop('disabled', true);
 			$('[data-toggle="tooltip"]').tooltip('destroy');
 			$('#studyNotificationFormId input,textarea').prop('disabled', true);
 			$('.deleteNotificationButtonHide').addClass('dis-none');
@@ -199,7 +179,6 @@
 		
 		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">
 			$('.deleteNotificationButtonHide').removeClass('dis-none');
-			/* $('[data-toggle="tooltip"]').tooltip(); */
 			$('.resendBuuttonAsDone').addClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
 				$('#datetimepicker, #timepicker1').prop('disabled', false);
@@ -242,7 +221,6 @@
 			}
 			if($('#inlineRadio2').prop('checked')){
 				$('.add_notify_option').addClass('dis-none');
-				//$('#datetimepicker, #timepicker1').prop('disabled', true);
 			}
 			$('#buttonType').val('resend');
 			$('.resendBuuttonAsDone').removeClass('dis-none');
@@ -264,10 +242,8 @@
     	  	  });
     	  	});
     	 
-    	 
     	$('.datepicker').datetimepicker({
              format: 'MM/DD/YYYY',
-//               minDate: new Date(),
              ignoreReadonly: true,
              useCurrent :false
          }).on('dp.change change', function(e) {
@@ -282,20 +258,16 @@
     	}); 
     	
          $(".datepicker").on("click", function (e) {
-             $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+             $('.datepicker').data("DateTimePicker").minDate(serverDate());
          });
     	 
          $(".timepicker").on("click", function (e) {
     		 var dt = $('#datetimepicker').val();
-    		 var date = new Date();
-    		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-    		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-    		 var today = month + '/' +  day + '/' + date.getFullYear();
-    		 if(dt != '' && dt != today){
+    		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
     			 $('.timepicker').data("DateTimePicker").minDate(false);
     			 $('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     		 } else {
-    			 $('.timepicker').data("DateTimePicker").minDate(moment());
+    			 $('.timepicker').data("DateTimePicker").minDate(serverDateTime());
     		 }
          });
          
@@ -365,7 +337,6 @@
           
           $('#saveStudyId').click(function() {
         	  $('#datetimepicker, #timepicker1').removeAttr('required', 'required');
-        	  //$('#inlineRadio1, #inlineRadio2').removeAttr('required', 'required');
         	  $('#buttonType').val('save');
         	  if(isFromValid('#studyNotificationFormId')){
         		  if($('#inlineRadio2').prop('checked')){
@@ -384,7 +355,6 @@
               }else{
             		$('#saveStudyId').prop('disabled',false);
               }
-              //$('#studyNotificationFormId').submit();
     		});
           
           $('.goToNotificationListForm').on('click',function(){
@@ -432,7 +402,6 @@
 	      		    }
 	      	    });
        			</c:if>
-	       		
       	});
           
      });
@@ -447,7 +416,7 @@
     			dt.setHours(thisDate.getHours());
     			dt.setMinutes(thisDate.getMinutes());
     			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-    			if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
+    			if(dt < serverDateTime()) {
     				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
     				valid = false;
     			}

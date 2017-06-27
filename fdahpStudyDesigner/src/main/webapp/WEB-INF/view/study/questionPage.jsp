@@ -4,6 +4,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<style>
+.tool-tip {
+  display: inline-block;
+}
+.tool-tip [disabled] {
+  pointer-events: none;
+}
+.tooltip {
+  width: 200px;
+}
+</style>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -13,20 +24,10 @@ function isNumber(evt) {
     }
     return true;
 }
-/* function isOnlyNumber(elem) {
-	var re = /^-?\d*\.?\d{0,6}$/; 
-	var text = $(elem).val();
-	console.log("text:"+text);
-    if (text.match(re) !== null) {
-       return true;
-    }
-    return false;
-} */
 function isOnlyNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-       console.log("charCode:"+charCode);
        if(charCode != 45){
         	return false;
         }
@@ -46,21 +47,16 @@ function isNumberKey(evt)
    return true;
 }
 </script>
-<style>
-.tooltip {
-  width: 175px;
-}
-</style>
 <!-- Start right Content here -->
-<div class="col-sm-10 col-rc white-bg p-none">
+<div id="questionPage" class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
-            <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question Step</c:if>
-         	<c:if test="${actionTypeForFormStep == 'view'}">View Question Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-         	<c:if test="${actionTypeForFormStep == 'add'}">Add Question Step</c:if>
+            <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question</c:if>
+         	<c:if test="${actionTypeForFormStep == 'view'}">View Question <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForFormStep == 'add'}">Add Question</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -77,7 +73,7 @@ function isNumberKey(evt)
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form" enctype="multipart/form-data">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form" enctype="multipart/form-data" >
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="questionLevel active"><a data-toggle="tab" href="#qla">Question-level Attributes</a></li>
@@ -90,30 +86,24 @@ function isNumberKey(evt)
          <input type="hidden" name="id" id="questionId" value="${questionsBo.id}">
          <input type="hidden" id="fromId" name="fromId" value="${formId}" />
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
+         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade active in mt-xlg">
             <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step."></span></div>
+                  <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step.Note that this field cannot be edited once the study is Launched."></span></div>
                   <div class="form-group mb-none">
-                     <input type="text" class="form-control" name="shortTitle" id="shortTitle" value="${fn:escapeXml(
-                     questionsBo.shortTitle)}" required maxlength="15"/>
+                     <input type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitle" value="${fn:escapeXml(
+                     questionsBo.shortTitle)}" required maxlength="15" <c:if test="${not empty questionsBo.isShorTitleDuplicate && (questionsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(
                      questionsBo.shortTitle)}"/>
                   </div>
             </div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Text of the question (1 to 250 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
+            <div class="col-md-10 p-none mt-md">
+               <div class="gray-xs-f mb-xs">Text of the question (1 to 300 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control" name="question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${fn:escapeXml(
-                  questionsBo.question)}" required maxlength="250"/>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description of the question (1 to 500 characters)</div>
-               <div class="form-group">
-                  <textarea class="form-control" rows="4" name="description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionsBo.description}</textarea>
+                  questionsBo.question)}" required maxlength="300"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -131,13 +121,13 @@ function isNumberKey(evt)
                   </span>
              </div>
             </div>
-            <div class="mt-md">
+            <div class="mt-lg">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
                <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
-                     <select id="responseTypeId" class="selectpicker" name="responseType" required value="${questionsBo.responseType}">
+                     <select id="responseTypeId" class="selectpicker" name="responseType" required value="${questionsBo.responseType}" <c:if test="${not empty questionsBo.isShorTitleDuplicate && (questionsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>>
                       <option value=''>Select</option>
                       <c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
                       	<option value="${questionResponseTypeMasterInfo.id}" ${questionsBo.responseType eq questionResponseTypeMasterInfo.id ? 'selected' : ''}>${questionResponseTypeMasterInfo.responseType}</option>
@@ -148,7 +138,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-none">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type </div>
                   <div id="responseTypeDescrption">
@@ -162,16 +152,16 @@ function isNumberKey(evt)
             </div>
             <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
                <c:choose>
-               	<c:when test="questionsBo.useAnchorDate">
+               	<c:when test="${questionsBo.useAnchorDate}">
                		<span class="checkbox checkbox-inline">
-		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} >
+		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
 		            </span>
                	</c:when>
                	<c:otherwise>
                		<span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
 		               <span class="checkbox checkbox-inline">
-		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
+		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes' || questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
 		               </span>
 	               </span>
@@ -182,14 +172,14 @@ function isNumberKey(evt)
             <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
                <label for="addLineChart"> Add response data to line chart on app dashboard </label>
                </span>
             </div>
             <div class="clearfix"></div>
             <div id="chartContainer" style="display: none">
             <div class="col-md-6 p-none">
-               <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="lineChartTimeRange" value="${questionsBo.lineChartTimeRange}">
                        <option value="" selected disabled>Select</option>
@@ -227,11 +217,11 @@ function isNumberKey(evt)
             </div>
             </c:if>
             <div class="clearfix"></div>
-            <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
+            <div class="bor-dashed mt-md mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq 'Yes'}">disabled</c:if>>
                <label for="useStasticData"> Use response data for statistic on dashboard</label>
                </span>
             </div>
@@ -240,7 +230,8 @@ function isNumberKey(evt)
             <div class="col-md-6 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Short identifier name (1 to 20 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="statShortName" id="statShortNameId" value="${fn:escapeXml(questionsBo.statShortName)}" maxlength="20" >
+                  <input type="text" custAttType="cust" class="form-control requireClass" name="statShortName" id="statShortNameId" value="${fn:escapeXml(questionsBo.statShortName)}" 
+                  maxlength="20" <c:if test="${not empty questionsBo.isStatShortNameDuplicate && (questionsBo.isStatShortNameDuplicate gt 0)}"> disabled</c:if>>
                	  <div class="help-block with-errors red-txt"></div>
                	  <input type="hidden" id="prevStatShortNameId" value= "${fn:escapeXml(questionsBo.statShortName)}">
                </div>
@@ -256,7 +247,7 @@ function isNumberKey(evt)
             </div>
             <div class="clearfix"></div>
             <div class="col-md-6 col-lg-4 p-none">
-               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="For Response Types of Time Interval and Height, participant responses are saved in hours and cms respectively. Please enter units accordingly."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control requireClass" name="statDisplayUnits" id="statDisplayUnitsId" value="${fn:escapeXml(
                   questionsBo.statDisplayUnits)}" maxlength="15">
@@ -318,7 +309,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-sm">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
@@ -354,7 +345,7 @@ function isNumberKey(evt)
             </div>
             <div id="Scale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-md mb-xs">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -377,13 +368,13 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(
-	                  questionsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                  questionsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -393,20 +384,20 @@ function isNumberKey(evt)
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${fn:escapeXml(
-	                  questionsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                  questionsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mb-xs">
                <div class="col-md-6 pl-none">
 	               <div class="col-md-8 col-lg-8 p-none">
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13. "></span></div>
 		               <div class="form-group">
 		               	  <c:if test="${not empty questionsBo.questionReponseTypeBo.step}">
-		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="<fmt:formatNumber  value="${(questionsBo.questionReponseTypeBo.maxValue-questionsBo.questionReponseTypeBo.minValue)/questionsBo.questionReponseTypeBo.step}"  maxFractionDigits="0" />" onkeypress="return isNumber(event)" >
+		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="<fmt:formatNumber  value="${(questionsBo.questionReponseTypeBo.maxValue-questionsBo.questionReponseTypeBo.minValue)/questionsBo.questionReponseTypeBo.step}"  groupingUsed="false" maxFractionDigits="0" type="number" />" onkeypress="return isNumber(event)" >
 		               	  </c:if>
 		                  <c:if test="${empty questionsBo.questionReponseTypeBo.step}">
 		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="" onkeypress="return isNumber(event)" >
@@ -424,10 +415,10 @@ function isNumberKey(evt)
 	           </div>
 	        </div>
 	        <div class="clearfix"></div>
-	        <div class="row mt-sm">
+	        <div class="row">
 	        	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicares the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value. "></span></div>
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicates the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value. "></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${fn:escapeXml(
                         questionsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isOnlyNumber(event)">
@@ -440,7 +431,7 @@ function isNumberKey(evt)
             </div>
             <div id="ContinuousScale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-md mb-xs">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -461,7 +452,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mb-xs">
                <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
@@ -472,8 +463,8 @@ function isNumberKey(evt)
                   </div>
                </div>
                <div class="col-md-6">
-               <div class="col-md-4 col-lg-4 p-none mb-lg">
-	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maxcimum and minimum values."></span></div>
+               <div class="col-md-6 col-lg-4 p-none">
+	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maximum and minimum values."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)" maxlength="2" onblur="validateFractionDigits(this);">
 	                  <div class="help-block with-errors red-txt"></div>
@@ -487,7 +478,7 @@ function isNumberKey(evt)
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}"  maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -496,7 +487,7 @@ function isNumberKey(evt)
                   <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxDescription)}"  maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -547,7 +538,7 @@ function isNumberKey(evt)
 	               </div>
 	            </div>
            		<div class="clearfix"></div>
-	            <div class="row">
+	            <div class="row mt-lg">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder (1 to 40 characters) <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
@@ -558,7 +549,7 @@ function isNumberKey(evt)
 	                  </div>
 	               </div>
 	               <div class="col-md-4">
-	                  <div class="col-md-4 col-lg-4 p-none">
+	                  <div class="col-md-6 col-lg-4 p-none">
 	                     <div class="gray-xs-f mb-xs">Max Length  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer for the maximum length of text allowed. If left empty, there will be no max limit applied."></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${fn:escapeXml(
@@ -572,16 +563,16 @@ function isNumberKey(evt)
            		<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Measurement System <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Select a suitable measurement system for height"></span></div>
 	               <div>
-	                  <span class="radio radio-info radio-inline p-45">
+	                  <span class="radio radio-info radio-inline pr-sm">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
 	                  <label for="measurementSystemLocal">Local</label>
 	                  </span>
-	                  <span class="radio radio-inline">
+	                  <span class="radio radio-inline pr-sm">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemMetric" value="Metric" name="questionReponseTypeBo.measurementSystem" ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Metric' ? 'checked':''} >
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
 	                  <span class="radio radio-inline">
-	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionsBo.questionReponseTypeBo.measurementSystem || questionsBo.questionReponseTypeBo.multipleLines eq 'US' ? 'checked':''} >
+	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionsBo.questionReponseTypeBo.measurementSystem || questionsBo.questionReponseTypeBo.measurementSystem eq 'US' ? 'checked':''} >
 	                  <label for="measurementSystemUS">US</label>
 	                  </span>
 	                  <div class="help-block with-errors red-txt"></div>
@@ -738,7 +729,7 @@ function isNumberKey(evt)
            <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
            <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span></div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 20 characters)<span class="requiredStar">*</span></div>
 			</div>
 			<div class="col-md-4 pl-none">
 			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
@@ -748,62 +739,62 @@ function isNumberKey(evt)
 			<c:choose>
 			  <c:when test="${questionsBo.responseType eq 4 && fn:length(questionsBo.questionResponseSubTypeList) gt 1}">
 			  	<c:forEach items="${questionsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
-			  		<div class="value-picker row form-group" id="${subtype.index}">
+			  		<div class="value-picker row form-group mb-xs" id="${subtype.index}">
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="20">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
 						<div class="col-md-4 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+						      <input type="text" class="form-control ValuePickerRequired valuePickerVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
-						<div class="col-md-2 pl-none mt-sm">
-						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
-				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+						<div class="col-md-2 pl-none mt__6">
+						   <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addValuePicker();'>+</span>
+				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeValuePicker(this);'></span>
 						</div>
 					</div>
 			  	</c:forEach>
 			  </c:when>
 			  <c:otherwise>
-			  	<div class="value-picker row form-group" id="0">
+			  	<div class="value-picker row form-group mb-xs" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="20">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
 					<div class="col-md-4 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+					      <input type="text" class="form-control ValuePickerRequired valuePickerVal" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
-					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
-			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+					<div class="col-md-2 pl-none mt__6">
+					   <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addValuePicker();'>+</span>
+			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeValuePicker(this);'></span>
 					</div>
 				</div>
-			   <div class="value-picker row form-group" id="1">
+			   <div class="value-picker row form-group mb-xs" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="20">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
 					<div class="col-md-4 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					      <input type="text" class="form-control ValuePickerRequired valuePickerVal" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
-					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
-			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+					<div class="col-md-2 pl-none mt__6">
+					<span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addValuePicker();'>+</span>
+			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeValuePicker(this);'></span>
 					</div>
 			   </div> 
 			  </c:otherwise>
@@ -815,7 +806,7 @@ function isNumberKey(evt)
          </div>
          <div id="TextScale" style="display: none;">
             <div class="clearfix"></div>
-            <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+            <div class="gray-choice-f mb-xs mt-md">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
 				      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
@@ -838,11 +829,11 @@ function isNumberKey(evt)
 							   </div>
 							   <div class="col-md-4 pl-none">
 							      <div class="form-group">
-							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+							         <input type="text" class="form-control TextScaleRequired textScaleValue" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
-							   <div class="col-md-2 pl-none mt-sm">
+							   <div class="col-md-2 pl-none mt__8">
 								<c:choose>
 							     <c:when test="${fn:length(questionsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
 							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
@@ -862,11 +853,11 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+						         <input type="text" class="form-control TextScaleRequired textScaleValue" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt__8">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -880,11 +871,11 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+						         <input type="text" class="form-control TextScaleRequired textScaleValue" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt__8">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -893,7 +884,7 @@ function isNumberKey(evt)
 				</c:choose>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mt-none">
                 <div class="col-md-6 pl-none">
                    <div class="col-md-8 col-lg-8 p-none">
                         <div class="gray-xs-f mb-xs">Default slider position  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default slider position. For example, if you have 6 choices, 5 will indicate the 5th choice."></span></div>
@@ -924,12 +915,12 @@ function isNumberKey(evt)
 		 <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
 		   <div class="col-md-4 pl-none">
-		      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
+		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 		   </div>
 		   <div class="col-md-4 pl-none">
 		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 		   </div>
-		   <div class="col-md-2 pl-none">
+		   <div class="col-md-3 pl-none">
 		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
 		   </div>
 		   
@@ -942,13 +933,13 @@ function isNumberKey(evt)
 						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+						         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -962,9 +953,9 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   
-						   <div class="col-md-2 pl-none mt-sm">
-						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+						   <div class="col-md-2 pl-none mt-xs">
+						      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeTextChoice(this);'></span>
 						   </div>
 						</div>
 					</c:forEach>
@@ -973,13 +964,13 @@ function isNumberKey(evt)
 					<div class="col-md-12 p-none text-choice row" id="0">
 					   <div class="col-md-4 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-4 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+					         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -993,21 +984,21 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					   <div class="col-md-2 pl-none mt-xs">
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeTextChoice(this);'></span>
 					   </div>
 					</div>
 					<div class="col-md-12 p-none text-choice row" id="1">
 					   <div class="col-md-4 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-4 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1021,9 +1012,9 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					   <div class="col-md-2 pl-none mt-xs">
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeTextChoice(this);'></span>
 					   </div>
 					</div>
 				</c:otherwise>
@@ -1041,7 +1032,7 @@ function isNumberKey(evt)
 			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span> </div>
 			      </div>
 			      <div class="col-md-3 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 100 characters"></span></div>
 			      </div>
 			      <div class="col-md-3 col-lg-3 pl-none">
 			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 50 characters"></span></div>
@@ -1086,20 +1077,20 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-3 col-lg-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}"maxlength="50">
+						         <input type="text" class="form-control ImageChoiceRequired imageChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}"maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   
-						   <div class="col-md-2 pl-none mt-sm">
-						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+						   <div class="col-md-2 pl-none mt__6">
+						      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
+							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 						   </div>
 						</div>
 					</c:forEach>
@@ -1136,20 +1127,20 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-3 col-lg-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+					         <input type="text" class="form-control ImageChoiceRequired imageChoiceVal" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+					   <div class="col-md-2 pl-none mt__6">
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
+						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 					   </div>
 					</div>
 					<div class="image-choice row" id="1">
@@ -1183,20 +1174,20 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-3 col-lg-3 pl-none">
 					      <div class="form-group">
-					          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					          <input type="text" class="form-control ImageChoiceRequired imageChoiceVal" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+					   <div class="col-md-2 pl-none mt__6">
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
+						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 					   </div>
 					</div> 
 				</c:otherwise>
@@ -1222,9 +1213,12 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
+    	 $("#doneId").attr("disabled",true);
     	 var isValid = true;
 		 var resType = $("#rlaResonseType").val();
-    	 
+		 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
+			 validateForUniqueValue('',resType,function(val){if(val){}});
+		 }
     	 if(resType == "Scale"){
     		 $("#displayStepsCount").trigger('blur');
     		 $("#scaleMinValueId").trigger('blur');
@@ -1237,7 +1231,7 @@ $(document).ready(function(){
     		 validateFractionDigits($("#continuesScaleFractionDigitsId"));
     	 }
     	 if(isFromValid("#questionStepId")){
-    		
+    	  $("body").addClass("loading");
    		  var placeholderText ='';
    		  var stepText = "";
    		  if(resType == "Email"){
@@ -1287,6 +1281,8 @@ $(document).ready(function(){
                      }  
      			  }
    				isValid = false;
+   				$("#doneId").attr("disabled",false);
+   				$("body").removeClass("loading");
    			  }
    			  
    		  }else if(resType == 'Text Scale'){
@@ -1295,35 +1291,59 @@ $(document).ready(function(){
    		    $("#placeholderTextId").val(placeholderText);
    		    $("#stepValueId").val(stepText);
 	   		if(resType != '' && resType != null && resType != 'undefined'){
+	   			     var exists = false;
 			    	 $("#responseTypeId > option").each(function() {
-			    		 var textVal = this.text.replace(/\s/g, '');
-			    		 console.log("textVal:"+textVal);
-		   			 if(resType.replace(/\s/g, '') == textVal){
-		   			 }else{
-		   				 $("#"+textVal).empty();
-		   			 }    
-		   		 });
+				    		 var textVal = this.text.replace(/\s/g, '');
+				    		 if(textVal == 'TextScale'){
+				    			 exists = true;
+				    		 }
+				    		 
+			   			 if(resType.replace(/\s/g, '') == textVal){
+			   			 }else{
+			   				 $("#"+textVal).empty();
+			   			 }    
+			   		 });
+			    	 if(!exists){
+			    		 $("#TextScale").empty();
+			    	 }	 
 			 }
 	   		if(isValid){
-	   			validateStatsShorTitle('',function(val){
-	   				console.log("shortTitle:"+val);
+	   			validateTheQuestionshortTitle('',function(val){
 	   				if(val){
 	   					var statShortName =  $("#statShortNameId").val();
 	   			       	if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
 	   			       			validateStatsShorTitle('',function(val){
 	   			       				if(val){
 	   			       					document.questionStepId.submit();
+	   			       				}else{
+		   			       				 $("#doneId").attr("disabled",false);
+				    	    			 $("body").removeClass("loading");
 	   			       				}
 	   			       			});
 	   			       	 }else{
 	   			      		 	document.questionStepId.submit();
 	   			       	 }
+	   				}else{
+		   				 $("#doneId").attr("disabled",false);
+		    			 $("body").removeClass("loading");
 	   				}
 	   			});
 	   			
+	   		}else{
+	   			$("#doneId").attr("disabled",false);
+	   		    $("body").removeClass("loading");
+	   			var qlaCount = $('#qla').find('.has-error.has-danger').length;
+				var rlaCount = $('#rla').find('.has-error.has-danger').length;
+				if(parseInt(qlaCount) >= 1){
+					 $('.questionLevel a').tab('show');
+				}else if(parseInt(rlaCount) >= 1){
+					 $('.responseLevel a').tab('show');
+				}
+				$("#rla").find(".has-error:first").find('input').focus();
 	   		}
 	   		
 		}else{
+			$("#doneId").attr("disabled",false);
 			var qlaCount = $('#qla').find('.has-error.has-danger').length;
 			var rlaCount = $('#rla').find('.has-error.has-danger').length;
 			if(parseInt(qlaCount) >= 1){
@@ -1334,7 +1354,7 @@ $(document).ready(function(){
 		}
      });
      $("#saveId").on('click',function(e){
-    	 validateStatsShorTitle('',function(val){
+    	 validateTheQuestionshortTitle('',function(val){
 				if(val){
 					var statShortName =  $("#statShortNameId").val();
 			       	if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
@@ -1344,7 +1364,17 @@ $(document).ready(function(){
 			       				}
 			       			});
 			       	 }else{
-			       		 saveQuestionStepQuestionnaire();
+			       		 var resType = $("#rlaResonseType").val();
+	    	    		 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
+	    	    			 validateForUniqueValue('',resType,function(val){
+	    	    				if(val){
+	    	    					 saveQuestionStepQuestionnaire();
+	    	    				 }
+	    	    			 });
+	    	    		 }else{
+	    	    			 saveQuestionStepQuestionnaire();
+	    	    		 }
+			       		
 			       	 }
 				}
 		});
@@ -1398,6 +1428,10 @@ $(document).ready(function(){
     		$(this).val("No");
     		$("#chartContainer").hide();
     		$(".chartrequireClass").attr('required',false);
+    		$("#lineChartTimeRangeId").val('');
+    		$('#chartTitleId').val('');
+    		$('.selectpicker').selectpicker('refresh');
+    		 document.getElementById("allowRollbackChartNo").checked = true;
     	}
      });
     $("#useStasticData").on('change',function(){
@@ -1409,6 +1443,12 @@ $(document).ready(function(){
     		$(this).val("No");
     		$("#statContainer").hide();
     		$(".requireClass").attr('required',false);
+    		$("#statShortNameId").val('');
+    		$("#statDisplayNameId").val('');
+    		$("#statDisplayUnitsId").val('');
+    		$("#statTypeId").val('');
+    		$("#statFormula").val('');
+    		$('.selectpicker').selectpicker('refresh');
     	}
     });
     $("#scaleMinValueId").blur(function(){
@@ -1424,7 +1464,6 @@ $(document).ready(function(){
                     $(this).parent().find(".help-block").empty();
                     $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
             	}else{
-            		//$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
             	}
@@ -1436,7 +1475,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1450,19 +1488,14 @@ $(document).ready(function(){
     $("#scaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
-    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
-    	console.log("value:"+value);
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			console.log("iffff");
-        		//	$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
-        			console.log("else");
         			$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();
@@ -1476,7 +1509,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1502,13 +1534,10 @@ $(document).ready(function(){
     	            displayStepsCount = parseInt(stepsCount);
     	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
-    	            	console.log("ifff");
-    	            	//$(this).validator('validate');
         	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
         	            $(this).parent().find(".help-block").empty();
         	            $("#scaleStepId").val(displayStepsCount);
     	            }else{
-    	            	console.log("else");
     	            	 $("#scaleStepId").val('');
     	            	 $(this).val('');
         	    		 $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1531,8 +1560,8 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	var selectedValue = [1,2,3,4,5,6,10,12,15,30];
-    	if(selectedValue.includes(parseInt(value))){
+    	var selectedValue = [1,2,3,4,5,6,10,12,15,20,30];
+    	if(selectedValue.indexOf(parseInt(value)) != -1){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
             $(this).validator('validate');
@@ -1564,7 +1593,6 @@ $(document).ready(function(){
         $(this).parent().find(".help-block").empty();
 		if(stepSize != ''){
 			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
-				//$(this).validator('validate');
 	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
 	            $(this).parent().find(".help-block").empty();
 			}else{
@@ -1605,7 +1633,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1624,7 +1651,6 @@ $(document).ready(function(){
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			//$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1641,7 +1667,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1652,19 +1677,6 @@ $(document).ready(function(){
         	}
     	}
     });
-    /* $("#continuesScaleFractionDigitsId").blur(function(){
-    	var value= $(this).val();
-    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").empty();
-    	}else{
-    	     $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
-    	}
-    }); */
     $("#continuesScaleDefaultValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
@@ -1694,31 +1706,18 @@ $(document).ready(function(){
     	setResponseDate(value);
     	
     });
-    $("#minDateId").on('dp.change',function(){
-    	var minDate = $("#minDateId").val();
-        var maxDate = $('#maxDateId').val();
-        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
-        	$('#minDateId').parent().addClass("has-danger").addClass("has-error");
-       	    $('#minDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
-       	    $('#minDateId').val('');
-        }else{
-        	$('#minDateId').parent().removeClass("has-danger").removeClass("has-error");
-            $('#minDateId').parent().find(".help-block").empty();
-            $("#maxDateId").parent().removeClass("has-danger").removeClass("has-error");
-            $("#maxDateId").parent().find(".help-block").empty();
-        }
-    	
+    $("#minDateId").on('dp.change',function(e){
+        $("#defaultDate").data("DateTimePicker").clear();
+        $('#maxDateId').data("DateTimePicker").clear()
     });
     $("#maxDateId").on('dp.change',function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
-        console.log("minDate:"+minDate);
-        console.log("maxDate:"+maxDate);
-        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
+        $("#defaultDate").data("DateTimePicker").clear();
+        if(minDate!='' && maxDate!='' && new Date(minDate) >= new Date(maxDate)){
+       	    $('#maxDateId').data("DateTimePicker").clear();
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
-       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
-       	    $('#maxDateId').val('');
-       	    console.log("ifffffffff");
+       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than or equal Min Date and Time</li></ul>');
         }else{
         	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
             $('#maxDateId').parent().find(".help-block").empty();
@@ -1730,23 +1729,18 @@ $(document).ready(function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
         var defaultDate = $("#defaultDate").val();
-        console.log("minDate:"+minDate);
-        console.log("maxDate:"+maxDate);
-        console.log("defaultDate:"+defaultDate);
         if(minDate!='' && maxDate!='' && defaultDate != ''){
-        	if(new Date(defaultDate) > new Date(minDate) && new Date(defaultDate) < new Date(maxDate)){
+        	if(new Date(defaultDate) >= new Date(minDate) && new Date(defaultDate) <= new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
                 $('#defaultDate').parent().find(".help-block").empty();
-                console.log("ifffff");
         	}else{
+        		$("#defaultDate").data("DateTimePicker").clear();
         		$('#defaultDate').parent().addClass("has-danger").addClass("has-error");
            	    $('#defaultDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>Enter default date to be shown as selected as per availability of Min and Max</li></ul>');
-           	    $('#defaultDate').val('');
-           	     console.log("else");
         	}
         }
     });
-    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId').bind('input', function(e) {
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#textmaxLengthId').bind('input', function(e) {
         var id= $(this).attr('id');
         console.log(id);
     	var str = $("#"+id).val();
@@ -1821,7 +1815,7 @@ $(document).ready(function(){
                 } else {
                     $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                     $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
+                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
@@ -1831,12 +1825,24 @@ $(document).ready(function(){
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);
         }
     });
+    $('.textScaleValue').on('blur',function(){
+		validateForUniqueValue(this,"Text Scale",function(){});
+	});
+    $('.valuePickerVal').on('blur',function(){
+		validateForUniqueValue(this,"Value Picker",function(){});
+	});
+    $('.imageChoiceVal').on('blur',function(){
+		validateForUniqueValue(this,"Image Choice",function(){});
+	});
+    $('.textChoiceVal').on('blur',function(){
+		validateForUniqueValue(this,"Text Choice",function(){});
+	});
 });
 //Displaying images from file upload 
 function readURL(input) {
@@ -1864,11 +1870,12 @@ function toJSDate( dateTime ) {
 }
 function setResponseDate(type){
 	console.log("type:"+type);
+	
 	if(type == 'Date-Time'){
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
 	    
 	}else{
 		
@@ -1940,7 +1947,6 @@ function getResponseType(id){
 				    $('.selectpicker').selectpicker('refresh');
 			}
 			$("#timeIntervalStepId").val(1);
-			//$("#scaleStepId").val(5);
 			$("#textScalePositionId").val(2);
 			$("#scaleDefaultValueId").val(1);
 			if(responseType == 'Text Scale'){
@@ -1957,30 +1963,17 @@ function getResponseType(id){
 		    	$('input[name="questionReponseTypeBo.style"]').attr("checked",false); 
 		    	$("#date").attr("checked",true);
 		    }
+		    $("#useAnchorDateId").attr("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
-		 /* var type='';
-		 if(responseType == 'Continuous Scale'){
-			 type = 'Scale';
-		 }else{
-			 type = responseType;
-			 $("#"+type.replace(/\s/g, '')).hide();
-		 } */
 		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
-			 var style = '${questionReponseTypeBo.style}';
+			 var style = "${questionsBo.questionReponseTypeBo.style}";
 			 console.log("style:"+style);
 			 setResponseDate(style);
 		 }
-		 /* if(responseType == 'Value Picker'){
-			if($('.value-picker').length > 2){
-				$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
-			}else{
-				$('.ValuePickerContainer').find(".remBtnDis").addClass("hide");
-			}
-		 } */
 		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
     		var description = '${questionResponseTypeMasterInfo.description}';
@@ -1997,14 +1990,27 @@ function getResponseType(id){
     			$("#useStasticDataContainerId").show();
         		$("#addLineChartContainerId").show();	
         		$("#borderdashId").show();
-        		console.log("ifff");
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
         			 $(".chartrequireClass").attr('required',true);
+        		 }else{
+        			 $("#lineChartTimeRangeId").val('');
+        			 if(document.getElementById("allowRollbackChartNo") != null && typeof document.getElementById("allowRollbackChartNo") != 'undefined'){
+        				 document.getElementById("allowRollbackChartNo").checked = true;	 
+        			 }
+        	    	 $('#chartTitleId').val('');
+        	    	 $('.selectpicker').selectpicker('refresh');
         		 }
         		 if($("#useStasticData").is(":checked")){
         			 $("#statContainer").show();
         			 $(".requireClass").attr('required',true);
+        		 }else{
+        			 $("#statShortNameId").val('');
+        	    	 $("#statDisplayNameId").val('');
+        	    	 $("#statDisplayUnitsId").val('');
+        	    	 $("#statTypeId").val('');
+        	    	 $("#statFormula").val('');
+        	    	 $('.selectpicker').selectpicker('refresh');
         		 }
     		}else{
     			$("#useStasticDataContainerId").hide();
@@ -2013,6 +2019,11 @@ function getResponseType(id){
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
+   			 	var anchorDate = "${questionsBo.useAnchorDate}";
+			 	if(anchorDate == "true"){
+			 		console.log("anchorDate:"+anchorDate);
+			 		$("#useAnchorDateId").attr("checked",true);
+			 	}
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
 	   		}
@@ -2039,7 +2050,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	var short_title = $("#shortTitle").val();
 	var questionText = $("#questionTextId").val();
-	var descriptionText = $("#descriptionId").val();
+	
 	var responseType = $("#responseTypeId").val();
 	var addLinceChart = $('input[name="addLineChart"]:checked').val();
 	var lineChartTimeRange = $("#lineChartTimeRangeId").val();
@@ -2049,21 +2060,15 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statShortName = $("#statShortNameId").val();
 	var statDisplayName = $("#statDisplayNameId").val();
 	var statDisplayUnits = $("#statDisplayUnitsId").val();
-	var statType=$("#statType").val();
+	var statType=$("#statTypeId").val();
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	var skippableText = $('input[name="skippable"]:checked').val();
 	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
 	var questionnaireId = $("#questionnairesId").val();
 	
-	
-	
-	
-	
-	console.log("questionid:"+questionid);
 	questionsBo.shortTitle=short_title;
 	questionsBo.question=questionText;
-	questionsBo.description=descriptionText;
 	questionsBo.responseType=responseType;
 	questionsBo.lineChartTimeRange=lineChartTimeRange;
 	questionsBo.addLineChart=addLinceChart;
@@ -2315,7 +2320,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$("#preShortTitleId").val(short_title);
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;
-					console.log("questionResponseId:"+questionResponseId);
+					
 					$("#questionId").val(questionId);
 					$("#questionResponseTypeId").val(questionResponseId);
 					$("#responseQuestionId").val(questionId);
@@ -2406,8 +2411,7 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("disabled",true);
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
-		//$('.destionationYes').val('');
-		//$('.destionationYes').attr("disabled",false);
+		
 		$('.selectpicker').selectpicker('refresh');
 		$(".textChoiceExclusive").validator('validate');
 	}else{
@@ -2416,44 +2420,35 @@ function getSelectionStyle(item){
 		$('.selectpicker').selectpicker('refresh');
 	}
 }
-/* function setExclusiveData(item){
-	var index = $(item).attr('index');
-	var value = $(item).val();
-	if(value == "Yes"){
-		$("#destinationTextChoiceStepId"+index).attr("disabled",false);
-		$('.selectpicker').selectpicker('refresh');
-	}else{
-		$("#destinationTextChoiceStepId"+index).val('');
-		$("#destinationTextChoiceStepId"+index).attr("disabled",true);
-		$('.selectpicker').selectpicker('refresh');
-	}
-	console.log("index:"+index);
-	console.log("value:"+value);
-} */
+
 var count = $('.value-picker').length;
 function addValuePicker(){
 	count = count+1;
-	var newValuePicker ="<div class='value-picker row form-group' id="+count+">"+
+	var newValuePicker ="<div class='value-picker row form-group mb-xs' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='15'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='20'>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
 						"<div class='col-md-4 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].value' id='displayValPickValue"+count+"' required maxlength='50'>"+
+						"      <input type='text' class='form-control valuePickerVal' name='questionResponseSubTypeList["+count+"].value' id='displayValPickValue"+count+"' required maxlength='50'"+ 
+						" onblur='validateForUniqueValue(this,&#34;Value Picker&#34;,function(){});'>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
-						"<div class='col-md-2 pl-none mt-sm'>"+
-						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
-					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
+						"<div class='col-md-2 pl-none mt__6'>"+
+						"   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addValuePicker();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
 					"</div>";	
 	$(".value-picker:last").after(newValuePicker);
+	$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
+    $(".value-picker").parent().find(".help-block").html('');
 	$(".value-picker").parents("form").validator("destroy");
     $(".value-picker").parents("form").validator();
+   
 	if($('.value-picker').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
@@ -2464,6 +2459,8 @@ function removeValuePicker(param){
 	if($('.value-picker').length > 2){
 		
 		$(param).parents(".value-picker").remove();
+		$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".value-picker").parent().find(".help-block").html('');
 	    $(".value-picker").parents("form").validator("destroy");
 		$(".value-picker").parents("form").validator();
 		if($('.value-picker').length > 2){
@@ -2486,17 +2483,19 @@ function addTextScale(){
 						"</div>"+
 						" <div class='col-md-4 pl-none'>"+
 						"    <div class='form-group'>"+
-						"       <input type='text' class='form-control TextScaleRequired' class='form-control' name='questionResponseSubTypeList["+scaleCount+"].value' id='displayTextSclValue"+scaleCount+"' maxlength='50' required>"+
+						"       <input type='text' class='form-control TextScaleRequired textScaleValue' class='form-control' name='questionResponseSubTypeList["+scaleCount+"].value' id='displayTextSclValue"+scaleCount+"' maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Scale&#34;,function(){});'>"+
 						"       <div class='help-block with-errors red-txt'></div>"+
 						"    </div>"+
 						" </div>";
-						newTextScale+="<div class='col-md-2 pl-none mt-sm'>"+
+						newTextScale+="<div class='col-md-2 pl-none mt__8'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
 						"	</div>"+
 						"</div>";
 	$(".text-scale:last").after(newTextScale);
 	$('.selectpicker').selectpicker('refresh');
+	$(".text-scale").parent().removeClass("has-danger").removeClass("has-error");
+    $(".text-scale").parent().find(".help-block").empty();
 	$(".text-scale").parents("form").validator("destroy");
     $(".text-scale").parents("form").validator();
 	if($('.text-scale').length > 2){
@@ -2512,11 +2511,15 @@ function addTextScale(){
 		$(".text-scale:last").find('span.addBtnDis').remove();
 		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
 	}
+	
 	}
+	
 }
 function removeTextScale(param){
 	if($('.text-scale').length > 2){
 		$(param).parents(".text-scale").remove();
+		$(".text-scale").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".text-scale").parent().find(".help-block").empty();
 	    $(".text-scale").parents("form").validator("destroy");
 		$(".text-scale").parents("form").validator();
 		if($('.text-scale').length > 2){
@@ -2542,13 +2545,13 @@ function addTextChoice(){
 	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
 						"	   <div class='col-md-4 pl-none'>"+
 					    "<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
-					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextChoiceText"+choiceCount+"'  maxlength='100' required>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+ 	
 					    "</div>"+
 					 	"  </div>"+
 					 	"<div class='col-md-4 pl-none'>"+
 					    "<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextSclValue'  maxlength='50' required>"+
+					    "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					 	"</div>"+
@@ -2565,13 +2568,15 @@ function addTextChoice(){
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					    "</div>";
-					   newTextChoice += "<div class='col-md-2 pl-none mt-sm'>"+
-					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
-					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
+					   newTextChoice += "<div class='col-md-2 pl-none mt-xs'>"+
+					    "<span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addTextChoice();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeTextChoice(this);'></span>"+
 					 "</div>"+
 					"</div> ";
 	$(".text-choice:last").after(newTextChoice);
 	$('.selectpicker').selectpicker('refresh');
+	$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+    $(".text-choice").parent().find(".help-block").empty();
 	$(".text-choice").parents("form").validator("destroy");
 	$(".text-choice").parents("form").validator();
 	if($('.text-choice').length > 2){
@@ -2579,10 +2584,13 @@ function addTextChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	
 }
 function removeTextChoice(param){
 	if($('.text-choice').length > 2){
 		$(param).parents(".text-choice").remove();
+		$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".text-choice").parent().find(".help-block").empty();
 	    $(".text-choice").parents("form").validator("destroy");
 		$(".text-choice").parents("form").validator();
 		if($('.text-choice').length > 2){
@@ -2620,23 +2628,25 @@ function addImageChoice(){
 						 "</div>"+
 						 "<div class='col-md-3 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].text' id='displayImageChoiceText"+imageCount+"' required maxlength='15'>"+
+						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].text' id='displayImageChoiceText"+imageCount+"' required maxlength='100'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>"+
 						 "<div class='col-md-3 col-lg-3 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].value' id='displayImageChoiceValue"+imageCount+"' required maxlength='50'>"+
+						 "      <input type='text' class='form-control ImageChoiceRequired imageChoiceVal' name='questionResponseSubTypeList["+imageCount+"].value' id='displayImageChoiceValue"+imageCount+"' required maxlength='50' onblur='validateForUniqueValue(this,&#34;Image Choice&#34;,function(){});'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>";
-						 newImageChoice +="<div class='col-md-2 pl-none mt-sm'>"+
-						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
-						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
+						 newImageChoice +="<div class='col-md-2 pl-none mt__6'>"+
+						 "   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addImageChoice();'>+</span>"+
+						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+
 						"</div> ";
 	$(".image-choice:last").after(newImageChoice);
 	$('.selectpicker').selectpicker('refresh');
+	$(".image-choice").parent().removeClass("has-danger").removeClass("has-error");
+    $(".image-choice").parent().find(".help-block").empty();
 	$(".image-choice").parents("form").validator("destroy");
 	$(".image-choice").parents("form").validator();
 	$(".sm-thumb-btn").click(function(){
@@ -2647,10 +2657,13 @@ function addImageChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	
 }
 function removeImageChoice(param){
 	if($('.image-choice').length > 2){
 		$(param).parents(".image-choice").remove();
+		$(".image-choice").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".image-choice").parent().find(".help-block").empty();
 	    $(".image-choice").parents("form").validator("destroy");
 		$(".image-choice").parents("form").validator();
 		if($('.image-choice').length > 2){
@@ -2664,6 +2677,8 @@ function validateStatsShorTitle(event,callback){
 	var short_title = $("#statShortNameId").val();
 	var prev_short_title =$("#prevStatShortNameId").val();
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
+		 $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+         $("#statShortNameId").parent().find(".help-block").empty();
  		if(prev_short_title !=short_title){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
@@ -2688,7 +2703,7 @@ function validateStatsShorTitle(event,callback){
                          $("#statShortNameId").val('');
                          $("#statShortNameId").parent().addClass("has-danger").addClass("has-error");
                          $("#statShortNameId").parent().find(".help-block").empty();
-                         $("#statShortNameId").parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + short_title + "' already exists.</li></ul>");
+                         $("#statShortNameId").parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + short_title + "' has already been used in the past.</li></ul>");
                          if (callback)
      						callback(false);
                          
@@ -2699,6 +2714,8 @@ function validateStatsShorTitle(event,callback){
  		}else{
  			if (callback)
 				callback(true);
+ 			$("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+ 	        $("#statShortNameId").parent().find(".help-block").empty();
  				
  		}
  	}else{
@@ -2713,7 +2730,10 @@ function validateTheQuestionshortTitle(item,callback){
  	var stepType="Question";
  	var thisAttr=  $("#shortTitle");
  	var existedKey = $("#preShortTitleId").val();
+ 	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").empty();
  		if(existedKey !=shortTitle){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateQuestionKey.do?_S=${param._S}",
@@ -2722,6 +2742,7 @@ function validateTheQuestionshortTitle(item,callback){
                  data: {
                  	shortTitle : shortTitle,
                  	questionnaireId : questionnaireId,
+                 	questionnaireShortTitle : questionnaireShortTitle
                  },
                  beforeSend: function(xhr, settings){
                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
@@ -2738,7 +2759,7 @@ function validateTheQuestionshortTitle(item,callback){
                          $(thisAttr).val('');
                          $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                          $(thisAttr).parent().find(".help-block").empty();
-                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
                          callback(false);
                      }
                  },
@@ -2746,6 +2767,8 @@ function validateTheQuestionshortTitle(item,callback){
            });
  		}else{
  			callback(true);
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").html("");
  		}
  	}else{
  		callback(false);
@@ -2797,7 +2820,6 @@ function validateFractionDigits(item){
 			console.log("maxFracDigits:"+maxFracDigits);
 			
 			if(parseInt(value) <= parseInt(maxFracDigits)){
-				//console.log("Number is allowed:"+maxFracDigits);
 				$(item).validator('validate');
 	    		$(item).parent().removeClass("has-danger").removeClass("has-error");
 	            $(item).parent().find(".help-block").empty();
@@ -2819,6 +2841,104 @@ function validateFractionDigits(item){
             $(item).parent().find(".help-block").empty();
             $(item).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an minimum and maximum values </li></ul>");
 		}
+	}
+}
+function validateForUniqueValue(item,responsetype,callback){
+	var isValid = true;
+	if(responsetype == 'Text Scale'){
+		var valueArray = new Array();
+		$('.text-scale').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayTextSclValue"+id).val();
+			$("#displayTextSclValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayTextSclValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayTextSclValue"+id).val('');
+		    		$("#displayTextSclValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayTextSclValue"+id).parent().find(".help-block").empty();
+		            $("#displayTextSclValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				//isValid=true;
+			}
+			
+		});
+		callback(isValid);
+	}else if(responsetype == "Value Picker"){
+		var valueArray = new Array();
+		$('.value-picker').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayValPickValue"+id).val();
+			$("#displayValPickValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayValPickValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayValPickValue"+id).val('');
+		    		$("#displayValPickValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayValPickValue"+id).parent().find(".help-block").empty();
+		            $("#displayValPickValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		            
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				
+			}
+			
+		});
+		callback(isValid);
+	}else if(responsetype == "Image Choice"){
+		var valueArray = new Array();
+		$('.image-choice').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayImageChoiceValue"+id).val();
+			$("#displayImageChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayImageChoiceValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayImageChoiceValue"+id).val('');
+		    		$("#displayImageChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayImageChoiceValue"+id).parent().find(".help-block").empty();
+		            $("#displayImageChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				
+			}
+			
+		});
+		callback(isValid);
+	}else if(responsetype == "Text Choice"){
+		var valueArray = new Array();
+		$('.text-choice').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayTextChoiceValue"+id).val();
+			$("#displayTextChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayTextChoiceValue"+id).val('');
+		    		$("#displayTextChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
+		            $("#displayTextChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				
+			}
+			
+		});
+		callback(isValid);
 	}
 }
 </script>

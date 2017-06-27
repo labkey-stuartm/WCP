@@ -20,7 +20,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES</div>
                     
                     <div class="dis-line form-group mb-none">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -31,7 +31,7 @@
                      </div> -->
 					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none ml-sm">
-                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
+                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="bottom" <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
                          <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete}"> disabled </c:if> >Mark as Completed</button>
                        </span>
                      </div>
@@ -54,7 +54,7 @@
                                 <th>
                                 <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn" onclick="addQuestionnaires();">+ Add Questionnaire</button>
+                                         <button type="button" class="btn btn-primary blue-btn" onclick="addQuestionnaires();">Add Questionnaire</button>
                                      </div>
                                  </c:if>    
                                 </th>
@@ -65,7 +65,7 @@
 		             	    <tr>
 		             	      <td>${questionnaryInfo.createdDate}</td>
 			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
-			                  <td>${questionnaryInfo.frequency}</td>
+			                  <td>${questionnaryInfo.frequency == 'Manually Schedule' ? 'Custom Schedule' :questionnaryInfo.frequency}</td>
 			                  <td style="width:200px !important;">
 			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
@@ -95,10 +95,6 @@ $(document).ready(function(){
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthQuestionnaires").addClass('active');
 	
-            // Fancy Scroll Bar
-           // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-          //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-            
              $('#questionnaire_list').DataTable( {
                  "paging":   true,
                  "abColumns": [
@@ -144,58 +140,62 @@ $(document).ready(function(){
   }   
   function deleteQuestionnaire(questionnaireId){
 	  var studyId = $("#studyId").val();
-	  bootbox.confirm("Are you sure you want to delete this questionnaire item?", function(result){ 
-			if(result){
-				if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
-					$.ajax({
-		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
-		    			type: "POST",
-		    			datatype: "json",
-		    			data:{
-		    				questionnaireId: questionnaireId,
-		    				studyId : studyId,
-		    				"${_csrf.parameterName}":"${_csrf.token}",
-		    			},
-		    			success: function deleteConsentInfo(data){
-		    				var jsonobject = eval(data);
-		    				var status = jsonobject.message;
-		    				var markAsComplete = data.markAsComplete;
-		    				var activityMsg = data.activityMsg;
-		    				if(status == "SUCCESS"){
-		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
-		    					$('#alertMsg').show();
-		    					//$("#row"+questionnaireId).remove();
-		    					var questionnaireList = jsonobject.questionnaireList;
-		    					reloadDataTabel(questionnaireList);
-		    					/* var table = $('#questionnaire_list').DataTable();
-		    					if (!table.data().count() ) {
-		    						$("#markAsCompleteBtnId").prop("disabled",false);
-		    					} */
-		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-		    					}
-		    					if(!markAsComplete){
-		    						$('#markAsCompleteBtnId').prop('disabled',true);
-		    						//$('[data-toggle="tooltip"]').tooltip();
-		    						$('#markAsTooltipId').attr("data-original-title", activityMsg);
-		    					}else{
-		    						$('#markAsCompleteBtnId').prop('disabled',false);
-		    						//$('[data-toggle="tooltip"]').tooltip('destroy');
-		    						$('#markAsTooltipId').removeAttr('data-original-title');
-		    					}
-		    				}else{
-		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
-		    					$('#alertMsg').show();
-		    	            }
-		    				setTimeout(hideDisplayMessage, 4000);
-		    			},
-		    			error: function(xhr, status, error) {
-		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-		    			  setTimeout(hideDisplayMessage, 4000);
-		    			}
-		    		});
+	  bootbox.confirm({
+		    message: "Are you sure you want to delete this questionnaire item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+		    buttons: {
+		        confirm: {
+		            label: 'Yes',
+		        },
+		        cancel: {
+		            label: 'No',
+		        }
+		    },
+		    callback: function (result) {
+		    	if(result){
+					if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
+						$.ajax({
+			    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
+			    			type: "POST",
+			    			datatype: "json",
+			    			data:{
+			    				questionnaireId: questionnaireId,
+			    				studyId : studyId,
+			    				"${_csrf.parameterName}":"${_csrf.token}",
+			    			},
+			    			success: function deleteConsentInfo(data){
+			    				var jsonobject = eval(data);
+			    				var status = jsonobject.message;
+			    				var markAsComplete = data.markAsComplete;
+			    				var activityMsg = data.activityMsg;
+			    				if(status == "SUCCESS"){
+			    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
+			    					$('#alertMsg').show();
+			    					var questionnaireList = jsonobject.questionnaireList;
+			    					reloadDataTabel(questionnaireList);
+			    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+			    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+			    					}
+			    					if(!markAsComplete){
+			    						$('#markAsCompleteBtnId').prop('disabled',true);
+			    						$('#markAsTooltipId').attr("data-original-title", activityMsg);
+			    					}else{
+			    						$('#markAsCompleteBtnId').prop('disabled',false);
+			    						$('#markAsTooltipId').removeAttr('data-original-title');
+			    					}
+			    				}else{
+			    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+			    					$('#alertMsg').show();
+			    	            }
+			    				setTimeout(hideDisplayMessage, 4000);
+			    			},
+			    			error: function(xhr, status, error) {
+			    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+			    			  setTimeout(hideDisplayMessage, 4000);
+			    			}
+			    		});
+					}
 				}
-			}
+		    }
 	  });
   }
   function reloadDataTabel(questionnaireList){
@@ -238,16 +238,6 @@ $(document).ready(function(){
 	  
   }
   function markAsCompleted(){
-		/* var table = $('#questionnaire_list').DataTable();
-		if (!table.data().count() ) {
-		    console.log( 'Add atleast one consent !' );
-		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
-		    $('#markAsCompleteBtnId').prop('disabled',true);
-		    $('[data-toggle="tooltip"]').tooltip();
-		}else{
-			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
-			document.questionnaireInfoForm.submit();
-		} */
 		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 
 		document.questionnaireInfoForm.submit();
 	}

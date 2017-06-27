@@ -31,7 +31,7 @@
                  	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Deactivated</span></span></div>
                  	 </c:if>
                  	 <c:if test="${empty userBO.userPassword}">
-                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Invitation Sent, Account Activation Pending</span></span></div>
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs pr-md"> Invitation Sent, Account Activation Pending</span></span><span class="black-sm-f resend pl-md"><a href="javascript:void(0)" id="resendLinkId">Re-send Activation Link</a></span></div>
                  	 </c:if>
                  </div>
              </div>
@@ -49,6 +49,9 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
+    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword}">
+    <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn" id="enforcePasswordId">Enforce Password Change</button></div>
+    </c:if>
         <div class="ed-user-layout row">
             <!-- Edit User Layout-->
             
@@ -78,7 +81,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">readonly</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -146,7 +149,7 @@
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${!fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${fn:contains(permissions,7)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio1"></label>
                         </span>
                         <span class="radio radio-inline">
@@ -182,7 +185,7 @@
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${!fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${fn:contains(permissions,4)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio5"></label>
                         </span>
                         <span class="radio radio-inline">
@@ -268,14 +271,8 @@
 </c:if>
 </form:form>
 
- <%-- <c:if test="${actionPage ne 'VIEW_PAGE'}">
-              	<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
-				</form:form>
- </c:if> --%>
- <%-- <c:if test="${actionPage eq 'VIEW_PAGE'}"> --%>
               	<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
 				</form:form>
- <%-- </c:if> --%>
 <script>
 
 
@@ -290,28 +287,36 @@
     	
     	$('[data-toggle="tooltip"]').tooltip();	
     	
-    	$("form").submit(function() {
-    		$(this).submit(function() {
-       	 		return false;
-    		});
-    		 	return true;
-	    });
     	
-    	$(window).on('load',function(){
-    		   
+   var countCall = 0;
+   $(window).on('load',function(){
+	   countCall = 1;
     	   	$('.selStd').each(function(){
         		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
         		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
        	  		  var ltxt = $(this).text();
        	  		  var a = $.trim(ltxt);
-       	  		  var b = $.trim(stdTxt);	  		  
+       	  		  var b = $.trim(stdTxt);
        	          if(a == b){
        	        	 $(this).parent().parent().hide();
        	          }
        	      });
         	});
-    	   	
-       });
+   }); 
+   
+   if(countCall == 0){
+		$('.selStd').each(function(){
+    		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
+    		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
+   	  		  var ltxt = $(this).text();
+   	  		  var a = $.trim(ltxt);
+   	  		  var b = $.trim(stdTxt);
+   	          if(a == b){
+   	        	 $(this).parent().parent().hide();
+   	          }
+   	      });
+    	});
+   }
     	
     	//cancel or back click
     	$('.backOrCancelBttn').on('click',function(){
@@ -320,15 +325,11 @@
     	
     	
     	if($('#inlineCheckbox1').prop("checked") == false){
-    		/* $('.musr').find('input[type=radio]').prop('checked',false);
-			$('.musr').find('input[type=radio]').prop('disabled',true); */
     		$('.musr').prop('checked',false);
     		$('.musr').prop('disabled',true);
     	}
     	
     	if($('#inlineCheckbox3').prop("checked") == false){
-    		/* $('.mnotf').find('input[type=radio]').prop('checked',false);
-			$('.mnotf').find('input[type=radio]').prop('disabled',true); */
     		$('.mnotf').prop('checked',false);
     		$('.mnotf').prop('disabled',true);
     	}
@@ -340,13 +341,10 @@
     	
     	$('#inlineCheckbox1').on('click',function(){
     		if($(this).prop("checked") == true){
-    			/* $(this).parents('.musr').find('input[type=radio]').prop('disabled',false); */
     			$('.musr').prop('disabled',false);
     			$('#inlineRadio1').prop('checked',true);
     		}
     		else if($(this).prop("checked") == false){
-    			/* $(this).parents('.musr').find('input[type=radio]').prop('checked',false);
-    			$(this).parents('.musr').find('input[type=radio]').prop('disabled',true); */
     			$('.musr').prop('checked',false);
         		$('.musr').prop('disabled',true);
     		}
@@ -354,41 +352,25 @@
     	
     	$('#inlineCheckbox3').on('click',function(){
     		if($(this).prop("checked") == true){
-    			/* $(this).parents('.mnotf').find('input[type=radio]').prop('disabled',false); */
     			$('.mnotf').prop('disabled',false);
     			$('#inlineRadio5').prop('checked',true);
     		}
     		else if($(this).prop("checked") == false){
-    			/* $(this).parents('.mnotf').find('input[type=radio]').prop('checked',false);
-    			$(this).parents('.mnotf').find('input[type=radio]').prop('disabled',true); */
     			$('.mnotf').prop('checked',false);
         		$('.mnotf').prop('disabled',true);
     		}
     	});
     	
-    	/* $('#inlineCheckbox1').on('click',function(){
-    		if($(this).prop("checked") == true){
-    			$('.usersRadioBtn').prop('disabled',false);
-    		}
-    		else if($(this).prop("checked") == false){
-    			$(".usersRadioBtn").prop("checked",false);
-    			$('.usersRadioBtn').prop('disabled',true);
-    		}
-    	}); */
-    	
     	$('#inlineCheckbox4').on('click',function(){
     		if($(this).prop("checked") == true){
                 $(this).val(1);
-                /* $('#inlineCheckbox5').prop('disabled',false); */
                 $('.changeView').prop('disabled',false);
             }
             else if($(this).prop("checked") == false){
                 $(this).val('');
                 $('#inlineCheckbox5').val('');
                 $('#inlineCheckbox5').prop('checked',false);
-                /* $('#inlineCheckbox5').prop('disabled',true); */
                 $('.changeView').prop('disabled',true);
-                /* $('#addStudy').prop('disabled',true); */
             }
     	});
     	
@@ -411,36 +393,9 @@
 	         }
 	       });
 	  
-           /*  var a = $('.study-list .bootstrap-select button span.filter-option').text();
-            if(a != "- Select and Add Studies -"){
-            var b = a.split(',');         
-            
-            for(var i = 0; i < b.length; i++)
-            {
-            	alert(b[i]);
-                var existingStudyDiv = "<div class='study-selected-item'>"
-                						+"<input type='hidden' id='"+b[i]+"' name='"+b[i]+"' value='0'>"
-						                +"<span class='mr-md'><img src='/fdahpStudyDesigner/images/icons/close.png'/></span>"
-						                +"<span>"+b[i]+"</span>"
-						                +"<span class='pull-right'>"
-						                +"<span class='radio radio-info radio-inline p-45 mr-xs'>"
-						                +"<input type='radio' id='inlineRadio7' value='option1' name='radioInline7'>"
-						                +"<label for='inlineRadio7'></label></span>"
-						                +"<span class='radio radio-inline'>"
-						                +"<input type='radio' id='inlineRadio8' value='option1' name='radioInline7'>"
-						                +"<label for='inlineRadio8'></label>"
-						                +"</span>"
-						                +"</span>"
-						                +"</div>";             
-            	$('.study-selected').append(existingStudyDiv);          
-            }
-
-          } */
-          
 		$('#multiple :selected').each(function(i, sel){ 
 								    var selVal = $(sel).val(); 
 								    var selTxt = $(sel).text(); 
-								   /*  $('#selectStudies'+selVal).prop('disabled',true); */
 								    var existingStudyDiv = "<div class='study-selected-item selStd' id='std"+selVal+"'>"
 									+"<input type='hidden' class='stdCls' id='"+selVal+"' name='' value='"+selVal+"'>"
 						            +"<span class='mr-md cls cur-pointer'><img src='/fdahpStudyDesigner/images/icons/close.png' onclick='del("+selVal+");'/></span>"
@@ -483,12 +438,11 @@
   $('.addUpdate').on('click',function(){
   	var selectedStudies = "";
   	var permissionValues = "";
+  	$('#emailId').prop('disabled',false);
   	if(isFromValid($(this).parents('form'))){
 	  	$('.selStd').each(function(){
 	  		var studyId = $(this).find('.stdCls').val();
-	  		/* alert("studyId"+studyId); */
 	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-	  		/* alert("permissionValue"+permissionValue); */
 	  		if(selectedStudies == ""){
 	  			selectedStudies = studyId;
 	  		}else{
@@ -500,16 +454,77 @@
 	  			permissionValues += ","+permissionValue;
 	  		}
 	  	});
-	  	/* alert(selectedStudies+" "+permissionValues); */
 	  	$('#selectedStudies').val(selectedStudies);
 	  	$('#permissionValues').val(permissionValues);
-	  	/* resetValidation('#userForm'); */
 	  	<c:if test="${sessionObject.userId eq userBO.userId}">
 	  		$('#ownUser').val('1');
 	  	</c:if>
   		$(this).parents('form').submit();	
   	}
   });
+  
+      $('#resendLinkId').on('click',function(){
+    	    var form= document.createElement('form');
+	    	form.method= 'post';
+	    	var input= document.createElement('input');
+	    	input.type= 'hidden';
+			input.name= 'userId';
+			input.value= '${userBO.userId}';
+			form.appendChild(input);
+			
+			input= document.createElement('input');
+	    	input.type= 'hidden';
+			input.name= '${_csrf.parameterName}';
+			input.value= '${_csrf.token}';
+			form.appendChild(input);
+			
+	    	form.action= '/fdahpStudyDesigner/adminUsersEdit/resendActivateDetailsLink.do';
+	    	document.body.appendChild(form);
+	    	form.submit();
+     });
+      
+     $('#enforcePasswordId').on('click',function(){
+    	bootbox.confirm({
+				closeButton: false,
+				message : "Are you sure you wish to enforce a password change for this user?",	
+			    buttons: {
+			        'cancel': {
+			            label: 'No',
+			        },
+			        'confirm': {
+			            label: 'Yes',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var form= document.createElement('form');
+		            	form.method= 'post';
+		            	var input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= 'changePassworduserId';
+		        		input.value= '${userBO.userId}';
+		        		form.appendChild(input);
+		        		
+		        		var input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= 'emailId';
+		        		input.value= '${userBO.userEmail}';
+		        		form.appendChild(input);
+		        		
+		        		input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= '${_csrf.parameterName}';
+		        		input.value= '${_csrf.token}';
+		        		form.appendChild(input);
+		        		
+		            	form.action= '/fdahpStudyDesigner/adminUsersEdit/enforcePasswordChange.do';
+		            	document.body.appendChild(form);
+		            	form.submit();
+			             }	
+			        }
+		}) 
+    	
+     });
         
    });
     

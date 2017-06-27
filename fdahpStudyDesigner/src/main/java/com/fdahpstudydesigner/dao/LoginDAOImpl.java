@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -32,6 +32,10 @@ public class LoginDAOImpl implements LoginDAO {
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
 	private Transaction transaction = null;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
 	public LoginDAOImpl() {
 	}
 	
@@ -56,8 +60,12 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
-			userBo = (UserBO) query.uniqueResult();
+//			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
+			SQLQuery query  = session
+					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
+							+ email + "'");
+			query.addEntity(UserBO.class);
+			userBo =  (UserBO) query.uniqueResult();
 			if(userBo!=null){
 				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
 				
@@ -202,6 +210,8 @@ public class LoginDAOImpl implements LoginDAO {
 		Boolean isAcountLocked = false;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
+		UserBO userBO = new UserBO();
+		final Integer USER_LOCK_DURATION = Integer.valueOf(propMap.get("user.lock.duration.in.minutes"));
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -217,24 +227,53 @@ public class LoginDAOImpl implements LoginDAO {
 			} else {
 				if (attemptsBo.getAttempts() + 1 >= MAX_ATTEMPTS) {
 					// locked user
-					queryString = "UPDATE UserBO set accountNonLocked = " + 0 + " where userEmail ='" + userEmailId+"'";
-					session.createQuery(queryString).executeUpdate();
+					/*queryString = "UPDATE UserBO set accountNonLocked = " + 0 + " where userEmail ='" + userEmailId+"'";
+					session.createQuery(queryString).executeUpdate();*/
 					// throw exception
 					isAcountLocked = true;
 				}
 				if (this.isUserExists(userEmailId)) {
-					attemptsBo.setAttempts(attemptsBo.getAttempts() + 1);
-					attemptsBo.setUserEmail(userEmailId);
-					attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
-					session.update(attemptsBo);
+					if(attemptsBo.getAttempts() >= MAX_ATTEMPTS && new SimpleDateFormat(
+							FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+							.parse(FdahpStudyDesignerUtil.addMinutes(attemptsBo.getLastModified(), USER_LOCK_DURATION))
+					.before(new SimpleDateFormat(
+							FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+							.parse(FdahpStudyDesignerUtil
+									.getCurrentDateTime()))) {
+						attemptsBo.setAttempts(1);
+						attemptsBo.setUserEmail(userEmailId);
+						attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
+						session.update(attemptsBo);
+						isAcountLocked = false;
+					} else if(attemptsBo.getAttempts() < MAX_ATTEMPTS + 1) {
+						attemptsBo.setAttempts(attemptsBo.getAttempts() + 1);
+						attemptsBo.setUserEmail(userEmailId);
+						attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
+						session.update(attemptsBo);
+					}
+				}
+			}
+//			userBO = (UserBO) session.getNamedQuery("getUserByEmail").setString("email", userEmailId).uniqueResult();
+			SQLQuery query  = session
+					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
+							+ userEmailId + "'");
+			query.addEntity(UserBO.class);
+			userBO =  (UserBO) query.uniqueResult();
+			if(userBO!=null){
+				if(isAcountLocked){
+					SessionObject sessionObject = new SessionObject();
+				    sessionObject.setUserId(userBO.getUserId());
+				    String activityDetails = FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_DEATILS_MESSAGE.replace("&name", userEmailId);
+	 				auditLogDAO.saveToAuditLog(session, transaction, sessionObject, FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_MESSAGE, activityDetails, "LoginDAOImpl - updateUser()");
+				}else{
+						SessionObject sessionObject = new SessionObject();
+					    sessionObject.setUserId(userBO.getUserId());
+						auditLogDAO.saveToAuditLog(session, transaction, sessionObject, FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_MESSAGE, FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_DEATILS_MESSAGE, "LoginDAOImpl - updateUser()");
 				}
 			}
 			transaction.commit();
-			if(isAcountLocked){
-				throw new LockedException("User Account is locked!");
-			}
 		}
-		catch (HibernateException e) {
+		catch (Exception e) {
 			if(transaction != null)
 				transaction.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
@@ -242,6 +281,9 @@ public class LoginDAOImpl implements LoginDAO {
 			if (session != null && session.isOpen()) {
 				session.close();
 			}
+		}
+		if(isAcountLocked){
+			throw new LockedException(propMap.get("user.lock.msg"));
 		}
 		logger.info("LoginDAOImpl - updateUser() - Ends");
 		
@@ -294,9 +336,11 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			Query query = session.getNamedQuery("getUserAttempts").setString("userEmailId", userEmailId);
+//			Query query = session.getNamedQuery("getUserAttempts").setString("userEmailId", userEmailId);
 		//	String searchQuery = "select * from user_attempts where email_id='"+userEmailId+"'";
 		//	Query query = session.createSQLQuery(searchQuery);
+			SQLQuery  query = session.createSQLQuery("select * from user_attempts where BINARY email_id='"+userEmailId+"'");
+			query.addEntity(UserAttemptsBo.class);
 			attemptsBo = (UserAttemptsBo) query.uniqueResult();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserAttempts() - ERROR " , e);
@@ -495,10 +539,9 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE ).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay));
-//			userBOList = session.getNamedQuery("getAllUsersExceptSuperAdmin").setString("userLastLoginDateTime", lastLoginDateTime+"%").list();
+			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME ).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay + 1));
 			userBOList = session.createSQLQuery("SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
-					+ "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime like '"+lastLoginDateTime+"%' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'").list();
+					+ "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime < '"+lastLoginDateTime+"' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'").list();
 			
 			if(userBOList!=null && !userBOList.isEmpty()){
 				userBOIdList = new ArrayList<>();
@@ -506,7 +549,7 @@ public class LoginDAOImpl implements LoginDAO {
 					userBOIdList.add(Integer.parseInt(objects[0]+""));
 				}
 				if (!userBOIdList.isEmpty()) {
-					session.createSQLQuery("Update users set accountNonLocked = 0 WHERE user_id in("+StringUtils.join(userBOIdList, ",")+")").executeUpdate();
+					session.createSQLQuery("Update users set status = 0 WHERE user_id in("+StringUtils.join(userBOIdList, ",")+")").executeUpdate();
 				}
 			}
 			transaction.commit();

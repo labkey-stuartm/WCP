@@ -22,7 +22,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name="active_task_attrtibutes_values")
 @NamedQueries({
-	@NamedQuery(name = "getAttributeListByActiveTAskId", query = "From ActiveTaskAtrributeValuesBo ABO where ABO.activeTaskId=:activeTaskId order by attributeValueId desc"),
+	@NamedQuery(name = "getAttributeListByActiveTAskId", query = "From ActiveTaskAtrributeValuesBo ABO where ABO.activeTaskId=:activeTaskId and ABO.active IS NOT NULL and ABO.active=1 order by attributeValueId desc"),
 })
 public class ActiveTaskAtrributeValuesBo implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -76,8 +76,14 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 	@Column(name = "time_range_stat")
 	private String timeRangeStat;
 	
+	@Column(name="active")
+	private Integer active=0;
+	
 	@Transient
 	private boolean addToDashboard = false;
+	
+	@Transient
+	private Integer isIdentifierNameStatDuplicate = 0;
 
 	public Integer getAttributeValueId() {
 		return attributeValueId;
@@ -198,6 +204,14 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 	public void setTimeRangeStat(String timeRangeStat) {
 		this.timeRangeStat = timeRangeStat;
 	}
+	
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
+	}
 
 	public boolean isAddToDashboard() {
 		return addToDashboard;
@@ -205,6 +219,15 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 
 	public void setAddToDashboard(boolean addToDashboard) {
 		this.addToDashboard = addToDashboard;
+	}
+
+	public Integer getIsIdentifierNameStatDuplicate() {
+		return isIdentifierNameStatDuplicate;
+	}
+
+	public void setIsIdentifierNameStatDuplicate(
+			Integer isIdentifierNameStatDuplicate) {
+		this.isIdentifierNameStatDuplicate = isIdentifierNameStatDuplicate;
 	}
 
 }

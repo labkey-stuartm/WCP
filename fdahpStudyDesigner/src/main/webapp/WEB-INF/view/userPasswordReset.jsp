@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
             
-    <title>FDA HSMP</title>	
+    <title>FDA MSMP</title>	
     
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -62,7 +62,7 @@
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               Health Study <br>Management Portal
+               FDA My Studies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
@@ -85,10 +85,9 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" name="password" maxlength="64"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" data-error="Password is invalid" />
+                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" maxlength="64"  data-minlength="8" placeholder="Password"  required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}"  data-error="Password is invalid" autocomplete="off"/>
                         <div class="help-block with-errors red-txt"></div>
-                        <!-- <input type="text" name="password" id="hidePass" /> -->
                         <span class="arrowLeftSugg"></span>
                             
                         </div>
@@ -99,7 +98,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
+                            <button type="button" class="btn lg-btn" id="resetPasswordBut">Submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
@@ -108,6 +107,7 @@
                         </div>
                    </div>
                    <input type="hidden" name="securityToken" value="${securityToken}" />
+                    <input type="password" name="password" id="hidePass" style="display: none;" />
                 </form:form>
             </div>
             
@@ -115,7 +115,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
               </div>
              
         </div>
@@ -200,12 +200,6 @@
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
-    		$("form").submit(function() {
-        		$(this).submit(function() {
-           	 		return false;
-        		});
-        		 	return true;
-    		});
     		
     		var errMsg = '${errMsg}';
 			var isValidToken = '${isValidToken}';
@@ -232,11 +226,11 @@
 				// minimum length requirement
 				length: 8
 			}); 
+			
     	});
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
-			location.reload(true);
 		}
     	window.onload = function () {
 		    if (typeof history.pushState === "function") {

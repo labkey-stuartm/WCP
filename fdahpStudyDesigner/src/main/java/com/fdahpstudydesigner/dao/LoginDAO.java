@@ -5,7 +5,6 @@ import java.util.List;
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
-import com.fdahpstudydesigner.util.SessionObject;
 
 
 /**

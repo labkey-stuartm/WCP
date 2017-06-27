@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form" autocomplete="off">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -25,11 +27,11 @@
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
-				<div class="dis-line form-group mb-none mr-sm">
+				<div class="dis-line form-group mb-none">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
 				</div>
-				<div class="dis-line form-group mb-none mr-sm">
-					<button type="button" class="btn btn-default gray-btn ConsentButtonHide" onclick="saveConsentInfo(this);">Save</button>
+				<div class="dis-line form-group mb-none">
+					<button type="button" class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm" onclick="saveConsentInfo(this);">Save</button>
 				</div>
 				<div class="dis-line form-group mb-none">
 					<button type="button" class="btn btn-primary blue-btn ConsentButtonHide" id="doneId">Done</button>
@@ -40,7 +42,7 @@
 		<!--  Start body tab section -->
 		<div class="right-content-body">
 			<div class="gray-xs-f mb-xs">Select Consent Section type <span class="requiredStar">*</span></div>
-			<div class="mb-xlg mt-md form-group">
+			<div class="mt-sm form-group">
 				<span class="radio radio-info radio-inline p-45"> 
 					<input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type"
 					 ${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
@@ -54,7 +56,7 @@
 			</div>
 			<div id="titleContainer">
 				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
-				<div class="col-md-5 p-none mb-xlg form-group elaborateClass consentTitle">
+				<div class="col-md-5 p-none form-group elaborateClass consentTitle">
 					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId"  required data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
@@ -65,31 +67,33 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div class="mb-xlg" id="displayTitleId">
-				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
+			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
+			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
+			<div id="displayTitleId">
+				<div class="gray-xs-f mb-xs">Display Title  <small>(75 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="75">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
-			<div class="mb-xlg">
-				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
+			<div>
+				<div class="gray-xs-f mb-xs">Brief Summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="7" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div class="mb-xlg">
-				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
-				<div class="form-group elaborateClass">
+			<div>
+				<div class="gray-xs-f mb-xs">Elaborated Content <span class="requiredStar">*</span></div>
+				<div class="form-group">
 					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish this section to appear as a standalone Visual Step in the app prior to the full Consent Document. A Visual Step screen shows the section Title, and the Brief Summary with a link to the elaborated version of the content."></span></div>
 				<div class="form-group">
 					<span class="radio radio-info radio-inline p-45"> 
 						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 
@@ -122,7 +126,6 @@ $(document).ready(function(){
     }
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active');
-   /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
     //load the list of titles when the page loads
 	consentInfoDetails();
@@ -171,14 +174,18 @@ $(document).ready(function(){
     }
     //submit the form
     $("#doneId").on('click', function(){
-    	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
-    	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
-    	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
-    	$("#elaborated").val(elaboratedContent);
-    	$("#briefSummary").val(briefSummaryText);
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
-    	if(isFromValid("#consentInfoFormId")){
+    	valid =  maxLenValEditor();
+    	if(valid && isFromValid("#consentInfoFormId")){
+    		var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+        	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
+        	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
+        	$("#elaborated").val(elaboratedContent);
+        	$("#briefSummary").val(briefSummaryText);
+        	var displayTitleText = $("#displayTitle").val();
+        	displayTitleText = replaceSpecialCharacters(displayTitleText);
+        	$("#displayTitle").val(displayTitleText);
     		$("#consentInfoFormId").submit();
     	}else{
     		$("#doneId").prop('disabled', false);
@@ -193,13 +200,18 @@ function saveConsentInfo(item){
 	var consentType = $('input[name="consentItemType"]:checked').val();
 	var consentitemtitleid = $("#consentItemTitleId").val();
 	var displayTitleText = $("#displayTitle").val();
+	displayTitleText = replaceSpecialCharacters(displayTitleText);
 	var briefSummaryText = $("#briefSummary").val();
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	elaboratedText = replaceSpecialCharacters(elaboratedText);
-	console.log("elaboratedText:"+elaboratedText);
+	
 	var visual_step= $('input[name="visualStep"]:checked').val();
-	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
+	
+	var valid =  maxLenValEditor();
+	
+	if(valid && (study_id != null && study_id != '' && typeof study_id != 'undefined') 
+			&& (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
 		$(item).prop('disabled', true);
 		if(null != consentInfoId){
 			consentInfo.id=consentInfoId;
@@ -224,10 +236,7 @@ function saveConsentInfo(item){
 			consentInfo.displayTitle = displayTitleText;
 		}
 		consentInfo.type="save";
-		/* if(elaboratedText.length > 1000){
-    		alert("Maximum character limit is 1000. Try again.");
-    		return;
-    	} */
+		
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
             url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
@@ -261,14 +270,16 @@ function saveConsentInfo(item){
      	});
 	}else{
 		$(item).prop('disabled', false);
-		$(".consentTitle").parent().addClass('has-error has-danger');
-		$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-		 setTimeout(hideDisplayMessage, 4000);
+		if(valid){
+			$(".consentTitle").parent().addClass('has-error has-danger');
+			$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+			setTimeout(hideDisplayMessage, 4000);
+		}
+		
 	}
 }
 
 function goToBackPage(item){
-	//window.history.back();
 	<c:if test="${actionPage ne 'view'}">
 		$(item).prop('disabled', true);
 		bootbox.confirm({
@@ -315,8 +326,10 @@ function addDefaultData(){
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
 			tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
-			$("#displayTitle").val("${consentInfoBo.displayTitle}");
-    		$("#briefSummary").val("${consentInfoBo.briefSummary}");
+			var displayTitle = $("#displayTitleTemp").val();
+			var briefSummary = $("#briefSummaryTemp").val();
+			$("#displayTitle").val(displayTitle);
+    		$("#briefSummary").val(briefSummary);
     		var visualStep = "${consentInfoBo.visualStep}";
     		if( visualStep == "Yes"){
     			$("#inlineRadio3").prop('checked', true);
@@ -351,9 +364,6 @@ function consentInfoDetails(){
 
 //initialize the tinymce editor
 function initTinyMCEEditor(){
-	/* if($("#elaboratedRTE").length > 0){ */
-    //$("#elaboratedRTE").val('');
-    //$("#elaboratedRTE").val('${consentInfoBo.elaborated}');
 	tinymce.init({
          selector: "#elaboratedRTE",
          theme: "modern",
@@ -369,7 +379,6 @@ function initTinyMCEEditor(){
          content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
          setup : function(ed) {
              ed.on('change', function(ed) {
-           		  //$('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
            		  if(tinyMCE.get(ed.target.id).getContent() != ''){
            			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
            	        $('#elaboratedRTE').parent().find(".help-block").html("");
@@ -378,9 +387,21 @@ function initTinyMCEEditor(){
     	  	},
     	  	<c:if test="${actionPage eq 'view'}">readonly:1</c:if>
      });
-	 //alert('${consentInfoBo.elaborated}');
-     /* tinymce.get('elaboratedRTE').setContent('');
-     setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000); */
-   /*  } */
+}
+
+function maxLenValEditor() {
+	var isValid = true; 
+	var value = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
+	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 15000){
+		if(isValid){
+			isValid = false;
+		}
+		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 15000 characters are allowed.</li></ul>');
+	} else {
+		 $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
+	     $('#elaboratedRTE').parent().find(".help-block").html(""); 
+	}
+	return isValid;
 }
 </script>
