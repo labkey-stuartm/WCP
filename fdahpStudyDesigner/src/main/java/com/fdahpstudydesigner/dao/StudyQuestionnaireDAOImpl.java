@@ -447,7 +447,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
  							notificationBO.setModifiedBy(sessionObject.getUserId());
  							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					    }
-					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", questionnaireBo.getShortTitle()).replace("$customId", draftStudyBo.getName()));
+					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", questionnaireBo.getTitle()).replace("$customId", draftStudyBo.getName()));
 					    session.saveOrUpdate(notificationBO);
 				}
 				//Notification Purpose needed End

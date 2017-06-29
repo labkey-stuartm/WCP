@@ -70,7 +70,7 @@ function isNumber(evt, thisAttr) {
          
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);" >Cancel</button>
          </div>
          <c:if test="${actionType ne 'view'}">
          <%-- <c:if test="${empty permission}"> --%>
@@ -816,7 +816,7 @@ $(document).ready(function() {
     	}
     }
     
-    $('#chooseDate').datetimepicker({
+    $('#chooseDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -857,7 +857,7 @@ $(document).ready(function() {
 		multiTimeVal = !(a > 0);
 	});
     
-    $('#chooseEndDate').datetimepicker({
+    $('#chooseEndDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -865,7 +865,7 @@ $(document).ready(function() {
 
     
     
-    $('#startDate').datetimepicker({
+    $('#startDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
     }).on("dp.change", function (e) {
@@ -886,7 +886,7 @@ $(document).ready(function() {
     }).on("dp.show", function (e) {
         $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('#startDateMonthly').datetimepicker({
+    $('#startDateMonthly').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
@@ -911,7 +911,7 @@ $(document).ready(function() {
     	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
     
-    $(".clock").datetimepicker({
+    $(".clock").not('.cursor-none, :disabled').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
@@ -935,7 +935,7 @@ $(document).ready(function() {
 		resetValidation($(this).parents('form'));
 	});
 	
-    $('#pickStartDate').datetimepicker({
+    $('#pickStartDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
         ignoreReadonly : true
@@ -956,7 +956,7 @@ $(document).ready(function() {
     }).on("click", function (e) {
         $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('#startWeeklyDate').datetimepicker({
+    $('#startWeeklyDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
         ignoreReadonly : true
@@ -977,7 +977,7 @@ $(document).ready(function() {
     }).on("click", function (e) {
         $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('.customCalnder').datetimepicker({
+    $('.customCalnder').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -992,7 +992,7 @@ $(document).ready(function() {
         	}    		
     	}
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
-    	$('#startWeeklyDate').datetimepicker({
+    	$('#startWeeklyDate').not('.cursor-none, :disabled').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: serverDate(),
             daysOfWeekDisabled: weeks,
@@ -1342,14 +1342,14 @@ function removeDate(param){
 		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
-    $('#'+item).datetimepicker({
+    $('#'+item).not('.cursor-none, :disabled').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
 	
-	$('.cusStrDate').datetimepicker({
+	$('.cusStrDate').not('.cursor-none, :disabled').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -1373,7 +1373,7 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	$('.cusEndDate').datetimepicker({
+	$('.cusEndDate').not('.cursor-none, :disabled').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -1489,7 +1489,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.questionnairesId = id;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		isFormValid = validateTime($("#chooseDate").not('.cursor-none'), $("#selectTime").not('.cursor-none'));
+		isFormValid = validateTime($("#chooseDate").not('.cursor-none, :disabled'), $("#selectTime").not('.cursor-none, :disabled'));
 	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
@@ -1518,7 +1518,7 @@ function saveQuestionnaire(item, callback){
 		questionnaire.questionnaireCustomScheduleBo=customArray;
 		if(isValidManuallySchedule) {
 			$(document).find('.manually-option').each( function(){
-				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none'), $(this).find(".cusTime").not('.cursor-none'));
+				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none, :disabled'), $(this).find(".cusTime").not('.cursor-none, :disabled'));
 				if(isFormValid) {
 					isFormValid = returnFlag;
 				}
@@ -1554,7 +1554,7 @@ function saveQuestionnaire(item, callback){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if( multiTimeVal  && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')))){
+		if( multiTimeVal  && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none, :disabled'), $(document).find(".dailyClock").not('.cursor-none, :disabled')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1588,7 +1588,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequence_time;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none'), $(document).find("#selectWeeklyTime").not('.cursor-none')))) {
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none, :disabled'), $(document).find("#selectWeeklyTime").not('.cursor-none, :disabled')))) {
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1622,7 +1622,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequencetime;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none'), $(document).find("#selectMonthlyTime").not('.cursor-none')))){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none, :disabled'), $(document).find("#selectMonthlyTime").not('.cursor-none, :disabled')))){
 			isFormValid = false;
 		}
 	}
