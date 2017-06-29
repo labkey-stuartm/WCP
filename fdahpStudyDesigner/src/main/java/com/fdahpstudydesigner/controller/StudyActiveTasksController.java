@@ -16,7 +16,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper.DefaultTyping;
+import org.codehaus.jackson.map.ObjectWriter;
+import org.codehaus.jackson.type.TypeReference;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +31,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.ConsentBo;
+import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
@@ -731,4 +740,59 @@ public class StudyActiveTasksController {
 			}
 			return timeRangeList;
 		}
+		
+		/** 
+		  * @author Ronalin
+		  * validating array of StudyTask ShortStatTitle and Stat Task Id
+		  * @param request , {@link HttpServletRequest}
+		  * @param response , {@link HttpServletResponse}
+		  * @throws IOException
+		  * @return void
+		  */
+			@RequestMapping(value="/adminStudies/validateActiveTaskStatShortTitleIds.do",  method = RequestMethod.POST)
+			public void validateActiveTaskStatShortTitleId(HttpServletRequest request, HttpServletResponse response) throws IOException{
+				logger.info("StudyActiveTasksController - validateActiveTaskShortTitleId() - Starts ");
+				JSONObject jsonobject = new JSONObject();
+				JSONArray statJsonArray = null;
+				PrintWriter out;
+				String message = FdahpStudyDesignerConstants.FAILURE;
+				ObjectMapper mapper = new ObjectMapper();
+				boolean flag = false;
+				String activeStatisticsBeanParamName = "";
+				List<ActiveStatisticsBean> statisticsInfoList = null;
+				try{
+					HttpSession session = request.getSession();
+					SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+					Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+					if(userSession!=null && userSession.getStudySession() != null && userSession.getStudySession().contains(sessionStudyCount)){
+						String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+						activeStatisticsBeanParamName = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeStatisticsBean"))?"":request.getParameter("activeStatisticsBean");
+						if(StringUtils.isNotEmpty(activeStatisticsBeanParamName)){
+							statisticsInfoList = mapper.readValue(activeStatisticsBeanParamName, new TypeReference<List<ActiveStatisticsBean>>(){});
+						}
+						statisticsInfoList = studyActiveTasksService.validateActiveTaskStatIds(customStudyId, statisticsInfoList);
+						if(statisticsInfoList!= null && !statisticsInfoList.isEmpty()){
+							statJsonArray = new JSONArray(mapper.writeValueAsString(statisticsInfoList));
+						}	
+						jsonobject.put(FdahpStudyDesignerConstants.STAT_INFO_LIST,statJsonArray);
+						if(statisticsInfoList!=null && !statisticsInfoList.isEmpty()){
+							for(ActiveStatisticsBean activeStatisticsBean: statisticsInfoList){
+								if(activeStatisticsBean.isType()){
+									flag = true;
+									break;
+								}
+							}
+						}
+						if(flag)
+							message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}catch (Exception e) {
+					logger.error("StudyActiveTasksController - validateActiveTaskShortTitleId() - ERROR ", e);
+				}
+				logger.info("StudyActiveTasksController - validateActiveTaskShortTitleId() - Ends ");
+				jsonobject.put("message", message);
+				response.setContentType("application/json");
+				out = response.getWriter();
+				out.print(jsonobject);
+			}
 }

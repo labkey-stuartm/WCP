@@ -5,6 +5,7 @@ package com.fdahpstudydesigner.service;
 
 import java.util.List;
 
+import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
@@ -29,4 +30,5 @@ public interface StudyActiveTasksService {
 	public List<StatisticImageListBo> getStatisticImages();
 	public List<ActivetaskFormulaBo> getActivetaskFormulas();
 	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId);
+	public List<ActiveStatisticsBean> validateActiveTaskStatIds(String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans);
 }

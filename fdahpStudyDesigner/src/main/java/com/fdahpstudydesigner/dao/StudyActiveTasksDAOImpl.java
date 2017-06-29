@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
@@ -541,7 +542,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	@Override
 	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId)
 			 {
-		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
+		logger.info("StudyActiveTasksDAOImpl - validateActiveTaskAttrById() - Starts");
 		boolean flag = false;
 		Session session =null;
 		String queryString = "", subString="";
@@ -555,8 +556,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
 				if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
 					if(customStudyId != null && !customStudyId.isEmpty()){
-						if(!activeTaskAttIdName.equals("static"))
-							  subString = " and attributeValueId!="+activeTaskAttIdName;
+						if(!activeTaskAttIdName.equals("static")){
+							if(activeTaskAttIdName.contains(",")){
+								activeTaskAttIdName = activeTaskAttIdName.substring(1);
+							}
+							subString = " and attributeValueId NOT IN("+activeTaskAttIdName+")";
+						}
+						
 						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
 								+ "(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and identifierNameStat='"+activeTaskAttIdVal+"'"+subString+"";
 						activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
@@ -640,14 +646,65 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				}
 			}
 		}catch(Exception e){
-			logger.error("StudyDAOImpl - validateActiveTaskAttrById() - ERROR",e);
+			logger.error("StudyActiveTasksDAOImpl - validateActiveTaskAttrById() - ERROR",e);
 		}finally{
 			if(null != session && session.isOpen()){
 					session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
+		logger.info("StudyActiveTasksDAOImpl - validateActiveTaskAttrById() - Ends");
 		return flag;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActiveStatisticsBean> validateActiveTaskStatIds(String customStudyId,
+			List<ActiveStatisticsBean> activeStatisticsBeans) {
+		logger.info("StudyActiveTasksDAOImpl - validateActiveTaskStatIds() - Starts");
+		Session session = null;
+		List<String> ids = new ArrayList<>();
+	    String subString = "";
+	    String queryString = "";
+	    List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(activeStatisticsBeans!=null && !activeStatisticsBeans.isEmpty() && StringUtils.isNotEmpty(customStudyId)){
+					if(!activeStatisticsBeans.get(0).getId().contains("static")){
+						for(ActiveStatisticsBean activeStatisticsBean: activeStatisticsBeans){
+							if(StringUtils.isNotEmpty(activeStatisticsBean.getIdname()))
+							 ids.add(activeStatisticsBean.getIdname());
+						}
+						if(!ids.isEmpty()){
+							subString = "AND attributeValueId NOT IN("+StringUtils.join(ids, ',')+")";
+						}
+					}
+					//checking each statistics data validate and get which one  have duplicate value
+					for(ActiveStatisticsBean activeStatisticsBean: activeStatisticsBeans){
+						if(!activeStatisticsBean.getDbVal().equalsIgnoreCase(activeStatisticsBean.getIdVal())){
+							queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
+									+ "(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and identifierNameStat ='"+activeStatisticsBean.getIdVal()+"' "+subString+"";
+							activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
+							if(activeTaskAtrributeValuesBos!=null && !activeTaskAtrributeValuesBos.isEmpty()){
+								activeStatisticsBean.setType(true);
+								break;
+							}else{
+								activeStatisticsBean.setType(false);
+							}
+					   }else{
+						   activeStatisticsBean.setType(false); 
+					   }
+					}
+			}
+		}catch(Exception e){
+			logger.error("StudyActiveTasksDAOImpl - validateActiveTaskStatIds() - ERROR",e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+		    }
+	    }
+		logger.info("StudyActiveTasksDAOImpl - validateActiveTaskStatIds() - Ends");
+		return activeStatisticsBeans;
 	}
 	
 }

@@ -47,7 +47,7 @@
                     <div class="col-md-4 p-none">
                         <select class="selectpicker targetOption" id="targetOptionId" taskId="${activeTaskBo.id}" title="Select">
                           <c:forEach items="${activeTaskListBos}" var="activeTaskTypeInfo">
-	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${(activeTaskTypeInfo.activeTaskListId eq '2' || activeTaskTypeInfo.activeTaskListId eq '3') ?'disabled':''}${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
+	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
                           </c:forEach>
                         </select>
                     </div> 
@@ -103,9 +103,17 @@
             });
             $( "#targetOptionId" ).change(function() {
           	    console.log($(this).val());
-          	    $('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
+          	    var taskId = $(this).val();
+          	    if(taskId == 1){
+          	    	$('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
+          	    }else if(taskId == 2){
+          	    	$('.activeText').html("This task measures a person's problem-solving skills.");
+          	    }else if(taskId ==3){
+          	    	$('.activeText').html("The task collects data that can be used to assess visuospatial memory and executive function.");
+          	    }
           	    var typeOfActiveTask = $(this).val();
           	    var activeTaskInfoId = $(this).attr('taskId');
+          	    $('.changeContent').html('');
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
           	    $('.actBut').show();
           	    $('.scheduleTaskClass').prop('disabled', false);

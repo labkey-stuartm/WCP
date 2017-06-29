@@ -1438,43 +1438,79 @@ function setFrequencyVal(flag){
     	$('.activeaddToChartText').hide();
     	if(frequencyType == 'One time'){
     		$('.chartSection').hide();
+    		
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
    	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').prop('checked' , false);
+    		
+    		$('.addLineChartBlock_Score_spatial').css("display","none");
+   	   	    $('.addLineChartBlock_Score_spatial').find('.requireClass').prop('required', false);
+   	   	    $('#Score_spatial_chart_id').val(false);
+   	   	    $('#Score_spatial_chart_id').prop('checked' , false);
+   	   	    
+   	   	    $('.addLineChartBlock_Number_of_Games_spatial').css("display","none");
+	   	    $('.addLineChartBlock_Number_of_Games_spatial').find('.requireClass').prop('required', false);
+	   	    $('#Number_of_Games_spatial_chart_id').val(false);
+	   	    $('#Number_of_Games_spatial_chart_id').prop('checked' , false);
+	   	    
+	   	    $('.addLineChartBlock_Number_of_Failures_spatial').css("display","none");
+	   	    $('.addLineChartBlock_Number_of_Failures_spatial').find('.requireClass').prop('required', false);
+	   	    $('#Number_of_Failures_spatial_chart_id').val(false);
+	   	    $('#Number_of_Failures_spatial_chart_id').prop('checked' , false);
     	}else{
     		$('.chartSection').show();
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').removeAttr("style");
-    		$('#lineChartId').val('');
     		$("#number_of_kicks_recorded_fetal_chart_id").prop("checked", true);
     		$('#number_of_kicks_recorded_fetal_chart_id').val(true);
-    		$("#chartId").html('');
-    		$("#chartId").attr('required', 'required').prop('required', 'required');
+    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
+    		$('#lineChartId').val('');
+    		
+    		$('.addLineChartBlock_Score_spatial').removeAttr("style");
+    		$("#Score_spatial_chart_id").prop("checked", true);
+    		$('#Score_spatial_chart_id').val(true);
+    		$('.addLineChartBlock_Score_spatial').find('.requireClass').prop('required', 'required');
+    		
+    		$('.addLineChartBlock_Number_of_Games_spatial').removeAttr("style");
+    		$("#Number_of_Games_spatial_chart_id").prop("checked", true);
+    		$('#Number_of_Games_spatial_chart_id').val(true);
+    		$('.addLineChartBlock_Number_of_Games_spatial').find('.requireClass').prop('required', 'required');
+    		$('#lineChartId1').val('');
+    		
+    		$('.addLineChartBlock_Number_of_Failures_spatial').removeAttr("style");
+    		$("#Number_of_Failures_spatial_chart_id").prop("checked", true);
+    		$('#Number_of_Failures_spatial_chart_id').val(true);
+    		$('.addLineChartBlock_Number_of_Failures_spatial').find('.requireClass').prop('required', 'required');
+    		$('#lineChartId2').val('');
+    		
+    		$('#lineChartId,lineChartId1,lineChartId2').val('');
+    		
+    		$("#chartId,#chartId1,#chartId2").html('');
+    		$("#chartId,#chartId1,#chartId2").attr('required', 'required').prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
     		$('.rollbackRadioClass').attr('checked', 'checked');
-    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
-   	   	    if(frequencyType == 'Daily'){
+    		if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
-	    			$("#chartId").append("<option value='Days of the current week'>Days of the current week</option>");
-	    			$("#chartId").append("<option value='Days of the current month'>Days of the current month</option>");
+	    			$("#chartId,#chartId1,#chartId2").append("<option value='Days of the current week'>Days of the current week</option>");
+	    			$("#chartId,#chartId1,#chartId2").append("<option value='Days of the current month'>Days of the current month</option>");
    	   	    	}else{
-	    			$("#chartId").append("<option value='24 hours of current day'>24 hours of current day</option>");
+	    			$("#chartId,#chartId1,#chartId2").append("<option value='24 hours of current day'>24 hours of current day</option>");
    	   	    	}
     		}
     		if(frequencyType == 'Weekly'){
-    			$("#chartId").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
+    			$("#chartId,#chartId1,#chartId2").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
     		}
     		if(frequencyType == 'Monthly'){
-    			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
+    			$("#chartId,#chartId1,#chartId2").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
     		if(frequencyType == 'Manually Schedule'){
-    			$("#chartId").append("<option value='Run-based'>Run-based</option>");
+    			$("#chartId,#chartId1,#chartId2").append("<option value='Run-based'>Run-based</option>");
     			$('.activeaddToChartText').show();
     			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')
     		}
     	}
-    	$('#chartId').selectpicker('refresh');
+    	$('#chartId,#chartId1,#chartId2').selectpicker('refresh');
     }
 }
 function validateTime(dateRef, timeRef) {

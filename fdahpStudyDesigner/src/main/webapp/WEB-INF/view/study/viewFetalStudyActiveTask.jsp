@@ -79,6 +79,7 @@
 	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
 	                                  </c:forEach>
                                 </select>
+                                <div class="mt-sm black-xs-f italic-txt activeaddToChartText" style="display: none;"></div>
                                 <div class="help-block with-errors red-txt"></div>
                             </div> 
                           </div>
@@ -231,6 +232,7 @@
 		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
 		                              </c:forEach>
 		                            </select>
+		                            <div class="mt-sm black-xs-f italic-txt activeaddToChartText" style="display: none;"></div>
 		                            <div class="help-block with-errors red-txt"></div>
 		                         </div>
 	                           
@@ -329,12 +331,6 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <!-- <div>
-	                            <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
-	                             <div class="add_notify_option form-group">
-                                  Current Week . Current Month . Custom StartDate and EndDate
-                                </div>
-	                         </div> -->
 	                         <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
@@ -343,9 +339,6 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				               <!-- <div class="mt-sm">
-				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-				               </div> -->
 				            </div>
 	                        </div>
 	                            

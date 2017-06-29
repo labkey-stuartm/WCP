@@ -292,6 +292,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTIVITY_TYPE_QUESTIONNAIRE = "Questionnaire";
 	public static final String ACTIVITY_TYPE_ACTIVETASK = "Activetask";
 	public static final String ACTIVITY_MESSAGE = "activityMsg";
+	public static final String STAT_INFO_LIST = "statisticsInfoList";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";

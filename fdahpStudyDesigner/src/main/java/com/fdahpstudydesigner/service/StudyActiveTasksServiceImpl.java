@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
@@ -373,5 +374,26 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
 		return valid;
+	}
+
+	/**
+	 * return ActiveStatisticsBean type 
+	 * @author Ronalin
+	 * 
+	 * @param customStudyId , list of ActiveStatisTicsBean
+	 * @return List of {@link ActiveStatisticsBean}
+	 * @exception Exception
+	 */
+	@Override
+	public List<ActiveStatisticsBean> validateActiveTaskStatIds(String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans) {
+		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - Starts");
+		List<ActiveStatisticsBean> statisticsBeans = null;
+		try {
+			statisticsBeans = studyActiveTasksDAO.validateActiveTaskStatIds(customStudyId, activeStatisticsBeans);
+		} catch (Exception e) {
+			logger.error("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - ERROR ", e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - Ends");
+		return statisticsBeans;
 	}
 }
