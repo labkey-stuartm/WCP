@@ -16,7 +16,7 @@ import org.hibernate.annotations.NamedQuery;
 @Table(name="form_mapping")
 @NamedQueries({
 @NamedQuery(name = "getFormMappingBO",query = "from FormMappingBo FMBO where FMBO.questionId=:questionId"),
-@NamedQuery(name="updateFromQuestionSequenceNo",query="update FormMappingBo f set f.sequenceNo=:newOrderNumber where f.id=:id"),
+@NamedQuery(name="updateFromQuestionSequenceNo",query="update FormMappingBo f set f.sequenceNo=:newOrderNumber where f.id=:id and f.active=1"),
 @NamedQuery(name="getFromByIdAndSequenceNo",query="From FormMappingBo FMBO where FMBO.formId=:formId and FMBO.sequenceNo=:oldOrderNumber and FMBO.active=1"),
 @NamedQuery(name="deleteFormQuestion",query="delete from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),
 @NamedQuery(name="getFormQuestion",query="from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),

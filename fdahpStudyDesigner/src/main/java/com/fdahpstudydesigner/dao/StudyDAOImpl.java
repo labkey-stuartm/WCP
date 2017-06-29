@@ -900,20 +900,20 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
 			if(consentInfoBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber+" and CIBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId()+" and C.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo >="+newOrderNumber+" and CIBO.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo >="+newOrderNumber+" and CIBO.sequenceNo <"+oldOrderNumber+" and CIBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId()+" and C.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}

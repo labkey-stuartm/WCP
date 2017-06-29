@@ -1380,7 +1380,7 @@ public class StudyController {
 				if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
 					map.addAttribute("_S", sessionStudyCount);
-					mav = new ModelAndView("redirect:consentReview.do",map);
+					mav = new ModelAndView("redirect:comprehensionQuestionList.do",map);
 				}else{
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
 					map.addAttribute("_S", sessionStudyCount);

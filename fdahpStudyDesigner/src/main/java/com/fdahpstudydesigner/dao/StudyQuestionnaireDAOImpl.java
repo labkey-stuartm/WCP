@@ -712,20 +712,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			questionnairesStepsBo = (QuestionnairesStepsBo)query.uniqueResult();
 			if(questionnairesStepsBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo <="+newOrderNumber+" and QSBO.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo <="+newOrderNumber+" and QSBO.sequenceNo >"+oldOrderNumber+" and QSBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update QuestionnairesStepsBo q set q.sequenceNo="+ newOrderNumber+" where q.stepId="+questionnairesStepsBo.getStepId());
+						query = session.createQuery("update QuestionnairesStepsBo q set q.sequenceNo="+ newOrderNumber+" where q.stepId="+questionnairesStepsBo.getStepId()+" and q.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo+1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo >="+newOrderNumber+" and QSBO.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo+1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo >="+newOrderNumber+" and QSBO.sequenceNo <"+oldOrderNumber+" and QSBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update QuestionnairesStepsBo Q set Q.sequenceNo="+ newOrderNumber+" where Q.stepId="+questionnairesStepsBo.getStepId());
+						query = session.createQuery("update QuestionnairesStepsBo Q set Q.sequenceNo="+ newOrderNumber+" where Q.stepId="+questionnairesStepsBo.getStepId()+" and Q.active=1");
 						count = query.executeUpdate();
 						//Reset destination steps in Questionnaire Starts
 						String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
@@ -1476,7 +1476,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			formMappingBo = (FormMappingBo)query.uniqueResult();
 			if(formMappingBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo-1 where FMBO.formId="+formId+" and FMBO.sequenceNo <="+newOrderNumber+" and FMBO.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo-1 where FMBO.formId="+formId+" and FMBO.sequenceNo <="+newOrderNumber+" and FMBO.sequenceNo >"+oldOrderNumber+" and FMBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
@@ -1485,7 +1485,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo+1 where FMBO.formId="+formId+" and FMBO.sequenceNo >="+newOrderNumber+" and FMBO.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo+1 where FMBO.formId="+formId+" and FMBO.sequenceNo >="+newOrderNumber+" and FMBO.sequenceNo <"+oldOrderNumber+" and FMBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
