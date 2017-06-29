@@ -86,9 +86,10 @@ public interface StudyDAO {
 	public String validateActivityComplete(String studyId, String action);
 	
 	
-	public Integer saveOrUpdateEligibilityTestQusAns(EligibilityTestBo eligibilityTestBo);
-	public String deleteEligibilityTestQusAnsById(Integer eligibilityId);
+	public Integer saveOrUpdateEligibilityTestQusAns(EligibilityTestBo eligibilityTestBo, Integer studyId, SessionObject sessionObject,String customStudyId);
+	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId, Integer studyId, SessionObject sessionObject,String customStudyId);
 	public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
-	public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber);
+	public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
+	public int eligibilityTestOrderCount(Integer eligibilityId);
 }

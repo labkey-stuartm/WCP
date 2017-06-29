@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -19,10 +20,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "eligibility_test")
 @NamedQueries({
-		@NamedQuery(name = "EligibilityTestBo.findAll", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.status = true"),
-		@NamedQuery(name = "EligibilityTestBo.findById", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.status = true AND ETB.id=:eligibilityTestId"),
-		@NamedQuery(name = "EligibilityTestBo.findByIdByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.status = true AND ETB.eligibilityId=:eligibilityId"),
-		@NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET status = false WHERE eligibilityId=:eligibilityId") })
+		@NamedQuery(name = "EligibilityTestBo.findAll", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true ORDER BY ETB.sequenceNo"),
+		@NamedQuery(name = "EligibilityTestBo.findById", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.id=:eligibilityTestId ORDER BY ETB.sequenceNo"),
+		@NamedQuery(name = "EligibilityTestBo.findByIdByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId ORDER BY ETB.sequenceNo"),
+		@NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET status = false WHERE eligibilityTestId=:eligibilityTestId ") })
 public class EligibilityTestBo implements Serializable {
 
 	private static final long serialVersionUID = -6517033483482921515L;
@@ -48,8 +49,14 @@ public class EligibilityTestBo implements Serializable {
 	private Integer sequenceNo;
 
 	@Column(name = "status")
-	private Boolean status = true;
-
+	private Boolean status = false;
+	
+	@Column(name="active")
+	private Boolean active = true;
+	
+	@Transient
+	private String type;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -100,6 +107,28 @@ public class EligibilityTestBo implements Serializable {
 
 	public Boolean getStatus() {
 		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }

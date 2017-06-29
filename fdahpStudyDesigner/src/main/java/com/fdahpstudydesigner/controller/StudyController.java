@@ -38,6 +38,7 @@ import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
@@ -1385,7 +1386,8 @@ public class StudyController {
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
-		EligibilityBo eligibilityBo = null;
+		EligibilityBo eligibilityBo;
+		List<EligibilityTestBo> eligibilityTestList = null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -1416,6 +1418,10 @@ public class StudyController {
 						eligibilityBo.setStudyId(Integer.parseInt(studyId));
 						eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
 					}
+					if(null != eligibilityBo.getId() && null != eligibilityBo.getEligibilityMechanism() && !(FdahpStudyDesignerConstants.ID_VALIDATION_ONLY).equals(eligibilityBo.getEligibilityMechanism())) {
+						eligibilityTestList = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+					}
+					map.addAttribute("eligibilityTestList", eligibilityTestList);
 					map.addAttribute("eligibility", eligibilityBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 					map.addAttribute("_S", sessionStudyCount);
@@ -2718,5 +2724,124 @@ public class StudyController {
 			if (null != is)
 				is.close();
 		}
+	}
+	
+	
+	/**
+	 * view Eligibility page
+	 * @author Vivek 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/viewStudyEligibiltyTestQusAns.do")
+	public ModelAndView viewStudyEligibiltyTestQusAns(HttpServletRequest request) {
+		logger.info("StudyController - viewStudyEligibilty - Starts");
+		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
+		ModelMap map = new ModelMap();
+		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
+		EligibilityBo eligibilityBo;
+		EligibilityTestBo eligibilityTest = null;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
+				if(null != request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG);
+				}
+				if(null != request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
+				}
+				
+				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+				Integer eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityId"));
+				
+				if (StringUtils.isEmpty(studyId)) {
+					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "0" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				} 
+				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
+				if (StringUtils.isNotEmpty(studyId)) {
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
+					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+					if(eligibilityBo == null){
+						eligibilityBo = new EligibilityBo();
+						eligibilityBo.setStudyId(Integer.parseInt(studyId));
+						eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
+					}
+					if(null != eligibilityBo.getId() && null != eligibilityBo.getEligibilityMechanism() && !(FdahpStudyDesignerConstants.ID_VALIDATION_ONLY).equals(eligibilityBo.getEligibilityMechanism())) {
+						eligibilityTest = studyService.viewEligibilityTestQusAnsById(eligibilityId);
+					}
+					map.addAttribute("eligibilityTest", eligibilityTest);
+					map.addAttribute("eligibility", eligibilityBo);
+					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+					map.addAttribute("_S", sessionStudyCount);
+					mav = new ModelAndView("studyEligibiltyPage", map);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - viewStudyEligibilty - ERROR", e);
+		}
+		logger.info("StudyController - viewStudyEligibilty - Ends");
+		return mav;
+	}
+	
+	/**
+	 * save or update Study Eligibility
+	 * @author Vivek 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param eligibilityBo , {@link EligibilityBo}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibiltyTestQusAns.do")
+	public ModelAndView saveOrUpdateStudyEligibiltyTestQusAns(HttpServletRequest request, EligibilityBo eligibilityBo) {
+		logger.info("StudyController - saveOrUpdateStudyEligibilty - Starts");
+		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
+		ModelMap map = new ModelMap();
+		String result = FdahpStudyDesignerConstants.FAILURE;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		String customStudyId = "";
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
+				if (eligibilityBo != null) {
+					if (eligibilityBo.getId() != null) {
+						eligibilityBo.setModifiedBy(sesObj.getUserId());
+						eligibilityBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+					} else {
+						eligibilityBo.setCreatedBy(sesObj.getUserId());
+						eligibilityBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+					}
+					customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo, sesObj,customStudyId);
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, eligibilityBo.getStudyId()+"");
+				}
+				map.addAttribute("_S", sessionStudyCount);
+				if(FdahpStudyDesignerConstants.SUCCESS.equals(result)) {
+					if(eligibilityBo != null && ("save").equals(eligibilityBo.getActionType())){
+						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
+						mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
+					}else{
+						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+						mav = new ModelAndView("redirect:consentListPage.do", map);
+					}	
+				}else {
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Error in set Eligibility.");
+					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - saveOrUpdateStudyEligibilty - ERROR", e);
+		}
+		logger.info("StudyController - saveOrUpdateStudyEligibilty - Ends");
+		return mav;
 	}
 }
