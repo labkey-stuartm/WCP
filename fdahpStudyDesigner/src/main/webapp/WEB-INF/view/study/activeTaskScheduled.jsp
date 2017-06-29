@@ -331,7 +331,7 @@ count = '${count}'
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
-// 	checkDateRange();
+ 	checkDateRange();
 	$('#monthEndDate').bind('contentchanged', function() {
 		chkEndDateWithDate($('#months'), $('#monthEndDate'));
 	});
