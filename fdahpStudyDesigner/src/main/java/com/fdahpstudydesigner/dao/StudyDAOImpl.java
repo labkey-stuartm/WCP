@@ -33,6 +33,7 @@ import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
@@ -229,10 +230,10 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.SUCCESS;
 		StudyPermissionBO studyPermissionBO = null;
-		Integer studyId = null, userId = null;
+		Integer studyId = null;
+		Integer userId = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo dbStudyBo = null;
-		List<NotificationBO> notificationBO = null;
 		String activitydetails = "";
 		String activity = "";
 		List<Integer> userSuperAdminList = null;
@@ -1994,7 +1995,6 @@ public class StudyDAOImpl implements StudyDAO{
     /**
      * validate Study Action 
      */
-	@SuppressWarnings("unchecked")
 	@Override
 	public String validateStudyAction(String studyId, String buttonText) {
 		logger.info("StudyDAOImpl - validateStudyAction() - Ends");
@@ -2002,7 +2002,6 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		boolean	enrollementFlag = false;
 		boolean	studyActivityFlag = false;
-		boolean	activityFlag = false;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo studyBo = null ;
 		try{
@@ -2608,7 +2607,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * Study Draft related data created
 	 * @param studyBo
 	 */
-	@SuppressWarnings({ "unchecked", "unused" })
+	@SuppressWarnings("unchecked")
 	public String studyDraftCreation(StudyBo studyBo, Session session){
 		logger.info("StudyDAOImpl - studyDraftCreation() - Starts");
 		List<StudyPageBo> studyPageBo = null;
@@ -3246,6 +3245,7 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getLiveVersion() - Ends");
 		return studyIdBean;
     }
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
 		logger.info("StudyDAOImpl - resourcesWithAnchorDate() - Starts");
@@ -3336,5 +3336,199 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - validateActivityComplete() - Ends");
 		return message;
 	}
-	
+
+	/**
+	 * @param eligibilityTestBo
+	 * @return eligibilityTestId, {@link Integer}
+	 */
+	@Override
+	public Integer saveOrUpdateEligibilityTestQusAns(
+			EligibilityTestBo eligibilityTestBo) {
+		logger.info("StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - Starts");
+		Session session = null;
+		Integer eligibilityTestId = 0;
+		Transaction trans = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			trans = session.beginTransaction();
+			session.saveOrUpdate(eligibilityTestBo);
+			eligibilityTestId = eligibilityTestBo.getId();
+			trans.commit();
+		} catch (Exception e) {
+			if (null != trans)
+				trans.rollback();
+			logger.error(
+					"StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - ERROR ",
+					e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - Ends");
+		return eligibilityTestId;
+	}
+
+	/**
+	 * @param eligibilityId
+	 * @return
+	 */
+	@Override
+	public String deleteEligibilityTestQusAnsById(Integer eligibilityId) {
+		logger.info("StudyDAOImpl - deleteEligibilityTestQusAnsById - Starts");
+		Session session = null;
+		Integer eligibilityDeleteResult = 0;
+		Transaction trans = null;
+		String result = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			trans = session.beginTransaction();
+			eligibilityDeleteResult = session
+					.getNamedQuery("EligibilityTestBo.deleteById")
+					.setInteger("eligibilityId", eligibilityId).executeUpdate();
+			trans.commit();
+			if (eligibilityDeleteResult > 0) {
+				result = FdahpStudyDesignerConstants.SUCCESS;
+			}
+		} catch (Exception e) {
+			if (null != trans)
+				trans.rollback();
+			logger.error(
+					"StudyDAOImpl - deleteEligibilityTestQusAnsById - ERROR ",
+					e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteEligibilityTestQusAnsById - Ends");
+		return result;
+	}
+
+	/**
+	 * @param eligibilityId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(
+			Integer eligibilityId) {
+		logger.info("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
+		Session session = null;
+		List<EligibilityTestBo> eligibilityTestList = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			eligibilityTestList = session
+					.getNamedQuery("EligibilityTestBo.findByIdByEligibilityId")
+					.setInteger("eligibilityId", eligibilityId).list();
+		} catch (Exception e) {
+			logger.error(
+					"StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - ERROR ",
+					e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - Ends");
+		return eligibilityTestList;
+	}
+
+	/**
+	 * @param eligibilityTestId
+	 * @return
+	 */
+	@Override
+	public EligibilityTestBo viewEligibilityTestQusAnsById(
+			Integer eligibilityTestId) {
+		logger.info("StudyDAOImpl - viewEligibilityTestQusAnsById - Starts");
+		Session session = null;
+		EligibilityTestBo eligibilityTest = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			eligibilityTest = (EligibilityTestBo) session
+					.getNamedQuery("EligibilityTestBo.findById")
+					.setInteger("eligibilityTestId", eligibilityTestId)
+					.uniqueResult();
+		} catch (Exception e) {
+			logger.error(
+					"StudyDAOImpl - viewEligibilityTestQusAnsById - ERROR ", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - viewEligibilityTestQusAnsById - Ends");
+		return eligibilityTest;
+	}
+
+	/**
+	 * @param eligibilityTestBo
+	 * @return
+	 */
+	@Override
+	public String reorderEligibilityTestQusAns(Integer eligibilityId,
+			int oldOrderNumber, int newOrderNumber) {
+		logger.info("StudyDAOImpl - reorderEligibilityTestQusAns - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		int count = 0;
+		EligibilityTestBo eligibilityTest = null;
+		String updatenewOrderQuery;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String updateQuery ="";
+			query = session.getNamedQuery("EligibilityTestBo.findByIdByEligibilityId").setInteger("eligibilityId", eligibilityId);
+			eligibilityTest = (EligibilityTestBo)query.uniqueResult();
+			if(eligibilityTest != null){
+				updatenewOrderQuery = "update EligibilityTestBo ETB set ETB.sequenceNo="
+						+ newOrderNumber
+						+ " where ETB.id="
+						+ eligibilityTest.getId();
+				if (oldOrderNumber < newOrderNumber) {
+					updateQuery = "update EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo-1 where ETB.eligibilityId="
+							+ eligibilityId
+							+ " and ETB.sequenceNo <="
+							+ newOrderNumber
+							+ " and ETB.sequenceNo >"
+							+ oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+				} else if(oldOrderNumber > newOrderNumber){
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where ETB.eligibilityId=="
+							+ eligibilityId
+							+ " and ETB.sequenceNo >="
+							+ newOrderNumber
+							+ " and ETB.sequenceNo <"
+							+ oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+				}
+				if (count > 0) {
+					query = session.createQuery(updatenewOrderQuery);
+					count = query.executeUpdate();
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+					StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, eligibilityId).uniqueResult();
+					if(studySequence != null){
+							studySequence.seteConsent(false);
+							session.update(studySequence);
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - reorderEligibilityTestQusAns - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - reorderEligibilityTestQusAns - Ends");
+		return message;
+	}
 }

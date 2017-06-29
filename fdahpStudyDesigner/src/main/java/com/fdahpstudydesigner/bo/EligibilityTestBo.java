@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -16,32 +18,37 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "eligibility_test")
-public class EligibilityTestBo implements Serializable{
+@NamedQueries({
+		@NamedQuery(name = "EligibilityTestBo.findAll", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.status = true"),
+		@NamedQuery(name = "EligibilityTestBo.findById", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.status = true AND ETB.id=:eligibilityTestId"),
+		@NamedQuery(name = "EligibilityTestBo.findByIdByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.status = true AND ETB.eligibilityId=:eligibilityId"),
+		@NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET status = false WHERE eligibilityId=:eligibilityId") })
+public class EligibilityTestBo implements Serializable {
 
 	private static final long serialVersionUID = -6517033483482921515L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
+
 	@Column(name = "eligibility_id")
 	private Integer eligibilityId;
-	
+
 	@Column(name = "short_title")
 	private String shortTitle;
-	
+
 	@Column(name = "question")
 	private String question;
-	
+
 	@Column(name = "response_format")
 	private String responseFormat;
-	
+
 	@Column(name = "sequence_no")
 	private Integer sequenceNo;
-	
+
 	@Column(name = "status")
-	private Boolean status;
+	private Boolean status = true;
 
 	public Integer getId() {
 		return id;
