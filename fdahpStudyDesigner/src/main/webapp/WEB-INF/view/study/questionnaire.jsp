@@ -1342,7 +1342,7 @@ function removeDate(param){
 		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
-    $('#'+item).not('.cursor-none, :disabled').datetimepicker({
+    $('#'+item).not('.cursor-none').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
