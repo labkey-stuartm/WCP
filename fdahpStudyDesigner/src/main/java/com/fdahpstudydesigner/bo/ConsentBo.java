@@ -110,6 +110,9 @@ public class ConsentBo implements Serializable{
 	
 	@Transient
 	private String type;
+	
+	@Transient
+	private String comprehensionTest;
 
 	public Integer getId() {
 		return id;
@@ -328,4 +331,12 @@ public class ConsentBo implements Serializable{
 		this.needComprehensionTest = needComprehensionTest;
 	}
 
+	public String getComprehensionTest() {
+		return comprehensionTest;
+	}
+
+	public void setComprehensionTest(String comprehensionTest) {
+		this.comprehensionTest = comprehensionTest;
+	}
+	
 }

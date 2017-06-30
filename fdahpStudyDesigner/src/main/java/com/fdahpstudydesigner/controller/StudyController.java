@@ -1661,6 +1661,7 @@ public class StudyController {
 		String studyId = "";
 		String consentId = "";
 		String customStudyId = "";
+		String comprehensionTest = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -1670,14 +1671,19 @@ public class StudyController {
 					consentBo = mapper.readValue(consentInfoParamName, ConsentBo.class);
 					if(consentBo != null){
 						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+						comprehensionTest = consentBo.getComprehensionTest();
 						consentBo = studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj,customStudyId);
 						studyId = StringUtils.isEmpty(String.valueOf(consentBo.getStudyId()))?"":String.valueOf(consentBo.getStudyId());
 						consentId = StringUtils.isEmpty(String.valueOf(consentBo.getId()))?"":String.valueOf(consentBo.getId());
-						
 						//setting consentId in requestSession
 						request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_ID);
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+							if(comprehensionTest != null && comprehensionTest.equalsIgnoreCase(FdahpStudyDesignerConstants.SAVE_BUTTON)){
+								studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.COMPREHENSION_TEST,false,sesObj,customStudyId);
+							}
+						}
 					}
 				}
 			}

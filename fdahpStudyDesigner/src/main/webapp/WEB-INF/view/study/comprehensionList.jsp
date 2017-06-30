@@ -40,8 +40,8 @@ function isNumber(evt) {
 	       </div>
            <div class="dis-line form-group mb-none">
            		<span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
-		          <c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
-                 	<button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" <c:if test="${!markAsComplete}">disabled</c:if> onclick="markAsCompleted();">Mark as Completed</button>
+		          <c:if test="${!markAsComplete && consentBo.needComprehensionTest eq 'Yes'}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
+                 	<button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" <c:if test="${!markAsComplete && consentBo.needComprehensionTest eq 'Yes'}">disabled</c:if> onclick="markAsCompleted();">Mark as Completed</button>
                  </span>
            </div>  
            </c:if>
@@ -65,7 +65,7 @@ function isNumber(evt) {
       </div>
 	</div>
    <!--  Start body tab section -->
-   <div class="right-content-body pt-none pb-none">
+   <div class="right-content-body pt-none pb-none <c:if test="${empty consentBo.needComprehensionTest || consentBo.needComprehensionTest eq 'No'}">ct_panel</c:if>" id="mainContainer">
       <div>
         <!--  This feature is work in progress and coming soon. -->
          <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
@@ -101,7 +101,7 @@ function isNumber(evt) {
       <div class="mb-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
          <div class="form-group col-md-5 p-none">
-            <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" required value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)">
+            <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)">
             <div class="help-block with-errors red-txt"></div>
          </div>
          <input type="hidden"name="consentId" id="consentId" value="${consentBo.id}" />
@@ -137,9 +137,21 @@ $(document).ready(function(){
 		var val = $(this).val();
 		if(val == "Yes"){
 			$("#comprehensionTestMinimumScore").attr("required",true);
+			$("#mainContainer").show();
+			var markAsComplete = "${markAsComplete}"
+			if(markAsComplete == "false"){
+				$("#markAsCompleteBtnId").attr("disabled",true);
+				$("#helpNote").attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.');
+				$('[data-toggle="tooltip"]').tooltip();
+			}
 		}else{
 			$("#comprehensionTestMinimumScore").attr("required",false);
 			$("#comprehensionTestMinimumScore").val('');
+			$("#mainContainer").hide();
+			if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
+				$("#markAsCompleteBtnId").attr("disabled",false);
+				$("#helpNote").attr('data-original-title', '');
+			}
 		}
 	});
     var viewPermission = "${permission}";
@@ -369,6 +381,9 @@ function saveConsent(type){
 		consentInfo.studyId=studyId;
 		consentInfo.comprehensionTestMinimumScore=minimumScore;
 		consentInfo.needComprehensionTest=needComprehensionTestTxt;
+		if(type == "save"){
+			consentInfo.comprehensionTest="save";
+		}
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
@@ -390,6 +405,10 @@ function saveConsent(type){
 						var a = document.createElement('a');
 						a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
 						document.body.appendChild(a).click();
+					}else{
+						if ($('.fifthComre').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							 $('.fifthComre').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+						}
 					}
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
