@@ -3336,5 +3336,87 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - validateActivityComplete() - Ends");
 		return message;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean deleteStudyByCustomStudyId(String customStudyId) {
+		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Starts");
+		Session session = null;
+		boolean falg = false;
+		List<StudyBo> studyBOList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			
+			query = session.createQuery(" FROM StudyBo SBO WHERE SBO.customStudyId ='"+customStudyId+"'");
+			studyBOList = query.list(); 
+			
+			if(studyBOList!=null && !studyBOList.isEmpty()){
+			session.createSQLQuery("DELETE FROM study_page WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM eligibility WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM consent WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM consent_info WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM active_task_attrtibutes_values WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id IN (SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM active_task_custom_frequencies WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM questions WHERE id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM questionnaires_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM questionnaires_custom_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM resources WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM notification_history WHERE notification_id in(SELECT notification_id FROM notification WHERE study_id in (SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM notification WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM study_checklist WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM study_permission WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM study_sequence WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
+			
+			session.createSQLQuery("DELETE FROM studies WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
+			falg = true;
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteStudyByCustomStudyId() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Ends");
+		return falg;
+	}
 }

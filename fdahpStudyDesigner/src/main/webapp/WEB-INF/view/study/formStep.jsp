@@ -217,6 +217,7 @@ $(document).ready(function(){
 		$('#formStepId input[type="radio"]').prop('disabled', true);
 		$('#formStepId select').addClass('linkDis');
 		$('.hideButtonOnView').addClass('dis-none');
+		$('.selectpicker').selectpicker('refresh');
 	</c:if>
 	var id= "${questionnairesStepsBo.stepId}";
 	if(id != '' && id != null && typeof id != 'undefined'){

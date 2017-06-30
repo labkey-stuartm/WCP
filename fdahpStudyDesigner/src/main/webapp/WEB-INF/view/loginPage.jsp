@@ -7,7 +7,7 @@
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="refresh" content="1800">        
+    <meta http-equiv="refresh" content="1700">        
     <title>FDA MSMP</title>	
     
     <meta name="description" content="">
