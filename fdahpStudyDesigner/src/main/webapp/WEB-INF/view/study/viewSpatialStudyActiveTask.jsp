@@ -267,7 +267,7 @@
 						<div class="pt-lg mt-xs pb-lg">
 							<span class="checkbox checkbox-inline"> <input
 								type="checkbox"
-								id="${taskMasterAttributeBo.attributeName}_stat_id"
+								id="${taskMasterAttributeBo.attributeName}_stat_id" class="statisticsBlock"
 								name="taskAttributeValueBos[7].useForStatistic" value="option1">
 								<label for="${taskMasterAttributeBo.attributeName}_stat_id">Use
 									for Statistic</label>
@@ -285,7 +285,7 @@
 									<div class="form-group statShortTitleClass">
 										<input autofocus="autofocus" type="text" custAttType="cust"
 											class="form-control requireClass shortTitleStatCls"
-											id="static1"
+											id="static1" exist="" dbid=""
 											name="taskAttributeValueBos[7].identifierNameStat"
 											maxlength="20" />
 										<div class="help-block with-errors red-txt"></div>
@@ -448,7 +448,7 @@
 						<div class="pt-lg mt-xs pb-lg">
 							<span class="checkbox checkbox-inline"> <input
 								type="checkbox"
-								id="${taskMasterAttributeBo.attributeName}_stat_id"
+								id="${taskMasterAttributeBo.attributeName}_stat_id" class="statisticsBlock"
 								name="taskAttributeValueBos[8].useForStatistic" value="option1">
 								<label for="${taskMasterAttributeBo.attributeName}_stat_id">Use
 									for Statistic</label>
@@ -466,7 +466,7 @@
 									<div class="form-group statShortTitleClass">
 										<input autofocus="autofocus" type="text" custAttType="cust"
 											class="form-control requireClass shortTitleStatCls"
-											id="static2"
+											id="static2" exist="" dbid=""
 											name="taskAttributeValueBos[8].identifierNameStat"
 											maxlength="20" />
 										<div class="help-block with-errors red-txt"></div>
@@ -629,7 +629,7 @@
 						<div class="pt-lg mt-xs pb-lg">
 							<span class="checkbox checkbox-inline"> <input
 								type="checkbox"
-								id="${taskMasterAttributeBo.attributeName}_stat_id"
+								id="${taskMasterAttributeBo.attributeName}_stat_id" class="statisticsBlock"
 								name="taskAttributeValueBos[9].useForStatistic" value="option1">
 								<label for="${taskMasterAttributeBo.attributeName}_stat_id">Use
 									for Statistic</label>
@@ -647,7 +647,7 @@
 									<div class="form-group statShortTitleClass">
 										<input autofocus="autofocus" type="text" custAttType="cust"
 											class="form-control requireClass shortTitleStatCls"
-											id="static3"
+											id="static3" exist="" dbid=""
 											name="taskAttributeValueBos[9].identifierNameStat"
 											maxlength="20" />
 										<div class="help-block with-errors red-txt"></div>
@@ -926,10 +926,11 @@
 	                            </div>                            
 	                        </div>
 	                        </div>
-	                        </div>    
+	                        </div>
+	                        <div>    
 	                         <div class="pt-lg mt-xs pb-lg">
 	                            <span class="checkbox checkbox-inline">
-	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[7].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
+	                                <input type="checkbox" class="statisticsBlock" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[7].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use for Statistic</label>
 	                            </span>  
 	                          </div>
@@ -939,7 +940,7 @@
 	                             <div class="add_notify_option">
 	                                 <div class="form-group statShortTitleClass">
 	                                     <input type="hidden" id="dbidentifierId1" title="${taskValueAttributeBo.attributeValueId}" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
-	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" custAttType="cust" id="identifierId1" name="taskAttributeValueBos[7].identifierNameStat" 
+	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" exist="${taskValueAttributeBo.useForStatistic==true?'Y':'N'}" dbid="${taskValueAttributeBo.attributeValueId}" custAttType="cust" id="identifierId1" name="taskAttributeValueBos[7].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
@@ -998,6 +999,7 @@
 				            </div>
 	                        </div>
 	                            
+	                         </div>
 	                         </div>
 	                    </div>
 	                    </c:if>
@@ -1063,7 +1065,7 @@
 	                        </div>    
 	                         <div class="pt-lg mt-xs pb-lg">
 	                            <span class="checkbox checkbox-inline">
-	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[8].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
+	                                <input type="checkbox" class="statisticsBlock" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[8].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use for Statistic</label>
 	                            </span>  
 	                          </div>
@@ -1073,7 +1075,7 @@
 	                             <div class="add_notify_option">
 	                                 <div class="form-group statShortTitleClass">
 	                                     <input type="hidden" id="dbidentifierId2" title="${taskValueAttributeBo.attributeValueId}" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
-	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" custAttType="cust" id="identifierId2" name="taskAttributeValueBos[8].identifierNameStat" 
+	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" exist="${taskValueAttributeBo.useForStatistic==true?'Y':'N'}" dbid="${taskValueAttributeBo.attributeValueId}" custAttType="cust" id="identifierId2" name="taskAttributeValueBos[8].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
@@ -1197,7 +1199,7 @@
 	                        </div>    
 	                         <div class="pt-lg mt-xs pb-lg">
 	                            <span class="checkbox checkbox-inline">
-	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[9].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
+	                                <input type="checkbox" class="statisticsBlock" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[9].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use for Statistic</label>
 	                            </span>  
 	                          </div>
@@ -1207,7 +1209,7 @@
 	                             <div class="add_notify_option">
 	                                 <div class="form-group statShortTitleClass">
 	                                     <input type="hidden" id="dbidentifierId3" title="${taskValueAttributeBo.attributeValueId}" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
-	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" custAttType="cust" id="identifierId3" name="taskAttributeValueBos[9].identifierNameStat" 
+	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" exist="${taskValueAttributeBo.useForStatistic==true?'Y':'N'}" dbid="${taskValueAttributeBo.attributeValueId}" custAttType="cust" id="identifierId3" name="taskAttributeValueBos[9].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
@@ -1297,7 +1299,6 @@ $(document).ready(function(){
     	validateShortTitleStatId('', this, function(val){});
     })
      $('#identifierId1').blur(function(){
-    	alert("2");
     	validateShortTitleStatId('', this, function(val){});
     })
      $('#identifierId2').blur(function(){
@@ -1321,13 +1322,19 @@ $(document).ready(function(){
    });
    $('#Score_spatial_stat_id').on('click',function(){
 	        	   if($(this).is(":checked")){
+	        		    alert("checked ...");
 	        			$('.addLineStaticBlock_Score_spatial').css("display","");
 	        			$('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', true);
 	        			$('#Score_spatial_stat_id').val(true);
+	        			$('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist','Y');
+	        			alert("attr value::"+ $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist'));
 	        			$('.selectpicker').selectpicker('refresh');
 	        	   }else{
+	        		 alert("Not checked ...");  
 	        	   	 $('.addLineStaticBlock_Score_spatial').css("display","none");
 	        	   	 $('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', false);
+	        	   	 $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist','N');
+	        	   	 alert("attr value::"+ $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist'));
 	        	   	 $('#Score_spatial_stat_id').val(false);
 	        	   }
     });
@@ -1349,10 +1356,12 @@ $(document).ready(function(){
 				$('.addLineStaticBlock_Number_of_Games_spatial').css("display","");
 				$('.addLineStaticBlock_Number_of_Games_spatial').find('.requireClass').attr('required', true);
 				$('#Number_of_Games_spatial_stat_id').val(true);
+				$('.addLineStaticBlock_Number_of_Games_spatial').find('.shortTitleStatCls').attr('exist','Y');
 				$('.selectpicker').selectpicker('refresh');
 		   }else{
 		   	 $('.addLineStaticBlock_Number_of_Games_spatial').css("display","none");
 		   	 $('.addLineStaticBlock_Number_of_Games_spatial').find('.requireClass').attr('required', false);
+		   	 $('.addLineStaticBlock_Number_of_Games_spatial').find('.shortTitleStatCls').attr('exist','N');
 		   	 $('#Number_of_Games_spatial_stat_id').val(false);
 		   }
 	});
@@ -1374,10 +1383,12 @@ $(document).ready(function(){
 					$('.addLineStaticBlock_Number_of_Failures_spatial').css("display","");
 					$('.addLineStaticBlock_Number_of_Failures_spatial').find('.requireClass').attr('required', true);
 					$('#Number_of_Failures_spatial_stat_id').val(true);
+					$('.addLineStaticBlock_Number_of_Failures_spatial').find('.shortTitleStatCls').attr('exist','Y');
 					$('.selectpicker').selectpicker('refresh');
 			   }else{
 			   	 $('.addLineStaticBlock_Number_of_Failures_spatial').css("display","none");
 			   	 $('.addLineStaticBlock_Number_of_Failures_spatial').find('.requireClass').attr('required', false);
+			   	 $('.addLineStaticBlock_Number_of_Failures_spatial').find('.shortTitleStatCls').attr('exist','N');
 			   	 $('#Number_of_Failures_spatial_stat_id').val(false);
 			   }
 		});
@@ -1763,27 +1774,33 @@ function validateShortTitleId(item,callback){
 	 		callback(false);
 	 	}
 	}
+	
 function validateShortTitleStatId(event, thisAttr, callback){
 	   var activeTaskAttName = 'identifierNameStat';
 	   var activeTaskAttIdVal = $(thisAttr).val();
 	   var activeTaskAttIdName = $(thisAttr).attr('id');
+	   var dbId = $(thisAttr).attr('title');
 	   $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
 	   $(thisAttr).parent().find(".help-block").empty();
-	   var statIds = '';
+	   var statIds = dbId;
 	   //validation with other statistics if short  title is there .
 	   //if not valid then display duplicate data 
 	   if(activeTaskAttIdVal){
 		   var count = 0;
 		   $(".shortTitleStatCls").each(function() {
+			   var flag = $(this).attr('exist');
 			   var statAttId = this.id;
-			   var statAttId = this.attr('title');
-			   var val = $(this).val();
-			   if(val && statAttId!=activeTaskAttIdName){
-				   if(statAttId)
-				    statIds = statIds +","+ statAttId;
-				   if(val  == activeTaskAttIdVal){
-					   count = count + 1;
-				   }
+			   if(flag && flag=='Y'){
+				   var statAttId = this.id;
+				   var dbStatAttId = $(this).attr('dbid');
+				   var val = $(this).val();
+				   if(val && statAttId!=activeTaskAttIdName){
+					   if(dbStatAttId)
+					    statIds = statIds +","+ dbStatAttId;
+					   if(val  == activeTaskAttIdVal){
+						   count = count + 1;
+					   }
+				   }  
 			   }
 		   });
 		   if(count>0){
@@ -1799,6 +1816,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 		   }else{
 			   alert("count0");
 			     if(activeTaskAttIdName != 'static1' || activeTaskAttIdName != 'static2' || activeTaskAttIdName != 'static3'){
+			    	 alert("not static");
 			    	 var dbIdentifierVal = '';
 			    	 if(activeTaskAttIdName == 'identifierId1'){
 			    		 dbIdentifierVal = $('#dbidentifierId1').val();
@@ -1807,15 +1825,16 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			    	 }else if(activeTaskAttIdName == 'identifierId3'){
 			    		 dbIdentifierVal = $('#dbidentifierId3').val();
 			    	 }
-			    	 alert("dbIdentifierVal"+dbIdentifierVal);
-			    	 if(statIds){
-			    		 activeTaskAttIdName = statIds; 
-			    	 }else{
-			    		 activeTaskAttIdName = 'static'; 
-			    	 }
-			    	 if(dbIdentifierVal && dbIdentifierVal!=activeTaskAttIdVal){
+			    	if(dbIdentifierVal && dbIdentifierVal!=activeTaskAttIdVal){
+			    		 alert("statIds:::"+statIds);
+				    	 if(statIds){
+				    		 activeTaskAttIdName = statIds; 
+				    	 }else{
+				    		 activeTaskAttIdName = 'static'; 
+				    	 }
 			    		 alert("ajax");
-			    		 $.ajax({
+			    		 callback(false);
+			    		 /* $.ajax({
 				               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
 				               type: "POST",
 				               datatype: "json",
@@ -1850,13 +1869,16 @@ function validateShortTitleStatId(event, thisAttr, callback){
 				            	   callback(false);
 				               },
 				               global : false
-				           });
+				           }); */
 			    	 }else{
 				 			callback(true);
 				 			$(thisAttr).parent().find('.statShortTitleClass').removeClass("has-danger").removeClass("has-error");
 	          			    $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
-				 	}
+				 	  }
 			     }else{
+			    	 alert("static");
+			    	 callback(false);
+			    	 /* activeTaskAttIdName = 'static'; 
 			    	 $.ajax({
 			               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
 			               type: "POST",
@@ -1890,7 +1912,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			            	   callback(false);
 			               },
 			               global : false
-			           });
+			           }); */
 			     }
 		  }
 	   }else{
@@ -2021,15 +2043,17 @@ function setLineChatStatCheckedVal(){
   	   	   $('#Score_spatial_chart_id').val(false);
 	   }
 	   if($('#Score_spatial_stat_id').is(":checked")){
-		   $('.addLineStaticBlock_Score_spatial').css("display","");
-			$('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', true);
+		    $('.addLineStaticBlock_Score_spatial').css("display","");
+		    $('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', true);
 			$('#Score_spatial_stat_id').val(true);
+			$('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist','Y');
 			$('.selectpicker').selectpicker('refresh');
 	   }else{
 		   $('.addLineStaticBlock_Score_spatial').css("display","none");
-  	   	 $('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', false);
-  	   	 $('#Score_spatial_stat_id').val(false);
-     }
+  	   	   $('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', false);
+  	       $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist','N');
+  	   	   $('#Score_spatial_stat_id').val(false);
+        }
 	   
 	   if($('#Number_of_Games_spatial_chart_id').is(":checked")){
 		    $('.addLineChartBlock_Number_of_Games_spatial').css("display","");
@@ -2045,10 +2069,12 @@ function setLineChatStatCheckedVal(){
 		    $('.addLineStaticBlock_Number_of_Games_spatial').css("display","");
 			$('.addLineStaticBlock_Number_of_Games_spatial').find('.requireClass').attr('required', true);
 			$('#Number_of_Games_spatial_stat_id').val(true);
+			$('.addLineStaticBlock_Number_of_Games_spatial').find('.shortTitleStatCls').attr('exist','Y');
 			$('.selectpicker').selectpicker('refresh');
 	   }else{
 		     $('.addLineStaticBlock_Number_of_Games_spatial').css("display","none");
 		   	 $('.addLineStaticBlock_Number_of_Games_spatial').find('.requireClass').attr('required', false);
+		   	 $('.addLineStaticBlock_Number_of_Games_spatial').find('.shortTitleStatCls').attr('exist','N');
 		   	 $('#Number_of_Games_spatial_stat_id').val(false);
        }
 	   
@@ -2066,10 +2092,12 @@ function setLineChatStatCheckedVal(){
 		    $('.addLineStaticBlock_Number_of_Failures_spatial').css("display","");
 			$('.addLineStaticBlock_Number_of_Failures_spatial').find('.requireClass').attr('required', true);
 			$('#Number_of_Failures_spatial_stat_id').val(true);
+			$('.addLineStaticBlock_Number_of_Failures_spatial').find('.shortTitleStatCls').attr('exist','Y');
 			$('.selectpicker').selectpicker('refresh');
 	   }else{
 		     $('.addLineStaticBlock_Number_of_Failures_spatial').css("display","none");
 		   	 $('.addLineStaticBlock_Number_of_Failures_spatial').find('.requireClass').attr('required', false);
+		   	$('.addLineStaticBlock_Number_of_Failures_spatial').find('.shortTitleStatCls').attr('exist','N');
 		   	 $('#Number_of_Failures_spatial_stat_id').val(false);
     }   
 }
