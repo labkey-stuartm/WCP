@@ -30,6 +30,7 @@ import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
+import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -310,18 +311,29 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
+		StudyVersionBo studyVersionBo = null;
+		String deleteActQuery = "";
+		String deleteQuery = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(activeTaskBo != null) {
 				transaction =session.beginTransaction();
-				String deleteQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
-				query = session.createQuery(deleteQuery);
+				query = session.getNamedQuery("getStudyByCustomStudyId").setString("customStudyId", customStudyId);
+				query.setMaxResults(1);
+				studyVersionBo = (StudyVersionBo)query.uniqueResult();
+				if(studyVersionBo!=null){
+					deleteActQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
+					deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where id="+activeTaskBo.getId();
+				}else{
+					deleteActQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId();
+					deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
+				}
+				query = session.createQuery(deleteActQuery);
 				query.executeUpdate();
 				
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
 				query.executeUpdate();
 				
-				deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where id="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				

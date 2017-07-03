@@ -2735,6 +2735,7 @@ public class StudyController {
 			String cusId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("cusId"))?"":request.getParameter("cusId");
 				if(!cusId.isEmpty()){
 					flag = studyService.deleteStudyByCustomStudyId(cusId);
+					
 					if(flag){
 						System.out.println("deleted successfully");
 						request.getSession(false).setAttribute("sucMsg", "deleted successfully");
