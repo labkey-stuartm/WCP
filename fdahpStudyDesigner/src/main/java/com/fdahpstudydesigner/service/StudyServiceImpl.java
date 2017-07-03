@@ -1291,7 +1291,6 @@ public class StudyServiceImpl implements StudyService {
 		try{
 			flag = studyDAO.deleteStudyByCustomStudyId(customStudyId);
 		}catch(Exception e){
-			
 			logger.error("StudyServiceImpl - deleteStudyByCustomStudyId() - Error",e);
 		}
 		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Ends");

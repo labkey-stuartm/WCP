@@ -3416,7 +3416,6 @@ public class StudyDAOImpl implements StudyDAO{
 				session.close();
 			}
 		}
-		
 		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Ends");
 		return falg;
 	}

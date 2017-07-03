@@ -77,6 +77,5 @@ public interface StudyService {
 	public StudyIdBean getLiveVersion(String customStudyId);
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 	public String validateActivityComplete(String studyId, String action);
-	
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 }

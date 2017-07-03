@@ -322,6 +322,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
 				if(studyVersionBo!=null){
+					
 					deleteActQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
 					deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where id="+activeTaskBo.getId();
 				}else{
