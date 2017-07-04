@@ -759,13 +759,18 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		PrintWriter out = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(sesObj!=null){
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
 				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
 				String stepType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("stepType"))?"":request.getParameter("stepType");
 				String shortTitle = FdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle"))?"":request.getParameter("shortTitle");
 				String questionnaireShortTitle = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireShortTitle"))?"":request.getParameter("questionnaireShortTitle");
+				String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				if(StringUtils.isEmpty(customStudyId)){
+					customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				}
 				if(!questionnaireId.isEmpty() && !stepType.isEmpty() && !shortTitle.isEmpty()){
-					message = studyQuestionnaireService.checkQuestionnaireStepShortTitle(Integer.valueOf(questionnaireId), stepType, shortTitle,questionnaireShortTitle);
+					message = studyQuestionnaireService.checkQuestionnaireStepShortTitle(Integer.valueOf(questionnaireId), stepType, shortTitle,questionnaireShortTitle,customStudyId);
 				}
 			}
 			jsonobject.put("message", message);
@@ -1713,12 +1718,17 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		PrintWriter out = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(sesObj!=null){
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
 				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
 				String shortTitle = FdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle"))?"":request.getParameter("shortTitle");
 				String questionnaireShortTitle = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireShortTitle"))?"":request.getParameter("questionnaireShortTitle");
+				String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				if(StringUtils.isEmpty(customStudyId)){
+					customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				}
 				if(!questionnaireId.isEmpty() &&  !shortTitle.isEmpty()){
-					message = studyQuestionnaireService.checkFromQuestionShortTitle(Integer.valueOf(questionnaireId), shortTitle,questionnaireShortTitle);
+					message = studyQuestionnaireService.checkFromQuestionShortTitle(Integer.valueOf(questionnaireId), shortTitle,questionnaireShortTitle,customStudyId);
 				}
 			}
 			jsonobject.put("message", message);
