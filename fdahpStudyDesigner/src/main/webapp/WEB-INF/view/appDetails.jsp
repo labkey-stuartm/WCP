@@ -48,12 +48,12 @@
         /*404 Page ***********/
 
         #aD__container{
-            width:400px;
-            position: absolute;
+            width:320px;
+            /* position: absolute;
             left: 0;
             right: 0;
             bottom: 0;
-            top: 0;
+            top: 0; */
             margin: auto;
             display: table;
             background: #fff;
@@ -65,10 +65,11 @@
         }
 
         #aD__container tr td{
-            font-size: 18px;
+            font-size: 16px;
             line-height: 26px;
-            font-weight: 200;
+            /* font-weight: 200; */
             margin: 0 auto 40px;
+            text-align:left;
         }   
 
         #aD__container tbody tr td:last-child{

@@ -342,11 +342,12 @@ public class FdahpStudyDesignerConstants {
 	public static final String SCHEDULE_ERROR_MSG = "Activity Run duration must be greater than fetal kick record time duration.";
 	
 	//STUDY NOTIFICATION TEST
-	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available for you to explore and possibly participate in. Check it out now.";
-	public static final String NOTIFICATION_RESUME_TEXT = "The study $customId has been resumed! Visit the study and start participating in activities again.";
-	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused for a while. We will notify you when it is resumed.";
-	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation!";
+	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available in the FDA My Studies App. Check it out now.";
+	public static final String NOTIFICATION_RESUME_TEXT = "The study $customId has been resumed. Visit the study to start participating in activities again.";
+	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused We will notify you when it is resumed.";
+	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation.";
 	public static final String NOTIFICATION_ACTIVETASK_TEXT = "New activity $shortTitle available for the study $customId. Check it out now.";
+	
 	
 	public static final String DATE = "Date";
 	public static final String DATE_TIME = "Date-Time";

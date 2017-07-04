@@ -542,7 +542,7 @@ $(document).ready(function() {
     	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
     
-    $(".clock").not('.cursor-none, :disabled').datetimepicker({
+    $(".clock").not('.cursor-none').datetimepicker({
      	 format: 'h:mm a',
     	 useCurrent :false,
     });
@@ -880,7 +880,7 @@ function removeDate(param){
 		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
-    $('#'+item).not('.cursor-none, :disabled').datetimepicker({
+    $('#'+item).not('.cursor-none').datetimepicker({
      	 format: 'h:mm a',
     	 useCurrent :false,
     });
