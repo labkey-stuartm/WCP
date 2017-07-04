@@ -65,7 +65,7 @@
 		          <div class="black-md-f  dis-line pull-left line34">Eligibility Test</div>
 		          <div class="dis-line form-group mb-none mr-sm">
 		          	<c:if test="${empty permission}">
-		               <button type="button" class="btn btn-primary blue-btn submitEle">+ Add QA</button>
+		               <button type="button" class="btn btn-primary blue-btn submitEle" id="addQaId">+ Add QA</button>
 		          	</c:if>
 		          </div>
 				</div>
@@ -97,6 +97,7 @@
 	    </div>
     </form:form>
 </div>
+<<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}" id="viewQAFormId"></form:form>
 <script type="text/javascript">
 	var viewPermission = "${permission}";
 	var permission = "${permission}";
@@ -111,18 +112,18 @@
        $('#eleFormId').find('.elaborateClass').addClass('linkDis');
       </c:if>
 	   
-	   $('.submitEle').click(function(e) {
-		   e.preventDefault();
-		   $('#actTy').remove();
-		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#eleFormId');
-	   		if($(this).attr('actType') == 'save'){
-	   			$('#eleFormId').validator('destroy');
-	   			$('#eleFormId').submit();
-	   		} else{
-	   			if(isFromValid('#eleFormId'))
-	   				$('#eleFormId').submit();
-	   		}
-		});
+// 	   $('.submitEle').click(function(e) {
+// 		   e.preventDefault();
+// 		   $('#actTy').remove();
+// 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#eleFormId');
+// 	   		if($(this).attr('actType') == 'save'){
+// 	   			$('#eleFormId').validator('destroy');
+// 	   			$('#eleFormId').submit();
+// 	   		} else{
+// 	   			if(isFromValid('#eleFormId'))
+// 	   				$('#eleFormId').submit();
+// 	   		}
+// 		});
 	   
 	    if(viewPermission == 'view'){
 	        reorder = false;
@@ -216,7 +217,28 @@
 				$('#instructionTextDivId').show();
 			}
 		})
+		$('#addQaId').click(function() {
+			addOrEditOrViewQA("add", "");
+		});
 	});
+	
+	function addOrEditOrViewQA(actionTypeForQuestionPage, eligibilityTestId) {
+		var form = $('#viewQAFormId')
+		
+		var input = document.createElement("input");
+		input.setAttribute('type',"hidden");
+		input.setAttribute('name','actionTypeForQuestionPage');
+		input.setAttribute('value', actionTypeForQuestionPage);
+		form.append(input);
+		
+		input = document.createElement("input");
+		input.setAttribute('type',"hidden");
+		input.setAttribute('name', 'eligibilityTestId');
+		input.setAttribute('value',eligibilityTestId);
+		form.append(input);
+		
+		form.submit();
+	}
 	function deleteConsentInfo(consentInfoId){
 		bootbox.confirm("Are you sure you want to delete this consent item?", function(result){ 
 			if(result){

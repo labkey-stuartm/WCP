@@ -2735,10 +2735,9 @@ public class StudyController {
 	 */
 	@RequestMapping("/adminStudies/viewStudyEligibiltyTestQusAns.do")
 	public ModelAndView viewStudyEligibiltyTestQusAns(HttpServletRequest request) {
-		logger.info("StudyController - viewStudyEligibilty - Starts");
+		logger.info("StudyController - viewStudyEligibiltyTestQusAns - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		ModelMap map = new ModelMap();
-		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
 		EligibilityBo eligibilityBo;
@@ -2746,6 +2745,7 @@ public class StudyController {
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			String actionTypeForQuestionPage = StringUtils.isNotBlank(request.getParameter("actionTypeForQuestionPage")) ? request.getParameter("actionTypeForQuestionPage"):"";
 			if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
 				if(null != request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG)){
 					sucMsg = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG);
@@ -2759,35 +2759,26 @@ public class StudyController {
 				}
 				
 				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
-				Integer eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityId"));
+				Integer eligibilityTestId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityTestId"));
 				
 				if (StringUtils.isEmpty(studyId)) {
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "0" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				} 
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
-				if (StringUtils.isNotEmpty(studyId)) {
-					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
-					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
-					if(eligibilityBo == null){
-						eligibilityBo = new EligibilityBo();
-						eligibilityBo.setStudyId(Integer.parseInt(studyId));
-						eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
-					}
-					if(null != eligibilityBo.getId() && null != eligibilityBo.getEligibilityMechanism() && !(FdahpStudyDesignerConstants.ID_VALIDATION_ONLY).equals(eligibilityBo.getEligibilityMechanism())) {
-						eligibilityTest = studyService.viewEligibilityTestQusAnsById(eligibilityId);
-					}
+				if (StringUtils.isNotBlank(studyId) && StringUtils.isNotBlank(actionTypeForQuestionPage)) {
+					if(eligibilityTestId != 0)
+						eligibilityTest = studyService.viewEligibilityTestQusAnsById(eligibilityTestId);
 					map.addAttribute("eligibilityTest", eligibilityTest);
-					map.addAttribute("eligibility", eligibilityBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 					map.addAttribute("_S", sessionStudyCount);
+					map.addAttribute("actionTypeForQuestionPage", actionTypeForQuestionPage);
 					mav = new ModelAndView("studyEligibiltyTestPage", map);
 				}
 			}
 		} catch (Exception e) {
-			logger.error("StudyController - viewStudyEligibilty - ERROR", e);
+			logger.error("StudyController - viewStudyEligibiltyTestQusAns - ERROR", e);
 		}
-		logger.info("StudyController - viewStudyEligibilty - Ends");
+		logger.info("StudyController - viewStudyEligibiltyTestQusAns - Ends");
 		return mav;
 	}
 	
@@ -2812,14 +2803,13 @@ public class StudyController {
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 			String studyId =  (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 			if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
-				
 				if (eligibilityTestBo != null) {
 					customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 					result = studyService.saveOrUpdateEligibilityTestQusAns(eligibilityTestBo, Integer.parseInt(studyId), sesObj, customStudyId);
 				}
 				map.addAttribute("_S", sessionStudyCount);
 				if(result > 0) {
-					if(eligibilityTestBo != null && ("save").equals(eligibilityTestBo.getType())){
+					if(eligibilityTestBo != null && (FdahpStudyDesignerConstants.ACTION_TYPE_SAVE).equals(eligibilityTestBo.getType())){
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
 						mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 					}else{

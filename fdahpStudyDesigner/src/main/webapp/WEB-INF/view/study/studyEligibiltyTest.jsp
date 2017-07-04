@@ -11,9 +11,9 @@
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
-         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Instruction Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Instruction Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit QA</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View QA <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add QA</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -32,13 +32,9 @@
    <!--  Start body tab section -->
    <div class="right-content-body">
       <!-- form- input-->
-      <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
-      <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
-      <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
       <input type="hidden" id="type" name="type" value="complete" />
-       <input type="hidden" name="questionnairesStepsBo.stepId" id="stepId" value="${instructionsBo.questionnairesStepsBo.stepId}">
-		    <div class="col-md-6 pl-none">
-			   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span></div>
+			<div class=" col-lg-4 col-md-5 pl-none">
+			   <div class="gray-xs-f mb-xs">Short title (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span></div>
 			   <div class="form-group">
 			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" 
 			      maxlength="15" <c:if test="${not empty instructionsBo.questionnairesStepsBo.isShorTitleDuplicate && (instructionsBo.questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
@@ -46,38 +42,44 @@
 		      	  <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}"/>
 			   </div>
 			</div>
-			<div class="col-md-6">
-			   <div class="gray-xs-f mb-xs">Step Type</div>
-			   <div>Instruction Step</div>
+		  <div class="clearfix"></div>
+	      <div class="gray-xs-f mb-xs">Question (1 to 250 characters)<span class="requiredStar">*</span></div>
+			<div class="form-group">
+		    	<input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${fn:escapeXml(instructionsBo.instructionTitle)}" maxlength="250"/>
+				<div class="help-block with-errors red-txt"></div>
 			</div>
 		  <div class="clearfix"></div>
-	      <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
-		  <div class="form-group">
-			    <input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${fn:escapeXml(instructionsBo.instructionTitle)}" maxlength="250"/>
-			    <div class="help-block with-errors red-txt"></div>
-		  </div>
-		  <div class="clearfix"></div>
-		  
-		  <div class="gray-xs-f mb-xs">Instruction Text (1 to 500 characters)<span class="requiredStar">*</span></div>
-		  <div class="form-group">
-		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="500">${instructionsBo.instructionText}</textarea>
-          <div class="help-block with-errors red-txt"></div>
-          </div>
+		  <div class="col-lg-4 col-md-5 p-none">
+             <div class="form-group col-md-12 p-none mr-md mb-none">
+             	 <div class="gray-xs-f mb-xs col-md-6 pl-none ">Response Options</div>
+             	 <div class="gray-xs-f mb-xs col-md-6 pr-none">Pass / Fail<span class="requiredStar">*</span></div>
+            </div>
+             <div class="form-group col-md-12 p-none mr-md mb-none">
+             	<div class="col-md-6 pl-none">
+             	 	<input type="text" class="form-control" name="tentativeDuration" value="Yes" disabled/>
+              	</div>
+             	<div class="col-md-6 pr-none">
+                 	<select class="selectpicker elaborateClass" required  title="Select" name="tentativeDurationWeekmonth">
+                 		<option value="">Pass</option>
+		        		<option value="">Fail</option>
+		     		</select>
+   					<div class="help-block with-errors red-txt"></div>
+   				</div>
+             </div>
+              <div class="form-group col-md-12 p-none mr-md mb-none">
+              	<div class="col-md-6 pl-none ">
+                	<input type="text" class="form-control" name="tentativeDuration" value="No" disabled/>
+                </div>
+              	<div class="col-md-6 pr-none">
+                	<select class="selectpicker elaborateClass" required  title="Select" name="tentativeDurationWeekmonth">
+			       		<option value="">Pass</option>
+			        	<option value="">Fail</option>
+		    	 	</select>
+    				<div class="help-block with-errors red-txt"></div>
+    			</div>
+             </div>
+         </div>
           <div class="clearfix"></div>
-          <c:if test="${questionnaireBo.branching}">
-          <div class="col-md-4 col-lg-3 p-none">
-			   <div class="gray-xs-f mb-xs">Default Destination Step  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-			   <div class="form-group">
-			      <select name="questionnairesStepsBo.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
-			         <c:forEach items="${destinationStepList}" var="destinationStep">
-			         	<option value="${destinationStep.stepId}" ${instructionsBo.questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-			         </c:forEach>
-			         <option value="0" ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
-			      </select>
-			      <div class="help-block with-errors red-txt"></div>
-			   </div>
-		 </div>
-		 </c:if>
    </div>
    </form:form>
    <!--  End body tab section -->
