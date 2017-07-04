@@ -317,22 +317,30 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(activeTaskBo != null) {
+				Integer studyId = activeTaskBo.getStudyId();
+				
 				transaction =session.beginTransaction();
+				
+				queryString = "DELETE From NotificationBO where activeTaskId="+activeTaskBo.getId()+ "AND notificationSent=false";
+				session.createQuery(queryString).executeUpdate();
+				
 				query = session.getNamedQuery("getStudyByCustomStudyId").setString("customStudyId", customStudyId);
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
 				if(studyVersionBo!=null){
-					
 					deleteActQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
 					deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where id="+activeTaskBo.getId();
 				}else{
+					session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id="+activeTaskBo.getId()).executeUpdate();
+					session.createSQLQuery("DELETE FROM active_task_custom_frequencies WHERE active_task_id ="+activeTaskBo.getId()).executeUpdate();
+					
 					deleteActQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId();
 					deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
 				}
 				query = session.createQuery(deleteActQuery);
 				query.executeUpdate();
 				
-				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
+				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+studyId );
 				query.executeUpdate();
 				
 				query = session.createQuery(deleteQuery);
@@ -341,10 +349,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				message = FdahpStudyDesignerConstants.SUCCESS;
 				
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
-				
-				queryString = "DELETE From NotificationBO where activeTaskId="+activeTaskBo.getId()+ "AND notificationSent=false";
-				session.createQuery(queryString).executeUpdate();
-				
 				transaction.commit();
 			}
 		} catch (Exception e) {

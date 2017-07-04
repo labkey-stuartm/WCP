@@ -86,4 +86,5 @@ public interface StudyService {
 	public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
+	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 }
