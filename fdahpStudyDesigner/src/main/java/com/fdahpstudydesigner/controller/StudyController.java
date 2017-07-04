@@ -2726,7 +2726,6 @@ public class StudyController {
 		}
 	}
 	
-	
 	/**
 	 * view Eligibility page
 	 * @author Vivek 
@@ -2844,4 +2843,35 @@ public class StudyController {
 		logger.info("StudyController - saveOrUpdateStudyEligibilty - Ends");
 		return mav;
 	}
+	/**
+	 * @author Ronalin
+	 * @param request
+	 * @param response
+	 */
+		@RequestMapping("/deleteStudy.do")
+		public ModelAndView deleteStudy(HttpServletRequest request) {
+		logger.info("StudyController - deleteStudy - Starts");
+		ModelAndView mav = new ModelAndView("redirect:login.do");
+		boolean flag = false;
+		try{
+				
+			String cusId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("cusId"))?"":request.getParameter("cusId");
+				if(!cusId.isEmpty()){
+					flag = studyService.deleteStudyByCustomStudyId(cusId);
+					if(flag){
+						System.out.println("deleted successfully");
+						request.getSession(false).setAttribute("sucMsg", "deleted successfully");
+					}else{
+						request.getSession(false).setAttribute("errMsg", "DB issue or study does not exist");
+					}
+				}
+				
+		}catch(Exception e){
+			logger.error("StudyController - deleteStudy - ERROR",e);
+		}
+		logger.info("StudyController - deleteStudy - Ends");
+		return mav;
+	}
+	
+	
 }

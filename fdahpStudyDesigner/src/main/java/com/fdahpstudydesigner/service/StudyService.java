@@ -84,4 +84,6 @@ public interface StudyService {
 	public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
 	public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
+
+	public boolean deleteStudyByCustomStudyId(String customStudyId);
 }
