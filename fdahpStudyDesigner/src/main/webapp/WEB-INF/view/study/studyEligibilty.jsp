@@ -65,7 +65,7 @@
 		          <div class="black-md-f  dis-line pull-left line34">Eligibility Test</div>
 		          <div class="dis-line form-group mb-none mr-sm">
 		          	<c:if test="${empty permission}">
-		               <button type="button" class="btn btn-default gray-btn cancelBut">+ Add QA</button>
+		               <button type="button" class="btn btn-primary blue-btn submitEle">+ Add QA</button>
 		          	</c:if>
 		          </div>
 				</div>
@@ -80,15 +80,17 @@
 			            </tr>
 			         </thead>
 			         <tbody>
-			            <tr id="">
-			                <td></td>
-			                <td></td>
-			                <td>
-			                	<span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewConsentInfo();"></span>
-			                    <span class="${true?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editConsentInfo();"></span>
-			                    <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteConsentInfo();"></span>
-			                </td>
-			        	</tr>
+			        	<c:forEach items="${eligibilityTestList}" var="etQusAns">
+				            <tr id="">
+				                <td>${etQusAns.sequenceNo}</td>
+				                <td>${etQusAns.question}</td>
+				                <td>
+				                	<span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewConsentInfo();"></span>
+				                    <span class="${true?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editConsentInfo();"></span>
+				                    <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteConsentInfo();"></span>
+				                </td>
+				        	</tr>
+			        	</c:forEach>
 	        		</tbody>
 	   			</table>
 		    </div>
