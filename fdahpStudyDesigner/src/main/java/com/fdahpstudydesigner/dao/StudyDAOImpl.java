@@ -3156,10 +3156,10 @@ public class StudyDAOImpl implements StudyDAO{
 				   session.createQuery("UPDATE Checklist set customStudyId='"+studyBo.getCustomStudyId()+"' where studyId="+studyBo.getId()).executeUpdate();
 				   
 				   //delete inactive Activity during lunch  Start
-				   if(studyVersionBo==null){
+				  /* if(studyVersionBo==null){
 					   query=session.createSQLQuery("CALL deleteInActiveActivity(:studyId)").setInteger("studyId", studyBo.getId());   
 					   query.executeUpdate();
-				   }
+				   }*/
 				 //delete inactive Activity during lunch  End
 				 }
 				message = FdahpStudyDesignerConstants.SUCCESS;
