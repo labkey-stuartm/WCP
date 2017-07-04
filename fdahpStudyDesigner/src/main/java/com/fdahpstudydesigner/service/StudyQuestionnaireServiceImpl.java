@@ -584,11 +584,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @param String : shortTitle
 	 */
 	@Override
-	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle,String questionnaireShortTitle) {
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle,questionnaireShortTitle);
+			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle,questionnaireShortTitle,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Error",e);
 		}
@@ -839,9 +839,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 
 	@Override
-	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle) {
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkFromQuestionShortTitle - Starts");
-		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle,questionnaireShortTitle);
+		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle,questionnaireShortTitle,customStudyId);
 	}
 
 	/**

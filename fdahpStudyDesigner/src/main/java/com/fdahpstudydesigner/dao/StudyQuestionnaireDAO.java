@@ -29,7 +29,7 @@ public interface StudyQuestionnaireDAO {
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId);
 	
 	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId);
-	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle);
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle,String customStudyId);
 	
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId); 
@@ -41,7 +41,7 @@ public interface StudyQuestionnaireDAO {
 	
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject,String customStudyId);
 	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject,String customStudyId);
-	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle);
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle,String customStudyId);
 	
 	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId);
 	public Boolean isQuestionnairesCompleted(Integer studyId);
