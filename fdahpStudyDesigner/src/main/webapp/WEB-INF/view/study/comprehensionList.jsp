@@ -101,7 +101,7 @@ function isNumber(evt) {
       <div class="mb-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
          <div class="form-group col-md-5 p-none">
-            <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)">
+            <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)" <c:if test="${consentBo.needComprehensionTest eq 'Yes'}">required</c:if>>
             <div class="help-block with-errors red-txt"></div>
          </div>
          <input type="hidden"name="consentId" id="consentId" value="${consentBo.id}" />
