@@ -728,45 +728,36 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if (count > 0) {
 						query = session.createQuery("update QuestionnairesStepsBo Q set Q.sequenceNo="+ newOrderNumber+" where Q.stepId="+questionnairesStepsBo.getStepId());
 						count = query.executeUpdate();
-						//Reset destination steps in Questionnaire Starts
-						String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
-						questionnaireStepList = session.createQuery(searchQuery).list();
-						
-						if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
-							if(questionnaireStepList.size() == 1){
-								questionnaireStepList.get(0).setDestinationStep(0);
-								questionnaireStepList.get(0).setSequenceNo(1);
-								session.update(questionnaireStepList.get(0));
-							} else {
-								int i;
-								for(i = 0; i < questionnaireStepList.size() - 1; i++){
-									questionnaireStepList.get(i).setDestinationStep(questionnaireStepList.get(i+1).getStepId());
-									questionnaireStepList.get(i).setSequenceNo(i+1);
-									session.update(questionnaireStepList.get(i));
-								}
-								questionnaireStepList.get(i).setDestinationStep(0);
-								questionnaireStepList.get(i).setSequenceNo(i+1);
-								session.update(questionnaireStepList.get(i));
-							}
-						}
-						
-						String formQuestionRepsonseQuery ="UPDATE response_sub_type_value SET destination_step_id = NULL WHERE response_type_id in "
-								+ "((select question_id from form_mapping ff where ff.form_id in (select form_id  from form where form_id in "
-								+ "(select q.instruction_form_id from questionnaires_steps q where q.questionnaires_id="+questionnaireId+" and q.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"') and active=1))) and active=1";
-						query = session.createSQLQuery(formQuestionRepsonseQuery);
-						query.executeUpdate();
-						
-						String questionResponseQuery = "UPDATE response_sub_type_value SET destination_step_id = NULL WHERE response_type_id in "
-								+ "(select id from questions qq where qq.id in (select q.instruction_form_id from questionnaires_steps q where q.questionnaires_id="+questionnaireId+" "
-								+ "and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"') and qq.active=1) and active=1";
-						
-						query = session.createSQLQuery(questionResponseQuery);
-						query.executeUpdate();
-						
-						//Reset destination steps in Questionnaire Ends
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
+				//Reset destination steps in Questionnaire Starts
+				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+					String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
+					questionnaireStepList = session.createQuery(searchQuery).list();
+					if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
+						if(questionnaireStepList.size() == 1){
+							questionnaireStepList.get(0).setDestinationStep(0);
+							questionnaireStepList.get(0).setSequenceNo(1);
+							session.update(questionnaireStepList.get(0));
+						} else {
+							int i;
+							for(i = 0; i < questionnaireStepList.size() - 1; i++){
+								questionnaireStepList.get(i).setDestinationStep(questionnaireStepList.get(i+1).getStepId());
+								questionnaireStepList.get(i).setSequenceNo(i+1);
+								session.update(questionnaireStepList.get(i));
+							}
+							questionnaireStepList.get(i).setDestinationStep(0);
+							questionnaireStepList.get(i).setSequenceNo(i+1);
+							session.update(questionnaireStepList.get(i));
+						}
+					}
+					String questionResponseQuery = "update response_sub_type_value rs,questionnaires_steps q set rs.destination_step_id = NULL "
+							+ "where rs.response_type_id=q.instruction_form_id and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and q.questionnaires_id="+questionnaireId+" and rs.active=1 and q.active=1";
+					query = session.createSQLQuery(questionResponseQuery);
+					query.executeUpdate();
+				}
+				//Reset destination steps in Questionnaire Ends
 			}
 			transaction.commit();
 		}catch(Exception e){
@@ -896,16 +887,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 			}
 			
-			String formQuestionRepsonseQuery ="UPDATE response_sub_type_value SET destination_step_id = NULL WHERE response_type_id in "
-					+ "((select question_id from form_mapping ff where ff.form_id in (select form_id  from form where form_id in "
-					+ "(select q.instruction_form_id from questionnaires_steps q where q.questionnaires_id="+questionnaireId+" and q.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"') and active=1))) and active=1";
-			query = session.createSQLQuery(formQuestionRepsonseQuery);
-			query.executeUpdate();
-			
-			String questionResponseQuery = "UPDATE response_sub_type_value SET destination_step_id = NULL WHERE response_type_id in "
-					+ "(select id from questions qq where qq.id in (select q.instruction_form_id from questionnaires_steps q where q.questionnaires_id="+questionnaireId+" "
-					+ "and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"') and qq.active=1) and active=1";
-			
+			String questionResponseQuery = "update response_sub_type_value rs,questionnaires_steps q set rs.destination_step_id = NULL "
+					+ "where rs.response_type_id=q.instruction_form_id and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and q.questionnaires_id="+questionnaireId+" and rs.active=1 and q.active=1";
 			query = session.createSQLQuery(questionResponseQuery);
 			query.executeUpdate();
 			
