@@ -3,6 +3,7 @@ package com.fdahpstudydesigner.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -3418,5 +3419,581 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Ends");
 		return falg;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean resetDraftStudyByCustomStudyId(String customStudyId) {
+		logger.info("StudyDAOImpl - resetDraftStudyByCustomStudyId() - Starts");
+		Session session = null;
+		boolean flag = false;
+		StudyBo liveStudyBo = null;
+		StudyBo draftData = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		List<StudyPageBo> studyPageBo = null;
+		EligibilityBo eligibilityBo = null;
+		List<ResourceBO> resourceBOList = null;
+		List<QuestionnaireBo> questionnaires = null;
+		QuestionReponseTypeBo questionReponseTypeBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			
+			liveStudyBo = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).uniqueResult();
+			if(liveStudyBo!=null){
+				draftData = (StudyBo) session.getNamedQuery("getStudyDraftVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).uniqueResult();
+				if(draftData!=null){
+				 //get study Draft vesion and delete 
+				 message = this.deleteStudyByIdOrCustomstudyId(session, transaction, draftData.getId().toString(), "");	
+				}
+				//studyDraft data delete and create copy exactly copy of live data 
+				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+					//create new Study and made it draft
+					StudyBo studyDreaftBo = SerializationUtils.clone(liveStudyBo);
+					studyDreaftBo.setVersion(0f);
+					studyDreaftBo.setId(null);
+					studyDreaftBo.setThumbnailImage(null);
+					studyDreaftBo.setLive(0);
+					studyDreaftBo.setHasActivetaskDraft(0);
+					studyDreaftBo.setHasQuestionnaireDraft(0);
+					studyDreaftBo.setHasConsentDraft(0);
+					studyDreaftBo.setHasStudyDraft(0);
+					//studyDreaftBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
+					session.save(studyDreaftBo);
+					
+					//Study Permission
+					String permissionQuery ="select s.user_id,s.view_permission"
+					        +" from study_permission s, user_permission_mapping u, user_permissions p"
+							+" where s.study_id="+liveStudyBo.getId()
+							+" and s.user_id=u.user_id"
+							+" and u.permission_id = p.permission_id"
+							+" and p.permissions='ROLE_SUPERADMIN'";
+					Iterator iterator = session.createSQLQuery(permissionQuery).list().iterator();
+					while(iterator.hasNext()){
+						Object[] objects = (Object[]) iterator.next();
+						if(objects!=null){
+							StudyPermissionBO studyPermissionBO = new StudyPermissionBO();
+							studyPermissionBO.setUserId((Integer)objects[0]);
+							studyPermissionBO.setViewPermission((Boolean)objects[1]);
+							studyPermissionBO.setStudyId(studyDreaftBo.getId());
+							studyPermissionBO.setStudyPermissionId(null);
+							session.save(studyPermissionBO);
+						}
+					}
+					//studySequence
+					StudySequenceBo studySequenceBo = new StudySequenceBo();
+					studySequenceBo.setStudyId(studyDreaftBo.getId());
+					session.save(studySequenceBo);
+					
+					//Over View
+					query = session.createQuery("from StudyPageBo where studyId="+liveStudyBo.getId());
+					studyPageBo = query.list();	
+					if(studyPageBo!=null && !studyPageBo.isEmpty()){
+						for(StudyPageBo pageBo:studyPageBo){
+							StudyPageBo subPageBo = SerializationUtils.clone(pageBo);
+							subPageBo.setStudyId(studyDreaftBo.getId());
+							subPageBo.setImagePath(null);
+							subPageBo.setPageId(null);
+							session.save(subPageBo);
+						}
+					}
+					
+					//Eligibility
+					query = session.getNamedQuery("getEligibiltyByStudyId").setInteger(FdahpStudyDesignerConstants.STUDY_ID, liveStudyBo.getId());
+					eligibilityBo = (EligibilityBo) query.uniqueResult();
+					if(eligibilityBo!=null){
+						EligibilityBo bo = SerializationUtils.clone(eligibilityBo);
+						bo.setStudyId(studyDreaftBo.getId());
+						bo.setId(null);
+						session.save(bo);
+					}
+					
+					//resources
+					String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+liveStudyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
+					query = session.createQuery(searchQuery);
+					resourceBOList = query.list();
+					if(resourceBOList!=null && !resourceBOList.isEmpty()){
+						for(ResourceBO bo:resourceBOList){
+							ResourceBO resourceBO = SerializationUtils.clone(bo);
+							resourceBO.setStudyId(studyDreaftBo.getId());
+							if(StringUtils.isNotEmpty(bo.getPdfUrl()) && StringUtils.isNotEmpty(bo.getPdfName())){
+								resourceBO.setAction(false);
+							}
+							resourceBO.setPdfUrl(null);
+							resourceBO.setPdfName(null);
+							resourceBO.setId(null);
+							session.save(resourceBO);
+						}
+					}
+					//Questionarries
+					query = session.createQuery(" From QuestionnaireBo QBO WHERE QBO.live=1 and QBO.active=1 and QBO.customStudyId='"+studyDreaftBo.getCustomStudyId()+"' order by QBO.createdDate DESC");
+					questionnaires = query.list();
+				    if(questionnaires!=null && !questionnaires.isEmpty()){
+						for(QuestionnaireBo questionnaireBo: questionnaires){
+							boolean draftFlag = false;
+							QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
+							newQuestionnaireBo.setId(null);
+							newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
+							newQuestionnaireBo.setVersion(questionnaireBo.getVersion());
+							newQuestionnaireBo.setLive(0);
+							session.save(newQuestionnaireBo);
+							/**Schedule Purpose creating draft Start **/
+							if(StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
+								if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+									searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
+									List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
+								    if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
+								    	for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
+								    		QuestionnaireCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
+								    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
+								    		newCustomScheduleBo.setId(null);
+								    		newCustomScheduleBo.setUsed(true);
+								    		session.save(newCustomScheduleBo);
+								    	}
+								    }
+								}else{
+									searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+									List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
+									if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
+										for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
+											QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = SerializationUtils.clone(questionnairesFrequenciesBo);
+											newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
+											newQuestionnairesFrequenciesBo.setId(null);
+											session.save(newQuestionnairesFrequenciesBo);
+										}
+									}
+								}
+							}
+							/** Schedule Purpose creating draft End **/
+							
+							/**  Content purpose creating draft Start **/
+							
+							List<Integer> destinationList = new ArrayList<>();
+							Map<Integer, Integer> destionationMapList = new HashMap<>();
+							
+							List<QuestionnairesStepsBo> existedQuestionnairesStepsBoList  = null;
+							List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
+							List<QuestionResponseSubTypeBo> existingQuestionResponseSubTypeList = new ArrayList<>();
+							List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList = new ArrayList<>();
+							query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", questionnaireBo.getId());
+							existedQuestionnairesStepsBoList = query.list();
+							if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
+								   for(QuestionnairesStepsBo questionnairesStepsBo:existedQuestionnairesStepsBoList){
+									   Integer destionStep = questionnairesStepsBo.getDestinationStep();
+									   if(destionStep.equals(0)){
+										   destinationList.add(-1);
+									   }else{
+										   for(int i=0;i<existedQuestionnairesStepsBoList.size();i++){
+											   if(existedQuestionnairesStepsBoList.get(i).getStepId() != null 
+													   && destionStep.equals(existedQuestionnairesStepsBoList.get(i).getStepId())){
+												   destinationList.add(i);
+												   break;
+											   }
+										   } 
+									   }
+									   destionationMapList.put(questionnairesStepsBo.getSequenceNo(), questionnairesStepsBo.getStepId());
+								   }
+								for(QuestionnairesStepsBo questionnairesStepsBo:existedQuestionnairesStepsBoList){
+									if(StringUtils.isNotEmpty(questionnairesStepsBo.getStepType())){
+										QuestionnairesStepsBo newQuestionnairesStepsBo = SerializationUtils.clone(questionnairesStepsBo);
+										 newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
+										 newQuestionnairesStepsBo.setStepId(null);
+										 session.save(newQuestionnairesStepsBo);
+										if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
+											InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+											  if(instructionsBo!=null){
+												  InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
+												  newInstructionsBo.setId(null);
+												  session.save(newInstructionsBo);
+												  
+												  //updating new InstructionId
+												  newQuestionnairesStepsBo.setInstructionFormId(newInstructionsBo.getId());
+											  }
+										}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+											QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+											  if(questionsBo!=null){
+												  boolean questionDraftFlag =false;
+												  //Question response subType 
+												  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
+												  
+												  //Question response Type 
+												  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+												  
+												  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+												  newQuestionsBo.setId(null);
+												  session.save(newQuestionsBo);
+												  
+												//Question response Type 
+												  if(questionReponseTypeBo!=null){
+													  QuestionReponseTypeBo newQuestionReponseTypeBo =  SerializationUtils.clone(questionReponseTypeBo);
+													  newQuestionReponseTypeBo.setResponseTypeId(null);
+													  newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
+													  session.save(newQuestionReponseTypeBo);
+												  }
+												  
+												  //Question response subType 
+												  if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
+													  existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
+													  
+													  for(QuestionResponseSubTypeBo questionResponseSubTypeBo: questionResponseSubTypeList){
+														  if(StringUtils.isNotEmpty(questionResponseSubTypeBo.getImage()) && StringUtils.isNotEmpty(questionResponseSubTypeBo.getSelectedImage())){
+															  draftFlag = true;
+															  questionDraftFlag = true;
+														  }
+														  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
+														  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
+														  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
+														  newQuestionResponseSubTypeBo.setImage(null);
+														  newQuestionResponseSubTypeBo.setSelectedImage(null);
+														  newQuestionResponseSubTypeBo.setDestinationStepId(null);
+														  session.save(newQuestionResponseSubTypeBo);
+														  newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
+													  }
+												  }
+												  if(questionDraftFlag){
+													  newQuestionnairesStepsBo.setStatus(false);
+													  newQuestionsBo.setStatus(false);
+													  session.update(newQuestionsBo);
+												  }
+												  //updating new InstructionId
+												  newQuestionnairesStepsBo.setInstructionFormId(newQuestionsBo.getId());
+											  }
+										}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
+											  FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+											  if(formBo!=null){
+												  boolean formDraftFlag = false;
+												  FormBo newFormBo = SerializationUtils.clone(formBo);
+												  newFormBo.setFormId(null);
+												  session.save(newFormBo);
+												
+												  List<FormMappingBo> formMappingBoList = session.getNamedQuery("getFormByFormId").setInteger("formId", formBo.getFormId()).list(); 
+												  if(formMappingBoList!=null && !formMappingBoList.isEmpty()){
+													  for(FormMappingBo formMappingBo : formMappingBoList){
+														  FormMappingBo newMappingBo = SerializationUtils.clone(formMappingBo);
+														  newMappingBo.setFormId(newFormBo.getFormId());
+														  newMappingBo.setId(null);
+														  
+														  
+														  
+														  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
+														  if(questionsBo!=null){
+															  boolean questionFlag = false;
+															  //Question response subType 
+															  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
+															  
+															  //Question response Type 
+															  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+															  
+															  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+															  newQuestionsBo.setId(null);
+															  session.save(newQuestionsBo);
+															  
+															//Question response Type 
+															  if(questionReponseTypeBo!=null){
+																  QuestionReponseTypeBo newQuestionReponseTypeBo =  SerializationUtils.clone(questionReponseTypeBo);
+																  newQuestionReponseTypeBo.setResponseTypeId(null);
+																  newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
+																  session.save(newQuestionReponseTypeBo);
+															  }
+															  
+															  //Question response subType 
+															  if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
+																 // existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
+																  for(QuestionResponseSubTypeBo questionResponseSubTypeBo: questionResponseSubTypeList){
+																	  if(StringUtils.isNotEmpty(questionResponseSubTypeBo.getImage()) && StringUtils.isNotEmpty(questionResponseSubTypeBo.getSelectedImage())){
+																		  draftFlag = true;
+																		  formDraftFlag = true;
+																		  questionFlag = true;
+																	  }
+																	  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
+																	  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
+																	  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
+																	  newQuestionResponseSubTypeBo.setImage(null);
+																	  newQuestionResponseSubTypeBo.setSelectedImage(null);
+																	  session.save(newQuestionResponseSubTypeBo);
+																	  //newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
+																  }
+															  }
+															  
+															  //adding questionId
+															  newMappingBo.setQuestionId(newQuestionsBo.getId());
+															  session.save(newMappingBo);
+															  if(questionFlag){
+																  newQuestionsBo.setStatus(false);
+																  session.update(newQuestionsBo);
+															  }
+														  }
+														  
+													  }
+												  }
+												  //updating new formId
+												  if(formDraftFlag){
+													  newQuestionnairesStepsBo.setStatus(false);
+												  }
+												  newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
+												  
+											  }
+										}
+										session.update(newQuestionnairesStepsBo);
+										newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
+									}
+								}
+							}
+							if (destinationList != null
+											&& !destinationList.isEmpty()) {
+										for (int i = 0; i < destinationList.size(); i++) {
+											int desId = 0;
+											if (destinationList.get(i) != -1) {
+												desId = newQuestionnairesStepsBoList
+														.get(destinationList.get(i))
+														.getStepId();
+											}
+											newQuestionnairesStepsBoList.get(i)
+													.setDestinationStep(desId);
+											session.update(newQuestionnairesStepsBoList
+													.get(i));
+										}
+							}
+							List<Integer> sequenceSubTypeList = new ArrayList<>();
+							List<Integer> destinationResList = new ArrayList<>();
+							if(existingQuestionResponseSubTypeList!=null && !existingQuestionResponseSubTypeList.isEmpty()){
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo:existingQuestionResponseSubTypeList){
+									if(questionResponseSubTypeBo.getDestinationStepId()==null){
+										sequenceSubTypeList.add(null);
+									}else if(questionResponseSubTypeBo.getDestinationStepId()!=null &&
+											questionResponseSubTypeBo.getDestinationStepId().equals(0)){
+										    sequenceSubTypeList.add(-1);
+									}else{
+										if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
+											for(QuestionnairesStepsBo questionnairesStepsBo: existedQuestionnairesStepsBoList){
+												if(questionResponseSubTypeBo.getDestinationStepId()!=null 
+														&& questionResponseSubTypeBo.getDestinationStepId().equals(questionnairesStepsBo.getStepId())){
+													sequenceSubTypeList.add(questionnairesStepsBo.getSequenceNo());
+													break;
+												}
+											}
+											
+										}
+									}
+								}
+							}
+							if (sequenceSubTypeList != null
+									&& !sequenceSubTypeList.isEmpty()) {
+									for (int i = 0; i < sequenceSubTypeList.size(); i++) {
+										Integer desId = null;
+										if(sequenceSubTypeList.get(i)==null){
+											desId = null;
+										}else if(sequenceSubTypeList.get(i).equals(-1)){
+											desId = 0;
+										}else{
+											for(QuestionnairesStepsBo questionnairesStepsBo: newQuestionnairesStepsBoList){
+												if (sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())){
+													 desId = questionnairesStepsBo.getStepId();
+													 break;
+												}
+										    }
+										}
+									destinationResList.add(desId);	
+								}
+								for (int i = 0; i < destinationResList.size(); i++) {
+									newQuestionResponseSubTypeList.get(i)
+											.setDestinationStepId(destinationResList.get(i));
+									session.update(newQuestionResponseSubTypeList
+											.get(i));
+								}
+					        }
+							if(draftFlag){
+								  newQuestionnaireBo.setStatus(false);
+								  session.update(newQuestionnaireBo);
+							}
+							/**  Content purpose creating draft End **/
+						   }
+						}//If Questionarries updated flag -1 then update End 
+				        //ActiveTasks
+						List<ActiveTaskBo> activeTasks = null;
+						query = session.createQuery("SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.live =1 and customStudyId='"+studyDreaftBo.getCustomStudyId()+"' order by id");
+						activeTasks = query.list();
+					    if(activeTasks!=null && !activeTasks.isEmpty()){
+					    	for(ActiveTaskBo activeTaskBo:activeTasks){
+					    		ActiveTaskBo newActiveTaskBo = SerializationUtils.clone(activeTaskBo);
+					    		newActiveTaskBo.setId(null);
+					    		newActiveTaskBo.setStudyId(studyDreaftBo.getId());
+					    		newActiveTaskBo.setVersion(activeTaskBo.getVersion());
+					    		newActiveTaskBo.setLive(0);
+					    		session.save(newActiveTaskBo);
+					    		/**Schedule Purpose creating draft Start **/
+								if(StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
+									if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+										searchQuery = "From ActiveTaskCustomScheduleBo QCSBO where QCSBO.activeTaskId="+activeTaskBo.getId();
+										List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleList= session.createQuery(searchQuery).list();
+									    if(activeTaskCustomScheduleList!=null && !activeTaskCustomScheduleList.isEmpty()){
+									    	for(ActiveTaskCustomScheduleBo customScheduleBo: activeTaskCustomScheduleList){
+									    		ActiveTaskCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
+									    		newCustomScheduleBo.setActiveTaskId(newActiveTaskBo.getId());
+									    		newCustomScheduleBo.setUsed(true);
+									    		newCustomScheduleBo.setId(null);
+									    		session.save(newCustomScheduleBo);
+									    	}
+									    }
+									}else{
+										searchQuery = "From ActiveTaskFrequencyBo QFBO where QFBO.activeTaskId="+activeTaskBo.getId();
+										List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = session.createQuery(searchQuery).list();
+										if(activeTaskFrequenciesList!=null && !activeTaskFrequenciesList.isEmpty()){
+											for(ActiveTaskFrequencyBo activeTaskFrequenciesBo: activeTaskFrequenciesList){
+												ActiveTaskFrequencyBo newFrequenciesBo = SerializationUtils.clone(activeTaskFrequenciesBo);
+												newFrequenciesBo.setActiveTaskId(newActiveTaskBo.getId());
+												newFrequenciesBo.setId(null);
+												session.save(newFrequenciesBo);
+											}
+										}
+									}
+								}
+								/** Schedule Purpose creating draft End **/
+								
+								/** Content Purpose creating draft Start **/
+								query = session.getNamedQuery("getAttributeListByActiveTAskId").setInteger("activeTaskId", activeTaskBo.getId());
+								List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBoList= query.list();
+								if(activeTaskAtrributeValuesBoList!=null && !activeTaskAtrributeValuesBoList.isEmpty()){
+								  for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo: activeTaskAtrributeValuesBoList){
+									  ActiveTaskAtrributeValuesBo newActiveTaskAtrributeValuesBo = SerializationUtils.clone(activeTaskAtrributeValuesBo);
+									  newActiveTaskAtrributeValuesBo.setActiveTaskId(newActiveTaskBo.getId());
+									  newActiveTaskAtrributeValuesBo.setAttributeValueId(null);
+									  session.save(newActiveTaskAtrributeValuesBo);
+								  }
+									
+								}
+								/** Content Purpose creating draft End **/
+					    	}
+					}//Active TAsk End
+					
+					//Consent updated update Start
+						query = session.createQuery("From ConsentBo CBO WHERE CBO.live =1 and customStudyId='"+studyDreaftBo.getCustomStudyId()+"' order by CBO.createdOn DESC");
+						List<ConsentBo> consentBoList = query.list();
+						if(consentBoList!=null && !consentBoList.isEmpty()){
+							for(ConsentBo consentBo: consentBoList){
+								ConsentBo newConsentBo = SerializationUtils.clone(consentBo);
+								newConsentBo.setId(null);
+								newConsentBo.setStudyId(studyDreaftBo.getId());
+								newConsentBo.setVersion(0f);
+								newConsentBo.setLive(0);
+								session.save(newConsentBo);
+							}
+						}
+						query = session.createQuery(" From ConsentInfoBo CBO WHERE CBO.live =1 and CBO.active=1 and customStudyId='"+studyDreaftBo.getCustomStudyId()+"' order by CBO.createdOn DESC");
+						List<ConsentInfoBo> consentInfoBoList = query.list();
+						if(consentInfoBoList!=null && !consentInfoBoList.isEmpty()){
+							for(ConsentInfoBo consentInfoBo:consentInfoBoList){
+								ConsentInfoBo newConsentInfoBo = SerializationUtils.clone(consentInfoBo);
+								newConsentInfoBo.setId(null);
+								newConsentInfoBo.setStudyId(studyDreaftBo.getId());
+								newConsentInfoBo.setVersion(0f);
+								newConsentInfoBo.setLive(0);
+								session.save(newConsentInfoBo);
+							}
+						}
+						//Consent updated update End
+							//checklist save  
+						    Checklist checklist = new Checklist();
+							checklist.setStudyId(studyDreaftBo.getId());
+						    checklist.setCustomStudyId(studyDreaftBo.getCustomStudyId());
+							session.save(checklist);
+					flag = true;	
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - resetDraftStudyByCustomStudyId() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - resetDraftStudyByCustomStudyId() - Ends");
+		return flag;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId, String customStudyId) {
+		logger.info("StudyDAOImpl - deleteStudyByIdOrCustomstudyId() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		List<StudyBo> studyBOList = null;
+		String subQuery = "";
+		String studyCustomQuery = "";
+		try{
+				if(StringUtils.isNotEmpty(customStudyId)){
+					    studyCustomQuery = " FROM StudyBo SBO WHERE SBO.customStudyId ='"+customStudyId+"'"; 
+				   		subQuery = "(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";
+				}else{
+					studyCustomQuery = " FROM StudyBo SBO WHERE SBO.id ="+studyId; 
+					subQuery = "("+studyId+")";	
+				}
+			    query = session.createQuery(studyCustomQuery);
+				studyBOList = query.list(); 
+				
+				if(studyBOList!=null && !studyBOList.isEmpty()){
+				session.createSQLQuery("DELETE FROM study_page WHERE study_id in"+subQuery).executeUpdate();
+				session.createSQLQuery("DELETE FROM eligibility WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM consent WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM consent_info WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM active_task_attrtibutes_values WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in"+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id IN (SELECT id FROM active_task WHERE study_id in"+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM active_task_custom_frequencies WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in"+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM active_task WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM questions WHERE id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in"+subQuery+")))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM questionnaires_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM questionnaires_custom_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM questionnaires WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM resources WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM notification_history WHERE notification_id in(SELECT notification_id FROM notification WHERE study_id in "+subQuery+")").executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM notification WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM study_checklist WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM study_permission WHERE study_id in"+subQuery).executeUpdate();
+				
+				session.createSQLQuery("DELETE FROM study_sequence WHERE study_id in"+subQuery).executeUpdate();
+				if(StringUtils.isNotEmpty(customStudyId)){
+					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
+					session.createSQLQuery("DELETE FROM studies WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
+				}else{
+					session.createSQLQuery("DELETE FROM studies WHERE id="+studyId).executeUpdate();
+				}
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			  }
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteStudyByIdOrCustomstudyId() - ERROR " , e);
+		}	
+		logger.info("StudyDAOImpl - deleteStudyByIdOrCustomstudyId() - Ends");
+		return message;
 	}
 }
