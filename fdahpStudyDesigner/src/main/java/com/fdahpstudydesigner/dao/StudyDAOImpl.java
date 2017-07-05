@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -3390,6 +3391,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param eligibilityId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId, Integer studyId, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyDAOImpl - deleteEligibilityTestQusAnsById - Starts");
@@ -3398,19 +3400,23 @@ public class StudyDAOImpl implements StudyDAO{
 		Transaction trans = null;
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		String reorderQuery;
+		EligibilityTestBo eligibilityTestBo;
+		List<EligibilityTestBo> eligibilityTestBos;
+		
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
+			eligibilityTestBo = (EligibilityTestBo) session.getNamedQuery("EligibilityTestBo.findById").setInteger("eligibilityTestId", eligibilityTestId).uniqueResult();
 			eligibilityDeleteResult = session
 					.getNamedQuery("EligibilityTestBo.deleteById")
 					.setInteger("eligibilityTestId", eligibilityTestId).executeUpdate();
-			reorderQuery = "update EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo-1 where ETB.id = "
-					+ "(select ETBO.id FROM EligibilityTestBo ETBO WHERE ETBO.sequenceNo > "
-					+ "(select ETBO1.sequenceNo FROM EligibilityTestBo ETBO1 WHERE ETBO1.id= '"
-					+ eligibilityTestId
-					+ "') AND ETBO.active = true AND "
-					+ "ETBO.eligibilityId = (select ETBO2.eligibilityId FROM EligibilityTestBo ETBO2 WHERE ETBO2.id= '"
-					+ eligibilityTestId + "')) ";
+			eligibilityTestBos=session.createQuery("select id FROM EligibilityTestBo  WHERE sequenceNo > '"
+					+ eligibilityTestBo.getSequenceNo()
+					+ "' AND active = true AND "
+					+ "eligibilityId = '"
+					+ eligibilityTestBo.getEligibilityId() + "'").list();
+			reorderQuery = "update EligibilityTestBo  set sequenceNo=sequenceNo-1 where id in "
+					+ "("+StringUtils.join(eligibilityTestBos, ",")+")";
 			if (eligibilityDeleteResult > 0) {
 				eligibilityDeleteResult = session.createQuery(reorderQuery).executeUpdate();
 			}
@@ -3455,7 +3461,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			eligibilityTestList = session
-					.getNamedQuery("EligibilityTestBo.findByIdByEligibilityId")
+					.getNamedQuery("EligibilityTestBo.findByEligibilityId")
 					.setInteger("eligibilityId", eligibilityId).list();
 		} catch (Exception e) {
 			logger.error(
@@ -3502,6 +3508,13 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param eligibilityTestBo
 	 * @return
 	 */
+	/**
+	 * @param eligibilityId
+	 * @param oldOrderNumber
+	 * @param newOrderNumber
+	 * @param studyId
+	 * @return
+	 */
 	@Override
 	public String reorderEligibilityTestQusAns(Integer eligibilityId,
 			int oldOrderNumber, int newOrderNumber, Integer studyId) {
@@ -3517,7 +3530,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
 			String updateQuery ="";
-			query = session.getNamedQuery("EligibilityTestBo.findByIdByEligibilityId").setInteger("eligibilityId", eligibilityId);
+			query = session.getNamedQuery("EligibilityTestBo.findByEligibilityIdAndSequenceNo").setInteger("eligibilityId", eligibilityId).setInteger("sequenceNo", oldOrderNumber);
 			eligibilityTest = (EligibilityTestBo)query.uniqueResult();
 			if(eligibilityTest != null){
 				updatenewOrderQuery = "update EligibilityTestBo ETB set ETB.sequenceNo="
@@ -3534,7 +3547,7 @@ public class StudyDAOImpl implements StudyDAO{
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 				} else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo+1 where ETB.eligibilityId=="
+					updateQuery = "update EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo+1 where ETB.eligibilityId="
 							+ eligibilityId
 							+ " and ETB.sequenceNo >="
 							+ newOrderNumber
@@ -4251,5 +4264,27 @@ public class StudyDAOImpl implements StudyDAO{
 		}	
 		logger.info("StudyDAOImpl - deleteStudyByIdOrCustomstudyId() - Ends");
 		return message;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String validateEligibilityTestKey(Integer eligibilityTestId,
+			String shortTitle) {
+		logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
+		Session session = null;
+		List<EligibilityTestBo> eligibilityTestBos;
+		String result= FdahpStudyDesignerConstants.FAILURE;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("EligibilityTestBo.validateShortTitle").setString("shortTitle", shortTitle).setInteger("eligibilityTestId", eligibilityTestId);
+			eligibilityTestBos = query.list();
+			if(eligibilityTestBos.isEmpty()) {
+				result = FdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getStudyVersionInfo() - ERROR " , e);
+		}
+		logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
+		return result;
 	}
 }

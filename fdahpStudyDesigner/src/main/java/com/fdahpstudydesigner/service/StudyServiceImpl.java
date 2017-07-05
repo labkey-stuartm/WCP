@@ -1386,4 +1386,18 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Ends");
 		return flag;
 	}
+
+	@Override
+	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle) {
+		logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.validateEligibilityTestKey(eligibilityTestId, shortTitle);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - validateEligibilityTestKey - Error", e);
+		}
+		logger.info("StudyServiceImpl - validateEligibilityTestKey - Ends");
+		return message;
+	}
 }

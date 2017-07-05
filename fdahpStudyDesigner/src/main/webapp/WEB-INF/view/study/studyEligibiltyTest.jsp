@@ -7,7 +7,7 @@
 <!-- ============================================================== --> 
  <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do?_S=${param._S}" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyEligibiltyTestQusAns.do?_S=${param._S}" name="studyEligibiltyTestFormId" id="studyEligibiltyTestFormId" method="post" data-toggle="validator" role="form">
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
@@ -15,12 +15,13 @@
          	<c:if test="${actionTypeForQuestionPage == 'view'}">View QA <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add QA</c:if>
          </div>
+         <input type="hidden" value="${actionTypeForQuestionPage}" name="actionTypeForQuestionPage"> 
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
 	         <div class="dis-line form-group mb-none mr-sm">
-	            <button type="button" class="btn btn-default gray-btn" onclick="saveIns();">Save</button>
+	            <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
@@ -33,47 +34,49 @@
    <div class="right-content-body">
       <!-- form- input-->
       <input type="hidden" id="type" name="type" value="complete" />
+      <input type="hidden" name="id" value="${eligibilityTest.id}" />
+      <input type="hidden" id="eligibilityId" name="eligibilityId" value="${eligibilityId}" />
+      <input type="hidden" id="sequenceNo" name="sequenceNo" value="${eligibilityTest.sequenceNo}" />
 			<div class=" col-lg-4 col-md-5 pl-none">
-			   <div class="gray-xs-f mb-xs">Short title (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span></div>
+			   <div class="gray-xs-f mb-xs">Short title (1 to 15 characters)<span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span></div>
 			   <div class="form-group">
-			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" 
-			      maxlength="15" <c:if test="${not empty instructionsBo.questionnairesStepsBo.isShorTitleDuplicate && (instructionsBo.questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
+			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(eligibilityTest.shortTitle)}" required="required" 
+			      maxlength="15" />
 		      	  <div class="help-block with-errors red-txt"></div>
-		      	  <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}"/>
 			   </div>
 			</div>
 		  <div class="clearfix"></div>
-	      <div class="gray-xs-f mb-xs">Question (1 to 250 characters)<span class="requiredStar">*</span></div>
+	      <div class="gray-xs-f mb-xs">Question (1 to 250 characters)<span class="requiredStar"> *</span></div>
 			<div class="form-group">
-		    	<input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${fn:escapeXml(instructionsBo.instructionTitle)}" maxlength="250"/>
+		    	<input type="text" class="form-control" required name="question" id="question" value="${fn:escapeXml(eligibilityTest.question)}" maxlength="250"/>
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 		  <div class="clearfix"></div>
 		  <div class="col-lg-4 col-md-5 p-none">
              <div class="form-group col-md-12 p-none mr-md mb-none">
              	 <div class="gray-xs-f mb-xs col-md-6 pl-none ">Response Options</div>
-             	 <div class="gray-xs-f mb-xs col-md-6 pr-none">Pass / Fail<span class="requiredStar">*</span></div>
+             	 <div class="gray-xs-f mb-xs col-md-6 pr-none">Pass / Fail<span class="requiredStar"> *</span></div>
             </div>
-             <div class="form-group col-md-12 p-none mr-md mb-none">
+             <div class="col-md-12 p-none mr-md mb-none">
              	<div class="col-md-6 pl-none">
              	 	<input type="text" class="form-control" name="tentativeDuration" value="Yes" disabled/>
               	</div>
-             	<div class="col-md-6 pr-none">
-                 	<select class="selectpicker elaborateClass" required  title="Select" name="tentativeDurationWeekmonth">
-                 		<option value="">Pass</option>
-		        		<option value="">Fail</option>
+             	<div class="form-group col-md-6 pr-none">
+                 	<select class="selectpicker elaborateClass" required  title="Select" name="responseYesOption">
+                 		<option value="true" ${eligibilityTest.responseYesOption ? 'selected':''}>Pass</option>
+		        		<option value="false" ${not empty eligibilityTest.responseYesOption && not eligibilityTest.responseYesOption ? 'selected':''}>Fail</option>
 		     		</select>
    					<div class="help-block with-errors red-txt"></div>
    				</div>
              </div>
-              <div class="form-group col-md-12 p-none mr-md mb-none">
+              <div class="col-md-12 p-none mr-md mb-none">
               	<div class="col-md-6 pl-none ">
                 	<input type="text" class="form-control" name="tentativeDuration" value="No" disabled/>
                 </div>
-              	<div class="col-md-6 pr-none">
-                	<select class="selectpicker elaborateClass" required  title="Select" name="tentativeDurationWeekmonth">
-			       		<option value="">Pass</option>
-			        	<option value="">Fail</option>
+              	<div class="form-group col-md-6 pr-none">
+                	<select class="selectpicker elaborateClass form-control" required  title="Select" name="responseNoOption">
+			       		<option value="true" ${eligibilityTest.responseNoOption ? 'selected':''} >Pass</option>
+			        	<option value="false" ${not empty eligibilityTest.responseNoOption && not eligibilityTest.responseNoOption ? 'selected':''}>Fail</option>
 		    	 	</select>
     				<div class="help-block with-errors red-txt"></div>
     			</div>
@@ -88,69 +91,73 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	<c:if test="${actionTypeForQuestionPage == 'view'}">
-		$('#basicInfoFormId input,textarea ').prop('disabled', true);
-		$('#basicInfoFormId select').addClass('linkDis');
-		$('.selectpicker').selectpicker('refresh');
-	</c:if>
+	  $(".menuNav li.active").removeClass('active');
+	  $(".menuNav li.fourth").addClass('active');
 	
-	$(".menuNav li.active").removeClass('active');
-	$(".sixthQuestionnaires").addClass('active');
+	 <c:if test="${not empty permission}">
+       $('#eleFormId input,textarea,select').prop('disabled', true);
+       $('#eleFormId').find('.elaborateClass').addClass('linkDis');
+      </c:if>
+      
 	$("#shortTitleId").blur(function(){
-		validateShortTitle('',function(val){});
+		validateShortTitle(this, function(val){
+			
+		});
     });
 	$('[data-toggle="tooltip"]').tooltip();
 	$("#doneId").click(function(){
-		$("#doneId").attr("disabled",true);
-		validateShortTitle('',function(val){
-			if(val){
-				 console.log(val);
-				 $('#shortTitleId').prop('disabled', false);
-				 if(isFromValid("#basicInfoFormId")){
-					document.basicInfoFormId.submit();
-				 }else{
-					 $("#doneId").attr("disabled",false);	
-					 console.log("else");
-				 } 
-			}else{
-				 $("#doneId").attr("disabled",false);	
-			}
+		$(this).prop("disabled",true);
+		validateShortTitle("#shortTitleId", function(val) {
+				if(val){
+					 $('#shortTitleId').prop('disabled', false);
+					 if(isFromValid("#studyEligibiltyTestFormId")){
+						document.studyEligibiltyTestFormId.submit();
+					 }else{
+						 $("#doneId").prop("disabled",false);	
+					 } 
+				}else{
+					 $("#doneId").prop("disabled",false);	
+				}
 		});
     });
+	$("#saveId").click(function(){
+		$(this).prop("disabled",true);
+		validateShortTitle("#shortTitleId", function(val) {
+			if(val) {
+				$('#studyEligibiltyTestFormId').validator('destroy');
+				$('#type').val('save');
+				$('#studyEligibiltyTestFormId').submit();
+			} else {
+				if($('#shortTitleId').val()) {
+					$('#shortTitleId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+				}
+				$('#saveId').prop("disabled",false);
+				return false;
+			}
+		});
+	});
 });
-function saveIns(){
-  	validateShortTitle('',function(val){
-			if(val){
-				saveInstruction();
-			}		
-  	}); 
-}
-function validateShortTitle(item,callback){
+
+function validateShortTitle(item, callback){
+	var thisAttr = item;
 	var shortTitle = $("#shortTitleId").val();
-	var questionnaireId = $("#questionnaireId").val();
-	var stepType="Instruction";
-	var thisAttr= $("#shortTitleId");
-	var existedKey = $("#preShortTitleId").val();
-	var questionnaireShortTitle = $("#questionnaireShortId").val();
-	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
-		if( existedKey !=shortTitle){
+	if(shortTitle) {
+			$('#shortTitleId').prop('disabled', true);
 			$.ajax({
-                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
+                url: "/fdahpStudyDesigner/adminStudies/validateEligibilityTestKey.do?_S=${param._S}",
                 type: "POST",
                 datatype: "json",
                 data: {
                 	shortTitle : shortTitle,
-                	questionnaireId : questionnaireId,
-                	stepType : stepType,
-                	questionnaireShortTitle : questionnaireShortTitle
+                	eligibilityTestId : '${eligibilityTest.id}'
                 },
                 beforeSend: function(xhr, settings){
                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
                 },
-                success:  function getResponse(data){
+                success: function(data){
                     var message = data.message;
-                    console.log(message);
-                    if('SUCCESS' != message){
+                    $('#shortTitleId').prop('disabled', false);
+                    if('SUCCESS' == message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
                         $(thisAttr).parent().find(".help-block").html("");
@@ -163,84 +170,16 @@ function validateShortTitle(item,callback){
                         callback(false);
                     }
                 },
+                error : function() {
+                	$('#shortTitleId').prop('disabled', false);
+				},
                 global : false
           });
-		}else{
-			callback(true);
-		}
-	}else{
+	} else {
 		 callback(false);
 	}
 }
-function saveInstruction(item){
-	var instruction_id = $("#id").val();
-	var questionnaire_id = $("#questionnaireId").val();
-	var instruction_title = $("#instructionTitle").val();
-	var instruction_text = $("#instructionText").val();
-	
-	var shortTitle = $("#shortTitleId").val();
-	var destinationStep = $("#destinationStepId").val();
-	var step_id=$("#stepId").val(); 
-	
-	var instruction = new Object();
-	if((questionnaire_id != null && questionnaire_id !='' && typeof questionnaire_id != 'undefined') && 
-			(shortTitle != null && shortTitle !='' && typeof shortTitle != 'undefined')){
-		instruction.questionnaireId = questionnaire_id;
-		instruction.id = instruction_id;
-		instruction.instructionTitle = instruction_title;
-		instruction.instructionText = instruction_text;
-		instruction.type="save";
-		
-		var questionnaireStep = new Object();
-		questionnaireStep.stepId=step_id;
-		questionnaireStep.stepShortTitle = shortTitle;
-		questionnaireStep.destinationStep=destinationStep
-		instruction.questionnairesStepsBo=questionnaireStep;
-		
-		var data = JSON.stringify(instruction);
-		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveInstructionStep.do?_S=${param._S}",
-	          type: "POST",
-	          datatype: "json",
-	          data: {instructionsInfo:data},
-	          beforeSend: function(xhr, settings){
-	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-	          },
-	          success:function(data){
-	        	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
-				if(message == "SUCCESS"){
-					$("#preShortTitleId").val(shortTitle);
-					var instructionId = jsonobject.instructionId;
-					var stepId = jsonobject.stepId;
-					$("#id").val(instructionId);
-					$("#stepId").val(stepId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
-					$(item).prop('disabled', false);
-					$('#alertMsg').show();
-					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-					}
-				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-					$('#alertMsg').show();
-				}
-				setTimeout(hideDisplayMessage, 4000);
-	          },
-	          error: function(xhr, status, error) {
-    			  $(item).prop('disabled', false);
-    			  $('#alertMsg').show();
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-    			  setTimeout(hideDisplayMessage, 4000);
-    		  }
-	   }); 
-	}else{
-		 $('#shortTitleId').validator('destroy').validator();
-		 if(!$('#shortTitleId')[0].checkValidity()) {
-			$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-		 }
-	}
-}
+
 function goToBackPage(item){
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForQuestionPage ne 'view'}">
@@ -258,7 +197,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -268,7 +207,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }

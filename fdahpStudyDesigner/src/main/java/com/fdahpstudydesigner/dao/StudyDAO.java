@@ -10,6 +10,7 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -96,6 +97,7 @@ public interface StudyDAO {
 	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
 	public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
 	public int eligibilityTestOrderCount(Integer eligibilityId);
+	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle);
 	
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId);

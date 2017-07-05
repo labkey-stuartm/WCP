@@ -1418,9 +1418,8 @@ public class StudyController {
 						eligibilityBo.setStudyId(Integer.parseInt(studyId));
 						eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
 					}
-					if(null != eligibilityBo.getId() && null != eligibilityBo.getEligibilityMechanism() && !(FdahpStudyDesignerConstants.ID_VALIDATION_ONLY).equals(eligibilityBo.getEligibilityMechanism())) {
-						eligibilityTestList = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
-					}
+					eligibilityTestList = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+					
 					map.addAttribute("eligibilityTestList", eligibilityTestList);
 					map.addAttribute("eligibility", eligibilityBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
@@ -2740,8 +2739,8 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		String sucMsg = "";
 		String errMsg = "";
-		EligibilityBo eligibilityBo;
 		EligibilityTestBo eligibilityTest = null;
+		StudyBo studyBo;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -2760,15 +2759,30 @@ public class StudyController {
 				
 				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 				Integer eligibilityTestId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityTestId"));
-				
+				Integer eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityId"));
 				if (StringUtils.isEmpty(studyId)) {
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "0" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
-				} 
+				}
+				if (StringUtils.isBlank(actionTypeForQuestionPage)) {
+					actionTypeForQuestionPage = (String) request.getSession().getAttribute(sessionStudyCount+"actionTypeForQuestionPage");
+					request.getSession().removeAttribute(sessionStudyCount+"actionTypeForQuestionPage");
+				}
+				if (eligibilityTestId.equals(0)) {
+					eligibilityTestId = (Integer) request.getSession().getAttribute(sessionStudyCount+"eligibilityTestId");
+					request.getSession().removeAttribute(sessionStudyCount+"eligibilityTestId");
+				}
+				if (eligibilityId.equals(0)) {
+					eligibilityId = (Integer) request.getSession().getAttribute(sessionStudyCount+"eligibilityId");
+					request.getSession().removeAttribute(sessionStudyCount+"eligibilityId");
+				}
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
+				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				if (StringUtils.isNotBlank(studyId) && StringUtils.isNotBlank(actionTypeForQuestionPage)) {
-					if(eligibilityTestId != 0)
+					if(eligibilityTestId != null)
 						eligibilityTest = studyService.viewEligibilityTestQusAnsById(eligibilityTestId);
 					map.addAttribute("eligibilityTest", eligibilityTest);
+					map.addAttribute("eligibilityId", eligibilityId);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 					map.addAttribute("_S", sessionStudyCount);
 					map.addAttribute("actionTypeForQuestionPage", actionTypeForQuestionPage);
@@ -2802,6 +2816,7 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 			String studyId =  (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+			String actionTypeForQuestionPage = StringUtils.isNotBlank(request.getParameter("actionTypeForQuestionPage")) ? request.getParameter("actionTypeForQuestionPage"):"";
 			if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
 				if (eligibilityTestBo != null) {
 					customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
@@ -2811,10 +2826,13 @@ public class StudyController {
 				if(result > 0) {
 					if(eligibilityTestBo != null && (FdahpStudyDesignerConstants.ACTION_TYPE_SAVE).equals(eligibilityTestBo.getType())){
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
-						mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
+						request.getSession().setAttribute(sessionStudyCount+"actionTypeForQuestionPage", actionTypeForQuestionPage);
+						request.getSession().setAttribute(sessionStudyCount+"eligibilityTestId", eligibilityTestBo.getId());
+						request.getSession().setAttribute(sessionStudyCount+"eligibilityId", eligibilityTestBo.getEligibilityId());
+						mav = new ModelAndView("redirect:viewStudyEligibiltyTestQusAns.do", map);
 					}else{
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
-						mav = new ModelAndView("redirect:consentListPage.do", map);
+						mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 					}	
 				}else {
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Error in set Eligibility Questions.");
@@ -2884,6 +2902,107 @@ public class StudyController {
 			logger.info("StudyController - resetStudy - Ends");
 			return mav;
 		}	
-	
-	
+
+			/**
+			 * @author Ronalin
+			 * @param request
+			 * @param response
+			 * This method is used to validate the questionnaire have response type scale for android platform 
+			 */
+			@RequestMapping(value="/adminStudies/validateEligibilityTestKey.do",method = RequestMethod.POST)
+			public void validateEligibilityTestKey(HttpServletRequest request ,HttpServletResponse response){
+				logger.info("StudyController - studyPlatformValidation() - Starts");
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				String message = FdahpStudyDesignerConstants.FAILURE;
+				Integer eligibilityTestId;
+				String shortTitle;
+				try{
+					SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+					Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+					eligibilityTestId = StringUtils.isNumeric(request.getParameter("eligibilityTestId")) ? Integer.parseInt(request.getParameter("eligibilityTestId")) : 0 ;
+					shortTitle = StringUtils.isNotBlank(request.getParameter("shortTitle")) ? request.getParameter("shortTitle") : "" ;
+					if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+						message = studyService.validateEligibilityTestKey(eligibilityTestId, shortTitle);
+					}
+					jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+					response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+					out = response.getWriter();
+					out.print(jsonobject);
+				}catch(Exception e){
+					logger.error("StudyController - studyPlatformValidation() - ERROR",e);
+				}
+				logger.info("StudyController - studyPlatformValidation() - Ends");
+			}
+			
+			/**
+			 * @author Ravinder
+			 * @param request
+			 * @param response
+			 */
+			@RequestMapping(value="/adminStudies/reOrderStudyEligibiltyTestQusAns.do", method = RequestMethod.POST)
+			public void reOrderStudyEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
+				logger.info("StudyController - reOrderStudyEligibiltyTestQusAns - Starts");
+				String message = FdahpStudyDesignerConstants.FAILURE;
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				Integer eligibilityId = null;
+				try{
+					SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+					int oldOrderNumber;
+					int newOrderNumber;
+					Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+					if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+						if(StringUtils.isEmpty(studyId)){
+							studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+						}
+						eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityId"));
+						String oldOrderNo = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.OLD_ORDER_NUMBER))?"0":request.getParameter(FdahpStudyDesignerConstants.OLD_ORDER_NUMBER);
+						String newOrderNo = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.NEW_ORDER_NUMBER))?"0":request.getParameter(FdahpStudyDesignerConstants.NEW_ORDER_NUMBER);
+						if((studyId != null && !studyId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
+							oldOrderNumber = Integer.valueOf(oldOrderNo);
+							newOrderNumber = Integer.valueOf(newOrderNo);
+							message = studyService.reorderEligibilityTestQusAns(eligibilityId, oldOrderNumber, newOrderNumber, Integer.valueOf(studyId));
+						}
+					}
+					jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+					response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+					out = response.getWriter();
+					out.print(jsonobject);
+				}catch(Exception e){
+					logger.error("StudyController - reOrderStudyEligibiltyTestQusAns - ERROR",e);
+				}
+				logger.info("StudyController - reOrderStudyEligibiltyTestQusAns - Ends");
+			}
+			/**
+			 * @author Vivek
+			 * @param request
+			 * @param response
+			 */
+			@RequestMapping(value="/adminStudies/deleteEligibiltyTestQusAns.do",method = RequestMethod.POST)
+			public void deleteEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
+				logger.info("StudyController - deleteConsentInfo - Starts");
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				String message = FdahpStudyDesignerConstants.FAILURE;
+				String customStudyId = "";
+				try{
+					SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+					Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+					if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+						String eligibilityTestId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId"))?"0":request.getParameter("eligibilityTestId");
+						String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"0":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+						message = studyService.deleteEligibilityTestQusAnsById(Integer.parseInt(eligibilityTestId), Integer.parseInt(studyId), sesObj, customStudyId);
+					}
+					jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+					response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+					out = response.getWriter();
+					out.print(jsonobject);
+				}catch(Exception e){
+					logger.error("StudyController - deleteConsentInfo - ERROR", e);
+				}
+				logger.info("StudyController - deleteConsentInfo - Ends");
+			}
 }

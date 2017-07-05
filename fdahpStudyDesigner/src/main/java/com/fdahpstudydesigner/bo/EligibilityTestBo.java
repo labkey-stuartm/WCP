@@ -22,8 +22,10 @@ import javax.persistence.Transient;
 @NamedQueries({
 		@NamedQuery(name = "EligibilityTestBo.findAll", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true ORDER BY ETB.sequenceNo"),
 		@NamedQuery(name = "EligibilityTestBo.findById", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.id=:eligibilityTestId ORDER BY ETB.sequenceNo"),
-		@NamedQuery(name = "EligibilityTestBo.findByIdByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId ORDER BY ETB.sequenceNo"),
-		@NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET status = false WHERE eligibilityTestId=:eligibilityTestId ") })
+		@NamedQuery(name = "EligibilityTestBo.findByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId ORDER BY ETB.sequenceNo"),
+		@NamedQuery(name = "EligibilityTestBo.findByEligibilityIdAndSequenceNo", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId AND ETB.sequenceNo =:sequenceNo"),
+		@NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET active = false WHERE id=:eligibilityTestId "),
+		@NamedQuery(name = "EligibilityTestBo.validateShortTitle", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.shortTitle =:shortTitle AND id !=:eligibilityTestId ") })
 public class EligibilityTestBo implements Serializable {
 
 	private static final long serialVersionUID = -6517033483482921515L;
@@ -53,6 +55,12 @@ public class EligibilityTestBo implements Serializable {
 	
 	@Column(name="active")
 	private Boolean active = true;
+	
+	@Column(name="response_yes_option")
+	private Boolean responseYesOption;
+	
+	@Column(name="response_no_option")
+	private Boolean responseNoOption;
 	
 	@Transient
 	private String type;
@@ -129,6 +137,22 @@ public class EligibilityTestBo implements Serializable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Boolean getResponseYesOption() {
+		return responseYesOption;
+	}
+
+	public void setResponseYesOption(Boolean responseYesOption) {
+		this.responseYesOption = responseYesOption;
+	}
+
+	public Boolean getResponseNoOption() {
+		return responseNoOption;
+	}
+
+	public void setResponseNoOption(Boolean responseNoOption) {
+		this.responseNoOption = responseNoOption;
 	}
 
 }

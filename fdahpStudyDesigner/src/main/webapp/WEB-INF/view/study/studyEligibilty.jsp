@@ -20,13 +20,13 @@
 	           </div>
 	
 	           <div class="dis-line form-group mb-none">
-	               <button type="button" class="btn btn-primary blue-btn submitEle" actType="mark">Mark as Completed</button>
+	               <button type="button" class="btn btn-primary blue-btn submitEle" actType="mark" id="doneBut">Mark as Completed</button>
 	           </div>
 	           </c:if>
 	       </div>
 	  </div>
 	        <!--  End  top tab section-->
-	      <input type="hidden" value="${eligibility.studyId}" name="studyId" /> 
+	      <input type="hidden" value="${eligibility.studyId}" name="studyId" id="studyId"/> 
 	      <input type="hidden" value="${eligibility.id}" name="id" /> 
 	    <!--  Start body tab section -->
 	    <div class="right-content-body">
@@ -46,7 +46,7 @@
 	           </span>
 	           <div class="help-block with-errors red-txt"></div>
 	       </div>
-	       <div id="instructionTextDivId"> 
+	       <div id="instructionTextDivId" <c:if test="${eligibility.eligibilityMechanism eq 3}">style="display: none;"</c:if>> 
 		       <div class="blue-md-f mb-md text-uppercase">
 		           Token Validation 
 		       </div>
@@ -65,7 +65,7 @@
 		          <div class="black-md-f  dis-line pull-left line34">Eligibility Test</div>
 		          <div class="dis-line form-group mb-none mr-sm">
 		          	<c:if test="${empty permission}">
-		               <button type="button" class="btn btn-primary blue-btn submitEle" id="addQaId">+ Add QA</button>
+		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" ${eligibility.eligibilityMechanism eq 1 ? 'disabled' : ''}>+ Add QA</button>
 		          	</c:if>
 		          </div>
 				</div>
@@ -85,9 +85,9 @@
 				                <td>${etQusAns.sequenceNo}</td>
 				                <td>${etQusAns.question}</td>
 				                <td>
-				                	<span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewConsentInfo();"></span>
-				                    <span class="${true?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editConsentInfo();"></span>
-				                    <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteConsentInfo();"></span>
+				                	<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" ></span>
+				                    <span class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId='${etQusAns.id}'></span>
+				                    <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns('${etQusAns.id}', this);"></span>
 				                </td>
 				        	</tr>
 			        	</c:forEach>
@@ -97,12 +97,14 @@
 	    </div>
     </form:form>
 </div>
-<<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}" id="viewQAFormId"></form:form>
+<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}" id="viewQAFormId"></form:form>
 <script type="text/javascript">
 	var viewPermission = "${permission}";
 	var permission = "${permission}";
+	var eligibilityMechanism = '${eligibility.eligibilityMechanism}';
 	console.log("viewPermission:"+viewPermission);
 	var reorder = true;
+	var table1;
 	$(document).ready(function(){
 	   $(".menuNav li.active").removeClass('active');
 	   $(".menuNav li.fourth").addClass('active');
@@ -112,25 +114,37 @@
        $('#eleFormId').find('.elaborateClass').addClass('linkDis');
       </c:if>
 	   
-// 	   $('.submitEle').click(function(e) {
-// 		   e.preventDefault();
-// 		   $('#actTy').remove();
-// 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#eleFormId');
-// 	   		if($(this).attr('actType') == 'save'){
-// 	   			$('#eleFormId').validator('destroy');
-// 	   			$('#eleFormId').submit();
-// 	   		} else{
-// 	   			if(isFromValid('#eleFormId'))
-// 	   				$('#eleFormId').submit();
-// 	   		}
-// 		});
+	   $('.submitEle').click(function(e) {
+		   e.preventDefault();
+		   $('#actTy').remove();
+		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#eleFormId');
+	   		if($(this).attr('actType') == 'save'){
+	   			$('#eleFormId').validator('destroy');
+	   			$('#eleFormId').submit();
+	   		} else{
+	   			if(isFromValid('#eleFormId'))
+	   				$('#eleFormId').submit();
+	   		}
+		});
 	   
+	    $('#addQaId').click(function() {
+			addOrEditOrViewQA("add", "");
+		});
+	   
+	    $('.viewIcon').click(function() {
+			addOrEditOrViewQA("view", "");
+		});
+	    
+	    $('.editIcon').click(function() {
+			addOrEditOrViewQA("edit", $(this).attr('etId'));
+		});
+	    
 	    if(viewPermission == 'view'){
 	        reorder = false;
 	    }else{
 	    	reorder = true;
 	    } 
-		var table1 = $('#consent_list').DataTable( {
+		table1 = $('#consent_list').DataTable( {
 		    "paging":false,
 		    "info": false,
 		    "filter": false,
@@ -169,11 +183,11 @@
 		    
 		    if (oldOrderNumber && newOrderNumber) {
 		    	$.ajax({
-					url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do?_S=${param._S}",
+					url: "/fdahpStudyDesigner/adminStudies/reOrderStudyEligibiltyTestQusAns.do?_S=${param._S}",
 					type: "POST",
 					datatype: "json",
 					data:{
-						studyId : studyId,
+						eligibilityId : '${eligibility.id}',
 						oldOrderNumber: oldOrderNumber,
 						newOrderNumber : newOrderNumber,
 						"${_csrf.parameterName}":"${_csrf.token}",
@@ -182,14 +196,10 @@
 						var jsonobject = eval(data);
 		         		var message = jsonobject.message;
 						if(message == "SUCCESS"){
-						    reloadConsentInfoDataTable(jsonobject.consentInfoList);
-							$('#alertMsg').show();
 							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
-							if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
-							   $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-							}
-							if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
-							   $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							$('#alertMsg').show();
+							if ($('.fourth').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							   $('.fourth').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 							}
 						}else{
 							$('#alertMsg').show();
@@ -206,6 +216,13 @@
 		});
 		
 		$('#eligibilityOptDivId input[type=radio]').change(function() {
+			if($(this).val() != '1' && eligibilityMechanism != $(this).val()) {
+				$('#doneBut, #addQaId').prop('disabled', true);
+				$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
+			} else {
+				$('#doneBut, #addQaId').prop('disabled', false);
+				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
+			}
 			if($('#inlineRadio1:checked').length > 0 ) {
 				$('#eligibilityQusDivId').hide();
 				$('#instructionTextDivId').show();
@@ -217,14 +234,11 @@
 				$('#instructionTextDivId').show();
 			}
 		})
-		$('#addQaId').click(function() {
-			addOrEditOrViewQA("add", "");
-		});
+		
 	});
 	
 	function addOrEditOrViewQA(actionTypeForQuestionPage, eligibilityTestId) {
-		var form = $('#viewQAFormId')
-		
+		var form = $('#viewQAFormId');
 		var input = document.createElement("input");
 		input.setAttribute('type',"hidden");
 		input.setAttribute('name','actionTypeForQuestionPage');
@@ -237,19 +251,25 @@
 		input.setAttribute('value',eligibilityTestId);
 		form.append(input);
 		
+		input = document.createElement("input");
+		input.setAttribute('type',"hidden");
+		input.setAttribute('name', 'eligibilityId');
+		input.setAttribute('value',"${eligibility.id}");
+		form.append(input);
+		
 		form.submit();
 	}
-	function deleteConsentInfo(consentInfoId){
-		bootbox.confirm("Are you sure you want to delete this consent item?", function(result){ 
+	function deleteEligibiltyTestQusAns(eligibilityTestId, thisAttr) {
+		var studyId = $('#studyId').val();
+		bootbox.confirm("Are you sure you want to delete this eligibility test item?", function(result){ 
 			if(result){
-				var studyId = $("#studyId").val();
-		    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
+		    	if(eligibilityTestId) {
 		    		$.ajax({
-		    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do?_S=${param._S}",
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteEligibiltyTestQusAns.do?_S=${param._S}",
 		    			type: "POST",
 		    			datatype: "json",
 		    			data:{
-		    				consentInfoId: consentInfoId,
+		    				eligibilityTestId: eligibilityTestId,
 		    				studyId : studyId,
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
@@ -258,14 +278,17 @@
 		    				if(status == "SUCCESS"){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
 		    					$('#alertMsg').show();
-// 		    					reloadData(studyId);
 		    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 								    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 								}
-								if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
-								    $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-								}
-		    				}else{
+		    					table1
+		    			        .row( $(thisAttr).parents('tr') )
+		    			        .remove()
+		    			        .draw(false);
+		    					$.each($('#consent_list tr td:first-child'),function(index,val){
+		    					    $(this).html(index+1)
+		    					});
+		    				} else {
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 		    					$('#alertMsg').show();
 		    	            }
@@ -280,25 +303,5 @@
 			}
 		});
 	}
-	function reloadData(studyId){
-		$.ajax({
-			url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do?_S=${param._S}",
-		    type: "POST",
-		    datatype: "json",
-		    data: {
-		    	studyId: studyId,
-		    	"${_csrf.parameterName}":"${_csrf.token}",
-		    },
-		    success: function status(data, status) {
-		    	 var jsonobject = eval(data);
-		         var message = jsonobject.message;
-		         if(message == "SUCCESS"){
-		        	 reloadConsentInfoDataTable(jsonobject.consentInfoList);
-		         }
-		    },
-		    error:function status(data, status) {
-		    	
-		    },
-		});
-	}
+	
 </script>
