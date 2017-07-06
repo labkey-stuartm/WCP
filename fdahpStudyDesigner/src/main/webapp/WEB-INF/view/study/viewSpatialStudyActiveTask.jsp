@@ -1448,7 +1448,6 @@ $(document).ready(function(){
 			    	  }
 			    	  if(gameStat){
 			    		  statShortId2 = "static2";
-			    		  
 			    		  statShortVal2 = $('#static2').val();
 			    	  }
 			    	  if(failureStat){
@@ -1782,7 +1781,9 @@ function validateShortTitleStatId(event, thisAttr, callback){
 	   var dbId = $(thisAttr).attr('title');
 	   $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
 	   $(thisAttr).parent().find(".help-block").empty();
-	   var statIds = dbId;
+	   var statIds = "";
+	   if(dbId)
+		   statIds = dbId;
 	   //validation with other statistics if short  title is there .
 	   //if not valid then display duplicate data 
 	   if(activeTaskAttIdVal){
@@ -1815,7 +1816,46 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			   callback(false);
 		   }else{
 			   alert("count0");
-			     if(activeTaskAttIdName != 'static1' || activeTaskAttIdName != 'static2' || activeTaskAttIdName != 'static3'){
+			   alert("name::"+activeTaskAttIdName);
+			   if(activeTaskAttIdName == 'static1' || activeTaskAttIdName == 'static2' || activeTaskAttIdName == 'static3'){
+				   alert("static data");
+				   callback(false);
+				   activeTaskAttIdName = 'static'; 
+			    	 $.ajax({
+			               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
+			               type: "POST",
+			               datatype: "json",
+			               data: {
+			            	   activeTaskAttName:activeTaskAttName,
+			            	   activeTaskAttIdVal:activeTaskAttIdVal,
+			            	   activeTaskAttIdName:activeTaskAttIdName,
+			                   "${_csrf.parameterName}":"${_csrf.token}",
+			               },
+			               success: function emailValid(data, status) {
+			            	   var jsonobject = eval(data);
+			                   var message = jsonobject.message;
+			                   if('SUCCESS' != message){
+			                	     $(thisAttr).validator('validate');
+			                	     $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+			                	     $('.statShortTitleClass').parent().find(".help-block").empty();
+			                         if (callback)
+			     						callback(true);
+			                     }else{
+			                    	 $(thisAttr).val('');
+			                    	 $(thisAttr).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
+			          			     $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
+			                    	 $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
+			                         if (callback)
+			     						callback(false);
+			                         
+			                     }
+			               },
+			               error:function status(data, status) {
+			            	   callback(false);
+			               },
+			               global : false
+			           });
+			   }else{
 			    	 alert("not static");
 			    	 var dbIdentifierVal = '';
 			    	 if(activeTaskAttIdName == 'identifierId1'){
@@ -1875,44 +1915,6 @@ function validateShortTitleStatId(event, thisAttr, callback){
 				 			$(thisAttr).parent().find('.statShortTitleClass').removeClass("has-danger").removeClass("has-error");
 	          			    $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
 				 	  }
-			     }else{
-			    	 alert("static");
-			    	 callback(false);
-			    	 /* activeTaskAttIdName = 'static'; 
-			    	 $.ajax({
-			               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
-			               type: "POST",
-			               datatype: "json",
-			               data: {
-			            	   activeTaskAttName:activeTaskAttName,
-			            	   activeTaskAttIdVal:activeTaskAttIdVal,
-			            	   activeTaskAttIdName:activeTaskAttIdName,
-			                   "${_csrf.parameterName}":"${_csrf.token}",
-			               },
-			               success: function emailValid(data, status) {
-			            	   var jsonobject = eval(data);
-			                   var message = jsonobject.message;
-			                   if('SUCCESS' != message){
-			                	     $(thisAttr).validator('validate');
-			                	     $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-			                	     $('.statShortTitleClass').parent().find(".help-block").empty();
-			                         if (callback)
-			     						callback(true);
-			                     }else{
-			                    	 $(thisAttr).val('');
-			                    	 $(thisAttr).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
-			          			     $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
-			                    	 $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
-			                         if (callback)
-			     						callback(false);
-			                         
-			                     }
-			               },
-			               error:function status(data, status) {
-			            	   callback(false);
-			               },
-			               global : false
-			           }); */
 			     }
 		  }
 	   }else{
