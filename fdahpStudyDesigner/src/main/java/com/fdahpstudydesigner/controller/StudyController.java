@@ -2563,7 +2563,6 @@ public class StudyController {
 			logger.info("StudyController - updateStudyActionOnAction() - Starts");
 			ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 			ModelMap map = new ModelMap();
-			Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 			String message = FdahpStudyDesignerConstants.FAILURE;
 			String successMessage = "";
 			String actionSucMsg = "";
@@ -2987,14 +2986,25 @@ public class StudyController {
 				PrintWriter out = null;
 				String message = FdahpStudyDesignerConstants.FAILURE;
 				String customStudyId = "";
+				List<EligibilityTestBo> testBos;
+				ObjectMapper mapper = new ObjectMapper();
+				JSONArray eligibilityTestJsonArray = null;
 				try{
 					SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 					Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 					if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
 						String eligibilityTestId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId"))?"0":request.getParameter("eligibilityTestId");
+						String eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId"))?"0":request.getParameter("eligibilityId");
 						String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"0":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						message = studyService.deleteEligibilityTestQusAnsById(Integer.parseInt(eligibilityTestId), Integer.parseInt(studyId), sesObj, customStudyId);
+						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+							testBos = studyService.viewEligibilityTestQusAnsByEligibilityId(Integer.parseInt(eligibilityId));
+							if(testBos!= null && !testBos.isEmpty()){
+								eligibilityTestJsonArray = new JSONArray(mapper.writeValueAsString(testBos));
+							}	
+							jsonobject.put("eligibiltyTestList",eligibilityTestJsonArray);
+						}
 					}
 					jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
 					response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);

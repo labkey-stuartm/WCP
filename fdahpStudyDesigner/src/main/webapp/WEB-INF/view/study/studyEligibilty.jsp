@@ -113,7 +113,7 @@
        $('#eleFormId input,textarea,select').prop('disabled', true);
        $('#eleFormId').find('.elaborateClass').addClass('linkDis');
       </c:if>
-	   
+      initActions();
 	   $('.submitEle').click(function(e) {
 		   e.preventDefault();
 		   $('#actTy').remove();
@@ -125,18 +125,6 @@
 	   			if(isFromValid('#eleFormId'))
 	   				$('#eleFormId').submit();
 	   		}
-		});
-	   
-	    $('#addQaId').click(function() {
-			addOrEditOrViewQA("add", "");
-		});
-	   
-	    $('.viewIcon').click(function() {
-			addOrEditOrViewQA("view", "");
-		});
-	    
-	    $('.editIcon').click(function() {
-			addOrEditOrViewQA("edit", $(this).attr('etId'));
 		});
 	    
 	    if(viewPermission == 'view'){
@@ -270,6 +258,7 @@
 		    			datatype: "json",
 		    			data:{
 		    				eligibilityTestId: eligibilityTestId,
+		    				eligibilityId : '${eligibility.id}',
 		    				studyId : studyId,
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
@@ -281,13 +270,7 @@
 		    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 								    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 								}
-		    					table1
-		    			        .row( $(thisAttr).parents('tr') )
-		    			        .remove()
-		    			        .draw(false);
-		    					$.each($('#consent_list tr td:first-child'),function(index,val){
-		    					    $(this).html(index+1)
-		    					});
+		    					reloadEligibiltyTestDataTable(data.eligibiltyTestList);
 		    				} else {
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 		    					$('#alertMsg').show();
@@ -303,5 +286,51 @@
 			}
 		});
 	}
-	
+	function  reloadEligibiltyTestDataTable(eligibiltyTestList){
+		 $('#consent_list').DataTable().clear();
+		 if (eligibiltyTestList && eligibiltyTestList.length >0){
+			 $.each(eligibiltyTestList, function(i, obj) {
+				 var datarow = [];
+				 if(typeof obj.sequenceNo === "undefined" && typeof obj.sequenceNo === "undefined" ){
+						datarow.push(' ');
+				 }else{
+						datarow.push(obj.sequenceNo);
+				 }	
+				 if(typeof obj.question === "undefined" && typeof obj.question === "undefined" ){
+						datarow.push(' ');
+				 }else{
+						datarow.push(obj.question);
+				 }	
+				 var actions ='<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="'+obj.id+'"></span> '+
+				 '<span class="'+(obj.status ? "edit-inc" : "edit-inc-draft") + ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'+obj.id+'"></span>'+
+                 '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns('+obj.id+', this);"></span>';
+//                  var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span>'+
+//                  '<span class="edit-inc mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="" etid="15" data-original-title="Edit"></span>'+
+//                  '<span class="sprites_icon copy delete  deleteIcon" data-toggle="tooltip" data-placement="top" title="" onclick="deleteEligibiltyTestQusAns('+15+', this);" data-original-title="Delete"></span>';
+                 
+                 
+                 // 				 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span><span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+				 datarow.push(actions);
+				 $('#consent_list').DataTable().row.add(datarow);
+			 });
+			 $('#consent_list').DataTable().draw();
+			 initActions();
+		 }else{
+			 $('#consent_list').DataTable().draw();
+			 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Consent Sections before attempting to mark this section as Complete.');
+		 }
+	}
+	function initActions() {
+		 $(document).find('#addQaId').click(function() {
+				addOrEditOrViewQA("add", "");
+			});
+		   
+		    $(document).find('.viewIcon').click(function() {
+				addOrEditOrViewQA("view", $(this).attr('etId'));
+			});
+		    
+		    $(document).find('.editIcon').click(function() {
+				addOrEditOrViewQA("edit", $(this).attr('etId'));
+			});
+	}
 </script>

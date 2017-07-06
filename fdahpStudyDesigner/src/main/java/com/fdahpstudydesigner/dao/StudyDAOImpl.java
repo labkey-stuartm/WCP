@@ -3410,14 +3410,14 @@ public class StudyDAOImpl implements StudyDAO{
 			eligibilityDeleteResult = session
 					.getNamedQuery("EligibilityTestBo.deleteById")
 					.setInteger("eligibilityTestId", eligibilityTestId).executeUpdate();
-			eligibilityTestBos=session.createQuery("select id FROM EligibilityTestBo  WHERE sequenceNo > '"
+			eligibilityTestBos = session.createQuery("select id FROM EligibilityTestBo  WHERE sequenceNo > '"
 					+ eligibilityTestBo.getSequenceNo()
 					+ "' AND active = true AND "
 					+ "eligibilityId = '"
 					+ eligibilityTestBo.getEligibilityId() + "'").list();
-			reorderQuery = "update EligibilityTestBo  set sequenceNo=sequenceNo-1 where id in "
+			if(eligibilityDeleteResult > 0 && !eligibilityTestBos.isEmpty()) {
+				reorderQuery = "update EligibilityTestBo  set sequenceNo=sequenceNo-1 where id in "
 					+ "("+StringUtils.join(eligibilityTestBos, ",")+")";
-			if (eligibilityDeleteResult > 0) {
 				eligibilityDeleteResult = session.createQuery(reorderQuery).executeUpdate();
 			}
 			if (eligibilityDeleteResult > 0) {
