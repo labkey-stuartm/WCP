@@ -1303,6 +1303,8 @@ public class StudyServiceImpl implements StudyService {
 		boolean flag = false; 
 		try{
 			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId);
+			if(flag)
+			flag = studyDAO.deleteLiveStudy(customStudyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Error",e);
 		}
