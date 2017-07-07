@@ -1322,19 +1322,19 @@ $(document).ready(function(){
    });
    $('#Score_spatial_stat_id').on('click',function(){
 	        	   if($(this).is(":checked")){
-	        		    alert("checked ...");
+	        		    //alert("checked ...");
 	        			$('.addLineStaticBlock_Score_spatial').css("display","");
 	        			$('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', true);
 	        			$('#Score_spatial_stat_id').val(true);
 	        			$('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist','Y');
-	        			alert("attr value::"+ $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist'));
+	        			//alert("attr value::"+ $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist'));
 	        			$('.selectpicker').selectpicker('refresh');
 	        	   }else{
-	        		 alert("Not checked ...");  
+	        		// alert("Not checked ...");  
 	        	   	 $('.addLineStaticBlock_Score_spatial').css("display","none");
 	        	   	 $('.addLineStaticBlock_Score_spatial').find('.requireClass').attr('required', false);
 	        	   	 $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist','N');
-	        	   	 alert("attr value::"+ $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist'));
+	        	   	// alert("attr value::"+ $('.addLineStaticBlock_Score_spatial').find('.shortTitleStatCls').attr('exist'));
 	        	   	 $('#Score_spatial_stat_id').val(false);
 	        	   }
     });
@@ -1404,8 +1404,10 @@ $(document).ready(function(){
 			if(isFromValid("#activeContentFormId")){
 				  $('.scheduleTaskClass').removeAttr('disabled');
 			      $('.scheduleTaskClass').removeClass('linkDis');
-				  $("#doneId").attr("disabled",false);
-			      $("body").removeClass('loading');
+			      var shortTitle = $('#shortTitleId').val();
+			      if(shortTitle){
+			    validateShortTitleId('', function(st){
+				  if(st){
 			      var scoreStat = $('#Score_spatial_stat_id').is(":checked");
 			      var gameStat = $('#Number_of_Games_spatial_stat_id').is(":checked");
 			      var failureStat = $('#Number_of_Failures_spatial_stat_id').is(":checked");
@@ -1451,6 +1453,7 @@ $(document).ready(function(){
 			    		  statShortVal2 = $('#static2').val();
 			    	  }
 			    	  if(failureStat){
+			    		  //alert("1");
 			    		  statShortId3 = "static3";
 			    		  statShortVal3 = $('#static3').val(); 
 			    	  }
@@ -1474,7 +1477,7 @@ $(document).ready(function(){
 				    	    statObj.idname = dbShortId2; 
 			    	  jsonArray.push(statObj);
 			      }
-			      if(gameStat){
+			      if(failureStat){
 			    	  var statObj = new Object();
 			    	  statObj.id = statShortId3;
 			    	  statObj.dbVal = dbShortVal3;
@@ -1486,18 +1489,44 @@ $(document).ready(function(){
 			      if(jsonArray.length>0){
 			    	  validateStatisticsIds(jsonArray, function(val){
 			    		  if(val){
-			    			  alert("val"+val);
+			    			  $("#doneId").attr("disabled",false);
+							  $("body").removeClass('loading');
+			    			  doneActiveTask(this, 'done', function(val) {
+				 					if(val) {
+				 						    $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+				 	                      	$("#buttonText").val('completed');
+				 	                      	document.activeContentFormId.submit();
+				 					}
+				 			      }) 
+			    		  }else{
+			    			  //alert("Not");
+			    			  $("#doneId").attr("disabled",false);
+							  $("body").removeClass('loading');
+							  showErrMsg("Please fill in all mandatory fields.");
+				          	  $('.contentClass a').tab('show');
 			    		  }
 			    	  });
 			      }else{
+			    	  $("#doneId").attr("disabled",false);
+					  $("body").removeClass('loading');
 	 				  doneActiveTask(this, 'done', function(val) {
 	 					if(val) {
-	 						$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+	 						    $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
 	 	                      	$("#buttonText").val('completed');
 	 	                      	document.activeContentFormId.submit();
 	 					}
 	 			      }) 
 			     }
+				 }else{
+						$("#doneId").attr("disabled",false);
+						$("body").removeClass('loading');
+				 }
+			   }); 
+			   }else{
+				   $("#doneId").attr("disabled",false);
+				   $("body").removeClass('loading');
+				   $('.contentClass a').tab('show');
+			   }   
 			}else{
 					console.log("else of Done");
 					$("body").removeClass('loading');
@@ -1505,184 +1534,146 @@ $(document).ready(function(){
 					$('.contentClass a').tab('show');
 			}
 	    });
-//     $(document).on('click', '#doneId', function(e){
-// 	  	$("body").addClass('loading');
-// 	  	$("#doneId").attr("disabled",true);
-//         if($('#pickStartDate').val() == ''){
-// 		    $('#pickStartDate').attr("readonly",false);	
-// 		}
-// 		if($('#startWeeklyDate').val() == ''){
-// 			$('#startWeeklyDate').attr("readonly",false);	
-// 		}
-// 		var shortFlag = true;
-// 		var statFlag = true;
-// 		if(isFromValid("#activeContentFormId")){
-// 			  $('.scheduleTaskClass').removeAttr('disabled');
-// 		      $('.scheduleTaskClass').removeClass('linkDis');
-// 		      var shortTitle = $('#shortTitleId').val();
-// 			  var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-// 			  if(shortTitle){
-// 				validateShortTitleId('', function(st){
-// 						  if(st){
-// 							    //2nd one
-// 								if($('#Score_spatial_stat_id').is(":checked")){
-// 									  var statShort = '';
-// 	  					        	  var statShortVal = '';
-// 	  					        	  var staticShortStat = $('#static1').val();
-// 	  					        	  var dynaminShortStat = $('#identifierId1').val();
-// 	  					        	  if(staticShortStat){
-// 	  					        		  statShort = '#static1';
-// 	  					        		  statShortVal = staticShortStat;
-// 	  					        	  }
-// 	  					        	  if(dynaminShortStat){
-// 	  					        		  statShort = '#identifierId1';
-// 	  					        		  statShortVal = dynaminShortStat;
-// 	  					        	  }
-// 	  								  if(statShort && statShortVal){
-// 	  										  validateShortTitleStatId('', statShort , function(st){
-// 	  											  if(st){
-// 												  if($('#Number_of_Games_spatial_stat_id').is(":checked")){
-// 													  var statShort1 = '';
-// 					  					        	  var statShortVal1 = '';
-// 					  					        	  var staticShortStat1 = $('#static2').val();
-// 					  					        	  var dynaminShortStat1 = $('#identifierId2').val();
-// 					  					        	  if(staticShortStat){
-// 					  					        		  statShort1 = '#static2';
-// 					  					        		  statShortVal1 = staticShortStat1;
-// 					  					        	  }
-// 					  					        	  if(dynaminShortStat){
-// 					  					        		  statShort1 = '#identifierId2';
-// 					  					        		  statShortVal1 = dynaminShortStat1;
-// 					  					        	  }
-// 					  								  if(statShort1 && statShortVal1){
-// 					  									  validateShortTitleStatId('', statShort1 , function(st){
-// 					  											  if(st){
-// 					  												//3rd one
-// 																	  if($('#Number_of_Failures_spatial_stat_id').is(":checked")){
-// 																		  var statShort2 = '';
-// 										  					        	  var statShortVal2 = '';
-// 										  					        	  var staticShortStat2 = $('#static3').val();
-// 										  					        	  var dynaminShortStat2 = $('#identifierId3').val();
-// 										  					        	  if(staticShortStat){
-// 										  					        		  statShort2 = '#static3';
-// 										  					        		  statShortVal2 = staticShortStat2;
-// 										  					        	  }
-// 										  					        	  if(dynaminShortStat){
-// 										  					        		  statShort2 = '#identifierId3';
-// 										  					        		  statShortVal2 = dynaminShortStat2;
-// 										  					        	  }
-// 										  								  if(statShort2 && statShortVal2){
-// 										  									  validateShortTitleStatId('', statShort2 , function(st){
-// 										  											  if(st){
-// 										  												  $("#doneId").attr("disabled",false);
-// 										  											      $("body").removeClass('loading');
-// 										  												  doneActiveTask(this, 'done', function(val) {
-// 										  													if(val) {
-// 										  														$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-// 										  							                        	$("#buttonText").val('completed');
-// 										  							                        	document.activeContentFormId.submit();
-// 										  													}
-// 										  											      })
-// 										  											  }else{
-// 										  												  var statId3 = $('.shortTitleStatCls').attr('id');
-// 									  			  						      			  if(statId3 && statId3 == 'identifierId3'){
-// 									  			  						      				$("#identifierId3").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-// 									  			  						      			  }else{
-// 									  			  											  $("#static3").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>'); 
-// 									  			  						      			  }
-// 									  			  						      			  $("#doneId").attr("disabled",false);
-// 									  													  $("body").removeClass('loading'); 
-// 										  											  }
-// 										  									  }); 
-// 																	     }else{
-// 																		    $("#doneId").attr("disabled",false);
-// 								  										    $("body").removeClass('loading');
-// 								  											doneActiveTask(this, 'done', function(val) {
-// 								  												if(val) {
-// 								  													$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-// 								  						                        	$("#buttonText").val('completed');
-// 								  						                        	document.activeContentFormId.submit();
-// 								  												}
-// 								  										    })  
-// 																	   }
-// 					  											  }else{
-					  												  
-// 					  											  }
-// 					  										}else{
-// 					  											  var statId2 = $('.shortTitleStatCls').attr('id');
-// 			  			  						      			  if(statId2 && statId2 == 'identifierId2'){
-// 			  			  						      				$("#identifierId2").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-// 			  			  						      			  }else{
-// 			  			  											  $("#static2").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>'); 
-// 			  			  						      			  }
-// 			  			  						      			  $("#doneId").attr("disabled",false);
-// 			  													  $("body").removeClass('loading');
-// 					  										}
-// 					  								      });			  
-// 					  								  }else{
-// 					  									  var statId1 = $('.shortTitleStatCls').attr('id');
-// 	  			  						      			  if(statId1 && statId1 == 'identifierId1'){
-// 	  			  						      				$("#identifierId2").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-// 	  			  						      			  }else{
-// 	  			  											  $("#static2").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>'); 
-// 	  			  						      			  }
-// 	  			  						      			  $("#doneId").attr("disabled",false);
-// 	  													  $("body").removeClass('loading');
-// 					  								 }
-// 	  											  }else{
-// 	  												$("#doneId").attr("disabled",false);
-// 		  										    $("body").removeClass('loading');
-// 		  											doneActiveTask(this, 'done', function(val) {
-// 		  												if(val) {
-// 		  													$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-// 		  						                        	$("#buttonText").val('completed');
-// 		  						                        	document.activeContentFormId.submit();
-// 		  												}
-// 		  										    }) 
-// 	  											  }
-// 	  											}else{
-// 	  												$("#doneId").attr("disabled",false);
-// 	  											    $("body").removeClass('loading');  
-// 	  											}
-// 	  										  }); 
-// 	  								   }else{
-// 	  										  var statId = $('.shortTitleStatCls').attr('id');
-// 	  						      			  if(statId && statId == 'identifierId1'){
-// 	  						      				$("#identifierId1").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-// 	  						      			  }else{
-// 	  											  $("#static1").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>'); 
-// 	  						      			  }
-// 	  						      			  $("#doneId").attr("disabled",false);
-// 											  $("body").removeClass('loading');
-// 	  								  }
-// 								}else{
-// 										  $("#doneId").attr("disabled",false);
-// 									      $("body").removeClass('loading');
-// 										  doneActiveTask(this, 'done', function(val) {
-// 											if(val) {
-// 												$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-// 					                        	$("#buttonText").val('completed');
-// 					                        	document.activeContentFormId.submit();
-// 											}
-// 									      })
-// 							  }
-// 						  }else{
-// 							$("#doneId").attr("disabled",false);
-// 						    $("body").removeClass('loading');
-// 						  }
-// 					  });
-// 			}else{
-// 				 $("#doneId").attr("disabled",false);
-// 				 $("body").removeClass('loading'); 
-// 			}
-// 		}else{
-// 				console.log("else of Done");
-// 				$("body").removeClass('loading');
-// 				$("#doneId").attr("disabled",false);
-// 				showErrMsg("Please fill in all mandatory fields.");
-// 				$('.contentClass a').tab('show');
-// 		}
-//     });
+	    
+        $('#saveId').click(function(e) {
+       	 $("body").addClass('loading');
+       	 $("#saveId").attr("disabled",true);
+       	 var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+       	 if(shortTitleCount >=1){
+       		 showErrMsg("Please fill in all mandatory fields.");
+       		 $('.contentClass a').tab('show');
+       		 $("body").removeClass('loading');
+       		 $("#saveId").attr("disabled",false);
+                return false;
+       	 }else if(!$('#shortTitleId')[0].checkValidity()){
+            	 $("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+            	 showErrMsg("Please fill in all mandatory fields.");
+            	 $('.contentClass a').tab('show');
+                $("body").removeClass('loading');
+                $("#saveId").attr("disabled",false);
+                return false;
+         } else {
+       	        validateShortTitleId('', function(st){
+        		if(st){
+        		  var scoreStat = $('#Score_spatial_stat_id').is(":checked");
+  			      var gameStat = $('#Number_of_Games_spatial_stat_id').is(":checked");
+  			      var failureStat = $('#Number_of_Failures_spatial_stat_id').is(":checked");
+  			      var dbStatExist = true;
+  			      var statShortVal1 = '', statShortVal2 = '', statShortVal3 = '';
+  			      var statShortId1 = '', statShortId2 = '', statShortId3 = '';
+  			      var dbShortVal1 = '', dbShortVal2 = '', dbShortVal3 = '';
+  			      var dbShortId1 = '', dbShortId2 = '', dbShortId3 = '';
+  			      var statisticsData = $('.shortTitleStatCls').attr('id');
+  			      if(statisticsData){
+  			    	  var count = statisticsData.indexOf('identifier');
+  			    	  if(count == -1){
+  			    		  dbStatExist = false; 
+  			    	  }
+  			      }
+  			      if(dbStatExist){
+  			    	  if(scoreStat){
+  			    		  statShortId1 = "identifierId1";
+  			    		  dbShortVal1 = $('#dbidentifierId1').val();
+  			    		  dbShortId1 =  $('#dbidentifierId1').attr("title");
+  			    		  statShortVal1 = $('#identifierId1').val();
+  			    	  }
+  			    	  if(gameStat){
+  			    		  statShortId2 = "identifierId2";
+  			    		  dbShortVal2 = $('#dbidentifierId2').val();
+  			    		  dbShortId2 =  $('#dbidentifierId2').attr("title");
+  			    		  statShortVal2 = $('#identifierId2').val();
+  			    	  }
+  			    	  if(failureStat){
+  			    		  statShortId3 = "identifierId3";
+  			    		  dbShortVal3 = $('#dbidentifierId3').val();
+  			    		  dbShortId3 =  $('#dbidentifierId3').attr("title");
+  			    		  //alert("dbShortId3"+dbShortId3);
+  			    		  statShortVal3 = $('#identifierId3').val(); 
+  			    	  } 
+  			      }else{
+  			    	  if(scoreStat){
+  			    		  statShortId1 = "static1";
+  			    		  statShortVal1 = $('#static1').val();
+  			    	  }
+  			    	  if(gameStat){
+  			    		  statShortId2 = "static2";
+  			    		  statShortVal2 = $('#static2').val();
+  			    	  }
+  			    	  if(failureStat){
+  			    		  //alert("1");
+  			    		  statShortId3 = "static3";
+  			    		  statShortVal3 = $('#static3').val(); 
+  			    	  }
+  			      }
+  			      var jsonArray  = new Array();
+  			      if(scoreStat){
+  			    	  var statObj = new Object();
+  			    	  statObj.id = statShortId1;
+  			    	  statObj.dbVal = dbShortVal1;
+  			    	  statObj.idVal = statShortVal1;
+  			    	  if(dbShortId1)
+  			    	    statObj.idname = dbShortId1; 
+  			    	  jsonArray.push(statObj);
+  			      }
+  			      if(gameStat){
+  			    	  var statObj = new Object();
+  			    	  statObj.id = statShortId2;
+  			    	  statObj.dbVal = dbShortVal2;
+  			    	  statObj.idVal = statShortVal2;
+  			    	  if(dbShortId2)
+  				    	    statObj.idname = dbShortId2; 
+  			    	  jsonArray.push(statObj);
+  			      }
+  			      if(failureStat){
+  			    	  var statObj = new Object();
+  			    	  statObj.id = statShortId3;
+  			    	  statObj.dbVal = dbShortVal3;
+  			    	  statObj.idVal = statShortVal3;
+  			    	  if(dbShortId3)
+  				    	  statObj.idname = dbShortId3; 
+  			    	  jsonArray.push(statObj);
+  			      }
+  			      if(jsonArray.length>0){
+  			    	  validateStatisticsIds(jsonArray, function(val){
+  			    		  if(val){
+  			    			  $("#saveId").attr("disabled",false);
+  							  $("body").removeClass('loading');
+  			    			  doneActiveTask(this, 'save', function(val) {
+  				 					if(val) {
+  				 						    $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+  				 	                      	$("#buttonText").val('save');
+  				 	                      	document.activeContentFormId.submit();
+  				 					}
+  				 			      }) 
+  			    		  }else{
+  			    			  //alert("Not");
+  			    			  $("#saveId").attr("disabled",false);
+  							  $("body").removeClass('loading');
+  							  showErrMsg("Please fill in all mandatory fields.");
+  				          	  $('.contentClass a').tab('show');
+  			    		  }
+  			    	  });
+  			      }else{
+  			    	  $("#saveId").attr("disabled",false);
+  					  $("body").removeClass('loading');
+  	 				  doneActiveTask(this, 'save', function(val) {
+  	 					if(val) {
+  	 						    $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+  	 	                      	$("#buttonText").val('save');
+  	 	                      	document.activeContentFormId.submit();
+  	 					}
+  	 			      }) 
+  			     }	  
+        		}else{
+        			$("body").removeClass('loading');
+        			$("#saveId").attr("disabled",false);
+        		}
+        	   });
+           }
+		});
+	    
+	    
+	    
 	$('.selectpicker').selectpicker('refresh');
 	$('[data-toggle="tooltip"]').tooltip();
 	$('input').on('drop', function() {
@@ -1805,7 +1796,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			   }
 		   });
 		   if(count>0){
-			   alert("count");
+			  // alert("count");
 			   $(thisAttr).val('');
 			   $(thisAttr).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
 			   $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
@@ -1815,11 +1806,10 @@ function validateShortTitleStatId(event, thisAttr, callback){
           	   shortTitleStatFlag = false;
 			   callback(false);
 		   }else{
-			   alert("count0");
-			   alert("name::"+activeTaskAttIdName);
+			  // alert("count0");
+			   var staticShortTitleId = activeTaskAttIdName;
 			   if(activeTaskAttIdName == 'static1' || activeTaskAttIdName == 'static2' || activeTaskAttIdName == 'static3'){
-				   alert("static data");
-				   callback(false);
+				  // alert("static data");
 				   activeTaskAttIdName = 'static'; 
 			    	 $.ajax({
 			               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
@@ -1845,7 +1835,9 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			                    	 $(thisAttr).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
 			          			     $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
 			                    	 $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
-			                         if (callback)
+			                    	 showErrMsg("Please fill in all mandatory fields.");
+			                    	 $('.contentClass a').tab('show');
+			                    	 if (callback)
 			     						callback(false);
 			                         
 			                     }
@@ -1856,7 +1848,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			               global : false
 			           });
 			   }else{
-			    	 alert("not static");
+			    	// alert("not static");
 			    	 var dbIdentifierVal = '';
 			    	 if(activeTaskAttIdName == 'identifierId1'){
 			    		 dbIdentifierVal = $('#dbidentifierId1').val();
@@ -1866,15 +1858,14 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			    		 dbIdentifierVal = $('#dbidentifierId3').val();
 			    	 }
 			    	if(dbIdentifierVal && dbIdentifierVal!=activeTaskAttIdVal){
-			    		 alert("statIds:::"+statIds);
+			    		// alert("statIds:::"+statIds);
 				    	 if(statIds){
 				    		 activeTaskAttIdName = statIds; 
 				    	 }else{
 				    		 activeTaskAttIdName = 'static'; 
 				    	 }
-			    		 alert("ajax");
-			    		 callback(false);
-			    		 /* $.ajax({
+			    		 //alert("ajax");
+			    		  $.ajax({
 				               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
 				               type: "POST",
 				               datatype: "json",
@@ -1909,7 +1900,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 				            	   callback(false);
 				               },
 				               global : false
-				           }); */
+				           });
 			    	 }else{
 				 			callback(true);
 				 			$(thisAttr).parent().find('.statShortTitleClass').removeClass("has-danger").removeClass("has-error");
@@ -1926,7 +1917,7 @@ function validateStatisticsIds(jsonDatas, callback){
 	var arrayLength = jsonDatas.length; //cache the array length
 	var shortSatId = '';
 	var shortSatIdVal = '';
-	alert("inside stat");
+	//alert("inside stat");
 	 if (arrayLength > 1) { 
 		for(var i=0;i<arrayLength ; i++){
 			   var existId = jsonDatas[i].id; 
@@ -1948,19 +1939,16 @@ function validateStatisticsIds(jsonDatas, callback){
 			   }
 	   }
 	 }
-	 alert(flag);
+	 //alert(flag);
 	 if(!flag){ 
 		   if(shortSatId){
           	 if(shortSatIdVal === ""){
           		$("#"+shortSatId).val('');
-   			    $("#"+shortSatId).focus();
    			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
              	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
-          		//$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>This is a required field.</li></ul>"); 
-          		$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
+          		$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field.</li></ul>");
           	 }else{
           		$("#"+shortSatId).val('');
-   			    $("#"+shortSatId).focus();
    			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
              	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
              	$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
@@ -1968,7 +1956,7 @@ function validateStatisticsIds(jsonDatas, callback){
 		   }
 		   callback(false); 
 	 }else{
-		 alert("else..");
+		 //alert("else..");
 // 		 for(var i=0;i<arrayLength ; i++){
 // 			 var activeStatisticsBean =  new Object();
 			 
@@ -1996,35 +1984,14 @@ function validateStatisticsIds(jsonDatas, callback){
 		        						 $("#"+obj.id).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
 		        			          	 $("#"+obj.id).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
 		        			          	 $("#"+obj.id).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
-// 		        			          	 alert(obj.idVal);
-// 		        			          	 if(obj.idVal){
-// 		        			          		$("#"+obj.id).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
-// 		        			          	 }else{
-// 		        			          		$("#"+obj.id).parent().find(".help-block").append("<ul class='list-unstyled'><li>This is a required field.</li></ul>");
-// 		        			          	 }
 		        				 }
 		        		 });
 		        		  
 		        	  }
-		        	  callback(false);
-		          }else{
-		        	  callback(true);
-		          }
-		                     /* if('SUCCESS' != message){
-		                	     $(thisAttr).validator('validate');
-		                	     $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-		                	     $('.statShortTitleClass').parent().find(".help-block").empty();
-		                         if (callback)
-		     						callback(true);
-		                     }else{
-		                    	 $(thisAttr).val('');
-		                    	 $(thisAttr).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
-		          			     $(thisAttr).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
-		                    	 $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
-		                         if (callback)
-		     						callback(false);
-		                         
-		                     } */
+		        	   callback(false);
+		             }else{
+		        	   callback(true);
+		             }
 		           },
 		           error:function status(data, status) {
 		            	   callback(false);
