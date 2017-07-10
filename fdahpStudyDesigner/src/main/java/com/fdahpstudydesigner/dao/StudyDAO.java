@@ -102,4 +102,5 @@ public interface StudyDAO {
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId, String customStudyId);
+	public boolean deleteLiveStudy(String customStudyId);
 }
