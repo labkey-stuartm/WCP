@@ -573,12 +573,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						if(questionnaireBo.getId() != null){
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							questionnaireBo.setStatus(false);
+							//questionnaireBo.setStatus(false);
 							questionnaireBo.setIsChange(0);
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							questionnaireBo.setStatus(false);
+							//questionnaireBo.setStatus(false);
 							questionnaireBo.setIsChange(0);
 						}
 						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
