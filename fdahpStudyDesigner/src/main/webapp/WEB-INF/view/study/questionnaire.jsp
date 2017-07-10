@@ -40,6 +40,13 @@
     border-spacing: 10px; 
     *border-collapse: expression('separate', cellSpacing = '10px');
 }
+/* .dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: none !important;
+}
+
+.dataTables_scrollBody{
+	overflow-x: hidden !important;
+} */
 </style>
 
 <script type="text/javascript">
@@ -631,7 +638,9 @@ $(document).ready(function() {
          "columnDefs": [ 
           { orderable: false, targets: [0,1,2,3] },
           ],
-         
+          /* scrollY: 400,
+          scrollX: false,
+          scrollCollapse: true, */
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(actionPage != 'view'){
 	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
@@ -653,7 +662,6 @@ $(document).ready(function() {
 	        var r1;
 	        if(i==0){
 		        r1 = $(rowData[0]).attr('id');
-		        console.log("r1:"+r1);
 		    }	        
 		    if(i==1){
 		      if(r1 > $(rowData[0]).attr('id')){
@@ -1031,6 +1039,8 @@ $(document).ready(function() {
 						if(val) {
 							validateLinceChartSchedule('','',function(valid){
 								if(valid){
+									//document.contentFormId.submit();
+									document.contentFormId.action="/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}";
 									document.contentFormId.submit();
 								}else{
 									$("body").removeClass("loading");
@@ -1410,7 +1420,7 @@ function saveQuestionnaire(item, callback){
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
 	var isFormValid = true;
-	
+	var statusText = $("#status").val();
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
 	var repeat_questionnaire = ''
@@ -1424,7 +1434,8 @@ function saveQuestionnaire(item, callback){
 	
 	type_text = "schedule";
 	var questionnaire = new Object();
-	
+	questionnaire.status = statusText;
+	console.log("statusText:"+statusText);
 	if(id != null && id != '' && typeof id != 'undefined'){
 		questionnaire.id=id;
 	}
@@ -1745,6 +1756,7 @@ function doneQuestionnaire(item, actType, callback) {
     	var valForm = false;
     	console.log("valForm:"+valForm);
     	if(actType !=='save'){
+    		$("#status").val(true);
 	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
 	    		if(isFromValid("#oneTimeFormId")){
@@ -1773,6 +1785,7 @@ function doneQuestionnaire(item, actType, callback) {
 	    	}
     	} else {
     		valForm = true;
+    		$("#status").val(false);
     	} 
     	if(valForm) {
     		saveQuestionnaire(item, function(val) {

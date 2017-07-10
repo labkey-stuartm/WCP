@@ -10,6 +10,7 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -23,6 +24,7 @@ import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
@@ -88,7 +90,17 @@ public interface StudyDAO {
 	public StudyIdBean getLiveVersion(String customStudyId);
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 	public String validateActivityComplete(String studyId, String action);
+	
+	public Integer saveOrUpdateEligibilityTestQusAns(EligibilityTestBo eligibilityTestBo, Integer studyId, SessionObject sessionObject,String customStudyId);
+	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId, Integer studyId, SessionObject sessionObject,String customStudyId);
+	public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
+	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
+	public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
+	public int eligibilityTestOrderCount(Integer eligibilityId);
+	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle);
+	
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId, String customStudyId);
+	public boolean deleteLiveStudy(String customStudyId);
 }

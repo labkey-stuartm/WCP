@@ -72,11 +72,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used get the instruction of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo getInstructionsBo(Integer instructionId,String customStudyId) {
+	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - getInstructionsBo - Starts");
 		InstructionsBo instructionsBo = null;
 		try{
-			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,customStudyId);
+			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,questionnaireShortTitle);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getInstructionsBo - ERROR ", e);
 		}
@@ -472,11 +472,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId,String customStudyId) {
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
 		QuestionsBo questionsBo = null;
 		try{
-			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,customStudyId);
+			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,questionnaireShortTitle);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
 		}
@@ -682,11 +682,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the step information of questionnaire in a study
 	 */
 	@Override
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId) {
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
 		QuestionnairesStepsBo questionnairesStepsBo=null;
 		try{
-			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, customStudyId);
+			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, questionnaireShortTitle);
 					if(questionnairesStepsBo != null && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP) && questionnairesStepsBo.getFormQuestionMap() != null){
 						List<QuestionResponseTypeMasterInfoBo>	questionResponseTypeMasterInfoList =studyQuestionnaireDAO.getQuestionReponseTypeList();
 						if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty()){
