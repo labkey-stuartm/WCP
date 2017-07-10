@@ -76,6 +76,7 @@
 		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
+		            <div class="help-block with-errors red-txt"></div>
 			            <c:if test="${not empty notificationHistoryNoDateTime}">
 				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
 					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
