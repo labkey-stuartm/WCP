@@ -47,12 +47,12 @@
 			<div>
 				<div class="gray-xs-f mb-xs">
 					Study Video URL (if available <span>e.g:
-						http://www.google.com</span>) <small>(100 characters max) </small>
+						http://www.google.com</span>) <small>(300 characters max) </small>
 				</div>
 				<div class="form-group">
 					<input autofocus="autofocus" type="text" class="form-control"
 						id="studyMediaLinkId" name="mediaLink"
-						value="${studyBo.mediaLink}" maxlength="100"
+						value="${studyBo.mediaLink}" maxlength="300"
 						pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
 						title="Include http://"
 						data-pattern-error="Please enter a valid URL">
