@@ -168,9 +168,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart()) && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
 					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+				}else{
+					addQuestionnaireBo.setStudyLifetimeStart(null);
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
 					addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+				}else{
+					addQuestionnaireBo.setStudyLifetimeEnd(null);
 				}
 				if(questionnaireBo.getFrequency() != null){
 					addQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
@@ -193,9 +197,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getModifiedBy() != null){
 					addQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
 				}
-				if(questionnaireBo.getRepeatQuestionnaire() != null){
+				//if(questionnaireBo.getRepeatQuestionnaire() != null){
 					addQuestionnaireBo.setRepeatQuestionnaire(questionnaireBo.getRepeatQuestionnaire());
-				}
+				//}
 				if(questionnaireBo.getDayOfTheWeek() != null){
 					addQuestionnaireBo.setDayOfTheWeek(questionnaireBo.getDayOfTheWeek());
 				}

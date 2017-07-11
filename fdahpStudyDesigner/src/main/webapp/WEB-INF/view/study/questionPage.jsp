@@ -123,7 +123,7 @@ function isNumberKey(evt)
             </div>
             <div class="mt-lg">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
-               <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
+               <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response. Note that this is not editable after Study Launch.</small></div>
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
