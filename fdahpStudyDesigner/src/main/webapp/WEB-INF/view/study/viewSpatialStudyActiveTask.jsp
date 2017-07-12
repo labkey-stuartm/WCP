@@ -1207,7 +1207,7 @@
 	                          <div>
 	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
-	                                 <div class="form-group statShortTitleClass">
+	                                <div class="form-group statShortTitleClass">
 	                                     <input type="hidden" id="dbidentifierId3" title="${taskValueAttributeBo.attributeValueId}" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
 	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" exist="${taskValueAttributeBo.useForStatistic==true?'Y':'N'}" dbid="${taskValueAttributeBo.attributeValueId}" custAttType="cust" id="identifierId3" name="taskAttributeValueBos[9].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
@@ -1305,6 +1305,7 @@ $(document).ready(function(){
     	validateShortTitleStatId('', this, function(val){});
     })
      $('#identifierId3').blur(function(){
+    	 //alert("1");
     	validateShortTitleStatId('', this, function(val){});
     })
     $('#Score_spatial_chart_id').on('click',function(){
@@ -1848,7 +1849,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			               global : false
 			           });
 			   }else{
-			    	// alert("not static");
+			    	//alert("not static");
 			    	 var dbIdentifierVal = '';
 			    	 if(activeTaskAttIdName == 'identifierId1'){
 			    		 dbIdentifierVal = $('#dbidentifierId1').val();
@@ -1857,7 +1858,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 			    	 }else if(activeTaskAttIdName == 'identifierId3'){
 			    		 dbIdentifierVal = $('#dbidentifierId3').val();
 			    	 }
-			    	if(dbIdentifierVal && dbIdentifierVal!=activeTaskAttIdVal){
+			    	if(dbIdentifierVal!=activeTaskAttIdVal){
 			    		// alert("statIds:::"+statIds);
 				    	 if(statIds){
 				    		 activeTaskAttIdName = statIds; 
