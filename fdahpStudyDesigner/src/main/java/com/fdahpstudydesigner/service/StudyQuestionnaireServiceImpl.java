@@ -250,6 +250,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getPreviousFrequency() != null){
 					addQuestionnaireBo.setPreviousFrequency(questionnaireBo.getPreviousFrequency());
 				}
+				if(questionnaireBo.getCurrentFrequency() != null){
+					addQuestionnaireBo.setCurrentFrequency(questionnaireBo.getCurrentFrequency());
+				}
 				addQuestionnaireBo.setIsChange(questionnaireBo.getIsChange());
 				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo, sessionObject,customStudyId);
 			}
