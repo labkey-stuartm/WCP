@@ -76,7 +76,7 @@ function isNumber(evt) {
 			      <th>
 			       <c:if test="${empty permission}">
 			         <div class="dis-line form-group mb-none">
-			            <button type="button" class="btn btn-primary blue-btn" onclick="addComphernsionQuestionPage();">Add Question</button>
+			            <button type="button" class="btn btn-primary blue-btn" id="addQuestionId" onclick="addComphernsionQuestionPage();">Add Question</button>
 			         </div>
 			       </c:if>
 			      </th>
@@ -135,6 +135,7 @@ $(document).ready(function(){
 	</c:if>
 	$('input[name="needComprehensionTest"]').change(function(){
 		var val = $(this).val();
+		$("#addQuestionId").attr("disabled",true);
 		if(val == "Yes"){
 			$("#comprehensionTestMinimumScore").attr("required",true);
 			$("#mainContainer").show();
@@ -238,6 +239,8 @@ $(document).ready(function(){
 		$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
 	});
 	$("#saveId").click(function(){
+		$("#comprehensionTestMinimumScore").parents("form").validator("destroy");
+	    $("#comprehensionTestMinimumScore").parents("form").validator();
 		saveConsent('save');
 	});
 	if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
@@ -373,7 +376,8 @@ function saveConsent(type){
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
 	var studyId = $("#studyId").val();
-	if(studyId != null && studyId != '' && typeof studyId != 'undefined'){
+	if(studyId != null && studyId != '' && typeof studyId != 'undefined' &&
+			needComprehensionTestTxt != null && needComprehensionTestTxt != '' && typeof needComprehensionTestTxt != 'undefined'){
 		var consentInfo =  new Object();
 		if(consentId != null && consentId != '' && typeof consentId != 'undefined'){
 			consentInfo.id=consentId;
@@ -399,8 +403,9 @@ function saveConsent(type){
 				if(message == "SUCCESS"){
 					var consentInfoId = jsonobject.consentId;
 					$("#consentId").val(consentId);
-					/* $("#alertMsg").removeClass('e-box').addClass('s-box').html("Minimum score saved successfully");
-					$('#alertMsg').show(); */
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
+					$('#alertMsg').show(); 
+					$("#addQuestionId").attr("disabled",false);
 					if(type != "save"){
 						var a = document.createElement('a');
 						a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
