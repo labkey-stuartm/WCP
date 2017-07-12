@@ -211,6 +211,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnaireBo.getStatus() != null){
 					addQuestionnaireBo.setStatus(questionnaireBo.getStatus());
+					if(questionnaireBo.getStatus()){
+						questionnaireBo.setIsChange(1);
+					}else{
+						questionnaireBo.setIsChange(0);
+					}
 				}
 				if(questionnaireBo.getFrequency() != null){
 					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
