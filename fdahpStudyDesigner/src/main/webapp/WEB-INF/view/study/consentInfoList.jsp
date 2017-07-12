@@ -209,7 +209,7 @@ function deleteConsentInfo(consentInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent Section deleted successfully.");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
 	    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {

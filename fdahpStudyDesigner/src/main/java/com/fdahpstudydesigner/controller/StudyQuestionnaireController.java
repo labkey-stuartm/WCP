@@ -231,7 +231,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}
 				if(instructionId!= null && !instructionId.isEmpty() && null != studyBo){
-					instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId),studyBo.getCustomStudyId());
+					instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId),questionnaireBo.getShortTitle());
 					if(instructionsBo != null && instructionsBo.getQuestionnairesStepsBo() != null){
 						List<QuestionnairesStepsBo> questionnairesStepsList = studyQuestionnaireService.getQuestionnairesStepsList(instructionsBo.getQuestionnairesStepsBo().getQuestionnairesId(), instructionsBo.getQuestionnairesStepsBo().getSequenceNo());
 						map.addAttribute("destinationStepList", questionnairesStepsList);
@@ -573,12 +573,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						if(questionnaireBo.getId() != null){
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							questionnaireBo.setStatus(false);
+							//questionnaireBo.setStatus(false);
 							questionnaireBo.setIsChange(0);
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							questionnaireBo.setStatus(false);
+							//questionnaireBo.setStatus(false);
 							questionnaireBo.setIsChange(0);
 						}
 						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
@@ -877,7 +877,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
 			if(formId!= null && !formId.isEmpty() && null != studyBo){
-				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, studyBo.getCustomStudyId());
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle());
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
 					map.addAttribute("destinationStepList", destionationStepList);
@@ -1208,7 +1208,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
 			if(questionId!= null && !questionId.isEmpty()){
-				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(questionId), FdahpStudyDesignerConstants.QUESTION_STEP, studyBo.getCustomStudyId());
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(questionId), FdahpStudyDesignerConstants.QUESTION_STEP, questionnaireBo.getShortTitle());
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
 					map.addAttribute("destinationStepList", destionationStepList);
@@ -1488,9 +1488,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 			if(formId!= null && !formId.isEmpty()){
-				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, studyBo.getCustomStudyId());
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle());
 				if(questionId != null && !questionId.isEmpty()){
-					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),studyBo.getCustomStudyId());
+					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle());
 					map.addAttribute("questionsBo", questionsBo);
 					request.getSession().setAttribute(sessionStudyCount+"questionId", questionId);
 					if(questionnairesStepsBo != null){

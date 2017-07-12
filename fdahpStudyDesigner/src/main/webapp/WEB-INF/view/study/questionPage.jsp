@@ -123,7 +123,7 @@ function isNumberKey(evt)
             </div>
             <div class="mt-lg">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
-               <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
+               <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response. Note that this is not editable after Study Launch.</small></div>
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
@@ -1051,7 +1051,7 @@ function isNumberKey(evt)
 						   <input type="hidden" class="form-control" id="imageChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						   <div class="col-md-2 pl-none col-smthumb-2">
 						      <div class="form-group">
-						         <div class="sm-thumb-btn">
+						         <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 						            <div class="thumb-img">
 						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 						            </div>
@@ -1064,7 +1064,7 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-2 pl-none col-smthumb-2">
 						      <div class="form-group">
-						         <div class="sm-thumb-btn">
+						         <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 						            <div class="thumb-img">
 						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 						            </div>
@@ -1099,7 +1099,7 @@ function isNumberKey(evt)
 					<div class="image-choice row" id="0">
 					   <div class="col-md-2 pl-none col-smthumb-2">
 					      <div class="form-group">
-					         <div class="sm-thumb-btn">
+					         <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
@@ -1113,7 +1113,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-2 pl-none col-smthumb-2">
 					      <div class="form-group">
-					         <div class="sm-thumb-btn">
+					         <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
@@ -1146,7 +1146,7 @@ function isNumberKey(evt)
 					<div class="image-choice row" id="1">
 					   <div class="col-md-2 pl-none col-smthumb-2">
 					      <div class="form-group">
-					         <div class="sm-thumb-btn">
+					         <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 					            <div class="thumb-img">
 					             <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
@@ -1160,7 +1160,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-2 pl-none col-smthumb-2">
 					      <div class="form-group">
-					         <div class="sm-thumb-btn">
+					         <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
@@ -1793,9 +1793,12 @@ $(document).ready(function(){
 	}
     $('[data-toggle="tooltip"]').tooltip();
  // File Upload    
-    $(".sm-thumb-btn").click(function(){
+    /* $(".sm-thumb-btn").click(function(){
         $(this).next().click();
-    });
+    }); */
+    openUploadWindow=function(item){
+    	$(item).siblings('.upload-image').click();
+    }
     var _URL = window.URL || window.webkitURL;
 
     $(document).on('change', '.upload-image', function(e) {
@@ -2606,7 +2609,7 @@ function addImageChoice(){
 	var newImageChoice = "<div class='image-choice row' id='"+imageCount+"'>"+
 						 "	   <div class='col-md-2 pl-none col-smthumb-2'>"+
 						 "   <div class='form-group'>"+
-						 "      <div class='sm-thumb-btn'>"+
+						 "      <div class='sm-thumb-btn' onclick='openUploadWindow(this);'>"+
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
 						 "         <div class='textLabelimagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
@@ -2617,7 +2620,7 @@ function addImageChoice(){
 						 "</div>"+
 						 "<div class='col-md-2 pl-none col-smthumb-2'>"+
 						 "   <div class='form-group'>"+
-						 "      <div class='sm-thumb-btn'>"+
+						 "      <div class='sm-thumb-btn' onclick='openUploadWindow(this);'>"+
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
 						 "         <div class='textLabelselectImagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
@@ -2649,9 +2652,9 @@ function addImageChoice(){
     $(".image-choice").parent().find(".help-block").empty();
 	$(".image-choice").parents("form").validator("destroy");
 	$(".image-choice").parents("form").validator();
-	$(".sm-thumb-btn").click(function(){
+	/* $(".sm-thumb-btn").click(function(){
 		   $(this).next().click();
-    });
+    }); */
 	if($('.image-choice').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
