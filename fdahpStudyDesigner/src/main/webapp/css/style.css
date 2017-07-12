@@ -1759,3 +1759,15 @@ height:0px !important;
 .left-content-container ul li:nth-child(10){
 	border-bottom:none;
 }
+.ans-opts .addBtnDis{
+	display: none;
+}
+.ans-opts:last-child .addBtnDis{
+	display: inline-block;
+}
+.ans-opts:last-child .addBtnDis{
+    margin-top: -8px;
+}
+.cursonMove{
+ cursor: move !important;
+}

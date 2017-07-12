@@ -21,6 +21,7 @@ import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
@@ -542,11 +543,11 @@ public class StudyServiceImpl implements StudyService {
 	 * 
 	 */
 	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId) {
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId,SessionObject sessionObject) {
 		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteComprehensionTestQuestion(questionId,studyId);
+			message = studyDAO.deleteComprehensionTestQuestion(questionId,studyId,sessionObject);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteComprehensionTestQuestion() - Error",e);
 		}
@@ -591,6 +592,10 @@ public class StudyServiceImpl implements StudyService {
 					updateComprehensionTestQuestionBo = studyDAO.getComprehensionTestQuestionById(comprehensionTestQuestionBo.getId());
 				}else{
 					updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
+					updateComprehensionTestQuestionBo.setActive(true);
+				}
+				if(comprehensionTestQuestionBo.getStatus() != null){
+					updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
 				}
 				if(comprehensionTestQuestionBo.getQuestionText() != null){
 					updateComprehensionTestQuestionBo.setQuestionText(comprehensionTestQuestionBo.getQuestionText());
@@ -601,8 +606,8 @@ public class StudyServiceImpl implements StudyService {
 				if(comprehensionTestQuestionBo.getSequenceNo() != null){
 					updateComprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
 				}
-				if(comprehensionTestQuestionBo.isStructureOfCorrectAns() != null){
-					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.isStructureOfCorrectAns());
+				if(comprehensionTestQuestionBo.getStructureOfCorrectAns() != null){
+					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.getStructureOfCorrectAns());
 				}
 				if(comprehensionTestQuestionBo.getCreatedOn() != null){
 					updateComprehensionTestQuestionBo.setCreatedOn(comprehensionTestQuestionBo.getCreatedOn());
@@ -616,7 +621,7 @@ public class StudyServiceImpl implements StudyService {
 				if(comprehensionTestQuestionBo.getModifiedBy() != null){
 					updateComprehensionTestQuestionBo.setModifiedBy(comprehensionTestQuestionBo.getModifiedBy());
 				}
-				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size() > 0){
+				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
 					updateComprehensionTestQuestionBo.setResponseList(comprehensionTestQuestionBo.getResponseList());
 				}
 				updateComprehensionTestQuestionBo = studyDAO.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
@@ -641,7 +646,7 @@ public class StudyServiceImpl implements StudyService {
 		int count = 1;
 		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
 		try{
-			count = studyDAO.consentInfoOrder(studyId);
+			count = studyDAO.comprehensionTestQuestionOrder(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - comprehensionTestQuestionOrder() - Error",e);
 		}
@@ -822,7 +827,9 @@ public class StudyServiceImpl implements StudyService {
 			if(consentBo.getComprehensionTestMinimumScore() != null){
 				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			}
-			
+			if(consentBo.getNeedComprehensionTest() != null){
+				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
+			}
 			if(consentBo.getShareDataPermissions() != null){
 				updateConsentBo.setShareDataPermissions(consentBo.getShareDataPermissions());
 			}
@@ -830,8 +837,7 @@ public class StudyServiceImpl implements StudyService {
 			if(consentBo.getTitle() != null){
 				updateConsentBo.setTitle(consentBo.getTitle());
 			}
-			
-			
+					
 			if(consentBo.getTaglineDescription() != null){
 				updateConsentBo.setTaglineDescription(consentBo.getTaglineDescription());
 			}
@@ -1283,6 +1289,82 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
 		return message;
 	}
+    public Integer saveOrUpdateEligibilityTestQusAns(
+            EligibilityTestBo eligibilityTestBo, Integer studyId, SessionObject sessionObject,String customStudyId) {
+        logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");
+        Integer eligibilityTestId = 0;
+        Integer seqCount = 0;
+        try{
+            if(eligibilityTestBo != null ) {
+                if(null == eligibilityTestBo.getId()) {
+                    seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
+                    eligibilityTestBo.setSequenceNo(seqCount);
+                }
+                eligibilityTestId = studyDAO.saveOrUpdateEligibilityTestQusAns(eligibilityTestBo, studyId, sessionObject, customStudyId);
+            }
+        }catch(Exception e){
+            logger.error("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Error",e);
+        }
+        logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Ends");
+        return eligibilityTestId;
+    }
+
+    @Override
+    public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId,
+            Integer studyId, SessionObject sessionObject,String customStudyId) {
+        logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Starts");
+        String message = FdahpStudyDesignerConstants.SUCCESS;
+        try{
+            message = studyDAO.deleteEligibilityTestQusAnsById(eligibilityTestId, studyId, sessionObject, customStudyId);
+        }catch(Exception e){
+            logger.error("StudyServiceImpl - deleteEligibilityTestQusAnsById - Error",e);
+        }
+        logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Ends");
+        return message;
+    }
+
+    @Override
+    public EligibilityTestBo viewEligibilityTestQusAnsById(
+            Integer eligibilityTestId) {
+        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Starts");
+        EligibilityTestBo eligibilityTestBo = null;
+        try{
+            eligibilityTestBo = studyDAO.viewEligibilityTestQusAnsById(eligibilityTestId);
+        }catch(Exception e){
+            logger.error("StudyServiceImpl - viewEligibilityTestQusAnsById - Error",e);
+        }
+        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Ends");
+        return eligibilityTestBo;
+    }
+
+    @Override
+    public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(
+            Integer eligibilityId) {
+        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
+        List<EligibilityTestBo> eligibilityTestBos = null;
+        try{
+            eligibilityTestBos = studyDAO.viewEligibilityTestQusAnsByEligibilityId(eligibilityId);
+        }catch(Exception e){
+            logger.error("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Error",e);
+        }
+        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Ends");
+        return eligibilityTestBos;
+    }
+
+    @Override
+    public String reorderEligibilityTestQusAns(Integer eligibilityId,
+            int oldOrderNumber, int newOrderNumber, Integer studyId) {
+        logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Starts");
+        String message = FdahpStudyDesignerConstants.SUCCESS;
+        try {
+            message = studyDAO.reorderEligibilityTestQusAns(eligibilityId, oldOrderNumber, newOrderNumber, studyId);
+        } catch (Exception e) {
+            logger.error(
+                    "StudyServiceImpl - reorderEligibilityTestQusAns - Error", e);
+        }
+        logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Ends");
+        return message;
+    }
 
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
@@ -1311,4 +1393,19 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Ends");
 		return flag;
 	}
+	
+    @Override
+    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle) {
+        logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
+        String message = FdahpStudyDesignerConstants.SUCCESS;
+        try {
+            message = studyDAO.validateEligibilityTestKey(eligibilityTestId, shortTitle);
+        } catch (Exception e) {
+            logger.error(
+                    "StudyServiceImpl - validateEligibilityTestKey - Error", e);
+        }
+        logger.info("StudyServiceImpl - validateEligibilityTestKey - Ends");
+        return message;
+    }
+
 }

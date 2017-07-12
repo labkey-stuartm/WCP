@@ -903,20 +903,20 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
 			if(consentInfoBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber+" and CIBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId()+" and C.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo >="+newOrderNumber+" and CIBO.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo >="+newOrderNumber+" and CIBO.sequenceNo <"+oldOrderNumber+" and CIBO.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo="+ newOrderNumber+" where C.id="+consentInfoBo.getId()+" and C.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
@@ -1078,7 +1078,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" order by CTQBO.sequenceNo asc");
+			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" and CTQBO.active=1 order by CTQBO.sequenceNo asc");
 			comprehensionTestQuestionList = query.list();
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getComprehensionTestQuestionList() - Error",e);
@@ -1105,19 +1105,15 @@ public class StudyDAOImpl implements StudyDAO{
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		Session session = null;
 		List<ComprehensionTestResponseBo> comprehensionTestResponsList = null;
-		//Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			//String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class, questionId);
 			if(null!= comprehensionTestQuestionBo){
-				String searchQuery = "From ComprehensionTestResponseBo CRBO where CRBO.id="+comprehensionTestQuestionBo.getId();
+				String searchQuery = "From ComprehensionTestResponseBo CRBO where CRBO.comprehensionTestQuestionId="+comprehensionTestQuestionBo.getId();
 				query = session.createQuery(searchQuery);
 				comprehensionTestResponsList = query.list();
 				comprehensionTestQuestionBo.setResponseList(comprehensionTestResponsList);
 			}
-			//query = session.createQuery(searchQuery);
-			//comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getComprehensionTestQuestionById() - Error",e);
 		}finally{
@@ -1125,7 +1121,7 @@ public class StudyDAOImpl implements StudyDAO{
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Ends");
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Ends"); 	
 		return comprehensionTestQuestionBo;
 	}
 	
@@ -1139,36 +1135,49 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId) {
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId,SessionObject sessionObject) {
 		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
 		String searchQuery = "";
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo=null;
+		StudySequenceBo studySequence=null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
 			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
-			searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" order by CTQBO.sequenceNo asc";
+			searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" and CTQBO.active=1 order by CTQBO.sequenceNo asc";
 			comprehensionTestQuestionList = session.createQuery(searchQuery).list();
 			if(comprehensionTestQuestionList != null && !comprehensionTestQuestionList.isEmpty()){
 				boolean isValue = false;
-				for(ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList){
-					if(comprehensionTestQuestionBo.getId().equals(questionId)){
+				for(ComprehensionTestQuestionBo comprehensionTestQuestion : comprehensionTestQuestionList){
+					if(comprehensionTestQuestion.getId().equals(questionId)){
 						isValue=true;
 					}
-					if(isValue && !comprehensionTestQuestionBo.getId().equals(questionId)){
-						comprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo()-1);
-						session.update(comprehensionTestQuestionBo);
+					if(isValue && !comprehensionTestQuestion.getId().equals(questionId)){
+						comprehensionTestQuestion.setSequenceNo(comprehensionTestQuestion.getSequenceNo()-1);
+						session.update(comprehensionTestQuestion);
 					}
 				}
 			
 			}
-			String deleteQuery = "delete ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
-			query = session.createQuery(deleteQuery);
-			count = query.executeUpdate();
-			if(count > 0){
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class, questionId);
+			if(comprehensionTestQuestionBo != null){
+				comprehensionTestQuestionBo.setActive(false);
+				comprehensionTestQuestionBo.setModifiedBy(sessionObject.getUserId());
+				comprehensionTestQuestionBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+				session.saveOrUpdate(comprehensionTestQuestionBo);
 				message = FdahpStudyDesignerConstants.SUCCESS;
+				if(comprehensionTestQuestionBo.getStudyId() != null){
+					studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, comprehensionTestQuestionBo.getStudyId()).uniqueResult();
+					if(studySequence != null){
+						if(studySequence.isComprehensionTest()){
+							studySequence.setComprehensionTest(false);
+						}
+						session.saveOrUpdate(studySequence);
+					}
+				}
 			}
 			transaction.commit();
 		}catch(Exception e){
@@ -1222,31 +1231,22 @@ public class StudyDAOImpl implements StudyDAO{
 	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
 		logger.info("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - Starts");
 		Session session = null;
-		StudySequenceBo studySequence=null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(comprehensionTestQuestionBo.getId() == null){
-				studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, comprehensionTestQuestionBo.getStudyId()).uniqueResult();
-				if(studySequence != null){
-					studySequence.setComprehensionTest(true);
-				}else{
-					studySequence = new StudySequenceBo();
-					studySequence.setComprehensionTest(true);
-					studySequence.setStudyId(comprehensionTestQuestionBo.getStudyId());
-					
-				}
-				session.saveOrUpdate(studySequence);
-			}
 			session.saveOrUpdate(comprehensionTestQuestionBo);
-				if(comprehensionTestQuestionBo.getId() != null && comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
-					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
+			if(comprehensionTestQuestionBo.getId() != null && comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
+				String deleteQuery ="delete from comprehension_test_response where comprehension_test_question_id="+comprehensionTestQuestionBo.getId();
+				session.createSQLQuery(deleteQuery).executeUpdate();
+				for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
+					if(comprehensionTestResponseBo.getResponseOption() != null && !comprehensionTestResponseBo.getResponseOption().isEmpty()){
 						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
 							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
 						}
-						session.saveOrUpdate(comprehensionTestResponseBo);
+						session.save(comprehensionTestResponseBo);
 					}
 				}
+			}	
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1257,7 +1257,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - Ends");
-		return null;
+		return comprehensionTestQuestionBo;
 	}
 	
 	/**
@@ -1275,7 +1275,7 @@ public class StudyDAOImpl implements StudyDAO{
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc");
+			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" and CTQBO.active=1 order by CTQBO.sequenceNo desc");
 			query.setMaxResults(1);
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
 			if(comprehensionTestQuestionBo != null){
@@ -1311,30 +1311,40 @@ public class StudyDAOImpl implements StudyDAO{
 		Query query = null;
 		int count = 0;
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		StudySequenceBo studySequence=null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			String updateQuery ="";
-			query = session.createQuery("From ComprehensionTestQuestionBo CTB where CTB.studyId="+studyId+" and CTB.sequenceNo ="+oldOrderNumber);
+			query = session.createQuery("From ComprehensionTestQuestionBo CTB where CTB.studyId="+studyId+" and CTB.sequenceNo ="+oldOrderNumber+" and CTB.active=1");
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo)query.uniqueResult();
 			if(comprehensionTestQuestionBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo-1 where CTB.studyId="+studyId+" and CTB.sequenceNo <="+newOrderNumber+" and CTB.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo-1 where CTB.studyId="+studyId+" and CTB.sequenceNo <="+newOrderNumber+" and CTB.sequenceNo >"+oldOrderNumber+" and CTB.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ComprehensionTestQuestionBo CTB set CTB.sequenceNo="+ newOrderNumber+" where CTB.id="+comprehensionTestQuestionBo.getId());
+						query = session.createQuery("update ComprehensionTestQuestionBo CTB set CTB.sequenceNo="+ newOrderNumber+" where CTB.id="+comprehensionTestQuestionBo.getId()+" and CTB.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber+" and CTB.active=1";
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ComprehensionTestQuestionBo CTB set CTB.sequenceNo="+ newOrderNumber+" where CTB.id="+comprehensionTestQuestionBo.getId());
+						query = session.createQuery("update ComprehensionTestQuestionBo CTB set CTB.sequenceNo="+ newOrderNumber+" where CTB.id="+comprehensionTestQuestionBo.getId()+" and CTB.active=1");
 						count = query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+				if(comprehensionTestQuestionBo.getStudyId() != null){
+					studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, comprehensionTestQuestionBo.getStudyId()).uniqueResult();
+					if(studySequence != null){
+						if(studySequence.isComprehensionTest()){
+							studySequence.setComprehensionTest(false);
+						}
+						session.saveOrUpdate(studySequence);
 					}
 				}
 			}
@@ -1615,7 +1625,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 			}
 			
-			if(consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+			if(consentBo.getType() != null && consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 				studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, consentBo.getStudyId()).uniqueResult();
 				if(studySequence != null){
 					studySequence.seteConsent(false);
@@ -1628,7 +1638,7 @@ public class StudyDAOImpl implements StudyDAO{
 				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(consentBo);
-			if(consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+			if(consentBo.getType() != null && consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 				activity = "Study consentReview saved";
 				activitydetails = customStudyId+" -- Study consentReview saved but not marked as completed and cannot process to publish or launch the study ";
 			}else{
@@ -1851,9 +1861,17 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 				if(flag){
 					activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
-					activityDetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;
+					activityDetails = customStudyId+" -- comprehesntion test questions completed";
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, studyId);
+			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPREHENSION_TEST)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET comprehensionTest = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+				if(flag){
+					activity = "comprehension test";
+					activityDetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;
+				}
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyId);
 			}
 			if(count > 0){
 				msg = FdahpStudyDesignerConstants.SUCCESS;
@@ -3338,7 +3356,274 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - validateActivityComplete() - Ends");
 		return message;
 	}
+    /**
+     * @param eligibilityTestBo
+     * @return eligibilityTestId, {@link Integer}
+     */
+    @Override
+    public Integer saveOrUpdateEligibilityTestQusAns(
+            EligibilityTestBo eligibilityTestBo, Integer studyId, SessionObject sesObj, String customStudyId) {
+        logger.info("StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - Starts");
+        Session session = null;
+        Integer eligibilityTestId = 0;
+        Transaction trans = null;
+        String activity;
+        String activitydetails;
+        try {
+            session = hibernateTemplate.getSessionFactory().openSession();
+            trans = session.beginTransaction();
+            StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId).uniqueResult();
+            if(studySequence != null && !studySequence.isEligibility()) {
+                    studySequence.setEligibility(false);
+                    session.update(studySequence);
+            }
+            if(eligibilityTestBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+                activity = "EligibilityQus section done";
+                activitydetails = customStudyId+" -- EligibilityQus section done and eligible for mark as completed action";
+                eligibilityTestBo.setStatus(true);
+            }else{
+                activity = "EligibilityQus section saved";
+                activitydetails = customStudyId+" -- EligibilityQus section saved but not eligible for mark as completed action untill unless it is DONE";
+            }
+            session.saveOrUpdate(eligibilityTestBo);
+            auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateEligibilityTestQusAns");
+            eligibilityTestId = eligibilityTestBo.getId();
+            trans.commit();
+        } catch (Exception e) {
+            if (null != trans)
+                trans.rollback();
+            logger.error(
+                    "StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - ERROR ",
+                    e);
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+        logger.info("StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - Ends");
+        return eligibilityTestId;
+    }
 
+    /**
+     * @param eligibilityId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId, Integer studyId, SessionObject sessionObject,String customStudyId) {
+        logger.info("StudyDAOImpl - deleteEligibilityTestQusAnsById - Starts");
+        Session session = null;
+        Integer eligibilityDeleteResult = 0;
+        Transaction trans = null;
+        String result = FdahpStudyDesignerConstants.FAILURE;
+        String reorderQuery;
+        EligibilityTestBo eligibilityTestBo;
+        List<EligibilityTestBo> eligibilityTestBos;
+        
+        try {
+            session = hibernateTemplate.getSessionFactory().openSession();
+            trans = session.beginTransaction();
+            eligibilityTestBo = (EligibilityTestBo) session.getNamedQuery("EligibilityTestBo.findById").setInteger("eligibilityTestId", eligibilityTestId).uniqueResult();
+            eligibilityDeleteResult = session
+                    .getNamedQuery("EligibilityTestBo.deleteById")
+                    .setInteger("eligibilityTestId", eligibilityTestId).executeUpdate();
+            eligibilityTestBos = session.createQuery("select id FROM EligibilityTestBo  WHERE sequenceNo > '"
+                    + eligibilityTestBo.getSequenceNo()
+                    + "' AND active = true AND "
+                    + "eligibilityId = '"
+                    + eligibilityTestBo.getEligibilityId() + "'").list();
+            if(eligibilityDeleteResult > 0 && !eligibilityTestBos.isEmpty()) {
+                reorderQuery = "update EligibilityTestBo  set sequenceNo=sequenceNo-1 where id in "
+                    + "("+StringUtils.join(eligibilityTestBos, ",")+")";
+                eligibilityDeleteResult = session.createQuery(reorderQuery).executeUpdate();
+            }
+            if (eligibilityDeleteResult > 0) {
+                result = FdahpStudyDesignerConstants.SUCCESS;
+            }
+            if(eligibilityTestId > 0){
+                StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId).uniqueResult();
+                if(studySequence != null && !studySequence.isEligibility()) {
+                        studySequence.setEligibility(false);
+                        session.update(studySequence);
+                }
+            }
+            auditLogDAO.saveToAuditLog(session, transaction, sessionObject, "EligibilityQus", customStudyId+" -- EligibilityQus deleted","StudyDAOImpl - deleteEligibilityTestQusAnsById");
+            trans.commit();
+        } catch (Exception e) {
+            if (null != trans)
+                trans.rollback();
+            logger.error(
+                    "StudyDAOImpl - deleteEligibilityTestQusAnsById - ERROR ",
+                    e);
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+        logger.info("StudyDAOImpl - deleteEligibilityTestQusAnsById - Ends");
+        return result;
+    }
+
+    /**
+     * @param eligibilityId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(
+            Integer eligibilityId) {
+        logger.info("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
+        Session session = null;
+        List<EligibilityTestBo> eligibilityTestList = null;
+        try {
+            session = hibernateTemplate.getSessionFactory().openSession();
+            eligibilityTestList = session
+                    .getNamedQuery("EligibilityTestBo.findByEligibilityId")
+                    .setInteger("eligibilityId", eligibilityId).list();
+        } catch (Exception e) {
+            logger.error(
+                    "StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - ERROR ",
+                    e);
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+        logger.info("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - Ends");
+        return eligibilityTestList;
+    }
+
+    /**
+     * @param eligibilityTestId
+     * @return
+     */
+    @Override
+    public EligibilityTestBo viewEligibilityTestQusAnsById(
+            Integer eligibilityTestId) {
+        logger.info("StudyDAOImpl - viewEligibilityTestQusAnsById - Starts");
+        Session session = null;
+        EligibilityTestBo eligibilityTest = null;
+        try {
+            session = hibernateTemplate.getSessionFactory().openSession();
+            eligibilityTest = (EligibilityTestBo) session
+                    .getNamedQuery("EligibilityTestBo.findById")
+                    .setInteger("eligibilityTestId", eligibilityTestId)
+                    .uniqueResult();
+        } catch (Exception e) {
+            logger.error(
+                    "StudyDAOImpl - viewEligibilityTestQusAnsById - ERROR ", e);
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+        logger.info("StudyDAOImpl - viewEligibilityTestQusAnsById - Ends");
+        return eligibilityTest;
+    }
+
+    /**
+     * @param eligibilityTestBo
+     * @return
+     */
+    /**
+     * @param eligibilityId
+     * @param oldOrderNumber
+     * @param newOrderNumber
+     * @param studyId
+     * @return
+     */
+    @Override
+    public String reorderEligibilityTestQusAns(Integer eligibilityId,
+            int oldOrderNumber, int newOrderNumber, Integer studyId) {
+        logger.info("StudyDAOImpl - reorderEligibilityTestQusAns - Starts");
+        String message = FdahpStudyDesignerConstants.FAILURE;
+        Session session = null;
+        Query query = null;
+        int count = 0;
+        EligibilityTestBo eligibilityTest = null;
+        String updatenewOrderQuery;
+        Transaction trans = null;
+        try{
+            session = hibernateTemplate.getSessionFactory().openSession();
+            trans = session.beginTransaction();
+            String updateQuery ="";
+            query = session.getNamedQuery("EligibilityTestBo.findByEligibilityIdAndSequenceNo").setInteger("eligibilityId", eligibilityId).setInteger("sequenceNo", oldOrderNumber);
+            eligibilityTest = (EligibilityTestBo)query.uniqueResult();
+            if(eligibilityTest != null){
+                updatenewOrderQuery = "update EligibilityTestBo ETB set ETB.sequenceNo="
+                        + newOrderNumber
+                        + " where ETB.id="
+                        + eligibilityTest.getId();
+                if (oldOrderNumber < newOrderNumber) {
+                    updateQuery = "update EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo-1 where ETB.eligibilityId="
+                            + eligibilityId
+                            + " and ETB.sequenceNo <="
+                            + newOrderNumber
+                            + " and ETB.sequenceNo >"
+                            + oldOrderNumber+" AND ETB.active = true";
+                    query = session.createQuery(updateQuery);
+                    count = query.executeUpdate();
+                } else if(oldOrderNumber > newOrderNumber){
+                    updateQuery = "update EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo+1 where ETB.eligibilityId="
+                            + eligibilityId
+                            + " and ETB.sequenceNo >="
+                            + newOrderNumber
+                            + " and ETB.sequenceNo <"
+                            + oldOrderNumber+" AND ETB.active = true";
+                    query = session.createQuery(updateQuery);
+                    count = query.executeUpdate();
+                }
+                if (count > 0) {
+                    query = session.createQuery(updatenewOrderQuery);
+                    count = query.executeUpdate();
+                    message = FdahpStudyDesignerConstants.SUCCESS;
+                }
+                if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+                    StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId).uniqueResult();
+                    if(studySequence != null && !studySequence.isEligibility()) {
+                        studySequence.setEligibility(false);
+                        session.update(studySequence);
+                    }
+                }
+            }
+            trans.commit();
+        }catch(Exception e){
+            if(null != trans)
+                trans.rollback();
+            logger.error("StudyDAOImpl - reorderEligibilityTestQusAns - ERROR " , e);
+        }finally{
+            if(null != session && session.isOpen()){
+                session.close();
+            }
+        }
+        logger.info("StudyDAOImpl - reorderEligibilityTestQusAns - Ends");
+        return message;
+    }
+
+    @Override
+    public int eligibilityTestOrderCount(Integer eligibilityId) {
+        logger.info("StudyDAOImpl - eligibilityTestOrderCount - Starts");
+        Session session = null;
+        int count = 1;
+        EligibilityTestBo eligibilityTestBo = null;
+        try{
+            session = hibernateTemplate.getSessionFactory().openSession();
+            query = session.createQuery(
+                    "From EligibilityTestBo ETB where ETB.eligibilityId="
+                            + eligibilityId
+                            + " and ETB.active=1 order by ETB.sequenceNo DESC")
+                    .setMaxResults(1);
+            eligibilityTestBo = ((EligibilityTestBo) query.uniqueResult());
+            if(eligibilityTestBo != null){
+                count = eligibilityTestBo.getSequenceNo() + 1;
+            }
+        }catch(Exception e){
+            logger.error("StudyDAOImpl - eligibilityTestOrderCount - Error",e);
+        }
+        logger.info("StudyDAOImpl - eligibilityTestOrderCount - Ends");
+        return count;
+    }
+    
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
@@ -4005,6 +4290,28 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - deleteStudyByIdOrCustomstudyId() - Ends");
 		return message;
 	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public String validateEligibilityTestKey(Integer eligibilityTestId,
+            String shortTitle) {
+        logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
+        Session session = null;
+        List<EligibilityTestBo> eligibilityTestBos;
+        String result= FdahpStudyDesignerConstants.FAILURE;
+        try{
+            session = hibernateTemplate.getSessionFactory().openSession();
+            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle").setString("shortTitle", shortTitle).setInteger("eligibilityTestId", eligibilityTestId);
+            eligibilityTestBos = query.list();
+            if(eligibilityTestBos.isEmpty()) {
+                result = FdahpStudyDesignerConstants.SUCCESS;
+            }
+        }catch(Exception e){
+            logger.error("StudyDAOImpl - getStudyVersionInfo() - ERROR " , e);
+        }
+        logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
+        return result;
+}
 
 	@Override
 	public boolean deleteLiveStudy(String customStudyId) {
