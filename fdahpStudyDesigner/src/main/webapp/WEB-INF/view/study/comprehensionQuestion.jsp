@@ -161,6 +161,8 @@ $(document).ready(function() {
     	}
     });
 	$("#saveId").on("click",function(){
+		$(".right-content-body").parents("form").validator("destroy");
+	    $(".right-content-body").parents("form").validator();
 		saveComrehensionTestQuestion();
 	});
 	if($('.ans-opts').length > 1){
@@ -275,7 +277,8 @@ function saveComrehensionTestQuestion(){
 	comprehensionTestQuestion.structureOfCorrectAns=structureOfCorrectTxt;
 	comprehensionTestQuestion.responseList=questionResponseArray;
 	var formData = new FormData();
-	if(studyId != null && studyId!= '' && typeof studyId != 'undefined'){
+	if(studyId != null && studyId!= '' && typeof studyId != 'undefined' &&
+			questiontext != null && questiontext!= '' && typeof questiontext != 'undefined'){
 		formData.append("comprehenstionQuestionInfo", JSON.stringify(comprehensionTestQuestion)); 
 		$.ajax({ 
 	         url: "/fdahpStudyDesigner/adminStudies/saveComprehensionTestQuestion.do?_S=${param._S}",
@@ -293,7 +296,7 @@ function saveComrehensionTestQuestion(){
 				if(message == "SUCCESS"){
 					var questionId = jsonobject.questionId;
 					$("#id").val(questionId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Comprehension test question saved as draft.");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
 					$('#alertMsg').show();
 				}else{
 					var errMsg = jsonobject.errMsg;
@@ -312,6 +315,11 @@ function saveComrehensionTestQuestion(){
    			  setTimeout(hideDisplayMessage, 4000);
    		  }
 	   }); 
+	}else{
+		$('#questionText').validator('destroy').validator();
+		if(!$('#questionText')[0].checkValidity()) {
+			$("#questionText").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+		}
 	}
 }
 </script>
