@@ -72,11 +72,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used get the instruction of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo getInstructionsBo(Integer instructionId,String customStudyId) {
+	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - getInstructionsBo - Starts");
 		InstructionsBo instructionsBo = null;
 		try{
-			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,customStudyId);
+			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,questionnaireShortTitle);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getInstructionsBo - ERROR ", e);
 		}
@@ -168,9 +168,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart()) && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
 					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+				}else{
+					addQuestionnaireBo.setStudyLifetimeStart(null);
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
 					addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+				}else{
+					addQuestionnaireBo.setStudyLifetimeEnd(null);
 				}
 				if(questionnaireBo.getFrequency() != null){
 					addQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
@@ -193,9 +197,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getModifiedBy() != null){
 					addQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
 				}
-				if(questionnaireBo.getRepeatQuestionnaire() != null){
+				//if(questionnaireBo.getRepeatQuestionnaire() != null){
 					addQuestionnaireBo.setRepeatQuestionnaire(questionnaireBo.getRepeatQuestionnaire());
-				}
+				//}
 				if(questionnaireBo.getDayOfTheWeek() != null){
 					addQuestionnaireBo.setDayOfTheWeek(questionnaireBo.getDayOfTheWeek());
 				}
@@ -207,6 +211,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnaireBo.getStatus() != null){
 					addQuestionnaireBo.setStatus(questionnaireBo.getStatus());
+					if(questionnaireBo.getStatus()){
+						questionnaireBo.setIsChange(1);
+					}else{
+						questionnaireBo.setIsChange(0);
+					}
 				}
 				if(questionnaireBo.getFrequency() != null){
 					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
@@ -245,6 +254,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnaireBo.getPreviousFrequency() != null){
 					addQuestionnaireBo.setPreviousFrequency(questionnaireBo.getPreviousFrequency());
+				}
+				if(questionnaireBo.getCurrentFrequency() != null){
+					addQuestionnaireBo.setCurrentFrequency(questionnaireBo.getCurrentFrequency());
 				}
 				addQuestionnaireBo.setIsChange(questionnaireBo.getIsChange());
 				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo, sessionObject,customStudyId);
@@ -472,11 +484,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId,String customStudyId) {
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
 		QuestionsBo questionsBo = null;
 		try{
-			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,customStudyId);
+			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,questionnaireShortTitle);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
 		}
@@ -584,11 +596,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @param String : shortTitle
 	 */
 	@Override
-	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle,String questionnaireShortTitle) {
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle,questionnaireShortTitle);
+			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle,questionnaireShortTitle,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Error",e);
 		}
@@ -682,11 +694,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the step information of questionnaire in a study
 	 */
 	@Override
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId) {
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
 		QuestionnairesStepsBo questionnairesStepsBo=null;
 		try{
-			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, customStudyId);
+			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, questionnaireShortTitle);
 					if(questionnairesStepsBo != null && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP) && questionnairesStepsBo.getFormQuestionMap() != null){
 						List<QuestionResponseTypeMasterInfoBo>	questionResponseTypeMasterInfoList =studyQuestionnaireDAO.getQuestionReponseTypeList();
 						if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty()){
@@ -839,9 +851,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 
 	@Override
-	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle) {
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkFromQuestionShortTitle - Starts");
-		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle,questionnaireShortTitle);
+		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle,questionnaireShortTitle,customStudyId);
 	}
 
 	/**

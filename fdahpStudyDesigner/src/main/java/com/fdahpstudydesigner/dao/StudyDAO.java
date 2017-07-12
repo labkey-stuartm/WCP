@@ -8,6 +8,11 @@ import java.util.HashMap;
  */
 import java.util.List;
 
+
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
@@ -84,4 +89,8 @@ public interface StudyDAO {
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 	public String validateActivityComplete(String studyId, String action);
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
+	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
+	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId, String customStudyId);
+    public boolean deleteLiveStudy(String customStudyId);
+
 }

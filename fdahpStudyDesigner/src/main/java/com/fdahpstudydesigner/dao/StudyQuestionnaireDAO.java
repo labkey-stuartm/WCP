@@ -14,12 +14,12 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface StudyQuestionnaireDAO {
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
 	
-	public InstructionsBo getInstructionsBo(Integer instructionId,String customStudyId);
+	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle);
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId);
 	
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId,String customStudyId);
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId);
-	public QuestionsBo getQuestionsById(Integer questionId,String customStudyId);
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle);
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
@@ -28,8 +28,8 @@ public interface StudyQuestionnaireDAO {
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId);
 	
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId);
-	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle);
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle);
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle,String customStudyId);
 	
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId); 
@@ -41,7 +41,7 @@ public interface StudyQuestionnaireDAO {
 	
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject,String customStudyId);
 	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject,String customStudyId);
-	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle);
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle,String customStudyId);
 	
 	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId);
 	public Boolean isQuestionnairesCompleted(Integer studyId);
