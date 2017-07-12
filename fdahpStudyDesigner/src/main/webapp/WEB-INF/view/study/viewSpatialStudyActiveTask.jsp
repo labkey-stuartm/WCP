@@ -70,7 +70,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -87,7 +87,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -104,7 +104,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -121,7 +121,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -138,7 +138,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" required onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -155,7 +155,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" required onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -748,7 +748,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -765,7 +765,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -1308,6 +1308,10 @@ $(document).ready(function(){
     	 //alert("1");
     	validateShortTitleStatId('', this, function(val){});
     })
+    $('#identifierId1, #identifierId2, #identifierId3').on('keyup',function(){
+   	  $(this).parent().find(".help-block").empty();
+	  $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+    });
     $('#Score_spatial_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_Score_spatial').css("display","");
@@ -1770,7 +1774,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 	   var activeTaskAttName = 'identifierNameStat';
 	   var activeTaskAttIdVal = $(thisAttr).val();
 	   var activeTaskAttIdName = $(thisAttr).attr('id');
-	   var dbId = $(thisAttr).attr('title');
+	   var dbId = $(thisAttr).attr('dbid');
 	   $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
 	   $(thisAttr).parent().find(".help-block").empty();
 	   var statIds = "";
@@ -1790,7 +1794,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 				   if(val && statAttId!=activeTaskAttIdName){
 					   if(dbStatAttId)
 					    statIds = statIds +","+ dbStatAttId;
-					   if(val  == activeTaskAttIdVal){
+					   if(val.toLowerCase()  == activeTaskAttIdVal.toLowerCase()){
 						   count = count + 1;
 					   }
 				   }  
@@ -1927,7 +1931,7 @@ function validateStatisticsIds(jsonDatas, callback){
 				   for(var j = 0; j<arrayLength ; j++) {
 					   var statId = jsonDatas[j].id;
 					   var statVal = jsonDatas[j].idVal; 
-				       if (existId!=statId && existVal == statVal) {
+				       if (existId!=statId && existVal.toLowerCase() == statVal.toLowerCase()) {
 				    	   flag = false;
 				    	   shortSatId = jsonDatas[j].id;
 				    	   shortSatIdVal = jsonDatas[j].idVal;
@@ -2074,6 +2078,14 @@ function setLineChatStatCheckedVal(){
 var updateLogoutCsrf = function() {
 	$('#logoutCsrf').val('${_csrf.token}');
 	$('#logoutCsrf').prop('name', '${_csrf.parameterName}');
+}
+function isNumber(evt) {
+	evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
+    	 return false;
+    }
+    return true;
 }
 //# sourceURL=filename3.js
 </script>
