@@ -216,7 +216,7 @@
 			
 			
 			$('#studyNotificationFormId textarea,#datetimepicker,#timepicker1,#inlineRadio1').prop('disabled', false);
-			$('#studyNotificationFormId textarea').prop('readonly', true);
+			$('#studyNotificationFormId textarea').prop('disabled', true);
 			if($('#inlineRadio1').prop('checked')){
 				$('#datetimepicker, #timepicker1').attr('required', 'required');
 			}
@@ -318,6 +318,7 @@
         	  $('#inlineRadio1, #inlineRadio2').attr('required', 'required');
         	  $('#buttonType').val('resend');
         	  if(isFromValid('#studyNotificationFormId')){
+        		  $('#notificationText').prop('disabled',false);
         		  if($('#inlineRadio2').prop('checked')){
         			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
                 	  		if(result){

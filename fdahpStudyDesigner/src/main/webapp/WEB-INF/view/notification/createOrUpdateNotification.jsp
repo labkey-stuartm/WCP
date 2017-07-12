@@ -190,8 +190,9 @@ $(document).ready(function(){
 	
 	<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 		$('#appNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
-		$('#appNotificationFormId input,textarea').prop('disabled', false);
-		$('#appNotificationFormId textarea').prop('readonly', true);
+		$('#appNotificationFormId input').prop('disabled', false);
+		$('#appNotificationFormId textarea').prop('disabled', true);
+		//$('#appNotificationFormId textarea').prop('readonly', true);
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
 			$('#immiResendButton').html('Save');
@@ -281,6 +282,7 @@ $(document).ready(function(){
 	$('.resendNotification').on('click',function(){
 		$('#buttonType').val('resend');
 		if(isFromValid('#appNotificationFormId')){
+			$('#notificationText').prop('disabled',false);
 			 if($('#inlineRadio2').prop('checked')){
 	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
 	          	  		if(result){
