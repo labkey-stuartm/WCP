@@ -608,17 +608,6 @@ $(document).ready(function(){
 		  var shortFlag = true;
 		  var statFlag = true;
 		  if(isFromValid("#activeContentFormId")){
-			  if(!durationFlag){
-				  var clock = $('#inputClockId').val();
-					  if(clock)
-				     $('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
-			  }else{
-					$('#inputClockId').parent().find(".help-block").empty();
-					var dt = new Date();
-					$('#inputClockId').datetimepicker({format: 'HH:mm',
-				 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
-						maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
-				  }
 			  $('.scheduleTaskClass').removeAttr('disabled');
 			      $('.scheduleTaskClass').removeClass('linkDis');
 			      //alert("statFlag"+ statFlag);
@@ -627,10 +616,7 @@ $(document).ready(function(){
 				  if(shortTitle){
 						  validateShortTitleId('', function(st){
 							  if(st){
- 							var durationTime = $('#inputClockId').val();
- 							if(durationTime){
- 								if(durationTime != '00:00'){
- 									if($('#number_of_kicks_recorded_fetal_stat_id').is(":checked")){
+ 									if($('#number_of_moves_tower_stat_id').is(":checked")){
  									  var statShort = '';
  	  					        	  var statShortVal = '';
  	  					        	  var staticShortStat = $('#static').val();
@@ -683,15 +669,6 @@ $(document).ready(function(){
 												}
 										      })
  									}
- 								}else{
- 									$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
- 									$("#doneId").attr("disabled",false);
-									$("body").removeClass('loading');
- 								}
- 							}else{
- 								$("#doneId").attr("disabled",false);
-								$("body").removeClass('loading');
- 							}
 							  }else{
 								$("#doneId").attr("disabled",false);
 							$("body").removeClass('loading');
@@ -705,11 +682,6 @@ $(document).ready(function(){
 				console.log("else of Done");
 				$("body").removeClass('loading');
 				$("#doneId").attr("disabled",false);
-				if(!durationFlag){
-					var clock = $('#inputClockId').val();
- 					if(clock)
-					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
-				}
 				showErrMsg("Please fill in all mandatory fields.");
 				$('.contentClass a').tab('show');
 			}
@@ -728,17 +700,9 @@ $(document).ready(function(){
         	 $('.contentClass a').tab('show');
             $("body").removeClass('loading');
             return false;
-        } else {
+     } else {
    	 validateShortTitleId('', function(st){
     		if(st){
-    			if(!durationFlag){
-					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
-					$('#inputClockId').focus();
-					showErrMsg("Please fill in all mandatory fields.");
-					$('.contentClass a').tab('show');
-					$("body").removeClass('loading');
-					return false;
-				}else{
 	      			  var statShortTitleCount = $('.statShortTitleClass').find('.help-block').children().length;
 	      			  if(statShortTitleCount >= 1){
 	      				  var statId = $('.shortTitleStatCls').attr('id');
@@ -762,11 +726,6 @@ $(document).ready(function(){
       	              	if(statShort){
     	      		    	validateShortTitleStatId('', statShort , function(st){
     	    					  if(st){
-    	    						$('#inputClockId').parent().find(".help-block").empty();
-    	         					var dt = new Date();
-    	         					$('#inputClockId').datetimepicker({format: 'HH:mm',
-    	         					minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
-    	         					maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
     	         					doneActiveTask(this, 'save', function(val) {
     	         							if(val) {
     	         								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
@@ -798,7 +757,6 @@ $(document).ready(function(){
         					 }); 
     	      		      }
     	      	   }
-				}
     		}else{
     			$("body").removeClass('loading');
     		}
