@@ -211,6 +211,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnaireBo.getStatus() != null){
 					addQuestionnaireBo.setStatus(questionnaireBo.getStatus());
+					if(questionnaireBo.getStatus()){
+						questionnaireBo.setIsChange(1);
+					}else{
+						questionnaireBo.setIsChange(0);
+					}
 				}
 				if(questionnaireBo.getFrequency() != null){
 					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
@@ -249,6 +254,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnaireBo.getPreviousFrequency() != null){
 					addQuestionnaireBo.setPreviousFrequency(questionnaireBo.getPreviousFrequency());
+				}
+				if(questionnaireBo.getCurrentFrequency() != null){
+					addQuestionnaireBo.setCurrentFrequency(questionnaireBo.getCurrentFrequency());
 				}
 				addQuestionnaireBo.setIsChange(questionnaireBo.getIsChange());
 				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo, sessionObject,customStudyId);

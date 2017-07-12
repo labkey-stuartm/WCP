@@ -254,7 +254,16 @@ function isNumber(evt, thisAttr) {
             <!-- One Time Section-->    
             <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form" data-toggle="validator">
 	            <input type="hidden" name="frequency" id="frequencyId" value="${questionnaireBo.frequency}">
-	            <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
+	            <c:choose>
+	            	<c:when test="${questionnaireBo.frequency eq 'Daily'}">
+	            		<c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 1}"><input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}"></c:if>
+	            		<c:if test="${empty questionnaireBo.questionnairesFrequenciesList || fn:length(questionnaireBo.questionnairesFrequenciesList) le 1}"><input type="hidden" name="previousFrequency" id="previousFrequency" value="One time"></c:if>
+	            	</c:when>
+	            	<c:otherwise>
+	            		<input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
+	            	</c:otherwise>
+	            </c:choose>
+	            
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
@@ -1542,6 +1551,12 @@ function saveQuestionnaire(item, callback){
 		repeat_questionnaire = $("#days").val();
 		study_lifetime_end = $("#endDateId").text();
 		
+		
+		if($('.time-opts').length > 1){
+			questionnaire.currentFrequency="Daily";
+		}else{
+			questionnaire.currentFrequency="One Time";
+		}
 		$('.time-opts').each(function(){
 			var questionnaireFrequencey = new Object();
 			var id = $(this).attr("id");
