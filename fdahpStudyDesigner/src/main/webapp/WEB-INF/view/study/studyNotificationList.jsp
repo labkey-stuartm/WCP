@@ -50,14 +50,14 @@
 	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
 	                                <td>${studyNotification.checkNotificationSendingStatus}</td>
 	                                <td>
+	                                	<span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
 	                                	<c:if test="${studyNotification.notificationSent}">
-	                                    	<span class="sprites-icons-2 send mr-lg hideButtonIfPaused studyNotificationDetails dis-none <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="Resend"></span>
+	                                    	<span class="sprites-icons-2 send mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="Resend"></span>
 	                                    </c:if>
 	                                    <c:if test="${not studyNotification.notificationSent}">
 	                                    	<span class="${studyNotification.notificationDone?'edit-inc':'edit-inc-draft'} mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="Edit"></span>
 	                                    </c:if>
-	                                    <span class="sprites_icon copy mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${fn:escapeXml(studyNotification.notificationText)}" data-toggle="tooltip" data-placement="top" title="Copy"></span>   
-	                                	<span class="sprites_icon preview-g studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
+	                                    <span class="sprites_icon copy hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${fn:escapeXml(studyNotification.notificationText)}" data-toggle="tooltip" data-placement="top" title="Copy"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
