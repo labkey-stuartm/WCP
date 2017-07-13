@@ -44,9 +44,96 @@
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
                 <input type="hidden" id="version" name="version" value="${consentBo.version}">
                 <div id="menu1" class="tab-pane fade">
-                  <!-- <h3>Share Data Permissions</h3> -->
-                   <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div>
-                 <!--  <p style="text-align: center;">This feature is work in progress and coming soon.</p> -->
+                 <!--   <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div> -->
+                   <div class="mt-lg">
+                   		<div class="gray-xs-f mb-sm">Enable share data permissions step for this study? <span class="gray-xs-f mb-xs">(Please ensure you have the IRB mandate to allow this)</span></div>
+                   		<div class="col-md-12 pl-none">
+	                        <div class="form-group">
+	                            <span class="radio radio-info radio-inline p-45">
+	                                <input type="radio" id="inlineRadio5" value="option1" name="radioInline3" checked="checked">
+	                                <label for="inlineRadio5">Yes</label>
+	                            </span>
+	                            <span class="radio radio-inline">
+	                                <input type="radio" id="inlineRadio6" value="option1" name="radioInline3">
+	                                <label for="inlineRadio6">No</label>
+	                            </span>
+	                        </div>
+                    	</div>
+                    	<div class="col-md-12 p-none">
+		                    <div class="gray-xs-f mb-xs">Title</div>
+		                    <div class="form-group">
+		                        <input type="text" class="form-control" placeholde="" required />
+		                        <div class="help-block with-errors red-txt"></div>
+		                    </div>
+		                </div>
+		                <div class="col-md-12 p-none">
+		                    <div class="gray-xs-f mb-xs">Tagline Description</div>
+		                    <div class="form-group">
+		                        <input type="text" class="form-control" placeholder="" required />
+		                        <div class="help-block with-errors red-txt"></div>
+		                    </div>
+		                </div>
+		                <div class="col-md-12 p-none">
+		                    <div class="gray-xs-f mb-xs">Short Description for RO</div>
+		                    <div class="form-group">
+		                        <input type="text" class="form-control" placeholder="" required />
+		                        <div class="help-block with-errors red-txt"></div>
+		                    </div>
+		                </div>
+		                <div class="col-md-12 p-none">
+		                    <div class="gray-xs-f mb-xs">Long Description for RO</div>
+		                    <div class="form-group">
+		                        <textarea class="form-control" maxlength="250" rows="5" id="rejoin_comment_yes" data-error="Please enter plain text of up to 250 characters max." placeholder="" required="required"></textarea>
+		                        <div class="help-block with-errors red-txt"></div>
+		                    </div>
+		                </div>
+		                <div class="col-md-12 p-none">
+		                     <div class="gray-xs-f mb-xs">Data Partner</div>
+		                     <div>
+		                        <textarea id="editor" name="area"></textarea>
+		                     </div>
+		                </div>
+		                <div class="col-md-12 pl-none mt-lg">
+		                	<div class="gray-xs-f mb-sm">Allow user to proceed if permission not provided</div>
+	                        <div class="form-group">
+	                            <span class="radio radio-info radio-inline p-45">
+	                                <input type="radio" id="inlineRadio7" value="option1" name="radioInline4" checked="checked">
+	                                <label for="inlineRadio7">Yes</label>
+	                            </span>
+	                            <span class="radio radio-inline">
+	                                <input type="radio" id="inlineRadio8" value="option1" name="radioInline4">
+	                                <label for="inlineRadio8">No</label>
+	                            </span>
+	                        </div>
+                    	</div>
+                    	 <div class="col-md-12 pl-none mt-lg mb-xlg">
+                    	 	<span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" onclick="viewQuestionnaires(124);" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span>
+                    	 </div>
+                    	 <!-- <div class="container">
+							  <div class="modal fade" id="myModal" role="dialog">
+							    <div class="modal-dialog" id="i__phone">
+							    	<button type="button" class="close" data-dismiss="modal">&times;</button>
+							    	<div class="i__phone__bg">
+							    		<div class="i__phone__content">
+							    			<div class=" ">
+							    				<div class="black-md-f text-uppercase dis-line line34 mb-sm mt-xlg">Title</div>
+							    				<div class="gray-xs-f mb-sm">Tagline Description</div>
+							    				<div classs=""mb-xlg><a href="#">Learn More</a></div>
+							    			</div>
+							    			<div>
+							    				<ul>
+							    					<li>List</li>
+							    					<li>List</li>
+							    					<li>List</li>
+							    				</ul>
+							    			</div>
+							    		</div>
+							    	</div>
+							    </div>
+							  </div>
+							  
+							</div> -->
+                   </div>
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-lg">
@@ -100,9 +187,22 @@
 	                    </div>
 	                </div>
                 <div id="menu3" class="tab-pane fade">
-                    <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div>
-                    <div style="display:none;">
-                        <div class="mt-lg form-group">
+                    <div class="mt-xlg text-weight-semibold">The mobile app captures the fallowinng from the user as  part of Consent to the study : </div>
+                    <div class="mt-lg">
+	                    <ul class="list-style-image">
+	                    	<li>Agreement to the content in the Consent Document
+			                    <div class="form-group mt-sm mb-none">
+			                        <input type="text" class="form-control" placeholder="Text message on app to confirm review and agreement of the Consent Document *" required />
+			                        <div class="help-block with-errors red-txt"></div>
+			                    </div>
+				            </li>
+	                    	
+	                    	<li>First Name</li>
+	                    	<li>Last Name</li>
+	                    	<li>E-signature</li>
+	                    	<li>Date and Time of providing Consent</li>
+	                    </ul>
+                        <%-- <div class="mt-lg form-group">
                             <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="agreementCB" value="No" name="eConsentAgree" ${consentBo.eConsentAgree=='Yes'?'checked':''}>
                                 <label for="agreementCB"> Agreement to the content in the Consent Document</label>
@@ -134,7 +234,7 @@
                                 <input type="checkbox" id="dateTimeCB" value="Yes" name="eConsentDatetime" checked disabled>
                                 <label for="dateTimeCB"> Date and Time of providing Consent</label>
                             </span> 
-                             <div class="help-block with-errors red-txt"></div>
+                             <div class="help-block with-errors red-txt"></div> --%>
                         </div>
                     </div>
                 </div>              
@@ -497,4 +597,27 @@ function maxLenValEditor() {
 	}
 	return replacedString;
 } */
+</script>
+<script>
+$(document).ready(function(){  
+    
+    //wysiwyg editor
+    if($("#editor").length > 0){
+	    tinymce.init({
+	        selector: "#editor",
+	        theme: "modern",
+	        skin: "lightgray",
+	        height:180,
+	        plugins: [
+	            "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
+	            "save contextmenu directionality paste"
+	        ],
+	        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+	        menubar: false,
+	        toolbar_items_size: 'small',
+	        content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+	    });
+	}
+});
+
 </script>
