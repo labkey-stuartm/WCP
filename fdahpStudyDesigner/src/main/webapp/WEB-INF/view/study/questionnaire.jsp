@@ -40,6 +40,13 @@
     border-spacing: 10px; 
     *border-collapse: expression('separate', cellSpacing = '10px');
 }
+/* .dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: none !important;
+}
+
+.dataTables_scrollBody{
+	overflow-x: hidden !important;
+} */
 </style>
 
 <script type="text/javascript">
@@ -247,7 +254,16 @@ function isNumber(evt, thisAttr) {
             <!-- One Time Section-->    
             <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form" data-toggle="validator">
 	            <input type="hidden" name="frequency" id="frequencyId" value="${questionnaireBo.frequency}">
-	            <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
+	            <c:choose>
+	            	<c:when test="${questionnaireBo.frequency eq 'Daily'}">
+	            		<c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 1}"><input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}"></c:if>
+	            		<c:if test="${empty questionnaireBo.questionnairesFrequenciesList || fn:length(questionnaireBo.questionnairesFrequenciesList) le 1}"><input type="hidden" name="previousFrequency" id="previousFrequency" value="One time"></c:if>
+	            	</c:when>
+	            	<c:otherwise>
+	            		<input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
+	            	</c:otherwise>
+	            </c:choose>
+	            
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
@@ -631,7 +647,9 @@ $(document).ready(function() {
          "columnDefs": [ 
           { orderable: false, targets: [0,1,2,3] },
           ],
-         
+          /* scrollY: 400,
+          scrollX: false,
+          scrollCollapse: true, */
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(actionPage != 'view'){
 	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
@@ -653,7 +671,6 @@ $(document).ready(function() {
 	        var r1;
 	        if(i==0){
 		        r1 = $(rowData[0]).attr('id');
-		        console.log("r1:"+r1);
 		    }	        
 		    if(i==1){
 		      if(r1 > $(rowData[0]).attr('id')){
@@ -911,7 +928,7 @@ $(document).ready(function() {
     	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
     
-    $(".clock").not('.cursor-none, :disabled').datetimepicker({
+    $(".clock").not('.cursor-none').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
@@ -1031,6 +1048,8 @@ $(document).ready(function() {
 						if(val) {
 							validateLinceChartSchedule('','',function(valid){
 								if(valid){
+									//document.contentFormId.submit();
+									document.contentFormId.action="/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}";
 									document.contentFormId.submit();
 								}else{
 									$("body").removeClass("loading");
@@ -1342,7 +1361,7 @@ function removeDate(param){
 		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
-    $('#'+item).not('.cursor-none, :disabled').datetimepicker({
+    $('#'+item).not('.cursor-none').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
@@ -1410,7 +1429,7 @@ function saveQuestionnaire(item, callback){
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
 	var isFormValid = true;
-	
+	var statusText = $("#status").val();
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
 	var repeat_questionnaire = ''
@@ -1424,7 +1443,8 @@ function saveQuestionnaire(item, callback){
 	
 	type_text = "schedule";
 	var questionnaire = new Object();
-	
+	questionnaire.status = statusText;
+	console.log("statusText:"+statusText);
 	if(id != null && id != '' && typeof id != 'undefined'){
 		questionnaire.id=id;
 	}
@@ -1531,6 +1551,12 @@ function saveQuestionnaire(item, callback){
 		repeat_questionnaire = $("#days").val();
 		study_lifetime_end = $("#endDateId").text();
 		
+		
+		if($('.time-opts').length > 1){
+			questionnaire.currentFrequency="Daily";
+		}else{
+			questionnaire.currentFrequency="One Time";
+		}
 		$('.time-opts').each(function(){
 			var questionnaireFrequencey = new Object();
 			var id = $(this).attr("id");
@@ -1745,6 +1771,7 @@ function doneQuestionnaire(item, actType, callback) {
     	var valForm = false;
     	console.log("valForm:"+valForm);
     	if(actType !=='save'){
+    		$("#status").val(true);
 	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
 	    		if(isFromValid("#oneTimeFormId")){
@@ -1773,6 +1800,7 @@ function doneQuestionnaire(item, actType, callback) {
 	    	}
     	} else {
     		valForm = true;
+    		$("#status").val(false);
     	} 
     	if(valForm) {
     		saveQuestionnaire(item, function(val) {

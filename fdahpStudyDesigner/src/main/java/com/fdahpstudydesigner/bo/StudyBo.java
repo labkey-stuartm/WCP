@@ -31,6 +31,7 @@ import com.fdahpstudydesigner.bean.StudyListBean;
 	@NamedQuery(name = "updateStudyVersion", query = "UPDATE StudyBo SET live=2 WHERE customStudyId=:customStudyId"),
 	@NamedQuery(name = "getStudyLiveVersion", query = " From StudyBo SBO WHERE SBO.live=1 AND customStudyId=:customStudyId"),
 	@NamedQuery(name = "getStudyBycustomStudyId", query = " From StudyBo SBO WHERE customStudyId=:customStudyId"),
+	@NamedQuery(name = "getStudyDraftVersion", query = " From StudyBo SBO WHERE SBO.live=0 AND customStudyId=:customStudyId"),
 })
 public class StudyBo implements Serializable{
 	

@@ -114,6 +114,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Transient
 	private Integer shortTitleDuplicate = 0;
+	
+	@Transient
+	private String currentFrequency;
 
 	public Integer getId() {
 		return this.id;
@@ -332,6 +335,14 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setIsChange(Integer isChange) {
 		this.isChange = isChange;
+	}
+
+	public String getCurrentFrequency() {
+		return currentFrequency;
+	}
+
+	public void setCurrentFrequency(String currentFrequency) {
+		this.currentFrequency = currentFrequency;
 	}
 	
 }

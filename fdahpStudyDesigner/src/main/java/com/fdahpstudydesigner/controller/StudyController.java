@@ -2719,4 +2719,64 @@ public class StudyController {
 				is.close();
 		}
 	}
+	
+	/**
+	 * @author Ronalin
+	 * @param request
+	 * @param response
+	 */
+		@RequestMapping("/deleteStudy.do")
+		public ModelAndView deleteStudy(HttpServletRequest request) {
+		logger.info("StudyController - deleteStudy - Starts");
+		ModelAndView mav = new ModelAndView("redirect:login.do");
+		boolean flag = false;
+		try{
+				
+			String cusId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("cusId"))?"":request.getParameter("cusId");
+				if(!cusId.isEmpty()){
+					flag = studyService.deleteStudyByCustomStudyId(cusId);
+					if(flag){
+						System.out.println("deleted successfully");
+						request.getSession(false).setAttribute("sucMsg", "deleted successfully");
+					}else{
+						request.getSession(false).setAttribute("errMsg", "DB issue or study does not exist");
+					}
+				}
+				
+		}catch(Exception e){
+			logger.error("StudyController - deleteStudy - ERROR",e);
+		}
+		logger.info("StudyController - deleteStudy - Ends");
+		return mav;
+	}
+		
+		/**
+		 * @author Ronalin
+		 * @param request
+		 * @param response
+		 */
+			@RequestMapping("/resetStudy.do")
+			public ModelAndView resetStudy(HttpServletRequest request) {
+			logger.info("StudyController - resetStudy - Starts");
+			ModelAndView mav = new ModelAndView("redirect:login.do");
+			boolean flag = false;
+			try{
+				String cusId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("cusId"))?"":request.getParameter("cusId");
+					if(!cusId.isEmpty()){
+						flag = studyService.resetDraftStudyByCustomStudyId(cusId);
+						if(flag){
+							request.getSession(false).setAttribute("sucMsg", "Reset successfully");
+						}else{
+							request.getSession(false).setAttribute("errMsg", "DB issue or study does not exist");
+						}
+					}
+					
+			}catch(Exception e){
+				logger.error("StudyController - resetStudy - ERROR",e);
+			}
+			logger.info("StudyController - resetStudy - Ends");
+			return mav;
+		}	
+	
+	
 }

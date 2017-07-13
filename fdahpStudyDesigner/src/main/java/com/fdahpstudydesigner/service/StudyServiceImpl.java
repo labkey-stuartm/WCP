@@ -1283,4 +1283,32 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
 		return message;
 	}
+
+	@Override
+	public boolean deleteStudyByCustomStudyId(String customStudyId) {
+		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Starts");
+		boolean flag = false; 
+		try{
+			flag = studyDAO.deleteStudyByCustomStudyId(customStudyId);
+            if(flag)
+            flag = studyDAO.deleteLiveStudy(customStudyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - deleteStudyByCustomStudyId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Ends");
+		return flag;
+	}
+
+	@Override
+	public boolean resetDraftStudyByCustomStudyId(String customStudyId) {
+		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Starts");
+		boolean flag = false; 
+		try{
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Ends");
+		return flag;
+	}
 }
