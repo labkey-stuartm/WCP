@@ -70,7 +70,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -87,7 +87,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -104,7 +104,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -121,7 +121,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="playspeedId"  class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required onkeypress="return isNumber(event)"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -138,7 +138,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" required onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumtestId" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -155,7 +155,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" required onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumFailureId" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -748,7 +748,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -765,7 +765,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -782,7 +782,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -799,7 +799,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="playspeedId" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -816,7 +816,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumtestId" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -833,7 +833,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumFailureId" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -1288,6 +1288,93 @@ $(document).ready(function(){
 			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
  	   }
     }
+    $('#initialspanId').keyup(function(){	
+    	var value= $(this).val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+        if(value){
+        	if(parseInt($(this).val()) < 2){
+            	$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            }
+        }else{
+        	$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+        }
+    });
+    $("#minimumspanId").keyup(function(){	
+    	var value= $(this).val();
+    	var initialSpanVal = $('#initialspanId').val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(initialSpanVal){
+    		if(parseInt($(this).val()) > parseInt(initialSpanVal)){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+    		}
+    	}else{
+    		$('#initialspanId').val('');
+   		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
+            $('#initialspanId').parent().find(".help-block").empty();
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            
+            $(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+    	}
+    });
+    
+    $("#maximumspanId").keyup(function(){	
+    	var value= $(this).val();
+    	var initialSpanVal = $('#initialspanId').val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(initialSpanVal){
+    		if(parseInt($(this).val()) > 20){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should <= 20  </li></ul>");
+    		}else if(parseInt($(this).val()) < parseInt(initialSpanVal)){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+    		}
+    	}else{
+    		$('#initialspanId').val('');
+   		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
+            $('#initialspanId').parent().find(".help-block").empty();
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            
+            $(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+    	}
+    });
+    
+    $("#playspeedId").keyup(function(){	
+        
+    });
+    $("#maximumtestId, #maximumFailureId").keyup(function(){	
+    	var value= $(this).val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(parseInt($(this).val()) < 1){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+    	}
+    });
 	$("#shortTitleId").blur(function(){
     	  validateShortTitleId('',function(val){});
     })
@@ -1723,7 +1810,7 @@ function validateShortTitleId(item,callback){
 	 	var thisAttr= $("#shortTitleId");
 	 	var existedKey = '${activeTaskBo.shortTitle}';
 	 	var activeTaskAttName = 'shortTitle';
- 	var activeTaskAttIdVal = shortTitle;
+ 	    var activeTaskAttIdVal = shortTitle;
 	    var activeTaskAttIdName = "not";
 	 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 	 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -1951,17 +2038,17 @@ function validateStatisticsIds(jsonDatas, callback){
           		$("#"+shortSatId).val('');
    			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
              	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
-          		$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field.</li></ul>");
+          		$("#"+shortSatId).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>Please fill out this field.</li></ul>");
           	 }else{
           		$("#"+shortSatId).val('');
    			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
              	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
-             	$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
+             	$("#"+shortSatId).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
           	 }
 		   }
 		   callback(false); 
 	 }else{
-		 //alert("else..");
+		//alert("else..");
 // 		 for(var i=0;i<arrayLength ; i++){
 // 			 var activeStatisticsBean =  new Object();
 			 
@@ -1988,7 +2075,7 @@ function validateStatisticsIds(jsonDatas, callback){
 		        						 $("#"+obj.id).focus();
 		        						 $("#"+obj.id).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
 		        			          	 $("#"+obj.id).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
-		        			          	 $("#"+obj.id).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
+		        			          	 $("#"+obj.id).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
 		        				 }
 		        		 });
 		        		  

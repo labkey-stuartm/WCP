@@ -79,9 +79,7 @@
 							type="hidden" name="taskAttributeValueBos[0].addToDashboard"
 							value="${taskMasterAttributeBo.addToDashboard}">
 	                             <div class="form-group">
-	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required title="Select" name="taskAttributeValueBos[0].attributeVal">
-                                        <option value="1">1</option>
-										<option value="2">2</option>
+	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required name="taskAttributeValueBos[0].attributeVal">
 										<option value="3">3</option>
 										<option value="4">4</option>
 										<option value="5">5</option>
@@ -312,9 +310,7 @@
 								<input type="hidden" name="taskAttributeValueBos[0].addToDashboard"
 								  value="${taskMasterAttributeBo.addToDashboard}"> 
 								<div class="form-group">
-	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required title="Select" name="taskAttributeValueBos[0].attributeVal">
-                                        <option value="1" ${taskValueAttributeBo.attributeVal eq '1'?'selected':''}>1</option>
-										<option value="2" ${taskValueAttributeBo.attributeVal eq '2'?'selected':''}>2</option>
+	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required name="taskAttributeValueBos[0].attributeVal">
 										<option value="3" ${taskValueAttributeBo.attributeVal eq '3'?'selected':''}>3</option>
 										<option value="4" ${taskValueAttributeBo.attributeVal eq '4'?'selected':''}>4</option>
 										<option value="5" ${taskValueAttributeBo.attributeVal eq '5'?'selected':''}>5</option>
