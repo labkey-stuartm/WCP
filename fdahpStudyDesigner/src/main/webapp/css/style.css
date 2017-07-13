@@ -1230,7 +1230,7 @@ height:0px !important;
     z-index: 9;
     position: absolute;    
     right: 14px;
-    top: 9px;
+    top: 4px;
 }
 .form-group select:disabled {
 	cursor: not-allowed;
@@ -1758,4 +1758,7 @@ height:0px !important;
 }
 .left-content-container ul li:nth-child(10){
 	border-bottom:none;
+}
+.ellipse{
+	visibility:visible;
 }
