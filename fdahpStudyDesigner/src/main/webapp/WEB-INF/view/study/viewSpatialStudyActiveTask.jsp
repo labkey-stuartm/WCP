@@ -120,7 +120,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="playspeedId"  class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required onkeypress="return isNumber(event)"/>
+                           <input type="text" id="playspeedId"  class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="4" required onkeypress="return isNumber(event)"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -801,7 +801,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="playspeedId" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="playspeedId" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="4" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -819,7 +819,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="maximumtestId" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumtestId" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -1368,7 +1368,28 @@ $(document).ready(function(){
     });
     
     $("#playspeedId").keyup(function(){	
-        
+    	var value= $(this).val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+        if(value){
+        	if(parseFloat($(this).val()) < 0.5){
+            	$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+            }
+        	if(parseInt($(this).val()) > 20){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be <= 20 seconds  </li></ul>");
+    		}
+        }else{
+        	$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+        }
     });
     $("#maximumtestId, #maximumFailureId").keyup(function(){	
     	var value= $(this).val();
