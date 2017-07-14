@@ -28,7 +28,7 @@
 			<div class="add_notify_option">
 				<div class="form-group shortTitleClass">
 					<input autofocus="autofocus" type="text" custAttType="cust"
-						class="form-control shortTitleIdCls" id="shortTitleId"
+						class="form-control shortTitleCls" id="shortTitleId"
 						name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}"
 						<c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}"> disabled</c:if>
 						maxlength="50" required />
@@ -632,7 +632,7 @@ $(document).ready(function(){
  	  											      $("body").removeClass('loading');
  	  												  doneActiveTask(this, 'done', function(val) {
  	  													if(val) {
- 	  														$('.shortTitleClass,.shortTitleStatCls').prop('disabled', false);
+ 	  														$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
  	  							                        	$("#buttonText").val('completed');
  	  							                        	document.activeContentFormId.submit();
  	  													}
@@ -724,7 +724,7 @@ $(document).ready(function(){
     	    					  if(st){
     	         					doneActiveTask(this, 'save', function(val) {
     	         							if(val) {
-    	         								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+    	         								$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
     	         								$('#activeContentFormId').validator('destroy');
     	         	                     	    $("#buttonText").val('save');
     	         	                     	    document.activeContentFormId.submit();
@@ -743,7 +743,7 @@ $(document).ready(function(){
         					maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
         					doneActiveTask(this, 'save', function(val) {
         							if(val) {
-        								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+        								$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
         								$('#activeContentFormId').validator('destroy');
         	                     	    $("#buttonText").val('save');
         	                     	    document.activeContentFormId.submit();

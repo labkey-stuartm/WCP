@@ -1443,6 +1443,11 @@ function setFrequencyVal(flag){
    	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').prop('checked' , false);
+   	   	    
+   	   	    $('.addLineChartBlock_number_of_moves_tower').css("display","none");
+   	   	    $('.addLineChartBlock_number_of_moves_tower').find('.requireClass').prop('required', false);
+   	   	    $('#number_of_moves_tower_chart_id').val(false);
+   	   	    $('#number_of_moves_tower_chart_id').prop('checked' , false);
     		
     		$('.addLineChartBlock_Score_spatial').css("display","none");
    	   	    $('.addLineChartBlock_Score_spatial').find('.requireClass').prop('required', false);
@@ -1465,6 +1470,11 @@ function setFrequencyVal(flag){
     		$('#number_of_kicks_recorded_fetal_chart_id').val(true);
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
     		$('#lineChartId').val('');
+    		
+   		    $('.addLineChartBlock_number_of_moves_tower').removeAttr("style");
+   	   	    $('.addLineChartBlock_number_of_moves_tower').find('.requireClass').prop('required', 'required');
+   	   	    $('#number_of_moves_tower_chart_id').val(true);
+   	   	    $('#number_of_moves_tower_chart_id').prop('checked' , true);
     		
     		$('.addLineChartBlock_Score_spatial').removeAttr("style");
     		$("#Score_spatial_chart_id").prop("checked", true);

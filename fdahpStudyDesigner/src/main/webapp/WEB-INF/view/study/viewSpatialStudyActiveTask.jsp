@@ -27,7 +27,7 @@
 			<div class="add_notify_option">
 				<div class="form-group shortTitleClass">
 					<input autofocus="autofocus" type="text" custAttType="cust"
-						class="form-control shortTitleIdCls" id="shortTitleId"
+						class="form-control shortTitleCls" id="shortTitleId" 
 						name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}"
 						<c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}"> disabled</c:if>
 						maxlength="50" required />
@@ -60,12 +60,12 @@
 		<c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
 			<c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The sequence length of the initial memory pattern"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The sequence length of the initial memory pattern"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -74,15 +74,14 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The minimum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The minimum pattern sequence length"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -91,15 +90,15 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					   class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+					   title="The maximum pattern sequence length"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -111,12 +110,12 @@
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The time per sequence item; a smaller value means faster sequence play."></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					  class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+					  title="The time per sequence item; a smaller value means faster sequence play."></span>
+					 </div>
 					  <input type="hidden" name="taskAttributeValueBos[3].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -125,15 +124,15 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of rounds to conduct"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+					    title="The maximum number of rounds to conduct"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[4].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -142,15 +141,15 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+				<div class="col-md-3 col-lg-3 p-none">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[5].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -162,12 +161,12 @@
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
 					<div class="col-md-3 col-lg-3 p-none">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+							class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="Boolean value that indicates whether to require the user to tap the sequence in reverse order."></span>
+					   </div>
 					  <input type="hidden" name="taskAttributeValueBos[6].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[6].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[6].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -738,12 +737,13 @@
 			<c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
             <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The sequence length of the initial memory pattern"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The sequence length of the initial memory pattern"></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -752,15 +752,15 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The minimum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The minimum pattern sequence length"></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -769,15 +769,16 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The maximum pattern sequence length"></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -789,12 +790,13 @@
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg">
 					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 					title="The time per sequence item; a smaller value means faster sequence play."></span>
 					</div>
-					<div class="col-md-3 col-lg-3 p-none">
 					  <input type="hidden" name="taskAttributeValueBos[3].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -803,15 +805,16 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 					title="The maximum number of rounds to conduct"></span>
 					</div>
-					<div class="col-md-3 col-lg-3 p-none">
 					  <input type="hidden" name="taskAttributeValueBos[4].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -820,32 +823,35 @@
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+	                <div class="col-md-3 col-lg-3 p-none">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[5].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="maximumFailureId" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumFailureId" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
+	               
+	               
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 7 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
+					
 					<div class="col-md-3 col-lg-3 p-none">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="Boolean value that indicates whether to require the user to tap the sequence in reverse order."></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[6].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[6].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[6].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
