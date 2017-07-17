@@ -62,7 +62,7 @@
              	 	<input type="text" class="form-control" name="tentativeDuration" value="Yes" disabled/>
               	</div>
              	<div class="form-group col-md-6 pr-none">
-                 	<select class="selectpicker elaborateClass" required  title="Select" name="responseYesOption">
+                 	<select class="selectpicker elaborateClass" required  title="Select" name="responseYesOption" id="resYesOptId" onchange="chkValidChoosedOption()">
                  		<option value="true" ${eligibilityTest.responseYesOption ? 'selected':''}>Pass</option>
 		        		<option value="false" ${not empty eligibilityTest.responseYesOption && not eligibilityTest.responseYesOption ? 'selected':''}>Fail</option>
 		     		</select>
@@ -74,7 +74,7 @@
                 	<input type="text" class="form-control" name="tentativeDuration" value="No" disabled/>
                 </div>
               	<div class="form-group col-md-6 pr-none">
-                	<select class="selectpicker elaborateClass form-control" required  title="Select" name="responseNoOption">
+                	<select class="selectpicker elaborateClass form-control" required  title="Select" name="responseNoOption" id="resNoOptId" onchange="chkValidChoosedOption()">
 			       		<option value="true" ${eligibilityTest.responseNoOption ? 'selected':''} >Pass</option>
 			        	<option value="false" ${not empty eligibilityTest.responseNoOption && not eligibilityTest.responseNoOption ? 'selected':''}>Fail</option>
 		    	 	</select>
@@ -89,6 +89,7 @@
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+var isValid = false;
 $(document).ready(function(){
 	
 	  $(".menuNav li.active").removeClass('active');
@@ -110,7 +111,7 @@ $(document).ready(function(){
 		validateShortTitle("#shortTitleId", function(val) {
 				if(val){
 					 $('#shortTitleId').prop('disabled', false);
-					 if(isFromValid("#studyEligibiltyTestFormId")){
+					 if(isFromValid("#studyEligibiltyTestFormId") && chkValidChoosedOption()){
 						document.studyEligibiltyTestFormId.submit();
 					 }else{
 						 $("#doneId").prop("disabled",false);	
@@ -124,9 +125,13 @@ $(document).ready(function(){
 		$(this).prop("disabled",true);
 		validateShortTitle("#shortTitleId", function(val) {
 			if(val) {
-				$('#studyEligibiltyTestFormId').validator('destroy');
-				$('#type').val('save');
-				$('#studyEligibiltyTestFormId').submit();
+				if(chkValidChoosedOption()) {
+					$('#studyEligibiltyTestFormId').validator('destroy');
+					$('#type').val('save');
+					$('#studyEligibiltyTestFormId').submit();
+				} else {
+					$('#saveId').prop("disabled",false);
+				}
 			} else {
 				if($('#shortTitleId').val()) {
 					$('#shortTitleId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
@@ -210,5 +215,16 @@ function goToBackPage(item){
 		a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
+}
+
+var chkValidChoosedOption = function() {
+	let resYesOptVal = $('#resYesOptId').val();
+	let resNoOptVal = $('#resNoOptId').val();
+	
+	if(resYesOptVal == 'false' && resNoOptVal == 'false') {
+		showErrMsg("Both answer options cannot have Fail attribute");
+		return false;
+	}
+	return true;
 }
 </script>
