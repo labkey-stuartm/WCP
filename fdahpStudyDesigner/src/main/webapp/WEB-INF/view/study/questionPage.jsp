@@ -2541,7 +2541,7 @@ function removeTextScale(param){
 		}
 	}
 }
-var choiceCount = $('.text-scale').length;
+var choiceCount = $('.text-choice').length;
 function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();

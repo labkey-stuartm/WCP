@@ -575,11 +575,17 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 							//questionnaireBo.setStatus(false);
 							//questionnaireBo.setIsChange(0);
+							if(questionnaireBo.getStatus()){
+								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire Updated successfully.");
+							}
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 							//questionnaireBo.setStatus(false);
 							//questionnaireBo.setIsChange(0);
+							if(questionnaireBo.getStatus()){
+								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire added successfully.");
+							}
 						}
 						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);
