@@ -37,77 +37,80 @@
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none">
              <ul class="nav nav-tabs review-tabs">
-                <li><a data-toggle="tab" href="#menu1" >Share Data Permissions</a></li>
-                <li class="active"><a data-toggle="tab" href="#menu2" >Consent Document for Review</a></li>
-                <li><a data-toggle="tab" href="#menu3" >E-Consent Form	</a></li>               
+                <li class="shareData active"><a data-toggle="tab" href="#menu1" >Share Data Permissions</a></li>
+                <li class="consentReview"><a data-toggle="tab" href="#menu2" >Consent Document for Review</a></li>
+                <li class="econsentForm"><a data-toggle="tab" href="#menu3" >E-Consent Form	</a></li>               
               </ul>
-              <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
+              <div class="tab-content pl-xlg pr-xlg">
                 <input type="hidden" id="version" name="version" value="${consentBo.version}">
-                <div id="menu1" class="tab-pane fade">
+                <div id="menu1" class="tab-pane fade in active">
                  <!--   <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div> -->
-                   <div class="mt-lg">
+                   <div class="mt-lg" >
                    		<div class="gray-xs-f mb-sm">Enable share data permissions step for this study? <span class="gray-xs-f mb-xs">(Please ensure you have the IRB mandate to allow this)</span></div>
                    		<div class="col-md-12 pl-none">
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
-	                                <input type="radio" id="inlineRadio5" value="option1" name="radioInline3" checked="checked">
-	                                <label for="inlineRadio5">Yes</label>
+	                                <input type="radio" id="shareDataPermissionsYes" value="Yes" name="shareDataPermissions" ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''}>
+	                                <label for="shareDataPermissionsYes">Yes</label>
 	                            </span>
 	                            <span class="radio radio-inline">
-	                                <input type="radio" id="inlineRadio6" value="option1" name="radioInline3">
-	                                <label for="inlineRadio6">No</label>
+	                                <input type="radio" id="shareDataPermissionsNo" value="No" name="shareDataPermissions" ${consentBo.shareDataPermissions eq 'No' ? 'checked' : ''}>
+	                                <label for="shareDataPermissionsNo">No</label>
 	                            </span>
 	                        </div>
                     	</div>
+                    	<div class="<c:if test="${consentBo.shareDataPermissions eq 'No'}">ct_panel</c:if>" id="rootContainer">
                     	<div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Title</div>
+		                    <div class="gray-xs-f mb-xs">Title <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control" placeholde="" required />
+		                        <input type="text" class="form-control" placeholde="" required id="titleId" name="title" value="${consentBo.title}" maxlength="250"/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Tagline Description</div>
+		                    <div class="gray-xs-f mb-xs">Tagline Description <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control" placeholder="" required />
+		                        <input type="text" class="form-control" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" required/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Short Description for RO</div>
+		                    <div class="gray-xs-f mb-xs">Short Description for RO <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control" placeholder="" required />
+		                        <input type="text" class="form-control" placeholder="" required maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}"/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Long Description for RO</div>
+		                    <div class="gray-xs-f mb-xs">Long Description for RO<small>(500 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <textarea class="form-control" maxlength="250" rows="5" id="rejoin_comment_yes" data-error="Please enter plain text of up to 250 characters max." placeholder="" required="required"></textarea>
+		                        <textarea class="form-control"  rows="5" maxlength="500"  placeholder="" required="required" name="longDescription" id="longDescriptionId">${consentBo.longDescription}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                     <div class="gray-xs-f mb-xs">Data Partner</div>
-		                     <div>
-		                        <textarea id="editor" name="area"></textarea>
+		                     <div class="gray-xs-f mb-xs">Learn More Text</div>
+		                     <div class="form-group">
+		                        <textarea id="learnMoreTextId" name="learnMoreText" required>${consentBo.learnMoreText}</textarea>
+		                        <div class="help-block with-errors red-txt"></div>
 		                     </div>
 		                </div>
 		                <div class="col-md-12 pl-none mt-lg">
 		                	<div class="gray-xs-f mb-sm">Allow user to proceed if permission not provided</div>
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
-	                                <input type="radio" id="inlineRadio7" value="option1" name="radioInline4" checked="checked">
-	                                <label for="inlineRadio7">Yes</label>
+	                                <input type="radio" id="allowWithoutPermissionYes" value="Yes" name="allowWithoutPermission" ${empty consentBo.allowWithoutPermission || consentBo.allowWithoutPermission eq 'Yes' ? 'checked' : ''}>
+	                                <label for="allowWithoutPermissionYes">Yes</label>
 	                            </span>
 	                            <span class="radio radio-inline">
-	                                <input type="radio" id="inlineRadio8" value="option1" name="radioInline4">
-	                                <label for="inlineRadio8">No</label>
+	                                <input type="radio" id="allowWithoutPermissionNo" value="No" name="allowWithoutPermission" ${consentBo.allowWithoutPermission eq 'No' ? 'checked' : ''}>
+	                                <label for="allowWithoutPermissionNo">No</label>
 	                            </span>
 	                        </div>
                     	</div>
                     	 <div class="col-md-12 pl-none mt-lg mb-xlg">
-                    	 	<span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" onclick="viewQuestionnaires(124);" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span>
+                    	 	<span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span>
+                    	 </div>
                     	 </div>
                     	 <!-- <div class="container">
 							  <div class="modal fade" id="myModal" role="dialog">
@@ -135,7 +138,7 @@
 							</div> -->
                    </div>
                 </div>
-	                <div id="menu2" class="tab-pane fade  in active">
+	                <div id="menu2" class="tab-pane fade">
 	                    <div class="mt-lg">
 	                    <div class="gray-xs-f mb-sm">Select a method of creation for the Consent Document </div>
 		                	<div class="form-group mb-none">
@@ -171,7 +174,7 @@
 	                        <div class="cont_editor">
 			                    <div id="newDivId" style="display:none;">
 									<div class="form-group ">
-							            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
+							            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId" >${consentBo.consentDocContent}</textarea>
 							            <div class="help-block with-errors red-txt"></div>
 							         </div>
 								</div>
@@ -190,9 +193,9 @@
                     <div class="mt-xlg text-weight-semibold">The mobile app captures the fallowinng from the user as  part of Consent to the study : </div>
                     <div class="mt-lg">
 	                    <ul class="list-style-image">
-	                    	<li>Agreement to the content in the Consent Document
+	                    	<li>Agreement to the content in the Consent Document <small>(250 characters max)</small><span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Text message on app to confirm review and agreement of the Consent Document"></span>
 			                    <div class="form-group mt-sm mb-none">
-			                        <input type="text" class="form-control" placeholder="Text message on app to confirm review and agreement of the Consent Document *" required />
+			                        <input type="text" class="form-control" placeholder="" required  name="aggrementOfTheConsent" id="aggrementOfTheConsentId" value="${consentBo.aggrementOfTheConsent}" maxlength="250"/>
 			                        <div class="help-block with-errors red-txt"></div>
 			                    </div>
 				            </li>
@@ -241,7 +244,7 @@
               </div>
             </div>
             <!--  End body tab section -->
-        </div>
+       
         <!-- End right Content here -->
 	</form:form>
 </div>
@@ -251,7 +254,9 @@ $(document).ready(function(){
 	//check the type of page action(view/edit)
 	if('${permission}' == 'view'){
 		$('input[name="consentDocType"]').attr('disabled', 'disabled');
-	    $('#newDivId .elaborateClass').addClass('linkDis');
+		$('#consentReviewFormId input').prop('disabled', true);
+	    $('#longDescriptionId').prop('disabled', true);
+		$('#newDivId .elaborateClass').addClass('linkDis');
 	    $('#saveId,#doneId').hide();
 	}
 	
@@ -272,7 +277,24 @@ $(document).ready(function(){
 	$("#consentDocTypeDivId").on('change', function(){
 		consentDocumentDivType();
     });
-	
+	var shareDataPermissions = '${consentBo.shareDataPermissions}';
+	resetValues(shareDataPermissions);
+	$('input[name="shareDataPermissions"]').change(function(){
+		var shareDataPermissions = '${consentBo.shareDataPermissions}';
+		var value= $(this).val();
+		if(value == 'Yes'){
+			$('#rootContainer input').attr('required',true);
+			$('#learnMoreTextId').attr('required',true);
+			$('#longDescriptionId').attr('required',true);
+			newLearnMoreConsentDocument();
+			$("#rootContainer").show();
+		}else{
+			$('#rootContainer input').attr('required',false);
+			$('#learnMoreTextId').attr('required',false);
+			$('#longDescriptionId').attr('required',false);
+			$("#rootContainer").hide();
+		}
+	});
 	/* var isChek = "${consentBo.consentDocType}";
 	if(isChek != null && isChek !='' && typeof isChek !=undefined){
 		if(isChek == 'New'){
@@ -300,65 +322,94 @@ $(document).ready(function(){
 		}
 		if(valid){
 			if( id == "saveId"){
+				$("#consentReviewFormId").parents("form").validator("destroy");
+			    $("#consentReviewFormId").parents("form").validator();
 				saveConsentReviewAndEConsentInfo("saveId");				
 			}else if(id == "doneId"){
 				var retainTxt = '${studyBo.retainParticipant}';
-				console.log(retainTxt);
-				var message = "";
-				var alertType = "";
-				if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined'){
-					if(retainTxt == 'Yes'){
-						alertType = "retained";
-					}else if(retainTxt == 'No'){
-						alertType = "deleted";
-					}else{
-						alertType = "retained or deleted as per participant choice";
+				if(isFromValid("#consentReviewFormId") && maxLenLearnMoreEditor()){
+					var message = "";
+					var alertType = "";
+					if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined'){
+						if(retainTxt == 'Yes'){
+							alertType = "retained";
+						}else if(retainTxt == 'No'){
+							alertType = "deleted";
+						}else{
+							alertType = "retained or deleted as per participant choice";
+						}
+						message = "You have a setting that needs study data to be "+alertType+" if the participant withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
 					}
-					message = "You have a setting that needs study data to be "+alertType+" if the participant withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
+					console.log(message);
+					bootbox.confirm({
+						closeButton: false,
+						message : message,
+						buttons: {
+					        'cancel': {
+					            label: 'Cancel',
+					        },
+					        'confirm': {
+					            label: 'OK',
+					        },
+					    },
+					    callback: function(result) {
+					        if (result) {
+					        	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+						    	if(consentDocumentType == "Auto"){
+						    		saveConsentReviewAndEConsentInfo("doneId");
+						    	}else{
+						    		var content = tinymce.get('newDocumentDivId').getContent();
+						    		if(content != null && content !='' && typeof content != 'undefined'){
+						    			saveConsentReviewAndEConsentInfo("doneId");
+						    		}else{
+						    			$("#newDocumentDivId").parent().find(".help-block").empty();
+							    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+						    		}
+						    	}
+					        }else{
+					        	$("#doneId").prop('disabled', false);
+					        }
+					    }
+		    		});
+				}else{
+					console.log("else....");
+			   		var slaCount = $('#menu1').find('.has-error.has-danger').length;
+					var qlaCount = $('#menu2').find('.has-error.has-danger').length;
+					var rlaCount = $('#menu3').find('.has-error.has-danger').length;
+					console.log("slaCount:"+slaCount);
+					console.log("qlaCount:"+qlaCount);
+					console.log("rlaCount:"+rlaCount);
+					if(parseInt(slaCount) >= 1){
+						 $('.shareData a').tab('show');
+					}else if(parseInt(qlaCount) >= 1){
+						 $('.consentReview a').tab('show');
+					}else if(parseInt(rlaCount) >= 1){
+						 $('.econsentForm a').tab('show');
+					}
 				}
-				console.log(message);
-				bootbox.confirm({
-					closeButton: false,
-					message : message,
-					buttons: {
-				        'cancel': {
-				            label: 'Cancel',
-				        },
-				        'confirm': {
-				            label: 'OK',
-				        },
-				    },
-				    callback: function(result) {
-				        if (result) {
-				        	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-					    	if(consentDocumentType == "Auto"){
-					    		saveConsentReviewAndEConsentInfo("doneId");
-					    	}else{
-					    		var content = tinymce.get('newDocumentDivId').getContent();
-					    		if(content != null && content !='' && typeof content != 'undefined'){
-					    			saveConsentReviewAndEConsentInfo("doneId");
-					    			
-					    		}else{
-					    			$("#newDocumentDivId").parent().find(".help-block").empty();
-						    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-					    		}
-					    	}
-				        }else{
-				        	$("#doneId").prop('disabled', false);
-				        }
-				    }
-	    		});
 			}	
 		}
 	});
-	
+	function resetValues(shareDataPermissions){
+		if(shareDataPermissions == '' || shareDataPermissions == 'No'){
+			$('#rootContainer input').val('');
+			$('#allowWithoutPermissionYes').attr('checked',true);
+			$('#learnMoreTextId').val('');
+			$('#longDescriptionId').val('');
+			//tinymce.get('learnMoreTextId').setContent('');
+		}else{
+			newLearnMoreConsentDocument();
+		} 
+	}
 	//consent doc type div
 	function consentDocumentDivType(){
 		//fancyToolbar();
-		console.log("consentDocumentDivType");
+		
 		if($("#inlineRadio1").is(":checked")){
+			console.log("consentDocumentDivType if");
     		$("#autoCreateDivId").show();
     		$("#autoCreateDivId01").show();
+    		$('#newDocumentDivId').attr("required",false);
 	        $("#newDivId").hide();
 	        $("#typeOfCensent").val("Auto");
 	        $("#autoCreateHelpTextDiv").show();
@@ -366,6 +417,7 @@ $(document).ready(function(){
 	        $('#requiredStarId').hide();
 	        autoCreateConsentDocument();
     	}else{
+    		console.log("consentDocumentDivType else");
     		$("#newDivId").show();
     		$("#autoCreateDivId").hide();
     		$("#autoCreateDivId01").hide();
@@ -373,6 +425,7 @@ $(document).ready(function(){
     		$("#autoCreateHelpTextDiv").hide();
 	        $("#newDocumentHelpTextDiv").show();
 	        $('#requiredStarId').show();
+	        $('#newDocumentDivId').attr("required",true);
     		createNewConsentDocument();
     	}
 	}
@@ -434,23 +487,52 @@ $(document).ready(function(){
     	/* tinymce.get('newDocumentDivId').setContent('');
     	tinymce.get('newDocumentDivId').setContent('${consentBo.consentDocContent}'); */ 
     }
-    
+    function newLearnMoreConsentDocument(){
+    	tinymce.init({
+            selector: "#learnMoreTextId",
+            theme: "modern",
+            skin: "lightgray",
+            height:180,
+            plugins: [
+                "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
+                "save contextmenu directionality paste"
+            ],
+            toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
+            menubar: false,
+            toolbar_items_size: 'small',
+            content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+            entity_encoding : "raw",
+            setup : function(ed) {
+                ed.on('change', function(ed) {
+              		  if(tinyMCE.get(ed.target.id).getContent() != ''){
+              			$('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
+              	        $('#learnMoreTextId').parent().find(".help-block").html("");
+              		  }
+                });
+       	  	},
+            <c:if test="${permission eq 'view'}">readonly:1</c:if>
+        });
+    }
     //save review and E-consent data
     function saveConsentReviewAndEConsentInfo(item){
-		if($('input[id="agreementCB"]:checked').is(":checked")){
-			$("#agreementCB").val("Yes");
-	   	}else{
-	   		$("#agreementCB").val("No");
-	   	}
-		
-		$("#consentValidatorDiv").validator('validate');
-   	 	var customErrorLength = $("#consentValidatorDiv").find(".has-danger").length;
-	   	if((customErrorLength == 1 && $("#agreementCB").val() == 'No')){
-	   		resetValidation($("#consentValidatorDiv"));
+	   //	if(item == "doneId"){
+			//$("#consentValidatorDiv").validator('validate');
+	   	 	//var customErrorLength = $("#consentValidatorDiv").find(".has-danger").length;
+	   	 
+		   	/* if(customErrorLength == 1){
+		   		resetValidation($("#consentValidatorDiv"));
+		   	} */
+	   		/* if(isFromValid("#consentReviewFormId")){
+		   		customErrorLength = 0;
+			}else{
+		   		customErrorLength = 1;
+		   	} */
+	   /* 	}else{
 	   		customErrorLength = 0;
-	   	}
+	   	} */
 	   	
-   	 	if(customErrorLength == 0){
+		//console.log("customErrorLength:"+customErrorLength);
+   	 	//if(customErrorLength == 0){
 	   		var consentInfo = new Object();
 	    	var consentId = $("#consentId").val();
 	    	var studyId = $("#studyId").val();
@@ -461,6 +543,18 @@ $(document).ready(function(){
 	    	var dateTimeCB = $("#dateTimeCB").val();
 	    	var consentDocumentContent = "";
 	    	var consentDocType = $('input[name="consentDocType"]:checked').val();
+	    	
+	    	var shareDataPermissionsTxt = $('input[name="shareDataPermissions"]:checked').val(); 
+	    	var title_txt = $("#titleId").val();
+	    	var tagline_description = $("#taglineDescriptionId").val();
+	    	var short_description = $("#shortDescriptionId").val();
+	    	var long_description = $("#longDescriptionId").val();
+	    	var learn_more_text = tinymce.get('learnMoreTextId').getContent({ format: 'raw' });
+	    	learn_more_text = replaceSpecialCharacters(learn_more_text);
+	    	var allow_Permission = $('input[name="allowWithoutPermission"]:checked').val();	
+	    	var aggrement_of_theconsent = $("#aggrementOfTheConsentId").val();	
+	    		
+	    		
 	    	if(consentDocType == "New"){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
@@ -480,6 +574,15 @@ $(document).ready(function(){
 	    	if(null != lNameCB){consentInfo.eConsentLastName = lNameCB;}
 	    	if(null != eSignCB){consentInfo.eConsentSignature = eSignCB;}
 	    	if(null != dateTimeCB){consentInfo.eConsentDatetime = dateTimeCB;}
+	    	
+	    	if(null != shareDataPermissionsTxt){consentInfo.shareDataPermissions = shareDataPermissionsTxt;}
+	    	if(null != title_txt){consentInfo.title = title_txt;}
+	    	if(null != tagline_description){consentInfo.taglineDescription = tagline_description;}
+	    	if(null != short_description){consentInfo.shortDescription = short_description;}
+	    	if(null != long_description){consentInfo.longDescription = long_description;}
+	    	if(null != learn_more_text){consentInfo.learnMoreText = learn_more_text;}
+	    	if(null != allow_Permission){consentInfo.allowWithoutPermission = allow_Permission;}
+	    	if(null != aggrement_of_theconsent){consentInfo.aggrementOfTheConsent = aggrement_of_theconsent;}
 	    	var data = JSON.stringify(consentInfo);
 	    	$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
@@ -513,6 +616,9 @@ $(document).ready(function(){
 							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 							$(item).prop('disabled', false);
 							$('#alertMsg').show();
+							if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							    $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							}
 						}
 					}else{
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
@@ -522,11 +628,23 @@ $(document).ready(function(){
 		          },
 		          global : false
 		   });
-	   	 }
+	   	 /* }else{
+	   		console.log("else....");
+	   		var slaCount = $('#menu1').find('.has-error.has-danger').length;
+			var qlaCount = $('#menu2').find('.has-error.has-danger').length;
+			var rlaCount = $('#menu3').find('.has-error.has-danger').length;
+			console.log("slaCount:"+slaCount);
+			console.log("qlaCount:"+qlaCount);
+			console.log("rlaCount:"+rlaCount);
+			if(parseInt(slaCount) >= 1){
+				 $('.shareData a').tab('show');
+			}else if(parseInt(qlaCount) >= 1){
+				 $('.consentReview a').tab('show');
+			}else if(parseInt(rlaCount) >= 1){
+				 $('.econsentForm a').tab('show');
+			}
+	   	 } */
     }
-//     $('.nav-tabs a').on('shown.bs.tab', function(event){
-//     	scrbar();
-//     });
 });
 
 function goToBackPage(item){
@@ -576,48 +694,18 @@ function maxLenValEditor() {
 	}
 	return isValid;
 }
-
-// function scrbar(){
-// 	var a = $(".col-lc").height();
-// 	var b = $(".col-rc").height();
-// 	if(a > b){
-// 		setTimeout($(".col-rc").css("height", a), 200);	
-// 	}else{
-// 		setTimeout($(".col-rc").css("height", "auto"), 200);
-// 	}
-// }
-
-//replace the special characters (single and double quotes with HTML number)
-/* function replaceSpecialCharacters(inputFormat){
-	var replacedString = "";
-	if( inputFormat != null && inputFormat != '' && inputFormat !== undefined){
-		inputFormat = inputFormat.replace("'", '&#39;');
-		inputFormat = inputFormat.replace('"', '&#34;');
-		replacedString = inputFormat;
+function maxLenLearnMoreEditor() {
+	var isValid = true; 
+	var value = tinymce.get('learnMoreTextId').getContent({ format: 'raw' });
+	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 70000){
+		if(isValid){
+			isValid = false;
+		}
+		$('#learnMoreTextId').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 70000 characters are allowed.</li></ul>');
+	} else {
+		 $('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
+	     $('#learnMoreTextId').parent().find(".help-block").html(""); 
 	}
-	return replacedString;
-} */
-</script>
-<script>
-$(document).ready(function(){  
-    
-    //wysiwyg editor
-    if($("#editor").length > 0){
-	    tinymce.init({
-	        selector: "#editor",
-	        theme: "modern",
-	        skin: "lightgray",
-	        height:180,
-	        plugins: [
-	            "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
-	            "save contextmenu directionality paste"
-	        ],
-	        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
-	        menubar: false,
-	        toolbar_items_size: 'small',
-	        content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
-	    });
-	}
-});
-
+	return isValid;
+}
 </script>

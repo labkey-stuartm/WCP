@@ -42,7 +42,7 @@ public class ConsentBo implements Serializable{
 	private String  needComprehensionTest;
 	
 	@Column(name = "share_data_permissions")
-	private Integer shareDataPermissions;
+	private String shareDataPermissions;
 	
 	@Column(name = "title")
 	private String title;
@@ -67,25 +67,25 @@ public class ConsentBo implements Serializable{
 	private String consentDocContent;
 	
 	@Column(name = "allow_without_permission")
-	private Integer allowWithoutPermission;
+	private String allowWithoutPermission;
 	
 	@Column(name = "html_consent")
 	private String htmlConsent;
 	
 	@Column(name = "e_consent_firstname")
-	private String eConsentFirstName;
+	private String eConsentFirstName="Yes";
 	
 	@Column(name = "e_consent_lastname")
-	private String eConsentLastName;
+	private String eConsentLastName="Yes";
 	
 	@Column(name = "e_consent_agree")
-	private String eConsentAgree;
+	private String eConsentAgree="Yes";
 	
 	@Column(name = "e_consent_signature")
-	private String eConsentSignature;
+	private String eConsentSignature="Yes";
 	
 	@Column(name = "e_consent_datetime")
-	private String eConsentDatetime;
+	private String eConsentDatetime="Yes";
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -107,6 +107,9 @@ public class ConsentBo implements Serializable{
 	
 	@Column(name = "is_live")
 	private Integer live = 0;
+	
+	@Column(name="aggrement_of_consent")
+	private String aggrementOfTheConsent;
 	
 	@Transient
 	private String type;
@@ -137,14 +140,6 @@ public class ConsentBo implements Serializable{
 	public void setComprehensionTestMinimumScore(
 			Integer comprehensionTestMinimumScore) {
 		this.comprehensionTestMinimumScore = comprehensionTestMinimumScore;
-	}
-
-	public Integer getShareDataPermissions() {
-		return shareDataPermissions;
-	}
-
-	public void setShareDataPermissions(Integer shareDataPermissions) {
-		this.shareDataPermissions = shareDataPermissions;
 	}
 
 	public String getTitle() {
@@ -201,14 +196,6 @@ public class ConsentBo implements Serializable{
 
 	public void setConsentDocContent(String consentDocContent) {
 		this.consentDocContent = consentDocContent;
-	}
-
-	public Integer getAllowWithoutPermission() {
-		return allowWithoutPermission;
-	}
-
-	public void setAllowWithoutPermission(Integer allowWithoutPermission) {
-		this.allowWithoutPermission = allowWithoutPermission;
 	}
 
 	public String getHtmlConsent() {
@@ -338,5 +325,30 @@ public class ConsentBo implements Serializable{
 	public void setComprehensionTest(String comprehensionTest) {
 		this.comprehensionTest = comprehensionTest;
 	}
+
+	public String getShareDataPermissions() {
+		return shareDataPermissions;
+	}
+
+	public void setShareDataPermissions(String shareDataPermissions) {
+		this.shareDataPermissions = shareDataPermissions;
+	}
+
+	public String getAllowWithoutPermission() {
+		return allowWithoutPermission;
+	}
+
+	public void setAllowWithoutPermission(String allowWithoutPermission) {
+		this.allowWithoutPermission = allowWithoutPermission;
+	}
+
+	public String getAggrementOfTheConsent() {
+		return aggrementOfTheConsent;
+	}
+
+	public void setAggrementOfTheConsent(String aggrementOfTheConsent) {
+		this.aggrementOfTheConsent = aggrementOfTheConsent;
+	}
+	
 	
 }
