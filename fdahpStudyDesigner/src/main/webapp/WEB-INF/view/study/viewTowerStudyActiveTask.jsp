@@ -28,7 +28,7 @@
 			<div class="add_notify_option">
 				<div class="form-group shortTitleClass">
 					<input autofocus="autofocus" type="text" custAttType="cust"
-						class="form-control shortTitleIdCls" id="shortTitleId"
+						class="form-control shortTitleCls" id="shortTitleId"
 						name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}"
 						<c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}"> disabled</c:if>
 						maxlength="50" required />
@@ -79,9 +79,7 @@
 							type="hidden" name="taskAttributeValueBos[0].addToDashboard"
 							value="${taskMasterAttributeBo.addToDashboard}">
 	                             <div class="form-group">
-	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required title="Select" name="taskAttributeValueBos[0].attributeVal">
-                                        <option value="1">1</option>
-										<option value="2">2</option>
+	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required name="taskAttributeValueBos[0].attributeVal">
 										<option value="3">3</option>
 										<option value="4">4</option>
 										<option value="5">5</option>
@@ -312,9 +310,7 @@
 								<input type="hidden" name="taskAttributeValueBos[0].addToDashboard"
 								  value="${taskMasterAttributeBo.addToDashboard}"> 
 								<div class="form-group">
-	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required title="Select" name="taskAttributeValueBos[0].attributeVal">
-                                        <option value="1" ${taskValueAttributeBo.attributeVal eq '1'?'selected':''}>1</option>
-										<option value="2" ${taskValueAttributeBo.attributeVal eq '2'?'selected':''}>2</option>
+	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required name="taskAttributeValueBos[0].attributeVal">
 										<option value="3" ${taskValueAttributeBo.attributeVal eq '3'?'selected':''}>3</option>
 										<option value="4" ${taskValueAttributeBo.attributeVal eq '4'?'selected':''}>4</option>
 										<option value="5" ${taskValueAttributeBo.attributeVal eq '5'?'selected':''}>5</option>
@@ -636,7 +632,7 @@ $(document).ready(function(){
  	  											      $("body").removeClass('loading');
  	  												  doneActiveTask(this, 'done', function(val) {
  	  													if(val) {
- 	  														$('.shortTitleClass,.shortTitleStatCls').prop('disabled', false);
+ 	  														$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
  	  							                        	$("#buttonText").val('completed');
  	  							                        	document.activeContentFormId.submit();
  	  													}
@@ -728,7 +724,7 @@ $(document).ready(function(){
     	    					  if(st){
     	         					doneActiveTask(this, 'save', function(val) {
     	         							if(val) {
-    	         								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+    	         								$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
     	         								$('#activeContentFormId').validator('destroy');
     	         	                     	    $("#buttonText").val('save');
     	         	                     	    document.activeContentFormId.submit();
@@ -747,7 +743,7 @@ $(document).ready(function(){
         					maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
         					doneActiveTask(this, 'save', function(val) {
         							if(val) {
-        								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+        								$('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
         								$('#activeContentFormId').validator('destroy');
         	                     	    $("#buttonText").val('save');
         	                     	    document.activeContentFormId.submit();

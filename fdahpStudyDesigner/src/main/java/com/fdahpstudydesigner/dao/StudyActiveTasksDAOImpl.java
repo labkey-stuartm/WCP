@@ -575,7 +575,16 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					if(customStudyId != null && !customStudyId.isEmpty()){
 						if(!activeTaskAttIdName.equals("static")){
 							if(activeTaskAttIdName.contains(",")){
-								activeTaskAttIdName = activeTaskAttIdName.substring(1);
+								List<String> idArr= new ArrayList<String>();
+								String[] arr ;
+								arr = activeTaskAttIdName.split(",");
+								if(arr!=null && arr.length>0){
+									for(String id: arr){
+										if(!id.isEmpty())
+										idArr.add(id);
+									}
+								}
+								activeTaskAttIdName = StringUtils.join(idArr, ',');
 							}
 							subString = " and attributeValueId NOT IN("+activeTaskAttIdName+")";
 						}
@@ -604,8 +613,21 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							}
 					  }
 					}else{
-						if(!activeTaskAttIdName.equals("static"))
-							  subString = " and attributeValueId!="+activeTaskAttIdName;
+						if(!activeTaskAttIdName.equals("static")){
+							if(activeTaskAttIdName.contains(",")){
+								List<String> idArr= new ArrayList<String>();
+								String[] arr ;
+								arr = activeTaskAttIdName.split(",");
+								if(arr!=null && arr.length>0){
+									for(String id: arr){
+										if(!id.isEmpty())
+										idArr.add(id);
+									}
+								}
+								activeTaskAttIdName = StringUtils.join(idArr, ',');
+							}
+							subString = " and attributeValueId NOT IN("+activeTaskAttIdName+")";
+						}
 						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+") "
 								+ "and identifierNameStat='"+activeTaskAttIdVal+"'"+subString+"";
 						activeTaskAtrributeValuesBos = session.createQuery(queryString).list();

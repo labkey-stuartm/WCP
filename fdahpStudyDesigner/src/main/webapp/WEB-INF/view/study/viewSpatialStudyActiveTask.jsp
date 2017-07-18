@@ -27,7 +27,7 @@
 			<div class="add_notify_option">
 				<div class="form-group shortTitleClass">
 					<input autofocus="autofocus" type="text" custAttType="cust"
-						class="form-control shortTitleIdCls" id="shortTitleId"
+						class="form-control shortTitleCls" id="shortTitleId" 
 						name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}"
 						<c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}"> disabled</c:if>
 						maxlength="50" required />
@@ -60,114 +60,113 @@
 		<c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
 			<c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The sequence length of the initial memory pattern"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The sequence length of the initial memory pattern"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The minimum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The minimum pattern sequence length"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					   class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+					   title="The maximum pattern sequence length"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The time per sequence item; a smaller value means faster sequence play."></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					  class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+					  title="The time per sequence item; a smaller value means faster sequence play."></span>
+					 </div>
 					  <input type="hidden" name="taskAttributeValueBos[3].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="playspeedId"  class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="4" required onkeypress="return isNumber(event)"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of rounds to conduct"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+					    title="The maximum number of rounds to conduct"></span>
+					  </div>
 					  <input type="hidden" name="taskAttributeValueBos[4].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumtestId" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+				<div class="col-md-3 col-lg-3 p-none">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[5].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumFailureId" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
 					<div class="col-md-3 col-lg-3 p-none">
+					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+							class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="Boolean value that indicates whether to require the user to tap the sequence in reverse order."></span>
+					   </div>
 					  <input type="hidden" name="taskAttributeValueBos[6].attributeValueId" value="">
 					  <input type="hidden" name="taskAttributeValueBos[6].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[6].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -738,114 +737,121 @@
 			<c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
             <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The sequence length of the initial memory pattern"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The sequence length of the initial memory pattern"></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The minimum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The minimum pattern sequence length"></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum pattern sequence length"></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The maximum pattern sequence length"></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg">
 					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 					title="The time per sequence item; a smaller value means faster sequence play."></span>
 					</div>
-					<div class="col-md-3 col-lg-3 p-none">
 					  <input type="hidden" name="taskAttributeValueBos[3].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="playspeedId" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="4" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+					
+					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 					title="The maximum number of rounds to conduct"></span>
 					</div>
-					<div class="col-md-3 col-lg-3 p-none">
 					  <input type="hidden" name="taskAttributeValueBos[4].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[4].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumtestId" class="form-control" name="taskAttributeValueBos[4].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
-					<div class="clearfix"></div>
+					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
-					<div class="col-md-3 col-lg-3 p-none">
+	                <div class="col-md-3 col-lg-3 p-none">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[5].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[5].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumFailureId" class="form-control" name="taskAttributeValueBos[5].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
+	               
+	               
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 7 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
-							class="requiredStar"> *</span><span
-					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-					title="The maximum number of consecutive failures the user can make before the task is terminated."></span>
-					</div>
+					
 					<div class="col-md-3 col-lg-3 p-none">
+						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
+								class="requiredStar"> *</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="Boolean value that indicates whether to require the user to tap the sequence in reverse order."></span>
+						</div>
 					  <input type="hidden" name="taskAttributeValueBos[6].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 					  <input type="hidden" name="taskAttributeValueBos[6].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[6].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -1288,6 +1294,114 @@ $(document).ready(function(){
 			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
  	   }
     }
+    $('#initialspanId').keyup(function(){	
+    	var value= $(this).val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+        if(value){
+        	if(parseInt($(this).val()) < 2){
+            	$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            }
+        }else{
+        	$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+        }
+    });
+    $("#minimumspanId").keyup(function(){	
+    	var value= $(this).val();
+    	var initialSpanVal = $('#initialspanId').val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(initialSpanVal){
+    		if(parseInt($(this).val()) > parseInt(initialSpanVal)){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+    		}
+    	}else{
+    		$('#initialspanId').val('');
+   		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
+            $('#initialspanId').parent().find(".help-block").empty();
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            
+            $(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+    	}
+    });
+    
+    $("#maximumspanId").keyup(function(){	
+    	var value= $(this).val();
+    	var initialSpanVal = $('#initialspanId').val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(initialSpanVal){
+    		if(parseInt($(this).val()) > 20){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should <= 20  </li></ul>");
+    		}else if(parseInt($(this).val()) < parseInt(initialSpanVal)){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+    		}
+    	}else{
+    		$('#initialspanId').val('');
+   		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
+            $('#initialspanId').parent().find(".help-block").empty();
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            
+            $(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+    	}
+    });
+    
+    $("#playspeedId").keyup(function(){	
+    	var value= $(this).val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+        if(value){
+        	if(parseFloat($(this).val()) < 0.5){
+            	$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+            }
+        	if(parseInt($(this).val()) > 20){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be <= 20 seconds  </li></ul>");
+    		}
+        }else{
+        	$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+        }
+    });
+    $("#maximumtestId, #maximumFailureId").keyup(function(){	
+    	var value= $(this).val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(parseInt($(this).val()) < 1){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+    	}
+    });
 	$("#shortTitleId").blur(function(){
     	  validateShortTitleId('',function(val){});
     })
@@ -1308,6 +1422,10 @@ $(document).ready(function(){
     	 //alert("1");
     	validateShortTitleStatId('', this, function(val){});
     })
+    $('#identifierId1, #identifierId2, #identifierId3').on('keyup',function(){
+   	  $(this).parent().find(".help-block").empty();
+	  $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+    });
     $('#Score_spatial_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_Score_spatial').css("display","");
@@ -1719,7 +1837,7 @@ function validateShortTitleId(item,callback){
 	 	var thisAttr= $("#shortTitleId");
 	 	var existedKey = '${activeTaskBo.shortTitle}';
 	 	var activeTaskAttName = 'shortTitle';
- 	var activeTaskAttIdVal = shortTitle;
+ 	    var activeTaskAttIdVal = shortTitle;
 	    var activeTaskAttIdName = "not";
 	 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 	 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -1770,7 +1888,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 	   var activeTaskAttName = 'identifierNameStat';
 	   var activeTaskAttIdVal = $(thisAttr).val();
 	   var activeTaskAttIdName = $(thisAttr).attr('id');
-	   var dbId = $(thisAttr).attr('title');
+	   var dbId = $(thisAttr).attr('dbid');
 	   $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
 	   $(thisAttr).parent().find(".help-block").empty();
 	   var statIds = "";
@@ -1790,7 +1908,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 				   if(val && statAttId!=activeTaskAttIdName){
 					   if(dbStatAttId)
 					    statIds = statIds +","+ dbStatAttId;
-					   if(val  == activeTaskAttIdVal){
+					   if(val.toLowerCase()  == activeTaskAttIdVal.toLowerCase()){
 						   count = count + 1;
 					   }
 				   }  
@@ -1927,7 +2045,7 @@ function validateStatisticsIds(jsonDatas, callback){
 				   for(var j = 0; j<arrayLength ; j++) {
 					   var statId = jsonDatas[j].id;
 					   var statVal = jsonDatas[j].idVal; 
-				       if (existId!=statId && existVal == statVal) {
+				       if (existId!=statId && existVal.toLowerCase() == statVal.toLowerCase()) {
 				    	   flag = false;
 				    	   shortSatId = jsonDatas[j].id;
 				    	   shortSatIdVal = jsonDatas[j].idVal;
@@ -1947,17 +2065,17 @@ function validateStatisticsIds(jsonDatas, callback){
           		$("#"+shortSatId).val('');
    			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
              	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
-          		$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field.</li></ul>");
+          		$("#"+shortSatId).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>Please fill out this field.</li></ul>");
           	 }else{
           		$("#"+shortSatId).val('');
    			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
              	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
-             	$("#"+shortSatId).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
+             	$("#"+shortSatId).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
           	 }
 		   }
 		   callback(false); 
 	 }else{
-		 //alert("else..");
+		//alert("else..");
 // 		 for(var i=0;i<arrayLength ; i++){
 // 			 var activeStatisticsBean =  new Object();
 			 
@@ -1984,7 +2102,7 @@ function validateStatisticsIds(jsonDatas, callback){
 		        						 $("#"+obj.id).focus();
 		        						 $("#"+obj.id).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
 		        			          	 $("#"+obj.id).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
-		        			          	 $("#"+obj.id).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
+		        			          	 $("#"+obj.id).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
 		        				 }
 		        		 });
 		        		  
@@ -2074,6 +2192,14 @@ function setLineChatStatCheckedVal(){
 var updateLogoutCsrf = function() {
 	$('#logoutCsrf').val('${_csrf.token}');
 	$('#logoutCsrf').prop('name', '${_csrf.parameterName}');
+}
+function isNumber(evt) {
+	evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
+    	 return false;
+    }
+    return true;
 }
 //# sourceURL=filename3.js
 </script>
