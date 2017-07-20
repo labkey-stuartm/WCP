@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -58,4 +59,6 @@ public interface StudyQuestionnaireService {
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId);
 	public String validateLineChartSchedule(Integer questionnaireId,String frequency);
 	public String validateRepetableFormQuestionStats(Integer formId);
+	
+	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList(); 
 }

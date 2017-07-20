@@ -354,6 +354,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String DATE = "Date";
 	public static final String DATE_TIME = "Date-Time";
 	public static final String ANDROID = "A";
+	public static final String IOS = "I";
 	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
