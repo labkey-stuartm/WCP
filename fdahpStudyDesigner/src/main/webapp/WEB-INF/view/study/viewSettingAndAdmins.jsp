@@ -133,12 +133,14 @@
                  <!-- End Section-->
                 
                  <!-- Start Section-->
+                <c:if test="${fn:contains(permissions,7)}">
                 <div>
                  <div class="black-md-f text-uppercase line34">MANAGE LIST OF ADMINS ASSIGNED TO THE STUDY</div>
-            <div class="dis-line form-group mb-none">
-					<button type="button"
-						class="btn btn-primary blue-btn mb-sm mt-xs" onclick="addAdmin();">+ Add Admin</button>
-			</div>
+                 <c:if test="${empty permission && fn:contains(permissions,5)}">
+		            <div class="dis-line form-group mb-none">
+							<button type="button" class="btn btn-primary blue-btn mb-sm mt-xs" onclick="addAdmin();">+ Add Admin</button>
+					</div>
+				</c:if>	
             
 			<table id="studyAdminsTable" class="display bor-none"
 				cellspacing="0" width="80%">
@@ -158,24 +160,24 @@
 								<td><span class="dis-ellipsis" title="${perm.userFullName}">${perm.userFullName}</span></td>
 								<td>
 									<span class="radio radio-info radio-inline p-45">
-	                            		<input type="radio" id="inlineRadio1${perm.userId}" value="0" name="view${perm.userId}" <c:if test="${not perm.viewPermission}">checked</c:if>>
+	                            		<input type="radio" id="inlineRadio1${perm.userId}" class="radcls" value="0" name="view${perm.userId}" <c:if test="${not perm.viewPermission}">checked</c:if>>
 	                            		<label for="inlineRadio1${perm.userId}"></label>
                         			</span>
 								</td>
 								<td>
 									<span class="radio radio-info radio-inline p-45">
-	                            		<input type="radio" id="inlineRadio2${perm.userId}" value="1" name="view${perm.userId}" <c:if test="${perm.viewPermission}">checked</c:if>>
+	                            		<input type="radio" id="inlineRadio2${perm.userId}" class="radcls" value="1" name="view${perm.userId}" <c:if test="${perm.viewPermission}">checked</c:if>>
 	                            		<label for="inlineRadio2${perm.userId}"></label>
                         			</span>
 								</td>
 								<td>
 									<span class="radio radio-info radio-inline p-45">
-	                            		<input type="radio" id="inlineRadio3${perm.userId}" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
+	                            		<input type="radio" id="inlineRadio3${perm.userId}" class="radcls" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
 	                            		<label for="inlineRadio3${perm.userId}"></label>
                         			</span>
 								</td>
 								<td>
-									<span class="sprites_icon copy delete" onclick="removeUser(${perm.userId})"></span>
+									<span class="sprites_icon copy delete <c:if test="${not empty permission || !fn:contains(permissions,5)}"> cursor-none </c:if>" onclick="removeUser(${perm.userId})"></span>
 								</td>
 							</tr>
 					</c:forEach>
@@ -183,6 +185,7 @@
 			</table>
 		<!-- </div> -->
 	</div>
+	</c:if>
                  <!-- End Section-->
                 
               
@@ -196,7 +199,7 @@
         </div>
         <!-- End right Content here -->
         
-        <!-- Admins Section Starts-->
+        <c:if test="${empty permission && fn:contains(permissions,5)}">
         <div class="col-sm-10 col-rc white-bg p-none" id="adminsId">
             <div class="right-content-head">        
                 <div class="text-right">
@@ -244,7 +247,7 @@
 	</div>
             </div>
         </div>
-        <!-- Admins Section Ends -->
+        </c:if>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
    <div class="modal-dialog modal-lg">
@@ -280,39 +283,41 @@
 <script>
 $(document).ready(function(){
 	
-		 $('#adminsId').hide();
-		 
-		 $('.studyAdminRowCls').each(function(){
+	<c:if test="${empty permission && fn:contains(permissions,5)}">
+		$('#adminsId').hide();
+		
+		$('.studyAdminRowCls').each(function(){
 			  var userId = $(this).attr('studyUserId');
 			  $('#user'+userId).hide();
-		 });
+		});
 		
-		 $('#userListTable').DataTable({
-		        "paging":   false,
-		        "aoColumns": [
-				   { "width":'5%',"bSortable": false },
-		           { "width":'35%',"bSortable": true },
-		           { "width":'30%',"bSortable": false },
-		           { "width":'30%',"bSortable": false }
-		          ], 
-		        "info" : false, 
-		        "lengthChange": true, 
-		        "searching": false, 
-		    });
-		 
+		$('#userListTable').DataTable({
+	        "paging":   false,
+	        "aoColumns": [
+			   { "width":'5%',"bSortable": false },
+	           { "width":'35%',"bSortable": true },
+	           { "width":'30%',"bSortable": false },
+	           { "width":'30%',"bSortable": false }
+	          ], 
+	        "info" : false, 
+	        "lengthChange": true, 
+	        "searching": false, 
+	    });
+	</c:if>
+	
 		 table =  $('#studyAdminsTable').DataTable({
-		        "paging":   false,
-		        "aoColumns": [
-				   { "width":'40%',"bSortable": false },
-		           { "width":'10%',"bSortable": false },
-		           { "width":'10%',"bSortable": false },
-		           { "width":'10%',"bSortable": false },
-		           { "width":'10%',"bSortable": false }
-		          ],  
-		        "info" : false, 
-		        "lengthChange": true, 
-		        "searching": false, 
-		    });
+			        "paging":   false,
+			        "aoColumns": [
+					   { "width":'40%',"bSortable": false },
+			           { "width":'10%',"bSortable": false },
+			           { "width":'10%',"bSortable": false },
+			           { "width":'10%',"bSortable": false },
+			           { "width":'10%',"bSortable": false }
+			          ],  
+			        "info" : false, 
+			        "lengthChange": true, 
+			        "searching": false, 
+		         });
 	
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
@@ -324,6 +329,10 @@ $(document).ready(function(){
             $('#settingfoFormId input,textarea,select').prop('disabled', true);
             $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
         </c:if>
+        
+        <c:if test="${!fn:contains(permissions,5)}">
+	        $('.radcls').prop('disabled', true);
+    	</c:if>
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
@@ -460,62 +469,6 @@ function submitButton(buttonText){
 	}
 }
 
-function addAdmin(){
-	$('#settingId').hide();	
-	$('#adminsId').show();
-}
-
-function cancelAddAdmin(){
-	$('#settingId').show();	
-	$('#adminsId').hide();
-	$('[name=case]:checked').each(function() {
-		$(this).prop('checked',false);
-	});
-}
-function addAdminsToStudy(){
-	 $('#addAdminsToStudyId').attr('disabled',true);
-	 $('[name=case]:checked').each(function() {
-		 var name = $(this).val();
-		 var userId = $(this).attr('userId');
-		 $('#user'+userId).hide();
-		 $('#settingId').show();
-		 $(this).prop('checked',false);
-		 $('#adminsId').hide();
-		 var domStr = '';
-		      domStr = domStr + '<tr id="studyAdminRowId'+userId+'" role="row" class="studyAdminRowCls" studyUserId="'+userId+'">';
-		      domStr = domStr + '<td><span class="dis-ellipsis" title="'+name+'">' + name +'</span></td>';
-	          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
-	          					'<input type="radio" id="inlineRadio1'+userId+'" value="0" name="view'+userId+'" checked>'+
-    							'<label for="inlineRadio1'+userId+'"></label>'+
-								'</span></td>';
-	          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
-	          					'<input type="radio" id="inlineRadio2'+userId+'" value="1" name="view'+userId+'">'+
-	          					'<label for="inlineRadio2'+userId+'"></label>'+
-	          					'</span></td>';
-			  domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
-								'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
-								'<label for="inlineRadio3'+userId+'"></label>'+
-								'</span></td>';
-			 domStr = domStr + '<td><span class="sprites_icon copy delete" onclick="removeUser('+userId+')"></span></td>';
-	         domStr = domStr + '</tr>';
-		 $('#studyAdminId').append(domStr);
-		 $('.dataTables_empty').remove();
-	 });
-	 $('#addAdminsToStudyId').attr('disabled',false); 
-}
-function removeUser(userId){
-	var userId = userId;
-	var count = 0;
-	$('.studyAdminRowCls').each(function(){
-		count++;
-	});
-	if(count == 1){
-		table.clear().draw();
-	}
-	$('#studyAdminRowId'+userId).remove();
-	$('#user'+userId).show();
-}
-
 function admins(){
 	var userIds = "";
 	var permissions = "";
@@ -541,4 +494,64 @@ function admins(){
 	$('#permissions').val(permissions);
 	$('#projectLead').val(projectLead);
 }
+
+	<c:if test="${empty permission && fn:contains(permissions,5)}">
+		function addAdmin(){
+			$('#settingId').hide();	
+			$('#adminsId').show();
+		}
+
+		function cancelAddAdmin(){
+			$('#settingId').show();	
+			$('#adminsId').hide();
+			$('[name=case]:checked').each(function() {
+				$(this).prop('checked',false);
+			});
+		}
+		
+		function addAdminsToStudy(){
+			 $('#addAdminsToStudyId').attr('disabled',true);
+			 $('[name=case]:checked').each(function() {
+				 var name = $(this).val();
+				 var userId = $(this).attr('userId');
+				 $('#user'+userId).hide();
+				 $('#settingId').show();
+				 $(this).prop('checked',false);
+				 $('#adminsId').hide();
+				 var domStr = '';
+				      domStr = domStr + '<tr id="studyAdminRowId'+userId+'" role="row" class="studyAdminRowCls" studyUserId="'+userId+'">';
+				      domStr = domStr + '<td><span class="dis-ellipsis" title="'+name+'">' + name +'</span></td>';
+			          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+			          					'<input type="radio" id="inlineRadio1'+userId+'" value="0" name="view'+userId+'" checked>'+
+		    							'<label for="inlineRadio1'+userId+'"></label>'+
+										'</span></td>';
+			          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+			          					'<input type="radio" id="inlineRadio2'+userId+'" value="1" name="view'+userId+'">'+
+			          					'<label for="inlineRadio2'+userId+'"></label>'+
+			          					'</span></td>';
+					  domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+										'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
+										'<label for="inlineRadio3'+userId+'"></label>'+
+										'</span></td>';
+					 domStr = domStr + '<td><span class="sprites_icon copy delete" onclick="removeUser('+userId+')"></span></td>';
+			         domStr = domStr + '</tr>';
+				 $('#studyAdminId').append(domStr);
+				 $('.dataTables_empty').remove();
+			 });
+			 $('#addAdminsToStudyId').attr('disabled',false); 
+		}
+		
+		function removeUser(userId){
+			var userId = userId;
+			var count = 0;
+			$('.studyAdminRowCls').each(function(){
+				count++;
+			});
+			if(count == 1){
+				table.clear().draw();
+			}
+			$('#studyAdminRowId'+userId).remove();
+			$('#user'+userId).show();
+		}
+	</c:if>
 </script>

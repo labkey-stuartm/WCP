@@ -57,6 +57,7 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.service.NotificationService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
+import com.fdahpstudydesigner.service.UsersService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -78,6 +79,9 @@ public class StudyController {
 	
 	@Autowired
 	private StudyQuestionnaireService studyQuestionnaireService;
+	
+	@Autowired
+	private UsersService usersService;
 	
 	/**
      * @author Ronalin
@@ -422,6 +426,7 @@ public class StudyController {
 		String errMsg = "";
 		List<UserBO> userList = null;
 		List<StudyPermissionBO> studyPermissionList = null;
+		List<Integer> permissions = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -446,11 +451,13 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					userList = studyService.getActiveNonAddedUserList(Integer.parseInt(studyId),sesObj.getUserId());
 					studyPermissionList = studyService.getAddedUserListToStudy(Integer.parseInt(studyId),sesObj.getUserId());
+					permissions = usersService.getPermissionsByUserId(sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,studyBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 					map.addAttribute("studyPermissionList",studyPermissionList);
 					map.addAttribute("userList",userList);
 					map.addAttribute("studyPermissionList",studyPermissionList);
+					map.addAttribute("permissions",permissions);
 					mav = new ModelAndView(FdahpStudyDesignerConstants.VIEW_SETTING_AND_ADMINS, map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
