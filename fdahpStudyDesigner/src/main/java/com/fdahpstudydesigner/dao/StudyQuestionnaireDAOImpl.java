@@ -30,6 +30,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
+import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
@@ -2452,5 +2453,33 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep(session,transction) - Ends");
 		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @return List of HealthKityKeyInfo
+	 * 
+	 * This method is used to get the Health Kit key master info
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList() {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionReponseTypeList() - Starts");
+		Session session = null;
+		List<HealthKitKeysInfo> healthKitKeysInfoList = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getHealthKitKeyInfo");
+			healthKitKeysInfoList = query.list();
+		} catch (Exception e) {
+			logger.error(
+					"StudyQuestionnaireDAOImpl - getQuestionReponseTypeList() - ERROR ", e);
+		} finally {
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionReponseTypeList() - Ends");
+		return healthKitKeysInfoList;
 	}
 }

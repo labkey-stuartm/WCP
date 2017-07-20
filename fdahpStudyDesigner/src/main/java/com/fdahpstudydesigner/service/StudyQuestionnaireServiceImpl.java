@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -928,6 +929,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public String validateRepetableFormQuestionStats(Integer formId) {
 		logger.info("StudyQuestionnaireServiceImpl - validateRepetableFormQuestionStats - Starts");
 		return studyQuestionnaireDAO.validateRepetableFormQuestionStats(formId);
+	}
+
+	/**
+	 * @author Ravinder
+	 * @return List of HealthKityKeyInfo
+	 * 
+	 * This method is used to get the Health Kit key master info
+	 */
+	@Override
+	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList() {
+		logger.info("StudyQuestionnaireServiceImpl - getHeanlthKitKeyInfoList - Starts");
+		return studyQuestionnaireDAO.getHeanlthKitKeyInfoList();
 	}
 	
 }

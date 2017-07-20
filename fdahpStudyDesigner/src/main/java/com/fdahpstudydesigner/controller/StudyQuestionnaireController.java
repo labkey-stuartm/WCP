@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
@@ -1125,6 +1126,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		List<StatisticImageListBo> statisticImageList = new ArrayList<>();
 		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
 		List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = new ArrayList<>();
+		List<HealthKitKeysInfo> healthKitKeysInfo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -1230,6 +1232,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
 					
+				}else{
+					healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
+					map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
 				}
 			}
 			map.addAttribute("permission", permission);
@@ -1402,6 +1407,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		List<StatisticImageListBo> statisticImageList = new ArrayList<>();
 		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
 		List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = new ArrayList<>();
+		List<HealthKitKeysInfo> healthKitKeysInfo= null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -1515,6 +1521,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
+				}else {
+						healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
+						map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
 				}
 			}
 			map.addAttribute("timeRangeList", timeRangeList);
