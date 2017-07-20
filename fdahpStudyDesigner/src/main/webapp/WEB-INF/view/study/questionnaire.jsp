@@ -714,7 +714,7 @@ $(document).ready(function() {
 					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					   
 					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-   					   reloadQuestionnaireStepData(questionnaireSteps);
+   					   reloadQuestionnaireStepData(questionnaireSteps,null);
    					   if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 						 $('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					   }
@@ -1853,7 +1853,8 @@ function deletStep(stepId,stepType){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
 		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-		    					reloadQuestionnaireStepData(questionnaireSteps);
+		    					var isDone = jsonobject.isDone;
+		    					reloadQuestionnaireStepData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
@@ -1875,7 +1876,7 @@ function deletStep(stepId,stepType){
 	    }
 	});
 }
-function reloadQuestionnaireStepData(questionnaire){
+function reloadQuestionnaireStepData(questionnaire,isDone){
 	$('#content').DataTable().clear();
 	 if(typeof questionnaire != 'undefined' && questionnaire != null && Object.keys(questionnaire).length > 0){
 		 $.each(questionnaire, function(key, value) {
@@ -1948,6 +1949,11 @@ function reloadQuestionnaireStepData(questionnaire){
 				datarow.push(dynamicAction);    	 
 			$('#content').DataTable().row.add(datarow);
 		 });
+		 console.log("isDone:"+isDone);
+		 if(isDone != null && isDone){
+			 $("#doneId").attr("disabled",false);
+			 $('#helpNote').attr('data-original-title', '');
+		 }
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
@@ -2143,9 +2149,8 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
                 	callback(false);
                 	var questionnaireSteps = jsonobject.questionnaireJsonObject;
                 	if(typeof questionnaireSteps !='undefined' && questionnaireSteps != null && questionnaireSteps!= ''){
-                		reloadQuestionnaireStepData(questionnaireSteps);	
+                		reloadQuestionnaireStepData(questionnaireSteps,null);	
                 	}
-					
                 }
             },
             global:false
