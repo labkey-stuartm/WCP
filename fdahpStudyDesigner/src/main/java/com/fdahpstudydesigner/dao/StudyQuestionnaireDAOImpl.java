@@ -208,6 +208,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						questionnairesStepsBo.setStatus(false);
 						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTION_SAVED;
+						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+questionnairesStepsBo.getQuestionnairesId());
+						query.executeUpdate();
 						
 					}else if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						questionnairesStepsBo.setStatus(true);
@@ -655,6 +657,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						if(questionnairesStepsBo != null && questionnairesStepsBo.getStatus()){
 							questionnairesStepsBo.setStatus(false);
 							session.saveOrUpdate(questionnairesStepsBo);
+							query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+questionnairesStepsBo.getQuestionnairesId());
+							query.executeUpdate();
 						}
 				}
 				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
@@ -1397,6 +1401,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
+						query.executeUpdate();
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DONE;
@@ -1639,6 +1645,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
+						query.executeUpdate();
+						
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DONE;
