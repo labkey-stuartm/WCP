@@ -7,10 +7,13 @@
 <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-       <div class="col-sm-10 col-rc white-bg p-none">
+       <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">
             <input type="hidden" id="settingsstudyId" name="id" value="${studyBo.id}">
+            <input type="hidden" id="userIds" name="userIds">
+            <input type="hidden" id="permissions" name="permissions">
+            <input type="hidden" id="projectLead" name="projectLead">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -130,18 +133,118 @@
                  <!-- End Section-->
                 
                  <!-- Start Section-->
-                
+                <div>
+                 <div class="black-md-f text-uppercase line34">MANAGE LIST OF ADMINS ASSIGNED TO THE STUDY</div>
+            <div class="dis-line form-group mb-none">
+					<button type="button"
+						class="btn btn-primary blue-btn mb-sm mt-xs" onclick="addAdmin();">+ Add Admin</button>
+			</div>
+            
+			<table id="studyAdminsTable" class="display bor-none"
+				cellspacing="0" width="80%">
+				<thead>
+					<tr>
+						<th>Admins</th>
+						<th>View</th>
+						<th>View&Edit</th>
+						<th>Project Lead</th>
+						<th  align="right"></th>
+
+					</tr>
+				</thead>
+				<tbody id="studyAdminId">
+					<c:forEach items="${studyPermissionList}" var="perm">
+							<tr id="studyAdminRowId${perm.userId}" class="studyAdminRowCls" studyUserId="${perm.userId}">
+								<td><span class="dis-ellipsis" title="${perm.userFullName}">${perm.userFullName}</span></td>
+								<td>
+									<span class="radio radio-info radio-inline p-45">
+	                            		<input type="radio" id="inlineRadio1${perm.userId}" value="0" name="view${perm.userId}" <c:if test="${not perm.viewPermission}">checked</c:if>>
+	                            		<label for="inlineRadio1${perm.userId}"></label>
+                        			</span>
+								</td>
+								<td>
+									<span class="radio radio-info radio-inline p-45">
+	                            		<input type="radio" id="inlineRadio2${perm.userId}" value="1" name="view${perm.userId}" <c:if test="${perm.viewPermission}">checked</c:if>>
+	                            		<label for="inlineRadio2${perm.userId}"></label>
+                        			</span>
+								</td>
+								<td>
+									<span class="radio radio-info radio-inline p-45">
+	                            		<input type="radio" id="inlineRadio3${perm.userId}" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
+	                            		<label for="inlineRadio3${perm.userId}"></label>
+                        			</span>
+								</td>
+								<td>
+									<span class="sprites_icon copy delete" onclick="removeUser(${perm.userId})"></span>
+								</td>
+							</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		<!-- </div> -->
+	</div>
                  <!-- End Section-->
                 
               
             </div>
             <!--  End body tab section -->
+           
             </form:form>
             
             
             
         </div>
         <!-- End right Content here -->
+        
+        <!-- Admins Section Starts-->
+        <div class="col-sm-10 col-rc white-bg p-none" id="adminsId">
+            <div class="right-content-head">        
+                <div class="text-right">
+                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" onclick="cancelAddAdmin();"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>Add Admins</div>
+                    
+                    <div class="dis-line form-group mb-none mr-sm">
+                         <button type="button" class="btn btn-default gray-btn" onclick="cancelAddAdmin();">Cancel</button>
+                     </div>
+                     <div class="dis-line form-group mb-none mr-sm">
+                         <button type="button" class="btn btn-primary blue-btn" id="addAdminsToStudyId" onclick="addAdminsToStudy()">Add</button>
+                     </div>
+                 </div>
+            </div>
+            <div class="right-content-body col-xs-12">
+            	<!-- <div class="right-content-body pt-none pb-none"> -->
+		<div>
+			<table id="userListTable" class="display bor-none tbl_rightalign"
+				cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th>USERS<span class="sort"></span></th>
+						<th>E-MAIL ADDRESS</th>
+						<th>ROLE</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${userList}" var="user">
+							<tr id="user${user.userId}">
+								<td>
+									<span class="checkbox checkbox-inline">
+                            			<input type="checkbox" class="platformClass" id="inlineCheckbox${user.userId}" name="case" value="${user.userFullName}" userId="${user.userId}">
+                            			<label for="inlineCheckbox${user.userId}"></label>
+                      				</span>
+								</td>
+								<td><span class="dis-ellipsis" title="${user.userFullName}">${user.userFullName}</span></td>
+								<td><span class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</span></td>
+								<td>${user.roleName}</td>
+							</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		<!-- </div> -->
+	</div>
+            </div>
+        </div>
+        <!-- Admins Section Ends -->
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
    <div class="modal-dialog modal-lg">
@@ -176,6 +279,41 @@
 </div>
 <script>
 $(document).ready(function(){
+	
+		 $('#adminsId').hide();
+		 
+		 $('.studyAdminRowCls').each(function(){
+			  var userId = $(this).attr('studyUserId');
+			  $('#user'+userId).hide();
+		 });
+		
+		 $('#userListTable').DataTable({
+		        "paging":   false,
+		        "aoColumns": [
+				   { "width":'5%',"bSortable": false },
+		           { "width":'35%',"bSortable": true },
+		           { "width":'30%',"bSortable": false },
+		           { "width":'30%',"bSortable": false }
+		          ], 
+		        "info" : false, 
+		        "lengthChange": true, 
+		        "searching": false, 
+		    });
+		 
+		 table =  $('#studyAdminsTable').DataTable({
+		        "paging":   false,
+		        "aoColumns": [
+				   { "width":'40%',"bSortable": false },
+		           { "width":'10%',"bSortable": false },
+		           { "width":'10%',"bSortable": false },
+		           { "width":'10%',"bSortable": false },
+		           { "width":'10%',"bSortable": false }
+		          ],  
+		        "info" : false, 
+		        "lengthChange": true, 
+		        "searching": false, 
+		    });
+	
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
 	    checkRadioRequired();
@@ -242,6 +380,7 @@ function setAllowRejoinText(){
 	}
 }
 function platformTypeValidation(buttonText){
+	/* Ronalin */
 	var platformNames = '';
 	$("input:checkbox[name=platform]:checked").each(function() {
 		platformNames = platformNames + $(this).val();
@@ -279,6 +418,7 @@ function platformTypeValidation(buttonText){
 }
 function submitButton(buttonText){
 	setAllowRejoinText();
+	admins() //Pradyumn
 	if(buttonText === 'save'){
 		$('#settingfoFormId').validator('destroy');
 		$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
@@ -318,5 +458,87 @@ function submitButton(buttonText){
 	       $("#settingfoFormId").submit();
         }
 	}
+}
+
+function addAdmin(){
+	$('#settingId').hide();	
+	$('#adminsId').show();
+}
+
+function cancelAddAdmin(){
+	$('#settingId').show();	
+	$('#adminsId').hide();
+	$('[name=case]:checked').each(function() {
+		$(this).prop('checked',false);
+	});
+}
+function addAdminsToStudy(){
+	 $('#addAdminsToStudyId').attr('disabled',true);
+	 $('[name=case]:checked').each(function() {
+		 var name = $(this).val();
+		 var userId = $(this).attr('userId');
+		 $('#user'+userId).hide();
+		 $('#settingId').show();
+		 $(this).prop('checked',false);
+		 $('#adminsId').hide();
+		 var domStr = '';
+		      domStr = domStr + '<tr id="studyAdminRowId'+userId+'" role="row" class="studyAdminRowCls" studyUserId="'+userId+'">';
+		      domStr = domStr + '<td><span class="dis-ellipsis" title="'+name+'">' + name +'</span></td>';
+	          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+	          					'<input type="radio" id="inlineRadio1'+userId+'" value="0" name="view'+userId+'" checked>'+
+    							'<label for="inlineRadio1'+userId+'"></label>'+
+								'</span></td>';
+	          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+	          					'<input type="radio" id="inlineRadio2'+userId+'" value="1" name="view'+userId+'">'+
+	          					'<label for="inlineRadio2'+userId+'"></label>'+
+	          					'</span></td>';
+			  domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+								'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
+								'<label for="inlineRadio3'+userId+'"></label>'+
+								'</span></td>';
+			 domStr = domStr + '<td><span class="sprites_icon copy delete" onclick="removeUser('+userId+')"></span></td>';
+	         domStr = domStr + '</tr>';
+		 $('#studyAdminId').append(domStr);
+		 $('.dataTables_empty').remove();
+	 });
+	 $('#addAdminsToStudyId').attr('disabled',false); 
+}
+function removeUser(userId){
+	var userId = userId;
+	var count = 0;
+	$('.studyAdminRowCls').each(function(){
+		count++;
+	});
+	if(count == 1){
+		table.clear().draw();
+	}
+	$('#studyAdminRowId'+userId).remove();
+	$('#user'+userId).show();
+}
+
+function admins(){
+	var userIds = "";
+	var permissions = "";
+	var projectLead = "";
+	$('.studyAdminRowCls').each(function(){
+		var userId = $(this).attr('studyUserId');
+		if(userIds == ""){
+			userIds = userId;
+		}else{
+			userIds += ","+userId;
+		}
+		var permission = $(this).find('input[type=radio]:checked').val();
+		if(permissions == ""){
+			permissions = permission;
+		}else{
+			permissions += ","+permission;
+		}
+		if($(this).find('#inlineRadio3'+userId).prop('checked')){
+			projectLead = userId;
+		}
+	});
+	$('#userIds').val(userIds);
+	$('#permissions').val(permissions);
+	$('#projectLead').val(projectLead);
 }
 </script>

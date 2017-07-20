@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,8 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -753,11 +758,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj) {
+	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj,String userIds,String permissions,String projectLead) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			result = studyDAO.saveOrUpdateStudySettings(studyBo, sesObj);
+			result = studyDAO.saveOrUpdateStudySettings(studyBo, sesObj, userIds, permissions, projectLead);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
 		}
@@ -1407,5 +1412,30 @@ public class StudyServiceImpl implements StudyService {
         logger.info("StudyServiceImpl - validateEligibilityTestKey - Ends");
         return message;
     }
+    
+    @Override
+    public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId) {
+  		logger.info("StudyServiceImpl - getActiveNonAddedUserList() - Starts");
+  		List<UserBO> userList = null;
+  		try{
+  			userList = studyDAO.getActiveNonAddedUserList(studyId, userId);
+  		}catch(Exception e){
+  			logger.error("StudyServiceImpl - getActiveNonAddedUserList() - ERROR",e);
+  		}
+  		logger.info("StudyServiceImpl - getActiveNonAddedUserList() - Ends");
+  		return userList;
+  	}
+    
+    public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,Integer userId) {
+  		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Starts");
+  		List<StudyPermissionBO> studyPermissionList = null;
+  		try{
+  			studyPermissionList = studyDAO.getAddedUserListToStudy(studyId, userId);
+  		}catch(Exception e){
+  			logger.error("StudyServiceImpl - getAddedUserListToStudy() - ERROR",e);
+  		}
+  		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Ends");
+  		return studyPermissionList;
+  	}
 
 }
