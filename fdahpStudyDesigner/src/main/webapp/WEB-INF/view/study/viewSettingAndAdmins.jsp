@@ -232,8 +232,8 @@
 							<tr id="user${user.userId}">
 								<td>
 									<span class="checkbox checkbox-inline">
-                            			<input type="checkbox" class="platformClass" id="inlineCheckbox${user.userId}" name="case" value="${user.userFullName}" userId="${user.userId}">
-                            			<label for="inlineCheckbox${user.userId}"></label>
+                            			<input type="checkbox" class="platformClass" id="inlineCheckboxNew${user.userId}" name="case" value="${user.userFullName}" userId="${user.userId}">
+                            			<label for="inlineCheckboxNew${user.userId}"></label>
                       				</span>
 								</td>
 								<td><span class="dis-ellipsis" title="${user.userFullName}">${user.userFullName}</span></td>
