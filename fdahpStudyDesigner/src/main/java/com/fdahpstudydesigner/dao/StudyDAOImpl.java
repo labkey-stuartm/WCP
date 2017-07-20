@@ -4462,7 +4462,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name "
-					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 0 "
+					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 1 "
 					+ "AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
 					+ "AND u.user_id <> "+userId);
