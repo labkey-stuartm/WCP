@@ -30,6 +30,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
+import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
@@ -208,6 +209,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						questionnairesStepsBo.setStatus(false);
 						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTION_SAVED;
+						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+questionnairesStepsBo.getQuestionnairesId());
+						query.executeUpdate();
 						
 					}else if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						questionnairesStepsBo.setStatus(true);
@@ -655,6 +658,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						if(questionnairesStepsBo != null && questionnairesStepsBo.getStatus()){
 							questionnairesStepsBo.setStatus(false);
 							session.saveOrUpdate(questionnairesStepsBo);
+							query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+questionnairesStepsBo.getQuestionnairesId());
+							query.executeUpdate();
 						}
 				}
 				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
@@ -1397,6 +1402,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
+						query.executeUpdate();
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DONE;
@@ -1639,6 +1646,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
+						query.executeUpdate();
+						
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
 						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DONE;
@@ -2452,5 +2462,33 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep(session,transction) - Ends");
 		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @return List of HealthKityKeyInfo
+	 * 
+	 * This method is used to get the Health Kit key master info
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList() {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionReponseTypeList() - Starts");
+		Session session = null;
+		List<HealthKitKeysInfo> healthKitKeysInfoList = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getHealthKitKeyInfo");
+			healthKitKeysInfoList = query.list();
+		} catch (Exception e) {
+			logger.error(
+					"StudyQuestionnaireDAOImpl - getQuestionReponseTypeList() - ERROR ", e);
+		} finally {
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionReponseTypeList() - Ends");
+		return healthKitKeysInfoList;
 	}
 }

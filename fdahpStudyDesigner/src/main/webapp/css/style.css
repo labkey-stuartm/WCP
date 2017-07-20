@@ -1230,7 +1230,7 @@ height:0px !important;
     z-index: 9;
     position: absolute;    
     right: 14px;
-    top: 9px;
+    top: 4px;
 }
 .form-group select:disabled {
 	cursor: not-allowed;
@@ -1771,3 +1771,41 @@ height:0px !important;
 .cursonMove{
  cursor: move !important;
 }
+.ellipse{
+	visibility:visible;
+}
+
+.eye__preview{
+	    padding: 5px 10px;
+    background: #f5f5f5;
+    border-radius: 3px;
+    cursor:pointer;
+}
+
+.eye__preview .preview-g{
+	vertical-align: text-top;
+}
+
+.list-style-image{
+	list-style-image: url(../images/icons/tick.png);
+}
+
+.list-style-image li{
+	padding:10px 0;
+}
+
+.i__phone__bg{
+	background:url(../images/logo/fda-logo.png) no-repleat;
+	background-size:cover;
+}
+#i__phone .close{
+	position: absolute;
+    left: 50%;
+    top: -30px;
+    opacity: 1;
+    color: #fff !important;
+    font-size: 30px;
+}
+.i__phone__content{
+	text-align:center;
+} 
