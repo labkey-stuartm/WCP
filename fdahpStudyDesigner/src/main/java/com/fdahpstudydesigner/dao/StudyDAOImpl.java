@@ -1535,7 +1535,7 @@ public class StudyDAOImpl implements StudyDAO{
 					deleteExceptIds += ","+sesObj.getUserId();
 				}
 				
-				query = session.createSQLQuery(" select sp.user_id from study_permission sp where sp.user_id not in ("+ deleteExceptIds +") and sp.study_id ="+studyBo.getId());
+				query = session.createSQLQuery(" SELECT sp.user_id FROM study_permission sp WHERE sp.user_id NOT IN ("+ deleteExceptIds +") AND sp.study_id ="+studyBo.getId());
 				deletingUserIds = query.list();
 				
 				if(null != deletingUserIds && !deletingUserIds.isEmpty()){
@@ -1553,12 +1553,12 @@ public class StudyDAOImpl implements StudyDAO{
 					viewPermission = permissions.split(",");
 					
 					if(null != deletingUserIds && !deletingUserIds.isEmpty()){
-						query = session.createSQLQuery(" delete from study_permission where user_id not in ("+ deleteExceptIds +") and study_id ="+studyBo.getId());
+						query = session.createSQLQuery(" DELETE FROM study_permission WHERE user_id NOT IN ("+ deleteExceptIds +") AND study_id ="+studyBo.getId());
 						query.executeUpdate();
 					}
 					
 					for(int i=0;i<userId.length;i++){
-						query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.userId = "+ userId[i] +" AND studyId ="+studyBo.getId());
+						query = session.createQuery(" FROM StudyPermissionBO UBO WHERE UBO.userId = "+ userId[i] +" AND studyId ="+studyBo.getId());
 						studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 						if(null != studyPermissionBO){
 							if(studyPermissionBO.isViewPermission() != "1".equals(viewPermission[i]) ? true : false){
@@ -1593,7 +1593,7 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}else{
 					if(null != deletingUserIds && !deletingUserIds.isEmpty()){
-						query = session.createSQLQuery(" delete from study_permission where user_id not in ("+ deleteExceptIds +") and study_id ="+studyBo.getId());
+						query = session.createSQLQuery(" DELETE FROM study_permission WHERE user_id NOT IN ("+ deleteExceptIds +") AND study_id ="+studyBo.getId());
 						query.executeUpdate();
 					}
 				}
