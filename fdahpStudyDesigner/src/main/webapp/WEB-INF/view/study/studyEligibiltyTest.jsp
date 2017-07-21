@@ -223,8 +223,14 @@ var chkValidChoosedOption = function() {
 	
 	if(resYesOptVal == 'false' && resNoOptVal == 'false') {
 		showErrMsg("Both answer options cannot have Fail attribute");
+		$("#resYesOptId").parents(".form-group").addClass("has-error has-danger"); 
+		$("#resNoOptId").parents(".form-group").addClass("has-error has-danger");
 		return false;
+	} else {
+		$("#resYesOptId").parents(".form-group").removeClass("has-error has-danger"); 
+		$("#resNoOptId").parents(".form-group").removeClass("has-error has-danger");
+		return true;
 	}
-	return true;
+	
 }
 </script>

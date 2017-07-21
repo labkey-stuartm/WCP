@@ -232,7 +232,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}
 				if(instructionId!= null && !instructionId.isEmpty() && null != studyBo){
-					instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId),questionnaireBo.getShortTitle());
+					instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId),questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 					if(instructionsBo != null && instructionsBo.getQuestionnairesStepsBo() != null){
 						List<QuestionnairesStepsBo> questionnairesStepsList = studyQuestionnaireService.getQuestionnairesStepsList(instructionsBo.getQuestionnairesStepsBo().getQuestionnairesId(), instructionsBo.getQuestionnairesStepsBo().getSequenceNo());
 						map.addAttribute("destinationStepList", questionnairesStepsList);
@@ -647,6 +647,30 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
 							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
 							jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+							if(qTreeMap != null){
+								boolean isDone =true;
+								for(Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()){
+									 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+									 if(questionnaireStepBean.getStatus() != null && !questionnaireStepBean.getStatus()){
+										 isDone = false;
+										 break;
+									 }
+									 if(entry.getValue().getFromMap() != null){
+										 if(!entry.getValue().getFromMap().isEmpty()){
+											 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
+												 if(!entryKey.getValue().getStatus()){
+													 isDone = false;
+													 break;
+												 }
+											 } 
+										 }else{
+											 isDone = false;
+											 break;
+										 }
+									 }
+								 }
+								jsonobject.put("isDone", isDone);
+							}
 						}
 						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 						if(StringUtils.isNotEmpty(studyId)){
@@ -884,7 +908,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
 			if(formId!= null && !formId.isEmpty() && null != studyBo){
-				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle());
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
 					map.addAttribute("destinationStepList", destionationStepList);
@@ -1082,13 +1106,25 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				if(!formId.isEmpty() && !questionId.isEmpty()){
 					message = studyQuestionnaireService.deleteFromStepQuestion(Integer.valueOf(formId),Integer.valueOf(questionId),sesObj,customStudyId);
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
-						questionnairesStepsBo=studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, customStudyId);
+						questionnairesStepsBo=studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP,null, customStudyId,null);
 						if(questionnairesStepsBo != null){
 							questionnairesStepsBo.setType(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE);
 							studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(questionnairesStepsBo, sesObj, customStudyId);
 							qTreeMap = questionnairesStepsBo.getFormQuestionMap();
 							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
 							jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+							if(qTreeMap != null){
+								boolean isDone =true;
+								if(!qTreeMap.isEmpty()){
+									 for(Entry<Integer, QuestionnaireStepBean> entryKey : qTreeMap.entrySet()){
+										 if(!entryKey.getValue().getStatus()){
+											 isDone = false;
+											 break;
+										 }
+									 } 
+								 }
+								jsonobject.put("isDone", isDone);
+							}
 						}
 						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 						if(StringUtils.isNotEmpty(studyId)){
@@ -1216,7 +1252,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
 			if(questionId!= null && !questionId.isEmpty()){
-				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(questionId), FdahpStudyDesignerConstants.QUESTION_STEP, questionnaireBo.getShortTitle());
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(questionId), FdahpStudyDesignerConstants.QUESTION_STEP, questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
 					map.addAttribute("destinationStepList", destionationStepList);
@@ -1500,7 +1536,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 			if(formId!= null && !formId.isEmpty()){
-				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle());
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 				if(questionId != null && !questionId.isEmpty()){
 					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle());
 					map.addAttribute("questionsBo", questionsBo);
