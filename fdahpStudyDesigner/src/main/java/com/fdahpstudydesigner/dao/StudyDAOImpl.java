@@ -1565,7 +1565,7 @@ public class StudyDAOImpl implements StudyDAO{
 								studyPermissionBO.setViewPermission("1".equals(viewPermission[i]) ? true : false);
 								flag = true;
 							}
-							if(!studyPermissionBO.getProjectLead().equals(projectLead.equals(userId[i]) ? 1 : 0)){
+							if((studyPermissionBO.getProjectLead() != null ? studyPermissionBO.getProjectLead() : 0) != (projectLead.equals(userId[i]) ? 1 : 0)){
 								studyPermissionBO.setProjectLead(projectLead.equals(userId[i]) ? 1 : 0);
 								flag = true;
 							}
@@ -1599,7 +1599,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				if(forceLogoutUserIds != ""){
-					query = session.createSQLQuery(" UPDATE users SET force_logout = true WHERE user_id IN ("+forceLogoutUserIds+")");
+					query = session.createSQLQuery(" UPDATE users SET force_logout = 'Y' WHERE user_id IN ("+forceLogoutUserIds+")");
 					query.executeUpdate();
 				}
 				
@@ -4503,7 +4503,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createSQLQuery(" SELECT sp.user_id,u.first_name,u.last_name,sp.view_permission,sp.project_lead "
 					+ "FROM users u,study_permission sp "
-					+ "WHERE u.user_id = sp.user_id AND sp.study_id = "+studyId
+					+ "WHERE u.user_id = sp.user_id AND u.status = 1 AND sp.study_id = "+studyId
 					+ " AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
 					+ "AND u.user_id <> "+userId);

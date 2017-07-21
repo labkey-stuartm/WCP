@@ -148,7 +148,7 @@
 					<tr>
 						<th>Admins</th>
 						<th>View</th>
-						<th>View&Edit</th>
+						<th>View & Edit</th>
 						<th>Project Lead</th>
 						<th  align="right"></th>
 
@@ -157,7 +157,7 @@
 				<tbody id="studyAdminId">
 					<c:forEach items="${studyPermissionList}" var="perm">
 							<tr id="studyAdminRowId${perm.userId}" class="studyAdminRowCls" studyUserId="${perm.userId}">
-								<td><span class="dis-ellipsis" title="${perm.userFullName}">${perm.userFullName}</span></td>
+								<td><span class="dis-ellipsis" title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span></td>
 								<td>
 									<span class="radio radio-info radio-inline p-45">
 	                            		<input type="radio" id="inlineRadio1${perm.userId}" class="radcls" value="0" name="view${perm.userId}" <c:if test="${not perm.viewPermission}">checked</c:if>>
@@ -177,7 +177,8 @@
                         			</span>
 								</td>
 								<td>
-									<span class="sprites_icon copy delete <c:if test="${not empty permission || !fn:contains(permissions,5)}"> cursor-none </c:if>" onclick="removeUser(${perm.userId})"></span>
+									<span class="sprites_icon copy delete <c:if test="${not empty permission || !fn:contains(permissions,5)}"> cursor-none </c:if>" 
+									 onclick="removeUser(${perm.userId})" data-toggle="tooltip" data-placement="top" title="Delete"></span>
 								</td>
 							</tr>
 					</c:forEach>
@@ -229,15 +230,15 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${userList}" var="user">
-							<tr id="user${user.userId}">
+							<tr id="user${user.userId}" class="checkCount">
 								<td>
 									<span class="checkbox checkbox-inline">
-                            			<input type="checkbox" class="platformClass" id="inlineCheckboxNew${user.userId}" name="case" value="${user.userFullName}" userId="${user.userId}">
+                            			<input type="checkbox" class="addAdminCheckbox" id="inlineCheckboxNew${user.userId}" name="case" value="${fn:escapeXml(user.userFullName)}" userId="${user.userId}">
                             			<label for="inlineCheckboxNew${user.userId}"></label>
                       				</span>
 								</td>
-								<td><span class="dis-ellipsis" title="${user.userFullName}">${user.userFullName}</span></td>
-								<td><span class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</span></td>
+								<td><span class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${user.userFullName}</span></td>
+								<td><span class="dis-ellipsis" title="${fn:escapeXml(user.userEmail)}">${user.userEmail}</span></td>
 								<td>${user.roleName}</td>
 							</tr>
 					</c:forEach>
@@ -284,11 +285,14 @@
 $(document).ready(function(){
 	
 	<c:if test="${empty permission && fn:contains(permissions,5)}">
+	
+		$('[data-toggle="tooltip"]').tooltip();
+	
 		$('#adminsId').hide();
 		
 		$('.studyAdminRowCls').each(function(){
 			  var userId = $(this).attr('studyUserId');
-			  $('#user'+userId).hide();
+			  $('#user'+userId).removeClass('checkCount').hide();
 		});
 		
 		$('#userListTable').DataTable({
@@ -299,10 +303,23 @@ $(document).ready(function(){
 	           { "width":'30%',"bSortable": false },
 	           { "width":'30%',"bSortable": false }
 	          ], 
+	        "emptyTable": "No data available",
 	        "info" : false, 
 	        "lengthChange": true, 
 	        "searching": false, 
 	    });
+		
+		$('.addAdminCheckbox').on('click',function(){
+			 var count = 0;
+			 $('[name=case]:checked').each(function() {
+				 count++;
+			 });
+			 if(count > 0){
+				$('#addAdminsToStudyId').prop('disabled',false);
+			 }else{
+				$('#addAdminsToStudyId').prop('disabled',true);
+			 }
+		});
 	</c:if>
 	
 		 table =  $('#studyAdminsTable').DataTable({
@@ -497,24 +514,49 @@ function admins(){
 
 	<c:if test="${empty permission && fn:contains(permissions,5)}">
 		function addAdmin(){
-			$('#settingId').hide();	
-			$('#adminsId').show();
+			 var userListTableRowCount = $('.checkCount').length;
+			 if(userListTableRowCount == 0){
+				 bootbox.alert({
+								closeButton: false,
+								message : 'No admins to add.',	
+				    		  });
+			 }else{
+					 $('#settingId').hide();	
+					 $('#adminsId').show();
+					 $('#addAdminsToStudyId').prop('disabled',true);
+			 }
 		}
 
 		function cancelAddAdmin(){
-			$('#settingId').show();	
-			$('#adminsId').hide();
-			$('[name=case]:checked').each(function() {
-				$(this).prop('checked',false);
-			});
+	 		bootbox.confirm({
+				closeButton: false,
+				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+			    buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	$('#settingId').show();	
+						$('#adminsId').hide();
+						$('[name=case]:checked').each(function() {
+							$(this).prop('checked',false);
+						});
+			        }
+			    }
+		    });
 		}
 		
 		function addAdminsToStudy(){
 			 $('#addAdminsToStudyId').attr('disabled',true);
 			 $('[name=case]:checked').each(function() {
-				 var name = $(this).val();
+				 var name = escapeXml($(this).val());
 				 var userId = $(this).attr('userId');
-				 $('#user'+userId).hide();
+				 $('#user'+userId).removeClass('checkCount').hide();
 				 $('#settingId').show();
 				 $(this).prop('checked',false);
 				 $('#adminsId').hide();
@@ -533,9 +575,10 @@ function admins(){
 										'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
 										'<label for="inlineRadio3'+userId+'"></label>'+
 										'</span></td>';
-					 domStr = domStr + '<td><span class="sprites_icon copy delete" onclick="removeUser('+userId+')"></span></td>';
+					 domStr = domStr + '<td><span class="sprites_icon copy delete" onclick="removeUser('+userId+')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
 			         domStr = domStr + '</tr>';
 				 $('#studyAdminId').append(domStr);
+				 $('[data-toggle="tooltip"]').tooltip();
 				 $('.dataTables_empty').remove();
 			 });
 			 $('#addAdminsToStudyId').attr('disabled',false); 
@@ -551,7 +594,34 @@ function admins(){
 				table.clear().draw();
 			}
 			$('#studyAdminRowId'+userId).remove();
-			$('#user'+userId).show();
+			$('#user'+userId).addClass('checkCount').show();
+		}
+		
+		//String Extenstion to format string for xml content.
+		//Replces xml escape chracters to their equivalent html notation.
+		String.prototype.EncodeXMLEscapeChars = function () {
+		    var OutPut = this;
+		    if ($.trim(OutPut) != "") {
+		        OutPut = OutPut.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+		        OutPut = OutPut.replace(/&(?!(amp;)|(lt;)|(gt;)|(quot;)|(#39;)|(apos;))/g, "&amp;");
+		        OutPut = OutPut.replace(/([^\\])((\\\\)*)\\(?![\\/{])/g, "$1\\\\$2");  //replaces odd backslash(\\) with even.
+		    }
+		    else {
+		        OutPut = "";
+		    }
+		    return OutPut;
+		};
+		
+		function escapeXml(unsafe) {
+		    return unsafe.replace(/[<>&'"]/g, function (c) {
+		        switch (c) {
+		            case '<': return '&lt;';
+		            case '>': return '&gt;';
+		            case '&': return '&amp;';
+		            case '\'': return '&apos;';
+		            case '"': return '&quot;';
+		        }
+		    });
 		}
 	</c:if>
 </script>
