@@ -596,8 +596,9 @@ function deletQuestion(formId,questionId){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
 		    					console.log(jsonobject.questionnaireJsonObject);
-		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-		    					reloadQuestionsData(questionnaireSteps);
+		    					var questionnaireSteps = jsonobject.questionnaireJsonObject;
+		    					var isDone = jsonobject.isDone;
+		    					reloadQuestionsData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
@@ -619,7 +620,7 @@ function deletQuestion(formId,questionId){
 	    }
 	});
 }
-function reloadQuestionsData(questions){
+function reloadQuestionsData(questions,isDone){
 	$('#content').DataTable().clear();
 	 if(typeof questions != 'undefined' && questions != null && Object.keys(questions).length > 0){
 		 $.each(questions, function(key, value) {
@@ -658,6 +659,11 @@ function reloadQuestionsData(questions){
 				datarow.push(dynamicAction);    	 
 			$('#content').DataTable().row.add(datarow);
 		 });
+		 console.log("isDone:"+isDone);
+		 if(isDone != null && isDone){
+			 $("#doneId").attr("disabled",false);
+			 $('#helpNote').attr('data-original-title', '');
+		 }
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
