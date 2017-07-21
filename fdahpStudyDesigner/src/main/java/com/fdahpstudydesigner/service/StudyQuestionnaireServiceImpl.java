@@ -454,6 +454,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getUseAnchorDate() != null){
 					addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
 				}
+				if(questionsBo.getQuestionnaireId() != null){
+					addQuestionsBo.setQuestionnaireId(questionsBo.getQuestionnaireId());
+				}
 				if(questionsBo.getType() != null){
 					activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){

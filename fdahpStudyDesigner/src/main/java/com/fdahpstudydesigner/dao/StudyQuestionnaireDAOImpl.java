@@ -657,7 +657,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 				if(!questionsBo.getStatus()){
-					query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", questionsBo.getFromId()).setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+					if(questionsBo.getQuestionnaireId() != null){
+						query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+questionsBo.getFromId()+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1 and QSBO.questionnairesId="+questionsBo.getQuestionnaireId());
+					}else{
+						query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", questionsBo.getFromId()).setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+					}
+					
 					QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
 						if(questionnairesStepsBo != null && questionnairesStepsBo.getStatus()){
 							questionnairesStepsBo.setStatus(false);
@@ -2321,7 +2326,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery ="select count(*) from questions q where q.id in (select f.question_id from form_mapping f where f.form_id="+formId+") and (q.add_line_chart = 'Yes' or q.use_stastic_data='Yes' or q.use_anchor_date=true)";
+			//String searchQuery ="select count(*) from questions q where q.id in (select f.question_id from form_mapping f where f.form_id="+formId+" and f.active=1) and (q.add_line_chart = 'Yes' or q.use_stastic_data='Yes' or q.use_anchor_date=true) and q.active=1";
+			String searchQuery ="select count(*) from questions q,form_mapping f where q.id=f.question_id and q.active=1 and f.active=1 and f.form_id="+formId+" and (q.add_line_chart = 'Yes' or q.use_stastic_data='Yes' or q.use_anchor_date=true)";
 			BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 			if(questionCount!=null && questionCount.intValue() > 0){
 				message = FdahpStudyDesignerConstants.SUCCESS;
