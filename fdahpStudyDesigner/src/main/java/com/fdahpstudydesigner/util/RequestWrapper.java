@@ -19,8 +19,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		super(servletRequest);
 	}
 
+	@Override
 	public String[] getParameterValues(String parameter) {
-		logger.info("InarameterValues .. parameter .......");
+		logger.warn("InarameterValues .. parameter .......");
 		String[] values = super.getParameterValues(parameter);
 		if (values == null) {
 			return values;
@@ -28,42 +29,49 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = cleanXSS(values[i]);
+			encodedValues[i] = this.cleanXSS(values[i]);
 		}
 		return encodedValues;
 	}
 
+	@Override
 	public String getParameter(String parameter) {
-		logger.info("Inarameter .. parameter .......");
+		logger.warn("Inarameter .. parameter .......");
 		String value = super.getParameter(parameter);
 		if (value == null) {
 			return value;
 		}
-		logger.info("Inarameter RequestWrapper ........ value .......");
-		return cleanXSS(value);
+		logger.warn("Inarameter RequestWrapper ........ value .......");
+		return this.cleanXSS(value);
 	}
 
+	@Override
 	public String getHeader(String name) {
-		logger.info("Ineader .. parameter .......");
+		logger.warn("Ineader .. parameter .......");
 		String value = super.getHeader(name);
 		if (value == null)
 			return value;
-		logger.info("Ineader RequestWrapper ........... value ....");
-		return cleanXSS(value);
+		logger.warn("Ineader RequestWrapper ........... value ....");
+		return this.cleanXSS(value);
 	}
 
 	private String cleanXSS(String value) {
 		// You'll need to remove the spaces from the html entities below
-		logger.info("InnXSS RequestWrapper ..............." + value);
-		value = value.replaceAll("eval\\((.*)\\)", "");
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-
-		value = value.replaceAll("(?i)<script.*?>.*?<script.*?>", "");
-		value = value.replaceAll("(?i)<script.*?>.*?</script.*?>", "");
-		value = value.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
-		
+		logger.warn("InnXSS RequestWrapper ..............." + value);
+		String filteredValue = null;
+		try {
+			filteredValue = value
+					.replaceAll("eval\\((.*)\\)", "")
+					.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"")
+					.replaceAll("(?i)<script.*?>.*?<script.*?>", "")
+					.replaceAll("(?i)<script.*?>.*?</script.*?>", "")
+					.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
+		} catch (Exception e) {
+			logger.error("RequestWrapper - cleanXSS - ERROR", e);
+		}
 		/*to skip the coverted html content from truncating*/
-		logger.info("OutnXSS RequestWrapper ........ value ......." + value);
-		return value;
+		logger.warn("OutnXSS RequestWrapper ........ value ......." + value);
+		return filteredValue;
 	}
+	
 }
