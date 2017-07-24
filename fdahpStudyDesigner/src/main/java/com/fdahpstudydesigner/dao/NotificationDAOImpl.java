@@ -288,7 +288,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PushNotificationBean> getPushNotificationList(String date, String time) {
-		logger.info("NotificationDAOImpl - getPushNotificationList - Starts");
+		logger.warn("NotificationDAOImpl - getPushNotificationList - Starts");
 		Session session = null;
 	    StringBuilder sb = null;
 	    List<PushNotificationBean> pushNotificationBeans = null;
@@ -344,7 +344,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			if(null != session)
 				session.close();
 		}
-		logger.info("NotificationDAOImpl - getPushNotificationList - Ends");
+		logger.warn("NotificationDAOImpl - getPushNotificationList - Ends");
 		return pushNotificationBeans;
 	}
 	
