@@ -566,6 +566,7 @@ function ellipseUnHover(item){
    $(item).prev().show();
 }
 function deletQuestion(formId,questionId){
+	var questionnairesId = $("#questionnairesId").val();
 	bootbox.confirm({
 	    message: "Are you sure you want to delete this question item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
 	    buttons: {
@@ -587,6 +588,7 @@ function deletQuestion(formId,questionId){
 		    			data:{
 		    				formId: formId,
 		    				questionId: questionId,
+		    				questionnairesId : questionnairesId,
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
 		    			success: function deleteConsentInfo(data){

@@ -1103,10 +1103,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String formId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("formId"))?"":request.getParameter("formId");
 				String questionId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionId"))?"":request.getParameter("questionId");
 				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				String questionnairesId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnairesId"))?"":request.getParameter("questionnairesId");
 				if(!formId.isEmpty() && !questionId.isEmpty()){
 					message = studyQuestionnaireService.deleteFromStepQuestion(Integer.valueOf(formId),Integer.valueOf(questionId),sesObj,customStudyId);
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
-						questionnairesStepsBo=studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP,null, customStudyId,null);
+						questionnairesStepsBo=studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP,null, customStudyId,Integer.valueOf(questionnairesId));
 						if(questionnairesStepsBo != null){
 							questionnairesStepsBo.setType(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE);
 							studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(questionnairesStepsBo, sesObj, customStudyId);
@@ -1616,7 +1617,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					map.addAttribute("_S", sessionStudyCount);
 					mav = new ModelAndView("redirect:/adminStudies/formStep.do",map);
 				}else{
-					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, "Form not added successfully.");
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Form not added successfully.");
 					map.addAttribute("_S", sessionStudyCount);
 					mav = new ModelAndView("redirect:/adminStudies/formQuestion.do", map);
 				}
