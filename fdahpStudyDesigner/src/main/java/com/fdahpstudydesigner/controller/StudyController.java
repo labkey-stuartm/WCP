@@ -2601,7 +2601,7 @@ public class StudyController {
 							}
 						}else{
 							if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
-							  request.getSession().setAttribute(sessionStudyCount+"errMsg", FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
+							  request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
 						}
 					}
 				}
