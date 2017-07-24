@@ -33,9 +33,9 @@ public class CrossScriptingFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		logger.warn("Inlter CrossScriptingFilter  ...............");
+		logger.info("Inlter CrossScriptingFilter  ...............");
 		chain.doFilter(new RequestWrapper((HttpServletRequest) request),
 				response);
-		logger.warn("Outlter CrossScriptingFilter ...............");
+		logger.info("Outlter CrossScriptingFilter ...............");
 	}
 }

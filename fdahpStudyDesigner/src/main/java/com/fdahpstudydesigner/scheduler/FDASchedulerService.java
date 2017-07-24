@@ -112,7 +112,7 @@ public class FDASchedulerService {
 	}
 	@Scheduled(cron = "0 0/1 * * * ?")
 	public void sendPushNotification() {
-		logger.warn("FDASchedulerService - sendPushNotification - Starts");
+		logger.info("FDASchedulerService - sendPushNotification - Starts");
 		List<PushNotificationBean> pushNotificationBeans;
 		String date;
 		String time;
@@ -150,7 +150,7 @@ public class FDASchedulerService {
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
 		}
-		logger.warn("FDASchedulerService - sendPushNotification - Ends");
+		logger.info("FDASchedulerService - sendPushNotification - Ends");
 	}
 
 }

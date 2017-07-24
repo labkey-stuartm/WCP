@@ -19,9 +19,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		super(servletRequest);
 	}
 
-	@Override
 	public String[] getParameterValues(String parameter) {
-		logger.warn("InarameterValues .. parameter .......");
+		logger.info("InarameterValues .. parameter .......");
 		String[] values = super.getParameterValues(parameter);
 		if (values == null) {
 			return values;
@@ -36,28 +35,28 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public String getParameter(String parameter) {
-		logger.warn("Inarameter .. parameter .......");
+		logger.info("Inarameter .. parameter .......");
 		String value = super.getParameter(parameter);
 		if (value == null) {
 			return value;
 		}
-		logger.warn("Inarameter RequestWrapper ........ value .......");
+		logger.info("Inarameter RequestWrapper ........ value .......");
 		return this.cleanXSS(value);
 	}
 
 	@Override
 	public String getHeader(String name) {
-		logger.warn("Ineader .. parameter .......");
+		logger.info("Ineader .. parameter .......");
 		String value = super.getHeader(name);
 		if (value == null)
 			return value;
-		logger.warn("Ineader RequestWrapper ........... value ....");
+		logger.info("Ineader RequestWrapper ........... value ....");
 		return this.cleanXSS(value);
 	}
 
 	private String cleanXSS(String value) {
 		// You'll need to remove the spaces from the html entities below
-		logger.warn("InnXSS RequestWrapper ..............." + value);
+		logger.info("InnXSS RequestWrapper ..............." + value);
 		String filteredValue = null;
 		try {
 			filteredValue = value
@@ -70,7 +69,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 			logger.error("RequestWrapper - cleanXSS - ERROR", e);
 		}
 		/*to skip the coverted html content from truncating*/
-		logger.warn("OutnXSS RequestWrapper ........ value ......." + value);
+		logger.info("OutnXSS RequestWrapper ........ value ......." + value);
 		return filteredValue;
 	}
 	
