@@ -2235,45 +2235,50 @@ public class StudyDAOImpl implements StudyDAO{
 					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
 					   message = this.studyDraftCreation(studyBo, session);
-					   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
-						 //notification text --   
-						   activity = "Study launch";
-					         activitydetails = studyBo.getCustomStudyId()+" -- Study launched successfully";
-					       //notification sent to gateway    
-					         NotificationBO notificationBO = new NotificationBO();
-								notificationBO = new NotificationBO();
-								notificationBO.setStudyId(studyBo.getId());
-								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
-								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
-								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
-								notificationBO.setNotificationStatus(false);
-								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
-								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
-								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
-								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-								notificationBO.setNotificationDone(true);
-								session.save(notificationBO);
-						}else{
-							//notification text -- 
-							activity = "Study update";
-							activitydetails = studyBo.getCustomStudyId()+" -- Study updated successfully";
-						}
-					   //Update resource startdate and time based on customStudyId
-					   session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
-							                            +"' where customStudyId='"+studyBo.getCustomStudyId()
-							                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
-							                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE
-							                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
-					
-					 //Update activity startdate and time based on customStudyId
-					  session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
-							                            +"' where customStudyId='"+studyBo.getCustomStudyId()
-							                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
-							                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
-							                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
-					
+					   if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+								 //notification text --   
+								   activity = "Study launch";
+							         activitydetails = studyBo.getCustomStudyId()+" -- Study launched successfully";
+							       //notification sent to gateway    
+							         NotificationBO notificationBO = new NotificationBO();
+										notificationBO = new NotificationBO();
+										notificationBO.setStudyId(studyBo.getId());
+										notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+										notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
+										notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+										notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+										notificationBO.setNotificationStatus(false);
+										notificationBO.setCreatedBy(sesObj.getUserId());
+										notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+										notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+										notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+										notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+										notificationBO.setNotificationDone(true);
+										session.save(notificationBO);
+								}else{
+									//notification text -- 
+									activity = "Study update";
+									activitydetails = studyBo.getCustomStudyId()+" -- Study updated successfully";
+								}
+							   //Update resource startdate and time based on customStudyId
+							   session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
+									                            +"' where customStudyId='"+studyBo.getCustomStudyId()
+									                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
+									                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE
+									                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
+							
+							 //Update activity startdate and time based on customStudyId
+							  session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
+									                            +"' where customStudyId='"+studyBo.getCustomStudyId()
+									                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
+									                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
+									                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
+							
+							  
+					   }else{
+						  throw new IllegalStateException("Error in creating in Study draft"); 
+					   }
 					}else{
 						liveStudy = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId()).uniqueResult();
 						if(liveStudy!=null){
@@ -2359,6 +2364,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			transaction.commit();
 		}catch(Exception e){
+			message = FdahpStudyDesignerConstants.FAILURE;
 			transaction.rollback();
 			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
 		}finally{

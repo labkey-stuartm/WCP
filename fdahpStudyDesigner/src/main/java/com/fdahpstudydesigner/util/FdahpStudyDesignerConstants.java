@@ -295,6 +295,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTIVITY_TYPE_ACTIVETASK = "Activetask";
 	public static final String ACTIVITY_MESSAGE = "activityMsg";
 	public static final String STAT_INFO_LIST = "statisticsInfoList";
+	public static final String FAILURE_UPDATE_STUDY_MESSAGE = "Sorry, a technical error occurred and the update(s) could not be published.";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";
