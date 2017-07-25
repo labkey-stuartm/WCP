@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
+ * Eligibility test question and answer of a {@link EligibilityBo} object of
+ * type "Eligibility Test"
  * 
  * @author Ronalin
  *
