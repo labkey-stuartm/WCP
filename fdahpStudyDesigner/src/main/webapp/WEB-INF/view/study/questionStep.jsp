@@ -1563,6 +1563,7 @@ $(document).ready(function(){
 		} 
      });
      $("#saveId").on("click",function(){
+    	 $("body").addClass("loading");
     	 validateQuestionShortTitle('',function(val){
     		 if(val){
     			 var statShortName =  $("#statShortNameId").val();
@@ -1570,6 +1571,8 @@ $(document).ready(function(){
     	    			validateStatsShorTitle('',function(val){
     	    				if(val){
     	    					 saveQuestionStepQuestionnaire('', '');
+    	    	    		 }else{
+    	    	    			 $("body").removeClass("loading");
     	    	    		 }
     	    			});
     	    	 }else{
@@ -1578,6 +1581,8 @@ $(document).ready(function(){
     	    			 validateForUniqueValue('',resType,function(val){
     	    				if(val){
     	    					 saveQuestionStepQuestionnaire('', '');
+    	    				 }else{
+    	    					 $("body").removeClass("loading");
     	    				 }
     	    			 });
     	    		 }else{
@@ -1585,6 +1590,8 @@ $(document).ready(function(){
     	    		 }
     	    		 
     	    	 }
+    		 }else{
+    			 $("body").removeClass("loading");
     		 }
     	 });
      });
@@ -1636,7 +1643,7 @@ $(document).ready(function(){
     		$(this).val("Yes");
     		$("#chartContainer").show();
     		$(".chartrequireClass").attr('required',true);
-    		$(".chartrequireClass").attr('required',false);
+    		$('.selectpicker').selectpicker('refresh');
     	} else{
     		$(this).val("No");
     		$("#chartContainer").hide();
@@ -1652,6 +1659,7 @@ $(document).ready(function(){
     		$(this).val("Yes");
     		$("#statContainer").show();
     		$(".requireClass").attr('required',true);
+    		$('.selectpicker').selectpicker('refresh');
     		
     	} else{
     		$(this).val("No");
@@ -2545,6 +2553,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					$("body").removeClass("loading");
 					$("#preShortTitleId").val(shortTitle);
 					var stepId = jsonobject.stepId;
 					var questionId = jsonobject.questionId;

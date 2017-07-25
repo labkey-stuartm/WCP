@@ -28,11 +28,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = cleanXSS(values[i]);
+			encodedValues[i] = this.cleanXSS(values[i]);
 		}
 		return encodedValues;
 	}
 
+	@Override
 	public String getParameter(String parameter) {
 		logger.info("Inarameter .. parameter .......");
 		String value = super.getParameter(parameter);
@@ -40,30 +41,36 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 			return value;
 		}
 		logger.info("Inarameter RequestWrapper ........ value .......");
-		return cleanXSS(value);
+		return this.cleanXSS(value);
 	}
 
+	@Override
 	public String getHeader(String name) {
 		logger.info("Ineader .. parameter .......");
 		String value = super.getHeader(name);
 		if (value == null)
 			return value;
 		logger.info("Ineader RequestWrapper ........... value ....");
-		return cleanXSS(value);
+		return this.cleanXSS(value);
 	}
 
 	private String cleanXSS(String value) {
 		// You'll need to remove the spaces from the html entities below
 		logger.info("InnXSS RequestWrapper ..............." + value);
-		value = value.replaceAll("eval\\((.*)\\)", "");
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-
-		value = value.replaceAll("(?i)<script.*?>.*?<script.*?>", "");
-		value = value.replaceAll("(?i)<script.*?>.*?</script.*?>", "");
-		value = value.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
-		
+		String filteredValue = null;
+		try {
+			filteredValue = value
+					.replaceAll("eval\\((.*)\\)", "")
+					.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"")
+					.replaceAll("(?i)<script.*?>.*?<script.*?>", "")
+					.replaceAll("(?i)<script.*?>.*?</script.*?>", "")
+					.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
+		} catch (Exception e) {
+			logger.error("RequestWrapper - cleanXSS - ERROR", e);
+		}
 		/*to skip the coverted html content from truncating*/
 		logger.info("OutnXSS RequestWrapper ........ value ......." + value);
-		return value;
+		return filteredValue;
 	}
+	
 }

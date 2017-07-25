@@ -2688,7 +2688,8 @@ public class StudyController {
 								mav = new ModelAndView("redirect:/adminStudies/actionList.do", map);
 							}
 						}else{
-							request.getSession().setAttribute(sessionStudyCount+"errMsg", "Unable to mark as complete. due to no change in Study");
+							if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
+							  request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
 						}
 					}
 				}
@@ -3039,7 +3040,7 @@ public class StudyController {
 		     */
 		    @RequestMapping("/adminStudies/saveOrUpdateStudyEligibiltyTestQusAns.do")
 		    public ModelAndView saveOrUpdateStudyEligibiltyTestQusAns(HttpServletRequest request, EligibilityTestBo eligibilityTestBo) {
-		        logger.info("StudyController - saveOrUpdateStudyEligibilty - Starts");
+		        logger.info("StudyController - saveOrUpdateStudyEligibiltyTestQusAns - Starts");
 		        ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		        ModelMap map = new ModelMap();
 		        Integer result = 0;
@@ -3073,9 +3074,9 @@ public class StudyController {
 		                }
 		            }
 		        } catch (Exception e) {
-		            logger.error("StudyController - saveOrUpdateStudyEligibilty - ERROR", e);
+		            logger.error("StudyController - saveOrUpdateStudyEligibiltyTestQusAns - ERROR", e);
 		        }
-		        logger.info("StudyController - saveOrUpdateStudyEligibilty - Ends");
+		        logger.info("StudyController - saveOrUpdateStudyEligibiltyTestQusAns - Ends");
 		        return mav;
 		    }
             /**
@@ -3157,7 +3158,7 @@ public class StudyController {
              */
             @RequestMapping(value="/adminStudies/deleteEligibiltyTestQusAns.do",method = RequestMethod.POST)
             public void deleteEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
-                logger.info("StudyController - deleteConsentInfo - Starts");
+                logger.info("StudyController - deleteEligibiltyTestQusAns - Starts");
                 JSONObject jsonobject = new JSONObject();
                 PrintWriter out = null;
                 String message = FdahpStudyDesignerConstants.FAILURE;
@@ -3187,9 +3188,9 @@ public class StudyController {
                     out = response.getWriter();
                     out.print(jsonobject);
                 }catch(Exception e){
-                    logger.error("StudyController - deleteConsentInfo - ERROR", e);
+                    logger.error("StudyController - deleteEligibiltyTestQusAns - ERROR", e);
                 }
-                logger.info("StudyController - deleteConsentInfo - Ends");
+                logger.info("StudyController - deleteEligibiltyTestQusAns - Ends");
             }
    
 
