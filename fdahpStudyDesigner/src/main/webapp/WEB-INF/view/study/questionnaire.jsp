@@ -1652,7 +1652,9 @@ function saveQuestionnaire(item, callback){
 			isFormValid = false;
 		}
 	}
-	
+	console.log("currentFrequency:"+questionnaire.currentFrequency);
+	console.log("frequency:"+questionnaire.frequency);
+	console.log("previousFrequency:"+questionnaire.previousFrequency);
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
@@ -1674,7 +1676,16 @@ function saveQuestionnaire(item, callback){
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
 					$("#questionnaireId").val(questionnaireId);
-					$("#previousFrequency").val(frequency_text);
+					if(frequency_text == 'Daily'){
+						var previous_frequency = $("#previousFrequency").val();
+						if(previous_frequency !='' && previous_frequency != null && previous_frequency != 'undefined'){
+							$("#previousFrequency").val(previous_frequency);
+						}else{
+							$("#previousFrequency").val(frequency_text);
+						}
+					}else{
+						$("#previousFrequency").val(frequency_text);	
+					}
 					$(".add-steps-btn").removeClass('cursor-none');
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);
