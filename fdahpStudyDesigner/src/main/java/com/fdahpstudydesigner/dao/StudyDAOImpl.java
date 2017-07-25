@@ -2153,6 +2153,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String activitydetails = "";
 		String activity = "";
 		StudyBo liveStudy = null;
+		String queryString = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -2196,7 +2197,7 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						//getting Questionnaries based on StudyId
-						query = session.createQuery("select ab.id"
+						/*query = session.createQuery("select ab.id"
 													+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 													+ " where a.questionnairesId=ab.id"
 													+" and ab.studyId=:impValue"
@@ -2212,10 +2213,15 @@ public class StudyDAOImpl implements StudyDAO{
 					    			query.executeUpdate();
 					    		}
 					    	}
-					    }
-					    
+					    }*/
+						queryString = "update questionnaires ab SET "
+								+ "ab.study_lifetime_start= '"+studyBo.getStudylunchDate()
+								+"' where ab.study_id="+studyId+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
+								+" and ab.id IN(select distinct(a.questionnaires_id) from questionnaires_frequencies a where a.is_launch_study=1)";
+						query = session.createSQLQuery(queryString);
+						query.executeUpdate();
 					  //getting activeTasks based on StudyId
-						 query = session.createQuery("select ab.id"
+						 /*query = session.createQuery("select ab.id"
 									+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 									+ " where a.activeTaskId=ab.id"
 									+" and ab.studyId=:impValue"
@@ -2231,10 +2237,16 @@ public class StudyDAOImpl implements StudyDAO{
 									query.executeUpdate();
 					    		}
 					    	}
-					    }
+					    }*/
+						queryString = "update active_task ab SET "
+								+ "ab.active_task_lifetime_start= '"+studyBo.getStudylunchDate()
+								+"' where ab.study_id="+studyId+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
+								+" and ab.id IN(select distinct(a.active_task_id) from active_task_frequencies a where a.is_launch_study=1)";
+						query = session.createSQLQuery(queryString);
+						query.executeUpdate();
 					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
-					   message = this.studyDraftCreation(studyBo, session);
+					   message = studyDraftCreation(studyBo, session);
 					   if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
 								 //notification text --   
@@ -2760,6 +2772,10 @@ public class StudyDAOImpl implements StudyDAO{
 						QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
 						newQuestionnaireBo.setId(null);
 						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
+						newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
+						newQuestionnaireBo.setCreatedBy(0);
+						newQuestionnaireBo.setModifiedBy(0);
+						newQuestionnaireBo.setModifiedDate(null);
 						if(studyVersionBo == null){
 							newQuestionnaireBo.setVersion(1.0f);
 							questionnaireBo.setVersion(1.0f);
@@ -2860,7 +2876,7 @@ public class StudyDAOImpl implements StudyDAO{
 											  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 											  
 											  //Question response Type 
-											  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+											  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
 											  
 											  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 											  newQuestionsBo.setId(null);
@@ -2913,7 +2929,7 @@ public class StudyDAOImpl implements StudyDAO{
 														  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 														  
 														  //Question response Type 
-														  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+														  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
 														  
 														  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 														  newQuestionsBo.setId(null);
@@ -4195,7 +4211,7 @@ public class StudyDAOImpl implements StudyDAO{
 							for (StudyBo study : draftDatas) {
 								studyIdList.add(study.getId());
 							}	
-						 message = this.deleteStudyByIdOrCustomstudyId(session, transaction, StringUtils.join(studyIdList, ","), "");	
+						 message = deleteStudyByIdOrCustomstudyId(session, transaction, StringUtils.join(studyIdList, ","), "");	
 						}	
 					}
 				//}
@@ -4333,7 +4349,7 @@ public class StudyDAOImpl implements StudyDAO{
 			
 			liveStudyBo = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).uniqueResult();
 			if(liveStudyBo!=null){
-				message = this.deleteStudyByIdOrCustomstudyId(session, transaction, liveStudyBo.getId().toString(), "");
+				message = deleteStudyByIdOrCustomstudyId(session, transaction, liveStudyBo.getId().toString(), "");
 				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
 					subQuery = "(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";

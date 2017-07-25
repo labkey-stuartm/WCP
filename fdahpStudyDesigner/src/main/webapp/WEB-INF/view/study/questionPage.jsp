@@ -1354,6 +1354,7 @@ $(document).ready(function(){
 		}
      });
      $("#saveId").on('click',function(e){
+    	 $("body").addClass("loading");
     	 validateTheQuestionshortTitle('',function(val){
 				if(val){
 					var statShortName =  $("#statShortNameId").val();
@@ -1361,6 +1362,8 @@ $(document).ready(function(){
 			       			validateStatsShorTitle('',function(val){
 			       				if(val){
 			       				 saveQuestionStepQuestionnaire();
+			       				}else{
+			       					$("body").removeClass("loading");
 			       				}
 			       			});
 			       	 }else{
@@ -1369,13 +1372,16 @@ $(document).ready(function(){
 	    	    			 validateForUniqueValue('',resType,function(val){
 	    	    				if(val){
 	    	    					 saveQuestionStepQuestionnaire();
+	    	    				 }else{
+	    	    					 $("body").removeClass("loading");
 	    	    				 }
 	    	    			 });
 	    	    		 }else{
 	    	    			 saveQuestionStepQuestionnaire();
 	    	    		 }
-			       		
 			       	 }
+				}else{
+					$("body").removeClass("loading");
 				}
 		});
      });
@@ -1424,6 +1430,7 @@ $(document).ready(function(){
     		$(this).val("Yes");
     		$("#chartContainer").show();
     		$(".chartrequireClass").attr('required',true);
+    		$('.selectpicker').selectpicker('refresh');
     	} else{
     		$(this).val("No");
     		$("#chartContainer").hide();
@@ -1439,6 +1446,7 @@ $(document).ready(function(){
     		$(this).val("Yes");
     		$("#statContainer").show();
     		$(".requireClass").attr('required',true);
+    		$('.selectpicker').selectpicker('refresh');
     	} else{
     		$(this).val("No");
     		$("#statContainer").hide();
@@ -2319,7 +2327,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					
+					$("body").removeClass("loading");
 					$("#preShortTitleId").val(short_title);
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;

@@ -531,26 +531,35 @@ public class LoginDAOImpl implements LoginDAO {
 	public void  passwordLoginBlocked(){
 		logger.info("LoginDAOImpl - passwordLoginBlocked() - Starts");
 		Session session = null;
-		List<Object[]> userBOList = null;
-		List<Integer> userBOIdList = null;
+		List<Integer> userBOList = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		int lastLoginExpirationInDay =  Integer.parseInt("-"+propMap.get("lastlogin.expiration.in.day"));
 		String lastLoginDateTime;
+		StringBuilder sb = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME ).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay + 1));
-			userBOList = session.createSQLQuery("SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
-					+ "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime < '"+lastLoginDateTime+"' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'").list();
-			
+			/*
+			 * userBOList = session.createSQLQuery(
+			 * "SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
+			 * +
+			 * "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime < '"
+			 * +lastLoginDateTime+
+			 * "' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'"
+			 * ).list();
+			 */
+			sb = new StringBuilder();
+			sb.append(
+					"SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in ")
+					.append("(select upm.user_id from user_permission_mapping upm where upm.permission_id = ")
+					.append("(select up.permission_id from user_permissions up where up.permissions ='ROLE_SUPERADMIN')) ")
+					.append("AND u.user_login_datetime < '")
+					.append(lastLoginDateTime).append("' AND u.status=1");
+			query = session.createSQLQuery(sb.toString());
+			userBOList = query.list();
 			if(userBOList!=null && !userBOList.isEmpty()){
-				userBOIdList = new ArrayList<>();
-				for (Object[] objects : userBOList) {
-					userBOIdList.add(Integer.parseInt(objects[0]+""));
-				}
-				if (!userBOIdList.isEmpty()) {
-					session.createSQLQuery("Update users set status = 0 WHERE user_id in("+StringUtils.join(userBOIdList, ",")+")").executeUpdate();
-				}
+				session.createSQLQuery("Update users set status = 0 WHERE user_id in("+StringUtils.join(userBOList, ",")+")").executeUpdate();
 			}
 			transaction.commit();
 		} catch (Exception e) {
