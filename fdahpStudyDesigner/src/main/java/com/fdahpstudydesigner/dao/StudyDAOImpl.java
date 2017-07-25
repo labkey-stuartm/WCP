@@ -2842,7 +2842,7 @@ public class StudyDAOImpl implements StudyDAO{
 											  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 											  
 											  //Question response Type 
-											  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+											  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
 											  
 											  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 											  newQuestionsBo.setId(null);
@@ -2895,7 +2895,7 @@ public class StudyDAOImpl implements StudyDAO{
 														  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 														  
 														  //Question response Type 
-														  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+														  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
 														  
 														  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 														  newQuestionsBo.setId(null);
