@@ -2216,7 +2216,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    }
 					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
-					   message = this.studyDraftCreation(studyBo, session);
+					   message = studyDraftCreation(studyBo, session);
 					   if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
 								 //notification text --   
@@ -3910,7 +3910,7 @@ public class StudyDAOImpl implements StudyDAO{
 							for (StudyBo study : draftDatas) {
 								studyIdList.add(study.getId());
 							}	
-						 message = this.deleteStudyByIdOrCustomstudyId(session, transaction, StringUtils.join(studyIdList, ","), "");	
+						 message = deleteStudyByIdOrCustomstudyId(session, transaction, StringUtils.join(studyIdList, ","), "");	
 						}	
 					}
 				//}
@@ -4026,7 +4026,7 @@ public class StudyDAOImpl implements StudyDAO{
 			
 			liveStudyBo = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).uniqueResult();
 			if(liveStudyBo!=null){
-				message = this.deleteStudyByIdOrCustomstudyId(session, transaction, liveStudyBo.getId().toString(), "");
+				message = deleteStudyByIdOrCustomstudyId(session, transaction, liveStudyBo.getId().toString(), "");
 				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
 					subQuery = "(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";
