@@ -2155,7 +2155,7 @@ public class StudyDAOImpl implements StudyDAO{
 						notificationBO.setStudyId(studyBo.getId());
 						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 						notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
-						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
@@ -2240,7 +2240,7 @@ public class StudyDAOImpl implements StudyDAO{
 										notificationBO.setStudyId(studyBo.getId());
 										notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 										notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
-										notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+										notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 										notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 										notificationBO.setNotificationStatus(false);
 										notificationBO.setCreatedBy(sesObj.getUserId());
@@ -2286,7 +2286,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
@@ -2309,7 +2309,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
@@ -2332,7 +2332,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
