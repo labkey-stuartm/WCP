@@ -1518,7 +1518,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				/* admin section starts */
 				deleteExceptIds = userIds;
-				superAdminUserIds = this.getSuperAdminUserIds();
+				superAdminUserIds = getSuperAdminUserIds();
 				if(superAdminUserIds != null){
 					for(Integer id:superAdminUserIds){
 						if(deleteExceptIds == ""){
