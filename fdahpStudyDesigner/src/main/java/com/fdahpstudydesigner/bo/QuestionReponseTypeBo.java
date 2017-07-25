@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="response_type_value")
 @NamedQueries({
-	@NamedQuery(name="getQuestionResponse", query="from QuestionReponseTypeBo QRBO where QRBO.questionsResponseTypeId=:questionsResponseTypeId"),
+	@NamedQuery(name="getQuestionResponse", query="from QuestionReponseTypeBo QRBO where QRBO.questionsResponseTypeId=:questionsResponseTypeId order by QRBO.responseTypeId DESC"),
 })
 public class QuestionReponseTypeBo implements Serializable {
 
