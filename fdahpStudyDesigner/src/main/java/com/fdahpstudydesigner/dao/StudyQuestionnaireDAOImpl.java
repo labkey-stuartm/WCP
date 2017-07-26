@@ -1905,37 +1905,34 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			studyVersionBo = (StudyVersionBo)query.uniqueResult();
 			
 			if(studyVersionBo != null){
-				String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId;
+				String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId+" and QBO.active=1";
 				query = session.createQuery(deleteQuery);
 				count = query.executeUpdate();
 				if(count > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
 					try{
-						String searchQuery = "Update QuestionnairesStepsBo QSBO set QSBO.active=0,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnaireId;
-						query = session.createQuery(searchQuery);
-						query.executeUpdate();
-
-						String deleteInsQuery = "Update InstructionsBo IBO set IBO.active=0,IBO.modifiedBy="+sessionObject.getUserId()+",IBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.INSTRUCTION_STEP+"')";
-						query = session.createQuery(deleteInsQuery);
+						String deleteInsQuery = "Update instructions IBO , questionnaires_steps QSBO set IBO.active=0,IBO.modified_by="+sessionObject.getUserId()+",IBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.INSTRUCTION_STEP+"'";
+						query = session.createSQLQuery(deleteInsQuery);
 						query.executeUpdate();
 						
-						String deleteQuesQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"')";
-						query = session.createQuery(deleteQuesQuery);
+						String deleteQuesQuery = "Update questions QBO,questionnaires_steps QSBO set QBO.active=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'";
+						query = session.createSQLQuery(deleteQuesQuery);
 						query.executeUpdate();
 						
-						String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
-						query = session.createQuery(subQuery);
-						if(query.list() != null && !query.list().isEmpty()){
-							String deleteFormQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN ("+subQuery+")";
-							query = session.createQuery(deleteFormQuery);
-							query.executeUpdate();
-						}
-						String formMappingDelete = "update FormMappingBo FMBO set FMBO.active=0 where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
-						query = session.createQuery(formMappingDelete);
+						String deleteFormQuery = "Update questions QBO,form_mapping FMBO,questionnaires_steps QSBO set QBO.active=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id=FMBO.question_id and FMBO.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"'";
+						query = session.createSQLQuery(deleteFormQuery);
 						query.executeUpdate();
 						
-						String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
-						query = session.createQuery(formDelete);
+						String formMappingDelete = "update form_mapping FMBO,questionnaires_steps QSBO set FMBO.active=0 where FMBO.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"'";
+						query = session.createSQLQuery(formMappingDelete);
+						query.executeUpdate();
+						
+						String formDelete = "Update form FBO,questionnaires_steps QSBO set FBO.active=0,FBO.modified_by="+sessionObject.getUserId()+",FBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"'";
+						query = session.createSQLQuery(formDelete);
+						query.executeUpdate();
+						
+						String searchQuery = "Update questionnaires_steps QSBO set QSBO.active=0,QSBO.modified_by="+sessionObject.getUserId()+",QSBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1";
+						query = session.createSQLQuery(searchQuery);
 						query.executeUpdate();
 						
 					}catch(Exception e){
