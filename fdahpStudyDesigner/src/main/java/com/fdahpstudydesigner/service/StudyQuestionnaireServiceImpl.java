@@ -98,7 +98,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != instructionsBo){
 				if(instructionsBo.getId() != null){
-					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,null);
+					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,instructionsBo.getQuestionnaireId());
 				}else{
 					addOrUpdateInstructionsBo = new InstructionsBo();
 					addOrUpdateInstructionsBo.setActive(true);
