@@ -157,7 +157,7 @@
 				<tbody id="studyAdminId">
 					<c:forEach items="${studyPermissionList}" var="perm">
 							<tr id="studyAdminRowId${perm.userId}" class="studyAdminRowCls" studyUserId="${perm.userId}">
-								<td><span class="dis-ellipsis" title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span></td>
+								<td align="left"><span class="dis-ellipsis" title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span></td>
 								<td>
 									<span class="radio radio-info radio-inline p-45">
 	                            		<input type="radio" id="inlineRadio1${perm.userId}" class="radcls" value="0" name="view${perm.userId}" <c:if test="${not perm.viewPermission}">checked</c:if>>
