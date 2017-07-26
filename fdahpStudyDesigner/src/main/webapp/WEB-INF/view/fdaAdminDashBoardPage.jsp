@@ -64,7 +64,7 @@
                 <img src="/fdahpStudyDesigner/images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               FDA My Studies <br>Management Portal
+               My Studies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="/fdahpStudyDesigner/images/icons/web.png"/>
@@ -90,19 +90,19 @@
 	                   <ul class="lg-icons-list"> 
 	                    <li class="studyListId">
 	                        <a class='studies-g' href='javascript:void(0)'></a>
-	                        <div class='studyList'>Manage Studies<br><span>&nbsp;</span></div>
+	                        <div class='studyList'>Studies<br><span>&nbsp;</span></div>
 	                    </li>
 	                    <li class="linkDis hide">
 	                        <a class='repository-g' href='javascript:void(0)'></a>
-	                        <div>Manage Repository</div>
+	                        <div>Repository</div>
 	                    </li> 
 	                    <li class="notificationListId">
 	                        <a class='notifications-g' href='javascript:void(0)'></a>
-	                        <div>Manage Notifications<br><span>&nbsp;</span></div>
+	                        <div>Notifications<br><span>&nbsp;</span></div>
 	                    </li> 
 	                   <li class="userListId">
 	                        <a class='user-g' href='javascript:void(0)'></a>
-	                        <div>Manage Users<br><span>&nbsp;</span></div>
+	                        <div>Users<br><span>&nbsp;</span></div>
 	                    </li> 
 	                    <li class="myAccountId">
 	                        <a class='account-g' href='javascript:void(0)'></a>
