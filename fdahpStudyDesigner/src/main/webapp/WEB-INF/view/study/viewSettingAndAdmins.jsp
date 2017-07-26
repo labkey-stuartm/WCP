@@ -164,13 +164,13 @@
 	                            		<label for="inlineRadio1${perm.userId}"></label>
                         			</span>
 								</td>
-								<td>
+								<td align="center">
 									<span class="radio radio-info radio-inline p-45">
 	                            		<input type="radio" id="inlineRadio2${perm.userId}" class="radcls" value="1" name="view${perm.userId}" <c:if test="${perm.viewPermission}">checked</c:if>>
 	                            		<label for="inlineRadio2${perm.userId}"></label>
                         			</span>
 								</td>
-								<td>
+								<td align="center">
 									<span class="radio radio-info radio-inline p-45">
 	                            		<input type="radio" id="inlineRadio3${perm.userId}" class="radcls" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
 	                            		<label for="inlineRadio3${perm.userId}"></label>
