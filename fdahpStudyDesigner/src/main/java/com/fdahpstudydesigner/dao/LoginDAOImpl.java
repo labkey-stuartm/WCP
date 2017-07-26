@@ -551,12 +551,11 @@ public class LoginDAOImpl implements LoginDAO {
 			 */
 			sb = new StringBuilder();
 			sb.append(
-					"SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in "
-							+ "(select upm.user_id from user_permission_mapping upm where upm.permission_id = "
-							+ "(select up.permission_id from user_permissions up where up.permissions ='ROLE_SUPERADMIN')) "
-							+ "AND u.user_login_datetime < '")
-					.append(lastLoginDateTime)
-					.append("' AND u.status=1");
+					"SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in ")
+					.append("(select upm.user_id from user_permission_mapping upm where upm.permission_id = ")
+					.append("(select up.permission_id from user_permissions up where up.permissions ='ROLE_SUPERADMIN')) ")
+					.append("AND u.user_login_datetime < '")
+					.append(lastLoginDateTime).append("' AND u.status=1");
 			query = session.createSQLQuery(sb.toString());
 			userBOList = query.list();
 			if(userBOList!=null && !userBOList.isEmpty()){
