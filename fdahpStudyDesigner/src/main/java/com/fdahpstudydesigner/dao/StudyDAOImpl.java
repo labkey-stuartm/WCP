@@ -2131,7 +2131,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudyBo studyBo = null;
-		List<Object> objectList = null;
+		List<Integer> objectList = null;
 		String activitydetails = "";
 		String activity = "";
 		StudyBo liveStudy = null;
@@ -2179,53 +2179,49 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						//getting Questionnaries based on StudyId
-						/*query = session.createQuery("select ab.id"
+						query = session.createQuery("select ab.id"
 													+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 													+ " where a.questionnairesId=ab.id"
 													+" and ab.studyId=:impValue"
 													+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-													+" and a.isLaunchStudy=1");
+													+" and a.isLaunchStudy=1"
+													+" and active=1"
+													+" and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')");
 						query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
 					    objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
-					    	for(Object obj: objectList){
+					    	/*for(Object obj: objectList){
 					    		Integer questionaryId = (Integer)obj;
 					    		if(questionaryId!=null){
 					    			query = session.getNamedQuery("updateQuestionnaireStartDate").setString("studyLifetimeStart", studyBo.getStudylunchDate()).setInteger("id", questionaryId);
 					    			query.executeUpdate();
 					    		}
-					    	}
-					    }*/
-						queryString = "update questionnaires ab SET "
-								+ "ab.study_lifetime_start= '"+studyBo.getStudylunchDate()
-								+"' where ab.study_id="+studyId+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-								+" and ab.id IN(select distinct(a.questionnaires_id) from questionnaires_frequencies a where a.is_launch_study=1)";
-						query = session.createSQLQuery(queryString);
-						query.executeUpdate();
+					    	}*/
+					    	query = session.createSQLQuery("update questionnaires ab SET ab.study_lifetime_start= '"+studyBo.getStudylunchDate()+"' where id IN("+StringUtils.join(objectList,",")+")");
+			    			query.executeUpdate();
+					    }
 					  //getting activeTasks based on StudyId
-						 /*query = session.createQuery("select ab.id"
+					    query = session.createQuery("select ab.id"
 									+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 									+ " where a.activeTaskId=ab.id"
 									+" and ab.studyId=:impValue"
 									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-									+" and a.isLaunchStudy=1");
+									+" and a.isLaunchStudy=1"
+									+" and active=1"
+									+" and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')");
 						query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
 						objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
-					    	for(Object obj: objectList){
+					    	/*for(Object obj: objectList){
 					    		Integer activeTaskId = (Integer)obj;
 					    		if(activeTaskId!=null){
 					    			query = session.getNamedQuery("updateFromActiveTAskStartDate").setString("activeTaskLifetimeStart", studyBo.getStudylunchDate()).setInteger("id", activeTaskId);
 									query.executeUpdate();
 					    		}
-					    	}
-					    }*/
-						queryString = "update active_task ab SET "
-								+ "ab.active_task_lifetime_start= '"+studyBo.getStudylunchDate()
-								+"' where ab.study_id="+studyId+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-								+" and ab.id IN(select distinct(a.active_task_id) from active_task_frequencies a where a.is_launch_study=1)";
-						query = session.createSQLQuery(queryString);
-						query.executeUpdate();
+					    	}*/
+					    	query = session.createSQLQuery("update active_task ab SET ab.active_task_lifetime_start= '"+studyBo.getStudylunchDate()+"' where id IN("+StringUtils.join(objectList,",")+")");
+			    			query.executeUpdate();
+					    }
 					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
 					   message = studyDraftCreation(studyBo, session);
