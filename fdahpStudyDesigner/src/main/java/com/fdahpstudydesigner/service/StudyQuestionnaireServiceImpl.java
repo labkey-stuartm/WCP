@@ -297,7 +297,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 */
 	@Override
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Starts");
 		QuestionnaireBo questionnaireBo=null;
 		try{
 			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId, customStudyId);
@@ -340,9 +340,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 			}
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireById - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Ends");
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Ends");
 		return questionnaireBo;
 	}
 
