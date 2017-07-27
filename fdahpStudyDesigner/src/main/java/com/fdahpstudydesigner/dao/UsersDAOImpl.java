@@ -98,13 +98,13 @@ public class UsersDAOImpl implements UsersDAO{
 			if(userStatus == 0){
 				userStatusNew = 1;
 				forceLogout = false;
-				activity = "User activated";
-				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is activated";
+				activity = "User activated.";
+				activityDetail = "User Account activated. (Account Details:- First Name = "+userBO.getFirstName()+" Last Name = "+userBO.getLastName()+ ", Email ="+userBO.getUserEmail()+")";
 			}else{
 				userStatusNew = 0;
 				forceLogout = true;
-				activity = "User deactivated";
-				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is deactivated";
+				activity = "User deactivated."; 
+				activityDetail = "User account  de-activated. (Account Details:- First Name = "+userBO.getFirstName()+" Last Name = "+userBO.getLastName()+ ", Email ="+userBO.getUserEmail()+")";
 			}
 			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatusNew+", modifiedOn = now(), modifiedBy = "+loginUser+",forceLogout = "+forceLogout+" WHERE userId = "+userId );
 			count = query.executeUpdate();

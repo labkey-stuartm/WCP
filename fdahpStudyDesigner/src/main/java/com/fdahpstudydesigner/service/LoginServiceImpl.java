@@ -222,8 +222,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						message = loginDAO.changePassword(userId, newPassword, oldPassword);
 						if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 							loginDAO.updatePasswordHistory(userId, FdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
-							activity = "Change password";
-							activityDetail = "Admin successfully changed his password";
+							activity = "Change password.";
+							activityDetail = "User successfully changed his/her password.";
 							auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword");
 						}
 					} else {
@@ -352,11 +352,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								userBO.setFirstName(null != userBO2.getFirstName() ? userBO2.getFirstName().trim() : "");
 								userBO.setLastName(null != userBO2.getLastName() ? userBO2.getLastName().trim() : "");
 								userBO.setPhoneNumber(null != userBO2.getPhoneNumber() ? userBO2.getPhoneNumber().trim() : "");
-								activity = "User registration";
+								activity = "User registration.";
 								activityDetail = "User named "+userBO2.getFirstName()+" "+userBO2.getLastName()+" is successfully registered";
 							}else{
 								activity = "Forgot password";
-								activityDetail = "User successfully created the new password";
+								activityDetail = "User successfully created the new password.";
 							}
 							userBO.setUserPassword(FdahpStudyDesignerUtil.getEncryptedPassword(password));
 							userBO.setTokenUsed(true);
@@ -458,8 +458,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		String activity = "";
 		String activityDetail = "";
 		try {
-        	activity = "User logout";
-			activityDetail = "User is succussfully loged out.";
+        	activity = "User logout.";
+        	activityDetail = "User successfully signed out. (Account Details:- First Name = "+sessionObject.getFirstName()+", Last Name = "+sessionObject.getLastName()+ ", Email ="+sessionObject.getEmail()+").";
 			auditLogDAO.saveToAuditLog(null, null, sessionObject, activity, activityDetail ,"FdahpStudyDesignerPreHandlerInterceptor - preHandle()");
 			isLogged = true;
 		} catch (Exception e) {

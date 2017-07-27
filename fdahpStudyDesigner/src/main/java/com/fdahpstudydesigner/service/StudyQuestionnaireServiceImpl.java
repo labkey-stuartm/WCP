@@ -454,18 +454,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getUseAnchorDate() != null){
 					addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
 				}
-				if(questionsBo.getType() != null){
-					activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
+				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
+				if (null != addQuestionsBo) {
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
+						activity = "Question of form step saved.";
+						activitydetails = "Content saved for question of form step. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
 					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DONE;
+						activity = "Question of form step checked for minimum content completeness.";
+						activitydetails = "Question  succesfully checked for minimum content completeness and marked 'Done'. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
 					}
 				}
-				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
-				
 				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
 			}
 		}catch(Exception e){

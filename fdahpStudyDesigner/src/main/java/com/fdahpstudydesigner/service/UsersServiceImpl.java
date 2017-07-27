@@ -147,6 +147,7 @@ public class UsersServiceImpl implements UsersService {
 		String dynamicContent = "";
 		boolean flag = false;
 		UserBO adminFullNameIfSizeOne = null;
+		UserBO userBO3 = null;
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -165,6 +166,7 @@ public class UsersServiceImpl implements UsersService {
 			}else{
 				addFlag = false;
 				userBO2 = usersDAO.getUserDetails(userBO.getUserId());
+				userBO3 = usersDAO.getUserDetails(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
 				/*if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
@@ -183,13 +185,13 @@ public class UsersServiceImpl implements UsersService {
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
 			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				if(addFlag){
-					activity = "User created";
-					activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
+					activity = "User account created.";
+					activityDetail ="New user created and Invite sent to user to activate account. (Account Details:- First Name = "+userBO.getFirstName()+" Last Name = "+userBO.getLastName()+ ", Email ="+userBO.getUserEmail()+")";
 					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
 				}
 				if(!addFlag){
-					activity = "User updated";
-					activityDetail = "User details is being updated and the user get force logout if the user is active";
+					activity = "User account updated.";
+					activityDetail = "User account details updated. (Previous Account Details:- First Name = "+userBO3.getFirstName()+", Last Name = "+userBO3.getLastName()+ ", Email ="+userBO3.getUserEmail()+") (New Account Details:- First Name = "+userBO.getFirstName()+", Last Name = "+userBO.getLastName()+ ", Email ="+userBO.getUserEmail()+")";
 					/*if(emailIdChange){
 						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
 					}else{*/

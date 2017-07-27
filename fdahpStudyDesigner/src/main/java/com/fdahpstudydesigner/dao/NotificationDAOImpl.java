@@ -228,15 +228,17 @@ public class NotificationDAOImpl implements NotificationDAO{
 				 if(notificationId!=null){
 					 String activitydetails = "";
 					 if("add".equals(buttonType)){
-						 activitydetails = "Notification created";
+						 activitydetails = "Gateway (app-level) notification created. (Notification ID = "+notificationId+")";
 					 }else if("update".equals(buttonType)){
-						 activitydetails = "Notification updated";
-					 }else if("resend".equals(buttonType)){
-						 activitydetails = "Notification resend";
+						 activitydetails = "Gateway (app-level) notification updated. (Notification ID = "+notificationId+")";
+					 }else if("resend".equals(buttonType) && !notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
+						 activitydetails = "Gateway (app-level) notification resend. (Notification ID = "+notificationId+")";
+					 }else if("resend".equals(buttonType) && notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
+						 activitydetails = "Notification for Study successfully resent. (Study ID = "+notificationBO.getCustomStudyId()+", Notification ID = "+notificationId+")";
 					 }else if("save".equals(buttonType)){
-						 activitydetails = "Notification saved but not eligible for mark as completed action untill unless it is DONE";
+						 activitydetails = "Notification content saved. (Study ID = "+notificationBO.getCustomStudyId()+", Notification ID = "+notificationId+")";
 					 }else if("done".equals(buttonType)){
-						 activitydetails = "Notification done and eligible for mark as completed action";
+						 activitydetails = "Notification for Study successfully  checked for minimum content completeness and marked 'Done'. (Study ID = "+notificationBO.getCustomStudyId()+")";
 					 }
 					 auditLogDAO.saveToAuditLog(session, transaction, sessionObject, notificationType, activitydetails, "NotificationDAOImpl - saveOrUpdateOrResendNotification");
 				 }
@@ -260,6 +262,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	    String message = FdahpStudyDesignerConstants.FAILURE;
 	    String queryString="";
 	    int i = 0;
+	    String activitydetails = "";
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
@@ -271,7 +274,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 				}
-				message = auditLogDAO.saveToAuditLog(session, transaction, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification");
+				if(!notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
+					activitydetails = "Gateway (app-level) notification deleted. (Notification ID = "+notificationIdForDelete+")";
+				 }else{
+					 activitydetails = "Notification for Study successfully deleted. (Notification ID = "+notificationIdForDelete+")";
+				}
+				message = auditLogDAO.saveToAuditLog(session, transaction, sessionObject, notificationType, activitydetails,"NotificationDAOImpl - deleteNotification");
 				transaction.commit();
 		} catch(Exception e){
 			transaction.rollback();
