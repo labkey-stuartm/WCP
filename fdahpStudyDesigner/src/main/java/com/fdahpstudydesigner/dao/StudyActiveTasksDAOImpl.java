@@ -250,11 +250,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			}
 			
 			if(activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
-				activity = "ActiveTask saved";
-				activitydetails = customStudyId+" -- ActiveTask saved but not eligible for mark as completed action untill unless it is DONE";
+				activity = "Content saved for Active Task.";
+				activitydetails = "Content saved for Active Task. (Active Task Key  = "+activeTaskBo.getShortTitle()+",  Study ID = "+customStudyId+")";
 			}else{
-				activity = "ActiveTask done";
-				activitydetails = customStudyId+" -- ActiveTask done and eligible for mark as completed action";
+				activity = "Active Task succesfully checked for minimum content completeness.";
+				activitydetails = "Active Task succesfully checked for minimum content completeness and marked 'Done'. (Active Task Key = "+activeTaskBo.getShortTitle()+", Study ID ="+customStudyId+")"; 
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, activeTaskBo.getStudyId());
 				//Notification Purpose needed Started
 				queryString = " From StudyBo where customStudyId='"+customStudyId+"' and live=1";
@@ -276,11 +276,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						notificationBO.setNotificationSent(false);
 					    }else{
  							notificationBO.setModifiedBy(sesObj.getUserId());
  							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					    }
 					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", activeTaskBo.getDisplayName()).replace("$customId", draftStudyBo.getName()));
+					    if(!notificationBO.isNotificationSent())
 					    session.saveOrUpdate(notificationBO);
 				}
 				//Notification Purpose needed End
@@ -314,6 +316,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		StudyVersionBo studyVersionBo = null;
 		String deleteActQuery = "";
 		String deleteQuery = "";
+		String activity = "";
+		String activityDetails = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(activeTaskBo != null) {
@@ -328,6 +332,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
 				if(studyVersionBo!=null){
+					activity = "Active Task was deactivated.";
+					activityDetails = "Active Task was deactivated. (Active Task Key = "+activeTaskBo.getShortTitle()+", Study ID = "+customStudyId+")";
 					deleteActQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
 					deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where id="+activeTaskBo.getId();
 				}else{
@@ -336,6 +342,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					
 					deleteActQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId();
 					deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
+					
+					activity = "Active Task was deleted.";
+					activityDetails = "Active Task was deleted. (Active Task Key = "+activeTaskBo.getShortTitle()+", Study ID = "+customStudyId+")";
 				}
 				query = session.createQuery(deleteActQuery);
 				query.executeUpdate();
@@ -348,7 +357,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 				
-				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activityDetails, "StudyActiveTasksDAOImpl - deleteActiveTAsk");
 				transaction.commit();
 			}
 		} catch (Exception e) {
