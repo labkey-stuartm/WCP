@@ -99,7 +99,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != instructionsBo){
 				if(instructionsBo.getId() != null){
-					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,null);
+					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,instructionsBo.getQuestionnaireId());
 				}else{
 					addOrUpdateInstructionsBo = new InstructionsBo();
 					addOrUpdateInstructionsBo.setActive(true);
@@ -459,18 +459,23 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo.setQuestionnaireId(questionsBo.getQuestionnaireId());
 				}
 				if(questionsBo.getType() != null){
-					activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
 					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DONE;
 					}
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
-				
-				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
+				if(null != addQuestionsBo && questionsBo.getType() != null){
+					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						activity = "Question of form step saved.";
+						activitydetails = "Content saved for question of form step. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
+					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						activity = "Question of form step checked for minimum content completeness.";
+						activitydetails = "Question  succesfully checked for minimum content completeness and marked 'Done'. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
+					}
+					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Error",e);
