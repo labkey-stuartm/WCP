@@ -714,7 +714,7 @@ $(document).ready(function() {
 					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					   
 					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-   					   reloadQuestionnaireStepData(questionnaireSteps);
+   					   reloadQuestionnaireStepData(questionnaireSteps,null);
    					   if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 						 $('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					   }
@@ -1652,7 +1652,9 @@ function saveQuestionnaire(item, callback){
 			isFormValid = false;
 		}
 	}
-	
+	console.log("currentFrequency:"+questionnaire.currentFrequency);
+	console.log("frequency:"+questionnaire.frequency);
+	console.log("previousFrequency:"+questionnaire.previousFrequency);
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
@@ -1674,7 +1676,16 @@ function saveQuestionnaire(item, callback){
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
 					$("#questionnaireId").val(questionnaireId);
-					$("#previousFrequency").val(frequency_text);
+					if(frequency_text == 'Daily'){
+						var previous_frequency = $("#previousFrequency").val();
+						if(previous_frequency !='' && previous_frequency != null && previous_frequency != 'undefined'){
+							$("#previousFrequency").val(previous_frequency);
+						}else{
+							$("#previousFrequency").val(frequency_text);
+						}
+					}else{
+						$("#previousFrequency").val(frequency_text);	
+					}
 					$(".add-steps-btn").removeClass('cursor-none');
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);
@@ -1853,7 +1864,8 @@ function deletStep(stepId,stepType){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
 		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-		    					reloadQuestionnaireStepData(questionnaireSteps);
+		    					var isDone = jsonobject.isDone;
+		    					reloadQuestionnaireStepData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
@@ -1875,7 +1887,7 @@ function deletStep(stepId,stepType){
 	    }
 	});
 }
-function reloadQuestionnaireStepData(questionnaire){
+function reloadQuestionnaireStepData(questionnaire,isDone){
 	$('#content').DataTable().clear();
 	 if(typeof questionnaire != 'undefined' && questionnaire != null && Object.keys(questionnaire).length > 0){
 		 $.each(questionnaire, function(key, value) {
@@ -1948,6 +1960,11 @@ function reloadQuestionnaireStepData(questionnaire){
 				datarow.push(dynamicAction);    	 
 			$('#content').DataTable().row.add(datarow);
 		 });
+		 console.log("isDone:"+isDone);
+		 if(isDone != null && isDone){
+			 $("#doneId").attr("disabled",false);
+			 $('#helpNote').attr('data-original-title', '');
+		 }
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
@@ -2143,9 +2160,8 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
                 	callback(false);
                 	var questionnaireSteps = jsonobject.questionnaireJsonObject;
                 	if(typeof questionnaireSteps !='undefined' && questionnaireSteps != null && questionnaireSteps!= ''){
-                		reloadQuestionnaireStepData(questionnaireSteps);	
+                		reloadQuestionnaireStepData(questionnaireSteps,null);	
                 	}
-					
                 }
             },
             global:false

@@ -2600,7 +2600,8 @@ public class StudyController {
 								mav = new ModelAndView("redirect:/adminStudies/actionList.do", map);
 							}
 						}else{
-							request.getSession().setAttribute(sessionStudyCount+"errMsg", "Unable to mark as complete. due to no change in Study");
+							if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
+							  request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
 						}
 					}
 				}

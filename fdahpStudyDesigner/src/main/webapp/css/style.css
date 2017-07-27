@@ -29,7 +29,7 @@ Version: 		1.0
     display: block;
 }
 
-.lg-space-left{
+.lg-space-left{	
     text-align: center;
 }
 
@@ -1230,7 +1230,7 @@ height:0px !important;
     z-index: 9;
     position: absolute;    
     right: 14px;
-    top: 9px;
+    top: 4px;
 }
 .form-group select:disabled {
 	cursor: not-allowed;

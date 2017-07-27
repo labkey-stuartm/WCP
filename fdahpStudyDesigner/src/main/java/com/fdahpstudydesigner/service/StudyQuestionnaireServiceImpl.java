@@ -72,11 +72,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used get the instruction of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle) {
+	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle,String customStudyId,Integer questionnaireId) {
 		logger.info("StudyQuestionnaireServiceImpl - getInstructionsBo - Starts");
 		InstructionsBo instructionsBo = null;
 		try{
-			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,questionnaireShortTitle);
+			instructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionId,questionnaireShortTitle,customStudyId,questionnaireId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getInstructionsBo - ERROR ", e);
 		}
@@ -98,7 +98,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != instructionsBo){
 				if(instructionsBo.getId() != null){
-					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),customStudyId);
+					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,instructionsBo.getQuestionnaireId());
 				}else{
 					addOrUpdateInstructionsBo = new InstructionsBo();
 					addOrUpdateInstructionsBo.setActive(true);
@@ -454,19 +454,27 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getUseAnchorDate() != null){
 					addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
 				}
-				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
-				if (null != addQuestionsBo) {
+				if(questionsBo.getQuestionnaireId() != null){
+					addQuestionsBo.setQuestionnaireId(questionsBo.getQuestionnaireId());
+				}
+				if(questionsBo.getType() != null){
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
+					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addQuestionsBo.setStatus(true);
+					}
+				}
+				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
+				if(null != addQuestionsBo && questionsBo.getType() != null){
+					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						activity = "Question of form step saved.";
 						activitydetails = "Content saved for question of form step. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
 					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
-						addQuestionsBo.setStatus(true);
 						activity = "Question of form step checked for minimum content completeness.";
 						activitydetails = "Question  succesfully checked for minimum content completeness and marked 'Done'. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
 					}
+					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
 				}
-				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Error",e);
@@ -694,11 +702,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the step information of questionnaire in a study
 	 */
 	@Override
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle) {
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle,String customStudyId,Integer questionnaireId) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
 		QuestionnairesStepsBo questionnairesStepsBo=null;
 		try{
-			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, questionnaireShortTitle);
+			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType, questionnaireShortTitle,customStudyId,questionnaireId);
 					if(questionnairesStepsBo != null && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP) && questionnairesStepsBo.getFormQuestionMap() != null){
 						List<QuestionResponseTypeMasterInfoBo>	questionResponseTypeMasterInfoList =studyQuestionnaireDAO.getQuestionReponseTypeList();
 						if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty()){

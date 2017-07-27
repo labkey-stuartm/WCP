@@ -2147,12 +2147,13 @@ public class StudyDAOImpl implements StudyDAO{
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudyBo studyBo = null;
-		List<Object> objectList = null;
+		List<Integer> objectList = null;
 		String activitydetails = "";
 		String activity = "";
 		StudyBo liveStudy = null;
 		StudyVersionBo studyVersionBo = null;
 		NotificationBO notificationBO = null;
+		String queryString = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -2172,7 +2173,7 @@ public class StudyDAOImpl implements StudyDAO{
 						notificationBO.setStudyId(studyBo.getId());
 						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 						notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
-						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
@@ -2202,79 +2203,90 @@ public class StudyDAOImpl implements StudyDAO{
 													+ " where a.questionnairesId=ab.id"
 													+" and ab.studyId=:impValue"
 													+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-													+" and a.isLaunchStudy=1");
+													+" and a.isLaunchStudy=1"
+													+" and active=1"
+													+" and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')");
 						query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
 					    objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
-					    	for(Object obj: objectList){
+					    	/*for(Object obj: objectList){
 					    		Integer questionaryId = (Integer)obj;
 					    		if(questionaryId!=null){
 					    			query = session.getNamedQuery("updateQuestionnaireStartDate").setString("studyLifetimeStart", studyBo.getStudylunchDate()).setInteger("id", questionaryId);
 					    			query.executeUpdate();
 					    		}
-					    	}
+					    	}*/
+					    	query = session.createSQLQuery("update questionnaires ab SET ab.study_lifetime_start= '"+studyBo.getStudylunchDate()+"' where id IN("+StringUtils.join(objectList,",")+")");
+			    			query.executeUpdate();
 					    }
-					    
 					  //getting activeTasks based on StudyId
-						 query = session.createQuery("select ab.id"
+					    query = session.createQuery("select ab.id"
 									+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 									+ " where a.activeTaskId=ab.id"
 									+" and ab.studyId=:impValue"
 									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-									+" and a.isLaunchStudy=1");
+									+" and a.isLaunchStudy=1"
+									+" and active=1"
+									+" and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')");
 						query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
 						objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
-					    	for(Object obj: objectList){
+					    	/*for(Object obj: objectList){
 					    		Integer activeTaskId = (Integer)obj;
 					    		if(activeTaskId!=null){
 					    			query = session.getNamedQuery("updateFromActiveTAskStartDate").setString("activeTaskLifetimeStart", studyBo.getStudylunchDate()).setInteger("id", activeTaskId);
 									query.executeUpdate();
 					    		}
-					    	}
+					    	}*/
+					    	query = session.createSQLQuery("update active_task ab SET ab.active_task_lifetime_start= '"+studyBo.getStudylunchDate()+"' where id IN("+StringUtils.join(objectList,",")+")");
+			    			query.executeUpdate();
 					    }
 					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
-					   message = this.studyDraftCreation(studyBo, session);
-					   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
-						 //notification text --   
-						   activity = "Study Launched.";
-						   activitydetails = "Study successfully launched. (Study ID = "+studyBo.getCustomStudyId()+", Status = Launched)";
-					         /*activitydetails = studyBo.getCustomStudyId()+" -- Study launched successfully";*/
-					       //notification sent to gateway    
-								notificationBO = new NotificationBO();
-								notificationBO.setStudyId(studyBo.getId());
-								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
-								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
-								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
-								notificationBO.setNotificationStatus(false);
-								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
-								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
-								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
-								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-								notificationBO.setNotificationDone(true);
-								session.save(notificationBO);
-						}else{
-							//notification text -- 
-							activity = "Study Updates Published.";
-							activitydetails = "Study version updated successfully. (Study ID = "+studyBo.getCustomStudyId()+", Status = version updates)";
-						}
-					   //Update resource startdate and time based on customStudyId
-					   session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
-							                            +"' where customStudyId='"+studyBo.getCustomStudyId()
-							                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
-							                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE
-							                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
-					
-					 //Update activity startdate and time based on customStudyId
-					  session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
-							                            +"' where customStudyId='"+studyBo.getCustomStudyId()
-							                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
-							                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
-							                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
-					
+					   message = studyDraftCreation(studyBo, session);
+					   if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+								 //notification text --   
+							      activity = "Study Launched.";
+							      activitydetails = "Study successfully launched. (Study ID = "+studyBo.getCustomStudyId()+", Status = Launched)";
+							       //notification sent to gateway    
+										notificationBO = new NotificationBO();
+										notificationBO.setStudyId(studyBo.getId());
+										notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+										notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
+										notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
+										notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+										notificationBO.setNotificationStatus(false);
+										notificationBO.setCreatedBy(sesObj.getUserId());
+										notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+										notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+										notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+										notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+										notificationBO.setNotificationDone(true);
+										session.save(notificationBO);
+								}else{
+									//notification text -- 
+									activity = "Study Updates Published.";
+									activitydetails = "Study version updated successfully. (Study ID = "+studyBo.getCustomStudyId()+", Status = version updates)";
+								}
+							   //Update resource startdate and time based on customStudyId
+							   session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
+									                            +"' where customStudyId='"+studyBo.getCustomStudyId()
+									                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
+									                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE
+									                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
+							
+							 //Update activity startdate and time based on customStudyId
+							  session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
+									                            +"' where customStudyId='"+studyBo.getCustomStudyId()
+									                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
+									                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
+									                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
+							
+							  
+					   }else{
+						  throw new IllegalStateException("Error in creating in Study draft"); 
+					   }
 					}else{
 						liveStudy = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId()).uniqueResult();
 						if(liveStudy!=null){
@@ -2364,6 +2376,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			transaction.commit();
 		}catch(Exception e){
+			message = FdahpStudyDesignerConstants.FAILURE;
 			transaction.rollback();
 			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
 		}finally{
@@ -2759,6 +2772,10 @@ public class StudyDAOImpl implements StudyDAO{
 						QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
 						newQuestionnaireBo.setId(null);
 						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
+						newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
+						newQuestionnaireBo.setCreatedBy(0);
+						newQuestionnaireBo.setModifiedBy(0);
+						newQuestionnaireBo.setModifiedDate(null);
 						if(studyVersionBo == null){
 							newQuestionnaireBo.setVersion(1.0f);
 							questionnaireBo.setVersion(1.0f);
@@ -2859,7 +2876,7 @@ public class StudyDAOImpl implements StudyDAO{
 											  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 											  
 											  //Question response Type 
-											  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+											  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
 											  
 											  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 											  newQuestionsBo.setId(null);
@@ -2912,7 +2929,7 @@ public class StudyDAOImpl implements StudyDAO{
 														  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 														  
 														  //Question response Type 
-														  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+														  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
 														  
 														  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 														  newQuestionsBo.setId(null);
@@ -3927,7 +3944,7 @@ public class StudyDAOImpl implements StudyDAO{
 							for (StudyBo study : draftDatas) {
 								studyIdList.add(study.getId());
 							}	
-						 message = this.deleteStudyByIdOrCustomstudyId(session, transaction, StringUtils.join(studyIdList, ","), "");	
+						 message = deleteStudyByIdOrCustomstudyId(session, transaction, StringUtils.join(studyIdList, ","), "");	
 						}	
 					}
 				//}
@@ -4043,7 +4060,7 @@ public class StudyDAOImpl implements StudyDAO{
 			
 			liveStudyBo = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).uniqueResult();
 			if(liveStudyBo!=null){
-				message = this.deleteStudyByIdOrCustomstudyId(session, transaction, liveStudyBo.getId().toString(), "");
+				message = deleteStudyByIdOrCustomstudyId(session, transaction, liveStudyBo.getId().toString(), "");
 				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
 					subQuery = "(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";

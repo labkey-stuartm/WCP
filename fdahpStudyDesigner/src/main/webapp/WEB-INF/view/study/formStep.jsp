@@ -566,6 +566,7 @@ function ellipseUnHover(item){
    $(item).prev().show();
 }
 function deletQuestion(formId,questionId){
+	var questionnairesId = $("#questionnairesId").val();
 	bootbox.confirm({
 	    message: "Are you sure you want to delete this question item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
 	    buttons: {
@@ -587,6 +588,7 @@ function deletQuestion(formId,questionId){
 		    			data:{
 		    				formId: formId,
 		    				questionId: questionId,
+		    				questionnairesId : questionnairesId,
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
 		    			success: function deleteConsentInfo(data){
@@ -596,8 +598,9 @@ function deletQuestion(formId,questionId){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
 		    					console.log(jsonobject.questionnaireJsonObject);
-		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-		    					reloadQuestionsData(questionnaireSteps);
+		    					var questionnaireSteps = jsonobject.questionnaireJsonObject;
+		    					var isDone = jsonobject.isDone;
+		    					reloadQuestionsData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
@@ -619,7 +622,7 @@ function deletQuestion(formId,questionId){
 	    }
 	});
 }
-function reloadQuestionsData(questions){
+function reloadQuestionsData(questions,isDone){
 	$('#content').DataTable().clear();
 	 if(typeof questions != 'undefined' && questions != null && Object.keys(questions).length > 0){
 		 $.each(questions, function(key, value) {
@@ -658,6 +661,11 @@ function reloadQuestionsData(questions){
 				datarow.push(dynamicAction);    	 
 			$('#content').DataTable().row.add(datarow);
 		 });
+		 console.log("isDone:"+isDone);
+		 if(isDone != null && isDone){
+			 $("#doneId").attr("disabled",false);
+			 $('#helpNote').attr('data-original-title', '');
+		 }
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
