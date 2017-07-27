@@ -142,22 +142,21 @@
 					</div>
 				</c:if>	
             
-			<table id="studyAdminsTable" class="display bor-none"
-				cellspacing="0" width="80%">
+			<table id="studyAdminsTable" class="display bor-none" cellspacing="0" width="80%">
 				<thead>
 					<tr>
 						<th>Admins</th>
 						<th>View</th>
 						<th>View & Edit</th>
 						<th>Project Lead</th>
-						<th  align="right"></th>
+						<th></th>
 
 					</tr>
 				</thead>
 				<tbody id="studyAdminId">
 					<c:forEach items="${studyPermissionList}" var="perm">
 							<tr id="studyAdminRowId${perm.userId}" class="studyAdminRowCls" studyUserId="${perm.userId}">
-								<td align="left"><span class="dis-ellipsis" title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span></td>
+								<td><span class="dis-ellipsis" title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span></td>
 								<td>
 									<span class="radio radio-info radio-inline p-45">
 	                            		<input type="radio" id="inlineRadio1${perm.userId}" class="radcls" value="0" name="view${perm.userId}" <c:if test="${not perm.viewPermission}">checked</c:if>>
@@ -176,7 +175,7 @@
 	                            		<label for="inlineRadio3${perm.userId}"></label>
                         			</span>
 								</td>
-								<td>
+								<td align="center">
 									<span class="sprites_icon copy delete <c:if test="${not empty permission || !fn:contains(permissions,5)}"> cursor-none </c:if>" 
 									 onclick="removeUser(${perm.userId})" data-toggle="tooltip" data-placement="top" title="Delete"></span>
 								</td>
@@ -217,8 +216,7 @@
             <div class="right-content-body col-xs-12">
             	<!-- <div class="right-content-body pt-none pb-none"> -->
 		<div>
-			<table id="userListTable" class="display bor-none tbl_rightalign"
-				cellspacing="0" width="100%">
+			<table id="userListTable" class="display bor-none tbl_rightalign" cellspacing="0" width="100%">
 				<thead>
 					<tr>
 						<th></th>
