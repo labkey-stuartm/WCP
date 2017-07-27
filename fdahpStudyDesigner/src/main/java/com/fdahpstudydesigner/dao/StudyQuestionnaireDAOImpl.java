@@ -443,7 +443,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						queryString = " From StudyBo where id="+questionnaireBo.getStudyId();
 						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
 					    NotificationBO notificationBO = null;
-					    queryString = "From NotificationBO where activeTaskId="+questionnaireBo.getId();
+					    queryString = "From NotificationBO where questionnarieId="+questionnaireBo.getId();
 					    notificationBO =  (NotificationBO)session.createQuery(queryString).uniqueResult();
 					    if(notificationBO==null){
 						notificationBO = new NotificationBO();
