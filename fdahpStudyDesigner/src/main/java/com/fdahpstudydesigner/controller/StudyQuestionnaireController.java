@@ -522,7 +522,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						questionnaireBo.setCreatedBy(sesObj.getUserId());
 						questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						questionnaireBo.setStatus(true);
-						
 						questionnaireBo.setIsChange(1);
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);

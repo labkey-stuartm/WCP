@@ -28,7 +28,7 @@ import com.fdahpstudydesigner.bean.StudyListBean;
 @Table(name = "studies")
 @NamedQueries({
 	@NamedQuery(name = "StudyBo.getStudiesById", query = " From StudyBo SBO WHERE SBO.id =:id"),
-	@NamedQuery(name = "updateStudyVersion", query = "UPDATE StudyBo SET live=2 WHERE customStudyId=:customStudyId"),
+	@NamedQuery(name = "updateStudyVersion", query = "UPDATE StudyBo SET live=2 WHERE customStudyId=:customStudyId and live=1"),
 	@NamedQuery(name = "getStudyLiveVersion", query = " From StudyBo SBO WHERE SBO.live=1 AND customStudyId=:customStudyId"),
 	@NamedQuery(name = "getStudyBycustomStudyId", query = " From StudyBo SBO WHERE customStudyId=:customStudyId"),
 	@NamedQuery(name = "getStudyDraftVersion", query = " From StudyBo SBO WHERE SBO.live=0 AND customStudyId=:customStudyId"),
