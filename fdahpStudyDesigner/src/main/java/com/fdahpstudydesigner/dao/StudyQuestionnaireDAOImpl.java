@@ -2167,45 +2167,29 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * 
 	 * This method is used to validate the questionnaire have response type scale for android platform 
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		List<QuestionsBo> questionsBo = null;
 		BigInteger questionCount = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(customStudyId != null && !customStudyId.isEmpty()){
-				String createQuery = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN "
-						+ "(select id from QuestionnaireBo Q where Q.studyId IN(select id from StudyBo where customStudyId='"+customStudyId+"') "
-						+ "and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) "
-						+ "and QBO.active=1 and QBO.responseType=3";
-				query = session.createQuery(createQuery);
-				questionsBo =  query.list();
-				if(questionsBo != null && !questionsBo.isEmpty()){
-					message = FdahpStudyDesignerConstants.SUCCESS;
-				}else{
-					String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id in(select a.id from studies a where a.custom_study_id='"+customStudyId+"') and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
-					questionCount = (BigInteger) session.createSQLQuery(searchQuuery).uniqueResult();
-					if(questionCount!=null && questionCount.intValue() > 0){
-						message = FdahpStudyDesignerConstants.SUCCESS;
-					}
-				}
+			String searchQuery = "select count(*) from questions QBO,questionnaires_steps QSBO,questionnaires Q where QBO.id=QSBO.instruction_form_id"
+					+ " and QSBO.questionnaires_id=Q.id and Q.study_id="+studyId+" and Q.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'"
+					+ " and QSBO.active=1 and QBO.active=1 and QBO.response_type=3";
+			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			if(count!=null && count.intValue() > 0){	
+				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
-				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.responseType=3");
-				questionsBo =  query.list();
-				if(questionsBo != null && !questionsBo.isEmpty()){
+				String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id"
+						+ " and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id="+studyId+""
+								+ " and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
+				questionCount = (BigInteger) session.createSQLQuery(searchQuuery).uniqueResult();
+				if(questionCount!=null && questionCount.intValue() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
-				}else{
-					String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id="+studyId+" and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
-					questionCount = (BigInteger) session.createSQLQuery(searchQuuery).uniqueResult();
-					if(questionCount!=null && questionCount.intValue() > 0){
-						message = FdahpStudyDesignerConstants.SUCCESS;
-					}
 				}
-			}
+			}	
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - ERROR " , e);
 		}finally{
