@@ -281,6 +281,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
  							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					    }
 					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", activeTaskBo.getDisplayName()).replace("$customId", draftStudyBo.getName()));
+					    if(!notificationBO.isNotificationSent())
 					    session.saveOrUpdate(notificationBO);
 				}
 				//Notification Purpose needed End

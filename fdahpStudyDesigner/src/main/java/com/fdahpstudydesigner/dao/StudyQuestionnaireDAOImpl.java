@@ -456,11 +456,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sessionObject.getUserId());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						notificationBO.setNotificationSent(false);
 					    }else{
  							notificationBO.setModifiedBy(sessionObject.getUserId());
  							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					    }
 					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", questionnaireBo.getTitle()).replace("$customId", draftStudyBo.getName()));
+					    if(!notificationBO.isNotificationSent())
 					    session.saveOrUpdate(notificationBO);
 				}
 				//Notification Purpose needed End
