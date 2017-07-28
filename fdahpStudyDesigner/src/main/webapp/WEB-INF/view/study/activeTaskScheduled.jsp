@@ -706,6 +706,17 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",false);
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
+    		$('#chooseDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false
+    	    })
+    	   	.on("dp.change", function (e) {
+    	   		if(e.date._d) 
+    				$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
+    			else 
+    				$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
+    	    });
     	}else{
     		$("#chooseDate").val('').attr("disabled",true);
     		$("#selectTime").val('').attr("disabled",true);
@@ -718,6 +729,12 @@ $(document).ready(function() {
     	if(!$("#isStudyLifeTime").is(':checked')){
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
+    		$('#chooseEndDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false
+    	    });
+    	   	
     	}else{
     		$("#chooseEndDate").val('').attr("disabled",true);
     		$("#chooseEndDate").required = true;

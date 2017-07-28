@@ -135,7 +135,7 @@ $(document).ready(function(){
 	           r1 = rowData[0];
 	        }	               
 	        if(i==1){
-	        	if(r1 > rowData[0]){
+	        	if(parseInt(r1) > parseInt(rowData[0])){
 	               oldOrderNumber = diff[0].oldData;
 	           	   newOrderNumber = diff[0].newData;
 	        	}else{

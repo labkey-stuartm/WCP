@@ -294,7 +294,10 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <div class="mt-md form-group">
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="chooseEndDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${questionnaireBo.studyLifetimeEnd}" />
+	                     <c:choose>
+	                     	<c:when test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}"><input id="chooseEndDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="" /></c:when>
+	                     	<c:otherwise><input id="chooseEndDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${questionnaireBo.studyLifetimeEnd}" /></c:otherwise>
+	                     </c:choose>
 	                     <span class='help-block with-errors red-txt'></span>
 	                     </span>                            
 	                  </div>
@@ -673,7 +676,7 @@ $(document).ready(function() {
 		        r1 = $(rowData[0]).attr('id');
 		    }	        
 		    if(i==1){
-		      if(r1 > $(rowData[0]).attr('id')){
+		      if(parseInt(r1) > parseInt($(rowData[0]).attr('id'))){
 		        oldOrderNumber = $(diff[0].oldData).attr('id');
 		        newOrderNumber = $(diff[0].newData).attr('id');
 		      }else{
@@ -1174,6 +1177,17 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",false);
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
+    		$('#chooseDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false,
+    	    })
+    	    .on("dp.change", function (e) {
+    	    	if(e.date._d) 
+    				$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
+    			else 
+    				$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
+    	    });
     	}else{
     		$("#chooseDate").attr("disabled",true);
     		$("#selectTime").attr("disabled",true);
@@ -1188,6 +1202,12 @@ $(document).ready(function() {
     	if(!$("#isStudyLifeTime").is(':checked')){
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
+    		$('#chooseEndDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false,
+    	    });
+    		$("#chooseEndDate").val('');
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
     		$("#chooseEndDate").required = true;

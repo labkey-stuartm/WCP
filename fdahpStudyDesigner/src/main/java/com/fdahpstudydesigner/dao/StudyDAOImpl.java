@@ -2772,7 +2772,7 @@ public class StudyDAOImpl implements StudyDAO{
 						QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
 						newQuestionnaireBo.setId(null);
 						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
-						newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
+						//newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
 						newQuestionnaireBo.setCreatedBy(0);
 						newQuestionnaireBo.setModifiedBy(0);
 						newQuestionnaireBo.setModifiedDate(null);
