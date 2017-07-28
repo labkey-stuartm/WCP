@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.collections.set.CompositeSet.SetMutator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -442,8 +443,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						queryString = " From StudyBo where id="+questionnaireBo.getStudyId();
 						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
 					    NotificationBO notificationBO = null;
-					    queryString = "From NotificationBO where questionnarieId="+questionnaireBo.getId();
-					    notificationBO =  (NotificationBO)session.createQuery(queryString).uniqueResult();
+					    queryString = "From NotificationBO where questionnarieId="+questionnaireBo.getId() + "and studyId="+questionnaireBo.getStudyId();
+					    notificationBO =  (NotificationBO)session.createQuery(queryString).setMaxResults(1).uniqueResult();
 					    if(notificationBO==null){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(questionnaireBo.getStudyId());
