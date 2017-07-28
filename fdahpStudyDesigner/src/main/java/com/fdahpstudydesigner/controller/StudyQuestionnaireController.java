@@ -1537,7 +1537,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					request.getSession().setAttribute(sessionStudyCount+"questionId", questionId);
 					if(questionnairesStepsBo != null){
 						List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
-						map.addAttribute(sessionStudyCount+"destinationStepList", destionationStepList);
+						map.addAttribute("destinationStepList", destionationStepList);
 					}
 				}
 				map.addAttribute("formId", formId);

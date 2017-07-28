@@ -375,10 +375,10 @@ $(document).ready(function(){
  	        var r1;
  	        if(i==0){
 		        r1 = $(rowData[0]).attr('id');
-		    }	        
+		    }
 		    if(i==1){
-		      if(r1 > $(rowData[0]).attr('id')){
-		        oldOrderNumber = $(diff[0].oldData).attr('id');
+		      if(parseInt(r1) > parseInt($(rowData[0]).attr('id'))){
+		    	oldOrderNumber = $(diff[0].oldData).attr('id');
 		        newOrderNumber = $(diff[0].newData).attr('id');
 		      }else{
 		        oldOrderNumber = $(diff[diff.length-1].oldData).attr('id');
@@ -388,7 +388,6 @@ $(document).ready(function(){
  	        result += rowData[1]+' updated to be in position '+
  	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
  	    }
-
  	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
  			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
  	    	$.ajax({
@@ -420,7 +419,7 @@ $(document).ready(function(){
  				  setTimeout(hideDisplayMessage, 4000);
  				}
  			});  
- 	    }
+ 	    } 
  	});
     if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
