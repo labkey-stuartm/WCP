@@ -1,9 +1,4 @@
-/**
- * 
- */
 package com.fdahpstudydesigner.bean;
-
-import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 
 
 /**
@@ -22,7 +17,8 @@ public class PushNotificationBean {
 
 	private String notificationSubType = "Announcement";
 
-	private String notificationTitle = FdahpStudyDesignerUtil.getAppProperties().get("push.notification.title");
+	private String notificationTitle = "";
+	// private String notificationTitle = FdahpStudyDesignerUtil.getAppProperties().get("push.notification.title");
 	
 	/**
 	 * @return the notificationText
