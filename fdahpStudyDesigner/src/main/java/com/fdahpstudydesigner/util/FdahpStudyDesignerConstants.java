@@ -294,10 +294,15 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTIVITY_TYPE_QUESTIONNAIRE = "Questionnaire";
 	public static final String ACTIVITY_TYPE_ACTIVETASK = "Activetask";
 	public static final String ACTIVITY_MESSAGE = "activityMsg";
+<<<<<<< HEAD
 
 	public static final String STAT_INFO_LIST = "statisticsInfoList";
 	public static final String FAILURE_UPDATE_STUDY_MESSAGE = "Sorry, a technical error occurred and the update(s) could not be published.";
 
+=======
+	public static final String STAT_INFO_LIST = "statisticsInfoList";
+	public static final String FAILURE_UPDATE_STUDY_MESSAGE = "Sorry, a technical error occurred and the update(s) could not be published.";
+>>>>>>> bfe95f1144a0bc76baf26097e0317d4af358341b
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";

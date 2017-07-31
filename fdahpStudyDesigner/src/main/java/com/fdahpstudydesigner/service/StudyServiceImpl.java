@@ -710,14 +710,14 @@ public class StudyServiceImpl implements StudyService {
 	 */
 	@Override
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj,String customStudyId) {
-		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
+		logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
 			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,sesObj,customStudyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
+			logger.error("StudyServiceImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
 		}
-		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
+		logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Ends");
 		return result;
 	}
 	
@@ -1301,82 +1301,150 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
 		return message;
 	}
-    public Integer saveOrUpdateEligibilityTestQusAns(
-            EligibilityTestBo eligibilityTestBo, Integer studyId, SessionObject sessionObject,String customStudyId) {
-        logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");
-        Integer eligibilityTestId = 0;
-        Integer seqCount = 0;
-        try{
-            if(eligibilityTestBo != null ) {
-                if(null == eligibilityTestBo.getId()) {
-                    seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
-                    eligibilityTestBo.setSequenceNo(seqCount);
-                }
-                eligibilityTestId = studyDAO.saveOrUpdateEligibilityTestQusAns(eligibilityTestBo, studyId, sessionObject, customStudyId);
-            }
-        }catch(Exception e){
-            logger.error("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Error",e);
-        }
-        logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Ends");
-        return eligibilityTestId;
-    }
+	
+	
+	/**
+	 * Save or update eligibility test question and answer
+	 * 
+	 * @param eligibilityTestBo
+	 *            , object of {@link EligibilityTestBo}
+	 * @param studyId
+	 *            , id of the {@link StudyBo}
+	 * @param sessionObject
+	 *            , current {@link SessionObject} object
+	 * @param customStudyId
+	 *            , custom study id of {@link StudyBo}
+	 * @return eligibilityTestId, Id of {@link EligibilityTestBo}
+	 */
+	@Override
+	public Integer saveOrUpdateEligibilityTestQusAns(
+			EligibilityTestBo eligibilityTestBo, Integer studyId,
+			SessionObject sessionObject, String customStudyId) {
+		logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");
+		Integer eligibilityTestId = 0;
+		Integer seqCount = 0;
+		try {
+			if (eligibilityTestBo != null) {
+				if (null == eligibilityTestBo.getId()) {
+					seqCount = studyDAO
+							.eligibilityTestOrderCount(eligibilityTestBo
+									.getEligibilityId());
+					eligibilityTestBo.setSequenceNo(seqCount);
+				}
+				eligibilityTestId = studyDAO.saveOrUpdateEligibilityTestQusAns(
+						eligibilityTestBo, studyId, sessionObject,
+						customStudyId);
+			}
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Ends");
+		return eligibilityTestId;
+	}
 
-    @Override
-    public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId,
-            Integer studyId, SessionObject sessionObject,String customStudyId) {
-        logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Starts");
-        String message = FdahpStudyDesignerConstants.SUCCESS;
-        try{
-            message = studyDAO.deleteEligibilityTestQusAnsById(eligibilityTestId, studyId, sessionObject, customStudyId);
-        }catch(Exception e){
-            logger.error("StudyServiceImpl - deleteEligibilityTestQusAnsById - Error",e);
-        }
-        logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Ends");
-        return message;
-    }
+	@Override
+	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId,
+			Integer studyId, SessionObject sessionObject, String customStudyId) {
+		logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.deleteEligibilityTestQusAnsById(
+					eligibilityTestId, studyId, sessionObject, customStudyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - deleteEligibilityTestQusAnsById - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Ends");
+		return message;
+	}
 
-    @Override
-    public EligibilityTestBo viewEligibilityTestQusAnsById(
-            Integer eligibilityTestId) {
-        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Starts");
-        EligibilityTestBo eligibilityTestBo = null;
-        try{
-            eligibilityTestBo = studyDAO.viewEligibilityTestQusAnsById(eligibilityTestId);
-        }catch(Exception e){
-            logger.error("StudyServiceImpl - viewEligibilityTestQusAnsById - Error",e);
-        }
-        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Ends");
-        return eligibilityTestBo;
-    }
+	/**
+	 * View eligibility test question answer by id
+	 * 
+	 * @author Vivek
+	 * 
+	 * @param eligibilityTestId
+	 *            , Id of {@link EligibilityTestBo}
+	 * @return eligibilityTestBo , Object of {@link EligibilityTestBo}
+	 */
+	@Override
+	public EligibilityTestBo viewEligibilityTestQusAnsById(
+			Integer eligibilityTestId) {
+		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Starts");
+		EligibilityTestBo eligibilityTestBo = null;
+		try {
+			eligibilityTestBo = studyDAO
+					.viewEligibilityTestQusAnsById(eligibilityTestId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - viewEligibilityTestQusAnsById - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Ends");
+		return eligibilityTestBo;
+	}
 
-    @Override
-    public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(
-            Integer eligibilityId) {
-        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
-        List<EligibilityTestBo> eligibilityTestBos = null;
-        try{
-            eligibilityTestBos = studyDAO.viewEligibilityTestQusAnsByEligibilityId(eligibilityId);
-        }catch(Exception e){
-            logger.error("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Error",e);
-        }
-        logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Ends");
-        return eligibilityTestBos;
-    }
+	/**
+	 * View eligibility test question answer by eligibility id
+	 * 
+	 * @author Vivek
+	 * 
+	 * @param eligibilityId
+	 *            , Id of {@link EligibilityBo}
+	 * @return eligibilityTestBos , {@link List} of {@link EligibilityTestBo}
+	 *         object
+	 */
+	@Override
+	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(
+			Integer eligibilityId) {
+		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
+		List<EligibilityTestBo> eligibilityTestBos = null;
+		try {
+			eligibilityTestBos = studyDAO
+					.viewEligibilityTestQusAnsByEligibilityId(eligibilityId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Ends");
+		return eligibilityTestBos;
+	}
 
-    @Override
-    public String reorderEligibilityTestQusAns(Integer eligibilityId,
-            int oldOrderNumber, int newOrderNumber, Integer studyId) {
-        logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Starts");
-        String message = FdahpStudyDesignerConstants.SUCCESS;
-        try {
-            message = studyDAO.reorderEligibilityTestQusAns(eligibilityId, oldOrderNumber, newOrderNumber, studyId);
-        } catch (Exception e) {
-            logger.error(
-                    "StudyServiceImpl - reorderEligibilityTestQusAns - Error", e);
-        }
-        logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Ends");
-        return message;
-    }
+	/**
+	 * Reorder the eligibility test questions
+	 * @author Vivek
+	 * 
+	 * @param eligibilityId
+	 *            , Eligibility Id of the study
+	 * @param oldOrderNumber
+	 *            , Old order
+	 * @param newOrderNumber
+	 *            , New order
+	 * @param studyId
+	 *            , Id of the study
+	 * @return {@link FdahpStudyDesignerConstants.SUCCESS} or {@link
+	 *         FdahpStudyDesignerConstants.FAILURE} , reorder status
+	 */
+	@Override
+	public String reorderEligibilityTestQusAns(Integer eligibilityId,
+			int oldOrderNumber, int newOrderNumber, Integer studyId) {
+		logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.reorderEligibilityTestQusAns(eligibilityId,
+					oldOrderNumber, newOrderNumber, studyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - reorderEligibilityTestQusAns - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Ends");
+		return message;
+	}
 
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
