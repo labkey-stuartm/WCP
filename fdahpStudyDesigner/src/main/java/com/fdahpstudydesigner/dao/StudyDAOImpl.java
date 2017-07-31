@@ -2706,7 +2706,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//Study Permission
 				studyPermissionList = session.createQuery("from StudyPermissionBO where studyId="+studyBo.getId()).list();
-				if(studyPermissionList!=null){
+				if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyPermissionBO permissionBO:studyPermissionList){
 						StudyPermissionBO studyPermissionBO = SerializationUtils.clone(permissionBO);
 						studyPermissionBO.setStudyId(studyDreaftBo.getId());
