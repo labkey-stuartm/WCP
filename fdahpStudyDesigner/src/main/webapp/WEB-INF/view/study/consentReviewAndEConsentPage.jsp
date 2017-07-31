@@ -50,11 +50,11 @@
                    		<div class="col-md-12 pl-none">
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
-	                                <input type="radio" id="shareDataPermissionsYes" value="Yes" name="shareDataPermissions" ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''}>
+	                                <input type="radio" id="shareDataPermissionsYes" value="Yes" name="shareDataPermissions" ${consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''}>
 	                                <label for="shareDataPermissionsYes">Yes</label>
 	                            </span>
 	                            <span class="radio radio-inline">
-	                                <input type="radio" id="shareDataPermissionsNo" value="No" name="shareDataPermissions" ${consentBo.shareDataPermissions eq 'No' ? 'checked' : ''}>
+	                                <input type="radio" id="shareDataPermissionsNo" value="No" name="shareDataPermissions" ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'No' ? 'checked' : ''}>
 	                                <label for="shareDataPermissionsNo">No</label>
 	                            </span>
 	                        </div>
@@ -282,6 +282,7 @@ $(document).ready(function(){
 	$('input[name="shareDataPermissions"]').change(function(){
 		var shareDataPermissions = '${consentBo.shareDataPermissions}';
 		var value= $(this).val();
+		console.log("value:"+value);
 		if(value == 'Yes'){
 			$('#rootContainer input').attr('required',true);
 			$('#learnMoreTextId').attr('required',true);
@@ -292,6 +293,7 @@ $(document).ready(function(){
 			$('#rootContainer input').attr('required',false);
 			$('#learnMoreTextId').attr('required',false);
 			$('#longDescriptionId').attr('required',false);
+			newLearnMoreConsentDocument();
 			$("#rootContainer").hide();
 		}
 	});
@@ -391,14 +393,19 @@ $(document).ready(function(){
 		}
 	});
 	function resetValues(shareDataPermissions){
+		console.log("shareDataPermissions:"+shareDataPermissions);
 		if(shareDataPermissions == '' || shareDataPermissions == 'No'){
+			console.log("ifff");
 			$('#rootContainer input').val('');
 			$('#allowWithoutPermissionYes').attr('checked',true);
 			$('#learnMoreTextId').val('');
 			$('#longDescriptionId').val('');
+			newLearnMoreConsentDocument();
+			$("#rootContainer").hide();
 			//tinymce.get('learnMoreTextId').setContent('');
 		}else{
 			newLearnMoreConsentDocument();
+			console.log("else");
 		} 
 	}
 	//consent doc type div
