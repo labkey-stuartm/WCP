@@ -15,7 +15,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface StudyQuestionnaireDAO {
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
 	
-	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle);
+	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle,String customStudyId,Integer questionnaireId);
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId);
 	
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId,String customStudyId);
@@ -29,7 +29,7 @@ public interface StudyQuestionnaireDAO {
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId);
 	
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle);
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String questionnaireShortTitle,String customStudyId,Integer questionnaireId);
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle,String customStudyId);
 	
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();

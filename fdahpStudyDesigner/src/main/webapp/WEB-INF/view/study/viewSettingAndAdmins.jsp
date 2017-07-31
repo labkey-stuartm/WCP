@@ -246,8 +246,16 @@ function platformTypeValidation(buttonText){
 	$("input:checkbox[name=platform]:checked").each(function() {
 		platformNames = platformNames + $(this).val();
 	});
+	var liveStudy = "${studyBo.liveStudyBo}";
+	if(liveStudy){
+		var platform = "${studyBo.liveStudyBo.platform}";
+		if(platform.includes('A')){
+			platformNames = '';
+		}
+	}
 	if(platformNames!='' && platformNames.includes('A')){
-		$('.actBut').prop('disabled',true);  
+		$('.actBut').prop('disabled',true);
+		$("body").addClass("loading");
 		$.ajax({
             url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidation.do?_S=${param._S}",
             type: "POST",
@@ -260,6 +268,7 @@ function platformTypeValidation(buttonText){
                 var jsonobject = eval(data);
                 var message = jsonobject.message;
                 var errorMessage = jsonobject.errorMessage;
+                $("body").removeClass("loading");
                 if (message == "SUCCESS") {
                 	$('#completedId').removeAttr('disabled');
                 	bootbox.alert(errorMessage);
@@ -315,7 +324,7 @@ function submitButton(buttonText){
         }else{
         	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
         	$("#buttonText").val('completed');
-	       $("#settingfoFormId").submit();
+	        $("#settingfoFormId").submit();
         }
 	}
 }

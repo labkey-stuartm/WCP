@@ -85,8 +85,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	        }
 	        
 	        request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
-        	activity = "User login";
-			activityDetail = "User "+sesObj.getFirstName()+" "+sesObj.getLastName()+" is succussfully loged in.";
+        	activity = "User login.";
+        	activityDetail = "User successfully signed in. (Account Details:- First Name = "+userdetails.getFirstName()+", Last Name = "+userdetails.getLastName()+ ", Email ="+userdetails.getUserEmail()+").";
 			auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"CustomSuccessHandler - handle");
 			
 	        if(null != request.getSession(false).getAttribute("sucMsg")){

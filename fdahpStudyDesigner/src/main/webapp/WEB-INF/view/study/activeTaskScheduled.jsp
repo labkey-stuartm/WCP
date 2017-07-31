@@ -80,7 +80,10 @@
 	       </span>
 	       <div class="mt-md form-group">
 	          <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	          <input id="chooseEndDate" type="text" class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskLifetimeEnd" placeholder="Choose End Date" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${activeTaskBo.activeTaskLifetimeEnd}"/>
+	          <c:choose>
+	          	<c:when test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}"><input id="chooseEndDate" type="text" class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskLifetimeEnd" placeholder="Choose End Date" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value=""/></c:when>
+	          	<c:otherwise><input id="chooseEndDate" type="text" class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskLifetimeEnd" placeholder="Choose End Date" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${activeTaskBo.activeTaskLifetimeEnd}"/></c:otherwise>
+	          </c:choose>
 	          <span class='help-block with-errors red-txt'></span>
 	          </span>                            
 	       </div>
@@ -706,6 +709,17 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",false);
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
+    		$('#chooseDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false
+    	    })
+    	   	.on("dp.change", function (e) {
+    	   		if(e.date._d) 
+    				$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
+    			else 
+    				$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
+    	    });
     	}else{
     		$("#chooseDate").val('').attr("disabled",true);
     		$("#selectTime").val('').attr("disabled",true);
@@ -718,6 +732,12 @@ $(document).ready(function() {
     	if(!$("#isStudyLifeTime").is(':checked')){
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
+    		$('#chooseEndDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false
+    	    });
+    		$("#chooseEndDate").val('');
     	}else{
     		$("#chooseEndDate").val('').attr("disabled",true);
     		$("#chooseEndDate").required = true;
@@ -1090,7 +1110,7 @@ function saveActiveTask(item, actType, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if(multiTimeVal && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none, :disabled'), $(document).find(".dailyClock").not('.cursor-none, :disabled')) && chkEndDateWithDate($('#days').not('.cursor-none, :disabled'), $('#endDateId')))){
+		if(multiTimeVal && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !validateTime($(document).find("#startDate").not('.cursor-none, :disabled'), $(document).find(".dailyClock").not('.cursor-none, :disabled'))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1124,7 +1144,7 @@ function saveActiveTask(item, actType, callback){
 			activeTaskFrequencey.frequencyTime=frequence_time;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none, :disabled'), $(document).find("#selectWeeklyTime").not('.cursor-none, :disabled')) && chkEndDateWithDate($('#weeks').not('.cursor-none, :disabled'), $('#weekEndDate')))){
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !validateTime($(document).find("#startWeeklyDate").not('.cursor-none, :disabled'), $(document).find("#selectWeeklyTime").not('.cursor-none, :disabled'))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1158,7 +1178,7 @@ function saveActiveTask(item, actType, callback){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none, :disabled'), $(document).find("#selectMonthlyTime").not('.cursor-none, :disabled')) && chkEndDateWithDate($('#months').not('.cursor-none, :disabled'), $('#monthEndDate')))){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !validateTime($(document).find("#startDateMonthly").not('.cursor-none, :disabled'), $(document).find("#selectMonthlyTime").not('.cursor-none, :disabled'))){
 			isFormValid = false;
 		}
 	}
