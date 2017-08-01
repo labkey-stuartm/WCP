@@ -70,7 +70,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId) {
+	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,Boolean isLive) {
 		logger.info("StudyActiveTasksDAOImpl - getStudyActiveTasksByStudyId() - Starts");
 		Session session = null;
 		List<ActiveTaskBo> activeTasks = null;
@@ -78,7 +78,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(studyId)) {
-				query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+				if(isLive){
+					String searchQuery = "SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.customStudyId ='"+studyId+"' and ATB.live=1 order by id";
+					query = session.createQuery(searchQuery);
+				}else{
+					query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+				}
+				
 				activeTasks = query.list();
 				
 				query = session.createQuery("from ActiveTaskListBo");

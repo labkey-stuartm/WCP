@@ -105,9 +105,9 @@ public class StudyActiveTasksController {
 					}
 					//Added for live version End
 					if(StringUtils.isNotEmpty(activityStudyId)){
-						activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(activityStudyId);
+						activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyBo.getCustomStudyId(),true);
 					}else{
-						activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
+						activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId,false);
 					}	
 					boolean markAsComplete = true;
 					actMsg = studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_ACTIVETASK);
