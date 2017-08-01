@@ -1029,9 +1029,9 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			consentInfoBo = (ConsentInfoBo) session.get(ConsentInfoBo.class, consentInfoId);
 			if(consentInfoBo!=null){
-				consentInfoBo.setDisplayTitle(StringUtils.isEmpty(consentInfoBo.getDisplayTitle())?"":consentInfoBo.getDisplayTitle().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'"));
-				consentInfoBo.setBriefSummary(StringUtils.isEmpty(consentInfoBo.getBriefSummary())?"":consentInfoBo.getBriefSummary().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'"));
-				consentInfoBo.setElaborated(StringUtils.isEmpty(consentInfoBo.getElaborated())?"":consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'"));
+				consentInfoBo.setDisplayTitle(StringUtils.isEmpty(consentInfoBo.getDisplayTitle())?"":consentInfoBo.getDisplayTitle().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+				consentInfoBo.setBriefSummary(StringUtils.isEmpty(consentInfoBo.getBriefSummary())?"":consentInfoBo.getBriefSummary().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+				consentInfoBo.setElaborated(StringUtils.isEmpty(consentInfoBo.getElaborated())?"":consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
 			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getConsentInfoById() - Error",e);
