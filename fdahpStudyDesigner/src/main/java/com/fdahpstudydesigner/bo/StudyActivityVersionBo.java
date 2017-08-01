@@ -36,6 +36,9 @@ public class StudyActivityVersionBo {
 	
 	@Column(name = "activity_id")
 	private Integer activityId;
+	
+	@Column(name = "activity_version")
+	private Float activityVersion;
 
 	public Integer getStudyActivityId() {
 		return studyActivityId;
@@ -83,5 +86,13 @@ public class StudyActivityVersionBo {
 
 	public void setActivityId(Integer activityId) {
 		this.activityId = activityId;
+	}
+
+	public Float getActivityVersion() {
+		return activityVersion;
+	}
+
+	public void setActivityVersion(Float activityVersion) {
+		this.activityVersion = activityVersion;
 	}
 }

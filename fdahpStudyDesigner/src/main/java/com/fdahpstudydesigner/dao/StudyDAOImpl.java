@@ -3210,6 +3210,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String searchQuery = "";
 		QuestionReponseTypeBo questionReponseTypeBo = null;
 		List<String> objectList = null;
+		List<String> questionnarieShorttitleList = null;
 		try{
 			/*if(session!= null) {
 				transaction = session.beginTransaction();
@@ -3308,11 +3309,23 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 					//If Questionnaire updated flag -1 then update
 					if(studyVersionBo==null  || (studyBo.getHasQuestionnaireDraft()!=null && studyBo.getHasQuestionnaireDraft().equals(1))){
-
 						//Questionarries
 						query = session.getNamedQuery("getQuestionariesByStudyId").setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId());
 						questionnaires = query.list();
 						if(questionnaires!=null && !questionnaires.isEmpty()){
+							//short title taking updating to archived which have change start
+							questionnarieShorttitleList = new ArrayList<>();
+							for(QuestionnaireBo questionnaireBo: questionnaires){
+								if(questionnaireBo.getIsChange()!=null && questionnaireBo.getIsChange().equals(1)){
+									questionnarieShorttitleList.add("'"+questionnaireBo.getShortTitle()+"'");
+								}
+							}
+							if(questionnarieShorttitleList!=null && !questionnarieShorttitleList.isEmpty()){
+								queryString = "update questionnaires SET is_live=2 where short_title IN("+StringUtils.join(questionnarieShorttitleList,",")+") and is_live=1 and custom_study_id='"+studyBo.getCustomStudyId()+"'";
+								query = session.createSQLQuery(queryString);
+								query.executeUpdate();
+							}
+							//short title taking updating to archived which have change end
 							for(QuestionnaireBo questionnaireBo: questionnaires){
 								//creating in study Activity version
 								StudyActivityVersionBo studyActivityVersionBo = new StudyActivityVersionBo();
@@ -3587,10 +3600,10 @@ public class StudyDAOImpl implements StudyDAO{
 										}
 									}
 
-									studyActivityVersionBo.setActivityId(newQuestionnaireBo.getId());
+									studyActivityVersionBo.setActivityVersion(newQuestionnaireBo.getVersion());
 									/**  Content purpose creating draft End **/
 								}else{
-									studyActivityVersionBo.setActivityId(questionnaireBo.getId());
+									studyActivityVersionBo.setActivityVersion(questionnaireBo.getVersion());
 								}
 								session.save(studyActivityVersionBo);
 							}
