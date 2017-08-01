@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
 	@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle"),
 	@NamedQuery(name = "getQuestionariesByStudyIdDone", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
-	@NamedQuery(name = "updateStudyQuestionnaireVersion", query = "UPDATE QuestionnaireBo SET live=2 WHERE customStudyId=:customStudyId"),
+	@NamedQuery(name = "updateStudyQuestionnaireVersion", query = "UPDATE QuestionnaireBo SET live=2 WHERE customStudyId=:customStudyId and live=1"),
 	@NamedQuery(name="updateQuestionnaireStartDate",query="update QuestionnaireBo SET studyLifetimeStart=:studyLifetimeStart where id=:id"),
 })
 public class QuestionnaireBo implements Serializable {

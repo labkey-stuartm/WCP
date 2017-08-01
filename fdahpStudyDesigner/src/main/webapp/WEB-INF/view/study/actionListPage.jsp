@@ -128,6 +128,8 @@
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
 <input type="hidden" name="buttonText" id="buttonText" value="" />
 </form:form>
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}" name="studyListInfoForm" id="studyListInfoForm" method="post">
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".menuNav li").removeClass('active');
@@ -160,8 +162,9 @@ function validateStudyStatus(obj){
 				    },
 				    callback: function(result) {
 				        if (result) {
-				        	$('#buttonText').val(buttonText);
-                     	    $('#actionInfoForm').submit();
+				        	//$('#buttonText').val(buttonText);
+                     	   // $('#actionInfoForm').submit();
+				        	updateStudyByAction(buttonText);
 				        }
 				    }
 			});	 
@@ -252,10 +255,47 @@ function showBootBoxMessage(buttonText, messageText){
 		    },
 		    callback: function(result) {
 		        if (result) {
-		        	  $('#buttonText').val(buttonText);
-               	      $('#actionInfoForm').submit();
+		        	  //$('#buttonText').val(buttonText);
+               	      //$('#actionInfoForm').submit();
+		        	  updateStudyByAction(buttonText);
 		             }	
 		        }
 		    })
 }
+
+function updateStudyByAction(buttonText){
+	if(buttonText){
+		var studyId ="${studyBo.id}";
+		$.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/updateStudyAction.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+           	 buttonText:buttonText,
+           	 studyId:studyId,
+                "${_csrf.parameterName}":"${_csrf.token}",
+            },
+            success: function updateAction(data, status) {
+                var jsonobject = eval(data);
+                var message = jsonobject.message;
+                if (message == "SUCCESS"){
+                	if(buttonText=='deactivateId' || buttonText=='lunchId' || buttonText=='updatesId'){
+                		$('#studyListInfoForm').submit();
+		            } else{
+		            	document.studyListInfoForm.action="/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}";
+		        		document.studyListInfoForm.submit();
+		            } 
+               	}else{
+               		$('#studyListInfoForm').submit();
+               	} 
+            },
+            error:function status(data, status) {
+            	$("body").removeClass("loading");
+            },
+            complete : function(){ $('.actBut').removeAttr('disabled'); }
+        });
+	}
+}
+
+
 </script>

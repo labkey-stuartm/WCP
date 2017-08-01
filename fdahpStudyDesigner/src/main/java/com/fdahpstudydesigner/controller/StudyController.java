@@ -2553,7 +2553,7 @@ public class StudyController {
 			out.print(jsonobject);
 		}
 		
-		@RequestMapping("/adminStudies/updateStudyAction.do")
+		/*@RequestMapping("/adminStudies/updateStudyAction.do")
 		public ModelAndView updateStudyActionOnAction(HttpServletRequest request) {
 			logger.info("StudyController - updateStudyActionOnAction() - Starts");
 			ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
@@ -2610,7 +2610,7 @@ public class StudyController {
 			}
 			logger.info("StudyController - updateStudyActionOnAction() - Ends");
 			return mav;
-		}
+		}*/
 		
 		@RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
 		public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
@@ -2778,6 +2778,69 @@ public class StudyController {
 			logger.info("StudyController - resetStudy - Ends");
 			return mav;
 		}	
+			
+			@RequestMapping(value="/adminStudies/updateStudyAction",method = RequestMethod.POST)
+			public ModelAndView updateStudyActionOnAction(HttpServletRequest request ,HttpServletResponse response) {
+				logger.info("StudyController - updateStudyActionOnAction() - Starts");
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				String message = FdahpStudyDesignerConstants.FAILURE;
+				String successMessage = "";
+				String errorMessage = "";
+				try {
+					SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+					Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+					if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+						String	studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+						String  buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT)) ? "" : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
+						if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
+							message = studyService.updateStudyActionOnAction(studyId, buttonText, sesObj);
+							if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+								if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_PUBLISH_SUCCESS_MSG;
+								}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_UNPUBLISH_SUCCESS_MSG;
+								}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_LUNCH_SUCCESS_MSG;
+								}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_UPDATES_SUCCESS_MSG;
+								}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_RESUME_SUCCESS_MSG;
+								}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_PAUSE_SUCCESS_MSG;
+								}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+									successMessage = FdahpStudyDesignerConstants.ACTION_DEACTIVATE_SUCCESS_MSG;
+								}
+								if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)
+										|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+									 request.getSession().setAttribute(FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
+									//mav = new ModelAndView("redirect:/adminStudies/studyList.do");
+								}else{
+									request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
+									//mav = new ModelAndView("redirect:/adminStudies/actionList.do", map);
+									//jsonobject.put(FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
+								}
+							}else{
+								/*if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
+									jsonobject.put("errorMessage", errorMessage);*/
+								if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
+									  request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
+							}
+						}
+					}
+					jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+					response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+					out = response.getWriter();
+					out.print(jsonobject);
+				} catch (Exception e) {
+					logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
+				}
+				logger.info("StudyController - updateStudyActionOnAction() - Ends");
+				return null;
+			}
+		
+			
+			
 	
 	
 }
