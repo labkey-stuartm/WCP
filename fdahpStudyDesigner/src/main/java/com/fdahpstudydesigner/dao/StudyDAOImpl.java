@@ -3610,7 +3610,8 @@ public class StudyDAOImpl implements StudyDAO{
 					query = session.createQuery(subString.toString());
 					objectList = query.list();
 					if(objectList!=null && !objectList.isEmpty()){
-						query = session.createSQLQuery("update questionnaires SET is_live=2, active=0 where short_title IN("+StringUtils.join(objectList,",")+") and is_live=1 and custom_study_id='"+studyBo.getCustomStudyId()+"'");
+						String subQuery = "update questionnaires SET is_live=2, active=0 where short_title IN("+StringUtils.join(objectList,",")+") and is_live=1 and custom_study_id='"+studyBo.getCustomStudyId()+"'";
+						query = session.createSQLQuery(subQuery);
 						query.executeUpdate();
 					}
 
