@@ -20,7 +20,7 @@
          </div>
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
 	         <div class="dis-line form-group mb-none mr-sm">
-	            <button type="button" class="btn btn-default gray-btn" onclick="saveIns();">Save</button>
+	            <button type="button" class="btn btn-default gray-btn" id="saveId" onclick="saveIns(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
@@ -117,9 +117,14 @@ $(document).ready(function(){
     });
 });
 function saveIns(){
+	 $("body").addClass("loading");
+	$("#saveId").attr("disabled",true);
   	validateShortTitle('',function(val){
 			if(val){
 				saveInstruction();
+			}else{
+				$("#saveId").attr("disabled",false);
+				$("body").removeClass("loading");
 			}		
   	}); 
 }
@@ -215,10 +220,12 @@ function saveInstruction(item){
 					$("#stepId").val(stepId);
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
+					$("#saveId").attr("disabled",false);
 					$('#alertMsg').show();
 					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
+					$("body").removeClass("loading");
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();
