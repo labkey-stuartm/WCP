@@ -18,7 +18,7 @@ import com.fdahpstudydesigner.util.SessionObject;
  */
 public interface StudyActiveTasksService {
 
-	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId);
+	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,Boolean isLive);
 	
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo, String customStudyId);
 	public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId);

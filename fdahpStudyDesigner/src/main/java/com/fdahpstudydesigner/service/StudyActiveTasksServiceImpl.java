@@ -45,11 +45,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	 * @exception Exception
 	 */
 	@Override
-	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId) {
+	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,Boolean isLive) {
 		logger.info("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - Starts");
 		List<ActiveTaskBo> activeTasks = null;
 		try {
-			activeTasks = studyActiveTasksDAO.getStudyActiveTasksByStudyId(studyId);
+			activeTasks = studyActiveTasksDAO.getStudyActiveTasksByStudyId(studyId,isLive);
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - ERROR ", e);
 		}

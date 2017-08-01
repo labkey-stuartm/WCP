@@ -1022,25 +1022,25 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@Override
 	public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
-		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
+		logger.info("StudyDAOImpl - getConsentInfoById() - Starts");
 		ConsentInfoBo consentInfoBo = null;
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			consentInfoBo = (ConsentInfoBo) session.get(ConsentInfoBo.class, consentInfoId);
 			if(consentInfoBo!=null){
-				consentInfoBo.setDisplayTitle(StringUtils.isEmpty(consentInfoBo.getDisplayTitle())?"":consentInfoBo.getDisplayTitle().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
-				consentInfoBo.setBriefSummary(StringUtils.isEmpty(consentInfoBo.getBriefSummary())?"":consentInfoBo.getBriefSummary().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
-				consentInfoBo.setElaborated(StringUtils.isEmpty(consentInfoBo.getElaborated())?"":consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+				consentInfoBo.setDisplayTitle(StringUtils.isEmpty(consentInfoBo.getDisplayTitle())?"":consentInfoBo.getDisplayTitle().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'"));
+				consentInfoBo.setBriefSummary(StringUtils.isEmpty(consentInfoBo.getBriefSummary())?"":consentInfoBo.getBriefSummary().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'"));
+				consentInfoBo.setElaborated(StringUtils.isEmpty(consentInfoBo.getElaborated())?"":consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'"));
 			}
 		}catch(Exception e){
-			logger.error("StudyDAOImpl - reOrderConsentInfoList() - Error",e);
+			logger.error("StudyDAOImpl - getConsentInfoById() - Error",e);
 		}finally{
 			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
+		logger.info("StudyDAOImpl - getConsentInfoById() - Ends");
 		return consentInfoBo;
 	}
 
@@ -2704,7 +2704,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//Study Permission
 				studyPermissionList = session.createQuery("from StudyPermissionBO where studyId="+studyBo.getId()).list();
-				if(studyPermissionList!=null){
+				if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyPermissionBO permissionBO:studyPermissionList){
 						StudyPermissionBO studyPermissionBO = SerializationUtils.clone(permissionBO);
 						studyPermissionBO.setStudyId(studyDreaftBo.getId());

@@ -50,11 +50,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @exception Exception
 	 */
 	@Override
-	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId) {
+	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId,Boolean isLive) {
 		logger.info("StudyQuestionnaireServiceImpl - getStudyQuestionnairesByStudyId() - Starts");
 		List<QuestionnaireBo> questionnaires = null;
 		try {
-			questionnaires = studyQuestionnaireDAO.getStudyQuestionnairesByStudyId(studyId);
+			questionnaires = studyQuestionnaireDAO.getStudyQuestionnairesByStudyId(studyId,isLive);
 		} catch (Exception e) {
 			logger.error("StudyQuestionnaireServiceImpl - getStudyQuestionnairesByStudyId() - ERROR ", e);
 		}

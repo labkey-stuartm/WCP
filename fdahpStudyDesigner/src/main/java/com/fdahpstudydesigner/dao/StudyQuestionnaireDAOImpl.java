@@ -77,14 +77,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId) {
+	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId,Boolean isLive) {
 		logger.info("StudyQuestionnaireDAOImpl - getStudyQuestionnairesByStudyId() - Starts");
 		Session session = null;
 		List<QuestionnaireBo> questionnaires = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(studyId)) {
-				query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+				if(isLive){
+					String searchQuery = "From QuestionnaireBo QBO WHERE QBO.customStudyId ='"+studyId+"' and QBO.active=1 and QBO.live=1 order by QBO.createdDate DESC";
+					query = session.createQuery(searchQuery);
+				}else{
+					query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+				}
 				questionnaires = query.list();
 			}
 		} catch (Exception e) {
