@@ -3354,7 +3354,7 @@ public class StudyDAOImpl implements StudyDAO{
 									//newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
 									newQuestionnaireBo.setCreatedBy(0);
 									newQuestionnaireBo.setModifiedBy(0);
-									newQuestionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDate());
+									newQuestionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 									if(studyVersionBo == null){
 										newQuestionnaireBo.setVersion(1.0f);
 										questionnaireBo.setVersion(1.0f);
@@ -3646,7 +3646,7 @@ public class StudyDAOImpl implements StudyDAO{
 					query = session.createQuery(subString.toString());
 					objectList = query.list();
 					if(objectList!=null && !objectList.isEmpty()){
-						String subQuery = "update questionnaires SET is_live=2, active=0 where short_title IN("+StringUtils.join(objectList,",")+") and is_live=1 and custom_study_id='"+studyBo.getCustomStudyId()+"'";
+						String subQuery = "update questionnaires SET is_live=2,modified_date='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"', active=0 where short_title IN("+StringUtils.join(objectList,",")+") and is_live=1 and custom_study_id='"+studyBo.getCustomStudyId()+"'";
 						query = session.createSQLQuery(subQuery);
 						query.executeUpdate();
 					}
