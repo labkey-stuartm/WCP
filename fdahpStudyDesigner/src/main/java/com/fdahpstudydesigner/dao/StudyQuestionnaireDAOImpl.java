@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.collections.set.CompositeSet.SetMutator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -212,15 +213,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(instructionsBo.getType() != null){
 					if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						questionnairesStepsBo.setStatus(false);
-						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTION_SAVED;
+						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY + " saved.";
+						activitydetails = "Content saved for  instruction Step. (Step Key  = "+instructionsBo.getInstructionTitle()+", Study ID = "+customStudyId+")";
 						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+questionnairesStepsBo.getQuestionnairesId());
 						query.executeUpdate();
-						
 					}else if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						questionnairesStepsBo.setStatus(true);
-						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTION_DONE;
+						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY + " marked Done.";
+						activitydetails = "Instruction step succesfully checked for minimum content completeness and marked 'Done'. (Step Key  = "+instructionsBo.getInstructionTitle()+", Study ID = "+customStudyId+")";
 					}
 				}
 				int count = 0;
@@ -345,12 +345,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(questionnaireBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.SCHEDULE)){
 				if(questionnaireBo != null &&  questionnaireBo.getId() != null){
 					if(questionnaireBo.getQuestionnairesFrequenciesList() != null && !questionnaireBo.getQuestionnairesFrequenciesList().isEmpty()){
-						String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+						/*String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
 						query = session.createSQLQuery(deleteQuery);
 						query.executeUpdate();
 						String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
 						query = session.createSQLQuery(deleteQuery2);
-						query.executeUpdate();
+						query.executeUpdate();*/
+						query=session.createSQLQuery("CALL deleteQuestionnaireFrequencies(:questionnaireId)").setInteger("questionnaireId", questionnaireBo.getId());
+					    query.executeUpdate();
 						for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
 							if(questionnairesFrequenciesBo.getFrequencyTime() != null){
 								questionnairesFrequenciesBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnairesFrequenciesBo.getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
@@ -365,12 +367,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
 						QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo.getQuestionnairesFrequenciesBo();
 						if(!questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY) && !questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
-							String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+							/*String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
 							query = session.createSQLQuery(deleteQuery);
 							query.executeUpdate();
 							String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
 							query = session.createSQLQuery(deleteQuery2);
-							query.executeUpdate();
+							query.executeUpdate();*/
+							query=session.createSQLQuery("CALL deleteQuestionnaireFrequencies(:questionnaireId)").setInteger("questionnaireId", questionnaireBo.getId());
+						    query.executeUpdate();
 						}
 						if(questionnairesFrequenciesBo.getFrequencyDate() != null || questionnairesFrequenciesBo.getFrequencyTime() != null || questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 							if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
@@ -386,12 +390,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}
 					}
 					if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && !questionnaireBo.getQuestionnaireCustomScheduleBo().isEmpty()){
-						String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+						/*String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
 						query = session.createSQLQuery(deleteQuery);
 						query.executeUpdate();
 						String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
 						query = session.createSQLQuery(deleteQuery2);
-						query.executeUpdate();
+						query.executeUpdate();*/
+						query=session.createSQLQuery("CALL deleteQuestionnaireFrequencies(:questionnaireId)").setInteger("questionnaireId", questionnaireBo.getId());
+					    query.executeUpdate();
 						for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
 							if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null && !questionnaireCustomScheduleBo.getFrequencyStartDate().isEmpty() && questionnaireCustomScheduleBo.getFrequencyEndDate() != null 
 									&& !questionnaireCustomScheduleBo.getFrequencyEndDate().isEmpty() && questionnaireCustomScheduleBo.getFrequencyTime() != null){
@@ -431,8 +437,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				updateLineChartSchedule(questionnaireBo.getId(), questionnaireBo.getFrequency(), sessionObject, session, transaction, customStudyId);	
 			}
 			
-			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
-			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
+			activity = "Content saved for questionnaire.";
+			activitydetails = "Content saved for questionnaire. (Study ID = "+customStudyId+").";
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire");
 			
 			if(questionnaireBo!=null && questionnaireBo.getStatus()){
@@ -444,8 +450,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						queryString = " From StudyBo where id="+questionnaireBo.getStudyId();
 						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
 					    NotificationBO notificationBO = null;
-					    queryString = "From NotificationBO where activeTaskId="+questionnaireBo.getId();
-					    notificationBO =  (NotificationBO)session.createQuery(queryString).uniqueResult();
+					    queryString = "From NotificationBO where questionnarieId="+questionnaireBo.getId() + "and studyId="+questionnaireBo.getStudyId();
+					    notificationBO =  (NotificationBO)session.createQuery(queryString).setMaxResults(1).uniqueResult();
 					    if(notificationBO==null){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(questionnaireBo.getStudyId());
@@ -457,11 +463,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sessionObject.getUserId());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						notificationBO.setNotificationSent(false);
 					    }else{
  							notificationBO.setModifiedBy(sessionObject.getUserId());
  							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					    }
 					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", questionnaireBo.getTitle()).replace("$customId", draftStudyBo.getName()));
+					    if(!notificationBO.isNotificationSent())
 					    session.saveOrUpdate(notificationBO);
 				}
 				//Notification Purpose needed End
@@ -828,52 +836,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					questionnairesStepsBo.setActive(false);
 					session.saveOrUpdate(questionnairesStepsBo);
 					
-					String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.active=1 and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
-					query = session.createQuery(updateQuery);
+					query=session.createSQLQuery("CALL deleteQuestionnaireStep(:questionnaireId,:modifiedOn,:modifiedBy,:sequenceNo,:stepId,:steptype)").setInteger("questionnaireId", questionnaireId).
+							setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime()).setInteger("modifiedBy", sessionObject.getUserId()).setInteger("sequenceNo", 0).setInteger("stepId", stepId).setString("steptype", stepType);
 					query.executeUpdate();
 					
 					if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
-						String deleteQuery = "Update InstructionsBo IBO set IBO.active=0,IBO.modifiedBy="+sessionObject.getUserId()+",IBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id="+stepId;
-						query = session.createQuery(deleteQuery);
-						query.executeUpdate();
-						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTIONSTEP_DELETED;
+						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY + " was deleted.";
+						activitydetails = "Instruction step was deleted. (Study ID = "+customStudyId+")";
 					}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
-						String deleteQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id="+stepId;
-						query = session.createQuery(deleteQuery);
-						query.executeUpdate();
-						activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
-						
-						String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId="+stepId;
-						query = session.createQuery(deleteResponse);
-						query.executeUpdate();
-						
-						String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId="+stepId;
-						query = session.createQuery(deleteSubResponse);
-						query.executeUpdate();
-						
-						
+						activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY + " was deleted.";
+						activitydetails = "Question step was deleted. (Study ID = "+customStudyId+")";
 					}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
-						
-						String deleteQuery = "Update questions QBO,form_mapping FMBO set QBO.active=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',FMBO.active=0 where QBO.id=FMBO.question_id and FMBO.form_id="+stepId;
-						query = session.createSQLQuery(deleteQuery);
-						query.executeUpdate();
-						
-						String deleteResponse = "Update response_type_value QRBO,form_mapping FMBO set QRBO.active=0 where QRBO.questions_response_type_id=FMBO.question_id and FMBO.form_id="+stepId;
-						query = session.createSQLQuery(deleteResponse);
-						query.executeUpdate();
-						
-						String deleteSubResponse = "Update response_sub_type_value QRSBO,form_mapping FMBO set QRSBO.active=0 where QRSBO.response_type_id=FMBO.question_id and FMBO.form_id="+stepId;
-						query = session.createSQLQuery(deleteSubResponse);
-						query.executeUpdate();
-						
-						String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId="+stepId;
-						query = session.createQuery(formDelete);
-						query.executeUpdate();
-						
-						activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
+						activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY + " was deleted.";
+						activitydetails = "Form step was deleted .(Study ID = "+customStudyId+")";
 					}
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
@@ -1415,15 +1390,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					addOrUpdateQuestionnairesStepsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
 				}
 				if(questionnairesStepsBo.getType() != null){
-					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+						activity = "Content saved for Form Step.";
+						activitydetails = "Content saved for Form Step. (Question Key = "+questionnairesStepsBo.getStepShortTitle()+", Study ID = "+customStudyId+")";
 						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
 						query.executeUpdate();
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DONE;
+						activity = "Question of form step succesfully checked for minimum content completeness.";
+						activitydetails = "Question of form step succesfully checked for minimum content completeness and marked 'Done'.(Question Key = "+questionnairesStepsBo.getStepShortTitle()+", Study ID = "+customStudyId+")";
 					}
 				}
 				int count = 0;
@@ -1570,8 +1546,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
-			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
-			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DELETED;
+			activity = "Question of form step was deleted.";
+			activitydetails = "Question of form step was deleted. (Study ID = "+customStudyId+")";
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteFromStepQuestion");
 			transaction.commit();
 		}catch(Exception e){
@@ -1659,16 +1635,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					addOrUpdateQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
 				}
 				if(questionnairesStepsBo.getType() != null){
-					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+						activity = "Question step saved.";
+						activitydetails = "Content saved for question step. (Step Key  = "+questionnairesStepsBo.getStepShortTitle()+", Study ID = "+customStudyId+") ";
 						query = session.createSQLQuery("update questionnaires q set q.status=0 where q.id="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
 						query.executeUpdate();
-						
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DONE;
+						activity = "Question step successfully checked for minimum content completeness.";
+						activitydetails = "Question step successfully checked for minimum content completeness and marked 'Done'. (Step Key  = "+questionnairesStepsBo.getStepShortTitle()+", Study ID = "+customStudyId+") ";
 					}
 				}
 				int count = 0;
@@ -1906,48 +1882,51 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			studyVersionBo = (StudyVersionBo)query.uniqueResult();
 			
 			if(studyVersionBo != null){
-				String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId;
+				
+				query=session.createSQLQuery("CALL deleteQuestionnaire(:questionnaireId,:modifiedOn,:modifiedBy,:studyId)").setInteger("questionnaireId", questionnaireId).
+					       setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime()).setInteger("modifiedBy", sessionObject.getUserId()).setInteger("studyId", studyId);
+			    query.executeUpdate();
+			    message = FdahpStudyDesignerConstants.SUCCESS;
+			    
+				/*String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId+" and QBO.active=1";
 				query = session.createQuery(deleteQuery);
 				count = query.executeUpdate();
 				if(count > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
 					try{
-						String searchQuery = "Update QuestionnairesStepsBo QSBO set QSBO.active=0,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnaireId;
-						query = session.createQuery(searchQuery);
-						query.executeUpdate();
-
-						String deleteInsQuery = "Update InstructionsBo IBO set IBO.active=0,IBO.modifiedBy="+sessionObject.getUserId()+",IBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.INSTRUCTION_STEP+"')";
-						query = session.createQuery(deleteInsQuery);
+						String deleteInsQuery = "Update instructions IBO , questionnaires_steps QSBO set IBO.active=0,IBO.modified_by="+sessionObject.getUserId()+",IBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.INSTRUCTION_STEP+"'";
+						query = session.createSQLQuery(deleteInsQuery);
 						query.executeUpdate();
 						
-						String deleteQuesQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"')";
-						query = session.createQuery(deleteQuesQuery);
+						String deleteQuesQuery = "Update questions QBO,questionnaires_steps QSBO set QBO.active=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'";
+						query = session.createSQLQuery(deleteQuesQuery);
 						query.executeUpdate();
 						
-						String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
-						query = session.createQuery(subQuery);
-						if(query.list() != null && !query.list().isEmpty()){
-							String deleteFormQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN ("+subQuery+")";
-							query = session.createQuery(deleteFormQuery);
-							query.executeUpdate();
-						}
-						String formMappingDelete = "update FormMappingBo FMBO set FMBO.active=0 where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
-						query = session.createQuery(formMappingDelete);
+						String deleteFormQuery = "Update questions QBO,form_mapping FMBO,questionnaires_steps QSBO set QBO.active=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id=FMBO.question_id and FMBO.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"'";
+						query = session.createSQLQuery(deleteFormQuery);
 						query.executeUpdate();
 						
-						String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
-						query = session.createQuery(formDelete);
+						String formMappingDelete = "update form_mapping FMBO,questionnaires_steps QSBO set FMBO.active=0 where FMBO.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"'";
+						query = session.createSQLQuery(formMappingDelete);
+						query.executeUpdate();
+						
+						String formDelete = "Update form FBO,questionnaires_steps QSBO set FBO.active=0,FBO.modified_by="+sessionObject.getUserId()+",FBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"'";
+						query = session.createSQLQuery(formDelete);
+						query.executeUpdate();
+						
+						String searchQuery = "Update questionnaires_steps QSBO set QSBO.active=0,QSBO.modified_by="+sessionObject.getUserId()+",QSBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1";
+						query = session.createSQLQuery(searchQuery);
 						query.executeUpdate();
 						
 					}catch(Exception e){
 						logger.error("StudyQuestionnaireDAOImpl - sub deleteQuestuionnaireInfo() - Error",e);
 					}
-				}
+				}*/
 			 }else{
 				 message = deleteQuestuionnaireInfo(studyId, questionnaireId, customStudyId, session, transaction);
 			 }
-			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
-			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
+			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted.";
+			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted. (Study ID = "+customStudyId+")";
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo");
 			
 			queryString = "DELETE From NotificationBO where questionnarieId="+questionnaireId+ "AND notificationSent=false";
@@ -2171,45 +2150,29 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * 
 	 * This method is used to validate the questionnaire have response type scale for android platform 
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		List<QuestionsBo> questionsBo = null;
 		BigInteger questionCount = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(customStudyId != null && !customStudyId.isEmpty()){
-				String createQuery = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN "
-						+ "(select id from QuestionnaireBo Q where Q.studyId IN(select id from StudyBo where customStudyId='"+customStudyId+"') "
-						+ "and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) "
-						+ "and QBO.active=1 and QBO.responseType=3";
-				query = session.createQuery(createQuery);
-				questionsBo =  query.list();
-				if(questionsBo != null && !questionsBo.isEmpty()){
-					message = FdahpStudyDesignerConstants.SUCCESS;
-				}else{
-					String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id in(select a.id from studies a where a.custom_study_id='"+customStudyId+"') and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
-					questionCount = (BigInteger) session.createSQLQuery(searchQuuery).uniqueResult();
-					if(questionCount!=null && questionCount.intValue() > 0){
-						message = FdahpStudyDesignerConstants.SUCCESS;
-					}
-				}
+			String searchQuery = "select count(*) from questions QBO,questionnaires_steps QSBO,questionnaires Q where QBO.id=QSBO.instruction_form_id"
+					+ " and QSBO.questionnaires_id=Q.id and Q.study_id="+studyId+" and Q.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'"
+					+ " and QSBO.active=1 and QBO.active=1 and QBO.response_type=3";
+			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			if(count!=null && count.intValue() > 0){	
+				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
-				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.responseType=3");
-				questionsBo =  query.list();
-				if(questionsBo != null && !questionsBo.isEmpty()){
+				String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id"
+						+ " and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id="+studyId+""
+								+ " and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
+				questionCount = (BigInteger) session.createSQLQuery(searchQuuery).uniqueResult();
+				if(questionCount!=null && questionCount.intValue() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
-				}else{
-					String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id="+studyId+" and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
-					questionCount = (BigInteger) session.createSQLQuery(searchQuuery).uniqueResult();
-					if(questionCount!=null && questionCount.intValue() > 0){
-						message = FdahpStudyDesignerConstants.SUCCESS;
-					}
 				}
-			}
+			}	
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - ERROR " , e);
 		}finally{
@@ -2292,16 +2255,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			else{
 				session.createSQLQuery(formQuery).executeUpdate();
 			}
-			activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
-			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+			activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY +" saved.";
+			activitydetails = "Content saved for Form Step. (Study ID = "+customStudyId+")";
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
 			
-			activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
-			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+			activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY  +" saved.";
+			activitydetails = "Content saved for Question Step. (Study ID = "+customStudyId+")";
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
 			
-			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
-			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
+			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY  +" saved.";
+			activitydetails = "Content saved for Question of Form Step. (Study ID = "+customStudyId+")";
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
 			if (session == null)
 				transaction.commit();
@@ -2423,16 +2386,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					String deleteQuery = "delete InstructionsBo IBO where IBO.id="+stepId;
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
-					activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTIONSTEP_DELETED;
+					activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY+ " was deleted.";;
+					activitydetails = "Instruction Step was deleted.(Study ID ="+customStudyId+")";
 					auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestionnaireStep");
 					
 				}else if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					String deleteQuery = "delete QuestionsBo QBO where QBO.id="+stepId;
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
-					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
-					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
+					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY + " was deleted.";
+					activitydetails = "Question Step was deleted.(Study ID ="+customStudyId+")";
 					auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestionnaireStep");
 					
 					String deleteResponse = "delete QuestionReponseTypeBo QRBO where QRBO.questionsResponseTypeId="+stepId;
@@ -2468,8 +2431,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					String formDelete = "delete FormBo FBO where FBO.formId="+stepId;
 					query = session.createQuery(formDelete);
 					query.executeUpdate();
-					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
-					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
+					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY+ " was deleted.";
+					activitydetails = "Form Step was deleted.(Study ID ="+customStudyId+")";
 					auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestionnaireStep");
 				}
 				session.delete(questionnairesStepsBo);

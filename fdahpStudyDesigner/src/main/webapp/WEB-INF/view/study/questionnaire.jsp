@@ -294,7 +294,10 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <div class="mt-md form-group">
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="chooseEndDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${questionnaireBo.studyLifetimeEnd}" />
+	                     <c:choose>
+	                     	<c:when test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}"><input id="chooseEndDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="" /></c:when>
+	                     	<c:otherwise><input id="chooseEndDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${questionnaireBo.studyLifetimeEnd}" /></c:otherwise>
+	                     </c:choose>
 	                     <span class='help-block with-errors red-txt'></span>
 	                     </span>                            
 	                  </div>
@@ -673,7 +676,7 @@ $(document).ready(function() {
 		        r1 = $(rowData[0]).attr('id');
 		    }	        
 		    if(i==1){
-		      if(r1 > $(rowData[0]).attr('id')){
+		      if(parseInt(r1) > parseInt($(rowData[0]).attr('id'))){
 		        oldOrderNumber = $(diff[0].oldData).attr('id');
 		        newOrderNumber = $(diff[0].newData).attr('id');
 		      }else{
@@ -1174,6 +1177,17 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",false);
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
+    		$('#chooseDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false,
+    	    })
+    	    .on("dp.change", function (e) {
+    	    	if(e.date._d) 
+    				$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
+    			else 
+    				$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
+    	    });
     	}else{
     		$("#chooseDate").attr("disabled",true);
     		$("#selectTime").attr("disabled",true);
@@ -1188,6 +1202,12 @@ $(document).ready(function() {
     	if(!$("#isStudyLifeTime").is(':checked')){
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
+    		$('#chooseEndDate').datetimepicker({
+    	        format: 'MM/DD/YYYY',
+    	        minDate: serverDate(),
+    	        useCurrent :false,
+    	    });
+    		$("#chooseEndDate").val('');
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
     		$("#chooseEndDate").required = true;
@@ -1652,7 +1672,9 @@ function saveQuestionnaire(item, callback){
 			isFormValid = false;
 		}
 	}
-	
+	console.log("currentFrequency:"+questionnaire.currentFrequency);
+	console.log("frequency:"+questionnaire.frequency);
+	console.log("previousFrequency:"+questionnaire.previousFrequency);
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
@@ -1674,7 +1696,16 @@ function saveQuestionnaire(item, callback){
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
 					$("#questionnaireId").val(questionnaireId);
-					$("#previousFrequency").val(frequency_text);
+					if(frequency_text == 'Daily'){
+						var previous_frequency = $("#previousFrequency").val();
+						if(previous_frequency !='' && previous_frequency != null && previous_frequency != 'undefined'){
+							$("#previousFrequency").val(previous_frequency);
+						}else{
+							$("#previousFrequency").val(frequency_text);
+						}
+					}else{
+						$("#previousFrequency").val(frequency_text);	
+					}
 					$(".add-steps-btn").removeClass('cursor-none');
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);

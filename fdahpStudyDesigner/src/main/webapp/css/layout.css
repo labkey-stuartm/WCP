@@ -14,7 +14,7 @@ Version: 		1.0
     
 .lg-space-left{
     position: relative;
-    width: 40%;
+    width: 0%;
     display: inline-block;
     float: left;        
     background: #007cba;        
@@ -22,6 +22,7 @@ Version: 		1.0
 
 .lg-space-img{
     padding: 50px 50px 0px;
+    text-align: left;
 }
 
 .lg-space-img img{
@@ -44,9 +45,9 @@ Version: 		1.0
 }
     
 .lg-icons-list li{
-    width: 200px;
-    height: 125px;
-    padding: 16px 30px 30px;
+    width: 220px;
+    height: 150px;
+    padding: 30px;
 }
     
 .lg-space-container{
@@ -129,7 +130,7 @@ Version: 		1.0
 }
     
 .lg-space-left{
-    width: 40%;
+    width: 0%;
 }
 
 .lg-space-right{
@@ -138,7 +139,7 @@ Version: 		1.0
     
 .lg-icons-list li{
     height: 160px;
-    padding: 40px 30px 30px;
+    padding: 30px;
 }
     
 .lg-space-container{
@@ -196,10 +197,20 @@ table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sor
 }
 
 
+@media screen and (min-width: 1100px) {
+	
+.lg-icons-list li{
+	width: 150px;
+	height:150px;
+}
+	
+}
+
+
 @media screen and (min-width: 1200px) {
 
 .lg-space-left{
-    width: 35%;
+    width: 0%;
 }
 
 .lg-space-right{
@@ -211,7 +222,7 @@ table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sor
 }
   
 .lg-icons-list li{
-    width: 192px;
+    width: 150px;
 }
   
 .md-container{
@@ -302,7 +313,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 @media screen and (min-width: 1400px) {
     
 .lg-space-left{
-    width: 30%;
+    width: 0%;
 }
 
 .lg-space-right{
@@ -342,7 +353,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 @media screen and (min-width: 1500px) {
     
 .lg-space-left{
-    width: 24%;
+    width: 0%;
 }
 
 .lg-space-right{
@@ -350,7 +361,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
     
 .lg-icons-list li{
-    width: 200px;
+    width: 150px;
 }
     
 .md-container{
@@ -371,7 +382,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 @media screen and (min-width: 1600px) {
     
 .lg-space-left{
-    width: 25%;
+    width: 0%;
 }
 
 .lg-space-right{

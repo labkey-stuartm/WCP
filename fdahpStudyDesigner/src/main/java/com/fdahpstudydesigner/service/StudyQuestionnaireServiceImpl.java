@@ -99,7 +99,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != instructionsBo){
 				if(instructionsBo.getId() != null){
-					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,null);
+					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId(),"",customStudyId,instructionsBo.getQuestionnaireId());
 				}else{
 					addOrUpdateInstructionsBo = new InstructionsBo();
 					addOrUpdateInstructionsBo.setActive(true);
@@ -167,18 +167,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getStudyId() != null){
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
-				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart()) && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
-					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
-				}else{
-					addQuestionnaireBo.setStudyLifetimeStart(null);
-				}
-				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
-					addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
-				}else{
-					addQuestionnaireBo.setStudyLifetimeEnd(null);
-				}
 				if(questionnaireBo.getFrequency() != null){
 					addQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
+				}
+				if(questionnaireBo.getFrequency() != null && !questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+					if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart()) && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
+						addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+					}else{
+						addQuestionnaireBo.setStudyLifetimeStart(null);
+					}
+					if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
+						addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+					}else{
+						addQuestionnaireBo.setStudyLifetimeEnd(null);
+					}
 				}
 				if(questionnaireBo.getTitle() != null){
 					addQuestionnaireBo.setTitle(questionnaireBo.getTitle());
@@ -224,11 +226,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
 						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 							if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
-								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
-									addQuestionnaireBo.setStudyLifetimeStart(null);
-								}
-								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
-									addQuestionnaireBo.setStudyLifetimeEnd(null);
+								if(!questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
+									if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
+										addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+									}
 								}
 							}
 						}
@@ -242,11 +243,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						}
 						if(questionnaireBo.getQuestionnairesFrequenciesBo()!= null){
 							if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
-									addQuestionnaireBo.setStudyLifetimeStart(null);
-								}
-								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
-									addQuestionnaireBo.setStudyLifetimeEnd(null);
+								if(!questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
+									if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
+										addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+									}
 								}
 							}
 							addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
@@ -298,7 +298,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 */
 	@Override
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Starts");
 		QuestionnaireBo questionnaireBo=null;
 		try{
 			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId, customStudyId);
@@ -341,9 +341,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 			}
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireById - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Ends");
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Ends");
 		return questionnaireBo;
 	}
 
@@ -459,18 +459,23 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo.setQuestionnaireId(questionsBo.getQuestionnaireId());
 				}
 				if(questionsBo.getType() != null){
-					activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
 					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
-						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DONE;
 					}
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
-				
-				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
+				if(null != addQuestionsBo && questionsBo.getType() != null){
+					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						activity = "Question of form step saved.";
+						activitydetails = "Content saved for question of form step. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
+					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						activity = "Question of form step checked for minimum content completeness.";
+						activitydetails = "Question  succesfully checked for minimum content completeness and marked 'Done'. (Question ID = "+addQuestionsBo.getId()+", Study ID = "+customStudyId+")";
+					}
+					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activitydetails, "StudyQuestionnaireServiceImpl - saveOrUpdateQuestion");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Error",e);
