@@ -3216,19 +3216,23 @@ public class StudyDAOImpl implements StudyDAO{
 				transaction = session.beginTransaction();
 			}*/
 			if(studyBo!=null){
+				logger.info("StudyDAOImpl - studyDraftCreation() getStudyByCustomStudyId- Starts");
 				//if already lunch if study hasStudyDraft()==1 , then update and create draft version , otherwise not
 				query = session.getNamedQuery("getStudyByCustomStudyId").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
+				logger.info("StudyDAOImpl - studyDraftCreation() getStudyByCustomStudyId- Ends");
 				if(studyVersionBo!=null && (studyBo.getHasStudyDraft().equals(0))){
 					flag = false;
 				}
 				if(flag){
 					//version update in study_version table 
 					if(studyVersionBo!=null){
+						logger.info("StudyDAOImpl - studyDraftCreation() updateStudyVersion- Starts");
 						//update all studies to archive (live as 2)
 						query = session.getNamedQuery("updateStudyVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
 						query.executeUpdate();
+						logger.info("StudyDAOImpl - studyDraftCreation() updateStudyVersion- Ends");
 
 						newstudyVersionBo = SerializationUtils.clone(studyVersionBo);
 						newstudyVersionBo.setStudyVersion(studyVersionBo.getStudyVersion() + 0.1f);
@@ -3256,16 +3260,19 @@ public class StudyDAOImpl implements StudyDAO{
 					session.save(studyDreaftBo);
 
 					//Study Permission
+					
 					studyPermissionList = session.createQuery("from StudyPermissionBO where studyId="+studyBo.getId()).list();
 					if(studyPermissionList!=null){
+						logger.info("StudyDAOImpl - studyDraftCreation() StudyPermissionBO- Starts");
 						for(StudyPermissionBO permissionBO:studyPermissionList){
 							StudyPermissionBO studyPermissionBO = SerializationUtils.clone(permissionBO);
 							studyPermissionBO.setStudyId(studyDreaftBo.getId());
 							studyPermissionBO.setStudyPermissionId(null);
 							session.save(studyPermissionBO);
 						}
+						logger.info("StudyDAOImpl - studyDraftCreation() StudyPermissionBO- Ends");
 					}
-
+					
 					//Sequence
 					StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()).uniqueResult();
 					StudySequenceBo newStudySequenceBo = SerializationUtils.clone(studySequence);
@@ -3300,12 +3307,14 @@ public class StudyDAOImpl implements StudyDAO{
 					query = session.createQuery(searchQuery);
 					resourceBOList = query.list();
 					if(resourceBOList!=null && !resourceBOList.isEmpty()){
+						logger.info("StudyDAOImpl - studyDraftCreation() ResourceBO- Starts");
 						for(ResourceBO bo:resourceBOList){
 							ResourceBO resourceBO = SerializationUtils.clone(bo);
 							resourceBO.setStudyId(studyDreaftBo.getId());
 							resourceBO.setId(null);
 							session.save(resourceBO);
 						}
+						logger.info("StudyDAOImpl - studyDraftCreation() ResourceBO- Ends");
 					}
 					//If Questionnaire updated flag -1 then update
 					if(studyVersionBo==null  || (studyBo.getHasQuestionnaireDraft()!=null && studyBo.getHasQuestionnaireDraft().equals(1))){
@@ -3321,12 +3330,15 @@ public class StudyDAOImpl implements StudyDAO{
 								}
 							}
 							if(questionnarieShorttitleList!=null && !questionnarieShorttitleList.isEmpty()){
+								logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie update is_live=2- Starts");
 								queryString = "update questionnaires SET is_live=2 where short_title IN("+StringUtils.join(questionnarieShorttitleList,",")+") and is_live=1 and custom_study_id='"+studyBo.getCustomStudyId()+"'";
 								query = session.createSQLQuery(queryString);
 								query.executeUpdate();
+								logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie update is_live=2- Ends");
 							}
 							//short title taking updating to archived which have change end
 							for(QuestionnaireBo questionnaireBo: questionnaires){
+								logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Starts");
 								//creating in study Activity version
 								StudyActivityVersionBo studyActivityVersionBo = new StudyActivityVersionBo();
 								studyActivityVersionBo.setCustomStudyId(studyBo.getCustomStudyId());
@@ -3342,7 +3354,7 @@ public class StudyDAOImpl implements StudyDAO{
 									//newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
 									newQuestionnaireBo.setCreatedBy(0);
 									newQuestionnaireBo.setModifiedBy(0);
-									newQuestionnaireBo.setModifiedDate(null);
+									newQuestionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDate());
 									if(studyVersionBo == null){
 										newQuestionnaireBo.setVersion(1.0f);
 										questionnaireBo.setVersion(1.0f);
@@ -3367,6 +3379,7 @@ public class StudyDAOImpl implements StudyDAO{
 											searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
 											List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
 											if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
+												logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie manual schedule update - Starts");
 												for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
 													QuestionnaireCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 													newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
@@ -3375,17 +3388,20 @@ public class StudyDAOImpl implements StudyDAO{
 												}
 												//updating draft version of schecule to Yes 
 												session.createQuery("UPDATE QuestionnaireCustomScheduleBo set used=true where questionnairesId="+questionnaireBo.getId()).executeUpdate();
+												logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie manual schedule update - Ends");
 											}
 										}else{
 											searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
 											List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
 											if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
+												logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie except manual schedule other update - Starts");
 												for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
 													QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = SerializationUtils.clone(questionnairesFrequenciesBo);
 													newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
 													newQuestionnairesFrequenciesBo.setId(null);
 													session.save(newQuestionnairesFrequenciesBo);
 												}
+												logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie except manual schedule other update - Ends");
 											}
 										}
 									}
@@ -3424,6 +3440,7 @@ public class StudyDAOImpl implements StudyDAO{
 												newQuestionnairesStepsBo.setStepId(null);
 												session.save(newQuestionnairesStepsBo);
 												if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
+													logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie instruction step - Starts");
 													InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 													if(instructionsBo!=null){
 														InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
@@ -3433,7 +3450,9 @@ public class StudyDAOImpl implements StudyDAO{
 														//updating new InstructionId
 														newQuestionnairesStepsBo.setInstructionFormId(newInstructionsBo.getId());
 													}
+													logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie instruction step - Ends");
 												}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+													logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie Qustion step - Starts");
 													QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 													if(questionsBo!=null){
 														//Question response subType 
@@ -3471,7 +3490,9 @@ public class StudyDAOImpl implements StudyDAO{
 														//updating new InstructionId
 														newQuestionnairesStepsBo.setInstructionFormId(newQuestionsBo.getId());
 													}
+													logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie Qustion step - Ends");
 												}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
+													logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie Form step - Starts");
 													FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 													if(formBo!=null){
 														FormBo newFormBo = SerializationUtils.clone(formBo);
@@ -3530,6 +3551,7 @@ public class StudyDAOImpl implements StudyDAO{
 														newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
 
 													}
+													logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie Form step - Ends");
 												}
 												session.update(newQuestionnairesStepsBo);
 												newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
@@ -3606,6 +3628,7 @@ public class StudyDAOImpl implements StudyDAO{
 									studyActivityVersionBo.setActivityVersion(questionnaireBo.getVersion());
 								}
 								session.save(studyActivityVersionBo);
+								logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Ends");
 							}
 							//Executing draft version to 0 
 							//session.createQuery("UPDATE QuestionnaireBo set live=0, isChange = 0 where studyId="+studyBo.getId()).executeUpdate();
