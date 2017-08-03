@@ -811,7 +811,17 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
 					if(consentInfoList!= null && !consentInfoList.isEmpty()){
+						boolean markAsComplete = true;
 						consentJsonArray = new JSONArray(mapper.writeValueAsString(consentInfoList));
+						if(consentInfoList != null && !consentInfoList.isEmpty()){
+							for(ConsentInfoBo conInfoBo : consentInfoList){
+								if(!conInfoBo.getStatus()){
+									markAsComplete = false;
+									break;
+								}
+							}
+						}
+						jsonobject.put("markAsComplete", markAsComplete);
 					}
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}

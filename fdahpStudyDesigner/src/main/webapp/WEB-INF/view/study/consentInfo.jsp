@@ -69,6 +69,7 @@
 			<div class="clearfix"></div>
 			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
 			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
+			<textarea name="hide" id="elaboratedTemp" style="display:none;">${consentInfoBo.elaborated}</textarea>
 			<div id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(75 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
@@ -313,6 +314,7 @@ function goToBackPage(item){
 
 //remove the default vallues from the fields when the consent type is changed
 function addDefaultData(){
+	console.log("addDefaultData");
 	var consentInfoId = $("#id").val();
 	$("#displayTitle").val('');
 	$("#briefSummary").val('');
@@ -325,7 +327,9 @@ function addDefaultData(){
 		var consentType = "${consentInfoBo.consentItemType}";
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
-			tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
+			//tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
+			var elaboratedText = $("#elaboratedTemp").val();
+			tinymce.get('elaboratedRTE').setContent(elaboratedText);
 			var displayTitle = $("#displayTitleTemp").val();
 			var briefSummary = $("#briefSummaryTemp").val();
 			$("#displayTitle").val(displayTitle);
