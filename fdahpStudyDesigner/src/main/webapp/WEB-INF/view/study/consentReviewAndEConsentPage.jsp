@@ -89,7 +89,7 @@
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                     <div class="gray-xs-f mb-xs">Learn More Text</div>
+		                     <div class="gray-xs-f mb-xs">Learn More Text <span class="requiredStar">*</span></div>
 		                     <div class="form-group">
 		                        <textarea  id="learnMoreTextId" name="learnMoreText" required>${consentBo.learnMoreText}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
