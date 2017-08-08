@@ -109,15 +109,16 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
 			if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 				activityStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.QUESTIONNARIE_STUDY_ID);
+				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID); 
 			}
 			//Added for live version End
 			if (StringUtils.isNotEmpty(studyId)) {
 				request.getSession().removeAttribute(sessionStudyCount+"actionType");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				if(StringUtils.isNotEmpty(activityStudyId)){
-					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(activityStudyId);
+					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(customStudyId,true);
 				}else{
-					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId,false);
 				}
 				boolean markAsComplete = true;
 				actMsg = studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE);
@@ -1730,7 +1731,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
 				if(!studyId.isEmpty() && !questionnaireId.isEmpty()){
 					message = studyQuestionnaireService.deletQuestionnaire(Integer.valueOf(studyId), Integer.valueOf(questionnaireId), sesObj,customStudyId);
-					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId,false);
 					if(questionnaires != null && !questionnaires.isEmpty()){
 						questionnaireJsonArray = new JSONArray(mapper.writeValueAsString(questionnaires));
 						jsonobject.put(FdahpStudyDesignerConstants.QUESTIONNAIRE_LIST, questionnaireJsonArray);

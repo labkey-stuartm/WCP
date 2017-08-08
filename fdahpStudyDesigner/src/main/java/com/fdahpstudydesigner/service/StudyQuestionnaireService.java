@@ -20,7 +20,7 @@ import com.fdahpstudydesigner.util.SessionObject;
  *
  */
 public interface StudyQuestionnaireService {
-	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
+	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId,Boolean isLive);
 	
 	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle,String customStudyId,Integer questionnaireId);
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId);
