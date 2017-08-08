@@ -427,6 +427,7 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 });
 function saveFormStep(){
+	$("body").addClass("loading");
 	validateShortTitle('',function(val){
 		if(val){
 			var repeatable=$('input[name="repeatable"]:checked').val();
@@ -435,13 +436,14 @@ function saveFormStep(){
 					if(!valid){
 						saveFormStepQuestionnaire();
 					}else{
-						
+						$("body").removeClass("loading");
 					}
 				});
 			}else{
 				saveFormStepQuestionnaire();
 			}
 		}else{
+			$("body").removeClass("loading");
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 		    var flaCount = $('#fla').find('.has-error.has-danger').length;
 			if(parseInt(slaCount) >= 1){
@@ -532,6 +534,7 @@ function saveFormStepQuestionnaire(item,callback){
 						$('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step before attempting this action.');
 					}
 					$("#saveBtn").text("Save");
+					$("body").removeClass("loading");
 					if (callback)
 						callback(true);
 				}else{

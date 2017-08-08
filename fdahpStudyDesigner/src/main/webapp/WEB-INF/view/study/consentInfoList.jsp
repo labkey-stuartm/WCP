@@ -164,7 +164,7 @@ $(document).ready(function(){
 					var jsonobject = eval(data);
 	         		var message = jsonobject.message;
 					if(message == "SUCCESS"){
-					    reloadConsentInfoDataTable(jsonobject.consentInfoList);
+					    reloadConsentInfoDataTable(jsonobject.consentInfoList,null);
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
@@ -245,8 +245,9 @@ function reloadData(studyId){
 	    success: function status(data, status) {
 	    	 var jsonobject = eval(data);
 	         var message = jsonobject.message;
+	         var markAsComplete = jsonobject.markAsComplete;
 	         if(message == "SUCCESS"){
-	        	 reloadConsentInfoDataTable(jsonobject.consentInfoList);
+	        	 reloadConsentInfoDataTable(jsonobject.consentInfoList,markAsComplete);
 	         }
 	    },
 	    error:function status(data, status) {
@@ -254,7 +255,7 @@ function reloadData(studyId){
 	    },
 	});
 }
-function  reloadConsentInfoDataTable(consentInfoList){
+function  reloadConsentInfoDataTable(consentInfoList,markAsComplete){
 	 $('#consent_list').DataTable().clear();
 	 if (typeof consentInfoList != 'undefined' && consentInfoList != null && consentInfoList.length >0){
 		 $.each(consentInfoList, function(i, obj) {
@@ -274,10 +275,20 @@ function  reloadConsentInfoDataTable(consentInfoList){
 			 }else{
 					datarow.push(obj.visualStep);
 			 }	
-			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span><span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span>";
+			 if(obj.status){
+			 	actions+="<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span>"
+			 }else{
+			 	actions+="<span class='sprites_icon edit-inc-draft mr-lg' onclick='editConsentInfo("+obj.id+");'></span>";
+			 }
+			 actions+="<span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
 			 datarow.push(actions);
 			 $('#consent_list').DataTable().row.add(datarow);
 		 });
+		 if(typeof markAsComplete !='undefined' && markAsComplete != null && markAsComplete){
+			 $("#markAsCompleteBtnId").attr("disabled",false);
+			 $('#helpNote').attr('data-original-title', '');
+		 }
 		 $('#consent_list').DataTable().draw();
 	 }else{
 		 $('#consent_list').DataTable().draw();

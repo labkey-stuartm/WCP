@@ -63,35 +63,35 @@
                     	<div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Title <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control" placeholde="" required id="titleId" name="title" value="${consentBo.title}" maxlength="250"/>
+		                        <input type="text" class="form-control requiredClass" placeholde="" id="titleId" name="title" value="${consentBo.title}" maxlength="250"/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Tagline Description <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" required/>
+		                        <input type="text" class="form-control requiredClass" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" />
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Short Description for RO <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control" placeholder="" required maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}"/>
+		                        <input type="text" class="form-control requiredClass" placeholder=""  maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}"/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Long Description for RO<small>(500 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <textarea class="form-control"  rows="5" maxlength="500"  placeholder="" required="required" name="longDescription" id="longDescriptionId">${consentBo.longDescription}</textarea>
+		                        <textarea class="form-control requiredClass"  rows="5" maxlength="500"  placeholder="" name="longDescription" id="longDescriptionId">${consentBo.longDescription}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                     <div class="gray-xs-f mb-xs">Learn More Text</div>
+		                     <div class="gray-xs-f mb-xs">Learn More Text <span class="requiredStar">*</span></div>
 		                     <div class="form-group">
-		                        <textarea id="learnMoreTextId" name="learnMoreText" required>${consentBo.learnMoreText}</textarea>
+		                        <textarea  id="learnMoreTextId" name="learnMoreText" required>${consentBo.learnMoreText}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
 		                     </div>
 		                </div>
@@ -286,13 +286,15 @@ $(document).ready(function(){
 		if(value == 'Yes'){
 			$('#rootContainer input').attr('required',true);
 			$('#learnMoreTextId').attr('required',true);
+			$('.requiredClass').attr('required',true);
 			$('#longDescriptionId').attr('required',true);
 			newLearnMoreConsentDocument();
 			$("#rootContainer").show();
 		}else{
 			$('#rootContainer input').attr('required',false);
-			$('#learnMoreTextId').attr('required',false);
 			$('#longDescriptionId').attr('required',false);
+			$('.requiredClass').attr('required',false);
+			$('#learnMoreTextId').attr('required',false);
 			newLearnMoreConsentDocument();
 			$("#rootContainer").hide();
 		}
@@ -322,6 +324,7 @@ $(document).ready(function(){
 		if($("#typeOfCensent").val() == "New"){
 			valid =  maxLenValEditor();
 		}
+		tinyMCE.triggerSave();
 		if(valid){
 			if( id == "saveId"){
 				$("#consentReviewFormId").parents("form").validator("destroy");
@@ -400,12 +403,13 @@ $(document).ready(function(){
 			$('#allowWithoutPermissionYes').attr('checked',true);
 			$('#learnMoreTextId').val('');
 			$('#longDescriptionId').val('');
+			$('#learnMoreTextId').attr('required',false);
 			newLearnMoreConsentDocument();
 			$("#rootContainer").hide();
 			//tinymce.get('learnMoreTextId').setContent('');
 		}else{
+			$('#learnMoreTextId').attr('required',true);
 			newLearnMoreConsentDocument();
-			console.log("else");
 		} 
 	}
 	//consent doc type div
@@ -512,6 +516,7 @@ $(document).ready(function(){
             setup : function(ed) {
                 ed.on('change', function(ed) {
               		  if(tinyMCE.get(ed.target.id).getContent() != ''){
+              			  console.log(tinyMCE.get(ed.target.id).getContent());
               			$('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
               	        $('#learnMoreTextId').parent().find(".help-block").html("");
               		  }
