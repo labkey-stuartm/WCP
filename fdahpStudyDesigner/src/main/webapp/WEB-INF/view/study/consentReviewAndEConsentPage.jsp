@@ -324,6 +324,7 @@ $(document).ready(function(){
 		if($("#typeOfCensent").val() == "New"){
 			valid =  maxLenValEditor();
 		}
+		tinyMCE.triggerSave();
 		if(valid){
 			if( id == "saveId"){
 				$("#consentReviewFormId").parents("form").validator("destroy");
@@ -518,7 +519,6 @@ $(document).ready(function(){
               			  console.log(tinyMCE.get(ed.target.id).getContent());
               			$('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
               	        $('#learnMoreTextId').parent().find(".help-block").html("");
-              	        $('#learnMoreTextId').attr('required',false);
               		  }
                 });
        	  	},
