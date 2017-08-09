@@ -59,6 +59,9 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	@Column(name="active")
 	private Boolean active;
 	
+	@Column(name="description")
+	private String description;
+	
 	@Transient
 	private MultipartFile imageFile;
 	
@@ -170,5 +173,13 @@ public class QuestionResponseSubTypeBo implements Serializable{
 
 	public void setImageId(Integer imageId) {
 		this.imageId = imageId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
