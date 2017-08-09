@@ -4298,7 +4298,7 @@ public class StudyDAOImpl implements StudyDAO{
 								    		QuestionnaireCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 								    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
 								    		newCustomScheduleBo.setId(null);
-								    		newCustomScheduleBo.setUsed(true);
+								    		newCustomScheduleBo.setUsed(false);
 								    		session.save(newCustomScheduleBo);
 								    	}
 								    }
@@ -4582,7 +4582,7 @@ public class StudyDAOImpl implements StudyDAO{
 									    	for(ActiveTaskCustomScheduleBo customScheduleBo: activeTaskCustomScheduleList){
 									    		ActiveTaskCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 									    		newCustomScheduleBo.setActiveTaskId(newActiveTaskBo.getId());
-									    		newCustomScheduleBo.setUsed(true);
+									    		newCustomScheduleBo.setUsed(false);
 									    		newCustomScheduleBo.setId(null);
 									    		session.save(newCustomScheduleBo);
 									    	}
