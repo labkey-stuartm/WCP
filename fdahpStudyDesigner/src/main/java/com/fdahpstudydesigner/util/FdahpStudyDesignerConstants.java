@@ -346,7 +346,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_RESUME_TEXT = "The study $customId has been resumed. Visit the study to start participating in activities again.";
 	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused. We will notify you when it is resumed.";
 	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation.";
-	public static final String NOTIFICATION_ACTIVETASK_TEXT = "New activity $shortTitle available for the study $customId. Check it out now.";
+	public static final String NOTIFICATION_ACTIVETASK_TEXT = "New activity $shortTitle available for the study: $customId. Check it out now.";
 	
 	
 	public static final String DATE = "Date";
