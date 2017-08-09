@@ -453,6 +453,40 @@ function isNumberKey(evt)
                   </div>
                </div>
             </div>
+            <div class="row">
+            	<div class="col-md-6 pl-none">
+            	<div class="col-md-8 col-lg-8 pl-none col-smthumb-2">
+				   <div class="gray-xs-f mb-xs">Image for Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the minimum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
+				   <div class="form-group">
+				      <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
+				         <div class="thumb-img">
+				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+				         </div>
+				         <div class="scaleMinimagePathId">Change</div>
+				      </div>
+				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="scaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+				      <input type="hidden" name="questionReponseTypeBo.minImage" id="scaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+				</div>
+				<div class="col-md-6">
+				<div class="col-md-8 col-lg-8 pl-none col-smthumb-2">
+				<div class="gray-xs-f mb-xs">Image for Minimum Value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
+				   <div class="form-group">
+				      <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
+				         <div class="thumb-img">
+				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+				         </div>
+				         <div class="scaleMaximagePathId">Change</div>
+				      </div>
+				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="scaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="scaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+			   </div>
+            </div>
             </div>
             <div id="ContinuousScale" style="display: none">
             <div class="clearfix"></div>
@@ -517,6 +551,40 @@ function isNumberKey(evt)
 	                </div>
                   </div>
                 </div>
+            </div>
+            <div class="row">
+            	<div class="col-md-6 pl-none">
+            	<div class="col-md-8 col-lg-8 pl-none col-smthumb-2">
+            	<div class="gray-xs-f mb-xs">Image for Minimum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the minimum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
+				   <div class="form-group">
+				      <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
+				         <div class="thumb-img">
+				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+				         </div>
+				         <div class="scaleMinimagePathId">Change</div>
+				      </div>
+				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="continuesScaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+				      <input type="hidden" name="questionReponseTypeBo.minImage" id="continuesScaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+				</div>
+				<div class="col-md-6">
+				<div class="col-md-8 col-lg-8 pl-none col-smthumb-2">
+				<div class="gray-xs-f mb-xs">Image for Maximum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
+				   <div class="form-group">
+				      <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
+				         <div class="thumb-img">
+				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+				         </div>
+				         <div class="scaleMaximagePathId">Change</div>
+				      </div>
+				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="continuesScaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="continuesScaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+			   </div>
             </div>
             </div>
             <div id="Location" style="display: none">
@@ -2138,6 +2206,7 @@ function getResponseType(id){
 			 if(responseType != 'Boolean'){
 				// $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				 $("#"+responseType.replace(/\s/g, '')).find('img').attr("src",''); 
 				 if(responseType == "Date"){
 					 var datePicker = $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker");
 					 if(typeof datePicker != 'undefined'){
@@ -2171,6 +2240,13 @@ function getResponseType(id){
 	    		 $("#scalevertical").attr("checked",true);
 	    	 }else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
 	    		 $("#scalehorizontal").attr("checked",true);
+	    		 if(responseType == 'Scale'){
+	    			 $("#scaleMinImagePathId").val('');
+	    			 $("#scaleMaxImagePathId").val('');
+	    		 }else{
+	    			 $("#continuesScaleMinImagePathId").val('');
+	    			 $("#continuesScaleMaxImagePathId").val('');
+	    		 } 
 	    	 }
 		     if(responseType == 'Numeric'){
 		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
@@ -2346,6 +2422,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 		step = $("#scaleStepId").val();
 		verticalText = $('input[name="questionReponseTypeBo.vertical"]:checked').val();	
 		
+		var minImagePath = $("#scaleMinImagePathId").val();
+		var maxImagePath = $("#scaleMaxImagePathId").val();
+	    
+		formData.append('minImageFile', document.getElementById("scaleMinImageFileId").files[0]);
+	    formData.append('maxImageFile', document.getElementById("scaleMaxImageFileId").files[0]);
+		
 		questionReponseTypeBo.vertical=verticalText;
 		questionReponseTypeBo.minValue=minValue;
 		questionReponseTypeBo.maxValue=maxValue;
@@ -2353,6 +2435,10 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionReponseTypeBo.minDescription=mindescrption;
 		questionReponseTypeBo.maxDescription=maxdescription;
 		questionReponseTypeBo.step=step;
+		
+		questionReponseTypeBo.minImage=minImagePath;
+		questionReponseTypeBo.maxImage=maxImagePath;
+		
 		
 	}else if(resType == "Continuous Scale"){
 		
@@ -2364,6 +2450,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 		vertical = $('input[name="questionReponseTypeBo.vertical"]:checked').val();	
 		var fractionDigits = $("#continuesScaleFractionDigitsId").val();
 		
+		var minImagePath = $("#continuesScaleMinImagePathId").val();
+		var maxImagePath = $("#continuesScaleMaxImagePathId").val();
+	    
+		formData.append('minImageFile', document.getElementById("continuesScaleMinImageFileId").files[0]);
+	    formData.append('maxImageFile', document.getElementById("continuesScaleMaxImageFileId").files[0]);
+		
 		questionReponseTypeBo.vertical=verticalText;
 		questionReponseTypeBo.minValue=minValue;
 		questionReponseTypeBo.maxValue=maxValue;
@@ -2371,6 +2463,8 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionReponseTypeBo.minDescription=mindescrption;
 		questionReponseTypeBo.maxDescription=maxdescription;
 		questionReponseTypeBo.maxFractionDigits=fractionDigits;
+		questionReponseTypeBo.minImage=minImagePath;
+		questionReponseTypeBo.maxImage=maxImagePath;
 		
 	}else if(resType == "Location"){
 		var usecurrentlocation = $('input[name="questionReponseTypeBo.useCurrentLocation"]:checked').val();	

@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name="response_type_value")
@@ -105,6 +108,12 @@ public class QuestionReponseTypeBo implements Serializable {
 	
 	@Column(name="active")
 	private Boolean active;
+	
+	@Transient
+	private MultipartFile minImageFile;
+	
+	@Transient
+	private MultipartFile maxImageFile;
 
 	public Integer getResponseTypeId() {
 		return responseTypeId;
@@ -329,5 +338,22 @@ public class QuestionReponseTypeBo implements Serializable {
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
 	}
+
+	public MultipartFile getMinImageFile() {
+		return minImageFile;
+	}
+
+	public void setMinImageFile(MultipartFile minImageFile) {
+		this.minImageFile = minImageFile;
+	}
+
+	public MultipartFile getMaxImageFile() {
+		return maxImageFile;
+	}
+
+	public void setMaxImageFile(MultipartFile maxImageFile) {
+		this.maxImageFile = maxImageFile;
+	}
+	
 	
 }

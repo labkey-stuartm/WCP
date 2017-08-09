@@ -1380,17 +1380,27 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
 					}
-					if(questionnairesStepsBo.getQuestionsBo() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
-						if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
-							for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
-								String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
-								String key2 = "selectImageFile[" + questionResponseSubTypeBo.getImageId() + "]";
-								if(fileMap != null && fileMap.get(key1) != null){
-									questionResponseSubTypeBo.setImageFile(fileMap.get(key1));
+					if(questionnairesStepsBo.getQuestionsBo() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() != null){
+						if(questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
+							if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
+									String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									String key2 = "selectImageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									if(fileMap != null && fileMap.get(key1) != null){
+										questionResponseSubTypeBo.setImageFile(fileMap.get(key1));
+									}
+									if(fileMap != null && fileMap.get(key2) != null){
+										questionResponseSubTypeBo.setSelectImageFile(fileMap.get(key2));
+									}
 								}
-								if(fileMap != null && fileMap.get(key2) != null){
-									questionResponseSubTypeBo.setSelectImageFile(fileMap.get(key2));
-								}
+							}
+						}
+						if(questionnairesStepsBo.getQuestionReponseTypeBo() != null){
+							if(fileMap != null && fileMap.get("minImageFile") != null){
+								questionnairesStepsBo.getQuestionReponseTypeBo().setMinImageFile(fileMap.get("minImageFile"));
+							}
+							if(fileMap != null && fileMap.get("maxImageFile") != null){
+								questionnairesStepsBo.getQuestionReponseTypeBo().setMaxImageFile(fileMap.get("maxImageFile"));
 							}
 						}
 					}
@@ -1679,6 +1689,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 										questionResponseSubTypeBo.setSelectImageFile(fileMap.get(key2));
 									}
 								}
+							}
+						}
+						if(questionsBo.getResponseType() != null && questionsBo.getQuestionReponseTypeBo() != null){
+							if(fileMap != null && fileMap.get("minImageFile") != null){
+								questionsBo.getQuestionReponseTypeBo().setMinImageFile(fileMap.get("minImageFile"));
+							}
+							if(fileMap != null && fileMap.get("maxImageFile") != null){
+								questionsBo.getQuestionReponseTypeBo().setMaxImageFile(fileMap.get("maxImageFile"));
 							}
 						}
 						addQuestionsBo = studyQuestionnaireService.saveOrUpdateQuestion(questionsBo, sesObj,customStudyId);	

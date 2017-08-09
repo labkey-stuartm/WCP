@@ -1782,12 +1782,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				addOrUpdateQuestionsResponseTypeBo.setMinDescription(questionsResponseTypeBo.getMinDescription());
 				addOrUpdateQuestionsResponseTypeBo.setMaxDescription(questionsResponseTypeBo.getMaxDescription());
-				if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
-					addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
-				}
-				if(questionsResponseTypeBo.getMaxImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImage())){
-					addOrUpdateQuestionsResponseTypeBo.setMaxImage(questionsResponseTypeBo.getMaxImage());
-				}
 				if(questionsResponseTypeBo.getMaxFractionDigits() != null){
 					addOrUpdateQuestionsResponseTypeBo.setMaxFractionDigits(questionsResponseTypeBo.getMaxFractionDigits());
 				}
@@ -1853,6 +1847,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				if(questionsResponseTypeBo.getUseCurrentLocation() != null){
 					addOrUpdateQuestionsResponseTypeBo.setUseCurrentLocation(questionsResponseTypeBo.getUseCurrentLocation());
+				}
+				String fileName;
+				if(questionsResponseTypeBo.getMinImageFile() != null){
+					if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
+						addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
+					}else{
+						fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+0,questionsResponseTypeBo.getMinImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
+						String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMinImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+						addOrUpdateQuestionsResponseTypeBo.setMinImage(imagePath);
+					}
+				}
+				if(questionsResponseTypeBo.getMaxImageFile() != null){
+					if(questionsResponseTypeBo.getMaxImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImage())){
+						addOrUpdateQuestionsResponseTypeBo.setMaxImage(questionsResponseTypeBo.getMaxImage());
+					}else{
+						fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+1,questionsResponseTypeBo.getMaxImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
+						String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMaxImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+						addOrUpdateQuestionsResponseTypeBo.setMaxImage(imagePath);
+					}
 				}
 			}
 		}catch(Exception e){
