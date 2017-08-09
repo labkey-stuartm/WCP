@@ -705,6 +705,27 @@ function isNumberKey(evt)
 	                  </div>
 	               </div>
 	        </div>
+	        <div class="clearfix"></div>
+	        <div class="row mb-xs">
+               <div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Minimum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter minimum value allowed"></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control"  name="questionReponseTypeBo.minValue" id="numericMinValueId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minValue)}" onkeypress="return isNumberKey(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Maximum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter maximum value allowed"></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control" name="questionReponseTypeBo.maxValue" id="numericMaxValueId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isNumberKey(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
           </div>
           <div id="Date" style="display: none;">
           	<div class="mt-lg">
@@ -1318,6 +1339,9 @@ $(document).ready(function(){
     		 $("#continuesScaleMaxValueId").trigger('blur');
     		 $("#continuesScaleDefaultValueId").trigger('blur');
     		 validateFractionDigits($("#continuesScaleFractionDigitsId"));
+    	 }else if(resType == "Numeric"){
+    		 $("#numericMinValueId").trigger('blur');
+    		 $("#numericMaxValueId").trigger('blur');
     	 }
     	 if(isFromValid("#questionStepId")){
     	  $("body").addClass("loading");
@@ -1331,6 +1355,25 @@ $(document).ready(function(){
    				placeholderText = $("#heightPlaceholderId").val();
    		  }else if(resType == "Numeric"){
    				placeholderText = $("#numericPlaceholderId").val(); 
+   				var minValue =$("#numericMinValueId").val();
+	   			var maxValue = $("#numericMaxValueId").val();
+				if((minValue != '' && maxValue != '') || (minValue == '' && maxValue == '')){
+	   				isValid = true;
+	   			  }else{
+	   				  if(maxValue == ''){
+	   					$("#numericMaxValueId").parent().addClass("has-danger").addClass("has-error");
+                        $("#numericMaxValueId").parent().find(".help-block").empty();
+                        $("#numericMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+	   				  }
+	     			  if(minValue == ''){
+	     				 $("#numericMinValueId").parent().addClass("has-danger").addClass("has-error");
+                         $("#numericMinValueId").parent().find(".help-block").empty();
+                         $("#numericMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");  
+	     			  }
+	   				isValid = false;
+	   				$("#doneId").attr("disabled",false);
+	   				$("body").removeClass("loading");
+	   			  }
    		  }else if(resType == "Time interval"){
    			  stepText = $("#timeIntervalStepId").val();
    		  }else if(resType == "Scale" || resType == "Continuous Scale"){
@@ -1788,6 +1831,40 @@ $(document).ready(function(){
              $(this).parent().find(".help-block").empty();
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
 		}
+    });
+    $("#numericMinValueId").blur(function(){
+    	var value= $(this).val();
+    	var maxValue = $("#numericMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+        if(maxValue != ''){
+        	if(parseInt(value) >= parseInt(maxValue)){
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an value number less than Maximum</li></ul>");
+        	}else{
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").empty();
+        	}
+        }
+    });
+    $("#numericMaxValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#numericMinValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+        if(minValue != ''){
+        	if(parseInt(value) <= parseInt(minValue)){
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an value number greater than Minimum</li></ul>");
+        	}else{
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").empty();
+        	}
+        }
     });
     var responseTypeId= '${questionsBo.responseType}';
     if(responseTypeId != null && responseTypeId !='' && typeof responseTypeId != 'undefined'){
