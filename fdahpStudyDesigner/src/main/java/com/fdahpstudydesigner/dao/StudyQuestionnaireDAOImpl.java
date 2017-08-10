@@ -1867,6 +1867,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						addOrUpdateQuestionsResponseTypeBo.setMaxImage(imagePath);
 					}
 				}
+				if(questionsResponseTypeBo.getDefaultTime() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultTime())){
+					addOrUpdateQuestionsResponseTypeBo.setDefaultTime(questionsResponseTypeBo.getDefaultTime());
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Error",e);
@@ -2343,13 +2346,31 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query = session.createQuery(deleteQuesQuery);
 				query.executeUpdate();
 				
+				String deleteResponse = "delete QuestionReponseTypeBo QRBO where QRBO.questionsResponseTypeId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"')";
+				query = session.createQuery(deleteResponse);
+				query.executeUpdate();
+				
+				String deleteSubResponse = "delete QuestionResponseSubTypeBo QRSBO  where QRSBO.responseTypeId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"')";
+				query = session.createQuery(deleteSubResponse);
+				query.executeUpdate();
+				
 				String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
 				query = session.createQuery(subQuery);
 				if(query.list() != null && !query.list().isEmpty()){
+					
+					String deleteFormResponse = "delete QuestionReponseTypeBo QRBO where QRBO.questionsResponseTypeId IN ("+subQuery+")";
+					query = session.createQuery(deleteFormResponse);
+					query.executeUpdate();
+					
+					String deleteFormSubResponse = "delete QuestionResponseSubTypeBo QRSBO  where QRSBO.responseTypeId IN ("+subQuery+")";
+					query = session.createQuery(deleteFormSubResponse);
+					query.executeUpdate();
+					
 					String deleteFormQuery = "delete QuestionsBo QBO where QBO.id IN ("+subQuery+")";
 					query = session.createQuery(deleteFormQuery);
 					query.executeUpdate();
 				}
+				
 				String formMappingDelete = "delete FormMappingBo FMBO where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
 				query = session.createQuery(formMappingDelete);
 				query.executeUpdate();

@@ -661,11 +661,18 @@ function isNumberKey(evt)
            </div>
            <div id="Timeinterval" style="display: none;">
 	           <div class="row mt-sm">
-	           	<div class="col-md-4 pl-none">
+	           	<div class="col-md-6 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <span class="dis-inline mt-sm ml-sm">Min</span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
+	            <div class="col-md-6">
+	               <div class="gray-xs-f mb-xs">Default Value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The default value to be seen by the participant on the time interval picker widget."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control TimeintervalRequired wid90 clock"  name="questionReponseTypeBo.defaultTime" id="timeIntervalDefaultId" value="${questionsBo.questionReponseTypeBo.defaultTime}">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	            </div>
@@ -1705,6 +1712,13 @@ $(document).ready(function(){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
             $(this).validator('validate');
+            $('#timeIntervalDefaultId').val('');
+            if(parseInt(value) <=6){
+            	 $('#timeIntervalDefaultId').val('00:0'+value);
+            }else{
+            	 $('#timeIntervalDefaultId').val('00:'+value);
+            }
+            $('#timeIntervalDefaultId').data('DateTimePicker').stepping(parseInt(value));
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1712,6 +1726,28 @@ $(document).ready(function(){
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please select a number from the following set (1,2,3,4,5,6,10,12,15,20 & 30).</li></ul>");
     	}
     });
+    var dt = new Date();
+    $('#timeIntervalDefaultId').datetimepicker({
+		format: 'HH:mm',
+		stepping: 1,
+		useCurrent: false,
+		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 01),
+		maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+     }).on("dp.change", function (e) {
+		var durationTime = $('#timeIntervalDefaultId').val();
+		if(durationTime && durationTime == '00:00'){
+			durationFlag = false;
+			$('#timeIntervalDefaultId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
+		}else{
+			durationFlag = true;
+			$('#timeIntervalDefaultId').parent().find(".help-block").empty();
+			var dt = new Date();
+			$('#timeIntervalDefaultId').datetimepicker({format: 'HH:mm',stepping: 1,
+				useCurrent: false,
+		 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 01),
+				maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
+		}
+     });
     $("#textScalePositionId").blur(function(){
     	var count = $('.text-scale').length;
     	var value= $(this).val();
@@ -2125,6 +2161,7 @@ function getResponseType(id){
 				    $('.selectpicker').selectpicker('refresh');
 			}
 			$("#timeIntervalStepId").val(1);
+			$("#timeIntervalDefaultId").val("00:01");
 			$("#textScalePositionId").val(2);
 			$("#scaleDefaultValueId").val(1);
 			if(responseType == 'Text Scale'){
@@ -2357,7 +2394,9 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionReponseTypeBo.placeholder = placeholder_text;
 	}else if(resType == "Time interval"){
 		 var stepValue = $("#timeIntervalStepId").val();
+		 var default_time = $("#timeIntervalDefaultId").val();
 		 questionReponseTypeBo.step=stepValue;
+		 questionReponseTypeBo.defaultTime=default_time;
 	}else if(resType == "Numeric"){
 		var styletext = $('input[name="questionReponseTypeBo.style"]:checked').val();
 		var unitText = $("#numericUnitId").val();

@@ -109,6 +109,9 @@ public class QuestionReponseTypeBo implements Serializable {
 	@Column(name="active")
 	private Boolean active;
 	
+	@Column(name="defalut_time")
+	private String defaultTime;
+	
 	@Transient
 	private MultipartFile minImageFile;
 	
@@ -354,6 +357,13 @@ public class QuestionReponseTypeBo implements Serializable {
 	public void setMaxImageFile(MultipartFile maxImageFile) {
 		this.maxImageFile = maxImageFile;
 	}
-	
+
+	public String getDefaultTime() {
+		return defaultTime;
+	}
+
+	public void setDefaultTime(String defaultTime) {
+		this.defaultTime = defaultTime;
+	}
 	
 }
