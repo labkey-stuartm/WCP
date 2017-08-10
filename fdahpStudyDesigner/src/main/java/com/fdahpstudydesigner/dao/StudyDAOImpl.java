@@ -4448,10 +4448,10 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			
 			//session.createSQLQuery("DELETE FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
-			queryString = "SELECT response_sub_type_value_id FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))";	
+			queryString = "SELECT id FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
 			idList = session.createSQLQuery(queryString).list();
 			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_sub_type_value_id in("+StringUtils.join(idList,",")+")").executeUpdate();
+				session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 			}
 			
 			
@@ -4471,7 +4471,7 @@ public class StudyDAOImpl implements StudyDAO{
 			
 			
 			//session.createSQLQuery("DELETE FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
-			queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
+			queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Instruction' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
 			idList = session.createSQLQuery(queryString).list();
 			if(idList!=null && !idList.isEmpty()){
 				session.createSQLQuery("DELETE FROM instructions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
@@ -4670,7 +4670,7 @@ public class StudyDAOImpl implements StudyDAO{
 								    		QuestionnaireCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 								    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
 								    		newCustomScheduleBo.setId(null);
-								    		newCustomScheduleBo.setUsed(true);
+								    		newCustomScheduleBo.setUsed(false);
 								    		session.save(newCustomScheduleBo);
 								    	}
 								    }
@@ -4954,7 +4954,7 @@ public class StudyDAOImpl implements StudyDAO{
 									    	for(ActiveTaskCustomScheduleBo customScheduleBo: activeTaskCustomScheduleList){
 									    		ActiveTaskCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 									    		newCustomScheduleBo.setActiveTaskId(newActiveTaskBo.getId());
-									    		newCustomScheduleBo.setUsed(true);
+									    		newCustomScheduleBo.setUsed(false);
 									    		newCustomScheduleBo.setId(null);
 									    		session.save(newCustomScheduleBo);
 									    	}
@@ -5147,10 +5147,10 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				//session.createSQLQuery("DELETE FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
-				queryString = "SELECT response_sub_type_value_id FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))";	
+				queryString = "SELECT id FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
-					session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_sub_type_value_id in("+StringUtils.join(idList,",")+")").executeUpdate();
+					session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
 				//session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
@@ -5168,7 +5168,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				//session.createSQLQuery("DELETE FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
-				queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
+				queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Instruction' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM instructions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
