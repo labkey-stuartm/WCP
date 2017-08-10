@@ -1008,6 +1008,8 @@ public class StudyServiceImpl implements StudyService {
 		StudyBo studyBo = null;
 		String activity = "";
 		String activityDetails = "";
+		Boolean saveNotiFlag = false; 
+		Boolean updateResource = false;
 		try{
 			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
@@ -1020,6 +1022,7 @@ public class StudyServiceImpl implements StudyService {
 				resourceBO2 = getResourceInfo(resourceBO.getId());
 				resourceBO2.setModifiedBy(sesObj.getUserId());
 				resourceBO2.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+				updateResource = true;
 			}
 			if(!resourceBO.isAction()){
 				activity = "Resource content saved.";
@@ -1060,9 +1063,9 @@ public class StudyServiceImpl implements StudyService {
 				}
 					if(resourceBO.isAction()){
                         	 notificationBO = studyDAO.getNotificationByResourceId(resourseId);
-     						boolean notiFlag;
+                        	 String notificationText = "";
+     						boolean notiFlag = false;
      						if(null == notificationBO){
-     							notiFlag = false;
      							notificationBO = new NotificationBO();
      							notificationBO.setStudyId(resourceBO2.getStudyId());
      							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
@@ -1078,7 +1081,23 @@ public class StudyServiceImpl implements StudyService {
      							notificationBO.setModifiedBy(sesObj.getUserId());
      							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
      						}
-     						notificationBO.setNotificationText(resourceBO2.getResourceText());
+     						if(!resourceBO2.isStudyProtocol()){
+     							saveNotiFlag = true;
+     							notificationText = resourceBO2.getResourceText();
+     						}else{
+     							if(studyBo.getLiveStudyBo() != null){
+     								String studyName = studyBo.getName();
+     								String innerText;
+	     							if(notiFlag || (!notiFlag && updateResource)){
+	     								innerText = "updated";
+	     							}else{
+	     								innerText = "added";
+	     							}
+	     							saveNotiFlag = true;
+     								notificationText = "Study Protocol information has been "+innerText+" for the study "+studyName+". Visit the app to read it now.";
+     							}
+     						}
+     						notificationBO.setNotificationText(notificationText);
      						if(resourceBO2.isResourceType()){
      							notificationBO.setAnchorDate(true);
      							notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
@@ -1088,10 +1107,13 @@ public class StudyServiceImpl implements StudyService {
      						}
      						notificationBO.setScheduleDate(null);
      						notificationBO.setScheduleTime(null);
-     						if(!resourceBO.isResourceType())
+     						/*if(!resourceBO.isResourceType())
      							studyDAO.saveResourceNotification(notificationBO,notiFlag);
      						if(resourceBO.isResourceType() && resourceBO.getStartDate()!=null)
-     						  studyDAO.saveResourceNotification(notificationBO,notiFlag);
+     						  studyDAO.saveResourceNotification(notificationBO,notiFlag);*/
+     						if(saveNotiFlag){
+     							studyDAO.saveResourceNotification(notificationBO,notiFlag);
+     						}
 					}
 			}
 		}catch(Exception e){
