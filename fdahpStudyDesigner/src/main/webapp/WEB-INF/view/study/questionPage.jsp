@@ -1332,6 +1332,7 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 $("#doneId").attr("disabled",true);
     	 var isValid = true;
+    	 var isImageValid = true;
 		 var resType = $("#rlaResonseType").val();
 		 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
@@ -1423,7 +1424,52 @@ $(document).ready(function(){
    				$("#doneId").attr("disabled",false);
    				$("body").removeClass("loading");
    			  }
-   			  
+	   			var minImagePath = '';
+	   			var maxImagePath = '';
+	   			var minImageFile='';
+	   			var maxImageFile='';
+	   			if(resType == "Continuous Scale"){
+	   				 minImagePath = $("#continuesScaleMinImagePathId").val();
+	   				 maxImagePath = $("#continuesScaleMaxImagePathId").val();
+	     			 minImageFile = document.getElementById("continuesScaleMinImageFileId").files[0];
+	     			 maxImageFile = document.getElementById("continuesScaleMaxImageFileId").files[0];
+	   			}else{
+	   				minImagePath = $("#scaleMinImagePathId").val();
+	   				maxImagePath = $("#scaleMaxImagePathId").val();
+	   				minImageFile = document.getElementById("scaleMinImageFileId").files[0];
+	     			maxImageFile = document.getElementById("scaleMaxImageFileId").files[0];
+	   			}
+	   			if(minImagePath == '' && maxImagePath == '' && typeof minImageFile == 'undefined' && typeof maxImageFile == 'undefined'){
+	   				isImageValid = true;
+	   			}else if ((typeof minImageFile != 'undefined' || minImagePath != '') && (typeof maxImageFile != 'undefined' || maxImagePath != '')){
+	   				isImageValid = true;
+	   			}else{
+	   				if(maxImagePath == '' && (maxImageFile == '' || typeof maxImageFile == 'undefined')){
+	   					if(resType == "Continuous Scale"){
+	   					 	$("#continuesScaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
+	                     	$("#continuesScaleMaxImagePathId").parent().find(".help-block").empty();
+	                        $("#continuesScaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+	                    }else{
+	                    	$("#scaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
+	                        $("#scaleMaxImagePathId").parent().find(".help-block").empty();
+	                        $("#scaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
+	                    }
+	   				  }
+	     			  if(minImagePath == '' && (minImageFile == '' || typeof minImageFile == 'undefined')){
+	     				 if(resType == "Continuous Scale"){
+	       					 $("#continuesScaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
+	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").empty();
+	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+	                     }else{
+	                    	 $("#scaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
+	                         $("#scaleMinImagePathId").parent().find(".help-block").empty();
+	                         $("#scaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");   
+	                     }  
+	     			  }
+	     			 isImageValid = false;
+	   				$("#doneId").attr("disabled",false);
+	   				$("body").removeClass("loading");
+	   		 }
    		  }else if(resType == 'Text Scale'){
 			  stepText =  $("#textScalePositionId").val();
 		  }
@@ -1446,7 +1492,7 @@ $(document).ready(function(){
 			    		 $("#TextScale").empty();
 			    	 }	 
 			 }
-	   		if(isValid){
+	   		if(isValid && isImageValid){
 	   			validateTheQuestionshortTitle('',function(val){
 	   				if(val){
 	   					var statShortName =  $("#statShortNameId").val();
@@ -2032,6 +2078,7 @@ $(document).ready(function(){
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
+                    $("#"+$(thisAttr).attr("id")).val('');
                     $('.textLabel'+id).text("Upload");
                 }
             };
