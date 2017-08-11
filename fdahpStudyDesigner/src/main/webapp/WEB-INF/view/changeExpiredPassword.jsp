@@ -77,6 +77,8 @@
 		            }
 		        };
 		    }
+		    $(document).find('.md-container.white-bg ')
+    			.removeClass('md-container');
 		}
 		
 		var addPasswordPopup = function() {
