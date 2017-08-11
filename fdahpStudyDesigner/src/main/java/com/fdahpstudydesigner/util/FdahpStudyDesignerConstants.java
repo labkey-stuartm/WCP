@@ -304,7 +304,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_GT = "GT";
 	public static final String NOTIFICATION_SUBTYPE_ANNOUNCEMENT = "Announcement";
 	public static final String NOTIFICATION_SUBTYPE_RESOURCE = "Resource";
-	 public static final String NOTIFICATION_SUBTYPE_ACTIVITY = "Activity";
+	public static final String NOTIFICATION_SUBTYPE_ACTIVITY = "Activity";
 	public static final String NOTIFICATION_NOTIMMEDIATE = "notImmediate";
 	public static final String NOTIFICATION_IMMEDIATE = "immediate";
 	
@@ -347,7 +347,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused. We will notify you when it is resumed.";
 	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation.";
 	public static final String NOTIFICATION_ACTIVETASK_TEXT = "New activity $shortTitle available for the study: $customId. Check it out now.";
-	
+	public static final String NOTIFICATION_ACTIVETASK_TEXT_PUBLISH = "1 or more activities have been added for the study: $customId. Check it out now.";
 	
 	public static final String DATE = "Date";
 	public static final String DATE_TIME = "Date-Time";

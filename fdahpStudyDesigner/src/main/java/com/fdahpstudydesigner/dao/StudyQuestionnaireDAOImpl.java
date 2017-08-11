@@ -469,6 +469,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", questionnaireBo.getTitle()).replace("$customId", draftStudyBo.getName()));
 					    if(!notificationBO.isNotificationSent())
 					    session.saveOrUpdate(notificationBO);
+					    /*NotificationBO notificationBO = null;
+						queryString = "From NotificationBO where "
+									+ "notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY+"' "
+									+ "and customStudyId='"+draftStudyBo.getCustomStudyId()+"' and notificationSent=false";
+							notificationBO =  (NotificationBO)session.createQuery(queryString).setMaxResults(1).uniqueResult();
+							if(notificationBO == null){
+								notificationBO = new NotificationBO();
+								notificationBO.setStudyId(questionnaireBo.getStudyId());
+								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY);
+								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+								//notificationBO.setQuestionnarieId(questionnaireBo.getId());
+								notificationBO.setNotificationStatus(false);
+								notificationBO.setCreatedBy(sessionObject.getUserId());
+								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								notificationBO.setNotificationSent(false);
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT_PUBLISH.replace("$customId", draftStudyBo.getName()));
+								session.save(notificationBO);
+						}*/
 				}
 				//Notification Purpose needed End
 			}
@@ -1956,6 +1976,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			
 			queryString = "DELETE From NotificationBO where questionnarieId="+questionnaireId+ "AND notificationSent=false";
 			session.createQuery(queryString).executeUpdate();
+			/*queryString = "select count(*) from questionnaires where study_id in(select id from studies where custom_study_id='"+customStudyId+"' and is_live=0) and active=1 and version =0";
+		    BigInteger qsubCount = (BigInteger) session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
+		    
+		    queryString = "select count(*) from active_task where study_id in(select id from studies where custom_study_id='"+customStudyId+"' and is_live=0) and active=1 and version =0";
+		    BigInteger asubCount = (BigInteger) session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
+		    if((qsubCount != null && qsubCount.intValue() > 0) ||  (asubCount != null && asubCount.intValue() > 0)){
+		    	queryString = "DELETE From NotificationBO where"
+						+" notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY+"'"
+						+" and customStudyId='"+customStudyId+"' and notificationSent=false";
+		    	query = session.createQuery(queryString);
+				query.executeUpdate();
+		    }*/
 			
 		    transaction.commit();
 		}catch(Exception e){
