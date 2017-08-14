@@ -525,7 +525,7 @@ function admins(){
 			 if(userListTableRowCount == 0){
 				 bootbox.alert({
 								closeButton: false,
-								message : 'No admins to add.',	
+								message : 'There are currently no other admin users available to add to this study.',	
 				    		  });
 			 }else{
 					 $('#settingId').hide();	
@@ -574,15 +574,15 @@ function admins(){
 			          					'<input type="radio" id="inlineRadio1'+userId+'" value="0" name="view'+userId+'" checked>'+
 		    							'<label for="inlineRadio1'+userId+'"></label>'+
 										'</span></td>';
-			          domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+			          domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">'+
 			          					'<input type="radio" id="inlineRadio2'+userId+'" value="1" name="view'+userId+'">'+
 			          					'<label for="inlineRadio2'+userId+'"></label>'+
 			          					'</span></td>';
-					  domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">'+
+					  domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">'+
 										'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
 										'<label for="inlineRadio3'+userId+'"></label>'+
 										'</span></td>';
-					 domStr = domStr + '<td><span class="sprites_icon copy delete" onclick="removeUser('+userId+')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
+					 domStr = domStr + '<td align="center"><span class="sprites_icon copy delete" onclick="removeUser('+userId+')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
 			         domStr = domStr + '</tr>';
 				 $('#studyAdminId').append(domStr);
 				 $('[data-toggle="tooltip"]').tooltip();
