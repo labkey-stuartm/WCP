@@ -4366,175 +4366,13 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Starts");
 		Session session = null;
 		boolean falg = false;
-		List<StudyBo> studyBOList = null;
-		List<Integer> idList = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			
-			query = session.createQuery(" FROM StudyBo SBO WHERE SBO.customStudyId ='"+customStudyId+"'");
-			studyBOList = query.list(); 
-			
-			if(studyBOList!=null && !studyBOList.isEmpty()){
-			
-			queryString = "SELECT page_id FROM study_page WHERE page_id is not null and study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM study_page WHERE page_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			queryString = "SELECT id FROM eligibility WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM eligibility WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			queryString = "SELECT id FROM consent WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM consent WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			queryString = "SELECT id FROM consent_info WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM consent_info WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			queryString = "SELECT active_task_id FROM active_task_attrtibutes_values WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM active_task_attrtibutes_values WHERE active_task_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			queryString = "SELECT active_task_id FROM active_task_frequencies WHERE active_task_id IN (SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			queryString = "SELECT active_task_id FROM active_task_custom_frequencies WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM active_task_custom_frequencies WHERE active_task_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			queryString = "SELECT id FROM active_task WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM active_task WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM questions WHERE id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))").executeUpdate();
-			queryString = "SELECT id FROM questions WHERE id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))").executeUpdate();
-			queryString = "SELECT response_type_id FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM response_type_value WHERE response_type_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))").executeUpdate();
-			queryString = "SELECT response_sub_type_value_id FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))))";	
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_sub_type_value_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
-			queryString = "SELECT id FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			
-			//session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
-			queryString = "SELECT response_type_id FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM response_type_value WHERE response_type_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
-			queryString = "SELECT response_sub_type_value_id FROM response_sub_type_value WHERE response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_sub_type_value_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			
-			//session.createSQLQuery("DELETE FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))").executeUpdate();
-			queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Instruction' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM instructions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			
-			//session.createSQLQuery("DELETE FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
-			queryString = "SELECT step_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM questionnaires_steps WHERE step_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			
-			
-			
-			//session.createSQLQuery("DELETE FROM questionnaires_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
-			queryString = "SELECT id FROM questionnaires_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM questionnaires_frequencies WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			
-			//session.createSQLQuery("DELETE FROM questionnaires_custom_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
-			queryString = "SELECT id FROM questionnaires_custom_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM questionnaires_custom_frequencies WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			queryString = "SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM questionnaires WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			//session.createSQLQuery("DELETE FROM resources WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			queryString = "SELECT id FROM resources WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')";
-			idList = session.createSQLQuery(queryString).list();
-			if(idList!=null && !idList.isEmpty()){
-				session.createSQLQuery("DELETE FROM resources WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-			}
-			
-			
-			session.createSQLQuery("DELETE FROM notification_history WHERE notification_id in(SELECT notification_id FROM notification WHERE study_id in (SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"'))").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM notification WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM study_checklist WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM study_permission WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM study_sequence WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM studies WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
-			
-			session.createSQLQuery("DELETE FROM study_activity_version WHERE custom_study_id='"+customStudyId+"'").executeUpdate();
-			
-			falg = true;
+			message = deleteStudyByIdOrCustomstudyId(session, transaction, "", customStudyId);
+			if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+				falg = true;
 			}
 			transaction.commit();
 		}catch(Exception e){
@@ -5070,139 +4908,189 @@ public class StudyDAOImpl implements StudyDAO{
 				studyBOList = query.list(); 
 				if(studyBOList!=null && !studyBOList.isEmpty()){
 					
-				//session.createSQLQuery("DELETE FROM study_page WHERE study_id in"+subQuery).executeUpdate();
 			    queryString = "SELECT page_id FROM study_page WHERE page_id is not null and study_id in"+subQuery;	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM study_page WHERE page_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
-				//session.createSQLQuery("DELETE FROM eligibility WHERE study_id in"+subQuery).executeUpdate();
+				
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM eligibility WHERE study_id in"+subQuery;	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM eligibility WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM consent WHERE study_id in"+subQuery).executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM consent WHERE study_id in"+subQuery;	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM consent WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM consent_info WHERE study_id in"+subQuery).executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM consent_info WHERE study_id in"+subQuery;	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM consent_info WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM active_task_attrtibutes_values WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in"+subQuery+")").executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT active_task_id FROM active_task_attrtibutes_values WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in"+subQuery+")";	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM active_task_attrtibutes_values WHERE active_task_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id IN (SELECT id FROM active_task WHERE study_id in"+subQuery+")").executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT active_task_id FROM active_task_frequencies WHERE active_task_id IN (SELECT id FROM active_task WHERE study_id in"+subQuery+")";	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM active_task_custom_frequencies WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in"+subQuery+")").executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT active_task_id FROM active_task_custom_frequencies WHERE active_task_id IN(SELECT id FROM active_task WHERE study_id in"+subQuery+")";	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM active_task_custom_frequencies WHERE active_task_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM active_task WHERE study_id in"+subQuery).executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM active_task WHERE study_id in"+subQuery;	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM active_task WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM questions WHERE id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in"+subQuery+")))").executeUpdate();
+				/** Questionnarie Part  Start**/
+				//Form Step Start .....
+				
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM questions WHERE id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in"+subQuery+")))";	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))").executeUpdate();
-				queryString = "SELECT response_type_id FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))";	
-				idList = session.createSQLQuery(queryString).list();
-				if(idList!=null && !idList.isEmpty()){
-					session.createSQLQuery("DELETE FROM response_type_value WHERE response_type_id in("+StringUtils.join(idList,",")+")").executeUpdate();
-				}
-				
-				//session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))").executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT response_sub_type_value_id FROM response_sub_type_value WHERE response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))";	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_sub_type_value_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
-				queryString = "SELECT id FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in(SELECT id FROM studies WHERE custom_study_id='"+customStudyId+"')))";
-				idList = session.createSQLQuery(queryString).list();
-				if(idList!=null && !idList.isEmpty()){
-					session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
-				}
-				
-				//session.createSQLQuery("DELETE FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
-				queryString = "SELECT response_type_id FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
+				idList = null;
+				queryString = "";
+				queryString = "SELECT response_type_id FROM response_type_value WHERE questions_response_type_id IN(SELECT question_id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")))";	
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM response_type_value WHERE response_type_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
+				//form_mapping deletion
+				idList = null;
+				queryString = "";
+				queryString = "SELECT id FROM form_mapping WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in"+subQuery+"))";
+				idList = session.createSQLQuery(queryString).list();
+				if(idList!=null && !idList.isEmpty()){
+					session.createSQLQuery("DELETE FROM form_mapping WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
+				}
+				
+				idList = null;
+				queryString = "";
+				//form deletion
+				queryString = "SELECT form_id FROM form WHERE form_id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Form' AND questionnaires_id IN (SELECT id FROM questionnaires q WHERE study_id in"+subQuery+"))";
+				idList = session.createSQLQuery(queryString).list();
+				if(idList!=null && !idList.isEmpty()){
+					session.createSQLQuery("DELETE FROM form WHERE form_id in("+StringUtils.join(idList,",")+")").executeUpdate();
+				}
+				
+				//Form Step End......
+				
+				//Instruction Step Start .....
+				
+				idList = null;
+				queryString = "";
+				queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Instruction' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
+				idList = session.createSQLQuery(queryString).list();
+				if(idList!=null && !idList.isEmpty()){
+					session.createSQLQuery("DELETE FROM instructions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
+				}
+				//Instruction Step End......
+				
+				//Question Step End......
+				
+				idList = null;
+				queryString = "";
+				queryString = "SELECT id FROM questions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
+				idList = session.createSQLQuery(queryString).list();
+				if(idList!=null && !idList.isEmpty()){
+					session.createSQLQuery("DELETE FROM questions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
+				}
+				
+				idList = null;
+				queryString = "";
 				queryString = "SELECT response_sub_type_value_id FROM response_sub_type_value WHERE response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM response_sub_type_value WHERE response_sub_type_value_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))").executeUpdate();
-				queryString = "SELECT id FROM instructions WHERE id IN (SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Instruction' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
+				idList = null;
+				queryString = "";
+				queryString = "SELECT response_type_id FROM response_type_value WHERE questions_response_type_id IN(SELECT instruction_form_id FROM questionnaires_steps WHERE step_type='Question' AND questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+"))";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
-					session.createSQLQuery("DELETE FROM instructions WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
+					session.createSQLQuery("DELETE FROM response_type_value WHERE response_type_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")").executeUpdate();
+				//Question Step End......
+				idList = null;
+				queryString = "";
 				queryString = "SELECT step_id FROM questionnaires_steps WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM questionnaires_steps WHERE step_id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM questionnaires_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")").executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM questionnaires_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM questionnaires_frequencies WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM questionnaires_custom_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")").executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM questionnaires_custom_frequencies WHERE questionnaires_id IN (SELECT id FROM questionnaires WHERE study_id in"+subQuery+")";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM questionnaires_custom_frequencies WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM questionnaires WHERE study_id in"+subQuery).executeUpdate();
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM questionnaires WHERE study_id in"+subQuery;
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
 					session.createSQLQuery("DELETE FROM questionnaires WHERE id in("+StringUtils.join(idList,",")+")").executeUpdate();
 				}
 				
-				//session.createSQLQuery("DELETE FROM resources WHERE study_id in"+subQuery).executeUpdate();
+				/** Questionnarie Part End *****/
+				
+				idList = null;
+				queryString = "";
 				queryString = "SELECT id FROM resources WHERE study_id in"+subQuery;
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
