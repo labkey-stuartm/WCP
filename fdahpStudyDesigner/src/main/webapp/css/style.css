@@ -548,7 +548,7 @@ div.mce-edit-area{
 }
 
 .right-content-body{
-   padding: 20px 30px;  
+   padding: 6px 30px;  
 }
 
 .lg-icons-list li a:disabled{
@@ -715,7 +715,7 @@ table.dataTable thead th, table.dataTable thead td{
 }
 
 #comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
-    text-align: right;
+    /* text-align: right; */
 }
 
 #comprehension_list thead th,.dragtbl thead th{
@@ -1771,6 +1771,14 @@ height:0px !important;
 .cursonMove{
  cursor: move !important;
 }
+
+#studyAdminsTable th{
+	background:#e1e8ee !important;}
+
+#studyAdminsTable td{
+	padding-left: 10px !important;
+}
+
 .ellipse{
 	visibility:visible;
 }

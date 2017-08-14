@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -48,6 +49,9 @@ public class StudyPermissionBO implements Serializable{
 	
 	@Column(name="delFlag")
 	private Integer delFlag;
+	
+	@Transient
+	private String userFullName;
 	
 	public Integer getStudyPermissionId() {
 		return studyPermissionId;
@@ -97,4 +101,11 @@ public class StudyPermissionBO implements Serializable{
 		this.delFlag = delFlag;
 	}
 
+	public String getUserFullName() {
+		return userFullName;
+	}
+
+	public void setUserFullName(String userFullName) {
+		this.userFullName = userFullName;
+	}
 }
