@@ -234,6 +234,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 								if(!questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
 									if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
 										addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+									}else{
+										addQuestionnaireBo.setStudyLifetimeEnd(null);
 									}
 								}
 							}

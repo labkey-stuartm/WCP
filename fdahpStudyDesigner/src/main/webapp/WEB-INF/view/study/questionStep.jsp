@@ -226,6 +226,7 @@ function isNumberKey(evt)
             </c:if>
             <div class="clearfix"></div>
             <c:if test="${questionnaireBo.frequency ne 'One time'}">
+            <div class="bor-dashed mt-none mb-md" id="borderHealthdashId" style="display:none"></div>
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
                <input type="checkbox" id="addLineChart" name="questionsBo.addLineChart" value="Yes" ${questionnairesStepsBo.questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
@@ -2545,6 +2546,7 @@ function getResponseType(id){
         		$("#borderdashId").hide();
     		}
     		if(responseType == 'Height' || responseType == 'Numeric'){
+    			$("#borderHealthdashId").show();
     			$("#allowHealthKitId").show();
     			if($("#allowHealthKit").is(":checked")){
         			$("#healthKitContainerId").show();
@@ -2558,6 +2560,7 @@ function getResponseType(id){
     		}else{
     			$("#allowHealthKitId").hide();
     			$("#healthKitContainerId").hide();
+    			$("#borderHealthdashId").hide();
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
