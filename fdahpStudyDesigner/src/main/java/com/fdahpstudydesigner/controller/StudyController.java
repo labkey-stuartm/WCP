@@ -51,10 +51,13 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.service.NotificationService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
+import com.fdahpstudydesigner.service.UsersService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -76,6 +79,9 @@ public class StudyController {
 	
 	@Autowired
 	private StudyQuestionnaireService studyQuestionnaireService;
+	
+	@Autowired
+	private UsersService usersService;
 	
 	/**
      * @author Ronalin
@@ -418,6 +424,9 @@ public class StudyController {
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		List<UserBO> userList = null;
+		List<StudyPermissionBO> studyPermissionList = null;
+		List<Integer> permissions = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -440,8 +449,15 @@ public class StudyController {
 				map.addAttribute("_S", sessionStudyCount);
 				if(FdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					userList = studyService.getActiveNonAddedUserList(Integer.parseInt(studyId),sesObj.getUserId());
+					studyPermissionList = studyService.getAddedUserListToStudy(Integer.parseInt(studyId),sesObj.getUserId());
+					permissions = usersService.getPermissionsByUserId(sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,studyBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+					map.addAttribute("studyPermissionList",studyPermissionList);
+					map.addAttribute("userList",userList);
+					map.addAttribute("studyPermissionList",studyPermissionList);
+					map.addAttribute("permissions",permissions);
 					mav = new ModelAndView(FdahpStudyDesignerConstants.VIEW_SETTING_AND_ADMINS, map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -540,10 +556,13 @@ public class StudyController {
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 				if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+					String userIds = FdahpStudyDesignerUtil.isEmpty(request.getParameter("userIds")) ? "" : request.getParameter("userIds");
+					String permissions = FdahpStudyDesignerUtil.isEmpty(request.getParameter("permissions")) ? "" : request.getParameter("permissions");
+					String projectLead = FdahpStudyDesignerUtil.isEmpty(request.getParameter("projectLead")) ? "" : request.getParameter("projectLead");
 					String buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT)) ? "" : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
 					studyBo.setButtonText(buttonText);
 					studyBo.setUserId(sesObj.getUserId());
-					message = studyService.saveOrUpdateStudySettings(studyBo, sesObj);
+					message = studyService.saveOrUpdateStudySettings(studyBo, sesObj, userIds, permissions, projectLead);
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
 					map.addAttribute("_S", sessionStudyCount);
 					if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {

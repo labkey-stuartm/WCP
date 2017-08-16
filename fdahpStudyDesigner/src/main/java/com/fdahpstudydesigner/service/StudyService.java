@@ -19,6 +19,8 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyService {
@@ -54,7 +56,7 @@ public interface StudyService {
 	public boolean validateStudyId(String studyId);
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
-	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj);
+	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj,String userIds,String permissions,String projectLead);
 	
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 	
@@ -88,4 +90,7 @@ public interface StudyService {
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
+	
+	public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId);
+	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,Integer userId);
 }
