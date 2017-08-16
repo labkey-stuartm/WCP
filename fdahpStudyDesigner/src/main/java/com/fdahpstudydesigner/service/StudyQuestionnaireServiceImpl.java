@@ -468,6 +468,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestionnaireId() != null){
 					addQuestionsBo.setQuestionnaireId(questionsBo.getQuestionnaireId());
 				}
+				if(questionsBo.getAllowHealthKit() != null){
+					addQuestionsBo.setAllowHealthKit(questionsBo.getAllowHealthKit());
+				}
+				if(questionsBo.getHealthkitDatatype() != null){
+					addQuestionsBo.setHealthkitDatatype(questionsBo.getHealthkitDatatype());
+				}
 				if(questionsBo.getType() != null){
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
@@ -836,6 +842,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null){
 					addQuestionsBo.setUseAnchorDate(questionnairesStepsBo.getQuestionsBo().getUseAnchorDate());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getAllowHealthKit() != null){
+					addQuestionsBo.setAllowHealthKit(questionnairesStepsBo.getQuestionsBo().getAllowHealthKit());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getHealthkitDatatype() != null){
+					addQuestionsBo.setHealthkitDatatype(questionnairesStepsBo.getQuestionsBo().getHealthkitDatatype());
 				}
 				if(questionnairesStepsBo.getType() != null){
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){

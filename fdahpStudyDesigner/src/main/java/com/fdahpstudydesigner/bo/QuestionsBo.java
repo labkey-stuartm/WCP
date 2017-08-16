@@ -95,6 +95,13 @@ public class QuestionsBo implements Serializable {
 	@Column(name="use_anchor_date")
 	private Boolean useAnchorDate=false;
 	
+	@Column(name="allow_healthkit")
+	private String allowHealthKit="No";
+	
+	@Column(name="healthkit_datatype")
+	private String healthkitDatatype;
+	
+	
 	@Transient
 	private String type;
 	
@@ -376,4 +383,21 @@ public class QuestionsBo implements Serializable {
 	public void setUseAnchorDate(Boolean useAnchorDate) {
 		this.useAnchorDate = useAnchorDate;
 	}
+
+	public String getAllowHealthKit() {
+		return allowHealthKit;
+	}
+
+	public void setAllowHealthKit(String allowHealthKit) {
+		this.allowHealthKit = allowHealthKit;
+	}
+
+	public String getHealthkitDatatype() {
+		return healthkitDatatype;
+	}
+
+	public void setHealthkitDatatype(String healthkitDatatype) {
+		this.healthkitDatatype = healthkitDatatype;
+	}
+	
 }

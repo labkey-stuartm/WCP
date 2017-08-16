@@ -1268,8 +1268,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
-					
-				}else{
+				}
+				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){
 					healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 					map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
 				}
@@ -1568,7 +1568,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
-				}else {
+				}
+				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){ 
 						healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 						map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
 				}

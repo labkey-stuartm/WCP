@@ -201,6 +201,29 @@ function isNumberKey(evt)
             	</c:otherwise>
             </c:choose>
             </div>
+            <c:if test="${fn:contains(studyBo.platform, 'I')}">
+            	<div class="clearfix"></div>
+            	<div class="mb-lg" id="allowHealthKitId" style="display: none">
+	               <span class="checkbox checkbox-inline">
+	               <input type="checkbox" id="allowHealthKit" name="questionsBo.allowHealthKit" value="Yes" ${questionnairesStepsBo.questionsBo.allowHealthKit eq 'Yes' ? 'checked':''}>
+	               <label for="allowHealthKit"> Allow participant to optionally use HealthKit to provide answer <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="If you check this box, participants who are using the app on an iOS device will be presented with an option to provide data from Health as the answer to this question. Participants are allowed to edit  the answer before submitting it."></span></label>
+	               </span>
+	            </div>
+	            <div id="healthKitContainerId">
+	            	<div class="col-md-4 p-none">
+		               <div class="gray-xs-f mb-xs">Select a HealthKit quantity data type <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" data-html=true title="- Please select the appropriate HealthKit data type as suited to the question<br>- Please note that only the most recent value available in HealthKit would be read by the app<br>- Access to HealthKit data is subject to the user providing permissions for the app to read the data"></span></div>
+		               <div class="form-group">
+		                  <select class="selectpicker elaborateClass healthkitrequireClass" id="healthkitDatatypeId" name="questionsBo.healthkitDatatype" value="${questionnairesStepsBo.questionsBo.healthkitDatatype}">
+		                       <option value="" selected disabled>Select</option>
+			                   <c:forEach items="${healthKitKeysInfo}" var="healthKitKeys">
+			                        <option value="${healthKitKeys.key}" ${questionnairesStepsBo.questionsBo.healthkitDatatype eq healthKitKeys.key ? 'selected':''}>${healthKitKeys.displayName}</option>
+			                   </c:forEach>
+		                  </select>
+		                  <div class="help-block with-errors red-txt"></div>
+		               </div>
+		            </div>
+	            </div>
+            </c:if>
             <div class="clearfix"></div>
             <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
@@ -1842,6 +1865,21 @@ $(document).ready(function(){
     		 document.getElementById("allowRollbackChartNo").checked = true;
     	}
      });
+     $("#allowHealthKit").on('change',function(){
+    	 console.log("change:"+$(this).is(":checked"));
+    	 if($(this).is(":checked")){
+     		$(this).val("Yes");
+     		$("#healthKitContainerId").show();
+     		$(".healthkitrequireClass").attr('required',true);
+     		$('.selectpicker').selectpicker('refresh');
+     	} else{
+     		$(this).val("No");
+     		$("#healthKitContainerId").hide();
+     		$(".healthkitrequireClass").attr('required',false);
+     		$("#healthkitDatatypeId").val('');
+     		$('.selectpicker').selectpicker('refresh');
+     	}
+     });
     $("#useStasticData").on('change',function(){
     	if($(this).is(":checked")){
     		$(this).val("Yes");
@@ -2382,6 +2420,9 @@ function resetTheLineStatData(){
 		        statchildren[i].selectedIndex = 0;
 		 } 
 	 }
+	 $("#allowHealthKit").prop("checked", false);
+	 $(".healthkitrequireClass").attr('required',false);
+	 $("#healthkitDatatypeId").val('');
 	 $('.selectpicker').selectpicker('refresh');
 }
 function getResponseType(id){
@@ -2502,6 +2543,21 @@ function getResponseType(id){
     			$("#useStasticDataContainerId").hide();
         		$("#addLineChartContainerId").hide();
         		$("#borderdashId").hide();
+    		}
+    		if(responseType == 'Height' || responseType == 'Numeric'){
+    			$("#allowHealthKitId").show();
+    			if($("#allowHealthKit").is(":checked")){
+        			$("#healthKitContainerId").show();
+             		$(".healthkitrequireClass").attr('required',true);
+        		}else{
+        			$("#healthKitContainerId").hide();
+             		$(".healthkitrequireClass").attr('required',false);
+             		$("#healthkitDatatypeId").val('');
+             		$('.selectpicker').selectpicker('refresh');
+        		}
+    		}else{
+    			$("#allowHealthKitId").hide();
+    			$("#healthKitContainerId").hide();
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
@@ -2671,8 +2727,14 @@ function saveQuestionStepQuestionnaire(item,callback){
 	}else if(resType == "Height"){
 		var measurement_system = $('input[name="questionReponseTypeBo.measurementSystem"]:checked').val();
 		var placeholder_text = $("#heightPlaceholderId").val();
+		var healthkitinfo = $('input[name="questionsBo.allowHealthKit"]:checked').val();
+		var healthkitdatatype = $("#healthkitDatatypeId").val();
+		
 		questionReponseTypeBo.measurementSystem = measurement_system;
 		questionReponseTypeBo.placeholder = placeholder_text;
+		questionsBo.allowHealthKit=healthkitinfo;
+		questionsBo.healthkitDatatype=healthkitdatatype;
+		
 	}else if(resType == "Time interval"){
 		 var stepValue = $("#timeIntervalStepId").val();
 		 var default_time = $("#timeIntervalDefaultId").val();
@@ -2684,11 +2746,17 @@ function saveQuestionStepQuestionnaire(item,callback){
 		var palceholder_text = $("#numericPlaceholderId").val(); 
 		var minValue =$("#numericMinValueId").val();
 		var maxValue = $("#numericMaxValueId").val();
+		var healthkitinfo = $('input[name="questionsBo.allowHealthKit"]:checked').val();
+		var healthkitdatatype = $("#healthkitDatatypeId").val();
+		
 		questionReponseTypeBo.style = styletext;
 		questionReponseTypeBo.placeholder = palceholder_text;
 		questionReponseTypeBo.unit=unitText;
 		questionReponseTypeBo.minValue=minValue;
 		questionReponseTypeBo.maxValue=maxValue;
+		
+		questionsBo.allowHealthKit=healthkitinfo;
+		questionsBo.healthkitDatatype=healthkitdatatype;
 	}else if(resType == "Date"){
 		var min_date = $("#minDateId").val(); 
 		var max_date = $("#maxDateId").val(); 
