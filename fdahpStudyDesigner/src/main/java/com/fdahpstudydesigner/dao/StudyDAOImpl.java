@@ -1684,7 +1684,7 @@ public class StudyDAOImpl implements StudyDAO{
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\(").replaceAll("em>", "i>").replaceAll("<a", "<a style='text-decoration:underline;color:blue;'"));
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 					consentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle().replaceAll("<", "&#60;").replaceAll(">", "&#62;").replaceAll("/", "&#47;").replaceAll("'", "&#39;").replaceAll("\"", "&#34;"));
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#39;", "&quot;").replaceAll("&#34;", "'").replaceAll("em>", "i>").replaceAll("<a", "<a target='_blank' style='text-decoration:underline;color:blue;'"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#39;", "'").replaceAll("&#34;", "&quot;").replaceAll("em>", "i>").replaceAll("<a", "<a target='_blank' style='text-decoration:underline;color:blue;'"));
 				}
 			}
 		}catch(Exception e){
