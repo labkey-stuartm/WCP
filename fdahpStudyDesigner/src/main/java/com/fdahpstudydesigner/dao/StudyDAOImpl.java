@@ -1752,18 +1752,34 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			session.saveOrUpdate(consentBo);
 			if(customStudyId!=null && !customStudyId.isEmpty()){
-				if(consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
-					activity = "Study consentReview saved.";
-					activitydetails = "Content saved for Consent Review Section. (Study ID = "+customStudyId+")";
-				}else{
-					query = session.getNamedQuery("getStudyByCustomStudyId").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId);
-					query.setMaxResults(1);
-					studyVersionBo = (StudyVersionBo)query.uniqueResult();
-					if(studyVersionBo!=null){
-						activity = "Study consentReview marked as completed.";
-						activitydetails = "Consent Review section successfully checked for minimum content completeness and marked 'Completed'.  (Study ID = "+customStudyId+", Consent Document Version = "+studyVersionBo.getConsentVersion()+")";  
+				if(consentBo.getType() != null){
+					if(consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						activity = "Study consentReview saved.";
+						activitydetails = "Content saved for Consent Review Section. (Study ID = "+customStudyId+")";
+					}else{
+						query = session.getNamedQuery("getStudyByCustomStudyId").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId);
+						query.setMaxResults(1);
+						studyVersionBo = (StudyVersionBo)query.uniqueResult();
+						if(studyVersionBo!=null){
+							activity = "Study consentReview marked as completed.";
+							activitydetails = "Consent Review section successfully checked for minimum content completeness and marked 'Completed'.  (Study ID = "+customStudyId+", Consent Document Version = "+studyVersionBo.getConsentVersion()+")";  
+						}
+					}
+				}else if(consentBo.getComprehensionTest() != null){
+					if(consentBo.getComprehensionTest().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						activity = "Study comprehension test saved.";
+						activitydetails = "Content saved for Comprehension test Section. (Study ID = "+customStudyId+")";
+					}else{
+						query = session.getNamedQuery("getStudyByCustomStudyId").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId);
+						query.setMaxResults(1);
+						studyVersionBo = (StudyVersionBo)query.uniqueResult();
+						if(studyVersionBo!=null){
+							activity = "Study comprehension test marked as completed.";
+							activitydetails = "Comprehension Test section successfully checked for minimum content completeness and marked 'Completed'.  (Study ID = "+customStudyId+")";  
+						}
 					}
 				}
+				
 		}
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrCompleteConsentReviewDetails");
 			transaction.commit();

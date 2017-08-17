@@ -387,6 +387,8 @@ function saveConsent(type){
 		consentInfo.needComprehensionTest=needComprehensionTestTxt;
 		if(type == "save"){
 			consentInfo.comprehensionTest="save";
+		}else{
+			consentInfo.comprehensionTest="done";
 		}
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 

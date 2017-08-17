@@ -919,6 +919,9 @@ public class StudyServiceImpl implements StudyService {
 			if(consentBo.getType() != null){
 				updateConsentBo.setType(consentBo.getType());
 			}
+			if(consentBo.getComprehensionTest() != null){
+				updateConsentBo.setComprehensionTest(consentBo.getComprehensionTest());
+			}
 			if(consentBo.getAggrementOfTheConsent() != null){
 				updateConsentBo.setAggrementOfTheConsent(consentBo.getAggrementOfTheConsent());
 			}
