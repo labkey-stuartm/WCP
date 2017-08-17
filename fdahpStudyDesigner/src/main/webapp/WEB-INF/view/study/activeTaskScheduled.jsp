@@ -379,6 +379,10 @@ $(document).ready(function() {
         			$("#oneTimeFreId").val('');
         			$("#isLaunchStudy").val('');
         			$("#isStudyLifeTime").val('');
+        			var frequency_txt = "${questionnaireBo.frequency}";
+            		if(frequency_txt != '' && frequency_txt != null && typeof frequency_txt != 'undefined'){
+            			$("#previousFrequency").val(frequency_txt);
+            		}
             	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
