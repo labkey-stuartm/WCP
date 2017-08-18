@@ -5119,6 +5119,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				idList = null;
+				queryString = "";
 				queryString = "select id from eligibility_test e where e.eligibility_id in(select id from eligibility where study_id in"+subQuery+")";
 				idList = session.createSQLQuery(queryString).list();
 				if(idList!=null && !idList.isEmpty()){
