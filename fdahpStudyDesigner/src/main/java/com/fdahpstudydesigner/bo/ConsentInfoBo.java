@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 @Table(name="consent_info")
 @NamedQueries({
 	@NamedQuery(name = "getConsentInfoByStudyId", query = " From ConsentInfoBo CBO WHERE CBO.studyId =:studyId and CBO.active=1 order by CBO.createdOn DESC"),
-	@NamedQuery(name = "updateStudyConsentInfoVersion", query = "UPDATE ConsentInfoBo SET live=2 WHERE customStudyId=:customStudyId"),
+	@NamedQuery(name = "updateStudyConsentInfoVersion", query = "UPDATE ConsentInfoBo SET live=2 WHERE customStudyId=:customStudyId and live=1"),
 })
 public class ConsentInfoBo implements Serializable{
 	private static final long serialVersionUID = 7994683067825219315L;

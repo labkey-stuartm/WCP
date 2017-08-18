@@ -208,8 +208,11 @@ $("#rowId").addClass('lc-gray-bg');
 				document.body.appendChild(a).click();
 			});
  			$('.fifthComre').click(function() {
+ 				<c:if test="${studyBo.studySequenceBo.consentEduInfo}">
  				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}";
  				document.body.appendChild(a).click();
+ 				</c:if>
+ 				
 			});
 			$('.fifthConsentReview').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}";
