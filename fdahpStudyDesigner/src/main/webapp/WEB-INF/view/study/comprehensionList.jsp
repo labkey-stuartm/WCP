@@ -238,9 +238,26 @@ $(document).ready(function(){
 	$("#comprehensionTestMinimumScore").keyup(function(){
 		$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
 	});
+	$("#comprehensionTestMinimumScore").blur(function(){
+		$("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass("has-error");
+        $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+		var value = $(this).val();
+		var questionCount = $("#comprehension_list").find("tbody").find("tr").length;
+		if(value != '' && value != null && (value == 0 || parseInt(value) > parseInt(questionCount))){
+			$(this).val('');
+			$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+            $("#comprehensionTestMinimumScore").parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should not be more than no of questions or zero</li></ul>");
+		}else{
+			$("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass("has-error");
+            $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+		}
+	});
 	$("#saveId").click(function(){
+		$("#comprehensionTestMinimumScore").trigger('blur');
 		$("#comprehensionTestMinimumScore").parents("form").validator("destroy");
 	    $("#comprehensionTestMinimumScore").parents("form").validator();
+	    $("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass("has-error");
+        $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
 		saveConsent('save');
 	});
 	if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
@@ -357,6 +374,7 @@ function markAsCompleted(){
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
 	console.log(isFromValid("#comprehensionInfoForm"));
+	$("#comprehensionTestMinimumScore").trigger('blur');
 	if(needComprehensionTestTxt == "Yes"){
 		 if (!table.data().count() ) {
 		    $('#alertMsg').show();
@@ -405,14 +423,14 @@ function saveConsent(type){
 				if(message == "SUCCESS"){
 					var consentInfoId = jsonobject.consentId;
 					$("#consentId").val(consentId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
-					$('#alertMsg').show(); 
 					$("#addQuestionId").attr("disabled",false);
 					if(type != "save"){
 						var a = document.createElement('a');
 						a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
 						document.body.appendChild(a).click();
 					}else{
+						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
+						$('#alertMsg').show(); 
 						if ($('.fifthComre').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 							 $('.fifthComre').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 						}
