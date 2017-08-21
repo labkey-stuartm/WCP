@@ -362,6 +362,16 @@ public class FdahpStudyDesignerConstants {
 	public static final String ANDROID = "A";
 	public static final String IOS = "I";
 	
+	public static final String ALLOW = "allow";
+	public static final String DISALLOW = "disallow";
+	
+	public static final String ALLCHARACTERS = "allcharacters";
+	public static final String ALPHABETS = "alphabets";
+	public static final String NUMBERS = "numbers";
+	public static final String ALPHABETSANDNUMBERS = "alphabetsandnumbers";
+	public static final String SPECIALCHARACTERS = "specialcharacters";
+	
+	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
 	}

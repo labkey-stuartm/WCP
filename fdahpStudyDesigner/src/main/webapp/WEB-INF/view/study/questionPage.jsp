@@ -655,7 +655,7 @@ function isNumberKey(evt)
 	            <div class="clearfix"></div>
 	            <div class="row mt-md">
 		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
-		            <input type="hidden" name="questionReponseTypeBo.validationRegex" id="validationRegexId" value="${questionsBo.questionReponseTypeBo.validationRegex}">
+		           <%--  <input type="hidden" name="questionReponseTypeBo.validationRegex" id="validationRegexId" value="${questionsBo.questionReponseTypeBo.validationRegex}"> --%>
 		                  <div class="col-md-12 col-lg-12 p-none">
 		                     <div class="gray-xs-f mb-xs">Special Validations<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span></div>
 		                     <div class="col-md-3 pl-none">

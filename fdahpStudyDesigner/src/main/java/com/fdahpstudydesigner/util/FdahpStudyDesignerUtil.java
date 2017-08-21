@@ -881,4 +881,52 @@ public class FdahpStudyDesignerUtil {
 			  }
 			return timeRange;
    }
+	
+   public static String getRegExpression(String validCondition,String validCharacters,String exceptCharacters){
+	   String regEx = "["; 
+	   if((validCharacters != null && StringUtils.isNotEmpty(validCharacters)) && 
+			   (validCondition != null && StringUtils.isNotEmpty(validCondition))){
+			if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
+				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+					regEx +=".";
+				}else{
+					regEx +="^.";
+				}
+			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETS)){
+				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+					regEx +="a-zA-Z";
+				}else{
+					regEx +="^a-zA-Z";
+				}
+			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.NUMBERS)){
+				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+					regEx +="0-9";
+				}else{
+					regEx +="^0-9";
+				}
+			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETSANDNUMBERS)){
+				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+					regEx +="a-zA-Z0-9";
+				}else{
+					regEx +="^a-zA-Z0-9";
+				}
+			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+					regEx +="^A-Za-z0-9";
+				}else{
+				   regEx +="A-Za-z0-9";
+				}
+			}
+		}
+	   	if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+			String[] exceptChar = exceptCharacters.split("\\|");
+			String except ="";
+			for(int i=0;i<exceptChar.length;i++){
+				except+=exceptChar[i];
+			}
+			regEx +="&&[^"+except+"]";
+		}
+		regEx +="]+";
+		return regEx;
+   }
 }
