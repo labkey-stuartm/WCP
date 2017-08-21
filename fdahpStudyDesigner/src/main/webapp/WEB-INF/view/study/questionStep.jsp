@@ -676,6 +676,62 @@ function isNumberKey(evt)
 	                  </div>
 	               </div>
 	            </div>
+	            <div class="clearfix"></div>
+	            <div class="row mt-md">
+		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
+		            <input type="hidden" name="questionReponseTypeBo.validationRegex" id="validationRegexId" value="${questionnairesStepsBo.questionReponseTypeBo.validationRegex}">
+		                  <div class="col-md-12 col-lg-12 p-none">
+		                     <div class="gray-xs-f mb-xs">Special Validations<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span></div>
+		                     <div class="col-md-3 pl-none">
+			                     <div class="form-group">
+			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
+							         <option value=''>select</option>
+							         <option value="allow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
+							         <option value="disallow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
+							       </select>                    
+			                     </div>
+			                     <div class="help-block with-errors red-txt"></div>
+		                     </div>
+		                     <div class="col-md-3">
+			                     <div class="form-group">
+			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker">
+							         <option value=''>select</option>
+							         <option value="allcharacters" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
+							         <option value="alphabets" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
+							         <option value="numbers" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
+							         <option value="alphabetsandnumbers" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'alphabetsandnumbers' ? 'selected' :''}>alphabets and numbers</option>
+							         <option value="specialcharacters" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'specialcharacters' ? 'selected' :''}>special characters</option>
+							       </select>                    
+			                     </div>
+			                     <div class="help-block with-errors red-txt"></div>
+		                     </div>
+		                     <div class="col-md-1">
+			                     <div class="form-group">
+			    					<div class="mt-xs">except</div>
+			                     </div>
+		                     </div>
+		                     <div class="col-md-4">
+			                     <div class="form-group">
+			    					<textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId">${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea>
+			                     </div>
+			                     <div class="help-block with-errors red-txt"></div>
+		                     </div>
+		                     <div class="col-md-1">
+			    				<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
+		                     </div>
+		                  </div>
+		            </div>
+	            </div>
+	            <div class="clearfix"></div>
+	            <div class="row">
+	            	<div class="col-md-6 p-none">
+		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="requiredStar">*</span></div>
+		               <div class="form-group">
+		                  <textarea class="form-control TextRequired" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="Invalid Input. Please try again." maxlength="200" >${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.invalidMessage)}</textarea>
+		                  <div class="help-block with-errors red-txt"></div>
+		               </div>
+		            </div>
+	            </div>
            </div>
            <div id="Height" style="display: none">
            		<div class="mt-lg">
@@ -2463,6 +2519,7 @@ function getResponseType(id){
 			 }
 			 $("#timeIntervalStepId").val(1);
 			 $("#timeIntervalDefaultId").val("00:01");
+			 $("#invalidMessageId").val("Invalid Input. Please try again.");
 			// $("#scaleStepId").val(5);
 		     $("#textScalePositionId").val(2);
 		     $("#scaleDefaultValueId").val(1);
@@ -2723,10 +2780,24 @@ function saveQuestionStepQuestionnaire(item,callback){
 		var max_length = $("#textmaxLengthId").val();
 		var placeholderText = $("#textPlaceholderId").val(); 
 	    var multiple_lines = $('input[name="questionReponseTypeBo.multipleLines"]:checked').val();	
+	    
+	    var validation_condition = $("#validationConditionId").val();
+	    var validation_characters = $("#validationCharactersId").val();
+	    var validation_except_text =$("#validationExceptTextId").val();
+	    var validation_regex = $("#validationRegexId").val();
+	    var invalid_message = $("#invalidMessageId").val();
+	    
 			
 	    questionReponseTypeBo.maxLength = max_length;
 	    questionReponseTypeBo.placeholder = placeholderText;
 	    questionReponseTypeBo.multipleLines = multiple_lines;
+	    
+	    questionReponseTypeBo.validationCondition = validation_condition;
+	    questionReponseTypeBo.validationCharacters = validation_characters;
+	    questionReponseTypeBo.validationExceptText = validation_except_text;
+	    questionReponseTypeBo.validationRegex = validation_regex;
+	    questionReponseTypeBo.invalidMessage = invalid_message;
+	    
 	}else if(resType == "Height"){
 		var measurement_system = $('input[name="questionReponseTypeBo.measurementSystem"]:checked').val();
 		var placeholder_text = $("#heightPlaceholderId").val();

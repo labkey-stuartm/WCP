@@ -245,6 +245,7 @@ $(document).ready(function(){
 		var questionCount = $("#comprehension_list").find("tbody").find("tr").length;
 		if(value != '' && value != null && (value == 0 || parseInt(value) > parseInt(questionCount))){
 			$(this).val('');
+			$("#comprehensionTestMinimumScore").parent().addClass("has-danger").addClass("has-error");
 			$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
             $("#comprehensionTestMinimumScore").parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should not be more than no of questions or zero</li></ul>");
 		}else{
@@ -373,9 +374,8 @@ function markAsCompleted(){
 	var table = $('#comprehension_list').DataTable();
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
-	console.log(isFromValid("#comprehensionInfoForm"));
-	$("#comprehensionTestMinimumScore").trigger('blur');
 	if(needComprehensionTestTxt == "Yes"){
+		 $("#comprehensionTestMinimumScore").trigger('blur');
 		 if (!table.data().count() ) {
 		    $('#alertMsg').show();
 			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question !");

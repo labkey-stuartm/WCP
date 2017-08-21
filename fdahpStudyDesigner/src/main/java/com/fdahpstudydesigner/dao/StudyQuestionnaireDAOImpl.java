@@ -1868,6 +1868,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionsResponseTypeBo.getUseCurrentLocation() != null){
 					addOrUpdateQuestionsResponseTypeBo.setUseCurrentLocation(questionsResponseTypeBo.getUseCurrentLocation());
 				}
+				if(questionsResponseTypeBo.getValidationCondition() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationCondition())){
+					addOrUpdateQuestionsResponseTypeBo.setValidationCondition(questionsResponseTypeBo.getValidationCondition());
+				}
+				if(questionsResponseTypeBo.getValidationCharacters() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationCharacters())){
+					addOrUpdateQuestionsResponseTypeBo.setValidationCharacters(questionsResponseTypeBo.getValidationCharacters());
+				}
+				//if(questionsResponseTypeBo.getValidationExceptText() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationExceptText())){
+					addOrUpdateQuestionsResponseTypeBo.setValidationExceptText(questionsResponseTypeBo.getValidationExceptText());
+				//}
 				String fileName;
 				if(questionsResponseTypeBo.getMinImageFile() != null){
 					if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){

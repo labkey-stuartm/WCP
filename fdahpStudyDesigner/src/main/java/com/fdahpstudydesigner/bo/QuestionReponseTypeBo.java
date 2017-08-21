@@ -112,6 +112,15 @@ public class QuestionReponseTypeBo implements Serializable {
 	@Column(name="defalut_time")
 	private String defaultTime;
 	
+	@Column(name="validation_condition")
+	private String validationCondition;
+	
+	@Column(name="validation_characters")
+	private String validationCharacters;
+	
+	@Column(name="validation_except_text")
+	private String validationExceptText;
+	
 	@Transient
 	private MultipartFile minImageFile;
 	
@@ -364,6 +373,30 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setDefaultTime(String defaultTime) {
 		this.defaultTime = defaultTime;
+	}
+
+	public String getValidationCondition() {
+		return validationCondition;
+	}
+
+	public void setValidationCondition(String validationCondition) {
+		this.validationCondition = validationCondition;
+	}
+
+	public String getValidationCharacters() {
+		return validationCharacters;
+	}
+
+	public void setValidationCharacters(String validationCharacters) {
+		this.validationCharacters = validationCharacters;
+	}
+
+	public String getValidationExceptText() {
+		return validationExceptText;
+	}
+
+	public void setValidationExceptText(String validationExceptText) {
+		this.validationExceptText = validationExceptText;
 	}
 	
 }
