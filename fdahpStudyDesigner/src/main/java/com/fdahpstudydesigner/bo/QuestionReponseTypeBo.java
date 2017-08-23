@@ -121,6 +121,9 @@ public class QuestionReponseTypeBo implements Serializable {
 	@Column(name="validation_except_text")
 	private String validationExceptText;
 	
+	@Column(name="formula_based_logic")
+	private String formulaBasedLogic="No";
+	
 	@Transient
 	private MultipartFile minImageFile;
 	
@@ -397,6 +400,14 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setValidationExceptText(String validationExceptText) {
 		this.validationExceptText = validationExceptText;
+	}
+
+	public String getFormulaBasedLogic() {
+		return formulaBasedLogic;
+	}
+
+	public void setFormulaBasedLogic(String formulaBasedLogic) {
+		this.formulaBasedLogic = formulaBasedLogic;
 	}
 	
 }

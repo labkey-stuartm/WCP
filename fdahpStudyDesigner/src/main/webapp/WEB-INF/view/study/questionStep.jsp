@@ -209,7 +209,7 @@ function isNumberKey(evt)
 	               <label for="allowHealthKit"> Allow participant to optionally use HealthKit to provide answer <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="If you check this box, participants who are using the app on an iOS device will be presented with an option to provide data from Health as the answer to this question. Participants are allowed to edit  the answer before submitting it."></span></label>
 	               </span>
 	            </div>
-	            <div id="healthKitContainerId">
+	            <div id="healthKitContainerId" style="display: none">
 	            	<div class="col-md-4 p-none">
 		               <div class="gray-xs-f mb-xs">Select a HealthKit quantity data type <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" data-html=true title="- Please select the appropriate HealthKit data type as suited to the question<br>- Please note that only the most recent value available in HealthKit would be read by the app<br>- Access to HealthKit data is subject to the user providing permissions for the app to read the data"></span></div>
 		               <div class="form-group">

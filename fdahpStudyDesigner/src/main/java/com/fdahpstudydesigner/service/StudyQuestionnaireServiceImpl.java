@@ -858,6 +858,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						addQuestionsBo.setStatus(true);
 					}
 				}
+				/*if(questionnairesStepsBo.getQuestionConditionBranchBoList() != null && !questionnairesStepsBo.getQuestionConditionBranchBoList().isEmpty()){
+					
+				}*/
 				questionnairesStepsBo.setQuestionsBo(addQuestionsBo);
 			}
 			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo, sessionObject,customStudyId);

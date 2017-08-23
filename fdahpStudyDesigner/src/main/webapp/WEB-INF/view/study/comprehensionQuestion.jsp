@@ -130,7 +130,7 @@
 	      <div class="clearfix"></div>
       <!-- -->
       <div>
-         <div class="gray-xs-f mb-sm">Choose structure of the correct answer</div>
+         <div class="gray-xs-f mb-sm">Choose structure of the correct answer <span class="requiredStar">*</span></div>
          <div class="form-group">
             <span class="radio radio-info radio-inline p-45">
 	            <input type="radio" id="inlineRadio1" value="false" name="structureOfCorrectAns" ${!comprehensionQuestionBo.structureOfCorrectAns ? 'checked' : ''}>
