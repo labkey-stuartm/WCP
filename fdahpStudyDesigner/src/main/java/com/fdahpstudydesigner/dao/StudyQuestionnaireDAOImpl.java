@@ -1202,7 +1202,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									}
 								}
 							}
-							if(questionReponseTypeBo != null && questionReponseTypeBo.getFormulaBasedLogic().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
+							if(questionReponseTypeBo != null && questionReponseTypeBo.getFormulaBasedLogic() != null && questionReponseTypeBo.getFormulaBasedLogic().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 								List<QuestionConditionBranchBo> questionConditionBranchList = getQuestionConditionalBranchingLogic(session, questionsBo.getId());
 								questionnairesStepsBo.setQuestionConditionBranchBoList(questionConditionBranchList);
 							}
