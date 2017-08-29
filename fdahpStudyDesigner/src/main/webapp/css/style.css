@@ -1817,3 +1817,20 @@ height:0px !important;
 .i__phone__content{
 	text-align:center;
 } 
+.c__search{
+	border: 1px solid rgb(217, 217, 217);
+    border-radius: 2px;
+    padding:8px;
+    color: rgb(166, 174, 180);
+    font-weight: normal;
+    width: 170px !important;
+	height: 40px;
+	background-color: #fff !important;
+	background-image: url(../images/search.png) !important;
+	background-position: left 10px top 12px;
+	background-repeat: no-repeat;
+	text-indent: 5px;
+	padding-left: 30px;
+    text-align: left;
+    float: left;
+}

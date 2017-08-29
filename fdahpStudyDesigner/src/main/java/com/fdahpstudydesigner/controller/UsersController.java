@@ -54,6 +54,7 @@ public class UsersController {
 		String sucMsg = "";
 		String errMsg = "";
 		String ownUser = "";
+		List<RoleBO> roleList = null;
 		try{
 			if(FdahpStudyDesignerUtil.isSession(request)){
 				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
@@ -68,6 +69,8 @@ public class UsersController {
 				}
 				ownUser = (String) request.getSession().getAttribute("ownUser");
 				userList = usersService.getUserList();
+				roleList = usersService.getUserRoleList();
+				map.addAttribute("roleList", roleList);
 				map.addAttribute("userList", userList);
 				map.addAttribute("ownUser", ownUser);
 				mav = new ModelAndView("userListPage",map);
