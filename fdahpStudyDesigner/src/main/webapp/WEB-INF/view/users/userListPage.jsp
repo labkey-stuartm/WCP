@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 grayeef2f5-bg p-none">
      <div>
@@ -12,40 +13,34 @@
                 Manage Users
             </div>
              
-            <%--  <div class="dis-inline">
+             <div class="dis-inline">
               <form class="navbar-form" role="search">
+              <div class="form-group mb-none mt-xs">
                 <div class="input-group add-on">
-                  <input class="form-control selectpicker" placeholder="Search" name="srch-term" id="srch-term" type="text">
-                  <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                  </div>
+                  <input placeholder="Search" class="c__search"  type="text"> 
+                </div>
                 </div>
               </form>
-             </div> --%>
+             </div>
              
              <div class="dis-line pull-right ml-md">
-             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
-                 <div class="form-group mb-none mt-xs">
-                 	 <button type="button" class="btn btn-default gray-btn mr-sm" id="enforcePasswordId">Enforce Password Change</button>                 	
-                     <button type="button" class="btn btn-primary blue-btn addOrEditUser">Add User</button>
-                 </div>
-             </c:if>
+	             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
+	                 <div class="form-group mb-none mt-xs">
+	                 	 <button type="button" class="btn btn-default gray-btn mr-sm" id="enforcePasswordId">Enforce Password Change</button>                 	
+	                     <button type="button" class="btn btn-primary blue-btn addOrEditUser">Add User</button>
+	                 </div>
+	             </c:if>
              </div>
-            <!--  <div class="text-center"> 
-       			<div class="" id="alertMsg">YES</div>
-        	 </div> -->
-            
-            <!--  <div class="dis-line pull-right">
-              <div class="form-group mb-none mt-sm">
-                  <select class="form-control selectpicker btn-md" id="sel1">
-                    <option disabled selected>Filter by Role</option>
-                    <option>Project Lead</option>
-                    <option>Coordinator</option>
-                    <option>Recruiter</option>
-                    <option>Project Lead</option>
-                  </select>
+             <div class="dis-line pull-right">
+              	<div class="mb-none mt-xs">
+                  <select class="selectpicker btn-md" id="filterRole">
+                    <option value="" selected>Filter by Role</option>
+                    <c:forEach items="${roleList}" var="role">
+                        <option value="${role.roleName}">${role.roleName}</option>
+                     </c:forEach>
+                    </select>
                 </div>
-             </div> -->
+             </div>
                       
          </div>         
     </div>
@@ -65,7 +60,8 @@
             </thead>
             <tbody>
             <c:forEach items="${userList}" var="user">
-              <tr>
+              <tr <c:if test="${fn:contains(aspList.capability , 'Project Lead' )}"> plRow </c:if>
+              <c:if test="${fn:contains(aspList.capability , 'Coordinator' )}"> cRow </c:if>>
                 <td><div class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</div></td>
                 <td>
                 	<div class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</div>
@@ -109,8 +105,6 @@
 	<input type="hidden" id="checkViewRefreshFlag" name="checkViewRefreshFlag">
 </form:form>
 
-<%-- <form:form action="/fdahpStudyDesigner/adminUsersEdit/forceLogOut.do" id="forceLogOutForm" name="forceLogOutForm" method="post">
-</form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#rowId').parent().removeClass('#white-bg');
@@ -143,23 +137,6 @@ $(document).ready(function(){
 			$('#checkViewRefreshFlag').val('Y');
 			$('#viewUserForm').submit();
 	});
-
-    //datatable icon toggle
-   /*  $("#user_list thead tr th").click(function(){
-      $(this).children().removeAttr('class')
-      $(this).siblings().children().removeAttr('class').addClass('sort');    
-      if($(this).attr('class') == 'sorting_asc'){
-        $(this).children().addClass('asc'); 
-        //alert('asc');
-      }else if($(this).attr('class') == 'sorting_desc'){
-       $(this).children().addClass('desc');
-        //alert('desc');
-      }else{
-        $(this).children().addClass('sort');
-      }
-    }); */
-    
-	  
     
 	    $('#enforcePasswordId').on('click',function(){
 	    	bootbox.confirm({
@@ -204,21 +181,31 @@ $(document).ready(function(){
 	    	
 	     });
 	
-
-		 //User_List page Datatable
-		    $('#user_list').DataTable({
-		        "paging":   true,
-		        "aoColumns": [
-		           { "bSortable": true },
-		           { "bSortable": true },
-		           { "bSortable": true },
-		           { "bSortable": false }
-		          ],  
-		        "info" : false, 
-		        "lengthChange": false, 
-		        "searching": false, 
-		        "pageLength": 15 
-		    });
+  //User_List page Datatable
+    table = $('#user_list').DataTable({
+        "paging":   true,
+        "searching": true,
+        "filter": true,
+        "info" : false, 
+        "sDom": '"top"i',
+        "aoColumns": [
+           { "bSortable": true },
+           { "bSortable": true },
+           { "bSortable": true },
+           { "bSortable": false }
+          ],  
+        "lengthChange": false, 
+        "pageLength": 15 
+    });
+  
+    $('.c__search').on('keyup',function(){
+	      table.search($(this).val().replace(/(["])/g, "\ $1")).draw() ;
+	}); 
+ 
+     $('#filterRole').on('change',function(){
+		var selected = $(this).find("option:selected").val();
+		table.column(2).search(selected).draw();
+     });
 });
 
 
