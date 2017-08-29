@@ -99,11 +99,11 @@
 		                	<div class="gray-xs-f mb-sm">Allow user to proceed if permission not provided</div>
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
-	                                <input type="radio" id="allowWithoutPermissionYes" value="Yes" name="allowWithoutPermission" ${empty consentBo.allowWithoutPermission || consentBo.allowWithoutPermission eq 'Yes' ? 'checked' : ''}>
+	                                <input type="radio" id="allowWithoutPermissionYes"  name="allowWithoutPermission" ${empty consentBo.allowWithoutPermission || consentBo.allowWithoutPermission eq 'Yes' ? 'checked' : ''} value="Yes">
 	                                <label for="allowWithoutPermissionYes">Yes</label>
 	                            </span>
 	                            <span class="radio radio-inline">
-	                                <input type="radio" id="allowWithoutPermissionNo" value="No" name="allowWithoutPermission" ${consentBo.allowWithoutPermission eq 'No' ? 'checked' : ''}>
+	                                <input type="radio" id="allowWithoutPermissionNo"  name="allowWithoutPermission" ${consentBo.allowWithoutPermission eq 'No' ? 'checked' : ''} value="No">
 	                                <label for="allowWithoutPermissionNo">No</label>
 	                            </span>
 	                        </div>
@@ -400,15 +400,20 @@ $(document).ready(function(){
 		if(shareDataPermissions == '' || shareDataPermissions == 'No'){
 			console.log("ifff");
 			$('#rootContainer input').val('');
-			$('#allowWithoutPermissionYes').attr('checked',true);
+			$('#allowWithoutPermissionYes').val("Yes");
+			$('#allowWithoutPermissionYes').prop("checked",true);
 			$('#learnMoreTextId').val('');
 			$('#longDescriptionId').val('');
 			$('#learnMoreTextId').attr('required',false);
+			$('.requiredClass').attr('required',false);
 			newLearnMoreConsentDocument();
 			$("#rootContainer").hide();
 			//tinymce.get('learnMoreTextId').setContent('');
 		}else{
+			$('.requiredClass').attr('required',true);
 			$('#learnMoreTextId').attr('required',true);
+			$('#allowWithoutPermissionYes').val("Yes");
+			$('#allowWithoutPermissionYes').prop("checked",true);
 			newLearnMoreConsentDocument();
 		} 
 	}
