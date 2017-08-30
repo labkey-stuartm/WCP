@@ -229,8 +229,8 @@
 				<tbody>
 					<c:forEach items="${userList}" var="user">
 							<tr id="user${user.userId}" class="checkCount">
-								<td>
-									<span class="checkbox checkbox-inline">
+								<td style="position: inherit;">
+									<span class="checkbox checkbox-inline" style="padding-top: 5px;">
                             			<input type="checkbox" class="addAdminCheckbox" id="inlineCheckboxNew${user.userId}" name="case" value="${fn:escapeXml(user.userFullName)}" userId="${user.userId}">
                             			<label for="inlineCheckboxNew${user.userId}"></label>
                       				</span>
