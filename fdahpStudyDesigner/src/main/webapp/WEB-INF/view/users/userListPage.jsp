@@ -9,15 +9,17 @@
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
          
-            <div class="black-lg-f">
+            <div class="black-lg-f" style="margin-top: 0px">
                 Manage Users
             </div>
              
-             <div class="dis-inline">
+             <div class="dis-inline" style="margin-top: 8px">
               <form class="navbar-form" role="search">
               <div class="form-group mb-none mt-xs">
                 <div class="input-group add-on">
-                  <input placeholder="Search" class="c__search"  type="text"> 
+                  <input placeholder="Search" class="c__search"  type="text" style="height: auto;
+padding: 4px 20px;
+background-position: left 7px top 6px;"> 
                 </div>
                 </div>
               </form>
@@ -26,12 +28,12 @@
              <div class="dis-line pull-right ml-md">
 	             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
 	                 <div class="form-group mb-none mt-xs">
-	                 	 <button type="button" class="btn btn-default gray-btn mr-sm" id="enforcePasswordId">Enforce Password Change</button>                 	
-	                     <button type="button" class="btn btn-primary blue-btn addOrEditUser">Add User</button>
+	                 	 <button type="button" class="btn btn-default gray-btn mr-sm" id="enforcePasswordId" style="margin-top: 12px;">Enforce Password Change</button>                 	
+	                     <button type="button" class="btn btn-primary blue-btn addOrEditUser" style="margin-top: 12px;">Add User</button>
 	                 </div>
 	             </c:if>
              </div>
-             <div class="dis-line pull-right">
+             <div class="dis-line pull-right" style="margin-top: 10px;height: auto;">
               	<div class="mb-none mt-xs">
                   <select class="selectpicker btn-md" id="filterRole">
                     <option value="" selected>Filter by Role</option>
