@@ -18,8 +18,8 @@
               <div class="form-group mb-none mt-xs">
                 <div class="input-group add-on">
                   <input placeholder="Search" class="c__search"  type="text" style="height: auto;
-padding: 4px 20px;
-background-position: left 7px top 6px;"> 
+						 padding: 4px 20px;
+						 background-position: left 7px top 6px;"> 
                 </div>
                 </div>
               </form>
