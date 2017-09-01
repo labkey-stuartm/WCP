@@ -90,6 +90,7 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 var isValid = false;
+var oldShortTitle= "${fn:escapeXml(eligibilityTest.shortTitle)}";
 $(document).ready(function(){
 	
 	  $(".menuNav li.active").removeClass('active');
@@ -101,9 +102,10 @@ $(document).ready(function(){
       </c:if>
       
 	$("#shortTitleId").blur(function(){
-		validateShortTitle(this, function(val){
-			
-		});
+		if($(this).val() != oldShortTitle)
+			validateShortTitle(this, function(val){
+				
+			});
     });
 	$('[data-toggle="tooltip"]').tooltip();
 	$("#doneId").click(function(){
@@ -166,8 +168,9 @@ function validateShortTitle(item, callback){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
                         $(thisAttr).parent().find(".help-block").html("");
+                        oldShortTitle = shortTitle;
                         callback(true);
-                    }else{
+                    } else {
                         $(thisAttr).val('');
                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                         $(thisAttr).parent().find(".help-block").empty();
