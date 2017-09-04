@@ -35,7 +35,7 @@
                             <tr>
                                 <th>Title</th>  
                                 <th class="linkDis">Status</th>                             
-                                <th>
+                                <th class="text-right">
                                     <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
                                          <button type="button" class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">Add Notification</button>
@@ -47,9 +47,9 @@
                         <tbody>
                         	<c:forEach items="${notificationList}" var="studyNotification">
 	                            <tr id="${studyNotification.notificationId}">
-	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
-	                                <td>${studyNotification.checkNotificationSendingStatus}</td>
-	                                <td>
+	                                <td width="60%"><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
+	                                <td class="wid20">${studyNotification.checkNotificationSendingStatus}</td>
+	                                <td class="wid20 text-right">
 	                                	<span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
 	                                	<c:if test="${studyNotification.notificationSent}">
 	                                    	<span class="sprites-icons-2 send mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="Resend"></span>

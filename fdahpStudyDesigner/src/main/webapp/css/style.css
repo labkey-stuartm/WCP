@@ -1834,3 +1834,15 @@ height:0px !important;
     text-align: left;
     float: left;
 }
+
+.wid50{
+	width: 50%;
+}
+
+.wid20{
+	width: 20%;
+}
+
+option:first-child {
+  color: #ccc;
+}
