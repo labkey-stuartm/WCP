@@ -37,15 +37,15 @@
 	       <div class="mb-xlg form-group" id="eligibilityOptDivId">
 	            <div class="gray-xs-f mb-sm">Choose the method to be used for ascertaining participant eligibility</div>
 	            <span class="radio radio-info radio-inline p-45">
-	               <input type="radio" id="inlineRadio1" value="1" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 1}">checked</c:if>>
+	               <input type="radio" id="inlineRadio1" value="1" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 1 || lastEligibilityOpt eq '1'}">checked</c:if>>
 	               <label for="inlineRadio1">Token Validation Only</label>
 	           </span>
 	           <span class="radio radio-inline p-45">
-	               <input type="radio" id="inlineRadio2" value="2" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 2}">checked</c:if>>
+	               <input type="radio" id="inlineRadio2" value="2" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 2 || lastEligibilityOpt eq '2'}">checked</c:if>>
 	               <label for="inlineRadio2">Token Validation and Eligibility Test</label>
 	           </span>
 	             <span class="radio radio-inline">
-	               <input type="radio" id="inlineRadio3" value="3" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 3}">checked</c:if>>
+	               <input type="radio" id="inlineRadio3" value="3" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 3 || lastEligibilityOpt eq '3'}">checked</c:if>>
 	               <label for="inlineRadio3">Eligibility Test Only</label>
 	           </span>
 	           <div class="help-block with-errors red-txt"></div>
@@ -69,7 +69,7 @@
 		          <div class="black-md-f  dis-line pull-left line34">Eligibility Test</div>
 		          <div class="dis-line form-group mb-none mr-sm">
 		          	<c:if test="${empty permission}">
-		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" ${eligibility.eligibilityMechanism eq 1 ? 'disabled' : ''}>+ Add QA</button>
+		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" >+ Add QA</button>
 		          	</c:if>
 		          </div>
 				</div>
@@ -219,16 +219,16 @@
 		});
 		
 		$('#eligibilityOptDivId input[type=radio]').change(function() {
-			if($(this).val() != '1' && eligibilityMechanism != $(this).val()) {
-				$('#doneBut, #addQaId').prop('disabled', true);
-				$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
-			} else {
-				$('#doneBut, #addQaId').prop('disabled', false);
-				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
-				if(!chkDone && $(this).val() != '1') {
-					$('#doneBut').prop('disabled', true);
-				}
-			}
+// 			if($(this).val() != '1' && eligibilityMechanism != $(this).val()) {
+// 				$('#doneBut, #addQaId').prop('disabled', true);
+// 				$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
+// 			} else {
+// 				$('#doneBut, #addQaId').prop('disabled', false);
+// 				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
+// 				if(!chkDone && $(this).val() != '1') {
+// 					$('#doneBut').prop('disabled', true);
+// 				}
+// 			}
 			if($('#inlineRadio1:checked').length > 0 ) {
 				$('#eligibilityQusDivId').slideUp('fast') ;
 				$('#instructionTextDivId').slideDown('fast');
@@ -261,6 +261,12 @@
 		input.setAttribute('type',"hidden");
 		input.setAttribute('name', 'eligibilityId');
 		input.setAttribute('value',"${eligibility.id}");
+		form.append(input);
+		
+		input = document.createElement("input");
+		input.setAttribute('type',"hidden");
+		input.setAttribute('name', 'lastEligibilityOpt');
+		input.setAttribute('value', $('.eligibilityOptCls:checked').val());
 		form.append(input);
 		
 		form.submit();
