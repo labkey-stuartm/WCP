@@ -84,17 +84,24 @@
 			            </tr>
 			         </thead>
 			         <tbody>
+			         <c:set value="true" var="chkDone" />
 			        	<c:forEach items="${eligibilityTestList}" var="etQusAns">
 				            <tr id="">
 				                <td>${etQusAns.sequenceNo}</td>
 				                <td>${etQusAns.question}</td>
 				                <td>
-				                	<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" ></span>
+				                	<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="${etQusAns.id}" ></span>
 				                    <span class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId='${etQusAns.id}'></span>
 				                    <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns('${etQusAns.id}', this);"></span>
 				                </td>
 				        	</tr>
+				        	<c:if test="${chkDone eq 'true' && not etQusAns.status}">
+				        		<c:set value="false" var="chkDone" />
+				        	</c:if>
 			        	</c:forEach>
+			        	<c:if test="${empty eligibilityTestList}">
+			        		<c:set value="false" var="chkDone" />
+			        	</c:if>
 	        		</tbody>
 	   			</table>
 		    </div>
@@ -105,6 +112,7 @@
 <script type="text/javascript">
 	var viewPermission = "${permission}";
 	var permission = "${permission}";
+	var chkDone = ${chkDone};
 	var eligibilityMechanism = '${eligibility.eligibilityMechanism}';
 	console.log("viewPermission:"+viewPermission);
 	var reorder = true;
@@ -114,9 +122,12 @@
 	   $(".menuNav li.fourth").addClass('active');
 	   
 	   <c:if test="${not empty permission}">
-       $('#eleFormId input,textarea,select').prop('disabled', true);
-       $('#eleFormId').find('.elaborateClass').addClass('linkDis');
+	       $('#eleFormId input,textarea,select').prop('disabled', true);
+	       $('#eleFormId').find('.elaborateClass').addClass('linkDis');
       </c:if>
+      if((!chkDone) && eligibilityMechanism != "1") {
+    	  $('#doneBut').prop('disabled', true);
+      }
       initActions();
 	   $('.submitEle').click(function(e) {
 		   e.preventDefault();
@@ -214,16 +225,19 @@
 			} else {
 				$('#doneBut, #addQaId').prop('disabled', false);
 				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
+				if(!chkDone && $(this).val() != '1') {
+					$('#doneBut').prop('disabled', true);
+				}
 			}
 			if($('#inlineRadio1:checked').length > 0 ) {
-				$('#eligibilityQusDivId').hide();
-				$('#instructionTextDivId').show();
+				$('#eligibilityQusDivId').slideUp('fast') ;
+				$('#instructionTextDivId').slideDown('fast');
 			} else if($('#inlineRadio3:checked').length > 0 ) {
-				$('#instructionTextDivId').hide();
-				$('#eligibilityQusDivId').show();
+				$('#instructionTextDivId').slideUp('fast') ;
+				$('#eligibilityQusDivId').slideDown('fast');
 			} else {
-				$('#eligibilityQusDivId').show();
-				$('#instructionTextDivId').show();
+				$('#eligibilityQusDivId').slideDown('fast') ;
+				$('#instructionTextDivId').slideDown('fast');
 			}
 		})
 		
@@ -275,6 +289,10 @@
 								    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 								}
 		    					reloadEligibiltyTestDataTable(data.eligibiltyTestList);
+		    					if($('#consent_list tbody tr').length == 1 && $('#consent_list tbody tr td').length == 1) {
+		    						chkDone = false;
+		    						$('#doneBut').prop('disabled', true);
+		    					}
 		    				} else {
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 		    					$('#alertMsg').show();

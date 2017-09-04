@@ -4195,7 +4195,7 @@ public class StudyDAOImpl implements StudyDAO{
 							FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
 					.setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId)
 					.uniqueResult();
-			if (studySequence != null && !studySequence.isEligibility()) {
+			if (studySequence != null && studySequence.isEligibility()) {
 				studySequence.setEligibility(false);
 				session.update(studySequence);
 			}
@@ -4292,7 +4292,7 @@ public class StudyDAOImpl implements StudyDAO{
 								FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
 						.setInteger(FdahpStudyDesignerConstants.STUDY_ID,
 								studyId).uniqueResult();
-				if (studySequence != null && !studySequence.isEligibility()) {
+				if (studySequence != null && studySequence.isEligibility()) {
 					studySequence.setEligibility(false);
 					session.update(studySequence);
 				}
@@ -4465,7 +4465,7 @@ public class StudyDAOImpl implements StudyDAO{
 									FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
 							.setInteger(FdahpStudyDesignerConstants.STUDY_ID,
 									studyId).uniqueResult();
-					if (studySequence != null && !studySequence.isEligibility()) {
+					if (studySequence != null && studySequence.isEligibility()) {
 						studySequence.setEligibility(false);
 						session.update(studySequence);
 					}
