@@ -145,7 +145,7 @@
 			<table id="studyAdminsTable" class="display bor-none" cellspacing="0" width="80%">
 				<thead>
 					<tr>
-						<th>Admins</th>
+						<th>&nbsp;&nbsp;&nbsp;Admins</th>
 						<th>View</th>
 						<th>View & Edit</th>
 						<th>Project Lead</th>

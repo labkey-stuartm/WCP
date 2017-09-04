@@ -52,7 +52,7 @@
 				<thead>
 					<tr>
 						<th>RESOURCE TITLE</th>
-						<th><c:if test="${empty permission}">
+						<th class="text-right"><c:if test="${empty permission}">
 								<div class="dis-line form-group mb-none mr-sm">
 									<button type="button" id="studyProtocolId"
 										class="btn btn-primary blue-btn"
@@ -72,8 +72,8 @@
 					<c:forEach items="${resourceBOList}" var="resourceInfo">
 						<c:if test="${not resourceInfo.studyProtocol}">
 							<tr id="row${resourceInfo.id}">
-								<td>${resourceInfo.title}</td>
-								<td><span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View"   id="viewRes"
+								<td class="wid50">${resourceInfo.title}</td>
+								<td class="wid50 text-right"><span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View"   id="viewRes"
 									onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
 									class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
 									data-toggle="tooltip" data-placement="top" title="Edit" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
