@@ -370,7 +370,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String NUMBERS = "numbers";
 	public static final String ALPHABETSANDNUMBERS = "alphabetsandnumbers";
 	public static final String SPECIALCHARACTERS = "specialcharacters";
-	
+	public static final String PLATFORM_ACTIVETASK_ERROR_MSG_ANDROID = "One or more Activetask have type that are not supported for the selected platform(s). Please correct the same and try again. Note that there is Help Text available on this page that explains differences in supported features for iOS vs. Android.";
 	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

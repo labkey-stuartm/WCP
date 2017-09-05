@@ -3274,6 +3274,40 @@ public class StudyController {
                 logger.info("StudyController - deleteEligibiltyTestQusAns - Ends");
             }
    
-
+            /**
+    		 * @author Ronalin
+    		 * @param request
+    		 * @param response
+    		 * This method is used to validate the activetaskType for android platform  
+    		 */
+    		@RequestMapping(value="/adminStudies/studyPlatformValidationforActiveTask",method = RequestMethod.POST)
+    		public void studyPlatformValidationforActiveTask(HttpServletRequest request ,HttpServletResponse response){
+    			logger.info("StudyController - studyPlatformValidation() - Starts");
+    			JSONObject jsonobject = new JSONObject();
+    			PrintWriter out = null;
+    			String message = FdahpStudyDesignerConstants.FAILURE;
+    			String errorMessage = "";
+    			try{
+    				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+    				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+    				if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+    					String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+    					if(StringUtils.isEmpty(studyId)){
+    						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+    					}
+    					message = studyService.checkActiveTaskTypeValidation(Integer.parseInt(studyId));	
+    					if(message.equals(FdahpStudyDesignerConstants.SUCCESS))
+    						errorMessage = FdahpStudyDesignerConstants.PLATFORM_ACTIVETASK_ERROR_MSG_ANDROID;
+    				}
+    				jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+    				jsonobject.put("errorMessage", errorMessage);
+    				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+    				out = response.getWriter();
+    				out.print(jsonobject);
+    			}catch(Exception e){
+    				logger.error("StudyController - studyPlatformValidation() - ERROR",e);
+    			}
+    			logger.info("StudyController - studyPlatformValidation() - Ends");
+    		}
 
 }

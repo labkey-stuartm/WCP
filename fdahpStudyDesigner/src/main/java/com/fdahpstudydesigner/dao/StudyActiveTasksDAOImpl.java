@@ -5,6 +5,7 @@ package com.fdahpstudydesigner.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -501,13 +502,17 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ActiveTaskListBo> getAllActiveTaskTypes() {
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType) {
 		logger.info("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - Starts");
 		Session session = null;
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("from ActiveTaskListBo");
+			if(StringUtils.isNotEmpty(platformType) && platformType.contains("A"))
+			  queryString = "from ActiveTaskListBo a where a.taskName not in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"')";
+			else
+			  queryString = "from ActiveTaskListBo";
+			query = session.createQuery(queryString);
 			activeTaskListBos = query.list();
 		}catch(Exception e){
 			logger.error("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - ERROR " , e);

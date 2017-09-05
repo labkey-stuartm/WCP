@@ -1542,5 +1542,17 @@ public class StudyServiceImpl implements StudyService {
   		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Ends");
   		return studyPermissionList;
   	}
-
+	
+	/**
+	 * @author Ronalin
+	 * @param Integer : studyId
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to validate the activetaskType for android platform 
+	 */
+	@Override
+	public String checkActiveTaskTypeValidation(Integer studyId) {
+		logger.info("StudyServiceImpl - checkActiveTaskTypeValidation - Starts");
+		return studyDAO.checkActiveTaskTypeValidation(studyId);
+	}
 }

@@ -298,11 +298,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	 *  This method used to get all type of activeTask
 	 */
 	@Override
-	public List<ActiveTaskListBo> getAllActiveTaskTypes(){
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType){
 		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Starts");
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
 		try {
-			activeTaskListBos = studyActiveTasksDAO.getAllActiveTaskTypes();
+			activeTaskListBos = studyActiveTasksDAO.getAllActiveTaskTypes(platformType);
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - ERROR ", e);
 		}

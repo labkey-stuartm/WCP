@@ -1192,7 +1192,8 @@ function saveActiveTask(item, actType, callback){
 	if(study_id && isFormValid){
 		if(actType !=='save'){
 			console.log("inside schedule");
-			if(frequency_text == 'One time' || frequency_text == 'Daily' || frequency_text == 'Manually Schedule'){
+			var activetaskType = $('#targetOptionId').val();
+			if(activetaskType && parseInt(activetaskType) == 1 && frequency_text == 'One time' || frequency_text == 'Daily' || frequency_text == 'Manually Schedule'){
 				if(frequency_text == 'One time')
 		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
 		    	if(frequency_text == 'Daily' || frequency_text == 'Manually Schedule')

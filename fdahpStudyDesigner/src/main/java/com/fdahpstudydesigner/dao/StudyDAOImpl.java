@@ -5509,4 +5509,36 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getSuperAdminUserIds() - Ends");
 		return superAdminUserIds;
 	}
+	
+	/**
+	 * @author Ronalin
+	 * @param Integer : studyId
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to validate the activetaskType for android platform 
+	 */
+	@Override
+	public String checkActiveTaskTypeValidation(Integer studyId) {
+		logger.info("StudyDAOImpl - checkActiveTaskTypeValidation() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "select count(*) from active_task a" 
+                +" where a.study_id=379 and a.task_type_id" 
+                +" in(select c.active_task_list_id from active_task_list c where c.task_name in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"'));";
+			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			if(count!=null && count.intValue() > 0){	
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}	
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - checkActiveTaskTypeValidation() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - checkActiveTaskTypeValidation() - Ends");
+		return message;
+	}
 }

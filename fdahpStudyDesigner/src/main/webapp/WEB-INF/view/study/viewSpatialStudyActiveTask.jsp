@@ -1391,7 +1391,7 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
         }
     });
-    $("#maximumtestId, #maximumFailureId").keyup(function(){	
+    $("#maximumtestId").keyup(function(){	
     	var value= $(this).val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
@@ -1402,6 +1402,25 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
     	}
     });
+    $("#maximumFailureId").keyup(function(){	
+    	var value= $(this).val();
+    	var maxmimunTestVal = $('#maximumtestId').val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(parseInt($(this).val()) < 1){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+    	}
+    	if(maxmimunTestVal && parseInt($(this).val()) > parseInt(maxmimunTestVal)){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+    	}
+    });
+    
 	$("#shortTitleId").blur(function(){
     	  validateShortTitleId('',function(val){});
     })
