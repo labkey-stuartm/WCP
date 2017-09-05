@@ -1576,6 +1576,13 @@ function isNumberKey(evt)
 				</c:choose>
 			</div>
          </div>
+         
+         <!-- Numeric Open Response  -->
+         
+         <div>
+         
+         </div>
+         
          </div>
         </div> 
       </div>
