@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +58,6 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * 
@@ -5412,6 +5410,7 @@ public class StudyDAOImpl implements StudyDAO{
 		return flag;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
     public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId) {
 		logger.info("StudyDAOImpl - getActiveNonAddedUserList() - Starts");
@@ -5425,6 +5424,8 @@ public class StudyDAOImpl implements StudyDAO{
 					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 1 "
 					+ "AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
+					+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
+					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "
 					+ "AND u.user_id <> "+userId);
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
