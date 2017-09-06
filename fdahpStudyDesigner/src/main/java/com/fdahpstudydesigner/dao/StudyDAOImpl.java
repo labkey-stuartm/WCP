@@ -4258,6 +4258,7 @@ public class StudyDAOImpl implements StudyDAO{
 		EligibilityTestBo eligibilityTestBo;
 		List<EligibilityTestBo> eligibilityTestBos;
 		StringBuilder sb = null;
+		StudyBo studyBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
@@ -4265,10 +4266,17 @@ public class StudyDAOImpl implements StudyDAO{
 					.getNamedQuery("EligibilityTestBo.findById")
 					.setInteger("eligibilityTestId", eligibilityTestId)
 					.uniqueResult();
-			eligibilityDeleteResult = session
-					.getNamedQuery("EligibilityTestBo.deleteById")
-					.setInteger("eligibilityTestId", eligibilityTestId)
-					.executeUpdate();
+			studyBo = this.getStudyById(String.valueOf(studyId), sessionObject.getUserId());
+			
+			if(null != studyBo && studyBo.getStatus().contains(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH)) {
+				session.delete(eligibilityTestBo);
+				eligibilityDeleteResult = 1;
+			} else {
+				eligibilityDeleteResult = session
+						.getNamedQuery("EligibilityTestBo.deleteById")
+						.setInteger("eligibilityTestId", eligibilityTestId)
+						.executeUpdate();
+			}
 			sb = new StringBuilder();
 			sb.append("select id FROM EligibilityTestBo  WHERE sequenceNo > '")
 					.append(eligibilityTestBo.getSequenceNo())
