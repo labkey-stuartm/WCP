@@ -261,9 +261,11 @@ $(document).ready(function(){
 	}
 	
 	//auto select if consent Id is empty
-	var consentId = "${consentBo.id}";
+	//var consentId = "${consentBo.id}";
+	
+	var consentId = "${consentBo.consentDocType}";
 	console.log(consentId);
-	if( consentId == null || consentId == '' || typeof consentId === undefined){
+	if( consentId == null || consentId == '' || typeof consentId === 'undefined'){
 		$("#inlineRadio1").attr('checked', true);
 		$("#version").val('1.0');
 	}

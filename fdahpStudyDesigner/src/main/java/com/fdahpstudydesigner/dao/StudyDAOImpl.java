@@ -976,6 +976,9 @@ public class StudyDAOImpl implements StudyDAO{
 						if(studySequence.iseConsent()){
 							studySequence.seteConsent(false);
 						}
+						if(studySequence.isComprehensionTest()){
+							studySequence.setComprehensionTest(false);
+						}
 					}else{
 						studySequence = new StudySequenceBo();
 						studySequence.setConsentEduInfo(false);
@@ -986,6 +989,9 @@ public class StudyDAOImpl implements StudyDAO{
 					consentInfoBo.setStatus(true);
 					if(studySequence.iseConsent()){
 						studySequence.seteConsent(false);
+					}
+					if(studySequence.isComprehensionTest()){
+						studySequence.setComprehensionTest(false);
 					}
 				}
 				session.saveOrUpdate(studySequence);
