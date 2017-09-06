@@ -213,6 +213,7 @@ function addAns(){
 		console.log("else");
 	}
 	$('.selectpicker').selectpicker('refresh');
+	$('#'+ansCount).find('input:first').focus();
 }
 function removeAns(param){
     $(param).parents(".ans-opts").remove();

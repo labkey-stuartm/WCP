@@ -3139,6 +3139,7 @@ function addValuePicker(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	$('#'+count).find('input:first').focus();
 }
 function removeValuePicker(param){
 	if($('.value-picker').length > 2){
@@ -3211,6 +3212,7 @@ function addTextScale(){
 	}
 	
   }
+  $('#'+scaleCount).find('input:first').focus();
 }
 function removeTextScale(param){
 	if($('.text-scale').length > 2){
@@ -3300,7 +3302,7 @@ function addTextChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	
+	$('#'+choiceCount).find('input:first').focus();
 }
 function removeTextChoice(param){
 	if($('.text-choice').length > 2){
@@ -3385,7 +3387,7 @@ function addImageChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	
+	$('#'+imageCount).find('input:first').focus();
 }
 function removeImageChoice(param){
 	if($('.image-choice').length > 2){
