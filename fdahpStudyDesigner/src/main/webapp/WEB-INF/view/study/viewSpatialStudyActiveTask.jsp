@@ -1823,7 +1823,7 @@ $(document).ready(function(){
   				 					}
   				 			      }) 
   			    		  }else{
-  			    			  alert("Not");
+  			    			 // alert("Not");
   			    			  $("#saveId").attr("disabled",false);
   							  $("body").removeClass('loading');
   							  showErrMsg("Please fill in all mandatory fields.");
