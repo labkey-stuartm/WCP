@@ -843,6 +843,7 @@ function addTime(){
 	$('#time'+count).val("");
 	var flag = 'schedule';
 	setFrequencyVal(flag);
+	$('#'+count).find('input:first').focus();
 }
 function removeTime(param){
     $(param).parents(".time-opts").remove();
@@ -891,6 +892,7 @@ function addDate(){
 	customEndDate('EndDate'+customCount,customCount);
 	timep('customTime'+customCount);
 	$('#customTime'+customCount).val("");
+	$('#'+customCount).find('input:first').focus();
 }
 function removeDate(param){
     $(param).parents(".manually-option").remove();
