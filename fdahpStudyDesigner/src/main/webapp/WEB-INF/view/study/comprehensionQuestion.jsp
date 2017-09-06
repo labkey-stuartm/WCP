@@ -52,11 +52,11 @@
 	         	   	<div class='col-md-6 pl-none'>
 				         <div class="gray-xs-f mb-xs">Answer Options (1 to 150 characters)<span class="requiredStar">*</span></div>
 				       </div> 
-				        <div class='col-md-2'>
+				        <div class='col-md-3'>
 					       	   <div class="gray-xs-f mb-xs">Correct Answer <span class="requiredStar">*</span></div>
 					    </div>
 					    
-					    <div class="col-md-4">
+					    <div class="col-md-3">
 				       		<div class="gray-xs-f mb-xs">&nbsp;</div>
 				       	</div>	
 				       	<div class="clearfix"></div>
@@ -68,9 +68,9 @@
 					       	 <div class='help-block with-errors red-txt'></div>
 					       </div>
 			           </div>
-				       <div class='col-md-2'>
+				       <div class='col-md-3'>
 					     <div class="form-group">
-							       <select class='selectpicker wid100' title='Select' name="responseList[0].correctAnswer" id="correctAnswerId0" required>
+							       <select class='selectpicker wid100'  name="responseList[0].correctAnswer" id="correctAnswerId0" required data-error='Please choose one option'>
 								       <option value=''>Select</option>
 								       <option value="true">Yes</option>
 								       <option value="false">No</option>
@@ -78,7 +78,7 @@
 							       <div class='help-block with-errors red-txt'></div>
 						       </div>  	   
 				       </div>
-				       <div class="col-md-4 pl-none">
+				       <div class="col-md-3 pl-none">
 				       		<div class="clearfix"></div>
 				       		<div class="mt-xs formgroup"> 
 				       			<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addAns();'>+</span>
@@ -109,9 +109,9 @@
 						       	 <div class='help-block with-errors red-txt'></div>
 						       </div>
 				           </div>
-					       <div class='col-md-2'>
+					       <div class='col-md-3'>
 						   <div class="form-group">
-								       <select class='selectpicker wid100' title='Select' required  name="responseList[${responseBoVar.index}].correctAnswer" id="correctAnswerId${responseBoVar.index}">
+								       <select class='selectpicker wid100' required  data-error='Please choose one option' name="responseList[${responseBoVar.index}].correctAnswer" id="correctAnswerId${responseBoVar.index}">
 									       <option value=''>Select</option>
 									       <option value="true" ${responseBo.correctAnswer ? 'selected':''}>Yes</option>
 									       <option value="false" ${responseBo.correctAnswer eq false ? 'selected':''}>No</option>
@@ -119,7 +119,7 @@
 								       <div class='help-block with-errors red-txt'></div>
 							       </div>  	   
 					       </div>
-					       <div class="col-md-4 pl-none">
+					       <div class="col-md-3 pl-none">
 					       		<div class="clearfix"></div>
 					       		<div class="mt-xs formgroup"> 
 					       			<span class="addBtnDis study-addbtn ml-none" onclick='addAns();'>+</span>
@@ -184,8 +184,8 @@ function addAns(){
 	        +"<div class='help-block with-errors red-txt'></div>"
 	        +"</div>"
         +"</div>"
-        +"<div class='col-md-2'><div class='form-group'>"
-	        +"<select class='selectpicker wid100' title='Select' required name='responseList["+ansCount+"].correctAnswer' id='correctAnswerId"+ansCount+"'>"
+        +"<div class='col-md-3'><div class='form-group'>"
+	        +"<select class='selectpicker' required data-error='Please choose one option' name='responseList["+ansCount+"].correctAnswer' id='correctAnswerId"+ansCount+"'>"
 		        +"<option value=''>Select</option>"
 	        	+"<option value='true'>Yes</option>"
 		        +"<option value='false'>No</option>"
@@ -193,7 +193,7 @@ function addAns(){
 	        +"<div class='help-block with-errors red-txt'></div>"
 	        +"</div>"
         +"</div>"
-        +"<div class='col-md-4 pl-none'>"
+        +"<div class='col-md-3 pl-none'>"
         +"	<div class='clearfix'></div>"
         +"	<div class='mt-xs form-group'> "
         +"		<span id='ans-btn' class='addBtnDis addbtn mr-sm align-span-center' onclick='addAns();'>+</span>"
@@ -212,6 +212,7 @@ function addAns(){
 		$('.unitDivParent').find(".remBtnDis").addClass("hide");
 		console.log("else");
 	}
+	$('.selectpicker').selectpicker('refresh');
 }
 function removeAns(param){
     $(param).parents(".ans-opts").remove();
