@@ -109,7 +109,7 @@
 	                        </div>
                     	</div>
                     	 <div class="col-md-12 pl-none mt-lg mb-xlg">
-                    	 	<span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span>
+                    	 	<!-- <span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span> -->
                     	 </div>
                     	 </div>
                     	 <!-- <div class="container">
@@ -412,8 +412,6 @@ $(document).ready(function(){
 		}else{
 			$('.requiredClass').attr('required',true);
 			$('#learnMoreTextId').attr('required',true);
-			$('#allowWithoutPermissionYes').val("Yes");
-			$('#allowWithoutPermissionYes').prop("checked",true);
 			newLearnMoreConsentDocument();
 		} 
 	}
