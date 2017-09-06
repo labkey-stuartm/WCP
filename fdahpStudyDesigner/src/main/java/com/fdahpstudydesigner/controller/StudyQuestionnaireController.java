@@ -1265,10 +1265,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
+				/*if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
-				}
+				}*/
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){
 					healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 					map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
@@ -1565,10 +1565,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
+				/*if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
-				}
+				}*/
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){ 
 						healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 						map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);

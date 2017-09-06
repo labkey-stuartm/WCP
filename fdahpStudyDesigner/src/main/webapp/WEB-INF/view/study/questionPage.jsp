@@ -1558,21 +1558,21 @@ $(document).ready(function(){
    		    $("#placeholderTextId").val(placeholderText);
    		    $("#stepValueId").val(stepText);
 	   		if(resType != '' && resType != null && resType != 'undefined'){
-	   			     var exists = false;
+	   			     //var exists = false;
 			    	 $("#responseTypeId > option").each(function() {
 				    		 var textVal = this.text.replace(/\s/g, '');
-				    		 if(textVal == 'TextScale'){
+				    		 /* if(textVal == 'TextScale'){
 				    			 exists = true;
-				    		 }
+				    		 } */
 				    		 
 			   			 if(resType.replace(/\s/g, '') == textVal){
 			   			 }else{
 			   				 $("#"+textVal).empty();
 			   			 }    
 			   		 });
-			    	 if(!exists){
+			    	 /* if(!exists){
 			    		 $("#TextScale").empty();
-			    	 }	 
+			    	 } */	 
 			 }
 	   		if(isValid && isImageValid){
 	   			validateTheQuestionshortTitle('',function(val){

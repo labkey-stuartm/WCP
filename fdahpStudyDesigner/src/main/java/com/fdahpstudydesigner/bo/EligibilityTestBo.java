@@ -12,6 +12,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+
 /**
  * Eligibility test question and answer of a {@link EligibilityBo} object of
  * type "Eligibility Test"
@@ -27,7 +29,7 @@ import javax.persistence.Transient;
     @NamedQuery(name = "EligibilityTestBo.findByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId ORDER BY ETB.sequenceNo"),
     @NamedQuery(name = "EligibilityTestBo.findByEligibilityIdAndSequenceNo", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId AND ETB.sequenceNo =:sequenceNo"),
     @NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET active = false WHERE id=:eligibilityTestId "),
-    @NamedQuery(name = "EligibilityTestBo.validateShortTitle", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.shortTitle =:shortTitle AND id !=:eligibilityTestId ") })
+    @NamedQuery(name = "EligibilityTestBo.validateShortTitle", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.shortTitle =:shortTitle AND ETB.id !=:eligibilityTestId AND ETB.used = false") })
 public class EligibilityTestBo implements Serializable {
 
 
@@ -68,6 +70,9 @@ public class EligibilityTestBo implements Serializable {
     @Transient
     private String type;
 
+    @Column(name = "is_used")
+	@Type(type="yes_no")
+	private boolean used = false;
 
 	public Integer getId() {
 		return id;
@@ -159,6 +164,20 @@ public class EligibilityTestBo implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the used
+	 */
+	public boolean isUsed() {
+		return used;
+	}
+
+	/**
+	 * @param used the used to set
+	 */
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 
 }
