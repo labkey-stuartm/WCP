@@ -3439,6 +3439,7 @@ public class StudyDAOImpl implements StudyDAO{
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
+								newEligibilityTestBo.setUsed(true);
 								session.save(newEligibilityTestBo);
 							}
 						}
@@ -4637,6 +4638,7 @@ public class StudyDAOImpl implements StudyDAO{
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
+								newEligibilityTestBo.setUsed(false);
 								session.save(newEligibilityTestBo);
 							}
 						}
