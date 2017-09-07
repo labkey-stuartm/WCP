@@ -1576,9 +1576,9 @@ function isNumberKey(evt)
 				</c:choose>
 			</div>
          </div>
-         
+        
          <!-- Numeric Open Response  -->
-         <div class="col-xs-12 p-none">
+        <!--  <div class="col-xs-12 p-none">
          <div class="col-md-12 p-none">
          	 <div class="col-md-5 col-lg-4 pl-none">
          	 	 <div class="gray-xs-f mb-xs">Style</div>
@@ -1677,7 +1677,7 @@ function isNumberKey(evt)
          
          </div>
          
-         </div>
+         </div>  -->
          
          
          </div>
