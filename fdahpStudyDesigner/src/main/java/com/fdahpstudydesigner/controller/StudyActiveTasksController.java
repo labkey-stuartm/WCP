@@ -402,7 +402,8 @@ public class StudyActiveTasksController {
 							map.addAttribute("actionPage", "addEdit");
 						}
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-						activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
+						if(studyBo!=null)
+						 activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes(studyBo.getPlatform());
 						map.addAttribute("activeTaskListBos", activeTaskListBos);
 						map.addAttribute("studyBo", studyBo);
 						if(StringUtils.isNotEmpty(activeTaskInfoId)){
@@ -457,7 +458,8 @@ public class StudyActiveTasksController {
 				typeOfActiveTask = FdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) ? "" : request.getParameter("typeOfActiveTask");
 				actionType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ?"":request.getParameter("actionType");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
+				if(studyBo!=null)
+				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes(studyBo.getPlatform());
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){

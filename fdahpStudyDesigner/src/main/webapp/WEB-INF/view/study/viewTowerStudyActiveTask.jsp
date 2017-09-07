@@ -80,14 +80,14 @@
 							value="${taskMasterAttributeBo.addToDashboard}">
 	                             <div class="form-group">
 	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required name="taskAttributeValueBos[0].attributeVal">
-										<option value="3">3</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3" selected>3</option>
 										<option value="4">4</option>
 										<option value="5">5</option>
 										<option value="6">6</option>
 										<option value="7">7</option>
 										<option value="8">8</option>
-										<option value="9">9</option>
-										<option value="10">10</option>
                                       </select>
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
@@ -311,14 +311,14 @@
 								  value="${taskMasterAttributeBo.addToDashboard}"> 
 								<div class="form-group">
 	                                  <select class="selectpicker aq-select aq-select-form elaborateClass  requireClass" required name="taskAttributeValueBos[0].attributeVal">
+										<option value="1" ${taskValueAttributeBo.attributeVal eq '1'?'selected':''}>1</option>
+										<option value="2" ${taskValueAttributeBo.attributeVal eq '2'?'selected':''}>2</option>
 										<option value="3" ${taskValueAttributeBo.attributeVal eq '3'?'selected':''}>3</option>
 										<option value="4" ${taskValueAttributeBo.attributeVal eq '4'?'selected':''}>4</option>
 										<option value="5" ${taskValueAttributeBo.attributeVal eq '5'?'selected':''}>5</option>
 										<option value="6" ${taskValueAttributeBo.attributeVal eq '6'?'selected':''}>6</option>
 										<option value="7" ${taskValueAttributeBo.attributeVal eq '7'?'selected':''}>7</option>
 										<option value="8" ${taskValueAttributeBo.attributeVal eq '8'?'selected':''}>8</option>
-										<option value="9" ${taskValueAttributeBo.attributeVal eq '9'?'selected':''}>9</option>
-										<option value="10" ${taskValueAttributeBo.attributeVal eq '10'?'selected':''}>10</option>
                                       </select>
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
@@ -700,7 +700,8 @@ $(document).ready(function(){
    	 validateShortTitleId('', function(st){
     		if(st){
 	      			  var statShortTitleCount = $('.statShortTitleClass').find('.help-block').children().length;
-	      			  if(statShortTitleCount >= 1){
+	      			  var errorstatShortTitle = $('.statShortTitleClass').find('.help-block').children().text();
+	      			  if(statShortTitleCount >= 1 && errorstatShortTitle != "Please fill out this field."){
 	      				  var statId = $('.shortTitleStatCls').attr('id');
 	      				  if(statId && statId == 'identifierId')
 	      					  $('#identifierId').focus();

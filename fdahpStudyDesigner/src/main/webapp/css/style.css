@@ -714,8 +714,26 @@ table.dataTable thead th, table.dataTable thead td{
     padding-right: 0px;
 }
 
-#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
-    /* text-align: right; */
+#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
+    text-align: right;
+}
+
+#comprehension_list thead th,.dragtbl thead th,.tbl_rightalign thead th{
+    font-size: 13px;
+    color: #868686;
+    text-transform: uppercase;
+    font-weight: 600;
+    outline: none;
+}
+
+#comprehension_list thead th:last-child,.dragtbl thead th:last-child,.tbl_rightalign thead th:last-child{
+    padding-right: 0px;
+}
+#comprehension_list tbody > tr:last-child > td {
+  border-bottom: 1px solid #ddd;
+}
+/* #comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
+    text-align: right;
 }
 
 #comprehension_list thead th,.dragtbl thead th{
@@ -729,7 +747,7 @@ table.dataTable thead th, table.dataTable thead td{
 #comprehension_list thead th:last-child,.dragtbl thead th:last-child{
     padding-right: 15px !important;
 }
-
+ */
 
 .col-md-6{
     width: 50% !important;

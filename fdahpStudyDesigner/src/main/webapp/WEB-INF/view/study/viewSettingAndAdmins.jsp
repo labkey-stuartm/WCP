@@ -17,7 +17,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Settings <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">SETTINGS AND ADMINS <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut" id="cancelId">Cancel</button>
@@ -268,7 +268,8 @@
                      
 	                      <ul class="no-disc">
 	                      <li>Given below is a list of features currently NOT available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks.</li>
-	                     	<li>i. Questionnaires: Question with Response Type Text Scale</li>
+	                     	<!--  <li>i. Questionnaires: Question with Response Type Text Scale</li> -->
+	                     	<li>i. Activetasks: Activetask with type Tower Of Hanoi, Spatial Span Memory</li>
 	                     </ul>
                      </li>
                     
@@ -420,7 +421,8 @@ function platformTypeValidation(buttonText){
 		$('.actBut').prop('disabled',true);
 		$("body").addClass("loading");
 		$.ajax({
-            url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidation.do?_S=${param._S}",
+            //url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidation.do?_S=${param._S}",
+            url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidationforActiveTask.do?_S=${param._S}",		
             type: "POST",
             datatype: "json",
             data: {

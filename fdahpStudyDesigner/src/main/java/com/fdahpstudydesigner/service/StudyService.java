@@ -93,4 +93,5 @@ public interface StudyService {
 	
 	public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId);
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,Integer userId);
+	public String checkActiveTaskTypeValidation(Integer studyId);
 }

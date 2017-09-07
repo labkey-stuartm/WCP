@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +58,6 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * 
@@ -978,6 +976,9 @@ public class StudyDAOImpl implements StudyDAO{
 						if(studySequence.iseConsent()){
 							studySequence.seteConsent(false);
 						}
+						if(studySequence.isComprehensionTest()){
+							studySequence.setComprehensionTest(false);
+						}
 					}else{
 						studySequence = new StudySequenceBo();
 						studySequence.setConsentEduInfo(false);
@@ -988,6 +989,9 @@ public class StudyDAOImpl implements StudyDAO{
 					consentInfoBo.setStatus(true);
 					if(studySequence.iseConsent()){
 						studySequence.seteConsent(false);
+					}
+					if(studySequence.isComprehensionTest()){
+						studySequence.setComprehensionTest(false);
 					}
 				}
 				session.saveOrUpdate(studySequence);
@@ -3441,6 +3445,7 @@ public class StudyDAOImpl implements StudyDAO{
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
+								newEligibilityTestBo.setUsed(true);
 								session.save(newEligibilityTestBo);
 							}
 						}
@@ -4260,6 +4265,7 @@ public class StudyDAOImpl implements StudyDAO{
 		EligibilityTestBo eligibilityTestBo;
 		List<EligibilityTestBo> eligibilityTestBos;
 		StringBuilder sb = null;
+		StudyBo studyBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
@@ -4267,10 +4273,17 @@ public class StudyDAOImpl implements StudyDAO{
 					.getNamedQuery("EligibilityTestBo.findById")
 					.setInteger("eligibilityTestId", eligibilityTestId)
 					.uniqueResult();
-			eligibilityDeleteResult = session
-					.getNamedQuery("EligibilityTestBo.deleteById")
-					.setInteger("eligibilityTestId", eligibilityTestId)
-					.executeUpdate();
+			studyBo = this.getStudyById(String.valueOf(studyId), sessionObject.getUserId());
+			
+			if(null != studyBo && studyBo.getStatus().contains(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH)) {
+				session.delete(eligibilityTestBo);
+				eligibilityDeleteResult = 1;
+			} else {
+				eligibilityDeleteResult = session
+						.getNamedQuery("EligibilityTestBo.deleteById")
+						.setInteger("eligibilityTestId", eligibilityTestId)
+						.executeUpdate();
+			}
 			sb = new StringBuilder();
 			sb.append("select id FROM EligibilityTestBo  WHERE sequenceNo > '")
 					.append(eligibilityTestBo.getSequenceNo())
@@ -4631,6 +4644,7 @@ public class StudyDAOImpl implements StudyDAO{
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
+								newEligibilityTestBo.setUsed(false);
 								session.save(newEligibilityTestBo);
 							}
 						}
@@ -5412,6 +5426,7 @@ public class StudyDAOImpl implements StudyDAO{
 		return flag;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
     public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId) {
 		logger.info("StudyDAOImpl - getActiveNonAddedUserList() - Starts");
@@ -5425,6 +5440,8 @@ public class StudyDAOImpl implements StudyDAO{
 					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 1 "
 					+ "AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
+					+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
+					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "
 					+ "AND u.user_id <> "+userId);
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
@@ -5508,5 +5525,37 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getSuperAdminUserIds() - Ends");
 		return superAdminUserIds;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @param Integer : studyId
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to validate the activetaskType for android platform 
+	 */
+	@Override
+	public String checkActiveTaskTypeValidation(Integer studyId) {
+		logger.info("StudyDAOImpl - checkActiveTaskTypeValidation() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "select count(*) from active_task a" 
+                +" where a.study_id="+studyId+" and a.task_type_id" 
+                +" in(select c.active_task_list_id from active_task_list c where c.task_name in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"'));";
+			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			if(count!=null && count.intValue() > 0){	
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}	
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - checkActiveTaskTypeValidation() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - checkActiveTaskTypeValidation() - Ends");
+		return message;
 	}
 }

@@ -622,8 +622,10 @@
      					$("body").removeClass('loading');
      					return false;
      				}else{
+     					//Please fill out this field.
      	      			  var statShortTitleCount = $('.statShortTitleClass').find('.help-block').children().length;
-     	      			  if(statShortTitleCount >= 1){
+     	      			  var errorstatShortTitle = $('.statShortTitleClass').find('.help-block').children().text();
+     					if(statShortTitleCount >= 1 && errorstatShortTitle != "Please fill out this field."){
      	      				  var statId = $('.shortTitleStatCls').attr('id');
      	      				  if(statId && statId == 'identifierId')
      	      					  $('#identifierId').focus();

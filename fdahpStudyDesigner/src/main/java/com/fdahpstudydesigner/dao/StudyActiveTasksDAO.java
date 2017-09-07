@@ -25,7 +25,7 @@ public interface StudyActiveTasksDAO {
 	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
 	
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo, String customStudyId);
-	public List<ActiveTaskListBo> getAllActiveTaskTypes();
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType);
 	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
 	public List<StatisticImageListBo> getStatisticImages();
 	public List<ActivetaskFormulaBo> getActivetaskFormulas();

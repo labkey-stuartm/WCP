@@ -70,7 +70,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required/>
+                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="2" onkeypress="return isNumber(event)" required/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -86,7 +86,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
+                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="2" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -103,7 +103,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required />
+                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="2" onkeypress="return isNumber(event)" required />
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -120,7 +120,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="playspeedId"  class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="4" required onkeypress="return isNumber(event)"/>
+                           <input type="text" id="playspeedId"  class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="5" required onkeypress="return isNumberFloat(event)"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -748,7 +748,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="initialspanId" class="form-control" name="taskAttributeValueBos[0].attributeVal" maxlength="2" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -765,7 +765,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="3" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="minimumspanId" class="form-control" name="taskAttributeValueBos[1].attributeVal" maxlength="2" required value="${taskValueAttributeBo.attributeVal}" onkeypress="return isNumber(event)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -783,7 +783,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="3" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                           <input type="text" id="maximumspanId" class="form-control" name="taskAttributeValueBos[2].attributeVal" maxlength="2" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -801,7 +801,7 @@
 					  <input type="hidden" name="taskAttributeValueBos[3].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 					  <input type="hidden" name="taskAttributeValueBos[3].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                  <div class="form-group">
-                           <input type="text" id="playspeedId" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="4" onkeypress="return isNumber(event)" required value="${taskValueAttributeBo.attributeVal}"/>
+                           <input type="text" id="playspeedId" class="form-control" name="taskAttributeValueBos[3].attributeVal" maxlength="5" onkeypress="return isNumberFloat(event)" required value="${taskValueAttributeBo.attributeVal}"/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                  </div>
 	               </div>
@@ -1294,7 +1294,7 @@ $(document).ready(function(){
 			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
  	   }
     }
-    $('#initialspanId').keyup(function(){	
+    $('#initialspanId').blur(function(){	
     	var value= $(this).val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
@@ -1305,6 +1305,26 @@ $(document).ready(function(){
                 $(this).parent().find(".help-block").empty();
                 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
             }
+        	if(parseInt($(this).val()) > 20){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan should <= 20  </li></ul>");
+    		}
+        	var minimumSpanVal = $('#minimumspanId').val();
+        	if(minimumSpanVal && (parseInt(minimumSpanVal) > parseInt($(this).val()))){
+        		$('#minimumspanId').val('');
+       		    $('#minimumspanId').parent().addClass("has-danger").addClass("has-error");
+                $('#minimumspanId').parent().find(".help-block").empty();
+                $('#minimumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+        	}
+        	var maxmimumSpanVal = $('#maximumspanId').val();
+        	if(maxmimumSpanVal && (parseInt(maxmimumSpanVal) < parseInt($(this).val()))){
+        		$('#maximumspanId').val('');
+       		    $('#maximumspanId').parent().addClass("has-danger").addClass("has-error");
+                $('#maximumspanId').parent().find(".help-block").empty();
+                $('#maximumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+        	}
         }else{
         	$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1312,7 +1332,7 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
         }
     });
-    $("#minimumspanId").keyup(function(){	
+    $("#minimumspanId").blur(function(){	
     	var value= $(this).val();
     	var initialSpanVal = $('#initialspanId').val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
@@ -1337,7 +1357,7 @@ $(document).ready(function(){
     	}
     });
     
-    $("#maximumspanId").keyup(function(){	
+    $("#maximumspanId").blur(function(){	
     	var value= $(this).val();
     	var initialSpanVal = $('#initialspanId').val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
@@ -1367,18 +1387,23 @@ $(document).ready(function(){
     	}
     });
     
-    $("#playspeedId").keyup(function(){	
+    $("#playspeedId").blur(function(){
     	var value= $(this).val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
         if(value){
-        	if(parseFloat($(this).val()) < 0.5){
+        	if(value == '.'){
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a valid number</li></ul>");
+        	}else if(parseFloat(value) < 0.5){
             	$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
                 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
             }
-        	if(parseInt($(this).val()) > 20){
+        	if(parseFloat(value) > parseFloat(20)){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
@@ -1391,7 +1416,7 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
         }
     });
-    $("#maximumtestId, #maximumFailureId").keyup(function(){	
+    $("#maximumtestId").blur(function(){	
     	var value= $(this).val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
@@ -1401,7 +1426,33 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").empty();
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
     	}
+    	var maximumFailure = $('#maximumFailureId').val();
+    	if(value && parseInt(maximumFailure) > parseInt($(this).val())){
+    		$('#maximumFailureId').val('');
+   		    $('#maximumFailureId').parent().addClass("has-danger").addClass("has-error");
+            $('#maximumFailureId').parent().find(".help-block").empty();
+            $('#maximumFailureId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+    	}
     });
+    $("#maximumFailureId").blur(function(){	
+    	var value= $(this).val();
+    	var maxmimunTestVal = $('#maximumtestId').val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
+    	if(parseInt($(this).val()) < 1){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+    	}
+    	if(maxmimunTestVal && parseInt($(this).val()) > parseInt(maxmimunTestVal)){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+    	}
+    });
+    
 	$("#shortTitleId").blur(function(){
     	  validateShortTitleId('',function(val){});
     })
@@ -1426,6 +1477,7 @@ $(document).ready(function(){
    	  $(this).parent().find(".help-block").empty();
 	  $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
     });
+    setLineChatStatCheckedVal();
     $('#Score_spatial_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_Score_spatial').css("display","");
@@ -1520,6 +1572,12 @@ $(document).ready(function(){
 			if($('#startWeeklyDate').val() == ''){
 				$('#startWeeklyDate').attr("readonly",false);	
 			}
+			$("#initialspanId").trigger('blur');
+			$("#minimumspanId").trigger('blur');
+			$("#maximumspanId").trigger('blur');
+			$("#playspeedId").trigger('blur');
+			$("#maximumtestId").trigger('blur');
+			$("#maximumFailureId").trigger('blur');
 			if(isFromValid("#activeContentFormId")){
 				  $('.scheduleTaskClass').removeAttr('disabled');
 			      $('.scheduleTaskClass').removeClass('linkDis');
@@ -1651,6 +1709,7 @@ $(document).ready(function(){
 					$("body").removeClass('loading');
 					$("#doneId").attr("disabled",false);
 					$('.contentClass a').tab('show');
+					showErrMsg("Please fill in all mandatory fields.");
 			}
 	    });
 	    
@@ -1753,7 +1812,7 @@ $(document).ready(function(){
   			    	  jsonArray.push(statObj);
   			      }
   			      if(jsonArray.length>0){
-  			    	  validateStatisticsIds(jsonArray, function(val){
+  			    	saveValidateStatisticsIds(jsonArray, function(val){
   			    		  if(val){
   			    			  $("#saveId").attr("disabled",false);
   							  $("body").removeClass('loading');
@@ -1765,7 +1824,7 @@ $(document).ready(function(){
   				 					}
   				 			      }) 
   			    		  }else{
-  			    			  //alert("Not");
+  			    			 // alert("Not");
   			    			  $("#saveId").attr("disabled",false);
   							  $("body").removeClass('loading');
   							  showErrMsg("Please fill in all mandatory fields.");
@@ -2119,6 +2178,103 @@ function validateStatisticsIds(jsonDatas, callback){
 		     });
 	 }
 }
+function saveValidateStatisticsIds(jsonDatas, callback){
+	var flag = true;
+	var arrayLength = jsonDatas.length; //cache the array length
+	var shortSatId = '';
+	var shortSatIdVal = '';
+	//alert("inside stat");
+	 if (arrayLength > 1) { 
+		for(var i=0;i<arrayLength ; i++){
+			   var existId = jsonDatas[i].id; 
+			   var existVal = jsonDatas[i].idVal;  
+			   if(existVal){
+				   for(var j = 0; j<arrayLength ; j++) {
+					   var statId = jsonDatas[j].id;
+					   var statVal = jsonDatas[j].idVal;
+				       if (existId!=statId && existVal.toLowerCase() == statVal.toLowerCase()) {
+				    	   flag = false;
+				    	   shortSatId = jsonDatas[j].id;
+				    	   shortSatIdVal = jsonDatas[j].idVal;
+				    	   break;
+				       }
+				   }   
+			   }
+	   }
+	 }
+	 if(!flag){ 
+		   if(shortSatId){
+          	 if(shortSatIdVal === ""){
+          		$("#"+shortSatId).val('');
+   			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
+             	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
+          		$("#"+shortSatId).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>Please fill out this field.</li></ul>");
+          	 }else{
+          		$("#"+shortSatId).val('');
+   			    $("#"+shortSatId).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
+             	$("#"+shortSatId).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error"); 
+             	$("#"+shortSatId).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>'" + shortSatIdVal + "' has already been used in the past.</li></ul>");
+          	 }
+		   }
+		   callback(false); 
+	 }else{
+		 var jsonArray  = new Array();
+		 for(var j = 0; j<arrayLength ; j++) {
+			   var statVal = jsonDatas[j].idVal;
+		       if(statVal) {
+		    	   var statObj = new Object();
+		    	   statObj.id = jsonDatas[j].id;
+		    	   statObj.dbVal = jsonDatas[j].dbVal;
+		    	   statObj.idVal = jsonDatas[j].idVal;
+		    	   if(jsonDatas[j].hasOwnProperty("idname"))
+		    	     statObj.idname = jsonDatas[j].idname; 
+		    	   jsonArray.push(statObj);
+		       }
+		 } 
+		 //do ajax call and check the db validation
+		 var jsonArrayLength = jsonArray.length;
+		 if(jsonArrayLength >0){
+			 var data = JSON.stringify(jsonArray);
+			 $.ajax({
+				      url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskStatShortTitleIds.do?_S=${param._S}",
+				      type: "POST",
+				      datatype: "json",
+			          data: {activeStatisticsBean:data},
+			          beforeSend: function(xhr, settings){
+			              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+			          },
+			          success: function emailValid(data, status) {
+			          var jsonobject = eval(data);
+			          var message = jsonobject.message;
+			          var staticInfoList = jsonobject.statisticsInfoList;
+			          if('SUCCESS' == message){
+			        	  if (typeof staticInfoList != 'undefined' && staticInfoList != null && staticInfoList.length >0){
+			        		  $.each(staticInfoList, function(i, obj) {
+			        				 if(obj.type){
+			        						 $("#"+obj.id).val('');
+			        						 $("#"+obj.id).focus();
+			        						 $("#"+obj.id).parent().find('.statShortTitleClass').parent().find(".help-block").empty();
+			        			          	 $("#"+obj.id).parent().find('.statShortTitleClass').addClass("has-danger").addClass("has-error");
+			        			          	 $("#"+obj.id).parent().find(".help-block").empty().append("<ul class='list-unstyled'><li>'" + obj.idVal + "' has already been used in the past.</li></ul>"); 
+			        				 }
+			        		 });
+			        		  
+			        	  }
+			        	   callback(false);
+			             }else{
+			        	   callback(true);
+			             }
+			           },
+			           error:function status(data, status) {
+			            	   callback(false);
+			           },
+			           global : false
+			     });
+		 }else{
+			 callback(true);
+		 }
+	 }
+}
 function setLineChatStatCheckedVal(){
 	   if($('#Score_spatial_chart_id').is(":checked")){
 			$('.addLineChartBlock_Score_spatial').css("display","");
@@ -2196,10 +2352,24 @@ var updateLogoutCsrf = function() {
 function isNumber(evt) {
 	evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
+    if (charCode > 31 && (charCode < 48 || charCode > 57)){
     	 return false;
     }
     return true;
+}
+function isNumberFloat(e) {
+	var keyCode = (e.which) ? e.which : e.keyCode;
+    if ((keyCode >= 48 && keyCode <= 57) || (keyCode == 8))
+        return true;
+    else if (keyCode == 46) {
+        var curVal = document.activeElement.value;
+        if (curVal != null && curVal.trim().indexOf('.') == -1)
+            return true;
+        else
+            return false;
+    }
+    else
+        return false;
 }
 //# sourceURL=filename3.js
 </script>

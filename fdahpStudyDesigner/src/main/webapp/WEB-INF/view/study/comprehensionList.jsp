@@ -98,7 +98,7 @@ function isNumber(evt) {
          </table>
       </div> 
       
-      <div class="mb-xlg" id="displayTitleId">
+      <div class="mt-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
          <div class="form-group col-md-5 p-none">
             <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)" <c:if test="${consentBo.needComprehensionTest eq 'Yes'}">required</c:if>>
@@ -396,6 +396,9 @@ function saveConsent(type){
 	var studyId = $("#studyId").val();
 	if(studyId != null && studyId != '' && typeof studyId != 'undefined' &&
 			needComprehensionTestTxt != null && needComprehensionTestTxt != '' && typeof needComprehensionTestTxt != 'undefined'){
+		if(type == "save"){
+			$("body").addClass("loading");
+		}
 		var consentInfo =  new Object();
 		if(consentId != null && consentId != '' && typeof consentId != 'undefined'){
 			consentInfo.id=consentId;
@@ -421,14 +424,19 @@ function saveConsent(type){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					var consentInfoId = jsonobject.consentId;
+					var consentId = jsonobject.consentId;
+					console.log(consentId);
 					$("#consentId").val(consentId);
 					$("#addQuestionId").attr("disabled",false);
 					if(type != "save"){
-						var a = document.createElement('a');
+						//$("body").removeClass("loading");	
+						/* var a = document.createElement('a');
 						a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
-						document.body.appendChild(a).click();
+						document.body.appendChild(a).click(); */
+						document.comprehensionInfoForm.action="/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
+						document.comprehensionInfoForm.submit();
 					}else{
+						$("body").removeClass("loading");
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
 						$('#alertMsg').show(); 
 						if ($('.fifthComre').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
@@ -436,16 +444,19 @@ function saveConsent(type){
 						}
 					}
 				}else{
+					$("body").removeClass("loading");
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();
 				}
 				setTimeout(hideDisplayMessage, 4000);
 	          },
 	          error: function(xhr, status, error) {
+	        	  $("body").removeClass("loading");
     			  $('#alertMsg').show();
     			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
-    		  }
+    		  },
+    		  global : false,
 	   });
 	}
 }
