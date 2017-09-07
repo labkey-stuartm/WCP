@@ -1490,11 +1490,11 @@ public class StudyController {
 					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 				}
-				String lastEligibilityOpt = (String) request.getSession().getAttribute(sessionStudyCount+"lastEligibilityOpt");
-				if(StringUtils.isNotBlank(lastEligibilityOpt)) {
-					map.addAttribute("lastEligibilityOpt", lastEligibilityOpt);
-					request.getSession().removeAttribute(sessionStudyCount+"lastEligibilityOpt");
-				}
+//				String lastEligibilityOpt = (String) request.getSession().getAttribute(sessionStudyCount+"lastEligibilityOpt");
+//				if(StringUtils.isNotBlank(lastEligibilityOpt)) {
+//					map.addAttribute("lastEligibilityOpt", lastEligibilityOpt);
+//					request.getSession().removeAttribute(sessionStudyCount+"lastEligibilityOpt");
+//				}
 				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 				
 				if (StringUtils.isEmpty(studyId)) {
@@ -3084,7 +3084,7 @@ public class StudyController {
 		                }
 		                
 		                String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
-		                String  lastEligibilityOpt = FdahpStudyDesignerUtil.isEmpty(request.getParameter("lastEligibilityOpt")) ? "1" : request.getParameter("lastEligibilityOpt");
+//		                String  lastEligibilityOpt = FdahpStudyDesignerUtil.isEmpty(request.getParameter("lastEligibilityOpt")) ? "1" : request.getParameter("lastEligibilityOpt");
 		                Integer eligibilityTestId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityTestId"));
 		                Integer eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityId"));
 		                if (StringUtils.isEmpty(studyId)) {
@@ -3113,7 +3113,7 @@ public class StudyController {
 		                    map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 		                    map.addAttribute("_S", sessionStudyCount);
 		                    map.addAttribute("actionTypeForQuestionPage", actionTypeForQuestionPage);
-		                    map.addAttribute("lastEligibilityOpt", lastEligibilityOpt);
+//		                    map.addAttribute("lastEligibilityOpt", lastEligibilityOpt);
 		                    mav = new ModelAndView("studyEligibiltyTestPage", map);
 		                }
 		            }
@@ -3145,14 +3145,14 @@ public class StudyController {
 		            Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 		            String studyId =  (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 		            String actionTypeForQuestionPage = StringUtils.isNotBlank(request.getParameter("actionTypeForQuestionPage")) ? request.getParameter("actionTypeForQuestionPage"):"";
-		            String  lastEligibilityOpt = FdahpStudyDesignerUtil.isEmpty(request.getParameter("lastEligibilityOpt")) ? "1" : request.getParameter("lastEligibilityOpt");
+//		            String  lastEligibilityOpt = FdahpStudyDesignerUtil.isEmpty(request.getParameter("lastEligibilityOpt")) ? "1" : request.getParameter("lastEligibilityOpt");
 		            if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
 		                if (eligibilityTestBo != null) {
 		                    customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 		                    result = studyService.saveOrUpdateEligibilityTestQusAns(eligibilityTestBo, Integer.parseInt(studyId), sesObj, customStudyId);
 		                }
 		                map.addAttribute("_S", sessionStudyCount);
-		                request.getSession().setAttribute(sessionStudyCount+"lastEligibilityOpt", lastEligibilityOpt);
+//		                request.getSession().setAttribute(sessionStudyCount+"lastEligibilityOpt", lastEligibilityOpt);
 		                if(result > 0) {
 		                    if(eligibilityTestBo != null && (FdahpStudyDesignerConstants.ACTION_TYPE_SAVE).equals(eligibilityTestBo.getType())){
 		                        request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
