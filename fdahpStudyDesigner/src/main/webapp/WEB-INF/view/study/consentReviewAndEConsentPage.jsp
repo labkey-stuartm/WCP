@@ -407,6 +407,7 @@ $(document).ready(function(){
 			console.log("ifff");
 			$('#rootContainer input').val('');
 			$('#allowWithoutPermissionYes').val("Yes");
+			$('#allowWithoutPermissionNo').val("No");
 			$('#allowWithoutPermissionYes').prop("checked",true);
 			$('#learnMoreTextId').val('');
 			$('#longDescriptionId').val('');
