@@ -266,8 +266,12 @@ $(document).ready(function(){
 	var consentId = "${consentBo.consentDocType}";
 	console.log(consentId);
 	if( consentId == null || consentId == '' || typeof consentId === 'undefined'){
-		$("#inlineRadio1").attr('checked', true);
-		$("#version").val('1.0');
+		if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
+			$("#inlineRadio1").attr('checked', true);
+			$("#version").val('1.0');
+		}else{
+			$("#inlineRadio2").attr('checked', true);
+		}
 	}
 	
 	//active li
