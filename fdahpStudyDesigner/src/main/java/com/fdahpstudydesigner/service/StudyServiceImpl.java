@@ -1490,13 +1490,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public boolean resetDraftStudyByCustomStudyId(String customStudyId) {
+	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
 		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Starts");
 		boolean flag = false; 
 		try{
-			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId);
+			SessionObject object = null;
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudy, FdahpStudyDesignerConstants.RESET_STUDY, object);
 			if(flag)
-            flag = studyDAO.deleteLiveStudy(customStudyId);
+            flag = studyDAO.deleteLiveStudy(customStudy);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Error",e);
 		}
@@ -1554,5 +1555,18 @@ public class StudyServiceImpl implements StudyService {
 	public String checkActiveTaskTypeValidation(Integer studyId) {
 		logger.info("StudyServiceImpl - checkActiveTaskTypeValidation - Starts");
 		return studyDAO.checkActiveTaskTypeValidation(studyId);
+	}
+
+	@Override
+	public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject object) {
+		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Starts");
+		boolean flag = false; 
+		try{
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId, FdahpStudyDesignerConstants.COPY_STUDY, object);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - copyliveStudyByCustomStudyId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Ends");
+		return flag;
 	}
 }

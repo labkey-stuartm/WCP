@@ -3297,7 +3297,7 @@ public class StudyController {
     		 */
     		@RequestMapping(value="/adminStudies/studyPlatformValidationforActiveTask",method = RequestMethod.POST)
     		public void studyPlatformValidationforActiveTask(HttpServletRequest request ,HttpServletResponse response){
-    			logger.info("StudyController - studyPlatformValidation() - Starts");
+    			logger.info("StudyController - studyPlatformValidationforActiveTask() - Starts");
     			JSONObject jsonobject = new JSONObject();
     			PrintWriter out = null;
     			String message = FdahpStudyDesignerConstants.FAILURE;
@@ -3320,9 +3320,36 @@ public class StudyController {
     				out = response.getWriter();
     				out.print(jsonobject);
     			}catch(Exception e){
-    				logger.error("StudyController - studyPlatformValidation() - ERROR",e);
+    				logger.error("StudyController - studyPlatformValidationforActiveTask() - ERROR",e);
     			}
-    			logger.info("StudyController - studyPlatformValidation() - Ends");
+    			logger.info("StudyController - studyPlatformValidationforActiveTask() - Ends");
     		}
-
+    		
+    		 /**
+    		 * @author Ronalin
+    		 * @param request
+    		 * @param response
+    		 * This method is used to crate copy of live study new study   
+    		 */
+    		@RequestMapping("/adminStudies/crateNewStudy.do")
+    		public ModelAndView crateNewStudy(HttpServletRequest request){
+    			logger.info("StudyController - crateNewStudy() - Starts");
+    			ModelMap map = new ModelMap();
+    			ModelAndView modelAndView = new ModelAndView("redirect:/adminStudies/studyList.do");
+    			boolean flag = false;
+    			try {
+    				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+    				String  customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID))? "" : request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+    				if(StringUtils.isNotEmpty(customStudyId) && sesObj!=null)
+    					flag = studyService.copyliveStudyByCustomStudyId(customStudyId, sesObj);
+    				if(flag)
+    					request.getSession().setAttribute(FdahpStudyDesignerConstants.ACTION_SUC_MSG, FdahpStudyDesignerConstants.COPY_STUDY_SUCCESS_MSG);
+    				else
+    					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.COPY_STUDY_FAILURE_MSG);
+    			} catch (Exception e) {
+    				logger.error("StudyController - crateNewStudy - ERROR", e);
+    			}
+    			logger.info("StudyController - crateNewStudy() - Ends");
+    			return modelAndView;
+    		}
 }

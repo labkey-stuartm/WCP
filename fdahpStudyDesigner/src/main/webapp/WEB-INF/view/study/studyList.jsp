@@ -46,6 +46,9 @@
 					</c:choose>" data-toggle="tooltip" data-placement="top" title="${(not empty study.liveStudyId)?((study.flag)?'Draft Version':'Edit'):'Draft Version'}" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
                     <span class="eye-inc viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
+					<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
+					<span class="sprites_icon copy copyStudyClass" customStudyId="${study.customStudyId}" data-toggle="tooltip" data-placement="top" title="Copy"></span>
+					</c:if>
 					</c:if>
                   </td>        
               </tr>
@@ -132,7 +135,26 @@
          } );
          
         });
-	    
+       $('.copyStudyClass').on('click',function(){
+      	 var form= document.createElement('form');
+		    	form.method= 'post';
+		    	var input= document.createElement('input');
+		    	input.type= 'hidden';
+				input.name= 'customStudyId';
+				input.value= $(this).attr('customStudyId');
+				form.appendChild(input);
+				
+				input= document.createElement('input');
+		    	input.type= 'hidden';
+				input.name= '${_csrf.parameterName}';
+				input.value= '${_csrf.token}';
+				form.appendChild(input);
+				
+		    	form.action= '/fdahpStudyDesigner/adminStudies/crateNewStudy.do';
+		    	document.body.appendChild(form);
+		    	form.submit();
+	     });
+       
         //datatable icon toggle
         $(".table thead tr th").click(function(){
           $(this).children().removeAttr('class')
