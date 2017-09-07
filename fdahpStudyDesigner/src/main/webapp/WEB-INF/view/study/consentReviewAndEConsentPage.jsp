@@ -68,28 +68,28 @@
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Tagline Description <small>(250 characters max)</small><span class="requiredStar">*</span></div>
+		                    <div class="gray-xs-f mb-xs">1 line description or tagline <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
 		                        <input type="text" class="form-control requiredClass" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" />
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Short Description for RO <small>(250 characters max)</small><span class="requiredStar">*</span></div>
+		                    <div class="gray-xs-f mb-xs">Short Description for RO (Research Organization or Data Partner) <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
 		                        <input type="text" class="form-control requiredClass" placeholder=""  maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}"/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Long Description for RO<small>(500 characters max)</small><span class="requiredStar">*</span></div>
+		                    <div class="gray-xs-f mb-xs">Long Description for RO (Research Organization or Data Partner) <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
 		                        <textarea class="form-control requiredClass"  rows="5" maxlength="500"  placeholder="" name="longDescription" id="longDescriptionId">${consentBo.longDescription}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                     <div class="gray-xs-f mb-xs">Learn More Text <span class="requiredStar">*</span></div>
+		                     <div class="gray-xs-f mb-xs">Learn More text (Elaborated content that explains how data will be shared)<span class="requiredStar">*</span></div>
 		                     <div class="form-group">
 		                        <textarea  id="learnMoreTextId" name="learnMoreText" required>${consentBo.learnMoreText}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
