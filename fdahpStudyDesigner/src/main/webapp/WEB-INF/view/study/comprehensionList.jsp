@@ -424,7 +424,8 @@ function saveConsent(type){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					var consentInfoId = jsonobject.consentId;
+					var consentId = jsonobject.consentId;
+					console.log(consentId);
 					$("#consentId").val(consentId);
 					$("#addQuestionId").attr("disabled",false);
 					if(type != "save"){

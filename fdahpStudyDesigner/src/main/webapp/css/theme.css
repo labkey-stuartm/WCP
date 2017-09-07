@@ -424,6 +424,14 @@ a:hover{
     vertical-align: middle;
 }
 
+
+.black-s-f {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2d2926;
+    font-weight: 600;
+}
+
 .black-md-f{
     font-size: 16px;
     line-height: 20px;
