@@ -1846,3 +1846,49 @@ height:0px !important;
 option:first-child {
   color: #ccc;
 }
+
+.tealtxt-md{
+	color: #007cba;
+	font-size: 16px;
+	line-height: 18px;
+	font-weight: 600;
+	
+}
+
+.sm-selection{
+	display: inline-block;
+    width: 250px;
+    margin-left: 15px;
+}
+
+.pl_18{
+	padding-left: 18px;
+	list-style-type:disc;
+}
+
+.numeric__header{
+	padding: 16px 20px;
+	border: 1px solid #bed2eb;
+	border-radius: 4px;
+}
+
+.numeric__header > span:first-child{
+	font-size: 15px;
+    color: #5e5956;
+}
+
+.numeric__header > span:first-child > span{
+	color: #000 !important;
+	font-weight: 600;
+}
+
+.numeric__header > span:nth-child(2){
+	color: #fff;
+    padding: 7px 13px;
+    text-align: right;
+    background: #007cba;
+    border-radius: 4px;
+    float: right;
+    margin-top: -5px;
+	
+}
