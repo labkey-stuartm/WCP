@@ -1578,10 +1578,107 @@ function isNumberKey(evt)
          </div>
          
          <!-- Numeric Open Response  -->
+         <div class="col-xs-12 p-none">
+         <div class="col-md-12 p-none">
+         	 <div class="col-md-5 col-lg-4 pl-none">
+         	 	 <div class="gray-xs-f mb-xs">Style</div>
+         	 	 <div class="form-group">
+                     <select class="selectpicker" required>
+                        <option>Integer</option>
+                        <option>float</option>
+                        <option>Double</option>
+                      </select>
+                      <div class="help-block with-errors red-txt"></div>
+                  </div>
+         	 </div>
+         </div>
          
-         <div>
+         <div class="col-md-12 p-none">
+         	<div class="col-md-5 col-lg-4 pl-none mr-md">
+         		<div class="gray-xs-f mb-xs">Units (1 to 10 characters)</div>
+         		<div class="form-group">
+                    <input type="text" class="form-control" required />
+                    <div class="help-block with-errors red-txt"></div>
+                </div>         		
+         	</div>
+         	<div class="col-md-5 col-lg-4 pl-none">
+         		<div class="gray-xs-f mb-xs">Placeholder Text (1 to 15 characters)</div>
+         		<div class="form-group">
+                    <input type="text" class="form-control" required />
+                    <div class="help-block with-errors red-txt"></div>
+                </div>         		
+         	</div>
+         </div>
+         
+         
+          <div class="col-md-12 p-none">
+         	<div class="col-md-5 col-lg-4 pl-none mr-md">
+         		<div class="gray-xs-f mb-xs">Maximum Value</div>
+         		<div class="form-group">
+                    <input type="text" class="form-control" required />
+                    <div class="help-block with-errors red-txt"></div>
+                </div>         		
+         	</div>
+         	<div class="col-md-5 col-lg-4 pl-none">
+         		<div class="gray-xs-f mb-xs">Minimum Value</div>
+         		<div class="form-group">
+                    <input type="text" class="form-control" required />
+                    <div class="help-block with-errors red-txt"></div>
+                </div>         		
+         	</div>
+         </div>
+         
+         <div class="col-md-12 p-none">
+         	<div>
+               <span class="checkbox checkbox-inline p-45">
+                    <input type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label for="inlineCheckbox1"><span class="tealtxt-md">User formula-based conditional branching logic</span></label>
+              </span>
+            </div>
+         </div>
+         
+         <div class="col-md-12 p-none mt-lg mb-md">
+         	<div class="black-s-f">Define Formula and Destination Steps</div>
+         </div>
+         
+         <div class="col-dm-12 p-none">
+         	<ul class="pl_18">
+         		<li>
+         			<span>If V1 = True, Destination Step &nbsp;&nbsp;= </span>
+         			<div class="form-group sm-selection">
+                     <select class="selectpicker" required>
+                        <option>Integer</option>
+                        <option>float</option>
+                        <option>Double</option>
+                      </select>
+                      <div class="help-block with-errors red-txt"></div>
+                  </div>         			     		
+         		</li>
+         		<li>
+         			<span>If V1 = False, Destination Step =</span>
+         			<div class="form-group sm-selection">
+                     <select class="selectpicker" required>
+                        <option>Integer</option>
+                        <option>float</option>
+                        <option>Double</option>
+                      </select>
+                      <div class="help-block with-errors red-txt"></div>
+                  </div>         
+         		</li>
+         	</ul>
+         </div>
+         
+         <div class="numeric__form">
+         
+         	<div class="numeric__header">
+	         	<span><span>Formula:</span> 200 > (0.5(40-x))</span>
+	         	<span>Trial</span>
+         	</div>
          
          </div>
+         
+         </div>
+         
          
          </div>
         </div> 
