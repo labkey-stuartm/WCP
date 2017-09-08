@@ -3441,7 +3441,7 @@ public class StudyDAOImpl implements StudyDAO{
 						List<EligibilityTestBo> eligibilityTestList = null;
 						eligibilityTestList = session.getNamedQuery("EligibilityTestBo.findByEligibilityId").setInteger(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId()).list();
 						if(eligibilityTestList!=null && !eligibilityTestList.isEmpty()){
-							List<Integer> eligibilityTestIds = new ArrayList<Integer>();
+							List<Integer> eligibilityTestIds = new ArrayList<>();
 							for(EligibilityTestBo eligibilityTestBo: eligibilityTestList){
 								eligibilityTestIds.add(eligibilityTestBo.getId());
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
@@ -4196,6 +4196,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Transaction trans = null;
 		String activity;
 		String activitydetails;
+		EligibilityTestBo saveEligibilityTestBo;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
@@ -4218,6 +4219,11 @@ public class StudyDAOImpl implements StudyDAO{
 				activity = "EligibilityQus section saved";
 				activitydetails = customStudyId
 						+ " -- EligibilityQus section saved but not eligible for mark as completed action untill unless it is DONE";
+			}
+			if (null != eligibilityTestBo.getId()) {
+				saveEligibilityTestBo = (EligibilityTestBo) session.get(EligibilityTestBo.class, eligibilityTestBo.getId());
+				session.evict(saveEligibilityTestBo);
+				eligibilityTestBo.setUsed(saveEligibilityTestBo.isUsed());
 			}
 			session.saveOrUpdate(eligibilityTestBo);
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity,
@@ -4625,7 +4631,7 @@ public class StudyDAOImpl implements StudyDAO{
 							session.save(studyPermissionBO);
 						    if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY) && !superadminId.equals(sesObj.getUserId())){
 						    	studyPermissionBO = new StudyPermissionBO();
-								studyPermissionBO.setUserId((Integer)objects[0]);
+								studyPermissionBO.setUserId((Integer)sesObj.getUserId());
 								studyPermissionBO.setViewPermission((Boolean)objects[1]);
 								studyPermissionBO.setStudyId(studyDreaftBo.getId());
 								studyPermissionBO.setStudyPermissionId(null);
@@ -4662,13 +4668,17 @@ public class StudyDAOImpl implements StudyDAO{
 						List<EligibilityTestBo> eligibilityTestList = null;
 						eligibilityTestList = session.getNamedQuery("EligibilityTestBo.findByEligibilityId").setInteger(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId()).list();
 						if(eligibilityTestList!=null && !eligibilityTestList.isEmpty()){
+							List<Integer> eligibilityTestIds = new ArrayList<>();
 							for(EligibilityTestBo eligibilityTestBo: eligibilityTestList){
+								eligibilityTestIds.add(eligibilityTestBo.getId());
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
-								newEligibilityTestBo.setUsed(false);
+								newEligibilityTestBo.setUsed(true);
 								session.save(newEligibilityTestBo);
 							}
+							if(!eligibilityTestIds.isEmpty())
+								session.createSQLQuery("UPDATE eligibility_test set is_used='Y' where id in("+StringUtils.join(eligibilityTestIds,",")+")").executeUpdate();
 						}
 					}
 					

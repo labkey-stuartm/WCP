@@ -24,6 +24,7 @@
 	           </div>
 	
 	           <div class="dis-line form-group mb-none">
+	           	<span id="spancomId" class="tool-tip" data-toggle="tooltip" data-placement="bottom"  data-original-title="">
 	               <button type="button" class="btn btn-primary blue-btn submitEle" actType="mark" id="doneBut">Mark as Completed</button>
 	           </div>
 	           </c:if>
@@ -128,6 +129,7 @@
       </c:if>
       if((!chkDone) && eligibilityMechanism != "1" ) {
     	  $('#doneBut').prop('disabled', true);
+    	  $('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
       }
       initActions();
 	   $('.submitEle').click(function(e) {
@@ -226,13 +228,16 @@
 				$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
 				if(!chkDone && $(this).val() != '1') {
 					$('#doneBut').prop('disabled', true);
+					$('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
 				}
 			} else {
 				$('#forceContinueMsgId').hide();
 				$('#doneBut, #addQaId').prop('disabled', false);
+				$('#spancomId').attr('data-original-title', '');
 				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
 				if(!chkDone && $(this).val() != '1') {
 					$('#doneBut').prop('disabled', true);
+					$('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
 				}
 			}
 			if($('#inlineRadio1:checked').length > 0 ) {
