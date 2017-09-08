@@ -11,9 +11,9 @@
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
-          <c:if test="${empty comprehensionQuestionBo.id}">Add Question</c:if>
-          <c:if test="${not empty comprehensionQuestionBo.id && actionPage eq 'addEdit'}">Edit Question</c:if>
-          <c:if test="${not empty comprehensionQuestionBo.id && actionPage eq 'view'}">View Question<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+          <c:if test="${empty comprehensionQuestionBo.id}">Add Comprehension Test Question</c:if>
+          <c:if test="${not empty comprehensionQuestionBo.id && actionPage eq 'addEdit'}">Edit Comprehension Test Question</c:if>
+          <c:if test="${not empty comprehensionQuestionBo.id && actionPage eq 'view'}">View Comprehension Test Question<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
