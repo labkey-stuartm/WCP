@@ -130,7 +130,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 			try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				queryString = "from NotificationHistoryBO NHBO where NHBO.notificationSentDateTime <> null and NHBO.notificationId = " +notificationId;
+				queryString = "from NotificationHistoryBO NHBO where NHBO.notificationSentDateTime <> null and NHBO.notificationId = " +notificationId +" order by NHBO.notificationSentDateTime desc";
 				query = session.createQuery(queryString);
 				notificationHistoryListNoDateTime = query.list();
 			}catch(Exception e){

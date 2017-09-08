@@ -45,7 +45,7 @@
 						</c:when>
 					</c:choose>" data-toggle="tooltip" data-placement="top" title="${(not empty study.liveStudyId)?((study.flag)?'Draft Version':'Edit'):'Draft Version'}" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
+                    <span class="eye-inc viewStudyClass mr-lg" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
 					<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
 					<span class="sprites_icon copy copyStudyClass" customStudyId="${study.customStudyId}" data-toggle="tooltip" data-placement="top" title="Copy"></span>
 					</c:if>
