@@ -1558,21 +1558,21 @@ $(document).ready(function(){
    		    $("#placeholderTextId").val(placeholderText);
    		    $("#stepValueId").val(stepText);
 	   		if(resType != '' && resType != null && resType != 'undefined'){
-	   			     var exists = false;
+	   			     //var exists = false;
 			    	 $("#responseTypeId > option").each(function() {
 				    		 var textVal = this.text.replace(/\s/g, '');
-				    		 if(textVal == 'TextScale'){
+				    		 /* if(textVal == 'TextScale'){
 				    			 exists = true;
-				    		 }
+				    		 } */
 				    		 
 			   			 if(resType.replace(/\s/g, '') == textVal){
 			   			 }else{
 			   				 $("#"+textVal).empty();
 			   			 }    
 			   		 });
-			    	 if(!exists){
+			    	 /* if(!exists){
 			    		 $("#TextScale").empty();
-			    	 }	 
+			    	 } */	 
 			 }
 	   		if(isValid && isImageValid){
 	   			validateTheQuestionshortTitle('',function(val){
@@ -2888,6 +2888,7 @@ function addValuePicker(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	$('#'+count).find('input:first').focus();
 }
 function removeValuePicker(param){
 	if($('.value-picker').length > 2){
@@ -2947,7 +2948,7 @@ function addTextScale(){
 	}
 	
 	}
-	
+	$('#'+scaleCount).find('input:first').focus();
 }
 function removeTextScale(param){
 	if($('.text-scale').length > 2){
@@ -3024,7 +3025,7 @@ function addTextChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	
+	$('#'+choiceCount).find('input:first').focus();
 }
 function removeTextChoice(param){
 	if($('.text-choice').length > 2){
@@ -3097,7 +3098,7 @@ function addImageChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	
+	$('#'+imageCount).find('input:first').focus();
 }
 function removeImageChoice(param){
 	if($('.image-choice').length > 2){

@@ -68,28 +68,28 @@
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Tagline Description <small>(250 characters max)</small><span class="requiredStar">*</span></div>
+		                    <div class="gray-xs-f mb-xs">1 line description or tagline <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
 		                        <input type="text" class="form-control requiredClass" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" />
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Short Description for RO <small>(250 characters max)</small><span class="requiredStar">*</span></div>
+		                    <div class="gray-xs-f mb-xs">Short Description for RO (Research Organization or Data Partner) <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
 		                        <input type="text" class="form-control requiredClass" placeholder=""  maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}"/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                    <div class="gray-xs-f mb-xs">Long Description for RO<small>(500 characters max)</small><span class="requiredStar">*</span></div>
+		                    <div class="gray-xs-f mb-xs">Long Description for RO (Research Organization or Data Partner) <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
 		                        <textarea class="form-control requiredClass"  rows="5" maxlength="500"  placeholder="" name="longDescription" id="longDescriptionId">${consentBo.longDescription}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
-		                     <div class="gray-xs-f mb-xs">Learn More Text <span class="requiredStar">*</span></div>
+		                     <div class="gray-xs-f mb-xs">Learn More text (Elaborated content that explains how data will be shared)<span class="requiredStar">*</span></div>
 		                     <div class="form-group">
 		                        <textarea  id="learnMoreTextId" name="learnMoreText" required>${consentBo.learnMoreText}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
@@ -109,7 +109,7 @@
 	                        </div>
                     	</div>
                     	 <div class="col-md-12 pl-none mt-lg mb-xlg">
-                    	 	<span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span>
+                    	 	<!-- <span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span> -->
                     	 </div>
                     	 </div>
                     	 <!-- <div class="container">
@@ -190,10 +190,10 @@
 	                    </div>
 	                </div>
                 <div id="menu3" class="tab-pane fade">
-                    <div class="mt-xlg text-weight-semibold">The mobile app captures the fallowinng from the user as  part of Consent to the study : </div>
+                    <div class="mt-xlg text-weight-semibold">The mobile app captures the following from the user as  part of Consent to the study : </div>
                     <div class="mt-lg">
 	                    <ul class="list-style-image">
-	                    	<li>Agreement to the content in the Consent Document <small>(250 characters max)</small><span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Text message on app to confirm review and agreement of the Consent Document"></span>
+	                    	<li>Agreement to the content in the Consent Document <small>(250 characters max)</small><span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Text message shown to the prospect participant on the app, to confirm Review of and Agreement to the Consent Document."></span>
 			                    <div class="form-group mt-sm mb-none">
 			                        <input type="text" class="form-control" placeholder="" required  name="aggrementOfTheConsent" id="aggrementOfTheConsentId" value="${consentBo.aggrementOfTheConsent}" maxlength="250"/>
 			                        <div class="help-block with-errors red-txt"></div>
@@ -261,11 +261,17 @@ $(document).ready(function(){
 	}
 	
 	//auto select if consent Id is empty
-	var consentId = "${consentBo.id}";
+	//var consentId = "${consentBo.id}";
+	
+	var consentId = "${consentBo.consentDocType}";
 	console.log(consentId);
-	if( consentId == null || consentId == '' || typeof consentId === undefined){
-		$("#inlineRadio1").attr('checked', true);
-		$("#version").val('1.0');
+	if( consentId == null || consentId == '' || typeof consentId === 'undefined'){
+		if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
+			$("#inlineRadio1").attr('checked', true);
+			$("#version").val('1.0');
+		}else{
+			$("#inlineRadio2").attr('checked', true);
+		}
 	}
 	
 	//active li
@@ -401,6 +407,7 @@ $(document).ready(function(){
 			console.log("ifff");
 			$('#rootContainer input').val('');
 			$('#allowWithoutPermissionYes').val("Yes");
+			$('#allowWithoutPermissionNo').val("No");
 			$('#allowWithoutPermissionYes').prop("checked",true);
 			$('#learnMoreTextId').val('');
 			$('#longDescriptionId').val('');
@@ -412,8 +419,6 @@ $(document).ready(function(){
 		}else{
 			$('.requiredClass').attr('required',true);
 			$('#learnMoreTextId').attr('required',true);
-			$('#allowWithoutPermissionYes').val("Yes");
-			$('#allowWithoutPermissionYes').prop("checked",true);
 			newLearnMoreConsentDocument();
 		} 
 	}

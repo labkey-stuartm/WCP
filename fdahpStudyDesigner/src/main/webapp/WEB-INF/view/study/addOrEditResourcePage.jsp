@@ -214,7 +214,7 @@
         <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
-<form:form action="/fdahpStudyDesigner/downloadPdf.do"  id="pdfDownloadFormId" method="post" target="_blank" >
+<form:form action="/fdahpStudyDesigner/downloadPdf.do?_S=${param._S}"  id="pdfDownloadFormId" method="post" target="_blank" >
 	<input type="hidden" value="studyResources"  name="fileFolder"/>
 	<input type="hidden" value="${resourceBO.pdfUrl}"  name="fileName"/>
 </form:form>

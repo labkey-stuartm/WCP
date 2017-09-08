@@ -50,7 +50,7 @@ function isNumber(evt) {
 	<!--  End  top tab section-->
 	<div class="right-content-head"> 
 	<div class="mb-xlg" id="displayTitleId">
-         <div class="gray-xs-f mb-xs">Do you need a Comprehension Test For your study?</div>
+         <div class="gray-xs-f mb-xs">Do you need a Comprehension Test for your study? <span class="ct_panel" id="addHelpNote"><small>(Please save to continue)</small></span></div>
          <div class="form-group col-md-5 p-none">
 			   <span class="radio radio-info radio-inline p-45">
 			  	 <input type="radio" id="comprehensionTestYes" value="Yes" name="needComprehensionTest" ${consentBo.needComprehensionTest eq 'Yes' ? 'checked' : ''}>
@@ -98,10 +98,10 @@ function isNumber(evt) {
          </table>
       </div> 
       
-      <div class="mb-xlg" id="displayTitleId">
+      <div class="mt-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
          <div class="form-group col-md-5 p-none">
-            <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)" <c:if test="${consentBo.needComprehensionTest eq 'Yes'}">required</c:if>>
+            <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)" >
             <div class="help-block with-errors red-txt"></div>
          </div>
          <input type="hidden"name="consentId" id="consentId" value="${consentBo.id}" />
@@ -137,7 +137,7 @@ $(document).ready(function(){
 		var val = $(this).val();
 		$("#addQuestionId").attr("disabled",true);
 		if(val == "Yes"){
-			$("#comprehensionTestMinimumScore").attr("required",true);
+			//$("#comprehensionTestMinimumScore").attr("required",true);
 			$("#mainContainer").show();
 			var markAsComplete = "${markAsComplete}"
 			if(markAsComplete == "false"){
@@ -145,10 +145,14 @@ $(document).ready(function(){
 				$("#helpNote").attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.');
 				$('[data-toggle="tooltip"]').tooltip();
 			}
+			if(document.getElementById("addQuestionId") != null && document.getElementById("addQuestionId").disabled){
+				$("#addHelpNote").show();
+			}
 		}else{
-			$("#comprehensionTestMinimumScore").attr("required",false);
+			//$("#comprehensionTestMinimumScore").attr("required",false);
 			$("#comprehensionTestMinimumScore").val('');
 			$("#mainContainer").hide();
+			$("#addHelpNote").hide();
 			if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
 				$("#markAsCompleteBtnId").attr("disabled",false);
 				$("#helpNote").attr('data-original-title', '');
@@ -396,6 +400,9 @@ function saveConsent(type){
 	var studyId = $("#studyId").val();
 	if(studyId != null && studyId != '' && typeof studyId != 'undefined' &&
 			needComprehensionTestTxt != null && needComprehensionTestTxt != '' && typeof needComprehensionTestTxt != 'undefined'){
+		if(type == "save"){
+			$("body").addClass("loading");
+		}
 		var consentInfo =  new Object();
 		if(consentId != null && consentId != '' && typeof consentId != 'undefined'){
 			consentInfo.id=consentId;
@@ -421,14 +428,20 @@ function saveConsent(type){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					var consentInfoId = jsonobject.consentId;
+					var consentId = jsonobject.consentId;
+					console.log(consentId);
 					$("#consentId").val(consentId);
 					$("#addQuestionId").attr("disabled",false);
+					$("#addHelpNote").hide();
 					if(type != "save"){
-						var a = document.createElement('a');
+						//$("body").removeClass("loading");	
+						/* var a = document.createElement('a');
 						a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
-						document.body.appendChild(a).click();
+						document.body.appendChild(a).click(); */
+						document.comprehensionInfoForm.action="/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
+						document.comprehensionInfoForm.submit();
 					}else{
+						$("body").removeClass("loading");
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
 						$('#alertMsg').show(); 
 						if ($('.fifthComre').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
@@ -436,16 +449,19 @@ function saveConsent(type){
 						}
 					}
 				}else{
+					$("body").removeClass("loading");
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();
 				}
 				setTimeout(hideDisplayMessage, 4000);
 	          },
 	          error: function(xhr, status, error) {
+	        	  $("body").removeClass("loading");
     			  $('#alertMsg').show();
     			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
-    		  }
+    		  },
+    		  global : false,
 	   });
 	}
 }

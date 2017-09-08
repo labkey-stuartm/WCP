@@ -25,7 +25,7 @@ public interface StudyActiveTasksService {
 	public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId);
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,SessionObject sessionObject,String customStudyId);
 	public String deleteActiveTask(Integer activeTaskInfoId,Integer studyId, SessionObject sesObj,String customStudyId);
-	public List<ActiveTaskListBo> getAllActiveTaskTypes();
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType);
 	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
 	public List<StatisticImageListBo> getStatisticImages();
 	public List<ActivetaskFormulaBo> getActivetaskFormulas();

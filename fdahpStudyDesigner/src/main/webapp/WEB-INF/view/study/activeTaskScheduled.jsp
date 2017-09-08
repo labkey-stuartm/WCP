@@ -843,6 +843,7 @@ function addTime(){
 	$('#time'+count).val("");
 	var flag = 'schedule';
 	setFrequencyVal(flag);
+	$('#'+count).find('input:first').focus();
 }
 function removeTime(param){
     $(param).parents(".time-opts").remove();
@@ -891,6 +892,7 @@ function addDate(){
 	customEndDate('EndDate'+customCount,customCount);
 	timep('customTime'+customCount);
 	$('#customTime'+customCount).val("");
+	$('#'+customCount).find('input:first').focus();
 }
 function removeDate(param){
     $(param).parents(".manually-option").remove();
@@ -1192,7 +1194,9 @@ function saveActiveTask(item, actType, callback){
 	if(study_id && isFormValid){
 		if(actType !=='save'){
 			console.log("inside schedule");
-			if(frequency_text == 'One time' || frequency_text == 'Daily' || frequency_text == 'Manually Schedule'){
+			var activetaskType = $('#targetOptionId').val();
+			console.log("activetaskType::"+activetaskType);
+			if((activetaskType && parseInt(activetaskType) == 1) && (frequency_text == 'One time' || frequency_text == 'Daily' || frequency_text == 'Manually Schedule')){
 				if(frequency_text == 'One time')
 		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
 		    	if(frequency_text == 'Daily' || frequency_text == 'Manually Schedule')
