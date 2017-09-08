@@ -3441,13 +3441,17 @@ public class StudyDAOImpl implements StudyDAO{
 						List<EligibilityTestBo> eligibilityTestList = null;
 						eligibilityTestList = session.getNamedQuery("EligibilityTestBo.findByEligibilityId").setInteger(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId()).list();
 						if(eligibilityTestList!=null && !eligibilityTestList.isEmpty()){
+							List<Integer> eligibilityTestIds = new ArrayList<Integer>();
 							for(EligibilityTestBo eligibilityTestBo: eligibilityTestList){
+								eligibilityTestIds.add(eligibilityTestBo.getId());
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
 								newEligibilityTestBo.setUsed(true);
 								session.save(newEligibilityTestBo);
 							}
+							if(!eligibilityTestIds.isEmpty())
+								session.createSQLQuery("UPDATE eligibility_test set is_used='Y' where id in("+StringUtils.join(eligibilityTestIds,",")+")").executeUpdate();
 						}
 					}
 					//resources
