@@ -1910,3 +1910,8 @@ option:first-child {
     margin-top: -5px;
 	
 }
+.cursor-none-disabled-event {
+	background-color: #eee;
+    opacity: 1;
+    cursor: not-allowed !important;
+}

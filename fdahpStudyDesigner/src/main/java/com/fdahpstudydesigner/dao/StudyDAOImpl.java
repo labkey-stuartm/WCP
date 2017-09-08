@@ -4192,6 +4192,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Transaction trans = null;
 		String activity;
 		String activitydetails;
+		EligibilityTestBo saveEligibilityTestBo;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
@@ -4214,6 +4215,11 @@ public class StudyDAOImpl implements StudyDAO{
 				activity = "EligibilityQus section saved";
 				activitydetails = customStudyId
 						+ " -- EligibilityQus section saved but not eligible for mark as completed action untill unless it is DONE";
+			}
+			if (null != eligibilityTestBo.getId()) {
+				saveEligibilityTestBo = (EligibilityTestBo) session.get(EligibilityTestBo.class, eligibilityTestBo.getId());
+				session.evict(saveEligibilityTestBo);
+				eligibilityTestBo.setUsed(saveEligibilityTestBo.isUsed());
 			}
 			session.saveOrUpdate(eligibilityTestBo);
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity,
