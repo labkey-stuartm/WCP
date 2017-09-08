@@ -99,7 +99,7 @@ public interface StudyDAO {
     public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle);
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
-	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
+	public boolean resetDraftStudyByCustomStudyId(String customStudyId, String action, SessionObject sesObj);
 	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId, String customStudyId);
     public boolean deleteLiveStudy(String customStudyId);
     
