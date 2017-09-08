@@ -1846,3 +1846,9 @@ height:0px !important;
 option:first-child {
   color: #ccc;
 }
+
+#accessCodeForm{
+	width: 384px;    
+    margin: 0 auto;
+    text-align: center;
+}
