@@ -4625,7 +4625,7 @@ public class StudyDAOImpl implements StudyDAO{
 							session.save(studyPermissionBO);
 						    if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY) && !superadminId.equals(sesObj.getUserId())){
 						    	studyPermissionBO = new StudyPermissionBO();
-								studyPermissionBO.setUserId((Integer)objects[0]);
+								studyPermissionBO.setUserId((Integer)sesObj.getUserId());
 								studyPermissionBO.setViewPermission((Boolean)objects[1]);
 								studyPermissionBO.setStudyId(studyDreaftBo.getId());
 								studyPermissionBO.setStudyPermissionId(null);
