@@ -3,9 +3,11 @@ package com.fdahpstudydesigner.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +57,7 @@ import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.UserPermissions;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -1600,6 +1603,39 @@ public class StudyDAOImpl implements StudyDAO{
 							studyPermissionBO.setViewPermission("1".equals(viewPermission[i]) ? true : false);
 							studyPermissionBO.setProjectLead(projectLead.equals(userId[i]) ? 1 : 0);
 							session.save(studyPermissionBO);
+							
+							UserBO user = null;
+							boolean present = false;
+							Set<UserPermissions> permissionSet = null;
+							query = session.createQuery(" FROM UserBO UBO where UBO.userId = "+userId[i]);
+							user = (UserBO) query.uniqueResult();
+							if(user != null){
+								String oldPermissions = "";
+								for (UserPermissions temp : user.getPermissions()) {
+									if(oldPermissions == ""){
+										oldPermissions = "'"+temp.getPermissions()+"'";
+									}else{
+										oldPermissions += ",'"+temp.getPermissions()+"'";
+									}
+							        if(temp.getPermissions().equals("ROLE_MANAGE_STUDIES")){
+							        	present = true;
+							        }
+							    }
+								
+								if(!present){
+									if(oldPermissions == ""){
+										oldPermissions = "'ROLE_MANAGE_STUDIES'";
+									}else{
+										oldPermissions += ",'ROLE_MANAGE_STUDIES'";
+									}
+									permissionSet = new HashSet<UserPermissions>(session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN ("+oldPermissions+")").list());
+									user.setPermissionList(permissionSet);
+									user.setModifiedBy(study.getUserId());
+									user.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+									session.update(user);
+								}
+							}
+							
 							if(forceLogoutUserIds == ""){
 								forceLogoutUserIds = userId[i];
 							}else{
@@ -5525,8 +5561,8 @@ public class StudyDAOImpl implements StudyDAO{
 					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 1 "
 					+ "AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
-					+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
-					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "
+					/*+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
+					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "*/
 					+ "AND u.user_id <> "+userId);
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
