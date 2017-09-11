@@ -3,9 +3,11 @@ package com.fdahpstudydesigner.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +57,7 @@ import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.UserPermissions;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -1600,6 +1603,39 @@ public class StudyDAOImpl implements StudyDAO{
 							studyPermissionBO.setViewPermission("1".equals(viewPermission[i]) ? true : false);
 							studyPermissionBO.setProjectLead(projectLead.equals(userId[i]) ? 1 : 0);
 							session.save(studyPermissionBO);
+							
+							UserBO user = null;
+							boolean present = false;
+							Set<UserPermissions> permissionSet = null;
+							query = session.createQuery(" FROM UserBO UBO where UBO.userId = "+userId[i]);
+							user = (UserBO) query.uniqueResult();
+							if(user != null){
+								String oldPermissions = "";
+								for (UserPermissions temp : user.getPermissions()) {
+									if(oldPermissions == ""){
+										oldPermissions = "'"+temp.getPermissions()+"'";
+									}else{
+										oldPermissions += ",'"+temp.getPermissions()+"'";
+									}
+							        if(temp.getPermissions().equals("ROLE_MANAGE_STUDIES")){
+							        	present = true;
+							        }
+							    }
+								
+								if(!present){
+									if(oldPermissions == ""){
+										oldPermissions = "'ROLE_MANAGE_STUDIES'";
+									}else{
+										oldPermissions += ",'ROLE_MANAGE_STUDIES'";
+									}
+									permissionSet = new HashSet<UserPermissions>(session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN ("+oldPermissions+")").list());
+									user.setPermissionList(permissionSet);
+									user.setModifiedBy(study.getUserId());
+									user.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+									session.update(user);
+								}
+							}
+							
 							if(forceLogoutUserIds == ""){
 								forceLogoutUserIds = userId[i];
 							}else{
@@ -4603,6 +4639,7 @@ public class StudyDAOImpl implements StudyDAO{
 						studyDreaftBo.setModifiedOn(null);
 						studyDreaftBo.setModifiedBy(null);
 						studyDreaftBo.setLive(0);
+						studyDreaftBo.setPlatform("I");
 					}
 					studyDreaftBo.setHasActivetaskDraft(0);
 					studyDreaftBo.setHasQuestionnaireDraft(0);
@@ -4668,17 +4705,17 @@ public class StudyDAOImpl implements StudyDAO{
 						List<EligibilityTestBo> eligibilityTestList = null;
 						eligibilityTestList = session.getNamedQuery("EligibilityTestBo.findByEligibilityId").setInteger(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId()).list();
 						if(eligibilityTestList!=null && !eligibilityTestList.isEmpty()){
-							List<Integer> eligibilityTestIds = new ArrayList<>();
 							for(EligibilityTestBo eligibilityTestBo: eligibilityTestList){
-								eligibilityTestIds.add(eligibilityTestBo.getId());
 								EligibilityTestBo newEligibilityTestBo = SerializationUtils.clone(eligibilityTestBo);
 								newEligibilityTestBo.setId(null);
 								newEligibilityTestBo.setEligibilityId(bo.getId());
-								newEligibilityTestBo.setUsed(true);
+								newEligibilityTestBo.setUsed(false);
+								if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+								newEligibilityTestBo.setShortTitle(null);
+								newEligibilityTestBo.setStatus(false);
+								}
 								session.save(newEligibilityTestBo);
 							}
-							if(!eligibilityTestIds.isEmpty())
-								session.createSQLQuery("UPDATE eligibility_test set is_used='Y' where id in("+StringUtils.join(eligibilityTestIds,",")+")").executeUpdate();
 						}
 					}
 					
@@ -4726,6 +4763,8 @@ public class StudyDAOImpl implements StudyDAO{
 								newQuestionnaireBo.setCreatedBy(sesObj.getUserId());
 								newQuestionnaireBo.setModifiedBy(null);
 								newQuestionnaireBo.setModifiedDate(null);
+								newQuestionnaireBo.setShortTitle(null);
+								newQuestionnaireBo.setStatus(false);
 							}
 							newQuestionnaireBo.setVersion(0f);
 							session.save(newQuestionnaireBo);
@@ -4795,6 +4834,7 @@ public class StudyDAOImpl implements StudyDAO{
 											 newQuestionnairesStepsBo.setCreatedBy(sesObj.getUserId());
 											 newQuestionnairesStepsBo.setModifiedBy(null);
 											 newQuestionnairesStepsBo.setModifiedOn(null);
+											 newQuestionnairesStepsBo.setStatus(false);
 										 }
 										 session.save(newQuestionnairesStepsBo);
 										if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
@@ -4802,6 +4842,13 @@ public class StudyDAOImpl implements StudyDAO{
 											  if(instructionsBo!=null){
 												  InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
 												  newInstructionsBo.setId(null);
+												  if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+													  newInstructionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+													  newInstructionsBo.setCreatedBy(sesObj.getUserId());
+													  newInstructionsBo.setModifiedBy(null);
+													  newInstructionsBo.setModifiedOn(null);
+													  newInstructionsBo.setStatus(false);
+												  }
 												  session.save(newInstructionsBo);
 												  
 												  //updating new InstructionId
@@ -4819,6 +4866,13 @@ public class StudyDAOImpl implements StudyDAO{
 												  
 												  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 												  newQuestionsBo.setId(null);
+												  if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+													  newQuestionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+													  newQuestionsBo.setCreatedBy(sesObj.getUserId());
+													  newQuestionsBo.setModifiedBy(null);
+													  newQuestionsBo.setModifiedOn(null);
+													  newQuestionsBo.setStatus(false);
+												  }
 												  session.save(newQuestionsBo);
 												  
 												//Question response Type 
@@ -4884,6 +4938,13 @@ public class StudyDAOImpl implements StudyDAO{
 															  
 															  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
 															  newQuestionsBo.setId(null);
+															  if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+																  newQuestionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+																  newQuestionsBo.setCreatedBy(sesObj.getUserId());
+																  newQuestionsBo.setModifiedBy(null);
+																  newQuestionsBo.setModifiedOn(null);
+																  newQuestionsBo.setStatus(false);
+															  }
 															  session.save(newQuestionsBo);
 															  
 															//Question response Type 
@@ -5026,6 +5087,8 @@ public class StudyDAOImpl implements StudyDAO{
 					    			newActiveTaskBo.setCreatedBy(sesObj.getUserId());
 					    			newActiveTaskBo.setModifiedBy(null);
 					    			newActiveTaskBo.setModifiedDate(null);
+					    			newActiveTaskBo.setShortTitle(null);
+					    			newActiveTaskBo.setIsChange(0);
 								}
 					    		newActiveTaskBo.setVersion(0f);
 					    		session.save(newActiveTaskBo);
@@ -5153,6 +5216,7 @@ public class StudyDAOImpl implements StudyDAO{
 										newConsentInfoBo.setCreatedBy(sesObj.getUserId());
 										newConsentInfoBo.setModifiedBy(null);
 										newConsentInfoBo.setModifiedOn(null);
+										newConsentInfoBo.setStatus(false);
 									}
 								newConsentInfoBo.setVersion(0f);
 								session.save(newConsentInfoBo);
@@ -5525,8 +5589,8 @@ public class StudyDAOImpl implements StudyDAO{
 					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 1 "
 					+ "AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
-					+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
-					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "
+					/*+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
+					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "*/
 					+ "AND u.user_id <> "+userId);
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
