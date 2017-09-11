@@ -11,9 +11,9 @@
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
-         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit QA</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View QA <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add QA</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Eligibility Question</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Eligibility Question <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Eligibility Question</c:if>
          </div>
          <input type="hidden" value="${actionTypeForQuestionPage}" name="actionTypeForQuestionPage"> 
          <div class="dis-line form-group mb-none mr-sm">

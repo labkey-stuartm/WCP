@@ -70,7 +70,7 @@
 		          <div class="black-md-f  dis-line pull-left line34">Eligibility Test</div>
 		          <div class="dis-line form-group mb-none mr-sm">
 		          	<c:if test="${empty permission}">
-		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" >+ Add QA</button>
+		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" >+ Add Question</button>
 		          	</c:if>
 		          </div>
 				</div>
