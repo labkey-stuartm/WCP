@@ -4639,6 +4639,7 @@ public class StudyDAOImpl implements StudyDAO{
 						studyDreaftBo.setModifiedOn(null);
 						studyDreaftBo.setModifiedBy(null);
 						studyDreaftBo.setLive(0);
+						studyDreaftBo.setPlatform("I");
 					}
 					studyDreaftBo.setHasActivetaskDraft(0);
 					studyDreaftBo.setHasQuestionnaireDraft(0);
