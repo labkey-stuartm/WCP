@@ -41,7 +41,7 @@
 			<div class=" col-lg-4 col-md-5 pl-none">
 			   <div class="gray-xs-f mb-xs">Short title (1 to 15 characters)<span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span></div>
 			   <div class="form-group">
-			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control " name="shortTitle" id="shortTitleId" value="${fn:escapeXml(eligibilityTest.shortTitle)}" required="required" 
+			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control ${eligibilityTest.used ? 'cursor-none-disabled-event' : ''}" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(eligibilityTest.shortTitle)}" required="required" 
 			      maxlength="15" ${eligibilityTest.used ? 'readonly' : ''} />
 		      	  <div class="help-block with-errors red-txt"></div>
 			   </div>

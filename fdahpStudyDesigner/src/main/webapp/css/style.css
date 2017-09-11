@@ -1914,4 +1914,10 @@ option:first-child {
     border-radius: 4px;
     float: right;
     margin-top: -5px;
+	
+}
+.cursor-none-disabled-event {
+	background-color: #eee;
+    opacity: 1;
+    cursor: not-allowed !important;
 }
