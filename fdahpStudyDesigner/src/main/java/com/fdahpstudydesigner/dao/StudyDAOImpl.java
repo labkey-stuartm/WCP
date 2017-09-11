@@ -4630,7 +4630,6 @@ public class StudyDAOImpl implements StudyDAO{
 					studyDreaftBo.setVersion(0f);
 					studyDreaftBo.setId(null);
 					studyDreaftBo.setThumbnailImage(null);
-					studyDreaftBo.setPlatform("I");
 					if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.RESET_STUDY))
 					  studyDreaftBo.setLive(5);
 					else{
