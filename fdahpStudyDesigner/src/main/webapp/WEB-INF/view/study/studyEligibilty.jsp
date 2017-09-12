@@ -89,7 +89,7 @@
 			        	<c:forEach items="${eligibilityTestList}" var="etQusAns">
 				            <tr id="">
 				                <td>${etQusAns.sequenceNo}</td>
-				                <td>${etQusAns.question}</td>
+				                <td><span class="dis-ellipsis" title="${fn:escapeXml(etQusAns.question)}">${etQusAns.question}</span></td>
 				                <td>
 				                	<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="${etQusAns.id}" ></span>
 				                    <span class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId='${etQusAns.id}'></span>
