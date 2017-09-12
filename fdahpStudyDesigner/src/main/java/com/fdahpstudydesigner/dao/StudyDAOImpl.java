@@ -1504,8 +1504,10 @@ public class StudyDAOImpl implements StudyDAO{
 		List<Integer> superAdminUserIds = null;
 		String deleteExceptIds = "";
 		String forceLogoutUserIds = "";
-		List<Integer> deletingUserIds = null;
+		List<Integer> deletingUserIds = new ArrayList<Integer>();
+		List<Integer> deletingUserIdsWithoutLoginUser = new ArrayList<Integer>();
 		Boolean flag = false;
+		boolean ownUserForceLogout = false;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1548,17 +1550,22 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				
-				if(deleteExceptIds == ""){
+				/*if(deleteExceptIds == ""){
 					deleteExceptIds = String.valueOf(sesObj.getUserId());
 				}else{
 					deleteExceptIds += ","+sesObj.getUserId();
-				}
+				}*/
 				
 				query = session.createSQLQuery(" SELECT sp.user_id FROM study_permission sp WHERE sp.user_id NOT IN ("+ deleteExceptIds +") AND sp.study_id ="+studyBo.getId());
 				deletingUserIds = query.list();
+				deletingUserIdsWithoutLoginUser.addAll(deletingUserIds);
+				if(deletingUserIds.contains(sesObj.getUserId())){
+					ownUserForceLogout = true;
+					deletingUserIdsWithoutLoginUser.remove(sesObj.getUserId());
+				}
 				
-				if(null != deletingUserIds && !deletingUserIds.isEmpty()){
-					for(Integer id:deletingUserIds){
+				if(null != deletingUserIdsWithoutLoginUser && !deletingUserIdsWithoutLoginUser.isEmpty()){
+					for(Integer id:deletingUserIdsWithoutLoginUser){
 						if(forceLogoutUserIds == ""){
 							forceLogoutUserIds = String.valueOf(id);
 						}else{
@@ -1590,10 +1597,14 @@ public class StudyDAOImpl implements StudyDAO{
 							}
 							if(flag){
 								session.update(studyPermissionBO);
-								if(forceLogoutUserIds == ""){
-									forceLogoutUserIds = userId[i];
+								if(sesObj.getUserId().equals(Integer.parseInt(userId[i]))){
+									ownUserForceLogout = true;
 								}else{
-									forceLogoutUserIds += ","+userId[i];
+									if(forceLogoutUserIds == ""){
+										forceLogoutUserIds = userId[i];
+									}else{
+										forceLogoutUserIds += ","+userId[i];
+									}
 								}
 							}
 						}else{
@@ -1636,10 +1647,14 @@ public class StudyDAOImpl implements StudyDAO{
 								}
 							}
 							
-							if(forceLogoutUserIds == ""){
-								forceLogoutUserIds = userId[i];
+							if(sesObj.getUserId().equals(Integer.parseInt(userId[i]))){
+								ownUserForceLogout = true;
 							}else{
-								forceLogoutUserIds += ","+userId[i];
+								if(forceLogoutUserIds == ""){
+									forceLogoutUserIds = userId[i];
+								}else{
+									forceLogoutUserIds += ","+userId[i];
+								}
 							}
 						}
 					}
@@ -1658,6 +1673,11 @@ public class StudyDAOImpl implements StudyDAO{
 				/* admin section ends */
 				
 				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyBo.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyBo.getId());
+				
+				if(result.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS) && ownUserForceLogout){
+					result = FdahpStudyDesignerConstants.WARNING;
+				}
+				
 				if(study != null){
 				if(studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 					activity = "Study settings marked as Completed.";
@@ -5563,7 +5583,8 @@ public class StudyDAOImpl implements StudyDAO{
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
 					/*+ "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "*/
-					+ "AND u.user_id <> "+userId);
+					/*+ "AND u.user_id <> "+userId*/
+					);
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
 				userList = new ArrayList<>();
@@ -5604,7 +5625,8 @@ public class StudyDAOImpl implements StudyDAO{
 					+ "WHERE u.user_id = sp.user_id AND u.status = 1 AND sp.study_id = "+studyId
 					+ " AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
 					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
-					+ "AND u.user_id <> "+userId);
+					/*+ "AND u.user_id <> "+userId*/
+					);
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
 				studyPermissionList = new ArrayList<>();

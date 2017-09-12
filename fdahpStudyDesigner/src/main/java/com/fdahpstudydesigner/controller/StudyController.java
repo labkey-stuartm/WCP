@@ -427,6 +427,7 @@ public class StudyController {
 		List<UserBO> userList = null;
 		List<StudyPermissionBO> studyPermissionList = null;
 		List<Integer> permissions = null;
+		String user = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -447,6 +448,8 @@ public class StudyController {
 				}
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
 				map.addAttribute("_S", sessionStudyCount);
+				//user = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
+				user = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 				if(FdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					userList = studyService.getActiveNonAddedUserList(Integer.parseInt(studyId),sesObj.getUserId());
@@ -458,6 +461,7 @@ public class StudyController {
 					map.addAttribute("userList",userList);
 					map.addAttribute("studyPermissionList",studyPermissionList);
 					map.addAttribute("permissions",permissions);
+					map.addAttribute("user", user);
 					mav = new ModelAndView(FdahpStudyDesignerConstants.VIEW_SETTING_AND_ADMINS, map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -565,7 +569,11 @@ public class StudyController {
 					message = studyService.saveOrUpdateStudySettings(studyBo, sesObj, userIds, permissions, projectLead);
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
 					map.addAttribute("_S", sessionStudyCount);
-					if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+					if(FdahpStudyDesignerConstants.SUCCESS.equals(message) || FdahpStudyDesignerConstants.WARNING.equals(message)) {
+						if(FdahpStudyDesignerConstants.WARNING.equals(message)){
+							//map.addAttribute(FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER, FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
+							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER, FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
+						}
 						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
 							return new ModelAndView("redirect:overviewStudyPages.do", map);
@@ -600,6 +608,7 @@ public class StudyController {
 			String sucMsg = "";
 			String errMsg = "";
 			StudyPageBean studyPageBean = new StudyPageBean();
+			String user = "";
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -619,6 +628,8 @@ public class StudyController {
 						studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 					}
 					String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
+					user = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
+					//user = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 					if(StringUtils.isNotEmpty(studyId)){
 						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -628,6 +639,7 @@ public class StudyController {
 						map.addAttribute("studyPageBean", studyPageBean);
 						map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 						map.addAttribute("_S", sessionStudyCount);
+						map.addAttribute("user", user);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
 						return new ModelAndView("redirect:studyList.do");

@@ -375,6 +375,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String RESET_STUDY = "reset";
 	public static final String COPY_STUDY_SUCCESS_MSG = "The new study has been created with existing study.";
 	public static final String COPY_STUDY_FAILURE_MSG = "Sorry, a technical error occurred and copy could not be happened.";
+	
+	public static final String LOGOUT_LOGIN_USER = "logout_login_user";
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
 	}
