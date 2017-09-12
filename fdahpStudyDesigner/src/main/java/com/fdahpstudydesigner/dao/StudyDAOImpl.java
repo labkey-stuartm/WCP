@@ -4667,7 +4667,6 @@ public class StudyDAOImpl implements StudyDAO{
 						studyDreaftBo.setModifiedOn(null);
 						studyDreaftBo.setModifiedBy(null);
 						studyDreaftBo.setLive(0);
-						studyDreaftBo.setPlatform("I");
 					}
 					studyDreaftBo.setHasActivetaskDraft(0);
 					studyDreaftBo.setHasQuestionnaireDraft(0);
@@ -4863,6 +4862,7 @@ public class StudyDAOImpl implements StudyDAO{
 											 newQuestionnairesStepsBo.setModifiedBy(null);
 											 newQuestionnairesStepsBo.setModifiedOn(null);
 											 newQuestionnairesStepsBo.setStatus(false);
+											 newQuestionnairesStepsBo.setStepShortTitle(null);
 										 }
 										 session.save(newQuestionnairesStepsBo);
 										if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
@@ -4899,6 +4899,8 @@ public class StudyDAOImpl implements StudyDAO{
 													  newQuestionsBo.setCreatedBy(sesObj.getUserId());
 													  newQuestionsBo.setModifiedBy(null);
 													  newQuestionsBo.setModifiedOn(null);
+													  newQuestionsBo.setShortTitle(null);
+													  newQuestionsBo.setStatShortName(null);
 													  newQuestionsBo.setStatus(false);
 												  }
 												  session.save(newQuestionsBo);
@@ -4971,6 +4973,8 @@ public class StudyDAOImpl implements StudyDAO{
 																  newQuestionsBo.setCreatedBy(sesObj.getUserId());
 																  newQuestionsBo.setModifiedBy(null);
 																  newQuestionsBo.setModifiedOn(null);
+																  newQuestionsBo.setShortTitle(null);
+																  newQuestionsBo.setStatShortName(null);
 																  newQuestionsBo.setStatus(false);
 															  }
 															  session.save(newQuestionsBo);
@@ -5116,7 +5120,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    			newActiveTaskBo.setModifiedBy(null);
 					    			newActiveTaskBo.setModifiedDate(null);
 					    			newActiveTaskBo.setShortTitle(null);
-					    			newActiveTaskBo.setIsChange(0);
+					    			newActiveTaskBo.setAction(false);
 								}
 					    		newActiveTaskBo.setVersion(0f);
 					    		session.save(newActiveTaskBo);
@@ -5157,6 +5161,9 @@ public class StudyDAOImpl implements StudyDAO{
 									  ActiveTaskAtrributeValuesBo newActiveTaskAtrributeValuesBo = SerializationUtils.clone(activeTaskAtrributeValuesBo);
 									  newActiveTaskAtrributeValuesBo.setActiveTaskId(newActiveTaskBo.getId());
 									  newActiveTaskAtrributeValuesBo.setAttributeValueId(null);
+									  if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+									   newActiveTaskAtrributeValuesBo.setIdentifierNameStat(null);
+									  }
 									  session.save(newActiveTaskAtrributeValuesBo);
 								  }
 									

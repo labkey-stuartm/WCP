@@ -160,7 +160,7 @@ $(document).ready(function() {
 	    $('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
 	$("#doneId").on("click",function(){
-    	if(isFromValid("#comprehensionFormId")){
+    	if(isFromValid("#comprehensionFormId") && validateCorrectAnswers()){
     		$("#comprehensionFormId").submit();
     	}
     });
@@ -326,6 +326,22 @@ function saveComrehensionTestQuestion(){
 		if(!$('#questionText')[0].checkValidity()) {
 			$("#questionText").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
 		}
+	}
+}
+function validateCorrectAnswers(){
+	var questionResponseArray  = new Array();
+	$('.ans-opts').each(function(){
+		var id = $(this).attr("id");
+		var correctAnswer = $("#correctAnswerId"+id).val();
+		questionResponseArray.push(correctAnswer);
+	});
+	if(questionResponseArray.indexOf("true") != -1) {
+		return true;
+	}else{
+		$('#alertMsg').show();
+	    $("#alertMsg").removeClass('s-box').addClass('e-box').html("Please select at least one correct answer as yes.");
+	    setTimeout(hideDisplayMessage, 3000);
+		return false;
 	}
 }
 </script>
