@@ -43,7 +43,7 @@ public class ResourceBO implements Serializable{
 	private String title;
 	
 	@Column(name = "sequence_no")
-	private Integer sequenceNo;
+	private Integer sequenceNo = 0;
 	
 	@Column(name = "text_or_pdf", length = 1)
 	private boolean textOrPdf;

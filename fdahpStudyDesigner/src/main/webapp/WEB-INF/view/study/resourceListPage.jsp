@@ -192,16 +192,13 @@ $(document).ready(function(){
 					if(message == "SUCCESS"){
 					    reloadResourceDataTable(jsonobject.resourceList,null);
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
-						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
-						   $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-						}
-						if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
-						   $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully.");
+						if ($('.eighthResources').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+						   $('.eighthResources').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 						}
 					}else{
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent.");
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
@@ -247,11 +244,11 @@ function deleteResourceInfo(resourceInfoId){
 	    						$('#markAsComp').prop('disabled',false);
 	    						$('[data-toggle="tooltip"]').tooltip('destroy');
 	    					}
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully.");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
 	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource.");
 	    					$('#alertMsg').show();
 	    	            }
 	    				setTimeout(hideDisplayMessage, 4000);
@@ -317,6 +314,8 @@ function  reloadResourceDataTable(resourceList,markAsComplete){
 			 actions+="<span class='sprites_icon copy delete' onclick='deleteResourceInfo("+obj.id+");'></span>";
 			 datarow.push(actions);
 			 $('#resource_list').DataTable().row.add(datarow);
+			// $('#resource_list tr').find('td[1]').addClass("wid50");
+			 
 			 }
 		 });
 		 if(typeof markAsComplete !='undefined' && markAsComplete != null && markAsComplete){
@@ -324,6 +323,10 @@ function  reloadResourceDataTable(resourceList,markAsComplete){
 			 //$('#helpNote').attr('data-original-title', '');
 		 }
 		 $('#resource_list').DataTable().draw();
+	 	 $('#resource_list tr').each(function() {
+	 	 $(this).find('td:nth-child(2)').addClass("wid50");
+			$(this).find('td:last').addClass("wid50 text-right");
+		});
 	 }else{
 		 $('#resource_list').DataTable().draw();
 		 //$('#helpNote').attr('data-original-title', 'Please ensure you add one or more Resource Sections before attempting to mark this section as Complete.');
