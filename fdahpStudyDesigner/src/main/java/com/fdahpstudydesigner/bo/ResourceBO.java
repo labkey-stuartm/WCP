@@ -42,6 +42,9 @@ public class ResourceBO implements Serializable{
 	@Column(name="title")
 	private String title;
 	
+	@Column(name = "sequence_no")
+	private Integer sequenceNo = 0;
+	
 	@Column(name = "text_or_pdf", length = 1)
 	private boolean textOrPdf;
 	
@@ -295,5 +298,13 @@ public class ResourceBO implements Serializable{
 
 	public void setyDaysSign(boolean yDaysSign) {
 		this.yDaysSign = yDaysSign;
+	}
+
+	public Integer getSequenceNo() {
+		return sequenceNo;
+	}
+
+	public void setSequenceNo(Integer sequenceNo) {
+		this.sequenceNo = sequenceNo;
 	}
 }

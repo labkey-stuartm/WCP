@@ -1917,7 +1917,10 @@ option:first-child {
 	
 }
 .cursor-none-disabled-event {
-	background-color: #eee;
-    opacity: 1;
+	background-color: #eee !important ;
+    opacity: 1 !important ;
     cursor: not-allowed !important;
+}
+.mt__28{
+	margin-top:45px;
 }
