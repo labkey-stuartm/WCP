@@ -1778,7 +1778,7 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
-					for(ResourceBO rBO:resourceBOList){
+					for(ResourceBO rBO:resourceBOList){ 
 						if(rBO.isStudyProtocol()){
 							studyProtocolResourceBO = new ResourceBO();
 							studyProtocolResourceBO.setId(rBO.getId());
@@ -1827,7 +1827,7 @@ public class StudyController {
 				}
 				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 				if(!resourceInfoId.isEmpty()){
-					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId),sesObj,customStudyId);
+					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId),sesObj,customStudyId,Integer.valueOf(studyId));
 				}
 				resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
 				if(!resourcesSavedList.isEmpty()){
@@ -1965,6 +1965,10 @@ public class StudyController {
 						resourceBO.setResourceType("0".equals(resourceTypeParm) ? false : true);
 					}else{
 						resourceBO.setResourceType(false);
+					}
+					if(resourceBO.getStudyId() != null && resourceBO.getId() == null){
+						int order = studyService.resourceOrder(resourceBO.getStudyId());
+						resourceBO.setSequenceNo(order);
 					}
 					resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);	
 				}
@@ -3351,5 +3355,99 @@ public class StudyController {
     			}
     			logger.info("StudyController - crateNewStudy() - Ends");
     			return modelAndView;
+    		}
+    		
+    		
+    		@RequestMapping(value="/adminStudies/reOrderResourceList.do", method = RequestMethod.POST)
+    		public void reOrderResourceList(HttpServletRequest request ,HttpServletResponse response){
+    			logger.info("StudyController - reOrderResourceList - Starts");
+    			String message = FdahpStudyDesignerConstants.FAILURE;
+    			JSONObject jsonobject = new JSONObject();
+    			PrintWriter out = null;
+    			ObjectMapper mapper = new ObjectMapper();
+    			JSONArray resourceJsonArray = null;
+    			List<ResourceBO> resourceList = null;
+    			try{
+    				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+    				int oldOrderNumber;
+    				int newOrderNumber;
+    				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+    				if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+    					String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+    					if(StringUtils.isEmpty(studyId)){
+    						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+    					}
+    					String oldOrderNo = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.OLD_ORDER_NUMBER))?"0":request.getParameter(FdahpStudyDesignerConstants.OLD_ORDER_NUMBER);
+    					String newOrderNo = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.NEW_ORDER_NUMBER))?"0":request.getParameter(FdahpStudyDesignerConstants.NEW_ORDER_NUMBER);
+    					if((studyId != null && !studyId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
+    						oldOrderNumber = Integer.valueOf(oldOrderNo);
+    						newOrderNumber = Integer.valueOf(newOrderNo);
+    						message = studyService.reOrderResourceList(Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
+    						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+    							resourceList = studyService.getResourceList(Integer.valueOf(studyId));
+    							if(resourceList!= null && !resourceList.isEmpty()){
+    								resourceJsonArray = new JSONArray(mapper.writeValueAsString(resourceList));
+    							}	
+    							jsonobject.put("resourceList",resourceJsonArray);
+    						}
+    						
+    					}
+    				}
+    				jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+    				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+    				out = response.getWriter();
+    				out.print(jsonobject);
+    			}catch(Exception e){
+    				logger.error("StudyController - reOrderResourceList - ERROR",e);
+    			}
+    			logger.info("StudyController - reOrderResourceList - Ends");
+    		}
+    		
+    		@RequestMapping("/adminStudies/reloadResourceListPage.do")
+    		public void reloadResourceListPage(HttpServletRequest request,HttpServletResponse response){
+    			logger.info("StudyController - reloadResourceListPage - Starts");
+    			JSONObject jsonobject = new JSONObject();
+    			PrintWriter out = null;
+    			String message = FdahpStudyDesignerConstants.FAILURE;
+    			ObjectMapper mapper = new ObjectMapper();
+    			JSONArray resourceJsonArray = null;
+    			List<ResourceBO> resourceList = null;
+    			try{
+    				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+    				if(sesObj!=null){
+    					String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+    					if(StringUtils.isNotEmpty(studyId)){
+    						resourceList = studyService.getResourceList(Integer.valueOf(studyId));
+    						if(resourceList!= null && !resourceList.isEmpty()){
+    							boolean markAsComplete = true;
+    							resourceJsonArray = new JSONArray(mapper.writeValueAsString(resourceList));
+    							if(resourceList != null && !resourceList.isEmpty()){
+    								for(ResourceBO resource : resourceList){
+    									if(!resource.isStatus()){
+    										markAsComplete = false;
+    										break;
+    									}
+    								}
+    							}
+    							jsonobject.put("markAsComplete", markAsComplete);
+    						}
+    						message = FdahpStudyDesignerConstants.SUCCESS;
+    					}
+    					jsonobject.put("resourceList",resourceJsonArray);
+    				}
+    				jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+    				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+    				out = response.getWriter();
+    				out.print(jsonobject);
+    			}catch(Exception e){
+    				logger.error("StudyController - reloadResourceListPage - ERROR",e);
+    				jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+    				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+    				if(out != null){
+    					out.print(jsonobject);
+    				}
+    			}
+    			logger.info("StudyController - reloadResourceListPage - Ends");
+    			
     		}
 }

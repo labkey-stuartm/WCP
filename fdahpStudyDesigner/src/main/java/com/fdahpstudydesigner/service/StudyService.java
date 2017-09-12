@@ -64,7 +64,7 @@ public interface StudyService {
 	public ConsentBo getConsentDetailsByStudyId(String studyId);
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
-	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId);
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId,int studyId);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
@@ -95,4 +95,6 @@ public interface StudyService {
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,Integer userId);
 	public String checkActiveTaskTypeValidation(Integer studyId);
 	public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject sesObj);
+	public String reOrderResourceList(Integer studyId, int oldOrderNumber,int newOrderNumber);
+	public int resourceOrder(Integer studyId) ;
 }
