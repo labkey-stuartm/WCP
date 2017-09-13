@@ -71,7 +71,7 @@ public interface StudyDAO {
 	public ConsentBo getConsentDetailsByStudyId(String studyId);
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
-	public String deleteResourceInfo(Integer resourceInfoId,boolean resourceVisibility);
+	public String deleteResourceInfo(Integer resourceInfoId,boolean resourceVisibility,int studyId);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO);
 	public String saveResourceNotification(NotificationBO notificationBO,boolean notiFlag);
@@ -99,11 +99,13 @@ public interface StudyDAO {
     public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle);
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
-	public boolean resetDraftStudyByCustomStudyId(String customStudyId);
+	public boolean resetDraftStudyByCustomStudyId(String customStudyId, String action, SessionObject sesObj);
 	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId, String customStudyId);
     public boolean deleteLiveStudy(String customStudyId);
     
     public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId);
     public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,Integer userId);
     public String checkActiveTaskTypeValidation(Integer studyId);
+    public String reOrderResourceList(Integer studyId, int oldOrderNumber,int newOrderNumber);
+    public int resourceOrder(Integer studyId);
 }

@@ -286,6 +286,19 @@
 <script>
 
     $(document).ready(function(){
+    
+    	<c:if test="${user eq 'logout_login_user'}">
+			bootbox.alert({
+				closeButton: false,
+				message : 'Your user account details have been updated. Please sign in again to continue using the portal.',	
+			    callback: function(result) {
+			    	var a = document.createElement('a');
+			    	a.href = "/fdahpStudyDesigner/sessionOut.do";
+					document.body.appendChild(a).click();
+			    }
+		    });
+		</c:if>
+		
     	$('body').find('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-up.png" />');
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');

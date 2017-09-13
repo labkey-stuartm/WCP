@@ -973,7 +973,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId) {
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId,int studyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		String activity = "";
@@ -982,7 +982,7 @@ public class StudyServiceImpl implements StudyService {
 		try{
 			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
 			if(null != resourceBO){
-				message = studyDAO.deleteResourceInfo(resourceInfoId,resourceBO.isResourceVisibility());
+				message = studyDAO.deleteResourceInfo(resourceInfoId,resourceBO.isResourceVisibility(),studyId);
 			}
 			if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				activity = "Resource has been soft-deleted.";
@@ -1030,6 +1030,7 @@ public class StudyServiceImpl implements StudyService {
 			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
+				resourceBO2.setSequenceNo(resourceBO.getSequenceNo());
 				resourceBO2.setStudyId(resourceBO.getStudyId());
 				resourceBO2.setCreatedBy(sesObj.getUserId());
 				resourceBO2.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -1490,13 +1491,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public boolean resetDraftStudyByCustomStudyId(String customStudyId) {
+	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
 		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Starts");
 		boolean flag = false; 
 		try{
-			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId);
+			SessionObject object = null;
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudy, FdahpStudyDesignerConstants.RESET_STUDY, object);
 			if(flag)
-            flag = studyDAO.deleteLiveStudy(customStudyId);
+            flag = studyDAO.deleteLiveStudy(customStudy);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Error",e);
 		}
@@ -1554,5 +1556,44 @@ public class StudyServiceImpl implements StudyService {
 	public String checkActiveTaskTypeValidation(Integer studyId) {
 		logger.info("StudyServiceImpl - checkActiveTaskTypeValidation - Starts");
 		return studyDAO.checkActiveTaskTypeValidation(studyId);
+	}
+
+	@Override
+	public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject object) {
+		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Starts");
+		boolean flag = false; 
+		try{
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId, FdahpStudyDesignerConstants.COPY_STUDY, object);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - copyliveStudyByCustomStudyId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Ends");
+		return flag;
+	}
+	
+	@Override
+	public String reOrderResourceList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
+		logger.info("StudyServiceImpl - reOrderResourceList() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyDAO.reOrderResourceList(studyId, oldOrderNumber, newOrderNumber);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - reOrderResourceList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - reOrderResourceList() - Ends");
+		return message;
+	}
+	
+	@Override
+	public int resourceOrder(Integer studyId) {
+		int count = 1;
+		logger.info("StudyServiceImpl - resourceOrder() - Starts");
+		try{
+			count = studyDAO.resourceOrder(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - resourceOrder() - Error",e);
+		}
+		logger.info("StudyServiceImpl - resourceOrder() - Ends");
+		return count;
 	}
 }

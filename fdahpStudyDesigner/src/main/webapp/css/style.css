@@ -1865,6 +1865,12 @@ option:first-child {
   color: #ccc;
 }
 
+#accessCodeForm{
+	width: 384px;    
+    margin: 0 auto;
+    text-align: center;
+}
+
 .tealtxt-md{
 	color: #007cba;
 	font-size: 16px;
@@ -1956,4 +1962,12 @@ option:first-child {
     display: inline-block;
     margin-left: 10px;
     font-weight: 400;
+}
+.cursor-none-disabled-event {
+	background-color: #eee !important ;
+    opacity: 1 !important ;
+    cursor: not-allowed !important;
+}
+.mt__28{
+	margin-top:45px;
 }

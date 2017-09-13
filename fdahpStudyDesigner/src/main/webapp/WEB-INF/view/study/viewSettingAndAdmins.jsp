@@ -171,7 +171,7 @@
 								</td>
 								<td align="center">
 									<span class="radio radio-info radio-inline p-45">
-	                            		<input type="radio" id="inlineRadio3${perm.userId}" class="radcls" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
+	                            		<input type="radio" id="inlineRadio3${perm.userId}" class="radcls leadCls" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
 	                            		<label for="inlineRadio3${perm.userId}"></label>
                         			</span>
 								</td>
@@ -285,6 +285,18 @@ $(document).ready(function(){
 	
 	<c:if test="${empty permission && fn:contains(permissions,5)}">
 	
+		<c:if test="${user eq 'logout_login_user'}">
+			bootbox.alert({
+				closeButton: false,
+				message : 'Your user account details have been updated. Please sign in again to continue using the portal.',	
+			    callback: function(result) {
+			    	var a = document.createElement('a');
+			    	a.href = "/fdahpStudyDesigner/sessionOut.do";
+					document.body.appendChild(a).click();
+			    }
+		    });
+		</c:if>
+	
 		$('[data-toggle="tooltip"]').tooltip();
 	
 		$('#adminsId').hide();
@@ -351,9 +363,26 @@ $(document).ready(function(){
     	</c:if>
 		
 		$("#completedId").on('click', function(e){
+			var rowCount = 0;
 			if(isFromValid("#settingfoFormId")) {
-				$('#completedId').prop('disabled',true);
-				platformTypeValidation('completed');
+				rowCount = $('.leadCls').length;
+				if (rowCount != 0) {
+				if ($("#studyAdminsTable .leadCls:checked").length > 0)
+				{
+					$('#completedId').prop('disabled',true);
+					platformTypeValidation('completed');
+				}
+				else
+				{
+					bootbox.alert({
+						closeButton: false,
+						message : 'Please select any one of the admin as project lead.',	
+		    		});
+				}
+				}else{
+					$('#completedId').prop('disabled',true);
+					platformTypeValidation('completed');
+				}
  			}
          });
          
@@ -581,7 +610,7 @@ function admins(){
 			          					'<label for="inlineRadio2'+userId+'"></label>'+
 			          					'</span></td>';
 					  domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">'+
-										'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
+										'<input type="radio" id="inlineRadio3'+userId+'" class="leadCls" name="projectLead">'+
 										'<label for="inlineRadio3'+userId+'"></label>'+
 										'</span></td>';
 					 domStr = domStr + '<td align="center"><span class="sprites_icon copy delete" onclick="removeUser('+userId+')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';

@@ -11,9 +11,9 @@
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
-         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit QA</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View QA <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add QA</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Eligibility Question</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Eligibility Question <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Eligibility Question</c:if>
          </div>
          <input type="hidden" value="${actionTypeForQuestionPage}" name="actionTypeForQuestionPage"> 
          <div class="dis-line form-group mb-none mr-sm">
@@ -37,11 +37,11 @@
       <input type="hidden" name="id" value="${eligibilityTest.id}" />
       <input type="hidden" id="eligibilityId" name="eligibilityId" value="${eligibilityId}" />
       <input type="hidden" id="sequenceNo" name="sequenceNo" value="${eligibilityTest.sequenceNo}" />
-      <input type="hidden" id="lastEligibilityOptId" name="lastEligibilityOpt" value="${lastEligibilityOpt}" />
+      <%-- <input type="hidden" id="lastEligibilityOptId" name="lastEligibilityOpt" value="${lastEligibilityOpt}" /> --%>
 			<div class=" col-lg-4 col-md-5 pl-none">
 			   <div class="gray-xs-f mb-xs">Short title (1 to 15 characters)<span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span></div>
 			   <div class="form-group">
-			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control " name="shortTitle" id="shortTitleId" value="${fn:escapeXml(eligibilityTest.shortTitle)}" required="required" 
+			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control ${eligibilityTest.used ? 'cursor-none-disabled-event' : ''}" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(eligibilityTest.shortTitle)}" required="required" 
 			      maxlength="15" ${eligibilityTest.used ? 'readonly' : ''} />
 		      	  <div class="help-block with-errors red-txt"></div>
 			   </div>

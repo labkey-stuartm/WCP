@@ -24,6 +24,7 @@
 	           </div>
 	
 	           <div class="dis-line form-group mb-none">
+	           	<span id="spancomId" class="tool-tip" data-toggle="tooltip" data-placement="bottom"  data-original-title="">
 	               <button type="button" class="btn btn-primary blue-btn submitEle" actType="mark" id="doneBut">Mark as Completed</button>
 	           </div>
 	           </c:if>
@@ -35,17 +36,17 @@
 	    <!--  Start body tab section -->
 	    <div class="right-content-body">
 	       <div class="mb-xlg form-group" id="eligibilityOptDivId">
-	            <div class="gray-xs-f mb-sm">Choose the method to be used for ascertaining participant eligibility</div>
+	            <div class="gray-xs-f mb-sm">Choose the method to be used for ascertaining participant eligibility <small style="display: none;" id= "forceContinueMsgId">(Please save to continue)</small></div>
 	            <span class="radio radio-info radio-inline p-45">
-	               <input type="radio" id="inlineRadio1" value="1" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${(eligibility.eligibilityMechanism eq 1 && empty lastEligibilityOpt) || lastEligibilityOpt eq '1'}">checked</c:if>>
+	               <input type="radio" id="inlineRadio1" value="1" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 1}" >checked</c:if>>
 	               <label for="inlineRadio1">Token Validation Only</label>
 	           </span>
 	           <span class="radio radio-inline p-45">
-	               <input type="radio" id="inlineRadio2" value="2" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${(eligibility.eligibilityMechanism eq 2  && empty lastEligibilityOpt) || lastEligibilityOpt eq '2'}">checked</c:if>>
+	               <input type="radio" id="inlineRadio2" value="2" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 2}">checked</c:if>>
 	               <label for="inlineRadio2">Token Validation and Eligibility Test</label>
 	           </span>
 	             <span class="radio radio-inline">
-	               <input type="radio" id="inlineRadio3" value="3" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${(eligibility.eligibilityMechanism eq 3  && empty lastEligibilityOpt) || lastEligibilityOpt eq '3'}">checked</c:if>>
+	               <input type="radio" id="inlineRadio3" value="3" class="eligibilityOptCls" name="eligibilityMechanism"  required <c:if test="${eligibility.eligibilityMechanism eq 3}">checked</c:if>>
 	               <label for="inlineRadio3">Eligibility Test Only</label>
 	           </span>
 	           <div class="help-block with-errors red-txt"></div>
@@ -69,7 +70,7 @@
 		          <div class="black-md-f  dis-line pull-left line34">Eligibility Test</div>
 		          <div class="dis-line form-group mb-none mr-sm">
 		          	<c:if test="${empty permission}">
-		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" >+ Add QA</button>
+		               <button type="button" class="btn btn-primary blue-btn" id="addQaId" >+ Add Question</button>
 		          	</c:if>
 		          </div>
 				</div>
@@ -88,7 +89,7 @@
 			        	<c:forEach items="${eligibilityTestList}" var="etQusAns">
 				            <tr id="">
 				                <td>${etQusAns.sequenceNo}</td>
-				                <td>${etQusAns.question}</td>
+				                <td><span class="dis-ellipsis" title="${fn:escapeXml(etQusAns.question)}">${etQusAns.question}</span></td>
 				                <td>
 				                	<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="${etQusAns.id}" ></span>
 				                    <span class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId='${etQusAns.id}'></span>
@@ -114,7 +115,7 @@
 	var permission = "${permission}";
 	var chkDone = ${chkDone};
 	var eligibilityMechanism = '${eligibility.eligibilityMechanism}';
- 	var lastEligibilityOpt = ${not empty lastEligibilityOpt && lastEligibilityOpt ne '1'};
+//  	var lastEligibilityOpt = ${not empty lastEligibilityOpt && lastEligibilityOpt ne '1'};
 	console.log("viewPermission:"+viewPermission);
 	var reorder = true;
 	var table1;
@@ -128,6 +129,7 @@
       </c:if>
       if((!chkDone) && eligibilityMechanism != "1" ) {
     	  $('#doneBut').prop('disabled', true);
+    	  $('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
       }
       initActions();
 	   $('.submitEle').click(function(e) {
@@ -220,16 +222,24 @@
 		});
 		
 		$('#eligibilityOptDivId input[type=radio]').change(function() {
-// 			if($(this).val() != '1' && eligibilityMechanism != $(this).val()) {
-// 				$('#doneBut, #addQaId').prop('disabled', true);
-// 				$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
-// 			} else {
-// 				$('#doneBut, #addQaId').prop('disabled', false);
-// 				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
-// 				if(!chkDone && $(this).val() != '1') {
-// 					$('#doneBut').prop('disabled', true);
-// 				}
-// 			}
+			if($(this).val() != '1' && eligibilityMechanism != $(this).val()) {
+				$('#forceContinueMsgId').show();
+				$('#addQaId').prop('disabled', true);
+				$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
+				if(!chkDone && $(this).val() != '1') {
+					$('#doneBut').prop('disabled', true);
+					$('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
+				}
+			} else {
+				$('#forceContinueMsgId').hide();
+				$('#doneBut, #addQaId').prop('disabled', false);
+				$('#spancomId').attr('data-original-title', '');
+				$('.viewIcon, .editIcon, .deleteIcon').removeClass('cursor-none');
+				if(!chkDone && $(this).val() != '1') {
+					$('#doneBut').prop('disabled', true);
+					$('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
+				}
+			}
 			if($('#inlineRadio1:checked').length > 0 ) {
 				$('#eligibilityQusDivId').slideUp('fast') ;
 				$('#instructionTextDivId').slideDown('fast');
@@ -246,8 +256,8 @@
 					$('#doneBut').prop('disabled', true);
 			}
 		})
-		if(lastEligibilityOpt)
-			$('#eligibilityOptDivId input[type=radio]').trigger('change');
+// 		if(lastEligibilityOpt)
+// 			$('#eligibilityOptDivId input[type=radio]').trigger('change');
 	});
 	
 	function addOrEditOrViewQA(actionTypeForQuestionPage, eligibilityTestId) {
@@ -270,11 +280,11 @@
 		input.setAttribute('value',"${eligibility.id}");
 		form.append(input);
 		
-		input = document.createElement("input");
-		input.setAttribute('type',"hidden");
-		input.setAttribute('name', 'lastEligibilityOpt');
-		input.setAttribute('value', $('.eligibilityOptCls:checked').val());
-		form.append(input);
+// 		input = document.createElement("input");
+// 		input.setAttribute('type',"hidden");
+// 		input.setAttribute('name', 'lastEligibilityOpt');
+// 		input.setAttribute('value', $('.eligibilityOptCls:checked').val());
+// 		form.append(input);
 		
 		form.submit();
 	}
