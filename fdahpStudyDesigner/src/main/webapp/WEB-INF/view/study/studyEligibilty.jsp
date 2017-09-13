@@ -344,7 +344,7 @@
 				 if(typeof obj.question === "undefined" && typeof obj.question === "undefined" ){
 						datarow.push(' ');
 				 }else{
-						datarow.push(obj.question);
+						datarow.push("<span class='dis-ellipsis' title='"+obj.question+"'>"+obj.question+"</span>");
 				 }	
 				 var actions ='<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="'+obj.id+'"></span> '+
 				 '<span class="'+(obj.status ? "edit-inc" : "edit-inc-draft") + ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'+obj.id+'"></span>'+
