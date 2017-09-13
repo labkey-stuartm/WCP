@@ -71,6 +71,7 @@ public interface StudyService {
 	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj,String customStudyId);
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
+	public ResourceBO getStudyProtocol(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj,String customStudyId);

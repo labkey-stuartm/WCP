@@ -829,9 +829,7 @@ public class StudyServiceImpl implements StudyService {
 				updateConsentBo.setStudyId(consentBo.getStudyId());
 			}
 			
-			if(consentBo.getComprehensionTestMinimumScore() != null){
-				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
-			}
+			updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			if(consentBo.getNeedComprehensionTest() != null){
 				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
 			}
@@ -957,6 +955,18 @@ public class StudyServiceImpl implements StudyService {
 		}
 		logger.info("StudyServiceImpl - getResourceList() - Ends");
 		return resourceBOList;
+	}
+	
+	public ResourceBO getStudyProtocol(Integer studyId) {
+		logger.info("StudyServiceImpl - getStudyProtocol() - Starts");
+		ResourceBO studyprotocol = null;
+		try{
+			studyprotocol = studyDAO.getStudyProtocol(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getStudyProtocol() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getStudyProtocol() - Ends");
+		return studyprotocol;
 	}
 	
 	@Override
