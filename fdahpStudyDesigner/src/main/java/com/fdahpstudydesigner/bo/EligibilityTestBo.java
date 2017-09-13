@@ -29,7 +29,7 @@ import org.hibernate.annotations.Type;
     @NamedQuery(name = "EligibilityTestBo.findByEligibilityId", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId ORDER BY ETB.sequenceNo"),
     @NamedQuery(name = "EligibilityTestBo.findByEligibilityIdAndSequenceNo", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.active = true AND ETB.eligibilityId=:eligibilityId AND ETB.sequenceNo =:sequenceNo"),
     @NamedQuery(name = "EligibilityTestBo.deleteById", query = "UPDATE EligibilityTestBo SET active = false WHERE id=:eligibilityTestId "),
-    @NamedQuery(name = "EligibilityTestBo.validateShortTitle", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.shortTitle =:shortTitle AND ETB.id !=:eligibilityTestId") })
+    @NamedQuery(name = "EligibilityTestBo.validateShortTitle", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.shortTitle =:shortTitle AND ETB.id !=:eligibilityTestId AND ETB.eligibilityId =:eligibilityId ") })
 public class EligibilityTestBo implements Serializable {
 
 

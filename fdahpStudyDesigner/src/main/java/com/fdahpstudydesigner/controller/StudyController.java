@@ -3192,10 +3192,12 @@ public class StudyController {
 		        return mav;
 		    }
             /**
-             * @author Ronalin
+             * This method is used to validate the Eligibility Short Title 
+             * 
+             * @author Vivek
              * @param request
              * @param response
-             * This method is used to validate the questionnaire have response type scale for android platform 
+             * 
              */
             @RequestMapping(value="/adminStudies/validateEligibilityTestKey.do",method = RequestMethod.POST)
             public void validateEligibilityTestKey(HttpServletRequest request ,HttpServletResponse response){
@@ -3204,14 +3206,16 @@ public class StudyController {
                 PrintWriter out = null;
                 String message = FdahpStudyDesignerConstants.FAILURE;
                 Integer eligibilityTestId;
+                Integer eligibilityId;
                 String shortTitle;
                 try{
                     SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
                     Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
                     eligibilityTestId = StringUtils.isNumeric(request.getParameter("eligibilityTestId")) ? Integer.parseInt(request.getParameter("eligibilityTestId")) : 0 ;
                     shortTitle = StringUtils.isNotBlank(request.getParameter("shortTitle")) ? request.getParameter("shortTitle") : "" ;
+                    eligibilityId = StringUtils.isNumeric(request.getParameter("eligibilityId")) ? Integer.parseInt(request.getParameter("eligibilityId")) : 0 ;
                     if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
-                        message = studyService.validateEligibilityTestKey(eligibilityTestId, shortTitle);
+                        message = studyService.validateEligibilityTestKey(eligibilityTestId, shortTitle, eligibilityId);
                     }
                     jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
                     response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);

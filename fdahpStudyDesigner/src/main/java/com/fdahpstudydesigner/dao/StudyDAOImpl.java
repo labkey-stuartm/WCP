@@ -5580,14 +5580,17 @@ public class StudyDAOImpl implements StudyDAO{
     @SuppressWarnings("unchecked")
     @Override
     public String validateEligibilityTestKey(Integer eligibilityTestId,
-            String shortTitle) {
+            String shortTitle, Integer eligibilityId) {
         logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
         Session session = null;
         List<EligibilityTestBo> eligibilityTestBos;
         String result= FdahpStudyDesignerConstants.FAILURE;
         try{
             session = hibernateTemplate.getSessionFactory().openSession();
-            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle").setString("shortTitle", shortTitle).setInteger("eligibilityTestId", eligibilityTestId);
+            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle")
+            			.setString("shortTitle", shortTitle)
+            			.setInteger("eligibilityTestId", eligibilityTestId)
+            			.setInteger("eligibilityId", eligibilityId);
             eligibilityTestBos = query.list();
             if(eligibilityTestBos.isEmpty()) {
                 result = FdahpStudyDesignerConstants.SUCCESS;
