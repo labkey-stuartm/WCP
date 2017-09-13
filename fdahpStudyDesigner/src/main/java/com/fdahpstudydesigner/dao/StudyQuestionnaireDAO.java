@@ -20,7 +20,7 @@ public interface StudyQuestionnaireDAO {
 	
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId,String customStudyId);
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId);
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle);
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId);
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);

@@ -395,7 +395,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != questionsBo){
 				if(questionsBo.getId() != null){
-					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(),customStudyId);
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(),null,customStudyId);
 				}else{
 					addQuestionsBo = new QuestionsBo();
 					addQuestionsBo.setActive(true);
@@ -511,11 +511,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle) {
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
 		QuestionsBo questionsBo = null;
 		try{
-			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,questionnaireShortTitle);
+			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,questionnaireShortTitle,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
 		}
@@ -785,7 +785,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			QuestionsBo addQuestionsBo = null;
 			if(questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null ){
 				if(questionnairesStepsBo.getQuestionsBo().getId() != null){
-					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId(),customStudyId);
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId(),null,customStudyId);
 					if(questionnairesStepsBo.getModifiedOn() != null){
 						addQuestionsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
 					}
