@@ -5800,7 +5800,8 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			String searchQuery = "select count(*) from active_task a" 
                 +" where a.study_id="+studyId+" and a.task_type_id" 
-                +" in(select c.active_task_list_id from active_task_list c where c.task_name in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"'));";
+                +" in(select c.active_task_list_id from active_task_list c"
+                +" where a.active=1 and c.task_name in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"'));";
 			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 			if(count!=null && count.intValue() > 0){	
 				message = FdahpStudyDesignerConstants.SUCCESS;

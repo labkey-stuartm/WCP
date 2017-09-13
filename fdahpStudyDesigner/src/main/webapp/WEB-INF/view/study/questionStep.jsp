@@ -1726,7 +1726,7 @@ function isNumberKey(evt)
 			                        <option>-</option>
 			                        <option>&lt;</option>
 			                      </select>
-			                      <div class="help-block with-errors red-txt"></div>
+			                     <div class="help-block with-errors red-txt"></div>
 			                 </div>
 	         			</div>
 	         			<div class="numeric__define_input gray__t">
@@ -1739,7 +1739,7 @@ function isNumberKey(evt)
 			                        <option>Function</option>
 			                        <option>Response Data Element (x)</option>			                       
 			                      </select>
-			                      <div class="help-block with-errors red-txt"></div>
+			                      <div class="add_varible add_var_hide">+ Add Variable</div>
 			                 </div>
 			                 <div class="form-group sm__in">
 			                 	<input type="text" class="form-control"/>
@@ -1754,7 +1754,7 @@ function isNumberKey(evt)
 			                        <option>Function</option>
 			                        <option>Response Data Element (x)</option>			                       
 			                      </select>
-			                      <div class="help-block with-errors red-txt"></div>
+			                      <div class="add_varible add_var_hide">+ Add Variable</div>
 			                 </div>
 			                
 			             </div>
@@ -1787,7 +1787,7 @@ function isNumberKey(evt)
 			                        <option>Constant</option>			                        
 			                        <option>Response Data Element (x)</option>			                       
 			                      </select>
-			                      <div class="help-block with-errors red-txt"></div>
+			                      <div class="add_varible add_var_hide">+ Add Variable</div>
 			                 </div>
 			                 <div class="form-group sm__in">
 			                 	<input type="text" class="form-control"/>
@@ -1802,7 +1802,7 @@ function isNumberKey(evt)
 			                        <option>Function</option>
 			                        <option>Response Data Element (x)</option>			                       
 			                      </select>
-			                      <div class="help-block with-errors red-txt"></div>
+			                      <div class="add_varible add_var_hide">+ Add Variable</div>
 			                 </div>
 			                 <div class="form-group sm__in">
 			                 	<input type="text" class="form-control"/>

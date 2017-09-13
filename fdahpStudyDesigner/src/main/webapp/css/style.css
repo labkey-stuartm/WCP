@@ -1883,6 +1883,7 @@ option:first-child {
 	display: inline-block;
     width: 250px;
     margin-left: 15px;
+    margin-bottom: 5px;
 }
 
 .pl_18{
@@ -1962,12 +1963,33 @@ option:first-child {
     display: inline-block;
     margin-left: 10px;
     font-weight: 400;
+    vertical-align: top;
 }
+
 .cursor-none-disabled-event {
 	background-color: #eee !important ;
     opacity: 1 !important ;
     cursor: not-allowed !important;
 }
+
 .mt__28{
 	margin-top:45px;
+}
+
+.add_varible{
+	font-size: 12px;
+    position: relative;
+    text-align: right;
+    color: #007cba;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.add_var_hide{
+	visibility: hidden;
+}
+
+
+.numeric__define > span,.numeric__row span{
+	vertical-align: top;
 }
