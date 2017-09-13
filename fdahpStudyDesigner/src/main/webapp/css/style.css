@@ -1915,6 +1915,7 @@ option:first-child {
     border-radius: 4px;
     float: right;
     margin-top: -5px;
+    cursor: pointer;
 	
 }
 
@@ -1992,4 +1993,91 @@ option:first-child {
 
 .numeric__define > span,.numeric__row span{
 	vertical-align: top;
+}
+
+.trial_header{
+	border: none;
+    padding: 15px 30px 0px;
+}
+
+
+.trial_body{
+	padding: 0px 30px 30px;
+}
+
+.trial_title{
+	color: #2d2926;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.trial_section1{
+	font-size: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.trial_section1 span:nth-child(2),.trial_section2 span:nth-child(2){
+	color: #2d2926;
+	font-weight: 600;
+}
+
+.tealfont{
+	color: #007cba;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.trial_section2{
+	font-size: 15px;
+	padding: 24px 0px;
+    border-bottom: 1px solid #ddd;
+}
+
+.trial_section3{
+	font-size: 15px;
+	padding: 24px 0px 0px;
+}
+
+.trial_section2 span:nth-child(3){
+	display: inline-block;
+	margin-bottom: 0px !important;
+}
+
+.trial_section2 span:nth-child(3) > input{
+	width: 68px;
+}
+
+.trial_section2 span:nth-child(4) > button{
+	background: #007cba;
+    border: 1px solid #007cba;
+    padding: 4.2px 22px;
+    color: #fff;
+    margin-left: 5px;
+    border-radius: 4px;
+}
+
+.trial_section3 > div{
+	display: inline-block;
+}
+
+.trial_section3 > div > div{
+	margin-bottom: 10px;
+}
+
+.trial_section3 > div > div > span:first-child{
+	margin-right: 5px;
+}
+
+.trial_section3 > .tealfont{
+	vertical-align: top;
+}
+
+
+.gtxtf{
+	color: #01af21;
 }
