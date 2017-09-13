@@ -71,7 +71,6 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${resourceBOList}" var="resourceInfo">
-						<c:if test="${not resourceInfo.studyProtocol}">
 							<tr id="row${resourceInfo.id}">
 							  <td>${resourceInfo.sequenceNo}</td>
 								<td class="wid50">${resourceInfo.title}</td>
@@ -84,7 +83,6 @@
 									data-toggle="tooltip" data-placement="top" title="Delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 								</td>
 							</tr>
-						</c:if>
 					</c:forEach>
 				</tbody>
 			</table>

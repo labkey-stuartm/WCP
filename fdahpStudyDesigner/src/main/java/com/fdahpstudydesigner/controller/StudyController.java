@@ -448,7 +448,6 @@ public class StudyController {
 				}
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
 				map.addAttribute("_S", sessionStudyCount);
-				//user = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 				user = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 				if(FdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -457,7 +456,6 @@ public class StudyController {
 					permissions = usersService.getPermissionsByUserId(sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,studyBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
-					map.addAttribute("studyPermissionList",studyPermissionList);
 					map.addAttribute("userList",userList);
 					map.addAttribute("studyPermissionList",studyPermissionList);
 					map.addAttribute("permissions",permissions);
@@ -1790,12 +1788,7 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
-					for(ResourceBO rBO:resourceBOList){ 
-						if(rBO.isStudyProtocol()){
-							studyProtocolResourceBO = new ResourceBO();
-							studyProtocolResourceBO.setId(rBO.getId());
-						}
-					}
+					studyProtocolResourceBO = studyService.getStudyProtocol(Integer.valueOf(studyId));
 					resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);

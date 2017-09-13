@@ -80,6 +80,7 @@ public interface StudyDAO {
 	public List<NotificationBO> getSavedNotification(Integer studyId);
 	public NotificationBO getNotificationByResourceId(Integer resourseId);
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
+	public ResourceBO getStudyProtocol(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist);

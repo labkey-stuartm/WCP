@@ -957,6 +957,18 @@ public class StudyServiceImpl implements StudyService {
 		return resourceBOList;
 	}
 	
+	public ResourceBO getStudyProtocol(Integer studyId) {
+		logger.info("StudyServiceImpl - getStudyProtocol() - Starts");
+		ResourceBO studyprotocol = null;
+		try{
+			studyprotocol = studyDAO.getStudyProtocol(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getStudyProtocol() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getStudyProtocol() - Ends");
+		return studyprotocol;
+	}
+	
 	@Override
 	public List<ResourceBO> resourcesSaved(Integer studyId) {
 		logger.info("StudyServiceImpl - resourcesSaved() - Starts");

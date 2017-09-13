@@ -376,7 +376,7 @@ $(document).ready(function(){
 				{
 					bootbox.alert({
 						closeButton: false,
-						message : 'Please select any one of the admin as project lead.',	
+						message : 'Please select one of the admin as a project lead',	
 		    		});
 				}
 				}else{

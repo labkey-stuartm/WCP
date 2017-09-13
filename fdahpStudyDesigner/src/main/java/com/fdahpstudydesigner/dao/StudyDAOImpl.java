@@ -146,6 +146,15 @@ public class StudyDAOImpl implements StudyDAO{
 								if(studyBo.getHasStudyDraft()==1)
 									bean.setFlag(true);
 							}
+							//if is there any team lead in that study
+							if(bean.getId()!=null){
+								String userInfo = (String) session.createQuery("SELECT  u.firstName from StudyPermissionBO s , UserBO u where s.studyId="+bean.getId()+" and s.userId=u.userId and s.projectLead=1").setMaxResults(1).uniqueResult();
+								if(StringUtils.isNotEmpty(userInfo)){
+									bean.setProjectLeadName(userInfo);
+								}else{
+									bean.setProjectLeadName("None");
+								}
+							}
 					}
 				}
 			}
@@ -1506,7 +1515,6 @@ public class StudyDAOImpl implements StudyDAO{
 		String forceLogoutUserIds = "";
 		List<Integer> deletingUserIds = new ArrayList<Integer>();
 		List<Integer> deletingUserIdsWithoutLoginUser = new ArrayList<Integer>();
-		Boolean flag = false;
 		boolean ownUserForceLogout = false;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -1587,6 +1595,7 @@ public class StudyDAOImpl implements StudyDAO{
 						query = session.createQuery(" FROM StudyPermissionBO UBO WHERE UBO.userId = "+ userId[i] +" AND studyId ="+studyBo.getId());
 						studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 						if(null != studyPermissionBO){
+							Boolean flag = false;
 							if(studyPermissionBO.isViewPermission() != "1".equals(viewPermission[i]) ? true : false){
 								studyPermissionBO.setViewPermission("1".equals(viewPermission[i]) ? true : false);
 								flag = true;
@@ -1881,12 +1890,27 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getResourceList() - Starts");
 		List<ResourceBO> resourceBOList = null;
 		Session session = null;
+		int count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
+			transaction =session.beginTransaction();
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.studyProtocol = false ORDER BY RBO.createdOn DESC ";
 			query = session.createQuery(searchQuery);
 			resourceBOList = query.list();
+			
+			if(resourceBOList != null && !resourceBOList.isEmpty()){
+				int sequenceNo = 1;
+				for(ResourceBO rBO:resourceBOList){
+					if(rBO.getSequenceNo().equals(0)){
+						rBO.setSequenceNo(sequenceNo);
+						session.update(rBO);
+						sequenceNo++;
+					}
+				}
+			}
+			transaction.commit();
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
 		}finally{
 			if(null != session && session.isOpen()){
@@ -1895,6 +1919,27 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getResourceList() - Ends");
 		return resourceBOList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResourceBO getStudyProtocol(Integer studyId) {
+		logger.info("StudyDAOImpl - getStudyProtocol() - Starts");
+		ResourceBO studyprotocol = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery(" FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.studyProtocol = true ");
+			studyprotocol = (ResourceBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getStudyProtocol() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getStudyProtocol() - Ends");
+		return studyprotocol;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -5697,7 +5742,7 @@ public class StudyDAOImpl implements StudyDAO{
 					StudyPermissionBO studyPermissionBO = new StudyPermissionBO();
 					studyPermissionBO.setUserId(null != obj[0] ? (Integer)obj[0] : 0);
 					studyPermissionBO.setUserFullName((null != obj[1] ? String.valueOf(obj[1]) : "")+" "+(null != obj[2] ? String.valueOf(obj[2]) : ""));
-					studyPermissionBO.setViewPermission((String.valueOf(obj[3])).equals("1") ? true : false);
+					studyPermissionBO.setViewPermission((boolean) obj[3] ? true : false);
 					studyPermissionBO.setProjectLead(null != obj[4] ?Integer.parseInt(obj[4].toString()) : 0);
 					studyPermissionList.add(studyPermissionBO);
 				}
@@ -5749,7 +5794,8 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			String searchQuery = "select count(*) from active_task a" 
                 +" where a.study_id="+studyId+" and a.task_type_id" 
-                +" in(select c.active_task_list_id from active_task_list c where c.task_name in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"'));";
+                +" in(select c.active_task_list_id from active_task_list c"
+                +" where a.active=1 and c.task_name in('"+FdahpStudyDesignerConstants.TOWER_OF_HANOI+"','"+FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY+"'));";
 			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 			if(count!=null && count.intValue() > 0){	
 				message = FdahpStudyDesignerConstants.SUCCESS;
