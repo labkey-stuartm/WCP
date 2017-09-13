@@ -146,6 +146,15 @@ public class StudyDAOImpl implements StudyDAO{
 								if(studyBo.getHasStudyDraft()==1)
 									bean.setFlag(true);
 							}
+							//if is there any team lead in that study
+							if(bean.getId()!=null){
+								String userInfo = (String) session.createQuery("SELECT  u.firstName from StudyPermissionBO s , UserBO u where s.studyId="+bean.getId()+" and s.userId=u.userId and s.projectLead=1").setMaxResults(1).uniqueResult();
+								if(StringUtils.isNotEmpty(userInfo)){
+									bean.setProjectLeadName(userInfo);
+								}else{
+									bean.setProjectLeadName("None");
+								}
+							}
 					}
 				}
 			}
