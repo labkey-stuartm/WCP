@@ -1899,15 +1899,9 @@ public class StudyDAOImpl implements StudyDAO{
 			resourceBOList = query.list();
 			
 			if(resourceBOList != null && !resourceBOList.isEmpty()){
+				int sequenceNo = 1;
 				for(ResourceBO rBO:resourceBOList){
 					if(rBO.getSequenceNo().equals(0)){
-						count++;
-					}
-				}
-				
-				if(count == resourceBOList.size()){
-					int sequenceNo = 1;
-					for(ResourceBO rBO:resourceBOList){
 						rBO.setSequenceNo(sequenceNo);
 						session.update(rBO);
 						sequenceNo++;

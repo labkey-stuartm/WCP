@@ -1702,8 +1702,8 @@ function isNumberKey(evt)
          <div class="numeric__form">
          
          	<div class="numeric__header">
-	         	<span><span>Formula:</span> 200 > (0.5(40-x))</span>
-	         	<span>Trial</span>
+	         	<span><span>Formula:</span> <b>200 > (0.5(40-x))</b></span>
+	         	<span data-toggle="modal" data-target="#myModal">Trial</span>
          	</div>
          	
          	<div class="numeric__container">
@@ -1826,6 +1826,42 @@ function isNumberKey(evt)
         </div> 
       </div>
    </div>
+   
+    <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header trial_header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>          
+        </div>
+        <div class="modal-body trial_body">
+         	<div class="trial_title">Try your formula</div>
+         	<div class="trial_section1">
+         		<span class="tealfont">Your Formula : </span><span>200 > (0.5(40-x))</span>
+         	</div>
+         	<div class="trial_section2">
+         		<span class="tealfont">Provide Input :  </span>
+         		<span> x = </span>
+         		<span class="form-group"><input type="text" class="form-control"/></span>
+         		<span><button>Submit</button></span>
+         	</div>
+         	<div class="trial_section3">
+         		<span class="tealfont">Output :</span>
+         		<div>
+         			<div><span>LHS Value:</span><span><b>200</b></span></div>
+         			<div><span>RHS Value:</span><span><b>10</b></span></div>
+         			<div><span>Boolean Output:</span><span class="gtxtf"><b>True</b></span></div>
+         		</div>
+         	</div>
+         	
+        </div>      
+      </div>
+      
+    </div>
+  </div>
+  
    </form:form>
 </div>
 <!-- End right Content here -->

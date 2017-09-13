@@ -829,9 +829,7 @@ public class StudyServiceImpl implements StudyService {
 				updateConsentBo.setStudyId(consentBo.getStudyId());
 			}
 			
-			if(consentBo.getComprehensionTestMinimumScore() != null){
-				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
-			}
+			updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			if(consentBo.getNeedComprehensionTest() != null){
 				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
 			}
