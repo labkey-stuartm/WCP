@@ -4826,7 +4826,6 @@ public class StudyDAOImpl implements StudyDAO{
 							if(StringUtils.isNotEmpty(bo.getPdfUrl()) && StringUtils.isNotEmpty(bo.getPdfName())){
 								resourceBO.setAction(false);
 							}
-							resourceBO.setPdfUrl(null);
 							resourceBO.setId(null);
 							if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
 								resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -4835,6 +4834,8 @@ public class StudyDAOImpl implements StudyDAO{
 							    resourceBO.setModifiedOn(null);
 							}else{
 								resourceBO.setPdfName(null);
+								resourceBO.setPdfUrl(null);
+
 							}
 							session.save(resourceBO);
 						}
