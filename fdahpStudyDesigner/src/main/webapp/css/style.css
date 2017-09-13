@@ -1910,3 +1910,50 @@ option:first-child {
     margin-top: -5px;
 	
 }
+
+.numeric__container{
+	padding: 30px 20px;
+	border: 1px solid #bed2eb;
+	border-radius: 4px;	
+}
+
+.gray__t{
+	color: #7c868d;
+	font-size: 15px;
+	line-height: 17px;
+	font-weight: 600;
+}
+
+.numeric__define{
+	width: 260px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2px;
+}
+
+.numeric__define_input{
+	display: inline-block;
+}
+
+.numeric__define > span,.numeric__define_input .numeric__row span{
+	color: #2d2926;
+    font-size: 15px;
+    line-height: 18px;
+    display: inline-block;
+}
+
+.numeric__define > div.sm-selection{
+	width: 100px !important;
+}
+
+.numeric__define > div.sm-selection .bootstrap-select.btn-group .dropdown-toggle .filter-option{
+	color: #007cba !important;
+	font-weight: 600;
+}
+	
+.sm__in {
+    width: 72px;
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: 400;
+}

@@ -1578,7 +1578,7 @@ function isNumberKey(evt)
          </div>
          
          <!-- Numeric Open Response  -->
-         <div class="col-xs-12 p-none">
+         <div class="col-xs-12 p-none mt-lg">
          <div class="col-md-12 p-none">
          	 <div class="col-md-5 col-lg-4 pl-none">
          	 	 <div class="gray-xs-f mb-xs">Style</div>
@@ -1673,6 +1673,117 @@ function isNumberKey(evt)
          	<div class="numeric__header">
 	         	<span><span>Formula:</span> 200 > (0.5(40-x))</span>
 	         	<span>Trial</span>
+         	</div>
+         	
+         	<div class="numeric__container">
+         		<div class="numeric__loop">
+         			<div class="numeric__define gray__t pb-sm">
+         				Define Function
+         			</div>
+         			<div class="numeric__define_input gray__t pb-sm">
+         				Define Inputs
+         			</div>
+         			
+         		   <!-- Numeric section -->
+         		   <div class="numeric__section mt-md">
+	         			<div class="numeric__define gray__t">
+	         				<span>V1</span>
+	         				<div class="form-group sm-selection">
+			                     <select class="selectpicker" required>
+			                        <option>&gt;</option>
+			                        <option>*</option>
+			                        <option>-</option>
+			                        <option>&lt;</option>
+			                      </select>
+			                      <div class="help-block with-errors red-txt"></div>
+			                 </div>
+	         			</div>
+	         			<div class="numeric__define_input gray__t">
+	         			
+	         			 <div class="numeric__row">
+	         				<span>V2 =</span>
+	         				<div class="form-group sm-selection">
+			                     <select class="selectpicker" required>
+			                        <option>Constant</option>
+			                        <option>Function</option>
+			                        <option>Response Data Element (x)</option>			                       
+			                      </select>
+			                      <div class="help-block with-errors red-txt"></div>
+			                 </div>
+			                 <div class="form-group sm__in">
+			                 	<input type="text" class="form-control"/>
+			                 </div>
+			             </div>
+			             
+			             <div class="numeric__row">
+	         				<span>V3 =</span>
+	         				<div class="form-group sm-selection">
+			                     <select class="selectpicker" required>
+			                        <option>Constant</option>
+			                        <option>Function</option>
+			                        <option>Response Data Element (x)</option>			                       
+			                      </select>
+			                      <div class="help-block with-errors red-txt"></div>
+			                 </div>
+			                
+			             </div>
+			             
+	         			</div>
+         		   </div>
+         		  <!-- End Numeric section -->
+         		  
+         		    <!-- Numeric section -->
+         		   <div class="numeric__section mt-md">
+	         			<div class="numeric__define gray__t">
+	         				<span>V1</span>
+	         				<div class="form-group sm-selection">
+			                     <select class="selectpicker" required>
+			                        <option>*</option>
+			                        <option>&gt;</option>			                        
+			                        <option>-</option>
+			                        <option>&lt;</option>
+			                      </select>
+			                      <div class="help-block with-errors red-txt"></div>
+			                 </div>
+	         			</div>
+	         			<div class="numeric__define_input gray__t">
+	         			
+	         			 <div class="numeric__row">
+	         				<span>V2 =</span>
+	         				<div class="form-group sm-selection">
+			                     <select class="selectpicker" required>
+			                        <option>Function</option>
+			                        <option>Constant</option>			                        
+			                        <option>Response Data Element (x)</option>			                       
+			                      </select>
+			                      <div class="help-block with-errors red-txt"></div>
+			                 </div>
+			                 <div class="form-group sm__in">
+			                 	<input type="text" class="form-control"/>
+			                 </div>
+			             </div>
+			             
+			             <div class="numeric__row">
+	         				<span>V3 =</span>
+	         				<div class="form-group sm-selection">
+			                     <select class="selectpicker" required>
+			                        <option>Constant</option>
+			                        <option>Function</option>
+			                        <option>Response Data Element (x)</option>			                       
+			                      </select>
+			                      <div class="help-block with-errors red-txt"></div>
+			                 </div>
+			                 <div class="form-group sm__in">
+			                 	<input type="text" class="form-control"/>
+			                 </div>
+			             </div>
+			             
+	         			</div>
+         		   </div>
+         		  <!-- End Numeric section -->
+         			
+         			
+         		</div>
          	</div>
          
          </div>
