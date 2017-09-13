@@ -1515,7 +1515,6 @@ public class StudyDAOImpl implements StudyDAO{
 		String forceLogoutUserIds = "";
 		List<Integer> deletingUserIds = new ArrayList<Integer>();
 		List<Integer> deletingUserIdsWithoutLoginUser = new ArrayList<Integer>();
-		Boolean flag = false;
 		boolean ownUserForceLogout = false;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -1596,6 +1595,7 @@ public class StudyDAOImpl implements StudyDAO{
 						query = session.createQuery(" FROM StudyPermissionBO UBO WHERE UBO.userId = "+ userId[i] +" AND studyId ="+studyBo.getId());
 						studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 						if(null != studyPermissionBO){
+							Boolean flag = false;
 							if(studyPermissionBO.isViewPermission() != "1".equals(viewPermission[i]) ? true : false){
 								studyPermissionBO.setViewPermission("1".equals(viewPermission[i]) ? true : false);
 								flag = true;
