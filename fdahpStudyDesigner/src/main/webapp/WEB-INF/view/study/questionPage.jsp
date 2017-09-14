@@ -1240,6 +1240,127 @@ function isNumberKey(evt)
 					</div>
 				</c:otherwise>
 			</c:choose> 
+			
+			<!-- Text choice section  -->						
+			<div class="col-xs-12 text-choice-section p-none">
+			    <!-- Section Start  -->
+				<div>
+			
+					<div class="txtchoice_section1">
+						 <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+						 <div class="form-group mb-none">
+	                        <input type="text" class="form-control">
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>					 
+					</div>
+					
+					<div class="txtchoice_section2">
+						 <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+						 <div class="form-group mb-none">
+	                        <input type="text" class="form-control">
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>					 
+					</div>
+					
+					<div class="txtchoice_section3">
+						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+						 <div class="form-group">
+	                         <select id="dp" class="selectpicker" title="Select" required>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                          </select>
+	                          <div class="help-block with-errors red-txt"></div>
+	                     </div>			 
+					</div>
+					
+					<div class="txtchoice_section4">
+						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+						 <div class="form-group">
+	                         <select id="dp" class="selectpicker" title="Select" required>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                          </select>
+	                          <div class="help-block with-errors red-txt"></div>
+	                     </div>			 
+					</div>
+					
+				
+					<div class="txtchoice_section5">
+						<div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+						 <div class="form-group">					     
+					      <textarea class="form-control" rows="5" id="comment"></textarea>
+					    </div>
+					</div>	
+				
+				</div>
+				 <!-- Section End -->
+				
+				 <!-- Section Start  -->
+				<div class="mt-xlg">
+			
+					<div class="txtchoice_section1">
+						 <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+						 <div class="form-group mb-none">
+	                        <input type="text" class="form-control">
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>					 
+					</div>
+					
+					<div class="txtchoice_section2">
+						 <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+						 <div class="form-group mb-none">
+	                        <input type="text" class="form-control">
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>					 
+					</div>
+					
+					<div class="txtchoice_section3">
+						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+						 <div class="form-group">
+	                         <select id="dp" class="selectpicker" title="Select" required>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                          </select>
+	                          <div class="help-block with-errors red-txt"></div>
+	                     </div>			 
+					</div>
+					
+					<div class="txtchoice_section4">
+						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+						 <div class="form-group">
+	                         <select id="dp" class="selectpicker" title="Select" required>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                            <option>Step 4: DosageQuestion</option>
+	                          </select>
+	                          <div class="help-block with-errors red-txt"></div>
+	                     </div>			 
+					</div>
+					
+				
+					<div class="txtchoice_section5">
+						<div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+						 <div class="form-group">					     
+					      <textarea class="form-control" rows="5" id="comment"></textarea>
+					    </div>
+					</div>	
+					
+					<div class="txtchoice_section6">
+						<button>+</button> 
+						<span class="delete vertical-align-middle pl-md align-span-center top0 ml-sm"></span>
+					</div>
+				
+				</div>
+				 <!-- Section End  -->
+				
+				
+			</div>
+			
+			<!-- End Text choice section  -->
+			
          </div>
          </div>
          <div id="ImageChoice" style="display: none;">
