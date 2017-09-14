@@ -1242,7 +1242,7 @@ function isNumberKey(evt)
 			</c:choose> 
 			
 			<!-- Text choice section  -->						
-			<div class="col-xs-12 text-choice-section p-none">
+			<div class="col-xs-12 text-choice-section p-none hide">
 			    <!-- Section Start  -->
 				<div>
 			
