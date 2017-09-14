@@ -1742,13 +1742,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								String deleteQuery = "delete from question_condtion_branching where question_id="+questionsBo.getId();
 								session.createSQLQuery(deleteQuery).executeUpdate();
 								for(QuestionConditionBranchBo questionConditionBranchBo : questionnairesStepsBo.getQuestionConditionBranchBoList()){
-									if(questionConditionBranchBo.getQuestionId() != null){
+									if(questionConditionBranchBo.getQuestionId() == null){
 										questionConditionBranchBo.setQuestionId(questionsBo.getId());
 									}
-									session.save(questionConditionBranchBo);
+									if(questionConditionBranchBo.getInputType() != null && questionConditionBranchBo.getInputType().equalsIgnoreCase("MF")){
+										session.save(questionConditionBranchBo);
+									}
 									if(questionConditionBranchBo.getQuestionConditionBranchBos() != null && !questionConditionBranchBo.getQuestionConditionBranchBos().isEmpty()){
 										for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchBo.getQuestionConditionBranchBos()) {
-											if(conditionBranchBo.getQuestionId() != null){
+											if(conditionBranchBo.getQuestionId() == null){
 												conditionBranchBo.setQuestionId(questionsBo.getId());
 											}
 											session.save(conditionBranchBo);

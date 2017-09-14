@@ -1604,225 +1604,188 @@ function isNumberKey(evt)
 				</c:choose>
 			</div>
          </div>
-        
-         <!-- Numeric Open Response  -->
-
-         <div class="col-xs-12 p-none mt-lg">
-        <div class="col-xs-12 p-none">
-
-         <div class="col-md-12 p-none">
-         	 <div class="col-md-5 col-lg-4 pl-none">
-         	 	 <div class="gray-xs-f mb-xs">Style</div>
-         	 	 <div class="form-group">
-                     <select class="selectpicker" required>
-                        <option>Integer</option>
-                        <option>float</option>
-                        <option>Double</option>
-                      </select>
-                      <div class="help-block with-errors red-txt"></div>
-                  </div>
-         	 </div>
-         </div>
          
-         <div class="col-md-12 p-none">
-         	<div class="col-md-5 col-lg-4 pl-none mr-md">
-         		<div class="gray-xs-f mb-xs">Units (1 to 10 characters)</div>
-         		<div class="form-group">
-                    <input type="text" class="form-control" required />
-                    <div class="help-block with-errors red-txt"></div>
-                </div>         		
-         	</div>
-         	<div class="col-md-5 col-lg-4 pl-none">
-         		<div class="gray-xs-f mb-xs">Placeholder Text (1 to 15 characters)</div>
-         		<div class="form-group">
-                    <input type="text" class="form-control" required />
-                    <div class="help-block with-errors red-txt"></div>
-                </div>         		
-         	</div>
-         </div>
-         
-         
-          <div class="col-md-12 p-none">
-         	<div class="col-md-5 col-lg-4 pl-none mr-md">
-         		<div class="gray-xs-f mb-xs">Maximum Value</div>
-         		<div class="form-group">
-                    <input type="text" class="form-control" required />
-                    <div class="help-block with-errors red-txt"></div>
-                </div>         		
-         	</div>
-         	<div class="col-md-5 col-lg-4 pl-none">
-         		<div class="gray-xs-f mb-xs">Minimum Value</div>
-         		<div class="form-group">
-                    <input type="text" class="form-control" required />
-                    <div class="help-block with-errors red-txt"></div>
-                </div>         		
-         	</div>
-         </div>
-         
-         <div class="col-md-12 p-none">
-         	<div>
-               <span class="checkbox checkbox-inline p-45">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <label for="inlineCheckbox1"><span class="tealtxt-md">User formula-based conditional branching logic</span></label>
-              </span>
-            </div>
-         </div>
-         
-         <div class="col-md-12 p-none mt-lg mb-md">
-         	<div class="black-s-f">Define Formula and Destination Steps</div>
-         </div>
-         
-         <div class="col-dm-12 p-none">
-         	<ul class="pl_18">
-         		<li>
-         			<span>If V1 = True, Destination Step &nbsp;&nbsp;= </span>
-         			<div class="form-group sm-selection">
-                     <select class="selectpicker" required>
-                        <option>Integer</option>
-                        <option>float</option>
-                        <option>Double</option>
-                      </select>
-                      <div class="help-block with-errors red-txt"></div>
-                  </div>         			     		
-         		</li>
-         		<li>
-         			<span>If V1 = False, Destination Step =</span>
-         			<div class="form-group sm-selection">
-                     <select class="selectpicker" required>
-                        <option>Integer</option>
-                        <option>float</option>
-                        <option>Double</option>
-                      </select>
-                      <div class="help-block with-errors red-txt"></div>
-                  </div>         
-         		</li>
-         	</ul>
-         </div>
-         
-         <div class="numeric__form">
-         
-         	<div class="numeric__header">
-	         	<span><span>Formula:</span> <b>200 > (0.5(40-x))</b></span>
-	         	<span data-toggle="modal" data-target="#myModal">Trial</span>
-         	</div>
-         	
-         	<div class="numeric__container">
-         		<div class="numeric__loop">
-         			<div class="numeric__define gray__t pb-sm">
-         				Define Function
-         			</div>
-         			<div class="numeric__define_input gray__t pb-sm">
-         				Define Inputs
-         			</div>
-         			
-         		   <!-- Numeric section -->
-         		   <div class="numeric__section mt-md">
-	         			<div class="numeric__define gray__t">
-	         				<span>V1</span>
-	         				<div class="form-group sm-selection">
-			                     <select class="selectpicker" required>
-			                        <option>&gt;</option>
-			                        <option>*</option>
-			                        <option>-</option>
-			                        <option>&lt;</option>
-			                      </select>
-			                     <div class="help-block with-errors red-txt"></div>
-			                 </div>
-	         			</div>
-	         			<div class="numeric__define_input gray__t">
-	         			
-	         			 <div class="numeric__row">
-	         				<span>V2 =</span>
-	         				<div class="form-group sm-selection">
-			                     <select class="selectpicker" required>
-			                        <option>Constant</option>
-			                        <option>Function</option>
-			                        <option>Response Data Element (x)</option>			                       
-			                      </select>
-			                      <div class="add_varible add_var_hide">+ Add Variable</div>
-			                 </div>
-			                 <div class="form-group sm__in">
-			                 	<input type="text" class="form-control"/>
-			                 </div>
-			             </div>
-			             
-			             <div class="numeric__row">
-	         				<span>V3 =</span>
-	         				<div class="form-group sm-selection">
-			                     <select class="selectpicker" required>
-			                        <option>Constant</option>
-			                        <option>Function</option>
-			                        <option>Response Data Element (x)</option>			                       
-			                      </select>
-			                      <div class="add_varible add_var_hide">+ Add Variable</div>
-			                 </div>
-			                
-			             </div>
-			             
-	         			</div>
-         		   </div>
-         		  <!-- End Numeric section -->
-         		  
-         		    <!-- Numeric section -->
-         		   <div class="numeric__section mt-md">
-	         			<div class="numeric__define gray__t">
-	         				<span>V1</span>
-	         				<div class="form-group sm-selection">
-			                     <select class="selectpicker" required>
-			                        <option>*</option>
-			                        <option>&gt;</option>			                        
-			                        <option>-</option>
-			                        <option>&lt;</option>
-			                      </select>
-			                      <div class="help-block with-errors red-txt"></div>
-			                 </div>
-	         			</div>
-	         			<div class="numeric__define_input gray__t">
-	         			
-	         			 <div class="numeric__row">
-	         				<span>V2 =</span>
-	         				<div class="form-group sm-selection">
-			                     <select class="selectpicker" required>
-			                        <option>Function</option>
-			                        <option>Constant</option>			                        
-			                        <option>Response Data Element (x)</option>			                       
-			                      </select>
-			                      <div class="add_varible add_var_hide">+ Add Variable</div>
-			                 </div>
-			                 <div class="form-group sm__in">
-			                 	<input type="text" class="form-control"/>
-			                 </div>
-			             </div>
-			             
-			             <div class="numeric__row">
-	         				<span>V3 =</span>
-	         				<div class="form-group sm-selection">
-			                     <select class="selectpicker" required>
-			                        <option>Constant</option>
-			                        <option>Function</option>
-			                        <option>Response Data Element (x)</option>			                       
-			                      </select>
-			                      <div class="add_varible add_var_hide">+ Add Variable</div>
-			                 </div>
-			                 <div class="form-group sm__in">
-			                 	<input type="text" class="form-control"/>
-			                 </div>
-			             </div>
-			             
-	         			</div>
-         		   </div>
-         		  <!-- End Numeric section -->
-         			
-         			
-         		</div>
-         	</div>
-         
-         </div>
-         
-         </div>  
-         
-         
-         </div>
+         <c:if test="${questionnaireBo.branching}">
+         <!-- Conditional branching logic  starts -->
+			<div class="col-xs-12 p-none mt-lg" id="condtionalBranchingId">
+			   <div class="col-xs-12 p-none">
+			      <div class="col-md-12 p-none">
+			         <div>
+			            <span class="checkbox checkbox-inline p-45">
+			            <input type="checkbox" id="formulaBasedLogicId" value="Yes" name="questionReponseTypeBo.formulaBasedLogic" ${questionnairesStepsBo.questionReponseTypeBo.formulaBasedLogic eq 'Yes' ? 'checked':''}>
+			            <label for="formulaBasedLogicId"><span class="tealtxt-md">User formula-based conditional branching logic</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="Enter the applicable units for the numeric input"></span></label>
+			            </span>
+			         </div>
+			      </div>
+			      <div id="conditionalFormulaId">
+				      <div class="col-md-12 p-none mt-lg mb-md">
+				         <div class="black-s-f">Define Formula and Destination Steps</div>
+				      </div>
+				      <div class="col-dm-12 p-none">
+				         <ul class="pl_18">
+				            <li>
+				               <span>If V1 = True, Destination Step &nbsp;&nbsp;= </span>
+				               <div class="form-group sm-selection">
+				                  <select name="questionResponseSubTypeList[0].destinationStepId" id="conditionDestinationId0"  class="selectpicker">
+							         <option value="">select</option>
+							         <c:forEach items="${destinationStepList}" var="destinationStep">
+							                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+							         </c:forEach>
+							         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							     </select>
+				                  <div class="help-block with-errors red-txt"></div>
+				               </div>
+				            </li>
+				            <li>
+				               <span>If V1 = False, Destination Step =</span>
+				               <div class="form-group sm-selection">
+				                  <select name="questionResponseSubTypeList[1].destinationStepId" id="conditionDestinationId1"  class="selectpicker">
+							         <option value="">select</option>
+							         <c:forEach items="${destinationStepList}" var="destinationStep">
+							                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+							         </c:forEach>
+							         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							      </select>
+				                  <div class="help-block with-errors red-txt"></div>
+				               </div>
+				            </li>
+				         </ul>
+				      </div>
+				      <div class="numeric__form">
+				         <div class="numeric__header">
+				            <span><span>Formula:</span> <b>200 > (0.5(40-x))</b></span>
+				            <span data-toggle="modal" data-target="#myModal">Trial</span>
+				         </div>
+				         <div class="numeric__container">
+				            <div class="numeric__loop">
+				               <div class="numeric__define gray__t pb-sm">
+				                  Define Function
+				               </div>
+				               <div class="numeric__define_input gray__t pb-sm">
+				                  Define Inputs
+				               </div>
+				               <!-- Numeric section -->
+				               <div class="numeric__section mt-md" id="rootId1">
+				                  <div class="numeric__define gray__t">
+				                     <span>V1</span>
+				                     <div class="form-group sm-selection">
+				                        <select class="selectpicker" name="questionConditionBranchBoList[0].inputTypeValue" id="inputTypeValue0" index="1">
+				                           <option value="">select</option>
+				                           <option value=">" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq ">" ? 'selected' :''}>&gt;</option>
+				                           <option value="<" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "<" ? 'selected' :''}>&lt;</option>
+				                           <option value="=" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "=" ? 'selected' :''}>&equals;</option>
+				                           <option value="!=" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "!=" ? 'selected' :''}>!=</option>
+				                           <option value="&&" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "&&" ? 'selected' :''}>AND</option>
+				                           <option value="||" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "||" ? 'selected' :''}>OR</option>
+				                        </select>
+				                        <div class="help-block with-errors red-txt"></div>
+				                     </div>
+				                     <input type="hidden" name="questionConditionBranchBoList[0].inputType" id="" value="MF">
+				                     <input type="hidden" name="questionConditionBranchBoList[0].sequenceNo" id="" value="1">
+				                     <input type="hidden" name="questionConditionBranchBoList[0].parentSequenceNo" id="" value="0">
+				                  </div>
+				                  <div class="numeric__define_input gray__t">
+				                     <div class="numeric__row" id="2">
+				                        <span>V2 =</span>
+				                        <div class="form-group sm-selection">
+				                           <select class="selectpicker" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputType0" index="2" count=0 onchange="addFunctions(this,0);">
+				                              <option value="">select</option>
+				                              <option value="C" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'C' ? 'selected' :''}>Constant</option>
+				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'F' ? 'selected' :''}>Function</option>
+				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
+				                           </select>
+				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue" id="inputTypeValueId20" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].sequenceNo" id="sequenceNoId20" value="2">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].parentSequenceNo" id="parentSequenceNoId20" value="1">
+				                           <div class="add_varible add_var_hide">+ Add Variable</div>
+				                        </div>
+				                        <div class="form-group sm__in">
+				                           <input type="text" id="constantValId20" index="20" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}" />
+				                        </div>
+				                     </div>
+				                     <div class="numeric__row"  id="3">
+				                        <span>V3 =</span>
+				                        <div class="form-group sm-selection">
+				                           <select class="selectpicker" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputType1" index="3" count=0 onchange="addFunctions(this,1);">
+				                              <option value="">select</option>
+				                              <option value="C" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C' ? 'selected' :''}>Constant</option>
+				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'F' ? 'selected' :''}>Function</option>
+				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
+				                           </select>
+				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue" id="inputTypeValueId30" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].sequenceNo" id="sequenceNoId30" value="3">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].parentSequenceNo" id="parentSequenceNoId30" value="1">
+				                           <div class="add_varible add_var_hide">+ Add Variable</div>
+				                        </div>
+				                        <div class="form-group sm__in">
+				                           <input type="text" id="constantValId30" index="30" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}"/>
+				                        </div>
+				                     </div>
+				                </div>
+				               </div>
+				               <!-- End Numeric section -->
+				               <!-- Numeric section -->
+				               <c:forEach items="${questionnairesStepsBo.questionConditionBranchBoList}" var="questionConditionBranchBo" varStatus="status">
+				         		 <c:if test="${not status.first}">
+				         		  <div class="numeric__section mt-md" id="rootId${status.index}">
+				         		 	<div class="numeric__define gray__t">
+					                     <span>V${questionConditionBranchBo.sequenceNo}</span>
+					                     <div class="form-group sm-selection">
+					                        <select class="selectpicker" name="questionConditionBranchBoList[${status.index}].inputTypeValue" id="inputTypeValue${status.index}" index="${questionConditionBranchBo.sequenceNo}">
+					                           <option value="">select</option>
+					                           <option value=">" ${questionConditionBranchBo.inputTypeValue eq ">" ? 'selected' :''}>&gt;</option>
+					                           <option value="<" ${questionConditionBranchBo.inputTypeValue eq "<" ? 'selected' :''}>&lt;</option>
+					                           <option value="=" ${questionConditionBranchBo.inputTypeValue eq "=" ? 'selected' :''}>&equals;</option>
+					                           <option value="+" ${questionConditionBranchBo.inputTypeValue eq "+" ? 'selected' :''}>+</option>
+					                           <option value="&#45;" ${questionConditionBranchBo.inputTypeValue eq "-" ? 'selected' :''}>-</option>
+					                           <option value="&#42;" ${questionConditionBranchBo.inputTypeValue eq "*" ? 'selected' :''}>&#42;</option>
+					                           <option value="/" ${questionConditionBranchBo.inputTypeValue eq "/" ? 'selected' :''}>/</option>
+					                           <option value="%" ${questionConditionBranchBo.inputTypeValue eq "%" ? 'selected' :''}>%</option>
+					                           <option value="&&" ${questionConditionBranchBo.inputTypeValue eq "&&" ? 'selected' :''}>AND</option>
+					                           <option value="||" ${questionConditionBranchBo.inputTypeValue eq "||" ? 'selected' :''}>OR</option>
+					                        </select>
+					                        <div class="help-block with-errors red-txt"></div>
+					                     </div>
+					                     <%-- <input type="hidden" name="questionConditionBranchBoList[${status.index}].inputType" id="" value="${questionConditionBranchBo.inputType}">
+				                     	 <input type="hidden" name="questionConditionBranchBoList[${status.index}].sequenceNo" id="" value="${questionConditionBranchBo.sequenceNo}">
+				                     	 <input type="hidden" name="questionConditionBranchBoList[${status.index}].parentSequenceNo" id="" value="${questionConditionBranchBo.parentSequenceNo}"> --%>
+					                 </div>
+					         		 <div class="numeric__define_input gray__t">
+					                     <c:forEach items="${questionConditionBranchBo.questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
+					                     <div class="numeric__row">
+					                        <span>V${questionConditionsSubBranchBo.sequenceNo} =</span>
+					                        <div class="form-group sm-selection">
+					                           <select class="selectpicker" name="questionConditionBranchBos[${subStatus.index}].inputType" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}">
+					                              <option value="">select</option>
+					                              <option value="C" ${questionConditionsSubBranchBo.inputType eq 'C' ? 'selected' :''}>Constant</option>
+					                              <option value="F" ${questionConditionsSubBranchBo.inputType eq 'F' ? 'selected' :''}>Function</option>
+					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
+					                           </select>
+					                           <input type="hidden" name="questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputTypeValueId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.inputTypeValue}">
+				                     	  	   <input type="hidden" name="questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
+				                     	   	   <input type="hidden" name="questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
+					                           <c:if test="${not subStatus.first}">
+					                           <div class="add_varible <c:if test="${questionConditionBranchBo.inputTypeValue ne ('*') }">add_var_hide</c:if> " id="addVaraiable${questionConditionsSubBranchBo.sequenceNo}">+ Add Variable</div>
+					                           </c:if>
+					                        </div>
+					                        <div class="form-group sm__in">
+					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}"/>
+					                        </div>
+					                     </div>
+					                     </c:forEach>
+					                  </div>
+					                  </div>
+				         		 </c:if>
+				               </c:forEach>
+				               <!-- End Numeric section -->
+				            </div>
+				         </div>
+				      </div>
+			      </div>
+			   </div>
+			</div>
+			</c:if>
+        	<!-- Conditional branching logic  Ends -->
         </div> 
       </div>
    </div>
@@ -2218,6 +2181,15 @@ $(document).ready(function(){
      		$("#healthkitDatatypeId").val('');
      		$('.selectpicker').selectpicker('refresh');
      	}
+     });
+     $("#formulaBasedLogicId").on('change',function(){
+    	 if($(this).is(":checked")){
+    		 $(this).val("Yes");
+    		 $("#conditionalFormulaId").show();
+    	 }else{
+    		 $(this).val("No");
+    		 $("#conditionalFormulaId").hide();
+    	 }
      });
     $("#useStasticData").on('change',function(){
     	if($(this).is(":checked")){
@@ -2692,6 +2664,12 @@ $(document).ready(function(){
     $('.textChoiceVal').on('blur',function(){
 		validateForUniqueValue(this,"Text Choice",function(){});
 	});
+    $('.constant').change(function(){
+    	var index=$(this).attr('index');
+    	console.log("index:"+index);
+    	var value = $(this).val();
+    	$("#inputTypeValueId"+index).val(value);
+    });
 });
 //Displaying images from file upload 
 function readURL(input) {
@@ -2914,6 +2892,18 @@ function getResponseType(id){
     			$("#scaleType").show();
 	   		}else{
 	   			$("#scaleType").hide();
+	   		}
+    		console.log("responseType:"+responseType);
+    		if(responseType == 'Scale' || responseType == 'Continuous Scale' || responseType == 'Height' 
+    				|| responseType == 'Time interval' || responseType == 'Numeric'){
+    			$("#condtionalBranchingId").show();
+    			if($("#formulaBasedLogicId").is(":checked")){
+        			$("#conditionalFormulaId").show();
+        		}else{
+        			$("#conditionalFormulaId").hide();
+        		}
+	   		}else{
+	   			$("#condtionalBranchingId").hide();
 	   		}
     		$("#"+responseType.replace(/\s/g, '')).show();
     		$("."+responseType.replace(/\s/g, '')+"Required").attr("required",true);
@@ -3947,5 +3937,108 @@ function validateForUniqueValue(item,responsetype,callback){
 		});
 		callback(isValid);
 	}
+}
+function addFunctions(item,j){
+	var index = $(item).attr('index');
+	//var count = parseInt($(item).attr('count'))+1;
+	var count = parseInt($(item).attr('count'));
+	console.log("count:"+count);
+	console.log("index:"+index);
+	var value = $(item).val();
+	console.log("value:"+value);
+	
+	//$("#rootId"+index).nextAll('div').remove();
+	$("#rootId"+index).remove();
+	
+	var total = parseInt($('.numeric__row').length);
+	console.log("total:"+total);
+	var v= total+1;
+	$(item).find('input').addClass("add_var_hide");
+	if(j!=null){
+		$("#constantValId"+index+count).addClass('add_var_hide');	
+	}
+	var rowCount = parseInt($('.numeric__section').length);
+	if(value === "F"){
+		count = parseInt(count)+1;
+		var addFunction="<div class='numeric__section mt-md' id='rootId"+index+"'>"+
+		   "<div class='numeric__define gray__t'>"+
+		   "   <span>V"+index+"</span>"+
+		   "   <div class='form-group sm-selection'>"+
+		   "      <select class='selectpicker' name='questionConditionBranchBoList["+rowCount+"].inputTypeValue' id='inputTypeValue"+rowCount+"' index='"+index+"' count='"+count+"' onchange='selectFunction(this);'>"+
+		   "         <option value=''>select</option>"+
+		   "         <option value='>' >&gt;</option>"+
+		   "         <option value='<' >&lt;</option>"+
+		   "         <option value='=' >&equals;</option>"+
+		   "         <option value='+' >+</option>"+
+		   "         <option value='&#45;' >&#45;</option>"+
+		   "         <option value='&#42;' >&#42;</option>"+
+		   "         <option value='/' >/</option>"+
+		   "         <option value='%' >%</option>"+
+		   "         <option value='&&' >AND</option>"+
+		   "         <option value='||' >OR</option>"+
+		   "      </select>"+
+		   "      <div class='help-block with-errors red-txt'></div>"+
+		   "   </div>"+
+		//   "   <input type='hidden' name='questionConditionBranchBoList["+count+"].inputType' id=''>"+
+		//   "   <input type='hidden' name='questionConditionBranchBoList["+count+"].sequenceNo' id=''>"+
+		//   "   <input type='hidden' name='questionConditionBranchBoList["+count+"].parentSequenceNo' id=''>"+
+		   "</div>"+
+		   "<div class='numeric__define_input gray__t'>"+
+		   "   <div class='numeric__row'>"+
+		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
+		   "      <div class='form-group sm-selection'>"+
+		   "         <select class='selectpicker' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' index='"+(parseInt(v)+1)+"' count='"+count+"' onchange='addFunctions(this,0);'>"+
+		   "            <option value=''>select</option>"+
+		   "            <option value='C'>Constant</option>"+
+		   "            <option value='F'>Function</option>"+
+		   "            <option value='RDE'>Response Data Element (x)</option>"+
+		   "         </select>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputTypeValue' id='inputTypeValueId"+(parseInt(v)+1)+count+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].sequenceNo' id='sequenceNoId"+(parseInt(v)+1)+count+"'  value='"+(parseInt(v)+1)+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].parentSequenceNo'  id='parentSequenceNoId"+(parseInt(v)+1)+count+"' value='"+parseInt(index)+"'>"+
+		   "         <div class='add_varible add_var_hide'>+ Add Variable</div>"+
+		   "      </div>"+
+		   "         <div class='form-group sm__in'>"+
+		   "            <input type='text' id='constantValId"+(parseInt(v)+1)+count+"' index='"+(parseInt(v)+1)+count+"' class='constant form-control add_var_hide' value=''/>"+
+		   "         </div>"+
+		   "   </div>"+
+		   "   <div class='numeric__row'>"+
+		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
+		   "      <div class='form-group sm-selection'>"+
+		   "         <select class='selectpicker' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' index='"+(parseInt(v)+2)+"' count='"+count+"' onchange='addFunctions(this,1);'>"+
+		   "            <option value=''>select</option>"+
+		   "            <option value='C'>Constant</option>"+
+		   "            <option value='F'>Function</option>"+
+		   "            <option value='RDE'>Response Data Element (x)</option>"+
+		   "         </select>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputTypeValue' id='inputTypeValueId"+(parseInt(v)+2)+count+"' >"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].sequenceNo' id='sequenceNoId"+(parseInt(v)+2)+count+"' value='"+(parseInt(v)+2)+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].parentSequenceNo'id='parentSequenceNoId"+(parseInt(v)+2)+count+"' value='"+parseInt(index)+"' >"+
+		   "         <div class='add_varible add_var_hide'>+ Add Variable</div>"+
+		   "      </div>"+
+		   "         <div class='form-group sm__in'>"+
+		   "            <input type='text' id='constantValId"+(parseInt(v)+2)+count+"' index='"+(parseInt(v)+2)+count+"' class='constant form-control add_var_hide' value=''/>"+
+		   "         </div>"+
+		   "   </div>"+
+		   "</div>"+
+		"</div>"+
+		"<div class='clearfix'></div>";
+		$(".numeric__section:last").after(addFunction);
+		$('.selectpicker').selectpicker('refresh');
+	}else if(value === "C"){
+		console.log("else v:"+index+count);
+		$("#constantValId"+index+count).removeClass('add_var_hide');
+	}else if(value === "RDE"){
+		$("#inputTypeValueId"+index+count).val('x');
+	}
+}
+function selectFunction(item){
+	var index = $(item).attr('index');
+	var count = parseInt($(item).attr('count'))-1;
+	console.log("count:"+count);
+	console.log("index:"+index);
+	var value = $(item).val();
+	$("#inputTypeValueId"+index+count).val(value);
+	
 }
 </script>

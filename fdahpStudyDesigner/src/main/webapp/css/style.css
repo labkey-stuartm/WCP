@@ -1989,7 +1989,9 @@ option:first-child {
 .add_var_hide{
 	visibility: hidden;
 }
-
+.add_var_show{
+	visibility: visible;
+}
 
 .numeric__define > span,.numeric__row span{
 	vertical-align: top;
