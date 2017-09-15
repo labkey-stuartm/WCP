@@ -2592,64 +2592,51 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		return healthKitKeysInfoList;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(Session session,Integer questionId){
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - Starts");
 		//Map<QuestionConditionBranchBo, List<QuestionConditionBranchBo>> questionConditionalMap = new LinkedHashMap<>();
 		List<QuestionConditionBranchBo> questionConditionBranchList = null;
 		List<QuestionConditionBranchBo> newQuestionConditionBranchList = null;
+		Session newSession = null;
 		try{
+			if(session == null){
+				newSession = hibernateTemplate.getSessionFactory().openSession();
+			}
 			String searchQuery = "From QuestionConditionBranchBo QCBO where QCBO.questionId="+questionId+" order by QCBO.sequenceNo ASC";
-			query=session.createQuery(searchQuery);
+			if(newSession!=null){
+				query=session.createQuery(searchQuery);
+			}else{
+				query=session.createQuery(searchQuery);
+			}
 			questionConditionBranchList = query.list();
-			if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
-				 newQuestionConditionBranchList = new ArrayList<>();
-				/*for (QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList) {
-					if(questionConditionBranchBo.getInputType() != null && 
-							(questionConditionBranchBo.getInputType().equalsIgnoreCase("MF") || questionConditionBranchBo.getInputType().equalsIgnoreCase("F"))){
-						List<QuestionConditionBranchBo> conditionBranchList = new ArrayList<>();
-						for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchList) {
-							if(questionConditionBranchBo.getSequenceNo().equals(conditionBranchBo.getParentSequenceNo())){
-								conditionBranchList.add(conditionBranchBo);
+			if(session == null){
+				newQuestionConditionBranchList = new ArrayList<>();
+				newQuestionConditionBranchList = questionConditionBranchList;
+			}else{
+				if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+					newQuestionConditionBranchList = new ArrayList<>();
+					for (QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList) {
+						if(questionConditionBranchBo.getInputType() != null && 
+								(questionConditionBranchBo.getInputType().equalsIgnoreCase("MF") || questionConditionBranchBo.getInputType().equalsIgnoreCase("F"))){
+							List<QuestionConditionBranchBo> conditionBranchList = new ArrayList<>();
+							for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchList) {
+								if(questionConditionBranchBo.getSequenceNo().equals(conditionBranchBo.getParentSequenceNo())){
+									conditionBranchList.add(conditionBranchBo);
+								}
 							}
+							questionConditionBranchBo.setQuestionConditionBranchBos(conditionBranchList);
+							newQuestionConditionBranchList.add(questionConditionBranchBo);
 						}
-						questionConditionalMap.put(questionConditionBranchBo, conditionBranchList);
-					}
-				}*/
-				for (QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList) {
-					if(questionConditionBranchBo.getInputType() != null && 
-							(questionConditionBranchBo.getInputType().equalsIgnoreCase("MF") || questionConditionBranchBo.getInputType().equalsIgnoreCase("F"))){
-						List<QuestionConditionBranchBo> conditionBranchList = new ArrayList<>();
-						for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchList) {
-							if(questionConditionBranchBo.getSequenceNo().equals(conditionBranchBo.getParentSequenceNo())){
-								conditionBranchList.add(conditionBranchBo);
-							}
-						}
-						questionConditionBranchBo.setQuestionConditionBranchBos(conditionBranchList);
-						newQuestionConditionBranchList.add(questionConditionBranchBo);
 					}
 				}
 			}
-			for (QuestionConditionBranchBo questionConditionBranchBo : newQuestionConditionBranchList) {
-				System.out.println("key:"+questionConditionBranchBo.getSequenceNo()+" "+questionConditionBranchBo.getInputType()+" "+questionConditionBranchBo.getInputTypeValue());
-				List<QuestionConditionBranchBo> list = questionConditionBranchBo.getQuestionConditionBranchBos();
-				for (QuestionConditionBranchBo questionConditionBranchBo2 : list) {
-					System.out.println("Values:"+questionConditionBranchBo2.getSequenceNo()+" "+questionConditionBranchBo2.getInputType()+" "+questionConditionBranchBo2.getInputTypeValue());
-				}
-				System.out.println("#####################");
-			}
-			/*System.out.println("#####################");
-			for(Map.Entry<QuestionConditionBranchBo, List<QuestionConditionBranchBo>> entry : questionConditionalMap.entrySet()){
-				QuestionConditionBranchBo questionConditionBranchBo = entry.getKey();
-				System.out.println("key:"+questionConditionBranchBo.getSequenceNo()+" "+questionConditionBranchBo.getInputType()+" "+questionConditionBranchBo.getInputTypeValue());
-				List<QuestionConditionBranchBo> list = entry.getValue();
-				for (QuestionConditionBranchBo questionConditionBranchBo2 : list) {
-					System.out.println("Values:"+questionConditionBranchBo2.getSequenceNo()+" "+questionConditionBranchBo2.getInputType()+" "+questionConditionBranchBo2.getInputTypeValue());
-				}
-				System.out.println("#####################");
-			}*/
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - ERROR ", e);
+		}finally{
+			if(null != newSession){
+				newSession.close();
+			}
 		}
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - Ends");
 		return newQuestionConditionBranchList;

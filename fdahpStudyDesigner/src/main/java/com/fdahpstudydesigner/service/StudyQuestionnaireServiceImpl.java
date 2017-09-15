@@ -1,17 +1,21 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
@@ -977,5 +981,85 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - getHeanlthKitKeyInfoList - Starts");
 		return studyQuestionnaireDAO.getHeanlthKitKeyInfoList();
 	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List of QuestionConditionBranchBo
+	 * 
+	 * This method is used to get the FormulaInfoBean
+	 */
+	@Override
+	public FormulaInfoBean validateQuestionConditionalBranchingLogic(Integer questionId, String trialInput){
+		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Starts");
+		FormulaInfoBean formulaInfoBean = new FormulaInfoBean();
+		Session session = null;
+		String operator = "";
+		String lhsData = "";
+		String rhsData = "";
+		int operandCount = 0;
+		List<QuestionConditionBranchBo> branchBos =  studyQuestionnaireDAO.getQuestionConditionalBranchingLogic(session, questionId);
+		if(!branchBos.isEmpty()){
+			List<QuestionConditionBranchBo> newBranchBos = branchBos;
+			for(QuestionConditionBranchBo conditionBranchBo: branchBos){
+				if(conditionBranchBo!=null && conditionBranchBo.getParentSequenceNo()==0){
+					operator = conditionBranchBo.getInputTypeValue();
+				}
+				if(conditionBranchBo!=null && conditionBranchBo.getParentSequenceNo()==1){
+					if(operandCount==0){
+						if(conditionBranchBo.getInputType().equalsIgnoreCase("F")){
+						    String lhsOperator = conditionBranchBo.getInputTypeValue();
+							for(QuestionConditionBranchBo lhSconditionBranchBo: newBranchBos){
+						    	Integer lhsIdNo = 0;
+								if(conditionBranchBo.getSequenceNo().equals(lhSconditionBranchBo.getParentSequenceNo())){
+									lhsIdNo = lhSconditionBranchBo.getConditionId();
+									if(lhSconditionBranchBo.getInputType().equalsIgnoreCase("RDE") || lhSconditionBranchBo.getInputType().equalsIgnoreCase("C")){
+										if(lhsIdNo==0){
+											lhsData = lhSconditionBranchBo.getInputTypeValue() + lhsOperator;
+										}else{
+											lhsData += lhSconditionBranchBo.getInputTypeValue();
+										}
+									}
+									lhsIdNo++;
+						    	}
+						      }
+					    }else if(conditionBranchBo.getInputType().equalsIgnoreCase("RDE")){
+					    	lhsData = trialInput;
+					    }else{
+					    	lhsData = conditionBranchBo.getInputTypeValue();
+					    }
+					   operandCount++;
+					}else{
+						if(conditionBranchBo.getInputType().equalsIgnoreCase("F")){
+						    String rhsOperator = conditionBranchBo.getInputTypeValue();
+							for(QuestionConditionBranchBo lhSconditionBranchBo: newBranchBos){
+						    	Integer rhsIdNo = 0;
+								if(conditionBranchBo.getSequenceNo().equals(lhSconditionBranchBo.getParentSequenceNo())){
+									rhsIdNo = lhSconditionBranchBo.getConditionId();
+									if(lhSconditionBranchBo.getInputType().equalsIgnoreCase("RDE") || lhSconditionBranchBo.getInputType().equalsIgnoreCase("C")){
+										if(rhsIdNo==0){
+											rhsData = lhSconditionBranchBo.getInputTypeValue() + rhsOperator;
+										}else{
+											rhsData += lhSconditionBranchBo.getInputTypeValue();
+										}
+									}
+									rhsIdNo++;
+						    	}
+						      }
+					    }else if(conditionBranchBo.getInputType().equalsIgnoreCase("RDE") || conditionBranchBo.getInputType().equalsIgnoreCase("C")){
+					    	rhsData = conditionBranchBo.getInputTypeValue();
+					    }
+					}
+				}
+				if(StringUtils.isNotEmpty(lhsData) && StringUtils.isNotEmpty(rhsData) && StringUtils.isNotEmpty(operator)){
+					formulaInfoBean = FdahpStudyDesignerUtil.getConditionalFormulaResult(lhsData, rhsData, operator, trialInput);
+				}
+			}
+		}
+		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Ends");
+		return formulaInfoBean;
+	}
+	
+	
+	
 	
 }

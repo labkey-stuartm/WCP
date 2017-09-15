@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -28,6 +29,12 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+
+
+
+//import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,8 +53,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPermissions;
+import com.github.dkellenb.formulaevaluator.FormulaEvaluator;
+import com.github.dkellenb.formulaevaluator.FormulaEvaluatorConfiguration;
+import com.udojava.evalex.Expression;
 
 public class FdahpStudyDesignerUtil {
 	private static Logger logger = Logger.getLogger(FdahpStudyDesignerUtil.class.getName());
@@ -841,15 +852,83 @@ public class FdahpStudyDesignerUtil {
 	   }
 	
 	   public static void main(String[] args) {
-		String firstDateTime = "2017-05-05 08:44";
+		/*String firstDateTime = "2017-05-05 08:44";
 		String secondDateTime = "2017-05-05 07:44";
 		
 		String hour = "00";
 		String minute = "30";
 		Integer durationSeconds = (Integer.valueOf(hour) * 60 * 60) + (Integer.valueOf(minute)* 60);
 		System.out.println(durationSeconds);
-		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));
+		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));*/
+		  //1.LHS contain operator then evaluate 
+		  //2. Get the LHS and RHS value and pass to  evalex.Expression
+		   //if there is any expression while evaluating value , will say as formula wrong
+		   String op1 = "3";
+		   System.out.println("op1::"+op1);
+		   net.objecthunter.exp4j.Expression e = new ExpressionBuilder("0.5*40-x")
+	        .variables("x")
+	        .build()
+	        .setVariable("x", 10);
+	        double op2 = e.evaluate();
+	        System.out.println("op2::"+op2);
+		   BigDecimal result1 = null;
+		   String operator = "!=";
+		   System.out.println("operator::"+operator);
+		   result1 = new com.udojava.evalex.Expression("x "+operator+" y").with("x", op1).with("y", BigDecimal.valueOf(op2)).eval();
+		   System.out.println(result1);
 	}
+	   
+	   
+    public static FormulaInfoBean getConditionalFormulaResult(String lhs, String rhs, String operator, String trialInput){
+    	FormulaInfoBean formulaInfoBean = new FormulaInfoBean();
+    	String operand1 = "";
+    	String operand2= "";
+    	BigDecimal result = null;
+    	if(lhs.contains("x")){
+    		try{
+    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(lhs)
+	        .variables("x")
+	        .build()
+	        .setVariable("x", Integer.parseInt(trialInput));
+	        double op = e.evaluate();
+	        operand1 = Double.toString(op);
+    		}catch(Exception e){
+    			e.printStackTrace();
+    			formulaInfoBean.setStatusMessage("Error in LHS");
+    		}
+    	}else{
+    		operand1 = lhs;
+    	}
+    	if(rhs.contains("x")){
+    		try{
+    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(rhs)
+	        .variables("x")
+	        .build()
+	        .setVariable("x", Integer.parseInt(trialInput));
+	        double op = e.evaluate();
+	        operand2 = Double.toString(op);
+    		}catch(Exception e){
+    			e.printStackTrace();
+    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		}
+    	}else{
+    		operand2 = rhs;
+    	}
+    	if(formulaInfoBean.getStatusMessage().isEmpty()){
+    		try{
+    		result = new com.udojava.evalex.Expression("x "+operator+" y").with("x", operand1).with("y", operand2).eval();
+    		}catch(Exception e){
+    			e.printStackTrace();
+    			formulaInfoBean.setStatusMessage("Error in Result");
+    		}
+    		if(result!=null){
+    			formulaInfoBean.setLhsData(operand1);
+    			formulaInfoBean.setRhsData(operand2);
+    			formulaInfoBean.setMessage(FdahpStudyDesignerConstants.SUCCESS);
+    		}
+    	}
+    	return formulaInfoBean;
+    }
 	   
 	public static String getTimeRangeString(String frequency){
 			String timeRange = "";
