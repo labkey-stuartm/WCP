@@ -1736,6 +1736,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									session.save(questionResponseSubTypeBo);
 								}	
 							}
+						}else{
+							String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
+							session.createQuery(deletQuesry).executeUpdate();
 						}
 						if(questionResponseTypeBo != null && questionResponseTypeBo.getFormulaBasedLogic().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 							if(questionnairesStepsBo.getQuestionConditionBranchBoList() != null && !questionnairesStepsBo.getQuestionConditionBranchBoList().isEmpty()){
