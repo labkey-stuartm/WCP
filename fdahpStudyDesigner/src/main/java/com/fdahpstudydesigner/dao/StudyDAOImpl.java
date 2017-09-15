@@ -1894,7 +1894,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.studyProtocol = false ORDER BY RBO.createdOn DESC ";
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.studyProtocol = false ORDER BY RBO.createdOn ASC ";
 			query = session.createQuery(searchQuery);
 			resourceBOList = query.list();
 			
@@ -4722,10 +4722,10 @@ public class StudyDAOImpl implements StudyDAO{
 					StudyBo studyDreaftBo = SerializationUtils.clone(liveStudyBo);
 					studyDreaftBo.setVersion(0f);
 					studyDreaftBo.setId(null);
-					studyDreaftBo.setThumbnailImage(null);
-					if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.RESET_STUDY))
+					if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.RESET_STUDY)){
 					  studyDreaftBo.setLive(5);
-					else{
+					  studyDreaftBo.setThumbnailImage(null);
+					}else{
 						studyDreaftBo.setCustomStudyId(null);
 						studyDreaftBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						studyDreaftBo.setCreatedBy(sesObj.getUserId());
@@ -4780,7 +4780,9 @@ public class StudyDAOImpl implements StudyDAO{
 						for(StudyPageBo pageBo:studyPageBo){
 							StudyPageBo subPageBo = SerializationUtils.clone(pageBo);
 							subPageBo.setStudyId(studyDreaftBo.getId());
-							subPageBo.setImagePath(null);
+							if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.RESET_STUDY)){
+								subPageBo.setImagePath(null);
+							}
 							subPageBo.setPageId(null);
 							session.save(subPageBo);
 						}
@@ -4803,8 +4805,8 @@ public class StudyDAOImpl implements StudyDAO{
 								newEligibilityTestBo.setEligibilityId(bo.getId());
 								newEligibilityTestBo.setUsed(false);
 								if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
-								newEligibilityTestBo.setShortTitle(null);
-								newEligibilityTestBo.setStatus(false);
+								 //newEligibilityTestBo.setShortTitle(null);
+								 newEligibilityTestBo.setStatus(false);
 								}
 								session.save(newEligibilityTestBo);
 							}
@@ -4824,14 +4826,16 @@ public class StudyDAOImpl implements StudyDAO{
 							if(StringUtils.isNotEmpty(bo.getPdfUrl()) && StringUtils.isNotEmpty(bo.getPdfName())){
 								resourceBO.setAction(false);
 							}
-							resourceBO.setPdfUrl(null);
-							resourceBO.setPdfName(null);
 							resourceBO.setId(null);
 							if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
 								resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 							    resourceBO.setCreatedBy(sesObj.getUserId());
 							    resourceBO.setModifiedBy(null);
 							    resourceBO.setModifiedOn(null);
+							}else{
+								resourceBO.setPdfName(null);
+								resourceBO.setPdfUrl(null);
+
 							}
 							session.save(resourceBO);
 						}
@@ -4855,7 +4859,7 @@ public class StudyDAOImpl implements StudyDAO{
 								newQuestionnaireBo.setCreatedBy(sesObj.getUserId());
 								newQuestionnaireBo.setModifiedBy(null);
 								newQuestionnaireBo.setModifiedDate(null);
-								newQuestionnaireBo.setShortTitle(null);
+								//newQuestionnaireBo.setShortTitle(null);
 								newQuestionnaireBo.setStatus(false);
 							}
 							newQuestionnaireBo.setVersion(0f);
@@ -4927,7 +4931,7 @@ public class StudyDAOImpl implements StudyDAO{
 											 newQuestionnairesStepsBo.setModifiedBy(null);
 											 newQuestionnairesStepsBo.setModifiedOn(null);
 											 newQuestionnairesStepsBo.setStatus(false);
-											 newQuestionnairesStepsBo.setStepShortTitle(null);
+											// newQuestionnairesStepsBo.setStepShortTitle(null);
 										 }
 										 session.save(newQuestionnairesStepsBo);
 										if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
@@ -4964,8 +4968,8 @@ public class StudyDAOImpl implements StudyDAO{
 													  newQuestionsBo.setCreatedBy(sesObj.getUserId());
 													  newQuestionsBo.setModifiedBy(null);
 													  newQuestionsBo.setModifiedOn(null);
-													  newQuestionsBo.setShortTitle(null);
-													  newQuestionsBo.setStatShortName(null);
+													  //newQuestionsBo.setShortTitle(null);
+													  //newQuestionsBo.setStatShortName(null);
 													  newQuestionsBo.setStatus(false);
 												  }
 												  session.save(newQuestionsBo);
@@ -4990,8 +4994,10 @@ public class StudyDAOImpl implements StudyDAO{
 														  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
 														  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
 														  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
-														  newQuestionResponseSubTypeBo.setImage(null);
-														  newQuestionResponseSubTypeBo.setSelectedImage(null);
+														  if(!action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+															  newQuestionResponseSubTypeBo.setImage(null);
+															  newQuestionResponseSubTypeBo.setSelectedImage(null);
+														  }
 														  newQuestionResponseSubTypeBo.setDestinationStepId(null);
 														  session.save(newQuestionResponseSubTypeBo);
 														  newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
@@ -5038,8 +5044,8 @@ public class StudyDAOImpl implements StudyDAO{
 																  newQuestionsBo.setCreatedBy(sesObj.getUserId());
 																  newQuestionsBo.setModifiedBy(null);
 																  newQuestionsBo.setModifiedOn(null);
-																  newQuestionsBo.setShortTitle(null);
-																  newQuestionsBo.setStatShortName(null);
+																  //newQuestionsBo.setShortTitle(null);
+																  //newQuestionsBo.setStatShortName(null);
 																  newQuestionsBo.setStatus(false);
 															  }
 															  session.save(newQuestionsBo);
@@ -5064,8 +5070,10 @@ public class StudyDAOImpl implements StudyDAO{
 																	  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
 																	  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
 																	  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
-																	  newQuestionResponseSubTypeBo.setImage(null);
-																	  newQuestionResponseSubTypeBo.setSelectedImage(null);
+																	  if(!action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+																		  newQuestionResponseSubTypeBo.setImage(null);
+																		  newQuestionResponseSubTypeBo.setSelectedImage(null);
+																	  }
 																	  session.save(newQuestionResponseSubTypeBo);
 																	  //newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
 																  }
@@ -5184,7 +5192,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    			newActiveTaskBo.setCreatedBy(sesObj.getUserId());
 					    			newActiveTaskBo.setModifiedBy(null);
 					    			newActiveTaskBo.setModifiedDate(null);
-					    			newActiveTaskBo.setShortTitle(null);
+					    			//newActiveTaskBo.setShortTitle(null);
 					    			newActiveTaskBo.setAction(false);
 								}
 					    		newActiveTaskBo.setVersion(0f);
@@ -5226,9 +5234,9 @@ public class StudyDAOImpl implements StudyDAO{
 									  ActiveTaskAtrributeValuesBo newActiveTaskAtrributeValuesBo = SerializationUtils.clone(activeTaskAtrributeValuesBo);
 									  newActiveTaskAtrributeValuesBo.setActiveTaskId(newActiveTaskBo.getId());
 									  newActiveTaskAtrributeValuesBo.setAttributeValueId(null);
-									  if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
+									  /*if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
 									   newActiveTaskAtrributeValuesBo.setIdentifierNameStat(null);
-									  }
+									  }*/
 									  session.save(newActiveTaskAtrributeValuesBo);
 								  }
 									
@@ -5616,14 +5624,17 @@ public class StudyDAOImpl implements StudyDAO{
     @SuppressWarnings("unchecked")
     @Override
     public String validateEligibilityTestKey(Integer eligibilityTestId,
-            String shortTitle) {
+            String shortTitle, Integer eligibilityId) {
         logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
         Session session = null;
         List<EligibilityTestBo> eligibilityTestBos;
         String result= FdahpStudyDesignerConstants.FAILURE;
         try{
             session = hibernateTemplate.getSessionFactory().openSession();
-            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle").setString("shortTitle", shortTitle).setInteger("eligibilityTestId", eligibilityTestId);
+            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle")
+            			.setString("shortTitle", shortTitle)
+            			.setInteger("eligibilityTestId", eligibilityTestId)
+            			.setInteger("eligibilityId", eligibilityId);
             eligibilityTestBos = query.list();
             if(eligibilityTestBos.isEmpty()) {
                 result = FdahpStudyDesignerConstants.SUCCESS;

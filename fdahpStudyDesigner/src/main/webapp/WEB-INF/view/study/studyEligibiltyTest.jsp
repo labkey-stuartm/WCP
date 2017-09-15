@@ -158,7 +158,8 @@ function validateShortTitle(item, callback){
 	                datatype: "json",
 	                data: {
 	                	shortTitle : shortTitle,
-	                	eligibilityTestId : '${eligibilityTest.id}'
+	                	eligibilityTestId : '${eligibilityTest.id}',
+	                	eligibilityId : '${eligibilityId}'
 	                },
 	                beforeSend: function(xhr, settings){
 	                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

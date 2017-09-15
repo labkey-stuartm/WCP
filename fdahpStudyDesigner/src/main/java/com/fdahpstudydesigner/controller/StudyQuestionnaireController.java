@@ -1549,7 +1549,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			if(formId!= null && !formId.isEmpty()){
 				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 				if(questionId != null && !questionId.isEmpty()){
-					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle());
+					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle(),studyBo.getCustomStudyId());
 					map.addAttribute("questionsBo", questionsBo);
 					request.getSession().setAttribute(sessionStudyCount+"questionId", questionId);
 					if(questionnairesStepsBo != null){

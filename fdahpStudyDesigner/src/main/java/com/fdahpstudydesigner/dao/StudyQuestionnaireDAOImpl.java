@@ -524,7 +524,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle) {
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Starts");
 		Session session = null;
 		QuestionsBo questionsBo = null;
@@ -534,10 +534,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(questionsBo != null){
 				try{
 					if(StringUtils.isNotEmpty(questionnaireShortTitle)){
-						
+						/*BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires_steps qs where qs.questionnaires_id  "
+								+ "in(select q.id from questionnaires q where q.short_title='"+questionnaireShortTitle+"' and q.active=1 and q.is_live=1 and q.custom_study_id='"+customStudyId+"') "
+								+ "and qs.step_short_title = '"+questionnairesStepsBo.getStepShortTitle()+"' and qs.active=1").uniqueResult();*/
 						//Duplicate ShortTitle per questionsBo Start 
 						BigInteger quesionshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.short_title='"+questionnaireShortTitle+"'"
-								+ " and Q.active=1 and Q.is_live=1 and QSBO.step_type='Form' and QBO.short_title='"+questionsBo.getShortTitle()+"' and QBO.active=1").uniqueResult();
+								+ " and Q.active=1 and Q.is_live=1 and Q.custom_study_id='"+customStudyId+"' and QSBO.step_type='Form' and QBO.short_title='"+questionsBo.getShortTitle()+"' and QBO.active=1").uniqueResult();
 						if(quesionshortTitleCount!=null && quesionshortTitleCount.intValue() > 0)
 							questionsBo.setIsShorTitleDuplicate(quesionshortTitleCount.intValue());
 						else
@@ -547,7 +549,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						//Duplicate statShortTitle per questionsBo Start 
 						if(StringUtils.isNotEmpty(questionsBo.getStatShortName())){
 							BigInteger quesionStatshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.short_title='"+questionnaireShortTitle+"'"
-									+ " and Q.active=1 and Q.is_live=1 and QSBO.step_type='Form' and QBO.stat_short_name='"+questionsBo.getStatShortName()+"' and QBO.active=1").uniqueResult();
+									+ " and Q.active=1 and Q.is_live=1 and Q.custom_study_id='"+customStudyId+"' and QSBO.step_type='Form' and QBO.stat_short_name='"+questionsBo.getStatShortName()+"' and QBO.active=1").uniqueResult();
 							if(quesionStatshortTitleCount!=null && quesionStatshortTitleCount.intValue() > 0)
 							questionsBo.setIsStatShortNameDuplicate(quesionStatshortTitleCount.intValue());
 						else

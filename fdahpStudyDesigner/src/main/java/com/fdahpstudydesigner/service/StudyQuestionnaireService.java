@@ -31,7 +31,7 @@ public interface StudyQuestionnaireService {
 	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject,String customStudyId);
 	
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo, SessionObject sesObj,String customStudyId);
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle);
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	

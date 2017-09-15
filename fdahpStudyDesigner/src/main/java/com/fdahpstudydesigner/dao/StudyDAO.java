@@ -97,7 +97,7 @@ public interface StudyDAO {
     public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
     public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
     public int eligibilityTestOrderCount(Integer eligibilityId);
-    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle);
+    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId, String action, SessionObject sesObj);
