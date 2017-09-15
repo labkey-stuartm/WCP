@@ -2680,31 +2680,31 @@ $(document).ready(function(){
     	$("#inputTypeValueId"+index).val(value);
     });
     $('#formulaSubmitId').on('click',function(){
-    	var responseQuestionId = $("#responseQuestionId").val();
-    	var trialInputVal = $('#trailInputId').val();
-	    var form= document.createElement('form');
-    	form.method= 'post';
-    	var input= document.createElement('input');
-    	input.type= 'hidden';
-		input.name= 'responseQuestionId';
-		input.value= responseQuestionId;
-		form.appendChild(input);
+//     	var responseQuestionId = $("#responseQuestionId").val();
+//     	var trialInputVal = $('#trailInputId').val();
+// 	    var form= document.createElement('form');
+//     	form.method= 'post';
+//     	var input= document.createElement('input');
+//     	input.type= 'hidden';
+// 		input.name= 'responseQuestionId';
+// 		input.value= responseQuestionId;
+// 		form.appendChild(input);
 		
-		input= document.createElement('input');
-		input.type= 'hidden';
-		input.name= 'trialInput';
-		input.value= trialInputVal;
-		form.appendChild(input);
+// 		input= document.createElement('input');
+// 		input.type= 'hidden';
+// 		input.name= 'trialInput';
+// 		input.value= trialInputVal;
+// 		form.appendChild(input);
 		
-		input= document.createElement('input');
-    	input.type= 'hidden';
-		input.name= '${_csrf.parameterName}';
-		input.value= '${_csrf.token}';
-		form.appendChild(input);
+// 		input= document.createElement('input');
+//     	input.type= 'hidden';
+// 		input.name= '${_csrf.parameterName}';
+// 		input.value= '${_csrf.token}';
+// 		form.appendChild(input);
 		
-    	form.action= '/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do';
-    	document.body.appendChild(form);
-    	form.submit();
+//     	form.action= '/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do';
+//     	document.body.appendChild(form);
+//     	form.submit();
  });
     
 });
