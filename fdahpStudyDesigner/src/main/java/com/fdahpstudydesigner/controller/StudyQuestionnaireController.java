@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
@@ -1909,5 +1910,40 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.error("StudyQuestionnaireController - validateRepeatableQuestion - ERROR",e);
 		}
 		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateconditionalFormula.do", method = RequestMethod.POST)
+	public void validateconditionalFormula(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateconditionalFormula - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject formulaResponseJsonObject = null;
+		FormulaInfoBean formulaInfoBean = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String responseQuestionId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("responseQuestionId"))?"":request.getParameter("responseQuestionId");
+				String trialInputVal = FdahpStudyDesignerUtil.isEmpty(request.getParameter("trialInput"))?"":request.getParameter("trialInput");
+				if(!responseQuestionId.isEmpty()){
+					formulaInfoBean = studyQuestionnaireService.validateQuestionConditionalBranchingLogic(Integer.valueOf(responseQuestionId), trialInputVal);
+					if(formulaInfoBean!=null && formulaInfoBean.getStatusMessage().equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						formulaResponseJsonObject = new JSONObject(mapper.writeValueAsString(formulaInfoBean));
+						jsonobject.put("formulaResponseJsonObject", formulaResponseJsonObject);
+					}
+				}
+			}
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateconditionalFormula - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateconditionalFormula - Ends");
 	}
 }

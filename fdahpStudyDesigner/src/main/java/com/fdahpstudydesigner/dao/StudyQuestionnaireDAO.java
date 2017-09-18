@@ -3,9 +3,12 @@ package com.fdahpstudydesigner.dao;
 import java.util.List;
 import java.util.SortedMap;
 
+import org.hibernate.Session;
+
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
@@ -53,4 +56,5 @@ public interface StudyQuestionnaireDAO {
 	public String validateRepetableFormQuestionStats(Integer formId);
 	
 	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList(); 
+	public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(Session session,Integer questionId);
 }

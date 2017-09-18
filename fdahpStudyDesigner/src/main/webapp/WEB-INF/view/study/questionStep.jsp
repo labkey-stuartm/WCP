@@ -1812,8 +1812,8 @@ function isNumberKey(evt)
          	<div class="trial_section2">
          		<span class="tealfont">Provide Input :  </span>
          		<span> x = </span>
-         		<span class="form-group"><input type="text" class="form-control"/></span>
-         		<span><button>Submit</button></span>
+         		<span class="form-group"><input type="text" id="trailInputId" class="form-control"/></span>
+         		<span><button type="button" id="formulaSubmitId">Submit</button></span>
          	</div>
          	<div class="trial_section3">
          		<span class="tealfont">Output :</span>
@@ -2680,6 +2680,34 @@ $(document).ready(function(){
     	var value = $(this).val();
     	$("#inputTypeValueId"+index).val(value);
     });
+    $('#formulaSubmitId').on('click',function(){
+//     	var responseQuestionId = $("#responseQuestionId").val();
+//     	var trialInputVal = $('#trailInputId').val();
+// 	    var form= document.createElement('form');
+//     	form.method= 'post';
+//     	var input= document.createElement('input');
+//     	input.type= 'hidden';
+// 		input.name= 'responseQuestionId';
+// 		input.value= responseQuestionId;
+// 		form.appendChild(input);
+		
+// 		input= document.createElement('input');
+// 		input.type= 'hidden';
+// 		input.name= 'trialInput';
+// 		input.value= trialInputVal;
+// 		form.appendChild(input);
+		
+// 		input= document.createElement('input');
+//     	input.type= 'hidden';
+// 		input.name= '${_csrf.parameterName}';
+// 		input.value= '${_csrf.token}';
+// 		form.appendChild(input);
+		
+//     	form.action= '/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do';
+//     	document.body.appendChild(form);
+//     	form.submit();
+ });
+    
 });
 //Displaying images from file upload 
 function readURL(input) {
