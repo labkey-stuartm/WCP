@@ -1653,10 +1653,10 @@ function isNumberKey(evt)
 				      </div>
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
-				            <span><span>Formula:</span> <b>200 > (0.5(40-x))</b></span>
+				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
 				            <span data-toggle="modal" data-target="#myModal">Trial</span>
 				         </div>
-				         <div class="numeric__container">
+				         <div class="numeric__container mb-sm">
 				            <div class="numeric__loop">
 				               <div class="numeric__define gray__t pb-sm">
 				                  Define Function
@@ -1669,7 +1669,7 @@ function isNumberKey(evt)
 				                  <div class="numeric__define gray__t">
 				                     <span>V1</span>
 				                     <div class="form-group sm-selection">
-				                        <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].inputTypeValue" id="inputTypeValueId0" index="1" count="0">
+				                        <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].inputTypeValue" id="inputTypeValueId0" index="1" count="0" onchange='selectFunction(this);'>
 				                           <option value="">select</option>
 				                           <option value=">" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq ">" ? 'selected' :''}>&gt;</option>
 				                           <option value="<" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "<" ? 'selected' :''}>&lt;</option>
@@ -1684,46 +1684,80 @@ function isNumberKey(evt)
 				                     <input type="hidden" name="questionConditionBranchBoList[0].sequenceNo" id="sequenceNoId0" value="1">
 				                     <input type="hidden" name="questionConditionBranchBoList[0].parentSequenceNo" id="parentSequenceNoId0" value="0">
 				                  </div>
+				                  <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) le 2}"> --%>
 				                  <div class="numeric__define_input gray__t">
 				                     <div class="numeric__row" id="2">
 				                        <span>V2 =</span>
 				                        <div class="form-group sm-selection">
-				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputTypeId20" index="2" count=0 onchange="addFunctions(this,0);">
+				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputTypeId20" index="2" count=0 onchange="addFunctions(this);">
 				                              <option value="">select</option>
 				                              <option value="C" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'C' ? 'selected' :''}>Constant</option>
 				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'F' ? 'selected' :''}>Function</option>
 				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
 				                           </select>
 				                           <div class="help-block with-errors red-txt"></div>
-				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue" id="inputTypeValueId20" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}">
+				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue" id="inputSubTypeValueId2" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].sequenceNo" id="sequenceNoId20" value="2">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].parentSequenceNo" id="parentSequenceNoId20" value="1">
-				                           <div class="add_varible add_var_hide">+ Add Variable</div>
 				                        </div>
 				                        <div class="form-group sm__in">
-				                           <input type="text" id="constantValId20" index="20" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}" />
+				                           <input type="text" id="constantValId20" index="2" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}" onkeypress="return isOnlyNumber(event)"/>
+				                           <div class="help-block with-errors red-txt"></div>
 				                        </div>
 				                     </div>
 				                     <div class="numeric__row"  id="3">
 				                        <span>V3 =</span>
 				                        <div class="form-group sm-selection">
-				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputTypeId31" index="3" count=1 onchange="addFunctions(this,1);">
+				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputTypeId31" index="3" count=1 onchange="addFunctions(this);">
 				                              <option value="">select</option>
 				                              <option value="C" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C' ? 'selected' :''}>Constant</option>
 				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'F' ? 'selected' :''}>Function</option>
 				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
 				                           </select>
 				                           <div class="help-block with-errors red-txt"></div>
-				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue" id="inputTypeValueId31" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}">
+				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue" id="inputSubTypeValueId3" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].sequenceNo" id="sequenceNoId31" value="3">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].parentSequenceNo" id="parentSequenceNoId31" value="1">
-				                           <div class="add_varible add_var_hide">+ Add Variable</div>
+				                           <%-- <div class="add_varible <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('&&') && questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('||')}">add_var_hide</c:if> " 
+					                           		index="0" parentIndex="1" id="addVaraiable0" onclick="addVariable(this);">+ Add Variable</div> --%>
 				                        </div>
 				                        <div class="form-group sm__in">
-				                           <input type="text" id="constantValId31" index="31" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}"/>
+				                           <input type="text" id="constantValId31" index="3" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}" onkeypress="return isOnlyNumber(event)"/>
+				                           <div class="help-block with-errors red-txt"></div>
 				                        </div>
 				                     </div>
 				                </div>
+				                <%-- </c:if> --%>
+				                <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) gt 2}">
+				                	<div class="numeric__define_input gray__t">
+					                     <c:forEach items="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
+					                     <div class="numeric__row" id="${questionConditionsSubBranchBo.sequenceNo}">
+					                        <span>V${questionConditionsSubBranchBo.sequenceNo} =</span>
+					                        <div class="form-group sm-selection">
+					                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].inputType" id="inputTypeId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onchange='addFunctions(this);'>
+					                              <option value="">select</option>
+					                              <option value="C" ${questionConditionsSubBranchBo.inputType eq 'C' ? 'selected' :''}>Constant</option>
+					                              <option value="F" ${questionConditionsSubBranchBo.inputType eq 'F' ? 'selected' :''}>Function</option>
+					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
+					                           </select>
+					                           <div class="help-block with-errors red-txt"></div>
+					                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
+				                     	  	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
+				                     	   	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
+					                           <c:if test="${subStatus.last}">
+					                           <div class="add_varible <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('&&') && questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('||')}">add_var_hide</c:if> " 
+					                           		index="0" parentIndex="1" id="addVaraiable0" onclick="addVariable(this);">+ Add Variable</div>
+					                           </c:if>
+					                        </div>
+					                        <div class="form-group sm__in">
+					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" 
+					                           index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired </c:if><c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isOnlyNumber(event)"/>
+					                           <div class="help-block with-errors red-txt"></div>
+					                        </div>
+					                     </div>
+					                     </c:forEach>
+					                  </div>
+				                </c:if> --%>
 				               </div>
 				               <!-- End Numeric section -->
 				               <!-- Numeric section -->
@@ -1749,9 +1783,6 @@ function isNumberKey(evt)
 					                        </select>
 					                        <div class="help-block with-errors red-txt"></div>
 					                     </div>
-					                     <%-- <input type="hidden" name="questionConditionBranchBoList[${status.index}].inputType" id="" value="${questionConditionBranchBo.inputType}">
-				                     	 <input type="hidden" name="questionConditionBranchBoList[${status.index}].sequenceNo" id="" value="${questionConditionBranchBo.sequenceNo}">
-				                     	 <input type="hidden" name="questionConditionBranchBoList[${status.index}].parentSequenceNo" id="" value="${questionConditionBranchBo.parentSequenceNo}"> --%>
 					                 </div>
 					         		 <div class="numeric__define_input gray__t">
 					                     <c:forEach items="${questionConditionBranchBo.questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
@@ -1765,15 +1796,18 @@ function isNumberKey(evt)
 					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
 					                           </select>
 					                           <div class="help-block with-errors red-txt"></div>
-					                           <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputTypeValueId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.inputTypeValue}">
+					                           <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
 				                     	  	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
 				                     	   	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
-					                           <c:if test="${not subStatus.first}">
-					                           <div class="add_varible <c:if test="${questionConditionBranchBo.inputTypeValue ne ('*') }">add_var_hide</c:if> " id="addVaraiable${questionConditionsSubBranchBo.sequenceNo}">+ Add Variable</div>
+					                           <c:if test="${subStatus.last}">
+					                           <div class="add_varible <c:if test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')
+					                           && questionConditionBranchBo.inputTypeValue ne ('&&') && questionConditionBranchBo.inputTypeValue ne ('||')}">add_var_hide</c:if> " 
+					                           		index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${status.index}" onclick="addVariable(this);">+ Add Variable</div>
 					                           </c:if>
 					                        </div>
 					                        <div class="form-group sm__in">
-					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}"/>
+					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isOnlyNumber(event)"/>
+					                           <div class="help-block with-errors red-txt"></div>
 					                        </div>
 					                     </div>
 					                     </c:forEach>
@@ -1806,8 +1840,10 @@ function isNumberKey(evt)
         <div class="modal-body trial_body">
          	<div class="trial_title">Try your formula</div>
          	<div class="trial_section1">
-         		<span class="tealfont">Your Formula : </span><span>200 > (0.5(40-x))</span>
+         		<span class="tealfont">Your Formula : </span><span class="tryFormula"> -NA- </span>
          	</div>
+         	<input type="hidden" name="lhs" id="lhsId" >
+         	<input type="hidden" name="rhs" id="rhsId" >
          	<div class="trial_section2">
          		<span class="tealfont">Provide Input :  </span>
          		<span> x = </span>
@@ -1817,9 +1853,9 @@ function isNumberKey(evt)
          	<div class="trial_section3">
          		<span class="tealfont">Output :</span>
          		<div>
-         			<div><span>LHS Value:</span><span><b>200</b></span></div>
-         			<div><span>RHS Value:</span><span><b>10</b></span></div>
-         			<div><span>Boolean Output:</span><span class="gtxtf"><b>True</b></span></div>
+         			<div><span>LHS Value:</span><span><b>-NA-</b></span></div>
+         			<div><span>RHS Value:</span><span><b>-NA-</b></span></div>
+         			<div><span>Boolean Output:</span><span class="gtxtf"><b></b></span></div>
          		</div>
          	</div>
          	
@@ -2028,7 +2064,7 @@ $(document).ready(function(){
 		    		 $("#TextScale").empty();
 		    	 } */
     		 } 
-		     if(isValid && isImageValid){
+		     if(isValid && isImageValid && validateResponseDataElement()){
 		    	 validateQuestionShortTitle('',function(val){
 		    		 if(val){
 		    			 var statShortName =  $("#statShortNameId").val();
@@ -2677,7 +2713,8 @@ $(document).ready(function(){
     	var index=$(this).attr('index');
     	console.log("index:"+index);
     	var value = $(this).val();
-    	$("#inputTypeValueId"+index).val(value);
+    	$("#inputSubTypeValueId"+index).val(value);
+    	createFormula();
     });
     $('#formulaSubmitId').on('click',function(){
     	//alert("1");
@@ -2952,6 +2989,7 @@ function getResponseType(id){
     			if($("#formulaBasedLogicId").is(":checked")){
         			$("#conditionalFormulaId").show();
         			$(".conditionalBranchingRequired").attr('required',true);
+        			createFormula();
         		}else{
         			$("#conditionalFormulaId").hide();
         			$(".conditionalBranchingRequired").attr('required',false);
@@ -3321,7 +3359,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 				var questionConditionBranchBos =  new Object();
 				var id = $(this).attr("id");
 				//console.log("id:"+id);
-				var input_type_value = $("#inputTypeValueId"+id+j).val();
+				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
 				var sequence_no=$("#sequenceNoId"+id+j).val();
 				var parent_sequence_no=$("#parentSequenceNoId"+id+j).val();
@@ -4060,19 +4098,12 @@ function validateForUniqueValue(item,responsetype,callback){
 }
 function addFunctions(item){
 	var index = $(item).attr('index');
-	//var count = parseInt($(item).attr('count'))+1;
 	var count = parseInt($(item).attr('count'));
-	//console.log("count:"+count);
-	//console.log("index:"+index);
+	var preCount = parseInt($(item).attr('count'));
 	var value = $(item).val();
-	//console.log("value:"+value);
-	
-	//$("#rootId"+index).nextAll('.numeric__section').remove();
 	$("#rootId"+index).parents(".numeric__row").remove();
 	$("#rootId"+index).remove();
-	
 	var total = parseInt($('.numeric__row').length);
-	//console.log("total:"+total);
 	var v= total+1;
 	$(item).find('input').addClass("add_var_hide");
 	$("#constantValId"+index+count).addClass('add_var_hide');	
@@ -4083,7 +4114,7 @@ function addFunctions(item){
 		   "<div class='numeric__define gray__t'>"+
 		   "   <span>V"+index+"</span>"+
 		   "   <div class='form-group sm-selection'>"+
-		   "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].inputTypeValue' id='inputTypeValueId"+rowCount+"' index='"+index+"' count='"+count+"' onchange='selectFunction(this);'>"+
+		   "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].inputTypeValue' id='inputTypeValueId"+rowCount+"' index='"+index+"' count='"+rowCount+"' onchange='selectFunction(this);' required>"+
 		   "         <option value=''>select</option>"+
 		   "         <option value='>' >&gt;</option>"+
 		   "         <option value='<' >&lt;</option>"+
@@ -4099,47 +4130,45 @@ function addFunctions(item){
 		   "      </select>"+
 		   "      <div class='help-block with-errors red-txt'></div>"+
 		   "   </div>"+
-		//   "   <input type='hidden' name='questionConditionBranchBoList["+count+"].inputType' id=''>"+
-		//   "   <input type='hidden' name='questionConditionBranchBoList["+count+"].sequenceNo' id=''>"+
-		//   "   <input type='hidden' name='questionConditionBranchBoList["+count+"].parentSequenceNo' id=''>"+
 		   "</div>"+
 		   "<div class='numeric__define_input gray__t'>"+
 		   "   <div class='numeric__row' id='"+(parseInt(v)+1)+"'>"+
 		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
 		   "      <div class='form-group sm-selection'>"+
-		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);'>"+
+		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
 		   "            <option value=''>select</option>"+
 		   "            <option value='C'>Constant</option>"+
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
 		   "         </select>"+
 		   "		 <div class='help-block with-errors red-txt'></div>"+
-		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputTypeValue' id='inputTypeValueId"+(parseInt(v)+1)+0+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v)+1)+"'>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].sequenceNo' id='sequenceNoId"+(parseInt(v)+1)+0+"'  value='"+(parseInt(v)+1)+"'>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].parentSequenceNo'  id='parentSequenceNoId"+(parseInt(v)+1)+0+"' value='"+parseInt(index)+"'>"+
-		   "         <div class='add_varible add_var_hide'>+ Add Variable</div>"+
 		   "      </div>"+
 		   "         <div class='form-group sm__in'>"+
-		   "            <input type='text' id='constantValId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+0+"' class='constant form-control add_var_hide' value=''/>"+
+		   "            <input type='text' id='constantValId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' class='constant form-control add_var_hide' value='' onkeypress='return isOnlyNumber(event)'/>"+
+		   "			<div class='help-block with-errors red-txt'></div>"+
 		   "         </div>"+
 		   "   </div>"+
 		   "   <div class='numeric__row' id='"+(parseInt(v)+2)+"'>"+
 		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
 		   "      <div class='form-group sm-selection'>"+
-		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);'>"+
+		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
 		   "            <option value=''>select</option>"+
 		   "            <option value='C'>Constant</option>"+
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
 		   "         </select>"+
 		   "	     <div class='help-block with-errors red-txt'></div>"+
-		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputTypeValue' id='inputTypeValueId"+(parseInt(v)+2)+1+"' >"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v)+2)+"' >"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].sequenceNo' id='sequenceNoId"+(parseInt(v)+2)+1+"' value='"+(parseInt(v)+2)+"'>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].parentSequenceNo'id='parentSequenceNoId"+(parseInt(v)+2)+1+"' value='"+parseInt(index)+"' >"+
-		   "         <div class='add_varible add_var_hide'>+ Add Variable</div>"+
+		   "         <div class='add_varible add_var_hide' parentIndex="+parseInt(index)+" index='"+rowCount+"' onclick='addVariable(this);' id='addVaraiable"+rowCount+"'>+ Add Variable</div>"+
 		   "      </div>"+
 		   "         <div class='form-group sm__in'>"+
-		   "            <input type='text' id='constantValId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+1+"' class='constant form-control add_var_hide' value=''/>"+
+		   "            <input type='text' id='constantValId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' class='constant form-control add_var_hide' value='' onkeypress='return isOnlyNumber(event)'/>"+
+		   "			<div class='help-block with-errors red-txt'></div>"+
 		   "         </div>"+
 		   "   </div>"+
 		   "</div>"+
@@ -4147,29 +4176,185 @@ function addFunctions(item){
 		"<div class='clearfix'></div>";
 		$(".numeric__section:last").after(addFunction);
 		$('.selectpicker').selectpicker('refresh');
+		$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".numeric__loop").parent().find(".help-block").empty();
+		$(".numeric__loop").parents("form").validator("destroy");
+		$(".numeric__loop").parents("form").validator();
 	}else if(value === "C"){
-		console.log("else v:"+index+count);
 		$("#constantValId"+index+count).removeClass('add_var_hide');
 		$("#constantValId"+index+count).val('');
 		$("#constantValId"+index+count).attr('required',true);
 	}else if(value === "RDE"){
-		$("#inputTypeValueId"+index+count).val('x');
+		$("#inputSubTypeValueId"+index).val('x');
+		var id= $(item).attr('id');
+		console.log("id:"+id);
+		var responseDataElementArray  = new Array();
+		var index = parseInt($(item).attr('count'));
+		$('#rootId'+index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			var val  = $("#inputSubTypeValueId"+id).val();
+			responseDataElementArray.push(val);
+		});
+		if(responseDataElementArray.indexOf("x") != -1){
+			$(item).val('');
+    		$("#"+id).parent().parent().addClass("has-danger").addClass("has-error");
+            $("#"+id).parent().parent().find(".help-block").empty();
+            $("#"+id).parent().parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a value in the range (0,x).</li></ul>");
+            $('.selectpicker').selectpicker('refresh');
+		}else{
+			$(item).parent().parent().removeClass("has-danger").removeClass("has-error");
+            $(item).parent().parent().find(".help-block").empty();
+            $('.selectpicker').selectpicker('refresh');
+		}
 	}
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
     	console.log("index:"+index);
     	var value = $(this).val();
-    	$("#inputTypeValueId"+index).val(value);
+    	$("#inputSubTypeValueId"+index).val(value);
+    	createFormula();
     });
+	createFormula();
 }
 function selectFunction(item){
 	var index = $(item).attr('index');
-	console.log("$(item).attr('count'):"+$(item).attr('count'));
-	var count = parseInt($(item).attr('count'))-1;
-	console.log("count:"+count);
-	console.log("index:"+index);
+	var count = parseInt($(item).attr('count'));
 	var value = $(item).val();
-	$("#inputTypeValueId"+index+count).val(value);
-	
+	$("#inputSubTypeValueId"+index).val(value);
+	if(value == '+' || value == '*' || value == '&&' || value == '||'){
+		$("#addVaraiable"+count).removeClass('add_var_hide');
+	}else{
+		$("#addVaraiable"+count).addClass('add_var_hide');
+	}
+	if(value == '&&' || value =='||'){
+		console.log("index:"+index);
+		$("#rootId"+index).parents(".numeric__row").length;
+		$('#rootId'+index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', true);
+			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', true);
+			$('.selectpicker').selectpicker('refresh');
+		});
+		
+	}else{
+		$('#rootId'+index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
+			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
+			$('.selectpicker').selectpicker('refresh');
+		});
+	}
+	createFormula();
+}
+function addVariable(item){
+	var index = parseInt($(item).attr('index'));
+	var rowCount = parseInt($('.numeric__section').length);
+	var total = parseInt($('.numeric__row').length);
+	var v= total+2;
+	var parent_index = parseInt($(item).attr('parentIndex'));
+	var count = parseInt($("#rootId"+parent_index+" .numeric__row").length);
+	console.log("count:"+count);
+	var addVar = "<div class='numeric__row' id='"+v+"'>"+
+				 "   <span>V"+v+" =</span>"+
+				 "   <div class='form-group sm-selection'>"+
+				 "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputType' id='inputTypeId"+(parseInt(v))+count+"' index='"+(parseInt(v))+"' count='"+count+"' onchange='addFunctions(this);' required>"+
+				 "         <option value=''>select</option>"+
+				 "         <option value='C'>Constant</option>"+
+				 "         <option value='F'>Function</option>"+
+				 "         <option value='RDE'>Response Data Element (x)</option>"+
+				 "      </select>"+
+				 "      <div class='help-block with-errors red-txt'></div>"+
+				 "      <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v))+"' >"+
+				 " 	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].sequenceNo' id='sequenceNoId"+(parseInt(v))+count+"' value='"+(parseInt(v))+"'>"+
+				 "	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].parentSequenceNo' id='parentSequenceNoId"+(parseInt(v))+count+"' value='"+parseInt(parent_index)+"'>"+
+				 "     <div class='add_varible' parentIndex="+parseInt(parent_index)+" index='"+index+"' onclick='addVariable(this);' id='addVaraiable"+index+"'>+ Add Variable</div> "+
+				 "   </div>"+
+				 "   <div class='form-group sm__in'>"+
+				 "      <input type='text' id='constantValId"+v+count+"' index='"+v+"' class='constant form-control add_var_hide' onkeypress='return isOnlyNumber(event)'/>"+
+				 "   </div>"+
+				 "</div>";
+	$(item).parents(".numeric__row:last").after(addVar);
+	var parent_value = $("#inputTypeValueId"+index).val();
+	if(parent_value == '&&' || parent_value =='||'){
+		$('#rootId'+parent_index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', true);
+			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', true);
+			$('.selectpicker').selectpicker('refresh');
+		});
+	}else{
+		$('#rootId'+parent_index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
+			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
+			$('.selectpicker').selectpicker('refresh');
+		});
+	}
+	$('.selectpicker').selectpicker('refresh');
+	$(item).remove();
+	$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
+    $(".numeric__loop").parent().find(".help-block").empty();
+	$(".numeric__loop").parents("form").validator("destroy");
+	$(".numeric__loop").parents("form").validator();
+	createFormula();
+}
+function validateResponseDataElement(){
+	var responseDataElementArray  = new Array();
+	if($("#formulaBasedLogicId").is(":checked")){
+		$('.numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			var rde_value = $("#inputSubTypeValueId"+id).val();
+			console.log("rde_value:"+rde_value);
+			responseDataElementArray.push(rde_value);
+		});
+		if(responseDataElementArray.indexOf("x") != -1){
+			return true;
+		}else{
+			$('#alertMsg').show();
+		    $("#alertMsg").removeClass('s-box').addClass('e-box').html("Please add atleast one response data element in conditional formula.");
+		    setTimeout(hideDisplayMessage, 3000);
+			return false;
+		}
+	}else{
+		return true;
+	}
+}
+var f="";
+function makeAFormula(index){
+		var rootId = "rootId"+index;
+		var root_value = $("#rootId"+index).find('select').val();
+		var subroot_length = $('#'+rootId+' .numeric__row').length-1;
+		if(subroot_length > 0){
+			$('#'+rootId+' .numeric__row').each(function(j){
+				var id = $(this).attr("id");
+				var input_type_value = $("#inputSubTypeValueId"+id).val();
+				var input_type=$("#inputTypeId"+id+j).val();
+				if(input_type != 'F'){
+					if(j == subroot_length){
+						f += input_type_value+")";
+					}else{
+						f += "("+input_type_value+root_value;
+					}
+				}else if(input_type == 'F'){
+					makeAFormula(id);
+					f+=")";
+				}
+			});
+		}else{
+			f = $("#inputSubTypeValueId"+index).val();
+		}
+	return f;
+}
+function createFormula(){
+	var mf = $("#inputTypeValueId0").val();
+	f="";
+	var lhs = makeAFormula(2);
+	f="";
+	var rhs = makeAFormula(3);
+	var formula = lhs+" "+mf+" "+rhs;
+	$(".formula").text(formula);
+	$(".tryFormula").text(formula);
+	$("#lhsId").val(lhs);
+	$("#rhsId").val(rhs);
 }
 </script>
