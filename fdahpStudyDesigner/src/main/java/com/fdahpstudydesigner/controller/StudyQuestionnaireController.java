@@ -1925,19 +1925,25 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject formulaResponseJsonObject = null;
 		FormulaInfoBean formulaInfoBean = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String responseQuestionId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("responseQuestionId"))?"":request.getParameter("responseQuestionId");
-				String trialInputVal = FdahpStudyDesignerUtil.isEmpty(request.getParameter("trialInput"))?"":request.getParameter("trialInput");
-				if(!responseQuestionId.isEmpty()){
-					formulaInfoBean = studyQuestionnaireService.validateQuestionConditionalBranchingLogic(Integer.valueOf(responseQuestionId), trialInputVal);
-					if(formulaInfoBean!=null && formulaInfoBean.getStatusMessage().equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+				String left_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("left_input"))?"":request.getParameter("left_input");
+		    	String right_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("right_input"))?"":request.getParameter("right_input");
+		    	String oprator_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("oprator_input"))?"":request.getParameter("oprator_input");
+		    	String trialInputVal =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("trialInput"))?"":request.getParameter("trialInput");
+				if(!left_input.isEmpty() && !right_input.isEmpty() && !oprator_input.isEmpty() && !trialInputVal.isEmpty()){
+					formulaInfoBean = studyQuestionnaireService.validateQuestionConditionalBranchingLogic(left_input, right_input, oprator_input, trialInputVal);
+					if(formulaInfoBean!=null){
 						formulaResponseJsonObject = new JSONObject(mapper.writeValueAsString(formulaInfoBean));
 						jsonobject.put("formulaResponseJsonObject", formulaResponseJsonObject);
+						if(formulaInfoBean.getMessage().equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+						 message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
 			}
+			jsonobject.put("message", message);
 			response.setContentType("application/json");
 			out = response.getWriter();
 			out.print(jsonobject);

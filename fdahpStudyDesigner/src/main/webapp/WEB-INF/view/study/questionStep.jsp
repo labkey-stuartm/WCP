@@ -2680,31 +2680,46 @@ $(document).ready(function(){
     	$("#inputTypeValueId"+index).val(value);
     });
     $('#formulaSubmitId').on('click',function(){
-//     	var responseQuestionId = $("#responseQuestionId").val();
-//     	var trialInputVal = $('#trailInputId').val();
-// 	    var form= document.createElement('form');
-//     	form.method= 'post';
-//     	var input= document.createElement('input');
-//     	input.type= 'hidden';
-// 		input.name= 'responseQuestionId';
-// 		input.value= responseQuestionId;
-// 		form.appendChild(input);
-		
-// 		input= document.createElement('input');
-// 		input.type= 'hidden';
-// 		input.name= 'trialInput';
-// 		input.value= trialInputVal;
-// 		form.appendChild(input);
-		
-// 		input= document.createElement('input');
-//     	input.type= 'hidden';
-// 		input.name= '${_csrf.parameterName}';
-// 		input.value= '${_csrf.token}';
-// 		form.appendChild(input);
-		
-//     	form.action= '/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do';
-//     	document.body.appendChild(form);
-//     	form.submit();
+    	//alert("1");
+    	var left_input = "x";
+    	var right_input = "10";
+    	var oprator_input = ">";
+    	var trialInputVal = "100";
+    	$.ajax({ 
+	          url: "/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do?_S=${param._S}",
+	          type: "POST",
+	          datatype: "json",
+	          data: {
+	        	  left_input:left_input,
+	        	  right_input:right_input,
+	        	  oprator_input:oprator_input,
+	        	  trialInput:trialInputVal,
+                  "${_csrf.parameterName}":"${_csrf.token}",
+              },
+	          processData: false,
+         	  contentType: false,
+	          beforeSend: function(xhr, settings){
+	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+	          },
+	          success:function(data){
+	        	var jsonobject = eval(data);			                       
+				var message = jsonobject.message;
+				var formulaResponseJsonObject = jsonobject.formulaResponseJsonObject; 
+				if(message == "SUCCESS"){
+					//$("body").removeClass("loading");
+					bootbox.alert("success");
+				}else{
+					bootbox.alert("failure");
+				}
+				//setTimeout(hideDisplayMessage, 4000);
+	          },
+	          error: function(xhr, status, error) {
+  			  $(item).prop('disabled', false);
+  			  //$('#alertMsg').show();
+  			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+  			  //setTimeout(hideDisplayMessage, 4000);
+  		  }
+	   });
  });
     
 });
