@@ -850,13 +850,16 @@ public class FdahpStudyDesignerUtil {
 	   }
 	
 	   public static void main(String[] args) {
-		 /*  net.objecthunter.exp4j.Expression e1 = new ExpressionBuilder("x")
+		   BigDecimal result1 = null; 
+		   result1 = new com.udojava.evalex.Expression("(1&&1)").eval();
+		   System.out.println("result::"+result1);
+		   /*net.objecthunter.exp4j.Expression e1 = new ExpressionBuilder("x+10")
 	        .variables("x")
 	        .build()
 	        .setVariable("x", 10);
 	        double op1 = e1.evaluate();
-	        System.out.println("op1::"+op1);
-		   net.objecthunter.exp4j.Expression e2 = new ExpressionBuilder("(25+x/(x+1))")
+	        System.out.println("op1::"+op1);*/
+		   /*net.objecthunter.exp4j.Expression e2 = new ExpressionBuilder("(25+x/(x+1))")
 	        .variables("x")
 	        .build()
 	        .setVariable("x", 10);
@@ -876,32 +879,61 @@ public class FdahpStudyDesignerUtil {
     	String operand1 = "";
     	String operand2= "";
     	BigDecimal result = null;
+    	BigDecimal oprandResult = null;
     	if(lhs.contains("x")){
-    		try{
-    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(lhs)
-	        .variables("x")
-	        .build()
-	        .setVariable("x", Integer.parseInt(trialInput));
-	        double op = e.evaluate();
-	        operand1 = Double.toString(op);
-    		}catch(Exception e){
-    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
-    			formulaInfoBean.setStatusMessage("Error in LHS");
+    		if(lhs.contains("!=") || lhs.contains("==") || lhs.contains(">") || lhs.contains("<") || lhs.contains("&&") || lhs.contains("||")){
+    			oprandResult = null;
+    			try{
+    				oprandResult= new com.udojava.evalex.Expression(lhs).with("x",trialInput).eval();
+    				if(oprandResult.intValue() == 1)
+    					operand1 = "true";
+    				else
+    					operand1 = "false";	
+    			}catch(Exception e){
+    				logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+        			formulaInfoBean.setStatusMessage("Error in LHS");
+    			}
+    		}else{
+    			try{
+    	    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(lhs)
+    		        .variables("x")
+    		        .build()
+    		        .setVariable("x", Integer.parseInt(trialInput));
+    		        double op = e.evaluate();
+    		        operand1 = Double.toString(op);
+    	    		}catch(Exception e){
+    	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    	    			formulaInfoBean.setStatusMessage("Error in LHS");
+    	    		}
     		}
     	}else{
     		operand1 = lhs;
     	}
     	if(rhs.contains("x")){
-    		try{
-    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(rhs)
-	        .variables("x")
-	        .build()
-	        .setVariable("x", Integer.parseInt(trialInput));
-	        double op = e.evaluate();
-	        operand2 = Double.toString(op);
-    		}catch(Exception e){
-    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
-    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		if(rhs.contains("!=") || rhs.contains("==") || rhs.contains(">") || rhs.contains("<") || rhs.contains("&&") || rhs.contains("||")){
+    			oprandResult = null;
+    			try{
+    				oprandResult= new com.udojava.evalex.Expression(rhs).with("x",trialInput).eval();
+    				if(oprandResult.intValue() == 1)
+    					operand2 = "true";
+    				else
+    					operand2 = "false";	
+    			}catch(Exception e){
+    				logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+        			formulaInfoBean.setStatusMessage("Error in LHS");
+    			}
+    		}else{
+    			try{
+    	    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(rhs)
+    		        .variables("x")
+    		        .build()
+    		        .setVariable("x", Integer.parseInt(trialInput));
+    		        double op = e.evaluate();
+    		        operand2 = Double.toString(op);
+    	    		}catch(Exception e){
+    	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    	    			formulaInfoBean.setStatusMessage("Error in RHS");
+    	    		}
     		}
     	}else{
     		operand2 = rhs;
@@ -913,8 +945,14 @@ public class FdahpStudyDesignerUtil {
     		}catch(Exception e){
     			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
     			formulaInfoBean.setStatusMessage("Error in Result");
+    			
     		}
     		if(result!=null){
+    			if(result.intValue() == 1){
+    				formulaInfoBean.setOutPutData("true");
+    			}else{
+    				formulaInfoBean.setOutPutData("false");
+    			}
     			formulaInfoBean.setLhsData(operand1);
     			formulaInfoBean.setRhsData(operand2);
     			formulaInfoBean.setMessage(FdahpStudyDesignerConstants.SUCCESS);

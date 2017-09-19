@@ -1835,7 +1835,7 @@ function isNumberKey(evt)
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header trial_header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>          
+          <button type="button" id="closeformulaId" class="close" data-dismiss="modal">&times;</button>          
         </div>
         <div class="modal-body trial_body">
          	<div class="trial_title">Try your formula</div>
@@ -1844,6 +1844,7 @@ function isNumberKey(evt)
          	</div>
          	<input type="hidden" name="lhs" id="lhsId" >
          	<input type="hidden" name="rhs" id="rhsId" >
+         	<input type="hidden" name="operator" id="operatorId" >
          	<div class="trial_section2">
          		<span class="tealfont">Provide Input :  </span>
          		<span> x = </span>
@@ -1853,9 +1854,9 @@ function isNumberKey(evt)
          	<div class="trial_section3">
          		<span class="tealfont">Output :</span>
          		<div>
-         			<div><span>LHS Value:</span><span><b>-NA-</b></span></div>
-         			<div><span>RHS Value:</span><span><b>-NA-</b></span></div>
-         			<div><span>Boolean Output:</span><span class="gtxtf"><b></b></span></div>
+         			<div><span>LHS Value:</span><span id="lhsValueId"></span></div>
+         			<div><span>RHS Value:</span><span id="rhsValueId"></span></div>
+         			<div><span>Boolean Output:</span><span class="gtxtf" id="outputId"></span></div>
          		</div>
          	</div>
          	
@@ -2716,47 +2717,53 @@ $(document).ready(function(){
     	$("#inputSubTypeValueId"+index).val(value);
     	createFormula();
     });
+    $('#myModal').find('.close').click(function(){
+        	$('#trailInputId').val('');
+        	$('#lhsValueId').html("");
+			$('#rhsValueId').html("");
+			$('#outputId').html("");
+    });
     $('#formulaSubmitId').on('click',function(){
-    	//alert("1");
-    	var left_input = "x";
-    	var right_input = "10";
-    	var oprator_input = ">";
-    	var trialInputVal = "100";
-    	$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do?_S=${param._S}",
-	          type: "POST",
-	          datatype: "json",
-	          data: {
-	        	  left_input:left_input,
-	        	  right_input:right_input,
-	        	  oprator_input:oprator_input,
-	        	  trialInput:trialInputVal,
-                  "${_csrf.parameterName}":"${_csrf.token}",
-              },
-	          processData: false,
-         	  contentType: false,
-	          beforeSend: function(xhr, settings){
-	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+    	var left_input = $('#lhsId').val();
+    	var right_input = $('#rhsId').val();
+    	var oprator_input = $('#operatorId').val();
+    	var trialInputVal = $('#trailInputId').val();
+    	if(trialInputVal){
+    		$.ajax({ 
+	  	        url: "/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do?_S=${param._S}",
+	            type: "POST",
+	            datatype: "json",
+	            data: {
+	            	left_input:left_input,
+		        	  right_input:right_input,
+		        	  oprator_input:oprator_input,
+		        	  trialInput:trialInputVal,
+	                "${_csrf.parameterName}":"${_csrf.token}",
 	          },
-	          success:function(data){
-	        	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
-				var formulaResponseJsonObject = jsonobject.formulaResponseJsonObject; 
-				if(message == "SUCCESS"){
-					//$("body").removeClass("loading");
-					bootbox.alert("success");
-				}else{
-					bootbox.alert("failure");
-				}
-				//setTimeout(hideDisplayMessage, 4000);
-	          },
-	          error: function(xhr, status, error) {
-  			  $(item).prop('disabled', false);
-  			  //$('#alertMsg').show();
-  			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-  			  //setTimeout(hideDisplayMessage, 4000);
-  		  }
-	   });
+  	          success:function(data){
+  	        	var jsonobject = eval(data);			                       
+  				var message = jsonobject.message;
+  				var formulaResponseJsonObject = jsonobject.formulaResponseJsonObject; 
+  				if(message == "SUCCESS"){
+  					$('#lhsValueId').html("<b>"+formulaResponseJsonObject.lhsData+"</b>");
+  					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
+  					$('#outputId').html("<b>"+formulaResponseJsonObject.outPutData+"</b>");
+  				}else{
+  					bootbox.alert(formulaResponseJsonObject.outPutData);
+  				}
+  				//setTimeout(hideDisplayMessage, 4000);
+  	          },
+  	          error: function(xhr, status, error) {
+    			  $(item).prop('disabled', false);
+    			  //$('#alertMsg').show();
+    			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+    			  //setTimeout(hideDisplayMessage, 4000);
+    		  }
+  	      });
+    	}else{
+    		bootbox.alert("Please pass input ");
+    	}
+    	
  });
     
 });
@@ -4356,5 +4363,6 @@ function createFormula(){
 	$(".tryFormula").text(formula);
 	$("#lhsId").val(lhs);
 	$("#rhsId").val(rhs);
+	$("#operatorId").val(mf);
 }
 </script>
