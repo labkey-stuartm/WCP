@@ -989,77 +989,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the FormulaInfoBean
 	 */
 	@Override
-	public FormulaInfoBean validateQuestionConditionalBranchingLogic(Integer questionId, String trialInput){
+	public FormulaInfoBean validateQuestionConditionalBranchingLogic(String lhs, String rhs, String operator, String input){
 		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Starts");
 		FormulaInfoBean formulaInfoBean = new FormulaInfoBean();
-		Session session = null;
-		String operator = "";
-		String lhsData = "";
-		String rhsData = "";
-		int operandCount = 0;
-		List<QuestionConditionBranchBo> branchBos =  studyQuestionnaireDAO.getQuestionConditionalBranchingLogic(session, questionId);
-		if(!branchBos.isEmpty()){
-			List<QuestionConditionBranchBo> newBranchBos = branchBos;
-			for(QuestionConditionBranchBo conditionBranchBo: branchBos){
-				if(conditionBranchBo!=null && conditionBranchBo.getParentSequenceNo()==0){
-					operator = conditionBranchBo.getInputTypeValue();
-				}
-				if(conditionBranchBo!=null && conditionBranchBo.getParentSequenceNo()==1){
-					if(operandCount==0){
-						if(conditionBranchBo.getInputType().equalsIgnoreCase("F")){
-						    String lhsOperator = conditionBranchBo.getInputTypeValue();
-							for(QuestionConditionBranchBo lhSconditionBranchBo: newBranchBos){
-						    	Integer lhsIdNo = 0;
-								if(conditionBranchBo.getSequenceNo().equals(lhSconditionBranchBo.getParentSequenceNo())){
-									lhsIdNo = lhSconditionBranchBo.getConditionId();
-									if(lhSconditionBranchBo.getInputType().equalsIgnoreCase("RDE") || lhSconditionBranchBo.getInputType().equalsIgnoreCase("C")){
-										if(lhsIdNo==0){
-											lhsData = lhSconditionBranchBo.getInputTypeValue() + lhsOperator;
-										}else{
-											lhsData += lhSconditionBranchBo.getInputTypeValue();
-										}
-									}
-									lhsIdNo++;
-						    	}
-						      }
-					    }else if(conditionBranchBo.getInputType().equalsIgnoreCase("RDE")){
-					    	lhsData = trialInput;
-					    }else{
-					    	lhsData = conditionBranchBo.getInputTypeValue();
-					    }
-					   operandCount++;
-					}else{
-						if(conditionBranchBo.getInputType().equalsIgnoreCase("F")){
-						    String rhsOperator = conditionBranchBo.getInputTypeValue();
-							for(QuestionConditionBranchBo lhSconditionBranchBo: newBranchBos){
-						    	Integer rhsIdNo = 0;
-								if(conditionBranchBo.getSequenceNo().equals(lhSconditionBranchBo.getParentSequenceNo())){
-									rhsIdNo = lhSconditionBranchBo.getConditionId();
-									if(lhSconditionBranchBo.getInputType().equalsIgnoreCase("RDE") || lhSconditionBranchBo.getInputType().equalsIgnoreCase("C")){
-										if(rhsIdNo==0){
-											rhsData = lhSconditionBranchBo.getInputTypeValue() + rhsOperator;
-										}else{
-											rhsData += lhSconditionBranchBo.getInputTypeValue();
-										}
-									}
-									rhsIdNo++;
-						    	}
-						      }
-					    }else if(conditionBranchBo.getInputType().equalsIgnoreCase("RDE") || conditionBranchBo.getInputType().equalsIgnoreCase("C")){
-					    	rhsData = conditionBranchBo.getInputTypeValue();
-					    }
-					}
-				}
-				if(StringUtils.isNotEmpty(lhsData) && StringUtils.isNotEmpty(rhsData) && StringUtils.isNotEmpty(operator)){
-					formulaInfoBean = FdahpStudyDesignerUtil.getConditionalFormulaResult(lhsData, rhsData, operator, trialInput);
-				}
-			}
+		if(StringUtils.isNotEmpty(lhs) && StringUtils.isNotEmpty(rhs) && StringUtils.isNotEmpty(operator)){
+					formulaInfoBean = FdahpStudyDesignerUtil.getConditionalFormulaResult(lhs, rhs, operator, input);
 		}
 		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Ends");
 		return formulaInfoBean;
 	}
-	
-	
-	
-	
 }

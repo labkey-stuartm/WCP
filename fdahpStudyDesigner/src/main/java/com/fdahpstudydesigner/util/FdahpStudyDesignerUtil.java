@@ -850,30 +850,27 @@ public class FdahpStudyDesignerUtil {
 	   }
 	
 	   public static void main(String[] args) {
-		/*String firstDateTime = "2017-05-05 08:44";
-		String secondDateTime = "2017-05-05 07:44";
-		
-		String hour = "00";
-		String minute = "30";
-		Integer durationSeconds = (Integer.valueOf(hour) * 60 * 60) + (Integer.valueOf(minute)* 60);
-		System.out.println(durationSeconds);
-		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));*/
-		  //1.LHS contain operator then evaluate 
-		  //2. Get the LHS and RHS value and pass to  evalex.Expression
-		   //if there is any expression while evaluating value , will say as formula wrong
-		   String op1 = "3";
-		   System.out.println("op1::"+op1);
-		   net.objecthunter.exp4j.Expression e = new ExpressionBuilder("0.5*40-x")
+		   BigDecimal result1 = null; 
+		   result1 = new com.udojava.evalex.Expression("(1&&1)").eval();
+		   System.out.println("result::"+result1);
+		   /*net.objecthunter.exp4j.Expression e1 = new ExpressionBuilder("x+10")
 	        .variables("x")
 	        .build()
 	        .setVariable("x", 10);
-	        double op2 = e.evaluate();
+	        double op1 = e1.evaluate();
+	        System.out.println("op1::"+op1);*/
+		   /*net.objecthunter.exp4j.Expression e2 = new ExpressionBuilder("(25+x/(x+1))")
+	        .variables("x")
+	        .build()
+	        .setVariable("x", 10);
+	        double op2 = e2.evaluate();
 	        System.out.println("op2::"+op2);
 		   BigDecimal result1 = null;
-		   String operator = "!=";
+		   String operator = ">";
 		   System.out.println("operator::"+operator);
-		   result1 = new com.udojava.evalex.Expression("x "+operator+" y").with("x", op1).with("y", BigDecimal.valueOf(op2)).eval();
-		   System.out.println(result1);
+		   result1 = new com.udojava.evalex.Expression("x "+operator+" y").with("x", BigDecimal.valueOf(op1)).with("y", BigDecimal.valueOf(op2)).eval();
+		   System.out.println(result1);*/
+		   //System.out.println(getConditionalFormulaResult("(x*10)", "(25+x/x=1)", ">", "10"));
 	}
 	   
 	   
@@ -882,32 +879,61 @@ public class FdahpStudyDesignerUtil {
     	String operand1 = "";
     	String operand2= "";
     	BigDecimal result = null;
+    	BigDecimal oprandResult = null;
     	if(lhs.contains("x")){
-    		try{
-    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(lhs)
-	        .variables("x")
-	        .build()
-	        .setVariable("x", Integer.parseInt(trialInput));
-	        double op = e.evaluate();
-	        operand1 = Double.toString(op);
-    		}catch(Exception e){
-    			e.printStackTrace();
-    			formulaInfoBean.setStatusMessage("Error in LHS");
+    		if(lhs.contains("!=") || lhs.contains("==") || lhs.contains(">") || lhs.contains("<") || lhs.contains("&&") || lhs.contains("||")){
+    			oprandResult = null;
+    			try{
+    				oprandResult= new com.udojava.evalex.Expression(lhs).with("x",trialInput).eval();
+    				if(oprandResult.intValue() == 1)
+    					operand1 = "true";
+    				else
+    					operand1 = "false";	
+    			}catch(Exception e){
+    				logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+        			formulaInfoBean.setStatusMessage("Error in LHS");
+    			}
+    		}else{
+    			try{
+    	    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(lhs)
+    		        .variables("x")
+    		        .build()
+    		        .setVariable("x", Integer.parseInt(trialInput));
+    		        double op = e.evaluate();
+    		        operand1 = Double.toString(op);
+    	    		}catch(Exception e){
+    	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    	    			formulaInfoBean.setStatusMessage("Error in LHS");
+    	    		}
     		}
     	}else{
     		operand1 = lhs;
     	}
     	if(rhs.contains("x")){
-    		try{
-    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(rhs)
-	        .variables("x")
-	        .build()
-	        .setVariable("x", Integer.parseInt(trialInput));
-	        double op = e.evaluate();
-	        operand2 = Double.toString(op);
-    		}catch(Exception e){
-    			e.printStackTrace();
-    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		if(rhs.contains("!=") || rhs.contains("==") || rhs.contains(">") || rhs.contains("<") || rhs.contains("&&") || rhs.contains("||")){
+    			oprandResult = null;
+    			try{
+    				oprandResult= new com.udojava.evalex.Expression(rhs).with("x",trialInput).eval();
+    				if(oprandResult.intValue() == 1)
+    					operand2 = "true";
+    				else
+    					operand2 = "false";	
+    			}catch(Exception e){
+    				logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+        			formulaInfoBean.setStatusMessage("Error in LHS");
+    			}
+    		}else{
+    			try{
+    	    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(rhs)
+    		        .variables("x")
+    		        .build()
+    		        .setVariable("x", Integer.parseInt(trialInput));
+    		        double op = e.evaluate();
+    		        operand2 = Double.toString(op);
+    	    		}catch(Exception e){
+    	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    	    			formulaInfoBean.setStatusMessage("Error in RHS");
+    	    		}
     		}
     	}else{
     		operand2 = rhs;
@@ -915,11 +941,18 @@ public class FdahpStudyDesignerUtil {
     	if(formulaInfoBean.getStatusMessage().isEmpty()){
     		try{
     		result = new com.udojava.evalex.Expression("x "+operator+" y").with("x", operand1).with("y", operand2).eval();
+    		System.out.println("result::"+result);
     		}catch(Exception e){
-    			e.printStackTrace();
+    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
     			formulaInfoBean.setStatusMessage("Error in Result");
+    			
     		}
     		if(result!=null){
+    			if(result.intValue() == 1){
+    				formulaInfoBean.setOutPutData("true");
+    			}else{
+    				formulaInfoBean.setOutPutData("false");
+    			}
     			formulaInfoBean.setLhsData(operand1);
     			formulaInfoBean.setRhsData(operand2);
     			formulaInfoBean.setMessage(FdahpStudyDesignerConstants.SUCCESS);
