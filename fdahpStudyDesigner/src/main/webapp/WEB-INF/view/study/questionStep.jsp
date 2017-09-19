@@ -1653,7 +1653,7 @@ function isNumberKey(evt)
 				      </div>
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
-				            <span><span>Formula:</span> <b class="formula">200 > (0.5(40-x))</b></span>
+				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
 				            <span data-toggle="modal" data-target="#myModal">Trial</span>
 				         </div>
 				         <div class="numeric__container mb-sm">
@@ -1684,7 +1684,7 @@ function isNumberKey(evt)
 				                     <input type="hidden" name="questionConditionBranchBoList[0].sequenceNo" id="sequenceNoId0" value="1">
 				                     <input type="hidden" name="questionConditionBranchBoList[0].parentSequenceNo" id="parentSequenceNoId0" value="0">
 				                  </div>
-				                  <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) le 2}">
+				                  <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) le 2}"> --%>
 				                  <div class="numeric__define_input gray__t">
 				                     <div class="numeric__row" id="2">
 				                        <span>V2 =</span>
@@ -1718,8 +1718,8 @@ function isNumberKey(evt)
 				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue" id="inputSubTypeValueId3" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].sequenceNo" id="sequenceNoId31" value="3">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].parentSequenceNo" id="parentSequenceNoId31" value="1">
-				                           <div class="add_varible <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('&&') && questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('||')}">add_var_hide</c:if> " 
-					                           		index="0" parentIndex="1" id="addVaraiable0" onclick="addVariable(this);">+ Add Variable</div>
+				                           <%-- <div class="add_varible <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('&&') && questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('||')}">add_var_hide</c:if> " 
+					                           		index="0" parentIndex="1" id="addVaraiable0" onclick="addVariable(this);">+ Add Variable</div> --%>
 				                        </div>
 				                        <div class="form-group sm__in">
 				                           <input type="text" id="constantValId31" index="3" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}" onkeypress="return isOnlyNumber(event)"/>
@@ -1727,8 +1727,8 @@ function isNumberKey(evt)
 				                        </div>
 				                     </div>
 				                </div>
-				                </c:if>
-				                <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) gt 2}">
+				                <%-- </c:if> --%>
+				                <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) gt 2}">
 				                	<div class="numeric__define_input gray__t">
 					                     <c:forEach items="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
 					                     <div class="numeric__row" id="${questionConditionsSubBranchBo.sequenceNo}">
@@ -1757,7 +1757,7 @@ function isNumberKey(evt)
 					                     </div>
 					                     </c:forEach>
 					                  </div>
-				                </c:if>
+				                </c:if> --%>
 				               </div>
 				               <!-- End Numeric section -->
 				               <!-- Numeric section -->
@@ -1840,8 +1840,10 @@ function isNumberKey(evt)
         <div class="modal-body trial_body">
          	<div class="trial_title">Try your formula</div>
          	<div class="trial_section1">
-         		<span class="tealfont">Your Formula : </span><span>200 > (0.5(40-x))</span>
+         		<span class="tealfont">Your Formula : </span><span class="tryFormula"> -NA- </span>
          	</div>
+         	<input type="hidden" name="lhs" id="lhsId" >
+         	<input type="hidden" name="rhs" id="rhsId" >
          	<div class="trial_section2">
          		<span class="tealfont">Provide Input :  </span>
          		<span> x = </span>
@@ -1851,9 +1853,9 @@ function isNumberKey(evt)
          	<div class="trial_section3">
          		<span class="tealfont">Output :</span>
          		<div>
-         			<div><span>LHS Value:</span><span><b>200</b></span></div>
-         			<div><span>RHS Value:</span><span><b>10</b></span></div>
-         			<div><span>Boolean Output:</span><span class="gtxtf"><b>True</b></span></div>
+         			<div><span>LHS Value:</span><span><b>-NA-</b></span></div>
+         			<div><span>RHS Value:</span><span><b>-NA-</b></span></div>
+         			<div><span>Boolean Output:</span><span class="gtxtf"><b></b></span></div>
          		</div>
          	</div>
          	
@@ -2712,6 +2714,7 @@ $(document).ready(function(){
     	console.log("index:"+index);
     	var value = $(this).val();
     	$("#inputSubTypeValueId"+index).val(value);
+    	createFormula();
     });
     $('#formulaSubmitId').on('click',function(){
 //     	var responseQuestionId = $("#responseQuestionId").val();
@@ -2971,6 +2974,7 @@ function getResponseType(id){
     			if($("#formulaBasedLogicId").is(":checked")){
         			$("#conditionalFormulaId").show();
         			$(".conditionalBranchingRequired").attr('required',true);
+        			createFormula();
         		}else{
         			$("#conditionalFormulaId").hide();
         			$(".conditionalBranchingRequired").attr('required',false);
@@ -4167,13 +4171,35 @@ function addFunctions(item){
 		$("#constantValId"+index+count).attr('required',true);
 	}else if(value === "RDE"){
 		$("#inputSubTypeValueId"+index).val('x');
+		var id= $(item).attr('id');
+		console.log("id:"+id);
+		var responseDataElementArray  = new Array();
+		var index = parseInt($(item).attr('count'));
+		$('#rootId'+index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			var val  = $("#inputSubTypeValueId"+id).val();
+			responseDataElementArray.push(val);
+		});
+		if(responseDataElementArray.indexOf("x") != -1){
+			$(item).val('');
+    		$("#"+id).parent().parent().addClass("has-danger").addClass("has-error");
+            $("#"+id).parent().parent().find(".help-block").empty();
+            $("#"+id).parent().parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a value in the range (0,x).</li></ul>");
+            $('.selectpicker').selectpicker('refresh');
+		}else{
+			$(item).parent().parent().removeClass("has-danger").removeClass("has-error");
+            $(item).parent().parent().find(".help-block").empty();
+            $('.selectpicker').selectpicker('refresh');
+		}
 	}
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
     	console.log("index:"+index);
     	var value = $(this).val();
     	$("#inputSubTypeValueId"+index).val(value);
+    	createFormula();
     });
+	createFormula();
 }
 function selectFunction(item){
 	var index = $(item).attr('index');
@@ -4203,7 +4229,7 @@ function selectFunction(item){
 			$('.selectpicker').selectpicker('refresh');
 		});
 	}
-	
+	createFormula();
 }
 function addVariable(item){
 	var index = parseInt($(item).attr('index'));
@@ -4255,6 +4281,7 @@ function addVariable(item){
     $(".numeric__loop").parent().find(".help-block").empty();
 	$(".numeric__loop").parents("form").validator("destroy");
 	$(".numeric__loop").parents("form").validator();
+	createFormula();
 }
 function validateResponseDataElement(){
 	var responseDataElementArray  = new Array();
@@ -4276,5 +4303,43 @@ function validateResponseDataElement(){
 	}else{
 		return true;
 	}
+}
+var f="";
+function makeAFormula(index){
+		var rootId = "rootId"+index;
+		var root_value = $("#rootId"+index).find('select').val();
+		var subroot_length = $('#'+rootId+' .numeric__row').length-1;
+		if(subroot_length > 0){
+			$('#'+rootId+' .numeric__row').each(function(j){
+				var id = $(this).attr("id");
+				var input_type_value = $("#inputSubTypeValueId"+id).val();
+				var input_type=$("#inputTypeId"+id+j).val();
+				if(input_type != 'F'){
+					if(j == subroot_length){
+						f += input_type_value+")";
+					}else{
+						f += "("+input_type_value+root_value;
+					}
+				}else if(input_type == 'F'){
+					makeAFormula(id);
+					f+=")";
+				}
+			});
+		}else{
+			f = $("#inputSubTypeValueId"+index).val();
+		}
+	return f;
+}
+function createFormula(){
+	var mf = $("#inputTypeValueId0").val();
+	f="";
+	var lhs = makeAFormula(2);
+	f="";
+	var rhs = makeAFormula(3);
+	var formula = lhs+" "+mf+" "+rhs;
+	$(".formula").text(formula);
+	$(".tryFormula").text(formula);
+	$("#lhsId").val(lhs);
+	$("#rhsId").val(rhs);
 }
 </script>
