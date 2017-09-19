@@ -1265,7 +1265,7 @@ function isNumberKey(evt)
 					<div class="txtchoice_section3">
 						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 						 <div class="form-group">
-	                         <select id="dp" class="selectpicker" title="Select" required>
+	                         <select id="dp" class="selectpicker" title="Select">
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
@@ -1277,7 +1277,7 @@ function isNumberKey(evt)
 					<div class="txtchoice_section4">
 						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 						 <div class="form-group">
-	                         <select id="dp" class="selectpicker" title="Select" required>
+	                         <select id="dp" class="selectpicker" title="Select">
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
@@ -1319,7 +1319,7 @@ function isNumberKey(evt)
 					<div class="txtchoice_section3">
 						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 						 <div class="form-group">
-	                         <select id="dp" class="selectpicker" title="Select" required>
+	                         <select id="dp" class="selectpicker" title="Select" >
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
@@ -1331,7 +1331,7 @@ function isNumberKey(evt)
 					<div class="txtchoice_section4">
 						 <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 						 <div class="form-group">
-	                         <select id="dp" class="selectpicker" title="Select" required>
+	                         <select id="dp" class="selectpicker" title="Select" >
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
 	                            <option>Step 4: DosageQuestion</option>
