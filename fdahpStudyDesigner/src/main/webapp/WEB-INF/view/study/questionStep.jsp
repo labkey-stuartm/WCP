@@ -1213,179 +1213,169 @@ function isNumberKey(evt)
          	<c:choose>
 				<c:when test="${questionnairesStepsBo.questionsBo.responseType eq 6 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
 					<c:forEach items="${questionnairesStepsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
-						<div class="col-md-12 p-none text-choice row" id="${subtype.index}">
-						<div class="row">
-						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
-						   <div class="col-md-3 pl-none">
-						   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
-						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
-						         <div class="help-block with-errors red-txt"></div>
-						      </div>
-						   </div>
-						   <div class="col-md-3 pl-none">
-						   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
-						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
-						         <div class="help-block with-errors red-txt"></div>
-						      </div>
-						   </div>
-						   <div class="col-md-2 pl-none">
-						    <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
-						      <div class="form-group">
-						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
-						              <option value="Yes" ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
-						              <option value="No" ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>No</option>
-						          </select>
-						         <div class="help-block with-errors red-txt"></div>
-						      </div>
-						   </div>
-						   <c:if test="${questionnaireBo.branching}">
-						      <div class="col-md-2 pl-none">
-						      <div class="gray-xs-f mb-xs">Destination Step  </div>
-						         <div class="form-group">
-						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}"  class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
-						               <option value="">select</option>
-						               <c:forEach items="${destinationStepList}" var="destinationStep">
-						                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-						               </c:forEach>
-						               <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-						            </select>
-						            <div class="help-block with-errors red-txt"></div>
-						         </div>
-						      </div>
-						   </c:if>
-						</div>
-						<div class="row" >
-						   <div class="col-md-10 pl-none">
-						   <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
-						      <div class="form-group">
-						         <%-- <input type="text" class="form-control" name="questionResponseSubTypeList[${subtype.index}].description" id="displayTextChoiceDescription${subtype.index}" value="${fn:escapeXml(questionResponseSubType.description)}" maxlength="150"> --%>
-						         <textarea class="form-control" name="questionResponseSubTypeList[${subtype.index}].description" id="displayTextChoiceDescription${subtype.index}" value="${fn:escapeXml(questionResponseSubType.description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
-						         <div class="help-block with-errors red-txt"></div>
-						      </div>
-						   </div> 
-						   <div class="col-md-2 pl-none mt__28">
-						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
-						   </div>
-						</div>
-						</div>
+					 <!-- Section Start  -->
+					   <div class="mt-xlg text-choice" id="${subtype.index}">
+					      <div class="txtchoice_section1">
+					         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+					         <div class="form-group mb-none">
+					            <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+					      <div class="txtchoice_section2">
+					         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+					         <div class="form-group mb-none">
+					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+					      <div class="txtchoice_section3">
+					         <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+					         <div class="form-group">
+					            <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+									<option value="Yes" ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+									<option value="No" ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>No</option>
+								</select>
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+						  <c:if test="${questionnaireBo.branching}">
+					      <div class="txtchoice_section4">
+					         <div class="gray-xs-f mb-xs">Destination Step  </div>
+					         <div class="form-group">
+					            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}"  class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
+									<option value="">select</option>
+										<c:forEach items="${destinationStepList}" var="destinationStep">
+										<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+										</c:forEach>
+									<option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+								</select>
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+						  </c:if>
+					      <div class="txtchoice_section5">
+					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
+					         <div class="form-group">					     
+					            <textarea class="form-control" name="questionResponseSubTypeList[${subtype.index}].description" id="displayTextChoiceDescription${subtype.index}" value="${fn:escapeXml(questionResponseSubType.description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
+					         </div>
+					      </div>
+					      <div class="txtchoice_section6">
+					         <span class="addBtnDis addbtn align-span-center" onclick='addTextChoice();'>+</span>
+						     <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					      </div>
+					   </div>
+					   <!-- Section End  -->
 					</c:forEach>
 				</c:when>
 				<c:otherwise>
-					<div class="col-md-12 p-none text-choice row" id="0">
-					   <div class="row">
-					   <div class="col-md-3 pl-none">
-					   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
-					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <div class="col-md-3 pl-none">
-					   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
-					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <div class="col-md-2 pl-none">
-					   <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
-					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
-					              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
-					              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
-					          </select>
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <c:if test="${questionnaireBo.branching}">
-					      <div class="col-md-2 pl-none">
-					      <div class="gray-xs-f mb-xs">Destination Step  </div>
-					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0"  class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
-					               <option value="">select</option>
-					               <c:forEach items="${destinationStepList}" var="destinationStep">
-					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-					               </c:forEach>
-					               <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-					            </select>
+					
+					<!-- Section Start  -->
+				   <div class="mt-xlg text-choice" id="0">
+				      <div class="txtchoice_section1">
+				         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+				         <div class="form-group mb-none">
+				            <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
+				            <div class="help-block with-errors red-txt"></div>
+				         </div>
+				      </div>
+				      <div class="txtchoice_section2">
+				         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+				         <div class="form-group mb-none">
+				            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+				            <div class="help-block with-errors red-txt"></div>
+				         </div>
+				      </div>
+				      <div class="txtchoice_section3">
+				         <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+				         <div class="form-group">
+				            <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+								 <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+								 <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
+							 </select>
+				            <div class="help-block with-errors red-txt"></div>
+				         </div>
+				      </div>
+					  <c:if test="${questionnaireBo.branching}">
+				      <div class="txtchoice_section4">
+				         <div class="gray-xs-f mb-xs">Destination Step  </div>
+				         <div class="form-group">
+				             <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0"  class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
+								<option value="">select</option>
+									<c:forEach items="${destinationStepList}" var="destinationStep">
+									<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+									</c:forEach>
+								<option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							</select>
+				            <div class="help-block with-errors red-txt"></div>
+				         </div>
+				      </div>
+					  </c:if>
+				      <div class="txtchoice_section5">
+				         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
+				         <div class="form-group">					     
+				            <textarea type="text" class="form-control" name="questionResponseSubTypeList[0].description" id="displayTextChoiceDescription0" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
+				         </div>
+				      </div>
+				      <div class="txtchoice_section6">
+				         <span class="addBtnDis addbtn align-span-center" onclick='addTextChoice();'>+</span>
+						 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+				      </div>
+				   </div>
+				   <!-- Section End  -->
+					<!-- Section Start  -->
+					   <div class="mt-xlg text-choice" id="1">
+					      <div class="txtchoice_section1">
+					         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+					         <div class="form-group mb-none">
+					            <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
-					   </c:if>
-					   </div>
-					   <div class="row">
-					   <div class="col-md-10 pl-none">
-					   <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
-					      <div class="form-group">
-					         <textarea type="text" class="form-control" name="questionResponseSubTypeList[0].description" id="displayTextChoiceDescription0" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <div class="col-md-2 pl-none mt-xl">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
-					   </div>
-					   </div>
-					</div>
-					<div class="col-md-12 p-none text-choice row" id="1">
-					   <div class="row">
-					   <div class="col-md-3 pl-none">
-					   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
-					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <div class="col-md-3 pl-none">
-					   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
-					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <div class="col-md-2 pl-none">
-					   <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
-					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
-					              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
-					              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
-					          </select>
-					         <div class="help-block with-errors red-txt"></div>
-					      </div>
-					   </div>
-					   <c:if test="${questionnaireBo.branching}">
-					      <div class="col-md-2 pl-none">
-					      <div class="gray-xs-f mb-xs">Destination Step  </div>
-					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> >
-					              <option value="">select</option>
-					               <c:forEach items="${destinationStepList}" var="destinationStep">
-					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-					               </c:forEach>
-					               <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-					            </select>
+					      <div class="txtchoice_section2">
+					         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+					         <div class="form-group mb-none">
+					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
-					   </c:if>
-					   </div>
-					   <div class="row" >
-					   <div class="col-md-10 pl-none">
-					   <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
-					      <div class="form-group">
-					         <textarea type="text" class="form-control" name="questionResponseSubTypeList[1].description" id="displayTextChoiceDescription1" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
-					         <div class="help-block with-errors red-txt"></div>
+					      <div class="txtchoice_section3">
+					         <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
+					         <div class="form-group">
+					            <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+									 <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+									 <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
+								 </select>
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+						  <c:if test="${questionnaireBo.branching}">
+					      <div class="txtchoice_section4">
+					         <div class="gray-xs-f mb-xs">Destination Step  </div>
+					         <div class="form-group">
+					             <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1"  class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if>>
+									<option value="">select</option>
+										<c:forEach items="${destinationStepList}" var="destinationStep">
+										<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+										</c:forEach>
+									<option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+								</select>
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+						  </c:if>
+					      <div class="txtchoice_section5">
+					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
+					         <div class="form-group">					     
+					            <textarea type="text" class="form-control" name="questionResponseSubTypeList[1].description" id="displayTextChoiceDescription1" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
+					         </div>
+					      </div>
+					      <div class="txtchoice_section6">
+					         <span class="addBtnDis addbtn align-span-center" onclick='addTextChoice();'>+</span>
+							 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					      </div>
 					   </div>
-					   <div class="col-md-2 pl-none mt__28">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
-					   </div>
-					   </div>
-					</div>
+					   <!-- Section End  -->
 				</c:otherwise>
 			</c:choose>
          </div>
@@ -1655,6 +1645,7 @@ function isNumberKey(evt)
 				         <div class="numeric__header">
 				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
 				            <span data-toggle="modal" data-target="#myModal">Trial</span>
+				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
 				         <div class="numeric__container mb-sm">
 				            <div class="numeric__loop">
@@ -2755,7 +2746,7 @@ $(document).ready(function(){
   					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
   					$('#outputId').html("<b>"+formulaResponseJsonObject.outPutData+"</b>");
   				}else{
-  					bootbox.alert(formulaResponseJsonObject.outPutData);
+  					bootbox.alert(formulaResponseJsonObject.statusMessage);
   				}
   				//setTimeout(hideDisplayMessage, 4000);
   	          },
@@ -2764,7 +2755,7 @@ $(document).ready(function(){
     			  //$('#alertMsg').show();
     			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
     			  //setTimeout(hideDisplayMessage, 4000);
-    		  }
+    		  },global:false
   	      });
     	}else{
     		bootbox.alert("Please pass input ");
@@ -3390,6 +3381,9 @@ function saveQuestionStepQuestionnaire(item,callback){
 		});
 		questionnaireStep.questionConditionBranchBoList=questionConditionBranchBoArray;
 		
+		var condition_formula = $("#conditionFormulaId").val();
+		questionReponseTypeBo.conditionFormula=condition_formula;
+		
 		var questionSubResponseArray  = new Array();
 		
 		var questionSubResponseType = new Object();
@@ -3677,62 +3671,60 @@ var choiceCount = $('.text-choice').length;
 function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
-	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
-						"<div class='row'>	   <div class='col-md-3 pl-none'>"+
-					    "<div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"+
-						"<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextChoiceText"+choiceCount+"'  maxlength='100' required>"+
-					    "   <div class='help-block with-errors red-txt'></div>"+
-					    "</div>"+
-					 	"  </div>"+
-					 	"<div class='col-md-3 pl-none'>"+
-					 	"<div class='gray-xs-f mb-xs'>Value (1 to 50 characters)<span class='requiredStar'>*</span></div>"+
-					    "<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
-					    "   <div class='help-block with-errors red-txt'></div>"+
-					    "</div>"+
-					 	"</div>"+
-					 	"<div class='col-md-2 pl-none'>"+
-					 	"<div class='gray-xs-f mb-xs'>Mark as exclusive ? <span class='requiredStar'>*</span></div>"+
-					    "<div class='form-group'>";
-					    if(selectionStyle == 'Single'){
-					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
-					    }else{
-					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
-					    }
-					    newTextChoice += "<option value='Yes'>Yes</option>"+
-					    "        <option value='No'>No</option>"+
-					    "    </select>"+
-					    "   <div class='help-block with-errors red-txt'></div>"+
-					    "</div>"+
-					    "</div>";
-					    <c:if test='${questionnaireBo.branching}'>
-					    newTextChoice += "<div class='col-md-2 pl-none'>"+
-					    "<div class='gray-xs-f mb-xs'>Destination Step  </div>"+
-					        "<div class='form-group'>"+
-					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value=''>select</option>";
-					             <c:forEach items='${destinationStepList}' var='destinationStep'>
-					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
-					             </c:forEach>
-					             newTextChoice +="<option value='0'>Completion Step</option>"+
-					          "</select>"+
-					          "<div class='help-block with-errors red-txt'></div>"+
-					       "</div>"+
-					    "</div>";
-					   </c:if>
-					   newTextChoice += "</div><div class='row'>"+
-					    "<div class='col-md-10 pl-none'>"+
-					    "<div class='gray-xs-f mb-xs'>Description(1 to 150 characters) </div>"+
-					    "<div class='form-group'>"+
-					    "   <textarea type='text' class='form-control' name='questionResponseSubTypeList["+choiceCount+"].description' id='displayTextChoiceDescription"+choiceCount+"'  maxlength='150'></textarea>"+
-					    "   <div class='help-block with-errors red-txt'></div>"+
-					    "</div>"+
-					 	" </div>"+
-					    "<div class='col-md-2 pl-none mt__28'>"+
-					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
-					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
-					 "</div></div>"+
-					"</div> ";
+	var newTextChoice = "<div class='mt-xlg text-choice' id='"+choiceCount+"'>"+
+	      "<div class='txtchoice_section1'>"+
+	      "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"+
+	      "   <div class='form-group mb-none'>"+
+	          "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextChoiceText"+choiceCount+"'  maxlength='100' required>"+
+	      "      <div class='help-block with-errors red-txt'></div>"+
+	      "   </div>"+
+	      "</div>"+
+	      "<div class='txtchoice_section2'>"+
+	      "   <div class='gray-xs-f mb-xs'>Value (1 to 50 characters)<span class='requiredStar'>*</span> </div>"+
+	      "   <div class='form-group mb-none'>"+
+	          "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
+	      "      <div class='help-block with-errors red-txt'></div>"+
+	      "   </div>"+
+	      "</div>"+
+	      "<div class='txtchoice_section3'>"+
+	      "   <div class='gray-xs-f mb-xs'>Mark as exclusive ? <span class='requiredStar'>*</span> </div>"+
+	      "   <div class='form-group'>";
+			   if(selectionStyle == 'Single'){
+			    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
+			    }else{
+			    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
+			    }
+				newTextChoice +="<option value='Yes'>Yes</option>"+
+					 "<option value='No' >No</option>"+
+				 "</select>"+
+	            "<div class='help-block with-errors red-txt'></div>"+
+	         "</div>"+
+	      "</div>";
+		  <c:if test='${questionnaireBo.branching}'>
+		  newTextChoice += "<div class='txtchoice_section4'>"+
+	      "   <div class='gray-xs-f mb-xs'>Destination Step  </div>"+
+	      "   <div class='form-group'>"+
+	      "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value=''>select</option>";
+	          <c:forEach items='${destinationStepList}' var='destinationStep'>
+	          newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+	          </c:forEach>
+	          newTextChoice +="<option value='0'>Completion Step</option>"+
+	      "</select>"+
+	      "  <div class='help-block with-errors red-txt'></div>"+
+	      " </div>"+
+	      "</div>";
+		  </c:if>
+	      newTextChoice +="<div class='txtchoice_section5'>"+
+	         "<div class='gray-xs-f mb-xs'>Description(1 to 150 characters) </div>"+
+	         "<div class='form-group'>"+			     
+	         "   <textarea type='text' class='form-control' name='questionResponseSubTypeList["+choiceCount+"].description' id='displayTextChoiceDescription"+choiceCount+"'  maxlength='150'></textarea>"+
+	         "</div>"+
+	      "</div>"+
+	      "<div class='txtchoice_section6'>"+
+	      "   <span class='addBtnDis addbtn align-span-center' onclick='addTextChoice();'>+</span>"+
+		  "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
+	      "</div>"+
+	   "</div>";
 	$(".text-choice:last").after(newTextChoice);
 	$('.selectpicker').selectpicker('refresh');
 	$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
@@ -4128,7 +4120,7 @@ function addFunctions(item){
 	$(item).find('input').addClass("add_var_hide");
 	$("#constantValId"+index+count).addClass('add_var_hide');	
 	var rowCount = parseInt($('.numeric__section').length);
-	
+	$("#inputSubTypeValueId"+index).val('');
 	if(value === "F"){
 		count = parseInt(count)+1;
 		var addFunction="<div class='numeric__section mt-md' id='rootId"+index+"'>"+
@@ -4208,33 +4200,23 @@ function addFunctions(item){
 		$("#constantValId"+index+count).removeClass('add_var_hide');
 		$("#constantValId"+index+count).val('');
 		$("#constantValId"+index+count).attr('required',true);
+		if(parent_sequence_no == 1){
+		}
+		
 	}else if(value === "RDE"){
-		$("#inputSubTypeValueId"+index).val('x');
 		var id= $(item).attr('id');
-		//console.log("id:"+id);
-		var responseDataElementArray  = new Array();
-		var index = parseInt($(item).attr('count'));
-		
-		console.log("index:"+index);
-		$('#rootId'+index+' .numeric__row').each(function(j){
-			var id = $(this).attr("id");
-			var val  = $("#inputSubTypeValueId"+id).val();
-			console.log("val:"+val);
-			responseDataElementArray.push(val);
-		});
-		console.log("responseDataElementArray:"+responseDataElementArray);
-		
-		if(responseDataElementArray.indexOf("x") != -1){
-			$(item).val('');
-    		$("#"+id).parent().parent().addClass("has-danger").addClass("has-error");
-            $("#"+id).parent().parent().find(".help-block").empty();
-            $("#"+id).parent().parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a value in the range (0,x).</li></ul>");
-            $('.selectpicker').selectpicker('refresh');
-		}else{
-			$(item).parent().parent().removeClass("has-danger").removeClass("has-error");
-            $(item).parent().parent().find(".help-block").empty();
-            $('.selectpicker').selectpicker('refresh');
-		} 
+		console.log("parent_sequence_no:"+parent_sequence_no);
+		if(parent_sequence_no == 1){
+			$('#rootId1 .numeric__row').each(function(j){
+				var id = $(this).attr("id");
+				var val  = $("#inputSubTypeValueId"+id).val();
+				if(val != '' && val == 'x'){
+					$(item).val('');
+					//break;
+				}
+			}); 			
+		}
+		$("#inputSubTypeValueId"+index).val('x');
 	}
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
@@ -4411,5 +4393,6 @@ function createFormula(){
 	$("#lhsId").val(lhs);
 	$("#rhsId").val(rhs);
 	$("#operatorId").val(mf);
+	$("#conditionFormulaId").val(formula);
 }
 </script>

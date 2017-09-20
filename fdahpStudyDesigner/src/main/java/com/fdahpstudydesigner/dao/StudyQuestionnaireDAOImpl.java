@@ -1937,6 +1937,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionsResponseTypeBo.getFormulaBasedLogic() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getFormulaBasedLogic())){
 					addOrUpdateQuestionsResponseTypeBo.setFormulaBasedLogic(questionsResponseTypeBo.getFormulaBasedLogic());
 				}
+				if(questionsResponseTypeBo.getConditionFormula() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getConditionFormula())){
+					addOrUpdateQuestionsResponseTypeBo.setConditionFormula(questionsResponseTypeBo.getConditionFormula());
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Error",e);
