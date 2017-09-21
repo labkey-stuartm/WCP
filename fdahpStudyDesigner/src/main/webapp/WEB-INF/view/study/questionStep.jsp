@@ -4366,12 +4366,14 @@ function makeAFormula(index){
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
 				if(input_type != 'F'){
-					if(j == subroot_length){
+					if(j==0){
+						f += "("+input_type_value+root_value;	
+					}else if(j == subroot_length){
 						f += input_type_value+")";
 					}else{
-						f += "("+input_type_value+root_value;
+						f += input_type_value+root_value;
 					}
-				}else if(input_type == 'F'){
+				}else{
 					makeAFormula(id);
 					f+=")";
 				}
