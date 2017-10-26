@@ -1616,6 +1616,7 @@ function isNumberKey(evt)
 				            <li>
 				               <span>If V1 = True, Destination Step &nbsp;&nbsp;= </span>
 				               <div class="form-group sm-selection">
+				                  <input type="hidden" name="questionResponseSubTypeList[0].value" value="true" id="conditionDestinationValueId0">
 				                  <select name="questionResponseSubTypeList[0].destinationStepId" id="conditionDestinationId0"  class="selectpicker conditionalBranchingRequired">
 							         <option value="">select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -1629,6 +1630,7 @@ function isNumberKey(evt)
 				            <li>
 				               <span>If V1 = False, Destination Step =</span>
 				               <div class="form-group sm-selection">
+				               	  <input type="hidden" name="questionResponseSubTypeList[1].value" value="false" id="conditionDestinationValueId1">
 				                  <select name="questionResponseSubTypeList[1].destinationStepId" id="conditionDestinationId1"  class="selectpicker conditionalBranchingRequired">
 							         <option value="">select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -1686,6 +1688,7 @@ function isNumberKey(evt)
 				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'F' ? 'selected' :''}>Function</option>
 				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
 				                           </select>
+				                           <div class="mt-sm black-xs-f italic-txt red-txt" id="inputTypeErrorValueId2" style="display: none;"></div>
 				                           <div class="help-block with-errors red-txt"></div>
 				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue" id="inputSubTypeValueId2" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].sequenceNo" id="sequenceNoId20" value="2">
@@ -1705,12 +1708,11 @@ function isNumberKey(evt)
 				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'F' ? 'selected' :''}>Function</option>
 				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
 				                           </select>
+				                           <div class="mt-sm black-xs-f italic-txt red-txt" id="inputTypeErrorValueId3" style="display: none;"></div>
 				                           <div class="help-block with-errors red-txt"></div>
 				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue" id="inputSubTypeValueId3" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].sequenceNo" id="sequenceNoId31" value="3">
 				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].parentSequenceNo" id="parentSequenceNoId31" value="1">
-				                           <%-- <div class="add_varible <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('&&') && questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('||')}">add_var_hide</c:if> " 
-					                           		index="0" parentIndex="1" id="addVaraiable0" onclick="addVariable(this);">+ Add Variable</div> --%>
 				                        </div>
 				                        <div class="form-group sm__in">
 				                           <input type="text" id="constantValId31" index="3" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}" onkeypress="return isNumberKey(event)"/>
@@ -1718,37 +1720,6 @@ function isNumberKey(evt)
 				                        </div>
 				                     </div>
 				                </div>
-				                <%-- </c:if> --%>
-				                <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) gt 2}">
-				                	<div class="numeric__define_input gray__t">
-					                     <c:forEach items="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
-					                     <div class="numeric__row" id="${questionConditionsSubBranchBo.sequenceNo}">
-					                        <span>V${questionConditionsSubBranchBo.sequenceNo} =</span>
-					                        <div class="form-group sm-selection">
-					                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].inputType" id="inputTypeId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onchange='addFunctions(this);'>
-					                              <option value="">select</option>
-					                              <option value="C" ${questionConditionsSubBranchBo.inputType eq 'C' ? 'selected' :''}>Constant</option>
-					                              <option value="F" ${questionConditionsSubBranchBo.inputType eq 'F' ? 'selected' :''}>Function</option>
-					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
-					                           </select>
-					                           <div class="help-block with-errors red-txt"></div>
-					                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
-				                     	  	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
-				                     	   	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
-					                           <c:if test="${subStatus.last}">
-					                           <div class="add_varible <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('&&') && questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue ne ('||')}">add_var_hide</c:if> " 
-					                           		index="0" parentIndex="1" id="addVaraiable0" onclick="addVariable(this);">+ Add Variable</div>
-					                           </c:if>
-					                        </div>
-					                        <div class="form-group sm__in">
-					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" 
-					                           index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired </c:if><c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isNumberKey(event)"/>
-					                           <div class="help-block with-errors red-txt"></div>
-					                        </div>
-					                     </div>
-					                     </c:forEach>
-					                  </div>
-				                </c:if> --%>
 				               </div>
 				               <!-- End Numeric section -->
 				               <!-- Numeric section -->
@@ -1775,8 +1746,6 @@ function isNumberKey(evt)
 					                           		<option value="%" ${questionConditionBranchBo.inputTypeValue eq "%" ? 'selected' :''}>%</option>
 					                           	 </c:otherwise>
 					                           </c:choose>
-					                          <%--  <option value="&&" ${questionConditionBranchBo.inputTypeValue eq "&&" ? 'selected' :''}>AND</option>
-					                           <option value="||" ${questionConditionBranchBo.inputTypeValue eq "||" ? 'selected' :''}>OR</option> --%>
 					                        </select>
 					                        <div class="help-block with-errors red-txt"></div>
 					                     </div>
@@ -1792,6 +1761,7 @@ function isNumberKey(evt)
 					                              <option value="F" ${questionConditionsSubBranchBo.inputType eq 'F' ? 'selected' :''}>Function</option>
 					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
 					                           </select>
+					                           <div class="mt-sm black-xs-f italic-txt red-txt" id="inputTypeErrorValueId${questionConditionsSubBranchBo.sequenceNo}" style="display: none;"></div>
 					                           <div class="help-block with-errors red-txt"></div>
 					                           <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
 				                     	  	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
@@ -3388,10 +3358,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 		
 		var questionSubResponseType = new Object();
 		questionSubResponseType.destinationStepId=$("#conditionDestinationId0").val();
+		questionSubResponseType.value=$("#conditionDestinationValueId0").val();
 		questionSubResponseArray.push(questionSubResponseType);
 		
 		var questionSubResponseType = new Object();
 		questionSubResponseType.destinationStepId=$("#conditionDestinationId1").val();
+		questionSubResponseType.value=$("#conditionDestinationValueId1").val();
 		questionSubResponseArray.push(questionSubResponseType);
 		questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
 		
@@ -4107,6 +4079,11 @@ function addFunctions(item){
 	var preCount = parseInt($(item).attr('count'));
 	var value = $(item).val();
 	
+	
+	var isValid = true;
+	
+	$("#inputTypeErrorValueId"+index).hide();
+	
 	/* $("#rootId"+index).parents(".numeric__row").remove();
 	$("#rootId"+index).remove(); */
 	var parent_sequence_no = $("#parentSequenceNoId"+index+count).val();
@@ -4157,6 +4134,7 @@ function addFunctions(item){
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
 		   "         </select>"+
+		   "		 <div class='mt-sm black-xs-f italic-txt red-txt' id='inputTypeErrorValueId"+(parseInt(v)+1)+"' style='display: none;'></div>"+
 		   "		 <div class='help-block with-errors red-txt'></div>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v)+1)+"'>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].sequenceNo' id='sequenceNoId"+(parseInt(v)+1)+0+"'  value='"+(parseInt(v)+1)+"'>"+
@@ -4176,6 +4154,7 @@ function addFunctions(item){
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
 		   "         </select>"+
+		   "		 <div class='mt-sm black-xs-f italic-txt red-txt' id='inputTypeErrorValueId"+(parseInt(v)+2)+"' style='display: none;'></div>"+
 		   "	     <div class='help-block with-errors red-txt'></div>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v)+2)+"' >"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].sequenceNo' id='sequenceNoId"+(parseInt(v)+2)+1+"' value='"+(parseInt(v)+2)+"'>"+
@@ -4200,23 +4179,60 @@ function addFunctions(item){
 		$("#constantValId"+index+count).removeClass('add_var_hide');
 		$("#constantValId"+index+count).val('');
 		$("#constantValId"+index+count).attr('required',true);
-		if(parent_sequence_no == 1){
-		}
+		
 		
 	}else if(value === "RDE"){
 		var id= $(item).attr('id');
-		console.log("parent_sequence_no:"+parent_sequence_no);
-		if(parent_sequence_no == 1){
-			$('#rootId1 .numeric__row').each(function(j){
-				var id = $(this).attr("id");
-				var val  = $("#inputSubTypeValueId"+id).val();
-				if(val != '' && val == 'x'){
-					$(item).val('');
-					//break;
-				}
-			}); 			
+		var noofrows = parseInt($('.numeric__section').length);
+		if(noofrows > 1){
+			var fun_count = parseInt(count)+1;
+			var inputTypeValueId = $("#inputTypeValueId"+fun_count).val();
+			$('.numeric__section').each(function(i){
+			    var index =  $("#inputTypeValueId"+i).attr('index');
+			    var rootId = "rootId"+index;
+			    if(inputTypeValueId != '+' || inputTypeValueId!= "-" ){
+			    	$('#'+rootId+' .numeric__row').each(function(j){
+						var id = $(this).attr("id");
+						var rde_value = $("#inputSubTypeValueId"+id).val();
+						if(rde_value != '' && rde_value == 'x'){
+							$(item).val('');
+							isValid=false;
+						}
+					});
+			    }else{
+			    	if(parent_sequence_no != index){
+				    	$('#'+rootId+' .numeric__row').each(function(j){
+							var id = $(this).attr("id");
+							var rde_value = $("#inputSubTypeValueId"+id).val();
+							if(rde_value != '' && rde_value == 'x'){
+								$(item).val('');
+								isValid=false;
+							}
+						});
+				    }
+			    }
+			    
+			});
+			
+		}else{
+			if(parent_sequence_no == 1){
+				$('#rootId1 .numeric__row').each(function(j){
+					var id = $(this).attr("id");
+					var val  = $("#inputSubTypeValueId"+id).val();
+					if(val != '' && val == 'x'){
+						$(item).val('');
+						isValid=false;
+					}
+				}); 			
+			}
 		}
-		$("#inputSubTypeValueId"+index).val('x');
+		if(isValid){
+			$("#inputSubTypeValueId"+index).val('x');
+		}else{
+			$("#inputTypeErrorValueId"+index).show();
+			$("#inputTypeErrorValueId"+index).html('RDE (x) should be used only once.');
+		}
+		
 	}
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
@@ -4275,7 +4291,6 @@ function addVariable(item){
 	var v= total+2;
 	var parent_index = parseInt($(item).attr('parentIndex'));
 	var count = parseInt($("#rootId"+parent_index+" .numeric__row").length);
-	console.log("count:"+count);
 	var addVar = "<div class='numeric__row' id='"+v+"'>"+
 				 "   <span>V"+v+" =</span>"+
 				 "   <div class='form-group sm-selection'>"+
@@ -4285,6 +4300,7 @@ function addVariable(item){
 				 "         <option value='F'>Function</option>"+
 				 "         <option value='RDE'>Response Data Element (x)</option>"+
 				 "      </select>"+
+				 "		<div class='mt-sm black-xs-f italic-txt red-txt' id='inputTypeErrorValueId"+v+"' style='display: none;'></div>"+
 				 "      <div class='help-block with-errors red-txt'></div>"+
 				 "      <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v))+"' >"+
 				 " 	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].sequenceNo' id='sequenceNoId"+(parseInt(v))+count+"' value='"+(parseInt(v))+"'>"+

@@ -8,11 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name="question_condtion_branching")
+@NamedQueries({
+	@NamedQuery(name="getQuestionConditionBranchList", query="from QuestionConditionBranchBo QCBO where QCBO.questionId=:questionId order by QCBO.sequenceNo ASC"),
+})
 public class QuestionConditionBranchBo implements Serializable {
 
 	private static final long serialVersionUID = 8189512029031610252L;

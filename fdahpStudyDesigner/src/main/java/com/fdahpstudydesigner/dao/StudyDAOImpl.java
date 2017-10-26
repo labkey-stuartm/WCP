@@ -41,6 +41,7 @@ import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -4958,6 +4959,8 @@ public class StudyDAOImpl implements StudyDAO{
 												  //Question response subType 
 												  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 												  
+												  List<QuestionConditionBranchBo> questionConditionBranchList = session.getNamedQuery("getQuestionConditionBranchList").setInteger("questionId", questionsBo.getId()).list();
+												  
 												  //Question response Type 
 												  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
 												  
@@ -4980,6 +4983,16 @@ public class StudyDAOImpl implements StudyDAO{
 													  newQuestionReponseTypeBo.setResponseTypeId(null);
 													  newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
 													  session.save(newQuestionReponseTypeBo);
+												  }
+												  
+												//Question Condition branching logic
+												  if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+													  for(QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList){
+														  QuestionConditionBranchBo newQuestionConditionBranchBo = SerializationUtils.clone(questionConditionBranchBo);
+														  newQuestionConditionBranchBo.setConditionId(null);
+														  newQuestionConditionBranchBo.setQuestionId(newQuestionsBo.getId());
+														  session.save(newQuestionConditionBranchBo);
+													  }
 												  }
 												  
 												  //Question response subType 
