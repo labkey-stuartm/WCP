@@ -1909,7 +1909,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				addOrUpdateQuestionsResponseTypeBo.setValidationCharacters(questionsResponseTypeBo.getValidationCharacters());
 				addOrUpdateQuestionsResponseTypeBo.setValidationExceptText(questionsResponseTypeBo.getValidationExceptText());
 				
-				System.out.println("regEx:"+FdahpStudyDesignerUtil.getRegExpression(questionsResponseTypeBo.getValidationCondition(), questionsResponseTypeBo.getValidationCharacters(), questionsResponseTypeBo.getValidationExceptText()));
+				logger.info("regEx:"+FdahpStudyDesignerUtil.getRegExpression(questionsResponseTypeBo.getValidationCondition(), questionsResponseTypeBo.getValidationCharacters(), questionsResponseTypeBo.getValidationExceptText()));
 				addOrUpdateQuestionsResponseTypeBo.setValidationRegex(FdahpStudyDesignerUtil.getRegExpression(questionsResponseTypeBo.getValidationCondition(), questionsResponseTypeBo.getValidationCharacters(), questionsResponseTypeBo.getValidationExceptText()));
 				
 				String fileName;
@@ -1917,18 +1917,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
 						addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
 					}else{
-						fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+0,questionsResponseTypeBo.getMinImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
-						String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMinImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
-						addOrUpdateQuestionsResponseTypeBo.setMinImage(imagePath);
+						if(questionsResponseTypeBo.getMinImageFile().getOriginalFilename() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImageFile().getOriginalFilename())){
+							fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+0,questionsResponseTypeBo.getMinImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
+							String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMinImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+							addOrUpdateQuestionsResponseTypeBo.setMinImage(imagePath);
+						}
+						
 					}
 				}
 				if(questionsResponseTypeBo.getMaxImageFile() != null){
 					if(questionsResponseTypeBo.getMaxImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImage())){
 						addOrUpdateQuestionsResponseTypeBo.setMaxImage(questionsResponseTypeBo.getMaxImage());
 					}else{
-						fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+1,questionsResponseTypeBo.getMaxImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
-						String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMaxImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
-						addOrUpdateQuestionsResponseTypeBo.setMaxImage(imagePath);
+						if(questionsResponseTypeBo.getMaxImageFile().getOriginalFilename() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImageFile().getOriginalFilename())){
+							fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+1,questionsResponseTypeBo.getMaxImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
+							String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMaxImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+							addOrUpdateQuestionsResponseTypeBo.setMaxImage(imagePath);
+						}
 					}
 				}
 				if(questionsResponseTypeBo.getDefaultTime() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultTime())){

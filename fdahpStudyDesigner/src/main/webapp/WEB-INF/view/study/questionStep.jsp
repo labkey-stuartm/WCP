@@ -1732,7 +1732,8 @@ function isNumberKey(evt)
 					                        <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[${status.index}].inputTypeValue" id="inputTypeValueId${status.index}" count="${status.index}" index="${questionConditionBranchBo.sequenceNo}" onchange='selectFunction(this);'>
 					                           <option value="">select</option>
 					                           <c:choose>
-					                           	 <c:when test="${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq '&&' || questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq '||'}">
+					                             <%-- <c:if test="${status.index lt 2}"></c:if> --%>
+					                           	 <c:when test="${status.index le 2 && (questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq '&&' || questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq '||' )}">
 					                           	 	 <option value=">" ${questionConditionBranchBo.inputTypeValue eq ">" ? 'selected' :''}>&gt;</option>
 					                           		 <option value="<" ${questionConditionBranchBo.inputTypeValue eq "<" ? 'selected' :''}>&lt;</option> 
 					                           		 <option value="=" ${questionConditionBranchBo.inputTypeValue eq "=" ? 'selected' :''}>&equals;</option>
@@ -4186,11 +4187,13 @@ function addFunctions(item){
 		var noofrows = parseInt($('.numeric__section').length);
 		if(noofrows > 1){
 			var fun_count = parseInt(count)+1;
-			var inputTypeValueId = $("#inputTypeValueId"+fun_count).val();
+			console.log("fun_count:"+fun_count);
+			//var inputTypeValueId = $('#rootId3').find('select').val();
+			console.log("parent_input:"+parent_input);
 			$('.numeric__section').each(function(i){
 			    var index =  $("#inputTypeValueId"+i).attr('index');
 			    var rootId = "rootId"+index;
-			    if(inputTypeValueId != '+' || inputTypeValueId!= "-" ){
+			    if(parent_input != "+" && parent_input != "-" ){
 			    	$('#'+rootId+' .numeric__row').each(function(j){
 						var id = $(this).attr("id");
 						var rde_value = $("#inputSubTypeValueId"+id).val();
@@ -4200,6 +4203,8 @@ function addFunctions(item){
 						}
 					});
 			    }else{
+			    	console.log("parent_sequence_no:"+parent_sequence_no);
+			    	console.log("index:"+index);
 			    	if(parent_sequence_no != index){
 				    	$('#'+rootId+' .numeric__row').each(function(j){
 							var id = $(this).attr("id");
@@ -4209,7 +4214,7 @@ function addFunctions(item){
 								isValid=false;
 							}
 						});
-				    }
+				    } 
 			    }
 			    
 			});
