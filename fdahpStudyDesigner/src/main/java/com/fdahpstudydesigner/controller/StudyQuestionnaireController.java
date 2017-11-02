@@ -1952,4 +1952,50 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - validateconditionalFormula - Ends");
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/copyQuestionnaire.do")
+	public ModelAndView copyStudyQuestionnaire(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Starts");
+		ModelAndView mav = new ModelAndView("instructionsStepPage");
+		ModelMap map = new ModelMap();
+		QuestionnaireBo copyQuestionnaireBo = null;
+		String customStudyId = "";
+		String studyId="";
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
+				
+				if(StringUtils.isNotEmpty(questionnaireId) && StringUtils.isNotEmpty(customStudyId)){
+					copyQuestionnaireBo = studyQuestionnaireService.copyStudyQuestionnaireBo(Integer.valueOf(questionnaireId), customStudyId, sesObj);
+				}
+				if(copyQuestionnaireBo != null){
+					request.getSession().setAttribute(sessionStudyCount+"actionType","edit");
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire copyied successfully.");
+					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", String.valueOf(copyQuestionnaireBo.getId()));
+					map.addAttribute("_S", sessionStudyCount);
+					if(StringUtils.isNotEmpty(studyId)){
+						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+				    }
+					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+				}else{
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Questionnaire not copyied successfully.");
+					map.addAttribute("_S", sessionStudyCount);
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do", map);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveOrUpdateFormQuestion - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Ends");
+		return mav;
+	}
 }

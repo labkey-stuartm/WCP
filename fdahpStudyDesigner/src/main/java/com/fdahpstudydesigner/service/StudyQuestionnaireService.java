@@ -67,4 +67,6 @@ public interface StudyQuestionnaireService {
 	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList(); 
 	
 	public FormulaInfoBean validateQuestionConditionalBranchingLogic(String lhs, String rhs, String operator, String input);
+	
+	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId,SessionObject sessionObject);
 }
