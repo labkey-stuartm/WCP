@@ -5911,7 +5911,7 @@ public class StudyDAOImpl implements StudyDAO{
 		ResourceBO resourceBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ResourceBO RBO where RBO.studyId="+studyId+" and RBO.status=1 order by RBO.sequenceNo DESC");
+			query = session.createQuery("From ResourceBO RBO where RBO.studyId="+studyId+" and RBO.studyProtocol = false and RBO.status=1 order by RBO.sequenceNo DESC");
 			query.setMaxResults(1);
 			resourceBo = ((ResourceBO) query.uniqueResult());
 			if(resourceBo != null){
