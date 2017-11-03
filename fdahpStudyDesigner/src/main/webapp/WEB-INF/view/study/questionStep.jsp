@@ -1816,7 +1816,7 @@ function isNumberKey(evt)
          	<div class="trial_section2">
          		<span class="tealfont">Provide Input :  </span>
          		<span> x = </span>
-         		<span class="form-group"><input type="text" id="trailInputId" class="form-control" onkeypress="return isNumber(event)"/></span>
+         		<span class="form-group"><input type="text" id="trailInputId" class="form-control" onkeypress="return isNumberKey(event)"/></span>
          		<span><button type="button" id="formulaSubmitId">Submit</button></span>
          	</div>
          	<div class="trial_section3">
