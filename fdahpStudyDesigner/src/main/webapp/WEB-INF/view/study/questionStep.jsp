@@ -1981,10 +1981,10 @@ $(document).ready(function(){
 		   			}
     	   			if(minImagePath == '' && maxImagePath == '' && typeof minImageFile == 'undefined' && typeof maxImageFile == 'undefined'){
     	   				isImageValid = true;
-    	   			}else if ((typeof minImageFile != 'undefined' || minImagePath != '') && (typeof maxImageFile != 'undefined' || maxImagePath != '')){
+    	   			}else if (((minImageFile != null && typeof minImageFile != 'undefined') || minImagePath != '') && ((maxImageFile != null && typeof maxImageFile != 'undefined') || maxImagePath != '')){
     	   				isImageValid = true;
     	   			}else{
-    	   				if(maxImagePath == '' && (maxImageFile == '' || typeof maxImageFile == 'undefined')){
+    	   				if(maxImagePath == '' && (maxImageFile == '' || typeof maxImageFile == 'undefined' || maxImageFile == null)){
     	   					if(resType == "Continuous Scale"){
     	   					 	$("#continuesScaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                     	$("#continuesScaleMaxImagePathId").parent().find(".help-block").empty();
@@ -1995,7 +1995,7 @@ $(document).ready(function(){
     	                        $("#scaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
     	                    }
     	   				  }
-    	     			  if(minImagePath == '' && (minImageFile == '' || typeof minImageFile == 'undefined')){
+    	     			  if(minImagePath == '' && (minImageFile == '' || typeof minImageFile == 'undefined' || minImageFile == null)){
     	     				 if(resType == "Continuous Scale"){
     	       					 $("#continuesScaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").empty();
