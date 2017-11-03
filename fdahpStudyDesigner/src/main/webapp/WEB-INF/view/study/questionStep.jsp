@@ -30,7 +30,7 @@ function isOnlyNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-       console.log("charCode:"+charCode);
+      
        if(charCode != 45){
         	return false;
         }
@@ -1666,7 +1666,7 @@ function isNumberKey(evt)
 				                           <option value="">select</option>
 				                           <option value=">" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq ">" ? 'selected' :''}>&gt;</option>
 				                           <option value="<" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "<" ? 'selected' :''}>&lt;</option>
-				                           <option value="=" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "=" ? 'selected' :''}>&equals;</option>
+				                           <option value="==" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "==" ? 'selected' :''}>&equals;</option>
 				                           <option value="!=" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "!=" ? 'selected' :''}>!=</option>
 				                           <%-- <option value="&&" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "&&" ? 'selected' :''}>AND</option>
 				                           <option value="||" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "||" ? 'selected' :''}>OR</option> --%>
@@ -2181,7 +2181,7 @@ $(document).ready(function(){
     	}
      });
      $("#allowHealthKit").on('change',function(){
-    	 console.log("change:"+$(this).is(":checked"));
+    	
     	 if($(this).is(":checked")){
      		$(this).val("Yes");
      		$("#healthKitContainerId").show();
@@ -2264,19 +2264,17 @@ $(document).ready(function(){
     $("#scaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
-    	console.log("minValue:"+minValue+" "+parseInt(minValue)+1);
-    	console.log("value:"+value);
+    	
+    	
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			console.log("iffff");
-        			
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
-        			console.log("else");
+        			
         			$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();
@@ -2303,7 +2301,6 @@ $(document).ready(function(){
     });
     $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#textmaxLengthId').bind('input', function(e) {
         var id= $(this).attr('id');
-        console.log(id);
     	var str = $("#"+id).val();
         var dec = str.indexOf(".");
         var first_char = str.charAt(0);
@@ -2341,7 +2338,6 @@ $(document).ready(function(){
     			var stepsCount = (parseInt(diff)/parseInt(value)); 
     			if((parseInt(diff)%parseInt(value)) == 0){
     	            displayStepsCount = parseInt(stepsCount);
-    	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
         	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
         	            $(this).parent().find(".help-block").empty();
@@ -2518,7 +2514,6 @@ $(document).ready(function(){
     }
     $("#responseTypeId").on("change",function(){
     	var value= $(this).val();
-    	console.log(value);
     	getResponseType(value);
     });
     $('.DateRequired').on("change",function(){
@@ -2563,7 +2558,6 @@ $(document).ready(function(){
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
     	var selectedValue = [1,2,3,4,5,6,10,12,15,20,30];
-    	console.log("value:"+value);
     	if(selectedValue.indexOf(parseInt(value)) != -1){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
@@ -2642,7 +2636,6 @@ $(document).ready(function(){
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
-                    console.log("id:"+id);
                     $("#"+id).val('');
                     $('.textLabel'+id).text("Change");
                 } else {
@@ -2651,7 +2644,6 @@ $(document).ready(function(){
                     $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload.</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
-                    console.log("id:"+$(thisAttr).attr("id"));
                     $("#"+id).val('');
                     $("#"+$(thisAttr).attr("id")).val('');
                     $('.textLabel'+id).text("Upload");
@@ -2681,7 +2673,6 @@ $(document).ready(function(){
 	});
     $('.constant').change(function(){
     	var index=$(this).attr('index');
-    	console.log("index:"+index);
     	var value = $(this).val();
     	$("#inputSubTypeValueId"+index).val(value);
     	createFormula();
@@ -2761,7 +2752,7 @@ function toJSDate( dateTime ) {
 	}
 }
 function setResponseDate(type){
-	console.log("type:"+type);
+	
 	if(type == 'Date-Time'){
 		
 		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
@@ -2836,7 +2827,7 @@ function getResponseType(id){
 			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
 			 	var container = document.getElementById(responseType.replace(/\s/g, ''));
 			    var children = container.getElementsByTagName('select');
-			    console.log("children.length:"+children.length);
+			   
 			    for (var i = 0; i < children.length; i++) {
 			        children[i].selectedIndex = 0;
 			    }
@@ -2883,7 +2874,7 @@ function getResponseType(id){
 		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
 			 var style = '${questionnairesStepsBo.questionReponseTypeBo.style}';
-			 console.log("style:"+style);
+			 
 			 setResponseDate(style);
 		 }
 		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
@@ -2958,7 +2949,7 @@ function getResponseType(id){
 	   		}else{
 	   			$("#scaleType").hide();
 	   		}
-    		console.log("responseType:"+responseType);
+    		
     		if(responseType == 'Scale' || responseType == 'Continuous Scale' || responseType == 'Height' 
     				|| responseType == 'Time interval' || responseType == 'Numeric'){
     			$("#condtionalBranchingId").show();
@@ -3235,14 +3226,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 		$('.text-scale').each(function(){
 			var questionSubResponseType = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
+			
 			var response_sub_type_id = $("#textScaleSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayTextSclText"+id).val();
 			var diaplay_value = $("#displayTextSclValue"+id).val();
 			var destination_step = $("#destinationTextSclStepId"+id).val();
-			console.log("diasplay_text:"+diasplay_text);
-			console.log("diaplay_value:"+diaplay_value);
-			console.log("destination_step:"+destination_step);
+			
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
@@ -3284,7 +3273,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 		$('.image-choice').each(function(){
 			var questionSubResponseType = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
+			
 			
 			var response_sub_type_id = $("#imageChoiceSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayImageChoiceText"+id).val();
@@ -3330,11 +3319,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 		   
 		    var index =  $("#inputTypeValueId"+i).attr('index');
 		    var rootId = "rootId"+index;
-		    console.log("rootId:"+rootId);
+		
 			$('#'+rootId+' .numeric__row').each(function(j){
 				var questionConditionBranchBos =  new Object();
 				var id = $(this).attr("id");
-				//console.log("id:"+id);
+				
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
 				var sequence_no=$("#sequenceNoId"+id+j).val();
@@ -3509,8 +3498,7 @@ function setExclusiveData(item){
 		$("#destinationTextChoiceStepId"+index).attr("disabled",true);
 		$('.selectpicker').selectpicker('refresh');
 	}
-	console.log("index:"+index);
-	console.log("value:"+value);
+	
 }
 var count = $('.value-picker').length;
 function addValuePicker(){
@@ -3837,7 +3825,7 @@ function validateQuestionShortTitle(item,callback){
                  },
                  success:  function getResponse(data){
                      var message = data.message;
-                     console.log(message);
+                     
                      if('SUCCESS' != message){
                          $(thisAttr).validator('validate');
                          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -3881,7 +3869,7 @@ function validateStatsShorTitle(event,callback){
                  },
                  success:  function getResponse(data){
                      var message = data.message;
-                     console.log(message);
+                     
                      if('SUCCESS' != message){
                          $("#statShortNameId").validator('validate');
                          $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
@@ -3951,7 +3939,7 @@ function validateFractionDigits(item){
 				minTemp = 4;
 			}
 			maxFracDigits = (parseInt(maxTemp)>parseInt(minTemp)) ? parseInt(minTemp):parseInt(maxTemp);
-			console.log("maxFracDigits:"+maxFracDigits);
+			
 			if(parseInt(value) <= parseInt(maxFracDigits)){
 				
 				$(item).validator('validate');
@@ -3979,7 +3967,7 @@ function validateFractionDigits(item){
 }
 function validateForUniqueValue(item,responsetype,callback){
 	var id= $(item).attr("id");
-	console.log("validateForUniqueValue:"+responsetype);
+	
 	var isValid = true;
 	if(responsetype == 'Text Scale'){
 		var valueArray = new Array();
@@ -4188,9 +4176,8 @@ function addFunctions(item){
 		var noofrows = parseInt($('.numeric__section').length);
 		if(noofrows > 1){
 			var fun_count = parseInt(count)+1;
-			console.log("fun_count:"+fun_count);
-			//var inputTypeValueId = $('#rootId3').find('select').val();
-			console.log("parent_input:"+parent_input);
+			
+			
 			$('.numeric__section').each(function(i){
 			    var index =  $("#inputTypeValueId"+i).attr('index');
 			    var rootId = "rootId"+index;
@@ -4204,8 +4191,7 @@ function addFunctions(item){
 						}
 					});
 			    }else{
-			    	console.log("parent_sequence_no:"+parent_sequence_no);
-			    	console.log("index:"+index);
+			    	
 			    	if(parent_sequence_no != index){
 				    	$('#'+rootId+' .numeric__row').each(function(j){
 							var id = $(this).attr("id");
@@ -4242,7 +4228,6 @@ function addFunctions(item){
 	}
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
-    	console.log("index:"+index);
     	var value = $(this).val();
     	$("#inputSubTypeValueId"+index).val(value);
     	createFormula();
@@ -4261,7 +4246,6 @@ function selectFunction(item){
 	}
 	deleteChildElements(index,"parent");
 	if(value == '&&' || value =='||'){
-		console.log("index:"+index);
 		$("#rootId"+index).parents(".numeric__row").length;
 		$('#rootId'+index+' .numeric__row').each(function(j){
 			var id = $(this).attr("id");
@@ -4286,6 +4270,9 @@ function selectFunction(item){
 			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
 			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
 			$('.selectpicker').selectpicker('refresh');
+			if(j > 1){
+				$("#"+id).remove();
+			}
 		});
 	}
 	createFormula();
@@ -4317,6 +4304,7 @@ function addVariable(item){
 				 "      <input type='text' id='constantValId"+v+count+"' index='"+v+"' class='constant form-control add_var_hide' onkeypress='return isNumberKey(event)'/>"+
 				 "   </div>"+
 				 "</div>";
+	$(item).addClass('add_var_hide');				 
 	$(item).parents(".numeric__row:last").after(addVar);
 	var parent_value = $("#inputTypeValueId"+index).val();
 	if(parent_value == '&&' || parent_value =='||'){
@@ -4335,7 +4323,7 @@ function addVariable(item){
 		});
 	}
 	$('.selectpicker').selectpicker('refresh');
-	$(item).remove();
+	//$(item).remove();
 	$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
     $(".numeric__loop").parent().find(".help-block").empty();
 	$(".numeric__loop").parents("form").validator("destroy");
@@ -4348,7 +4336,7 @@ function validateResponseDataElement(){
 		$('.numeric__row').each(function(j){
 			var id = $(this).attr("id");
 			var rde_value = $("#inputSubTypeValueId"+id).val();
-			console.log("rde_value:"+rde_value);
+			
 			responseDataElementArray.push(rde_value);
 		});
 		if(responseDataElementArray.indexOf("x") != -1){
