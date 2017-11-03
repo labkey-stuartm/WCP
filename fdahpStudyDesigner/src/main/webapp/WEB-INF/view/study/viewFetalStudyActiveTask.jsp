@@ -52,19 +52,31 @@
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 2}">
                     <div class="blue-md-f text-uppercase">Results captured from the task</div>
                     <div class="pt-xs">
-                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">${taskMasterAttributeBo.displayName}</div>
-                    </c:if>
-                        <c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
+                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
+                        ${taskMasterAttributeBo.displayName}
+                        <div class="clearfix"></div>
+                        <div class="form-group mt-sm" style="width: 230px;">
                         <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="">
-                        <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
-                        <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
+                         <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
+                         <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
+                         <input type="text" class="form-control pr-xlg"  id="fetalKickId" name="taskAttributeValueBos[1].attributeVal" 
+                            maxlength="2" required/> 
+                         <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
+                    </c:if>
+                    
+                        <c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
+                        <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="">
+                        <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
+                        <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
                         <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
                         
                         <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
                            <div class="chartSection" style="display:none">
                           <div class="mb-lg">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_chart_id" name="taskAttributeValueBos[1].addToLineChart" value="option1">
+                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_chart_id" name="taskAttributeValueBos[2].addToLineChart" value="option1">
                                 <label for="${taskMasterAttributeBo.attributeName}_chart_id">Add to line chart</label>
                             </span>  
                           </div>   
@@ -73,7 +85,7 @@
                           <div class="pb-lg">
                             <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
                              <div class="add_notify_option form-group">
-                                <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
+                                <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass" id="chartId" name="taskAttributeValueBos[2].timeRangeChart" title="Select" >
                                     <option value="" selected disabled>Select</option>
 	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
@@ -90,11 +102,11 @@
                               </div>
                               <div class="form-group">
                                 <span class="radio radio-info radio-inline p-45">
-                                    <input type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[1].rollbackChat">
+                                    <input type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[2].rollbackChat">
                                     <label for="inlineRadio1">Yes</label>
                                 </span>
                                 <span class="radio radio-inline">
-                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat">
+                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[2].rollbackChat">
                                     <label for="inlineRadio2">No</label>
                                 </span>
                                 <div class="help-block with-errors red-txt"></div>
@@ -105,7 +117,7 @@
                             <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30"/>  
+                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[2].titleChat" maxlength="30"/>  
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -114,7 +126,7 @@
                         </div>    
                          <div class="pt-lg mt-xs pb-lg">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[1].useForStatistic" value="option1">
+                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[2].useForStatistic" value="option1">
                                 <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use for Statistic</label>
                             </span>  
                           </div>
@@ -123,7 +135,7 @@
                             <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group statShortTitleClass">
-                                     <input autofocus="autofocus" type="text" custAttType="cust" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
+                                     <input autofocus="autofocus" type="text" custAttType="cust" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[2].identifierNameStat" maxlength="20"/>
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -132,7 +144,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
+                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[2].displayNameStat" maxlength="50"/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                          </div>
@@ -141,7 +153,7 @@
                             <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15"/>  
+                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[2].displayUnitStat" maxlength="15"/>  
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                              </div>
@@ -150,7 +162,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
-                                  <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+                                  <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[2].uploadTypeStat">
                                       <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}">${statisticImage.value}</option>
 	                                </c:forEach>
@@ -162,7 +174,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+                                 <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[2].formulaAppliedStat">
                                       <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 	                                    <option value="${activetaskFormula.activetaskFormulaId}">${activetaskFormula.value}</option>
 	                                  </c:forEach>
@@ -202,23 +214,33 @@
 	                    </div>
 	                    <div class="clearfix"></div>
 	                    </c:if>
-	                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && count == 0}">
-	                    <c:set var="count" value="${count+1}"/>
+	                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 	                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
 	                    <div class="pt-xs">
-	                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">${taskMasterAttributeBo.displayName}</div>
+	                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
+	                        ${taskMasterAttributeBo.displayName}
+	                        <div class="clearfix"></div>
+	                        <div class="form-group mt-sm" style="width: 230px;">
+	                         <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
+	                         <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
+	                         <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">  
+	                        <input type="text" class="form-control pr-xlg" id="fetalKickId" name="taskAttributeValueBos[1].attributeVal" 
+	                        value="${taskValueAttributeBo.attributeVal}"  maxlength="2" required/>
+	                        <div class="help-block with-errors red-txt"></div>
+	                        </div>
+	                        </div>
 	                    </c:if>
 	                        <c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-	                        <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
-	                        <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
-	                        <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
+	                        <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
+	                        <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
+	                        <input type="hidden" name="taskAttributeValueBos[2].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
 	                        
 	                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
 	                        <div class="chartSection" style="display:none">
 	                          <div class="mb-lg">
 	                            <span class="checkbox checkbox-inline">
-	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_chart_id" name="taskAttributeValueBos[1].addToLineChart" <c:if test="${taskValueAttributeBo.addToLineChart==true}">checked</c:if> value="${taskValueAttributeBo.addToLineChart}">
+	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_chart_id" name="taskAttributeValueBos[2].addToLineChart" <c:if test="${taskValueAttributeBo.addToLineChart==true}">checked</c:if> value="${taskValueAttributeBo.addToLineChart}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_chart_id">Add to line chart</label>
 	                            </span>  
 	                          </div>   
@@ -227,7 +249,7 @@
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
 	                              <div class="add_notify_option form-group mb-none">
-		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList requireClass" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
+		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList requireClass" id="chartId" name="taskAttributeValueBos[2].timeRangeChart" title="Select" >
 		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
 		                              </c:forEach>
@@ -245,11 +267,11 @@
                                 </div>
 	                              <div class="form-group">
 	                                <span class="radio radio-info radio-inline p-45">
-	                                    <input class="" type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[1].rollbackChat" ${taskValueAttributeBo.rollbackChat eq 'Yes'?'checked':""}>
+	                                    <input class="" type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[2].rollbackChat" ${taskValueAttributeBo.rollbackChat eq 'Yes'?'checked':""}>
 	                                    <label for="inlineRadio1">Yes</label>
 	                                </span>
 	                                <span class="radio radio-inline">
-	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if> ${taskValueAttributeBo.rollbackChat eq 'No'?'checked':""}>
+	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[2].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if> ${taskValueAttributeBo.rollbackChat eq 'No'?'checked':""}>
 	                                    <label for="inlineRadio2">No</label>
 	                                </span>
 	                                <div class="help-block with-errors red-txt"></div>
@@ -261,7 +283,7 @@
                              </div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>  
+	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[2].titleChat" maxlength="30" value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -270,7 +292,7 @@
 	                        </div>    
 	                         <div class="pt-lg mt-xs pb-lg">
 	                            <span class="checkbox checkbox-inline">
-	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[1].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
+	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[2].useForStatistic" <c:if test="${taskValueAttributeBo.useForStatistic==true}">checked</c:if> value="${taskValueAttributeBo.useForStatistic}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use for Statistic</label>
 	                            </span>  
 	                          </div>
@@ -280,7 +302,7 @@
 	                             <div class="add_notify_option">
 	                                 <div class="form-group statShortTitleClass">
 	                                     <input type="hidden" id="dbIdentifierId" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
-	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" custAttType="cust" id="identifierId" name="taskAttributeValueBos[1].identifierNameStat" 
+	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" custAttType="cust" id="identifierId" name="taskAttributeValueBos[2].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
@@ -290,7 +312,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small> (50 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>  
+	                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[2].displayNameStat" maxlength="50" value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>  
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
@@ -300,7 +322,7 @@
 	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>  
+	                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[2].displayUnitStat" maxlength="15" value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>
@@ -312,7 +334,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                  <select class="selectpicker  aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+	                                  <select class="selectpicker  aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[2].uploadTypeStat">
                                       <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
 	                                </c:forEach>
@@ -323,7 +345,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                  <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+	                                  <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[2].formulaAppliedStat">
                                       <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 	                                    <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
 	                                  </c:forEach>
@@ -355,6 +377,7 @@
  	var shortTitleStatFlag = true;
  	var durationFlag = true;
    $(document).ready(function(){
+		   $('#fetalKickId').mask("99");
            var taskId = $('#taskContentId').val();
            if(taskId){
         	   var frequencyType = '${activeTaskBo.frequency}';
