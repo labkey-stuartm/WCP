@@ -1668,8 +1668,8 @@ function isNumberKey(evt)
 				                           <option value="<" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "<" ? 'selected' :''}>&lt;</option>
 				                           <option value="=" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "=" ? 'selected' :''}>&equals;</option>
 				                           <option value="!=" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "!=" ? 'selected' :''}>!=</option>
-				                           <option value="&&" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "&&" ? 'selected' :''}>AND</option>
-				                           <option value="||" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "||" ? 'selected' :''}>OR</option>
+				                           <%-- <option value="&&" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "&&" ? 'selected' :''}>AND</option>
+				                           <option value="||" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "||" ? 'selected' :''}>OR</option> --%>
 				                        </select>
 				                        <div class="help-block with-errors red-txt"></div>
 				                     </div>
