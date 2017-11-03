@@ -69,6 +69,7 @@
 			                  <td style="width:200px !important;">
 			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon copy  mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Copy" onclick="copyQuestionnaire(${questionnaryInfo.id});"></span>
 			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
 			                  </td>
 			               </tr>
@@ -132,7 +133,16 @@ $(document).ready(function(){
 			$("#questionnaireId").val(questionnaryId);
 			$("#questionnaireInfoForm").submit();
 	    }
-	  }    
+	  }  
+  function copyQuestionnaire(questionnaryId){
+	  console.log("consentInfoId:"+questionnaryId);
+		if(questionnaryId != null && questionnaryId != '' && typeof questionnaryId !='undefined'){
+			$("#questionnaireId").val(questionnaryId);
+			$("#actionType").val('edit');
+			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/copyQuestionnaire.do?_S=${param._S}";	 
+			document.questionnaireInfoForm.submit();
+	    }
+  }
   function addQuestionnaires(){
 	$("#actionType").val('add');
 	$("#questionnaireId").val('');

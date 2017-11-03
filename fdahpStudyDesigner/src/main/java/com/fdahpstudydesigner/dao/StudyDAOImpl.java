@@ -3739,6 +3739,7 @@ public class StudyDAOImpl implements StudyDAO{
 													if(questionsBo!=null){
 														//Question response subType 
 														List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
+														List<QuestionConditionBranchBo> questionConditionBranchList = session.getNamedQuery("getQuestionConditionBranchList").setInteger("questionId", questionsBo.getId()).list();
 
 														//Question response Type 
 														questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
@@ -3754,6 +3755,16 @@ public class StudyDAOImpl implements StudyDAO{
 															newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
 															session.save(newQuestionReponseTypeBo);
 														}
+														
+														//Question Condition branching logic
+														  if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+															  for(QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList){
+																  QuestionConditionBranchBo newQuestionConditionBranchBo = SerializationUtils.clone(questionConditionBranchBo);
+																  newQuestionConditionBranchBo.setConditionId(null);
+																  newQuestionConditionBranchBo.setQuestionId(newQuestionsBo.getId());
+																  session.save(newQuestionConditionBranchBo);
+															  }
+														  }
 
 														//Question response subType 
 														if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
@@ -3924,7 +3935,7 @@ public class StudyDAOImpl implements StudyDAO{
 					subString.append('"');
 					subString.append("',shortTitle,'");
 					subString.append('"');
-					subString.append("') from QuestionnaireBo where active=0 and studyId="+studyBo.getId()+"");
+					subString.append("') from QuestionnaireBo where active=0 and studyId="+studyBo.getId()+" and shortTitle is NOT NULL");
 					query = session.createQuery(subString.toString());
 					objectList = query.list();
 					if(objectList!=null && !objectList.isEmpty()){
@@ -3943,7 +3954,7 @@ public class StudyDAOImpl implements StudyDAO{
 						//ActiveTasks
 						query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId());
 						activeTasks = query.list();
-						if(activeTasks!=null && !activeTasks.isEmpty()){
+						if(activeTasks!=null && !activeTasks.isEmpty()){ 
 							for(ActiveTaskBo activeTaskBo:activeTasks){
 								Float activeTaskversion =  activeTaskBo.getVersion();
 								ActiveTaskBo newActiveTaskBo = SerializationUtils.clone(activeTaskBo);

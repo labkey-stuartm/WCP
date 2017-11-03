@@ -1646,7 +1646,7 @@ function isNumberKey(evt)
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
 				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
-				            <span data-toggle="modal" data-target="#myModal">Trial</span>
+				            <span data-toggle="modal" data-target="#myModal" id="trailId">Trial</span>
 				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
 				         <div class="numeric__container mb-sm">
@@ -1842,7 +1842,8 @@ $(document).ready(function(){
 	<c:if test="${actionTypeForQuestionPage == 'view'}">
 		$('#questionStepId input,textarea ').prop('disabled', true);
 		$('#questionStepId select').addClass('linkDis');
-		$('.addBtnDis, .remBtnDis').addClass('dis-none');
+		$('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
+		$("#trailId").hide();
 	</c:if>
 	
 	if($('.value-picker').length > 2){

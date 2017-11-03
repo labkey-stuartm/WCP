@@ -57,4 +57,6 @@ public interface StudyQuestionnaireDAO {
 	
 	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList(); 
 	public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(Session session,Integer questionId);
+	
+	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId,SessionObject sessionObject);
 }

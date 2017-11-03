@@ -998,4 +998,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Ends");
 		return formulaInfoBean;
 	}
+
+	/**
+	 * @author Ravinder
+	 * @return QuestionnaireBo
+	 * 
+	 * This method is used to copy the questionnaire bo into study
+	 */
+	@Override
+	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId, SessionObject sessionObject) {
+		logger.info("StudyQuestionnaireServiceImpl - copyStudyQuestionnaireBo - Starts");
+		return studyQuestionnaireDAO.copyStudyQuestionnaireBo(questionnaireId, customStudyId, sessionObject);
+	}
 }
