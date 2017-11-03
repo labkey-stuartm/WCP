@@ -932,10 +932,20 @@ public class FdahpStudyDesignerUtil {
     			}
     		}else{
     			try{
-    	    		net.objecthunter.exp4j.Expression e = new ExpressionBuilder(rhs)
-    		        .variables("x")
-    		        .build()
-    		        .setVariable("x", Integer.parseInt(trialInput));
+    	    		net.objecthunter.exp4j.Expression e;
+    				if(trialInput.contains(".")){
+    					 e = new ExpressionBuilder(rhs)
+        		        .variables("x")
+        		        .build()
+        		        .setVariable("x", Float.parseFloat(trialInput));
+    				}else{
+    					 e = new ExpressionBuilder(rhs)
+        		        .variables("x")
+        		        .build()
+        		        .setVariable("x", Integer.parseInt(trialInput));
+    				}
+    	    		
+    	    		
     		        double op = e.evaluate();
     		        operand2 = Double.toString(op);
     	    		}catch(Exception e){
