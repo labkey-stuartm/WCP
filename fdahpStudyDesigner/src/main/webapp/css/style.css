@@ -2002,6 +2002,9 @@ option:first-child {
     padding: 15px 30px 0px;
 }
 
+.w230{
+	width: 230px;
+}
 
 .trial_body{
 	padding: 0px 30px 30px;
@@ -2079,11 +2082,6 @@ option:first-child {
 	vertical-align: top;
 }
 
-
 .gtxtf{
 	color: #01af21;
 }
-
-
-
-.
