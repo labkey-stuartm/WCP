@@ -1902,7 +1902,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(resourceBOList != null && !resourceBOList.isEmpty()){
 				int sequenceNo = 1;
 				for(ResourceBO rBO:resourceBOList){
-					if(rBO.getSequenceNo().equals(0)){
+					if(rBO.getSequenceNo() == null || rBO.getSequenceNo().equals(0)){
 						rBO.setSequenceNo(sequenceNo);
 						session.update(rBO);
 						sequenceNo++;
