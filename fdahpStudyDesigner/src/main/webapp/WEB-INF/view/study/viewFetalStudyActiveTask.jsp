@@ -36,36 +36,40 @@
                       <div class="help-block with-errors red-txt"></div>
                     </div>
                     <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
-                    <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
-                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span class="requiredStar"> *</span></div>                    
-                    <div class="form-group col-md-3 col-lg-3 p-none timeDurationClass">
-                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
-                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
-                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
-                           required /> 
-                         <div class="help-block with-errors red-txt"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                    </c:if>
+                    <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo" varStatus="status">
+                    
+                    <c:if test="${status.index eq 1}">
+                    
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 2}">
-                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
-                    <div class="pt-xs">
-                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
-                        ${taskMasterAttributeBo.displayName}
-                        <div class="clearfix"></div>
-                        <div class="form-group mt-sm" style="width: 230px;">
+                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title=" Enter the number of kicks (N) for which the activity must record the time taken."></span></div>                    
+                    <div class="form-group col-md-3 col-lg-3 p-none timeDurationClass">
                         <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="">
                          <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
                          <input type="text" class="form-control pr-xlg"  id="fetalKickId" name="taskAttributeValueBos[1].attributeVal" 
                             maxlength="2" required/> 
                          <div class="help-block with-errors red-txt"></div>
-                        </div>
-                        </div>
+                    </div>
+                    <div class="clearfix"></div>
                     </c:if>
-                    
+	                    <%-- <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}"> --%>
+	                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
+	                    <div class="pt-xs">
+	                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
+	                        ${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span>
+	                        <div class="clearfix"></div>
+	                        <div class="form-group mt-sm" style="width: 230px;">
+	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
+	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${activeTaskBo.taskMasterAttributeBos[0].masterId}">
+	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${activeTaskBo.taskMasterAttributeBos[0].addToDashboard}">
+	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
+	                           required />    
+	                            
+	                         <div class="help-block with-errors red-txt"></div>
+	                        </div>
+	                        </div>
+	                    <%-- </c:if> --%>
+                    </c:if>
                         <c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
                         <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="">
                         <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
@@ -201,34 +205,37 @@
                     <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) gt 0}">
                     <c:set var="count" value="0"/>
                      <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
-                     <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
-	                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-	                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}</div>                    
-	                    <div class="form-group col-md-3 col-lg-3 p-none timeDurationClass">
-	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
-	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
-	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" 
-	                                  name="taskAttributeValueBos[0].attributeVal" value="${taskValueAttributeBo.attributeVal}" required/>
-	                         <div class="help-block with-errors red-txt"></div>
-	                    </div>
-	                    <div class="clearfix"></div>
-	                    </c:if>
+                     <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo" varStatus="status">
+                     <c:if test="${status.index eq 1}">
 	                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-	                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
-	                    <div class="pt-xs">
-	                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
-	                        ${taskMasterAttributeBo.displayName}
-	                        <div class="clearfix"></div>
-	                        <div class="form-group mt-sm" style="width: 230px;">
+	                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName} <span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title=" Enter the number of kicks (N) for which the activity must record the time taken."></span></div>                    
+	                    <div class="form-group col-md-3 col-lg-3 p-none timeDurationClass">
 	                         <input type="hidden" name="taskAttributeValueBos[1].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                         <input type="hidden" name="taskAttributeValueBos[1].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                         <input type="hidden" name="taskAttributeValueBos[1].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">  
 	                        <input type="text" class="form-control pr-xlg" id="fetalKickId" name="taskAttributeValueBos[1].attributeVal" 
 	                        value="${taskValueAttributeBo.attributeVal}"  maxlength="2" required/>
-	                        <div class="help-block with-errors red-txt"></div>
-	                        </div>
-	                        </div>
+	                         <div class="help-block with-errors red-txt"></div>
+	                    </div>
+	                    <div class="clearfix"></div>
+	                    </c:if>
+	                    	<c:if test="${taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
+		                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
+		                    <div class="pt-xs">
+		                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
+		                        ${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span>
+		                        <div class="clearfix"></div>
+		                        <div class="form-group mt-sm" style="width: 230px;">
+		                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${activeTaskBo.taskAttributeValueBos[0].attributeValueId}">
+		                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${activeTaskBo.taskMasterAttributeBos[0].masterId}">
+		                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${activeTaskBo.taskMasterAttributeBos[0].addToDashboard}">
+		                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" 
+		                                  name="taskAttributeValueBos[0].attributeVal" value="${activeTaskBo.taskAttributeValueBos[0].attributeVal}" required/>
+		                                  
+		                        <div class="help-block with-errors red-txt"></div>
+		                        </div>
+		                        </div>
+		                    </c:if>
 	                    </c:if>
 	                        <c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 	                        <input type="hidden" name="taskAttributeValueBos[2].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">

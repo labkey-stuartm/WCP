@@ -2860,6 +2860,9 @@ function getResponseType(id){
 		    	 $("#date").attr("checked",true);
 		     }
 		     $("#useAnchorDateId").attr("checked",false);
+		     
+		     deleteChildElements(1,"parent");
+		     $("#formulaBasedLogicId").prop("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
