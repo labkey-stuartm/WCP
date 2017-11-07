@@ -717,7 +717,8 @@ $(document).ready(function() {
 					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					   
 					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-   					   reloadQuestionnaireStepData(questionnaireSteps,null);
+					   var isDone = jsonobject.isDone;
+   					   reloadQuestionnaireStepData(questionnaireSteps,isDone);
    					   if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 						 $('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					   }
@@ -1990,6 +1991,9 @@ function reloadQuestionnaireStepData(questionnaire,isDone){
 		 if(isDone != null && isDone){
 			 $("#doneId").attr("disabled",false);
 			 $('#helpNote').attr('data-original-title', '');
+		 }else{
+			 $("#doneId").attr("disabled",true);
+			 $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.');
 		 }
 		 $('#content').DataTable().draw();
 	 }else{

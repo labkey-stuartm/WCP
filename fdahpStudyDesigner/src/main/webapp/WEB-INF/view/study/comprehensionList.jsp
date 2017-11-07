@@ -270,7 +270,7 @@ $(document).ready(function(){
 	}
 });
 function deleteComprehensionQuestion(questionId){
-	bootbox.confirm("Are you sure you want to delete this consent?", function(result){ 
+	bootbox.confirm("Are you sure you want to delete this question?", function(result){ 
 		if(result){
 			var studyId = $("#studyId").val();
 	    	if(questionId != '' && questionId != null && typeof questionId!= 'undefined'){

@@ -719,7 +719,31 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					message = studyQuestionnaireService.reOrderQuestionnaireSteps(Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.valueOf(questionnaireId));
-						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						if(qTreeMap != null){
+							boolean isDone =true;
+							for(Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()){
+								 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+								 if(questionnaireStepBean.getStatus() != null && !questionnaireStepBean.getStatus()){
+									 isDone = false;
+									 break;
+								 }
+								 if(entry.getValue().getFromMap() != null){
+									 if(!entry.getValue().getFromMap().isEmpty()){
+										 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
+											 if(!entryKey.getValue().getStatus()){
+												 isDone = false;
+												 break;
+											 }
+										 } 
+									 }else{
+										 isDone = false;
+										 break;
+									 }
+								 }
+							 }
+							jsonobject.put("isDone", isDone);
+							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						}
 						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 						String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);

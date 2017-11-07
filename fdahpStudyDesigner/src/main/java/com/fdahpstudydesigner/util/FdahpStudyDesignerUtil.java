@@ -915,7 +915,14 @@ public class FdahpStudyDesignerUtil {
     	    		}
     		}
     	}else{
-    		operand1 = lhs;
+    		//operand1 = lhs;
+    		try{
+		        double op = new ExpressionBuilder(lhs).build().evaluate();
+		        operand1 = Double.toString(op);
+    		}catch(Exception e){
+    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		}
     	}
     	if(rhs.contains("x")){
     		if(rhs.contains("!=") || rhs.contains("==") || rhs.contains(">") || rhs.contains("<") || rhs.contains("&&") || rhs.contains("||")){
@@ -954,7 +961,14 @@ public class FdahpStudyDesignerUtil {
     	    		}
     		}
     	}else{
-    		operand2 = rhs;
+    		//operand2 = rhs;
+    		try{
+		        double op = new ExpressionBuilder(rhs).build().evaluate();
+		        operand2 = Double.toString(op);
+    		}catch(Exception e){
+    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		}
     	}
     	if(formulaInfoBean.getStatusMessage().isEmpty()){
     		try{
