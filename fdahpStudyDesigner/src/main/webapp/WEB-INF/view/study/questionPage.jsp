@@ -461,26 +461,32 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.minImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				         <div class="scaleMinimagePathId">Change</div>
+				        <!--  <div class="scaleMinimagePathId">Change</div> -->
+				         <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelscaleMinImagePathId" >Upload</div></c:if>
+					     <c:if test="${not empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelscaleMinImagePathId" >Change</div></c:if>
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="scaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="scaleMinImagePathId" value="${questionsBo.questionReponseTypeBo.minImage}">
+				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
 				</div>
 				<div class="col-md-6">
 				<div class="col-md-8 col-lg-8 pl-none">
-				<div class="gray-xs-f mb-xs">Image for Minimum Value<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
+				<div class="gray-xs-f mb-xs">Image for Maximum Value<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
 				   <div class="form-group col-smthumb-2">
 				      <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				         <div class="scaleMaximagePathId">Change</div>
+				        <!--  <div class="scaleMaximagePathId">Change</div> -->
+				         <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelscaleMaxImagePathId" >Upload</div></c:if>
+					     <c:if test="${not empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelscaleMaxImagePathId" >Change</div></c:if>
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="scaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="scaleMaxImagePathId" value="${questionsBo.questionReponseTypeBo.maxImage}">
+				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -562,26 +568,32 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.minImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				         <div class="scaleMinimagePathId">Change</div>
+				        <!--  <div class="scaleMinimagePathId">Change</div> -->
+				         <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelcontinuesScaleMinImagePathId" >Upload</div></c:if>
+					     <c:if test="${not empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelcontinuesScaleMinImagePathId" >Change</div></c:if>
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="continuesScaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="continuesScaleMinImagePathId" value="${questionsBo.questionReponseTypeBo.minImage}">
+				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
 				</div>
 				<div class="col-md-6">
 				<div class="col-md-8 col-lg-8 pl-none">
-				<div class="gray-xs-f mb-xs">Image for Minimum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
+				<div class="gray-xs-f mb-xs">Image for Maximum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
 				   <div class="form-group col-smthumb-2">
 				      <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				         <div class="scaleMaximagePathId">Change</div>
+				        <!--  <div class="scaleMaximagePathId">Change</div> -->
+				         <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelcontinuesScaleMaxImagePathId" >Upload</div></c:if>
+					     <c:if test="${not empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelcontinuesScaleMaxImagePathId" >Change</div></c:if>
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="continuesScaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="continuesScaleMaxImagePathId" value="${questionsBo.questionReponseTypeBo.maxImage}">
+				       <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -701,7 +713,7 @@ function isNumberKey(evt)
 	            <div class="clearfix"></div>
 	            <div class="row">
 	            	<div class="col-md-6 p-none">
-		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="requiredStar">*</span></div>
+		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text to be presented to the user when invalid input is received."></span></div>
 		               <div class="form-group">
 		                  <textarea class="form-control TextRequired" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="Invalid Input. Please try again." maxlength="200" >${fn:escapeXml(questionsBo.questionReponseTypeBo.invalidMessage)}</textarea>
 		                  <div class="help-block with-errors red-txt"></div>
@@ -1517,7 +1529,7 @@ $(document).ready(function(){
 	   				minImageFile = document.getElementById("scaleMinImageFileId").files[0];
 	     			maxImageFile = document.getElementById("scaleMaxImageFileId").files[0];
 	   			}
-	   			if(minImagePath == '' && maxImagePath == '' && typeof minImageFile == 'undefined' && typeof maxImageFile == 'undefined'){
+	   			if(minImagePath == '' && maxImagePath == '' && ((typeof minImageFile == 'undefined' && typeof maxImageFile == 'undefined') ||  (minImageFile == null && maxImageFile == null))){
 	   				isImageValid = true;
 	   			}else if (((minImageFile != null && typeof minImageFile != 'undefined') || minImagePath != '') && ((maxImageFile != null && typeof maxImageFile != 'undefined') || maxImagePath != '')){
 	   				isImageValid = true;
@@ -3381,5 +3393,15 @@ function validateForUniqueValue(item,responsetype,callback){
 		});
 		callback(isValid);
 	}
+}
+function removeImage(item){
+	var id = $(item).parent().find('input').attr('id');
+	var id2 = $(item).parent().find('input[type="hidden"]').attr('id')
+	console.log("id:"+id);
+	console.log("id2:"+id2);
+	$("#"+id).val('');
+	$("#"+id2).val('');
+	$('.textLabel'+id2).text("Upload");
+	$(item).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
 }
 </script>
