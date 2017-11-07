@@ -683,7 +683,7 @@ function isNumberKey(evt)
 	                  <div class="col-md-6 col-lg-4 p-none">
 	                     <div class="gray-xs-f mb-xs">Max Length  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer for the maximum length of text allowed. If left empty, there will be no max limit applied."></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${questionnairesStepsBo.questionReponseTypeBo.maxLength}" onkeypress="return isNumber(event)" maxlength="10">
+	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${questionnairesStepsBo.questionReponseTypeBo.maxLength}" onkeypress="return isNumber(event)" maxlength="5">
 	                     </div>
 	                  </div>
 	               </div>
@@ -706,16 +706,16 @@ function isNumberKey(evt)
 		                     </div>
 		                     <div class="col-md-3">
 			                     <div class="form-group">
-			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker">
+			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if>>
 							         <option value=''>select</option>
 							         <option value="allcharacters" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
 							         <option value="alphabets" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
 							         <option value="numbers" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
 							         <option value="alphabetsandnumbers" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'alphabetsandnumbers' ? 'selected' :''}>alphabets and numbers</option>
 							         <option value="specialcharacters" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'specialcharacters' ? 'selected' :''}>special characters</option>
-							       </select>                    
+							       </select>
+							       <div class="help-block with-errors red-txt"></div>                    
 			                     </div>
-			                     <div class="help-block with-errors red-txt"></div>
 		                     </div>
 		                     <div class="col-md-1">
 			                     <div class="form-group">
@@ -724,7 +724,7 @@ function isNumberKey(evt)
 		                     </div>
 		                     <div class="col-md-4">
 			                     <div class="form-group">
-			    					<textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId">${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea>
+			    					<textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if> >${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea>
 			                     </div>
 			                     <div class="help-block with-errors red-txt"></div>
 		                     </div>
@@ -737,9 +737,9 @@ function isNumberKey(evt)
 	            <div class="clearfix"></div>
 	            <div class="row">
 	            	<div class="col-md-6 p-none">
-		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text to be presented to the user when invalid input is received."></span></div>
+		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text to be presented to the user when invalid input is received."></span></div>
 		               <div class="form-group">
-		                  <textarea class="form-control TextRequired" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="Invalid Input. Please try again." maxlength="200" >${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.invalidMessage)}</textarea>
+		                  <textarea class="form-control <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="Invalid Input. Please try again." maxlength="200" >${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.invalidMessage)}</textarea>
 		                  <div class="help-block with-errors red-txt"></div>
 		               </div>
 		            </div>
@@ -1901,6 +1901,8 @@ $(document).ready(function(){
     	 }else if(resType == "Numeric"){
     		 $("#numericMinValueId").trigger('blur');
     		 $("#numericMaxValueId").trigger('blur');
+    	 }else if(resType == "Text Scale"){
+    		 $("#textScalePositionId").trigger('blur');
     	 }
     	 
     	 if(isFromValid("#questionStepId")){
@@ -2031,25 +2033,6 @@ $(document).ready(function(){
     		  }
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
-		     if(resType != '' && resType != null && resType != 'undefined'){
-		    	// var exists = false;
-		    	 $("#responseTypeId > option").each(function() {
-		    		 var textVal = this.text.replace(/\s/g, '');
-		    		 /* if(textVal == 'TextScale'){
-		    			 exists = true;
-		    		 } */
-	    			 if(resType.replace(/\s/g, '') == textVal){
-	    			 }else{
-	    				 $("#"+textVal).empty();
-	    			 }    
-	    		 });
-		    	 if(!$("#formulaBasedLogicId").is(":checked")){
-		    		 $("#conditionalFormulaId").empty();
-		    	 }
-		    	 /* if(!exists){
-		    		 $("#TextScale").empty();
-		    	 } */
-    		 } 
 		     if(isValid && isImageValid && validateResponseDataElement()){
 		    	 validateQuestionShortTitle('',function(val){
 		    		 if(val){
@@ -2057,6 +2040,18 @@ $(document).ready(function(){
 				    	 if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
 				    			validateStatsShorTitle('',function(val){
 				    				if(val){
+				    					if(resType != '' && resType != null && resType != 'undefined'){
+				    				    	 $("#responseTypeId > option").each(function() {
+				    				    		 var textVal = this.text.replace(/\s/g, '');
+				    			    			 if(resType.replace(/\s/g, '') == textVal){
+				    			    			 }else{
+				    			    				 $("#"+textVal).empty();
+				    			    			 }    
+				    			    		 });
+				    				    	 if(!$("#formulaBasedLogicId").is(":checked")){
+				    				    		 $("#conditionalFormulaId").empty();
+				    				    	 }
+				    		    		 }
 				    					document.questionStepId.submit();
 				    	    		 }else{
 				    	    			 $("#doneId").attr("disabled",false);
@@ -2064,7 +2059,19 @@ $(document).ready(function(){
 				    	    		 }
 				    			});
 				    	 }else{
-				    		document.questionStepId.submit();
+				    		 if(resType != '' && resType != null && resType != 'undefined'){
+						    	 $("#responseTypeId > option").each(function() {
+						    		 var textVal = this.text.replace(/\s/g, '');
+					    			 if(resType.replace(/\s/g, '') == textVal){
+					    			 }else{
+					    				 $("#"+textVal).empty();
+					    			 }    
+					    		 });
+						    	 if(!$("#formulaBasedLogicId").is(":checked")){
+						    		 $("#conditionalFormulaId").empty();
+						    	 }
+				    		 }
+				    		 document.questionStepId.submit();
 				    	 } 
 		    		 }else{
 		    			 $("body").removeClass("loading");
@@ -2749,6 +2756,35 @@ $(document).ready(function(){
             event.preventDefault();
         }
     });
+    $("#validationConditionId").change(function(e){
+    	var value = $(this).val();
+    	if(value != '' && value != null && typeof value!='undefined'){
+    		$("#validationCharactersId").val('');
+    		$("#validationCharactersId").attr("disabled",false);
+    		$("#validationCharactersId").attr("required",true);
+    		$("#validationExceptTextId").val('');
+    		$("#validationExceptTextId").attr("disabled",false);
+    		$('.selectpicker').selectpicker('refresh');
+    		$("#invalidMessageId").attr("required",true);
+    		$("#invalidMessageId").val("Invalid Input. Please try again.");
+    	}else{
+    		$("#validationCharactersId").val('');
+    		$("#validationExceptTextId").val('');
+    		$("#validationCharactersId").attr("disabled",true);
+    		$("#validationExceptTextId").attr("disabled",true);
+    		$("#validationCharactersId").attr("required",false);
+    		$('.selectpicker').selectpicker('refresh');
+    		$("#validationCharactersId").validator('validate');
+    		$('#validationCharactersId').parent().removeClass("has-danger").removeClass("has-error");
+            $('#validationCharactersId').parent().find(".help-block").empty();
+    		$("#invalidMessageId").attr("required",false);
+    		$("#invalidMessageId").val('');
+    	}
+    })
+    $("#validationCharactersId").change(function(e){
+    	var value = $(this).val();
+    	$("#validationExceptTextId").val('');
+    });
     
 });
 //Displaying images from file upload 
@@ -2859,7 +2895,7 @@ function getResponseType(id){
 			 }
 			 $("#timeIntervalStepId").val(1);
 			 $("#timeIntervalDefaultId").val("00:01");
-			 $("#invalidMessageId").val("Invalid Input. Please try again.");
+			// $("#invalidMessageId").val("Invalid Input. Please try again.");
 			// $("#scaleStepId").val(5);
 		     $("#textScalePositionId").val(2);
 		     $("#scaleDefaultValueId").val(1);
@@ -4422,6 +4458,9 @@ function makeAFormula(index){
 }
 function createFormula(){
 	var mf = $("#inputTypeValueId0").val();
+	if(mf == '=='){
+		mf="=";
+	}
 	f="";
 	var lhs = makeAFormula(2);
 	f="";
