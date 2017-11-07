@@ -460,6 +460,7 @@ public class StudyController {
 					map.addAttribute("studyPermissionList",studyPermissionList);
 					map.addAttribute("permissions",permissions);
 					map.addAttribute("user", user);
+					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 					mav = new ModelAndView(FdahpStudyDesignerConstants.VIEW_SETTING_AND_ADMINS, map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -1971,7 +1972,7 @@ public class StudyController {
 					}else{
 						resourceBO.setResourceType(false);
 					}
-					if(resourceBO.getStudyId() != null && resourceBO.getId() == null){
+					if(resourceBO.getStudyId() != null && resourceBO.getId() == null && !resourceBO.isStudyProtocol()){
 						int order = studyService.resourceOrder(resourceBO.getStudyId());
 						resourceBO.setSequenceNo(order);
 					}

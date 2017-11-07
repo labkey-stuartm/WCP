@@ -130,7 +130,7 @@ public class StudyDAOImpl implements StudyDAO{
 								referenceTablesBos =query.list();
 								if(referenceTablesBos!=null && !referenceTablesBos.isEmpty()){
 									bean.setCategory(referenceTablesBos.get(0).getValue());
-									bean.setResearchSponsor(referenceTablesBos.get(1).getValue());
+									bean.setResearchSponsor(referenceTablesBos.size() == 2?referenceTablesBos.get(1).getValue() : "");
 								}
 							}
 							if(StringUtils.isNotEmpty(bean.getCustomStudyId())){
