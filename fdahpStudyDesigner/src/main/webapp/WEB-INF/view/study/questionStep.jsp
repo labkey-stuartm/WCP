@@ -683,7 +683,7 @@ function isNumberKey(evt)
 	                  <div class="col-md-6 col-lg-4 p-none">
 	                     <div class="gray-xs-f mb-xs">Max Length  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer for the maximum length of text allowed. If left empty, there will be no max limit applied."></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${questionnairesStepsBo.questionReponseTypeBo.maxLength}" onkeypress="return isNumber(event)">
+	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${questionnairesStepsBo.questionReponseTypeBo.maxLength}" onkeypress="return isNumber(event)" maxlength="10">
 	                     </div>
 	                  </div>
 	               </div>
