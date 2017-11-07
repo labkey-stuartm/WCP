@@ -2208,6 +2208,12 @@ $(document).ready(function(){
     $('.textChoiceVal').on('blur',function(){
 		validateForUniqueValue(this,"Text Choice",function(){});
 	});
+    $("#numericUnitId").keypress(function(event){
+        var inputValue = event.charCode;
+        if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)){
+            event.preventDefault();
+        }
+    });
 });
 //Displaying images from file upload 
 function readURL(input) {

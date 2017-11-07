@@ -2743,15 +2743,12 @@ $(document).ready(function(){
     	}
     	
  	});
-    /* $("#removeUrl").click(function(){
-    	 var siblings = this.parentNode.children;
-    	 for(var i = siblings.length; i--;) {
-    	        if(siblings[i].id) {
-    	            console.log(siblings[i]);
-    	            break;
-    	        }
-    	 }
-    }); */
+    $("#numericUnitId").keypress(function(event){
+        var inputValue = event.charCode;
+        if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)){
+            event.preventDefault();
+        }
+    });
     
 });
 //Displaying images from file upload 
