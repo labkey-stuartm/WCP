@@ -1754,80 +1754,88 @@ $(document).ready(function(){
     	}
     });
     $("#scaleMinValueId").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#scaleMinValueId").val();
     	var maxValue = $("#scaleMaxValueId").val();
-    	$(this).parent().removeClass("has-danger").removeClass("has-error");
-        $(this).parent().find(".help-block").empty();
+    	$("#scaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#scaleMinValueId").parent().find(".help-block").empty();
     	if(maxValue != ''){
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value)+1 > parseInt(maxValue)){
-            		$(this).val('');
-           		    $(this).parent().addClass("has-danger").addClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
-            	}else{
-            		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-            	}
-    		}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+	    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+	    			if(parseInt(value)+1 > parseInt(maxValue)){
+	            		$("#scaleMinValueId").val('');
+	           		    $("#scaleMinValueId").parent().addClass("has-danger").addClass("has-error");
+	                    $("#scaleMinValueId").parent().find(".help-block").empty();
+	                    $("#scaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+	            	}else{
+	            		$("#scaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
+	                    $("#scaleMinValueId").parent().find(".help-block").empty();
+	            	}
+	    		}else{
+	        		$("#scaleMinValueId").val('');
+	       		    $("#scaleMinValueId").parent().addClass("has-danger").addClass("has-error");
+	                $("#scaleMinValueId").parent().find(".help-block").empty();
+	                $("#scaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+	        	}
+    		}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").empty();
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+    			if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+            		$("#scaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
+                    $("#scaleMinValueId").parent().find(".help-block").empty();
+            	}else{
+            		$("#scaleMinValueId").val('');
+           		    $("#scaleMinValueId").parent().addClass("has-danger").addClass("has-error");
+                    $("#scaleMinValueId").parent().find(".help-block").empty();
+                    $("#scaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+            	}	
+    		}
     	}
     });
     $("#scaleMaxValueId").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#scaleMaxValueId").val();
     	var minValue = $("#scaleMinValueId").val();
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-            		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-        		}else if(parseInt(value) < parseInt(minValue)+1){
-        			$(this).val('');
-           		    $(this).parent().addClass("has-danger").addClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-        		}
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+	    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+	    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+	            		$("#scaleMaxValueId").parent().removeClass("has-danger").removeClass("has-error");
+	                    $("#scaleMaxValueId").parent().find(".help-block").empty();
+	        		}else if(parseInt(value) < parseInt(minValue)+1){
+	        			$("#scaleMaxValueId").val('');
+	           		    $("#scaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
+	                    $("#scaleMaxValueId").parent().find(".help-block").empty();
+	                    $("#scaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+	        		}
+	        	}else{
+	        		$("#scaleMaxValueId").val('');
+	       		    $("#scaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
+	                $("#scaleMaxValueId").parent().find(".help-block").empty();
+	                $("#scaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+	        	}
+    		}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").empty();
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+	    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+	        		$("#scaleMaxValueId").parent().removeClass("has-danger").removeClass("has-error");
+	                $("#scaleMaxValueId").parent().find(".help-block").empty();
+	        	}else{
+	        		$("#scaleMaxValueId").val('');
+	       		    $("#scaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
+	                $("#scaleMaxValueId").parent().find(".help-block").empty();
+	                $("#scaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+	        	}
+    		}
     	}
     });
     
     $("#displayStepsCount").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#displayStepsCount").val();
     	var minValue = $("#scaleMinValueId").val();
     	var maxValue = $("#scaleMaxValueId").val();
-    	$(this).parent().removeClass("has-danger").removeClass("has-error");
-        $(this).parent().find(".help-block").empty();
+    	$("#displayStepsCount").parent().removeClass("has-danger").removeClass("has-error");
+        $("#displayStepsCount").parent().find(".help-block").empty();
     	if(value != '' && minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
     			var displayStepsCount = "";
@@ -1836,27 +1844,27 @@ $(document).ready(function(){
     	            displayStepsCount = parseInt(stepsCount);
     	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
-        	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-        	            $(this).parent().find(".help-block").empty();
+        	    		$("#displayStepsCount").parent().removeClass("has-danger").removeClass("has-error");
+        	            $("#displayStepsCount").parent().find(".help-block").empty();
         	            $("#scaleStepId").val(displayStepsCount);
     	            }else{
     	            	 $("#scaleStepId").val('');
-    	            	 $(this).val('');
-        	    		 $(this).parent().addClass("has-danger").addClass("has-error");
-        	             $(this).parent().find(".help-block").empty();
+    	            	 $("#displayStepsCount").val('');
+        	    		 $("#displayStepsCount").parent().addClass("has-danger").addClass("has-error");
+        	             $("#displayStepsCount").parent().find(".help-block").empty();
         	             if(parseInt(stepsCount) < 1){
-        	            	 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter  a smaller step size.</li></ul>");
+        	            	 $("#displayStepsCount").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter  a smaller step size.</li></ul>");
         	             }else{
-        	            	 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a larger step size.</li></ul>"); 
+        	            	 $("#displayStepsCount").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a larger step size.</li></ul>"); 
         	             }
         	             
     	            }
     			}else{
-    				 $(this).val('');
+    				 $("#displayStepsCount").val('');
     				 $("#scaleStepId").val('');
-    	    		 $(this).parent().addClass("has-danger").addClass("has-error");
-    	             $(this).parent().find(".help-block").empty();
-    	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>(Max-Min) value should be exactly divisisble by the step size.</li></ul>");
+    	    		 $("#displayStepsCount").parent().addClass("has-danger").addClass("has-error");
+    	             $("#displayStepsCount").parent().find(".help-block").empty();
+    	             $("#displayStepsCount").parent().find(".help-block").append("<ul class='list-unstyled'><li>(Max-Min) value should be exactly divisisble by the step size.</li></ul>");
     			}
     	}
     });
@@ -1918,109 +1926,121 @@ $(document).ready(function(){
     	}
     });
     $("#scaleDefaultValueId").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#scaleDefaultValueId").val();
 		var stepSize = $("#scaleStepId").val();
 		$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
-		if(stepSize != ''){
+		if(value != '' && stepSize != ''){
 			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
-	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-	            $(this).parent().find(".help-block").empty();
+	    		$("#scaleDefaultValueId").parent().removeClass("has-danger").removeClass("has-error");
+	            $("#scaleDefaultValueId").parent().find(".help-block").empty();
 			}else{
-				 $(this).val('');
-	    		 $(this).parent().addClass("has-danger").addClass("has-error");
-	             $(this).parent().find(".help-block").empty();
-	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
+				 $("#scaleDefaultValueId").val('');
+	    		 $("#scaleDefaultValueId").parent().addClass("has-danger").addClass("has-error");
+	             $("#scaleDefaultValueId").parent().find(".help-block").empty();
+	             $("#scaleDefaultValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
 			}
 		}else{
-			$(this).val('');
-   		 $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an step size first </li></ul>");
+			if(value != ''){
+				$("#scaleDefaultValueId").val('');
+	   		    $("#scaleDefaultValueId").parent().addClass("has-danger").addClass("has-error");
+	            $("#scaleDefaultValueId").parent().find(".help-block").empty();
+	            $("#scaleDefaultValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an step size first </li></ul>");
+			}
 		}
     });
     $("#continuesScaleMinValueId").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#continuesScaleMinValueId").val();
     	var maxValue = $("#continuesScaleMaxValueId").val();
-    	$(this).parent().removeClass("has-danger").removeClass("has-error");
-        $(this).parent().find(".help-block").empty();
+    	$("#continuesScaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#continuesScaleMinValueId").parent().find(".help-block").empty();
     	if(maxValue != ''){
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value)+1 > parseInt(maxValue)){
-            		$(this).val('');
-           		    $(this).parent().addClass("has-danger").addClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
-            	}else{
-            		
-            		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-            	}
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+	    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+	    			if(parseInt(value)+1 > parseInt(maxValue)){
+	            		$("#continuesScaleMinValueId").val('');
+	           		    $("#continuesScaleMinValueId").parent().addClass("has-danger").addClass("has-error");
+	                    $("#continuesScaleMinValueId").parent().find(".help-block").empty();
+	                    $("#continuesScaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+	            	}else{
+	            		
+	            		$("#continuesScaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
+	                    $("#continuesScaleMinValueId").parent().find(".help-block").empty();
+	            	}
+	        	}else{
+	        		$("#continuesScaleMinValueId").val('');
+	       		    $("#continuesScaleMinValueId").parent().addClass("has-danger").addClass("has-error");
+	                $("#continuesScaleMinValueId").parent().find(".help-block").empty();
+	                $("#continuesScaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+	        	}
+    		}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").empty();
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+    			if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+            		$("#continuesScaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
+                    $("#continuesScaleMinValueId").parent().find(".help-block").empty();
+            	}else{
+            		$("#continuesScaleMinValueId").val('');
+           		    $("#continuesScaleMinValueId").parent().addClass("has-danger").addClass("has-error");
+                    $("#continuesScaleMinValueId").parent().find(".help-block").empty();
+                    $("#continuesScaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+            	}
+    		}
     	}
     });
     $("#continuesScaleMaxValueId").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#continuesScaleMaxValueId").val();
     	var minValue = $("#continuesScaleMinValueId").val();
-    	$(this).parent().removeClass("has-danger").removeClass("has-error");
-        $(this).parent().find(".help-block").empty();
+    	$("#continuesScaleMaxValueId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
     	if(minValue != ''){
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-            		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-        		}else if(parseInt(value) < parseInt(minValue)+1){
-        			$(this).val('');
-           		    $(this).parent().addClass("has-danger").addClass("has-error");
-                    $(this).parent().find(".help-block").empty();
-                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-        		}
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+    			if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+        			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+                		$("#continuesScaleMaxValueId").parent().removeClass("has-danger").removeClass("has-error");
+                        $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
+            		}else if(parseInt(value) < parseInt(minValue)+1){
+            			$("#continuesScaleMaxValueId").val('');
+               		    $("#continuesScaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
+                        $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
+                        $("#continuesScaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+            		}
+            	}else{
+            		$("#continuesScaleMaxValueId").val('');
+           		    $("#continuesScaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+            	}
+    		}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").empty();
-        	}else{
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
-        	}
+    		if(value != ''){
+    			if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+            		$("#continuesScaleMaxValueId").parent().removeClass("has-danger").removeClass("has-error");
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
+            	}else{
+            		$("#continuesScaleMaxValueId").val('');
+           		    $("#continuesScaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+            	}
+    		}
     	}
     });
     $("#continuesScaleDefaultValueId").blur(function(){
-    	var value= $(this).val();
+    	var value= $("#continuesScaleDefaultValueId").val();
     	var minValue = $("#continuesScaleMinValueId").val();
 		var maxValue = $("#continuesScaleMaxValueId").val();
-		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
-			$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").empty();
-		}else{
-			 $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+		if(value != ''){
+			if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
+				$("#continuesScaleDefaultValueId").validator('validate');
+	    		$("#continuesScaleDefaultValueId").parent().removeClass("has-danger").removeClass("has-error");
+	            $("#continuesScaleDefaultValueId").parent().find(".help-block").empty();
+			}else{
+				 $("#continuesScaleDefaultValueId").val('');
+	    		 $("#continuesScaleDefaultValueId").parent().addClass("has-danger").addClass("has-error");
+	             $("#continuesScaleDefaultValueId").parent().find(".help-block").empty();
+	             $("#continuesScaleDefaultValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+			}
 		}
     });
     $("#numericMinValueId").blur(function(){
