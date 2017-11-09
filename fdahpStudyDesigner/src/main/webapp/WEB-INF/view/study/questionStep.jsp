@@ -835,7 +835,7 @@ function isNumberKey(evt)
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter minimum value allowed"></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control"  name="questionReponseTypeBo.minValue" id="numericMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isNumberKey(event)">
+                        <input type="text" class="form-control"  name="questionReponseTypeBo.minValue" id="numericMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isNumberKey(event)" maxlength="50">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -844,7 +844,7 @@ function isNumberKey(evt)
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter maximum value allowed"></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control" name="questionReponseTypeBo.maxValue" id="numericMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isNumberKey(event)">
+                        <input type="text" class="form-control" name="questionReponseTypeBo.maxValue" id="numericMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isNumberKey(event)" maxlength="50">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -4361,7 +4361,7 @@ function selectFunction(item){
 	}else{
 		$("#addVaraiable"+count).addClass('add_var_hide');
 	}
-	//deleteChildElements(index,"parent");
+	deleteChildElements(index,"parent");
 	$('#rootId'+index+' .numeric__row').each(function(j){
 			var id = $(this).attr("id");
 			$("#inputTypeId"+id+j).val("");

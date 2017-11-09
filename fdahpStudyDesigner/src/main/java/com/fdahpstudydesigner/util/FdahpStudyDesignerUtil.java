@@ -908,7 +908,7 @@ public class FdahpStudyDesignerUtil {
         		        .setVariable("x", Integer.parseInt(trialInput));
     				}
     		        double op = e.evaluate();
-    		        operand1 = Double.toString(op);
+    		        operand1 = Double.toString( Math.round( op * 100.0 ) / 100.0);
     	    		}catch(Exception e){
     	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
     	    			formulaInfoBean.setStatusMessage("Error in LHS");
@@ -918,7 +918,7 @@ public class FdahpStudyDesignerUtil {
     		//operand1 = lhs;
     		try{
 		        double op = new ExpressionBuilder(lhs).build().evaluate();
-		        operand1 = Double.toString(op);
+		        operand1 = Double.toString(Math.round( op * 100.0 ) / 100.0);
     		}catch(Exception e){
     			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
     			formulaInfoBean.setStatusMessage("Error in RHS");
@@ -954,7 +954,7 @@ public class FdahpStudyDesignerUtil {
     	    		
     	    		
     		        double op = e.evaluate();
-    		        operand2 = Double.toString(op);
+    		        operand2 = Double.toString(Math.round( op * 100.0 ) / 100.0);
     	    		}catch(Exception e){
     	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
     	    			formulaInfoBean.setStatusMessage("Error in RHS");
@@ -964,7 +964,7 @@ public class FdahpStudyDesignerUtil {
     		//operand2 = rhs;
     		try{
 		        double op = new ExpressionBuilder(rhs).build().evaluate();
-		        operand2 = Double.toString(op);
+		        operand2 = Double.toString(Math.round( op * 100.0 ) / 100.0);
     		}catch(Exception e){
     			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
     			formulaInfoBean.setStatusMessage("Error in RHS");
