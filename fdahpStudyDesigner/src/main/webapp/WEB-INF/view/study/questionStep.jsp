@@ -4490,7 +4490,7 @@ function makeAFormula(index){
 				var id = $(this).attr("id");
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
-				if(input_type == 'C' || input_type == 'RDE'){
+				if(input_type != 'F'){
 					if(j==0){
 						f += "("+input_type_value+root_value;	
 					}else if(j == subroot_length){
