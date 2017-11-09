@@ -467,7 +467,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="scaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="scaleMinImagePathId" value="${questionsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -486,7 +486,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="scaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="scaleMaxImagePathId" value="${questionsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl " class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -574,7 +574,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="continuesScaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="continuesScaleMinImagePathId" value="${questionsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -593,7 +593,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="continuesScaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="continuesScaleMaxImagePathId" value="${questionsBo.questionReponseTypeBo.maxImage}">
-				       <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				       <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -1416,6 +1416,7 @@ $(document).ready(function(){
 		$('#questionStepId input,textarea ').prop('disabled', true);
 		$('#questionStepId select').addClass('linkDis');
 		$('.addBtnDis, .remBtnDis').addClass('dis-none');
+		$(".removeImageId").css("visibility","hidden");
 	</c:if>
 	
 	$(".menuNav li.active").removeClass('active');
@@ -1914,15 +1915,16 @@ $(document).ready(function(){
     $("#textScalePositionId").blur(function(){
     	var count = $('.text-scale').length;
     	var value= $(this).val();
-    	if(value >= 1 && value <= count){
-    		//$(this).validator('validate');
-    		$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
-            $("#textScalePositionId").parent().find(".help-block").empty();
-    	}else{
-    	     $("#textScalePositionId").val('');
-    		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
-             $("#textScalePositionId").parent().find(".help-block").empty();
-             $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices </li></ul>");
+    	if(value !=''){
+    		if(value >= 1 && value <= count){
+        		$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
+                $("#textScalePositionId").parent().find(".help-block").empty();
+        	}else{
+        	     $("#textScalePositionId").val('');
+        		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
+                 $("#textScalePositionId").parent().find(".help-block").empty();
+                 $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices </li></ul>");
+        	}
     	}
     });
     $("#scaleDefaultValueId").blur(function(){

@@ -494,7 +494,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="scaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="scaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -513,7 +513,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="scaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="scaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -600,7 +600,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="continuesScaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="continuesScaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -619,7 +619,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="continuesScaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="continuesScaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide" style="visibility: visible;" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -739,7 +739,7 @@ function isNumberKey(evt)
 	            	<div class="col-md-6 p-none">
 		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text to be presented to the user when invalid input is received."></span></div>
 		               <div class="form-group">
-		                  <textarea class="form-control <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="Invalid Input. Please try again." maxlength="200" >${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.invalidMessage)}</textarea>
+		                  <textarea class="form-control <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="" maxlength="200" >${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.invalidMessage)}</textarea>
 		                  <div class="help-block with-errors red-txt"></div>
 		               </div>
 		            </div>
@@ -1856,6 +1856,7 @@ $(document).ready(function(){
 		$('#questionStepId select').addClass('linkDis');
 		$('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
 		$("#trailId").hide();
+		$(".removeImageId").css("visibility","hidden");
 	</c:if>
 	
 	if($('.value-picker').length > 2){
@@ -2004,10 +2005,12 @@ $(document).ready(function(){
     	   			}else{
     	   				if(maxImagePath == '' && (maxImageFile == '' || typeof maxImageFile == 'undefined' || maxImageFile == null)){
     	   					if(resType == "Continuous Scale"){
+    	   						$("#continuesScaleMaxImagePathId").focus();
     	   					 	$("#continuesScaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                     	$("#continuesScaleMaxImagePathId").parent().find(".help-block").empty();
     	                        $("#continuesScaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
     	                    }else{
+    	                    	$("#scaleMaxImagePathId").focus();
     	                    	$("#scaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                        $("#scaleMaxImagePathId").parent().find(".help-block").empty();
     	                        $("#scaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
@@ -2015,10 +2018,12 @@ $(document).ready(function(){
     	   				  }
     	     			  if(minImagePath == '' && (minImageFile == '' || typeof minImageFile == 'undefined' || minImageFile == null)){
     	     				 if(resType == "Continuous Scale"){
-    	       					 $("#continuesScaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
+    	     					 $("#continuesScaleMinImagePathId").focus();
+    	     					 $("#continuesScaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").empty();
     	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
     	                     }else{
+    	                    	 $("#scaleMinImagePathId").focus();
     	                    	 $("#scaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                         $("#scaleMinImagePathId").parent().find(".help-block").empty();
     	                         $("#scaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");   
@@ -2609,15 +2614,18 @@ $(document).ready(function(){
     $("#textScalePositionId").blur(function(){
     	var count = $('.text-scale').length;
     	var value= $(this).val();
-    	if(value >= 1 && value <= count){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").empty();
-    	}else{
-    	     $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices</li></ul>");
+    	$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#textScalePositionId").parent().find(".help-block").empty();
+    	if(value !=''){
+    		if(value >= 1 && value <= count){
+        		$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
+                $("#textScalePositionId").parent().find(".help-block").empty();
+        	}else{
+        	     $("#textScalePositionId").val('');
+        		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
+                 $("#textScalePositionId").parent().find(".help-block").empty();
+                 $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices</li></ul>");
+        	}
     	}
     });
     var dt = new Date();
@@ -2790,10 +2798,40 @@ $(document).ready(function(){
     })
     $("#validationCharactersId").change(function(e){
     	var value = $(this).val();
+    	var regexp = "";
     	$("#validationExceptTextId").val('');
+    	addRegEx(value);
     });
+    var valicationCharacterValue = "${questionnairesStepsBo.questionReponseTypeBo.validationCharacters}";
+    if(valicationCharacterValue != '' && valicationCharacterValue != null && typeof valicationCharacterValue !='undefined'){
+    	addRegEx(valicationCharacterValue);
+    }
     
 });
+function addRegEx(value){
+	$("#validationExceptTextId").unbind("keyup blur");
+	if(value == "alphabets"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+		    node.val(node.val().replace(/[^a-zA-Z|\s]/g,'')); 
+        });
+	}else if(value == "numbers"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);/* /^[0-9\b]+$/ */
+		    node.val(node.val().replace(/[^0-9|\s]+$/,'')); 
+        });
+	}else if(value == "alphabetsandnumbers"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+			node.val(node.val().replace(/[^a-zA-Z0-9|\s]/g,'')); 
+        });
+	}else if(value == "specialcharacters"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+		    node.val(node.val().replace(/[a-zA-Z0-9\s]/g,'')); 
+        });
+	}
+}
 //Displaying images from file upload 
 function readURL(input) {
     
@@ -2929,6 +2967,15 @@ function getResponseType(id){
 		     $("#useAnchorDateId").attr("checked",false);
 		     
 		     deleteChildElements(1,"parent");
+		     $("#inputTypeValueId0").val('');
+		     $("#inputTypeId20").val('');
+		     $("#inputTypeId31").val('');
+		     $(".formula").text("-NA-");
+		     $(".tryFormula").text("-NA-");
+		     $("#constantValId31").val('');
+		     $("#constantValId31").addClass("add_var_hide");
+		     $("#inputSubTypeValueId2").val('');
+		     $('.selectpicker').selectpicker('refresh');
 		     $("#formulaBasedLogicId").prop("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
@@ -4314,8 +4361,22 @@ function selectFunction(item){
 	}else{
 		$("#addVaraiable"+count).addClass('add_var_hide');
 	}
-	deleteChildElements(index,"parent");
-	if(value == '&&' || value =='||'){
+	//deleteChildElements(index,"parent");
+	$('#rootId'+index+' .numeric__row').each(function(j){
+			var id = $(this).attr("id");
+			$("#inputTypeId"+id+j).val("");
+			$("#inputSubTypeValueId"+id).val("");
+			$("#constantValId"+id+j).val('');
+			$("#constantValId"+id+j).attr('required',false);
+			$("#constantValId"+id+j).addClass('add_var_hide');
+			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
+			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
+			$('.selectpicker').selectpicker('refresh');
+			if(j > 1){
+				$("#"+id).remove();
+			}
+	});
+	/* if(value == '&&' || value =='||'){
 		$("#rootId"+index).parents(".numeric__row").length;
 		$('#rootId'+index+' .numeric__row').each(function(j){
 			var id = $(this).attr("id");
@@ -4344,7 +4405,7 @@ function selectFunction(item){
 				$("#"+id).remove();
 			}
 		});
-	}
+	} */
 	createFormula();
 }
 function addVariable(item){
@@ -4374,26 +4435,9 @@ function addVariable(item){
 				 "      <input type='text' id='constantValId"+v+count+"' index='"+v+"' class='constant form-control add_var_hide' onkeypress='return isNumberKey(event)'/>"+
 				 "   </div>"+
 				 "</div>";
-	$(item).addClass('add_var_hide');				 
-	$(item).parents(".numeric__row:last").after(addVar);
-	var parent_value = $("#inputTypeValueId"+index).val();
-	if(parent_value == '&&' || parent_value =='||'){
-		$('#rootId'+parent_index+' .numeric__row').each(function(j){
-			var id = $(this).attr("id");
-			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', true);
-			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', true);
-			$('.selectpicker').selectpicker('refresh');
-		});
-	}else{
-		$('#rootId'+parent_index+' .numeric__row').each(function(j){
-			var id = $(this).attr("id");
-			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
-			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
-			$('.selectpicker').selectpicker('refresh');
-		});
-	}
+	$(item).parents(".numeric__row").after(addVar);
+	$(item).addClass('add_var_hide');	
 	$('.selectpicker').selectpicker('refresh');
-	//$(item).remove();
 	$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
     $(".numeric__loop").parent().find(".help-block").empty();
 	$(".numeric__loop").parents("form").validator("destroy");
@@ -4436,6 +4480,7 @@ function deleteChildElements(index,type){
 	}
 }
 var f="";
+var i=0;
 function makeAFormula(index){
 		var rootId = "rootId"+index;
 		var root_value = $("#rootId"+index).find('select').val();
@@ -4445,7 +4490,7 @@ function makeAFormula(index){
 				var id = $(this).attr("id");
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
-				if(input_type != 'F'){
+				if(input_type == 'C' || input_type == 'RDE'){
 					if(j==0){
 						f += "("+input_type_value+root_value;	
 					}else if(j == subroot_length){
@@ -4455,7 +4500,12 @@ function makeAFormula(index){
 					}
 				}else{
 					makeAFormula(id);
-					f+=")";
+					i++;
+					if(j==0){
+						f += root_value;	
+					}else if(i == subroot_length){
+						f +=")";
+					}
 				}
 			});
 		}else{
