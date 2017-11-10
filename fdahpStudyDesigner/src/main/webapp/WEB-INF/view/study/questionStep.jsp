@@ -1692,7 +1692,7 @@ function isNumberKey(evt)
 				                  </div>
 				                  <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) le 2}"> --%>
 				                  <div class="numeric__define_input gray__t">
-				                     <div class="numeric__row" id="2">
+				                     <div class="numeric__row display__flex__base" id="2">
 				                        <span>V2 =</span>
 				                        <div class="form-group sm-selection">
 				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputTypeId20" index="2" count=0 onchange="addFunctions(this);">
@@ -1712,7 +1712,7 @@ function isNumberKey(evt)
 				                           <div class="help-block with-errors red-txt"></div>
 				                        </div>
 				                     </div>
-				                     <div class="numeric__row"  id="3">
+				                     <div class="numeric__row display__flex__base"  id="3">
 				                        <span>V3 =</span>
 				                        <div class="form-group sm-selection">
 				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputTypeId31" index="3" count=1 onchange="addFunctions(this);">
@@ -1766,7 +1766,7 @@ function isNumberKey(evt)
 					                 </div>
 					         		 <div class="numeric__define_input gray__t">
 					                     <c:forEach items="${questionConditionBranchBo.questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
-					                     <div class="numeric__row" id="${questionConditionsSubBranchBo.sequenceNo}">
+					                     <div class="numeric__row display__flex__base" id="${questionConditionsSubBranchBo.sequenceNo}">
 					                        <span>V${questionConditionsSubBranchBo.sequenceNo} =</span>
 					                        <div class="form-group sm-selection">
 					                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputType" id="inputTypeId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onchange='addFunctions(this);'>
@@ -4506,23 +4506,24 @@ function makeAFormula(index){
 				var id = $(this).attr("id");
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
+				console.log("input_type:"+input_type);
 				if(input_type != 'F'){
 					if(j==0){
 						f += "("+input_type_value+root_value;	
 					}else if(j == subroot_length){
 						f += input_type_value+")";
-					}else{
+					}/* else{
 						f += input_type_value+root_value;
-					}
+					} */
 				}else{
 					makeAFormula(id);
-					i++;
 					if(j==0){
 						f += root_value;	
-					}else if(i == subroot_length){
-						f +=")";
 					}
+					
+					//f +=")";
 				}
+				console.log("###########");
 			});
 		}else{
 			f = $("#inputSubTypeValueId"+index).val();
