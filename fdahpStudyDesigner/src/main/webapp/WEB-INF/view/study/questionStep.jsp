@@ -2039,7 +2039,7 @@ $(document).ready(function(){
     		  }
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
-		     if(isValid && isImageValid && validateResponseDataElement()){
+		     if(isValid && isImageValid && validateResponseDataElement() &&validateSingleResponseDataElement()){
 		    	 validateQuestionShortTitle('',function(val){
 		    		 if(val){
 		    			 var statShortName =  $("#statShortNameId").val();
@@ -4190,24 +4190,16 @@ function addFunctions(item){
 	var count = parseInt($(item).attr('count'));
 	var preCount = parseInt($(item).attr('count'));
 	var value = $(item).val();
-	
-	
 	var isValid = true;
-	
 	$("#inputTypeErrorValueId"+index).hide();
-	
-	/* $("#rootId"+index).parents(".numeric__row").remove();
-	$("#rootId"+index).remove(); */
 	var parent_sequence_no = $("#parentSequenceNoId"+index+count).val();
-	
 	var parent_input = $("#rootId"+parent_sequence_no).find('select').val();
-	
 	deleteChildElements(index,"child");
-	
 	var total = parseInt($('.numeric__row').length);
 	var v= total+1;
 	$(item).find('input').addClass("add_var_hide");
 	$("#constantValId"+index+count).addClass('add_var_hide');	
+	$("#constantValId"+index+count).attr('required',false);
 	var rowCount = parseInt($('.numeric__section').length);
 	$("#inputSubTypeValueId"+index).val('');
 	if(value === "F"){
@@ -4230,8 +4222,6 @@ function addFunctions(item){
 		   "         <option value='/' >/</option>"+
 		   "         <option value='%' >%</option>";
 		   }
-		 //  "         <option value='&&' >AND</option>"+
-		 //  "         <option value='||' >OR</option>"+
 		   addFunction+="      </select>"+
 		   "      <div class='help-block with-errors red-txt'></div>"+
 		   "   </div>"+
@@ -4291,15 +4281,11 @@ function addFunctions(item){
 		$("#constantValId"+index+count).removeClass('add_var_hide');
 		$("#constantValId"+index+count).val('');
 		$("#constantValId"+index+count).attr('required',true);
-		
-		
 	}else if(value === "RDE"){
 		var id= $(item).attr('id');
 		var noofrows = parseInt($('.numeric__section').length);
 		if(noofrows > 1){
 			var fun_count = parseInt(count)+1;
-			
-			
 			$('.numeric__section').each(function(i){
 			    var index =  $("#inputTypeValueId"+i).attr('index');
 			    var rootId = "rootId"+index;
@@ -4308,45 +4294,41 @@ function addFunctions(item){
 						var id = $(this).attr("id");
 						var rde_value = $("#inputSubTypeValueId"+id).val();
 						if(rde_value != '' && rde_value == 'x'){
-							$(item).val('');
+							//$(item).val('');
 							isValid=false;
 						}
 					});
 			    }else{
-			    	
 			    	if(parent_sequence_no != index){
 				    	$('#'+rootId+' .numeric__row').each(function(j){
 							var id = $(this).attr("id");
 							var rde_value = $("#inputSubTypeValueId"+id).val();
 							if(rde_value != '' && rde_value == 'x'){
-								$(item).val('');
+								//$(item).val('');
 								isValid=false;
 							}
 						});
 				    } 
 			    }
-			    
 			});
-			
 		}else{
 			if(parent_sequence_no == 1){
 				$('#rootId1 .numeric__row').each(function(j){
 					var id = $(this).attr("id");
 					var val  = $("#inputSubTypeValueId"+id).val();
 					if(val != '' && val == 'x'){
-						$(item).val('');
+						//$(item).val('');
 						isValid=false;
 					}
 				}); 			
 			}
 		}
-		if(isValid){
-			$("#inputSubTypeValueId"+index).val('x');
-		}else{
+		$("#inputSubTypeValueId"+index).val('x');
+		if(!isValid){
+			//$("#inputSubTypeValueId"+index).val('x');
 			$("#inputTypeErrorValueId"+index).show();
 			$("#inputTypeErrorValueId"+index).html('RDE (x) should be used only once.');
 		}
-		
 	}
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
@@ -4354,6 +4336,12 @@ function addFunctions(item){
     	$("#inputSubTypeValueId"+index).val(value);
     	createFormula();
     });
+	if(isValid){
+		$(".numeric__row").each(function(j){
+			var id = $(this).attr("id");
+			$("#inputTypeErrorValueId"+id).hide();
+		});
+	}
 	createFormula();
 }
 function selectFunction(item){
@@ -4374,43 +4362,14 @@ function selectFunction(item){
 			$("#constantValId"+id+j).val('');
 			$("#constantValId"+id+j).attr('required',false);
 			$("#constantValId"+id+j).addClass('add_var_hide');
-			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
-			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
+			//$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
+			//$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
 			$('.selectpicker').selectpicker('refresh');
+			$("#inputTypeErrorValueId"+id).hide();
 			if(j > 1){
 				$("#"+id).remove();
 			}
 	});
-	/* if(value == '&&' || value =='||'){
-		$("#rootId"+index).parents(".numeric__row").length;
-		$('#rootId'+index+' .numeric__row').each(function(j){
-			var id = $(this).attr("id");
-			$("#inputTypeId"+id+j).val("");
-			$("#inputSubTypeValueId"+id).val("");
-			$("#constantValId"+id+j).val('');
-			$("#constantValId"+id+j).attr('required',false);
-			$("#constantValId"+id+j).addClass('add_var_hide');
-			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', true);
-			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', true);
-			$('.selectpicker').selectpicker('refresh');
-		});
-		
-	}else{
-		$('#rootId'+index+' .numeric__row').each(function(j){
-			var id = $(this).attr("id");
-			$("#inputTypeId"+id+j).val("");
-			$("#inputSubTypeValueId"+id).val("");
-			$("#constantValId"+id+j).val('');
-			$("#constantValId"+id+j).attr('required',false);
-			$("#constantValId"+id+j).addClass('add_var_hide');
-			$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
-			$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
-			$('.selectpicker').selectpicker('refresh');
-			if(j > 1){
-				$("#"+id).remove();
-			}
-		});
-	} */
 	createFormula();
 }
 function addVariable(item){
@@ -4449,13 +4408,65 @@ function addVariable(item){
 	$(".numeric__loop").parents("form").validator();
 	createFormula();
 }
+function validateSingleResponseDataElement(){
+	var responseDataElementArray  = new Array();
+	if($("#formulaBasedLogicId").is(":checked")){
+		var isSingle = true;
+		var noofrows = parseInt($('.numeric__section').length);
+		if(noofrows > 1){
+			$('.numeric__section').each(function(i){
+			    var index =  $("#inputTypeValueId"+i).attr('index');
+			    console.log("index"+index +" i:"+i);
+			    var rootId = "rootId"+index;
+			    var parent_input = $("#inputTypeValueId"+i).val();
+				console.log("parent_input:"+parent_input);
+				console.log("responseDataElementArray:"+responseDataElementArray);
+				$('#'+rootId+' .numeric__row').each(function(j){
+					var id = $(this).attr("id");
+					var val  = $("#inputTypeId"+id+j).val();
+					if(val != '' && val == 'RDE'){
+						if(responseDataElementArray.indexOf(val) != -1) {
+							$('#alertMsg').show();
+						    $("#alertMsg").removeClass('s-box').addClass('e-box').html("RDE (x) should be used only once.");
+						    setTimeout(hideDisplayMessage, 3000);
+							isSingle = false;
+						}else{
+							 if(parent_input != "+" && parent_input != "-" ){
+								responseDataElementArray.push(val);		
+							 }
+						}
+				   }
+				});
+			});
+			console.log("isSingle:"+isSingle);
+			return isSingle;
+		}else{
+			$('#rootId1 .numeric__row').each(function(j){
+				var id = $(this).attr("id");
+				var val  = $("#inputTypeId"+id+j).val();
+				if(val != '' && val == 'RDE'){
+					if(responseDataElementArray.indexOf(val) != -1) {
+						$('#alertMsg').show();
+					    $("#alertMsg").removeClass('s-box').addClass('e-box').html("RDE (x) should be used only once.");
+					    setTimeout(hideDisplayMessage, 3000);
+						isSingle = false;
+					}else{
+						responseDataElementArray.push(val);
+					}
+				}
+			}); 
+			return isSingle;
+		}
+	}else{
+		return true;
+	}
+}
 function validateResponseDataElement(){
 	var responseDataElementArray  = new Array();
 	if($("#formulaBasedLogicId").is(":checked")){
 		$('.numeric__row').each(function(j){
 			var id = $(this).attr("id");
 			var rde_value = $("#inputSubTypeValueId"+id).val();
-			
 			responseDataElementArray.push(rde_value);
 		});
 		if(responseDataElementArray.indexOf("x") != -1){
