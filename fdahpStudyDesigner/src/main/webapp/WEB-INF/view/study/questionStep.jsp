@@ -672,7 +672,7 @@ function isNumberKey(evt)
            		<div class="clearfix"></div>
 	            <div class="row mt-md">
 	               <div class="col-md-6 pl-none">
-	                  <div class="col-md-8 col-lg-8 p-none">
+	                  <div class="col-md-12 col-lg-12 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder  (1 to 50 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.placeholder)}" maxlength="50">
@@ -697,7 +697,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pl-none">
 			                     <div class="form-group">
 			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
-							         <option value=''>select</option>
+							         <option value=''>Select</option>
 							         <option value="allow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
 							         <option value="disallow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
 							       </select>                    
@@ -707,7 +707,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3">
 			                     <div class="form-group">
 			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if>>
-							         <option value=''>select</option>
+							         <option value=''>Select</option>
 							         <option value="allcharacters" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
 							         <option value="alphabets" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
 							         <option value="numbers" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
@@ -717,19 +717,19 @@ function isNumberKey(evt)
 							       <div class="help-block with-errors red-txt"></div>                    
 			                     </div>
 		                     </div>
-		                     <div class="col-md-1">
+		                     <!-- <div class="col-md-1 text-right">
 			                     <div class="form-group">
-			    					<div class="mt-xs">except</div>
+			    					            
 			                     </div>
-		                     </div>
-		                     <div class="col-md-4">
-			                     <div class="form-group">
-			    					<textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if> >${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea>
+		                     </div> -->
+		                     <div class="col-md-6 pl-none">
+                            <div class="mt-xs mr-md float__left">except</div>
+			                      <div class="form-group float__left">
+                              
+			    					          <div class=""><textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if> >${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea></div>
+                               <div class="help-block with-errors red-txt"></div>
 			                     </div>
-			                     <div class="help-block with-errors red-txt"></div>
-		                     </div>
-		                     <div class="col-md-1">
-			    				<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
+                           <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
 		                     </div>
 		                  </div>
 		            </div>
@@ -925,7 +925,7 @@ function isNumberKey(evt)
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
 				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0"  class="selectpicker destionationYes">
-				         <option value=''>select</option>
+				         <option value=''>Select</option>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -955,7 +955,7 @@ function isNumberKey(evt)
 				<div class="col-md-3 pl-none">
 				   <div class="form-group">
 				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" class="selectpicker" >
-				        <option value=''>select</option>
+				        <option value=''>Select</option>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -1084,7 +1084,7 @@ function isNumberKey(evt)
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
 							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" class="selectpicker" >
-								         <option value="">select</option>
+								         <option value="">Select</option>
 								         <c:forEach items="${destinationStepList}" var="destinationStep">
 								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 								         </c:forEach> 
@@ -1122,7 +1122,7 @@ function isNumberKey(evt)
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0"  class="selectpicker" >
-							         <option value="">select</option>
+							         <option value="">Select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -1154,7 +1154,7 @@ function isNumberKey(evt)
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1"  class="selectpicker" >
-							        <option value="">select</option>
+							        <option value="">Select</option>
 							        <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -1769,7 +1769,7 @@ function isNumberKey(evt)
 					                        <span>V${questionConditionsSubBranchBo.sequenceNo} =</span>
 					                        <div class="form-group sm-selection">
 					                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputType" id="inputTypeId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onchange='addFunctions(this);'>
-					                              <option value="">select</option>
+					                              <option value="">Select</option>
 					                              <option value="C" ${questionConditionsSubBranchBo.inputType eq 'C' ? 'selected' :''}>Constant</option>
 					                              <option value="F" ${questionConditionsSubBranchBo.inputType eq 'F' ? 'selected' :''}>Function</option>
 					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
@@ -1827,8 +1827,8 @@ function isNumberKey(evt)
          	<input type="hidden" name="operator" id="operatorId" >
          	<div class="trial_section2">
          		<span class="tealfont">Provide Input :  </span>
-         		<span> x = </span>
-         		<span class="form-group"><input type="text" id="trailInputId" class="form-control" onkeypress="return isNumberKey(event)" maxlength="8"/></span>
+         		<span> x =  </span>
+         		 <span class="form-group"><input type="text" id="trailInputId" class="form-control ml-sm" onkeypress="return isNumberKey(event)" maxlength="8"/></span>
          		<span><button type="button" id="formulaSubmitId">Submit</button></span>
          	</div>
          	<div class="trial_section3">
@@ -1836,7 +1836,7 @@ function isNumberKey(evt)
          		<div>
          			<div><span>LHS Value:</span><span id="lhsValueId"></span></div>
          			<div><span>RHS Value:</span><span id="rhsValueId"></span></div>
-         			<div><span>Boolean Output:</span><span class="gtxtf" id="outputId"></span></div>
+         			<div><span>Boolean Output:</span><span class="" id="outputId"></span></div>
          		</div>
          	</div>
          	
@@ -2747,7 +2747,11 @@ $(document).ready(function(){
   				if(message == "SUCCESS"){
   					$('#lhsValueId').html("<b>"+formulaResponseJsonObject.lhsData+"</b>");
   					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
-  					$('#outputId').html("<b>"+formulaResponseJsonObject.outPutData+"</b>");
+		            if (formulaResponseJsonObject.outPutData =='true') {
+		              $('#outputId').html("<span class='gtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
+		            }else{
+		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
+		            }
   				}else{
   					bootbox.alert(formulaResponseJsonObject.statusMessage);
   				}
@@ -3685,7 +3689,7 @@ function addTextScale(){
 					    <c:if test='${questionnaireBo.branching}'>
 					    newTextScale+=" <div class='col-md-3 pl-none'>"+
 						"    <div class='form-group'>"+
-						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one option'><option value=''>select</option>";
+						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one option'><option value=''>Select</option>";
 						<c:forEach items="${destinationStepList}" var="destinationStep">
 						newTextScale+="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 			        	 </c:forEach> 
@@ -3783,7 +3787,7 @@ function addTextChoice(){
 		  newTextChoice += "<div class='txtchoice_section4'>"+
 	      "   <div class='gray-xs-f mb-xs'>Destination Step  </div>"+
 	      "   <div class='form-group'>"+
-	      "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value=''>select</option>";
+	      "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value=''>Select</option>";
 	          <c:forEach items='${destinationStepList}' var='destinationStep'>
 	          newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 	          </c:forEach>
@@ -3872,7 +3876,7 @@ function addImageChoice(){
 						 <c:if test='${questionnaireBo.branching}'>
 						 newImageChoice +="<div class='col-md-2 col-lg-2 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one option' class='selectpicker'><option value=''>select</option>";
+						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one option' class='selectpicker'><option value=''>Select</option>";
 						 <c:forEach items="${destinationStepList}" var="destinationStep">
 						 	newImageChoice +="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 						 </c:forEach>
@@ -4204,7 +4208,7 @@ function addFunctions(item){
 		   "   <span>V"+index+"</span>"+
 		   "   <div class='form-group sm-selection'>"+
 		   "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].inputTypeValue' id='inputTypeValueId"+rowCount+"' index='"+index+"' count='"+rowCount+"' onchange='selectFunction(this);' required>"+
-		   "         <option value=''>select</option>";
+		   "         <option value=''>Select</option>";
 		   if(parent_input == '&&' || parent_input == '||'){
 			   addFunction+= "         <option value='>' >&gt;</option>"+
 			   "         <option value='<' >&lt;</option>"+
@@ -4226,7 +4230,7 @@ function addFunctions(item){
 		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
 		   "      <div class='form-group sm-selection'>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
-		   "            <option value=''>select</option>"+
+		   "            <option value=''>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
@@ -4246,7 +4250,7 @@ function addFunctions(item){
 		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
 		   "      <div class='form-group sm-selection'>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
-		   "            <option value=''>select</option>"+
+		   "            <option value=''>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
@@ -4378,7 +4382,7 @@ function addVariable(item){
 				 "   <span>V"+v+" =</span>"+
 				 "   <div class='form-group sm-selection'>"+
 				 "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputType' id='inputTypeId"+(parseInt(v))+count+"' index='"+(parseInt(v))+"' count='"+count+"' onchange='addFunctions(this);' required>"+
-				 "         <option value=''>select</option>"+
+				 "         <option value=''>Select</option>"+
 				 "         <option value='C'>Constant</option>"+
 				 "         <option value='F'>Function</option>"+
 				 "         <option value='RDE'>Response Data Element (x)</option>"+

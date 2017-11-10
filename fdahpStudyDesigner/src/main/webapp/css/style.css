@@ -265,7 +265,7 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 }
 
 .bootstrap-select.btn-group .dropdown-toggle .filter-option{
-	color:#000 !important;
+	color:rgba(0, 0, 0, 0.53) !important;
 }
 
 .error_msg{
@@ -1256,7 +1256,7 @@ height:0px !important;
 }
 
 .tbl thead tr th, .tbl thead tr td{
-	padding: 10px 15px !important;
+	padding: 10px !important;
 }
 
 .tbl tbody td{
@@ -1993,9 +1993,9 @@ option:first-child {
 	visibility: visible;
 }
 
-.numeric__define > span,.numeric__row span{
+/*.numeric__define > span,.numeric__row span{
 	vertical-align: top;
-}
+}*/
 
 .trial_header{
 	border: none;
@@ -2085,3 +2085,44 @@ option:first-child {
 .gtxtf{
 	color: #01af21;
 }
+.rtxtf {
+    color: red;
+}
+
+
+/*prasanna*/
+.trial_section2{
+    display: flex;
+    align-items: center;
+}
+.form-control{
+    height:32px;
+}
+#outputId{
+    text-transform: capitalize;
+}
+/*.numeric__row{
+    display: flex;
+    align-items: baseline;
+}*/
+.filter-option{
+    text-transform: capitalize;
+}
+
+/*common*/
+.text-right{
+    text-align:right;
+}
+.text-left{
+    text-align:left;
+}
+.text-center{
+    text-align:center;
+}
+.float__left{
+    float:left;
+}
+.float__right{
+    float:right;
+}
+/*common*/
