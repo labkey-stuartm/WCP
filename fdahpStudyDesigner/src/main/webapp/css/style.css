@@ -1256,11 +1256,11 @@ height:0px !important;
 }
 
 .tbl thead tr th, .tbl thead tr td{
-	padding: 10px !important;
+	padding: 10px 8px !important;
 }
 
 .tbl tbody td{
-	padding: 8px 15px !important;
+	padding: 10px 8px !important;
 	vertical-align: middle !important;
 }
 .col-rc {
@@ -1883,7 +1883,7 @@ option:first-child {
 	display: inline-block;
     width: 250px;
     margin-left: 15px;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 }
 
 .pl_18{
@@ -2098,7 +2098,7 @@ option:first-child {
 .form-control{
     height:32px;
 }
-#outputId{
+#outputId span b{
     text-transform: capitalize;
 }
 /*.numeric__row{
@@ -2107,6 +2107,12 @@ option:first-child {
 }*/
 .filter-option{
     text-transform: capitalize;
+}
+.numeric__row >span{
+    width:50px;
+}
+.numeric__form .sm__in  help-block{
+    width:130px;
 }
 
 /*common*/
@@ -2124,5 +2130,9 @@ option:first-child {
 }
 .float__right{
     float:right;
+}
+.display__flex__base{
+    display: flex;
+    align-items: baseline;
 }
 /*common*/

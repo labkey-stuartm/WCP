@@ -1625,9 +1625,9 @@ function isNumberKey(evt)
 				      </div>
 				      <div class="col-md-12 p-none">
 				         <ul class="pl_18">
-				            <li>
-				               <span>If V1 = True, Destination Step &nbsp;&nbsp;= </span>
-				               <div class="form-group sm-selection">
+				            <li class="display__flex__base">
+				               <span class="col-md-3 p-none">If V1 = True, Destination Step &nbsp;&nbsp;&nbsp;&nbsp;= </span>
+				               <div class="form-group sm-selection col-md-4 p-none">
 				                  <input type="hidden" name="questionResponseSubTypeList[0].value" value="true" id="conditionDestinationValueId0">
 				                  <select name="questionResponseSubTypeList[0].destinationStepId" id="conditionDestinationId0"  class="selectpicker conditionalBranchingRequired">
 							         <option value="">select</option>
@@ -1639,9 +1639,10 @@ function isNumberKey(evt)
 				                  <div class="help-block with-errors red-txt"></div>
 				               </div>
 				            </li>
-				            <li>
-				               <span>If V1 = False, Destination Step =</span>
-				               <div class="form-group sm-selection">
+                    <div class="clearfix"></div>
+				            <li class="display__flex__base">
+				               <span class="col-md-3 p-none">If V1 = False, Destination Step &nbsp;&nbsp;&nbsp;=</span>
+				               <div class="form-group sm-selection col-md-4 p-none">
 				               	  <input type="hidden" name="questionResponseSubTypeList[1].value" value="false" id="conditionDestinationValueId1">
 				                  <select name="questionResponseSubTypeList[1].destinationStepId" id="conditionDestinationId1"  class="selectpicker conditionalBranchingRequired">
 							         <option value="">select</option>
@@ -4235,10 +4236,10 @@ function addFunctions(item){
 		   "      <div class='help-block with-errors red-txt'></div>"+
 		   "   </div>"+
 		   "</div>"+
-		   "<div class='numeric__define_input gray__t'>"+
-		   "   <div class='numeric__row' id='"+(parseInt(v)+1)+"'>"+
+		   "<div class='numeric__define_input gray__t' style='margin-left:4px;'>"+
+		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+1)+"'>"+
 		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
-		   "      <div class='form-group sm-selection'>"+
+		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
 		   "            <option value=''>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
@@ -4256,9 +4257,9 @@ function addFunctions(item){
 		   "			<div class='help-block with-errors red-txt'></div>"+
 		   "         </div>"+
 		   "   </div>"+
-		   "   <div class='numeric__row' id='"+(parseInt(v)+2)+"'>"+
+		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+2)+"'>"+
 		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
-		   "      <div class='form-group sm-selection'>"+
+		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
 		   "            <option value=''>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
@@ -4419,9 +4420,9 @@ function addVariable(item){
 	var v= total+2;
 	var parent_index = parseInt($(item).attr('parentIndex'));
 	var count = parseInt($("#rootId"+parent_index+" .numeric__row").length);
-	var addVar = "<div class='numeric__row' id='"+v+"'>"+
+	var addVar = "<div class='numeric__row display__flex__base' id='"+v+"'>"+
 				 "   <span>V"+v+" =</span>"+
-				 "   <div class='form-group sm-selection'>"+
+				 "   <div class='form-group sm-selection' style='margin-left: 18px;'>"+
 				 "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputType' id='inputTypeId"+(parseInt(v))+count+"' index='"+(parseInt(v))+"' count='"+count+"' onchange='addFunctions(this);' required>"+
 				 "         <option value=''>Select</option>"+
 				 "         <option value='C'>Constant</option>"+
