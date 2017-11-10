@@ -2420,7 +2420,7 @@ $(document).ready(function(){
     });
     
     $("#continuesScaleMinValueId").blur(function(){
-    	console.log("continue scale");
+    	
     	var value= $("#continuesScaleMinValueId").val();
     	var maxValue = $("#continuesScaleMaxValueId").val();
     	$("#continuesScaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
@@ -2675,7 +2675,7 @@ $(document).ready(function(){
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
-                    console.log("id:"+id);
+                   
                     $("#"+id).val('');
                     $('.textLabel'+id).text("Change");
                 } else {
@@ -2684,7 +2684,7 @@ $(document).ready(function(){
                     $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload.</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
-                    console.log("else id:"+id);
+                    
                     $("#"+id).val('');
                     $("#"+$(thisAttr).attr("id")).val('');
                     $('.textLabel'+id).text("Upload");
@@ -2803,7 +2803,6 @@ $(document).ready(function(){
     })
     $("#validationCharactersId").change(function(e){
     	var value = $(this).val();
-    	var regexp = "";
     	$("#validationExceptTextId").val('');
     	addRegEx(value);
     });
@@ -2822,7 +2821,7 @@ function addRegEx(value){
         });
 	}else if(value == "numbers"){
 		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
-			var node = $(this);/* /^[0-9\b]+$/ */
+			var node = $(this);
 		    node.val(node.val().replace(/[^0-9|\s]+$/,'')); 
         });
 	}else if(value == "alphabetsandnumbers"){
@@ -4198,8 +4197,10 @@ function addFunctions(item){
 	var total = parseInt($('.numeric__row').length);
 	var v= total+1;
 	$(item).find('input').addClass("add_var_hide");
+	
 	$("#constantValId"+index+count).addClass('add_var_hide');	
 	$("#constantValId"+index+count).attr('required',false);
+	
 	var rowCount = parseInt($('.numeric__section').length);
 	$("#inputSubTypeValueId"+index).val('');
 	if(value === "F"){
@@ -4273,10 +4274,6 @@ function addFunctions(item){
 		"<div class='clearfix'></div>";
 		$(".numeric__section:last").after(addFunction);
 		$('.selectpicker').selectpicker('refresh');
-		$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
-	    $(".numeric__loop").parent().find(".help-block").empty();
-		$(".numeric__loop").parents("form").validator("destroy");
-		$(".numeric__loop").parents("form").validator();
 	}else if(value === "C"){
 		$("#constantValId"+index+count).removeClass('add_var_hide');
 		$("#constantValId"+index+count).val('');
@@ -4330,6 +4327,10 @@ function addFunctions(item){
 			$("#inputTypeErrorValueId"+index).html('RDE (x) should be used only once.');
 		}
 	}
+	$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
+    $(".numeric__loop").parent().find(".help-block").empty();
+	$(".numeric__loop").parents("form").validator("destroy");
+	$(".numeric__loop").parents("form").validator();
 	$('.constant').change(function(){
     	var index=$(this).attr('index');
     	var value = $(this).val();
@@ -4416,11 +4417,8 @@ function validateSingleResponseDataElement(){
 		if(noofrows > 1){
 			$('.numeric__section').each(function(i){
 			    var index =  $("#inputTypeValueId"+i).attr('index');
-			    console.log("index"+index +" i:"+i);
 			    var rootId = "rootId"+index;
 			    var parent_input = $("#inputTypeValueId"+i).val();
-				console.log("parent_input:"+parent_input);
-				console.log("responseDataElementArray:"+responseDataElementArray);
 				$('#'+rootId+' .numeric__row').each(function(j){
 					var id = $(this).attr("id");
 					var val  = $("#inputTypeId"+id+j).val();
@@ -4438,7 +4436,6 @@ function validateSingleResponseDataElement(){
 				   }
 				});
 			});
-			console.log("isSingle:"+isSingle);
 			return isSingle;
 		}else{
 			$('#rootId1 .numeric__row').each(function(j){
@@ -4497,7 +4494,7 @@ function deleteChildElements(index,type){
 }
 var f="";
 var i=0;
-function makeAFormula(index){
+function makeAFormula(index,isRecursive){
 		var rootId = "rootId"+index;
 		var root_value = $("#rootId"+index).find('select').val();
 		var subroot_length = $('#'+rootId+' .numeric__row').length-1;
@@ -4506,29 +4503,48 @@ function makeAFormula(index){
 				var id = $(this).attr("id");
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
 				var input_type=$("#inputTypeId"+id+j).val();
-				console.log("input_type:"+input_type);
 				if(input_type != 'F'){
-					if(j==0){
-						f += "("+input_type_value+root_value;	
-					}else if(j == subroot_length){
-						f += input_type_value+")";
-					}/* else{
-						f += input_type_value+root_value;
-					} */
+					if(!isRecursive){
+						if(j==0){
+							f+=input_type_value+root_value;
+						}else{
+							f+=input_type_value;
+						}
+					}
 				}else{
-					makeAFormula(id);
+					makeAFormula(id,true);
 					if(j==0){
-						f += root_value;	
+						f+=makeFunction(id)+root_value;
+					}else{
+						f+=makeFunction(id);
 					}
 					
-					//f +=")";
 				}
-				console.log("###########");
 			});
 		}else{
 			f = $("#inputSubTypeValueId"+index).val();
 		}
 	return f;
+}
+function makeFunction(index){
+	var rootId = "rootId"+index;
+	var root_value = $("#rootId"+index).find('select').val();
+	var i="";
+	var subroot_length = $('#'+rootId+' .numeric__row').length-1;
+	$('#'+rootId+' .numeric__row').each(function(j){
+		var id = $(this).attr("id");
+		var input_type_value = $("#inputSubTypeValueId"+id).val();
+		var input_type=$("#inputTypeId"+id+j).val();
+		if(j==0){
+			i += "("+input_type_value+root_value;	
+		}else if(j==subroot_length) {
+			i += input_type_value+")";
+		}else{
+			i += input_type_value+root_value;
+		}
+		
+	});
+	return i;
 }
 function createFormula(){
 	var mf = $("#inputTypeValueId0").val();
@@ -4536,9 +4552,9 @@ function createFormula(){
 		mf="=";
 	}
 	f="";
-	var lhs = makeAFormula(2);
+	var lhs = makeAFormula(2,false);
 	f="";
-	var rhs = makeAFormula(3);
+	var rhs = makeAFormula(3,false);
 	var formula = lhs+" "+mf+" "+rhs;
 	$(".formula").text(formula);
 	$(".tryFormula").text(formula);
