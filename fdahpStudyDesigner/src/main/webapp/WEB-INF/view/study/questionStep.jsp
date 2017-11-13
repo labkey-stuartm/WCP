@@ -1905,10 +1905,7 @@ $(document).ready(function(){
     	 }else if(resType == "Numeric"){
     		 $("#numericMinValueId").trigger('blur');
     		 $("#numericMaxValueId").trigger('blur');
-    	 }else if(resType == "Text Scale"){
-    		 $("#textScalePositionId").trigger('blur');
     	 }
-    	 
     	 if(isFromValid("#questionStepId")){
     		  $("body").addClass("loading");
     		  var placeholderText ='';
@@ -2008,12 +2005,10 @@ $(document).ready(function(){
     	   			}else{
     	   				if(maxImagePath == '' && (maxImageFile == '' || typeof maxImageFile == 'undefined' || maxImageFile == null)){
     	   					if(resType == "Continuous Scale"){
-    	   						$("#continuesScaleMaxImagePathId").focus();
     	   					 	$("#continuesScaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                     	$("#continuesScaleMaxImagePathId").parent().find(".help-block").empty();
     	                        $("#continuesScaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
     	                    }else{
-    	                    	$("#scaleMaxImagePathId").focus();
     	                    	$("#scaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                        $("#scaleMaxImagePathId").parent().find(".help-block").empty();
     	                        $("#scaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
@@ -2021,12 +2016,10 @@ $(document).ready(function(){
     	   				  }
     	     			  if(minImagePath == '' && (minImageFile == '' || typeof minImageFile == 'undefined' || minImageFile == null)){
     	     				 if(resType == "Continuous Scale"){
-    	     					 $("#continuesScaleMinImagePathId").focus();
     	     					 $("#continuesScaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").empty();
     	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
     	                     }else{
-    	                    	 $("#scaleMinImagePathId").focus();
     	                    	 $("#scaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
     	                         $("#scaleMinImagePathId").parent().find(".help-block").empty();
     	                         $("#scaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");   
@@ -2037,7 +2030,19 @@ $(document).ready(function(){
     	   				$("body").removeClass("loading");
     	   		 }
     		  }else if(resType == 'Text Scale'){
+    			  var count = $('.text-scale').length;
     			  stepText =  $("#textScalePositionId").val();
+    			  if(stepText != ''){
+    				  if(stepText != '' && stepText >= 1 && stepText <= count){
+    	 	    			 isValid = true;
+    	 	    	  }else{
+    	 	    			 isValid  = false;
+    	 	    			$("#textScalePositionId").focus();
+    	 	    			 stepText="";
+    	 	    	   }	  
+    			  }else{
+    				  isValid = true;
+    			  }
     		  }
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
@@ -2624,7 +2629,7 @@ $(document).ready(function(){
         		$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
                 $("#textScalePositionId").parent().find(".help-block").empty();
         	}else{
-        	     $("#textScalePositionId").val('');
+        	     //$("#textScalePositionId").val('');
         		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
                  $("#textScalePositionId").parent().find(".help-block").empty();
                  $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices</li></ul>");
@@ -2750,7 +2755,7 @@ $(document).ready(function(){
   				if(message == "SUCCESS"){
   					$('#lhsValueId').html("<b>"+formulaResponseJsonObject.lhsData+"</b>");
   					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
-		            if (formulaResponseJsonObject.outPutData =='true') {
+		            if (formulaResponseJsonObject.outPutData =='true' || formulaResponseJsonObject.outPutData =='True') {
 		              $('#outputId').html("<span class='gtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
 		            }else{
 		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
