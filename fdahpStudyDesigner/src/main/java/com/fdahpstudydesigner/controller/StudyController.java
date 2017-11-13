@@ -1650,8 +1650,10 @@ public class StudyController {
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyId);
 					if(StringUtils.isNotEmpty(consentStudyId)){
 						consentInfoBoList = studyService.getConsentInfoDetailsListByStudyId(consentStudyId);
+						consentBo = studyService.getConsentDetailsByStudyId(consentStudyId);
 					}else{
 						consentInfoBoList = studyService.getConsentInfoDetailsListByStudyId(studyId);
+						consentBo = studyService.getConsentDetailsByStudyId(studyId);
 					}	
 					if( null != consentInfoBoList && !consentInfoBoList.isEmpty()){
 						map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoBoList);
@@ -1661,8 +1663,6 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 					
-					//get consentId if exists for studyId
-					consentBo = studyService.getConsentDetailsByStudyId(studyId);
 					if( consentBo != null){
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
 						map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());

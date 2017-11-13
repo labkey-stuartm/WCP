@@ -716,7 +716,7 @@ function isNumberKey(evt)
 	            	<div class="col-md-6 p-none">
 		               <div class="gray-xs-f mb-xs">Invalid Message  (1 to 200 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text to be presented to the user when invalid input is received."></span></div>
 		               <div class="form-group">
-		                  <textarea class="form-control <c:if test="${not empty questionsBo.questionReponseTypeBo.validationCondition}">TextRequired</c:if>" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="Invalid Input. Please try again." maxlength="200" >${fn:escapeXml(questionsBo.questionReponseTypeBo.invalidMessage)}</textarea>
+		                  <textarea class="form-control <c:if test="${not empty questionsBo.questionReponseTypeBo.validationCondition}">TextRequired</c:if>" rows="4" name="questionReponseTypeBo.invalidMessage" id="invalidMessageId" placeholder="" maxlength="200" >${fn:escapeXml(questionsBo.questionReponseTypeBo.invalidMessage)}</textarea>
 		                  <div class="help-block with-errors red-txt"></div>
 		               </div>
 		            </div>
@@ -2268,8 +2268,37 @@ $(document).ready(function(){
     $("#validationCharactersId").change(function(e){
     	var value = $(this).val();
     	$("#validationExceptTextId").val('');
+    	addRegEx(value)
     });
+    var valicationCharacterValue = "${questionsBo.questionReponseTypeBo.validationCharacters}";
+    if(valicationCharacterValue != '' && valicationCharacterValue != null && typeof valicationCharacterValue !='undefined'){
+    	addRegEx(valicationCharacterValue);
+    }
 });
+function addRegEx(value){
+	$("#validationExceptTextId").unbind("keyup blur");
+	if(value == "alphabets"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+		    node.val(node.val().replace(/[^a-zA-Z|\s]/g,'')); 
+        });
+	}else if(value == "numbers"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+		    node.val(node.val().replace(/[^0-9|\s]+$/,'')); 
+        });
+	}else if(value == "alphabetsandnumbers"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+			node.val(node.val().replace(/[^a-zA-Z0-9|\s]/g,'')); 
+        });
+	}else if(value == "specialcharacters"){
+		$("#validationExceptTextId" ).bind('keyup blur',function(){ 
+			var node = $(this);
+		    node.val(node.val().replace(/[a-zA-Z0-9\s]/g,'')); 
+        });
+	}
+}
 //Displaying images from file upload 
 function readURL(input) {
     
