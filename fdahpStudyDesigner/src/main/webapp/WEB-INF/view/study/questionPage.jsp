@@ -646,7 +646,7 @@ function isNumberKey(evt)
            		<div class="clearfix"></div>
 	            <div class="row mt-lg">
 	               <div class="col-md-6 pl-none">
-	                  <div class="col-md-8 col-lg-8 p-none">
+	                  <div class="col-md-12 col-lg-12 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder (1 to 40 characters) <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${fn:escapeXml(
@@ -680,34 +680,33 @@ function isNumberKey(evt)
 			                     </div>
 			                     <div class="help-block with-errors red-txt"></div>
 		                     </div>
-		                     <div class="col-md-3">
+		                     <div class="col-md-3 pr-none pr-xs">
 			                     <div class="form-group">
-			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionsBo.questionReponseTypeBo.validationCondition}">TextRequired</c:if>" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>
-							         <option value=''>select</option>
-							         <option value="allcharacters" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
-							         <option value="alphabets" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
-							         <option value="numbers" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
-							         <option value="alphabetsandnumbers" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'alphabetsandnumbers' ? 'selected' :''}>alphabets and numbers</option>
-							         <option value="specialcharacters" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'specialcharacters' ? 'selected' :''}>special characters</option>
-							       </select>                
-							       <div class="help-block with-errors red-txt"></div>    
+          			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionsBo.questionReponseTypeBo.validationCondition}">TextRequired</c:if>" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>
+          							         <option value=''>select</option>
+          							         <option value="allcharacters" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
+          							         <option value="alphabets" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
+          							         <option value="numbers" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
+          							         <option value="alphabetsandnumbers" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'alphabetsandnumbers' ? 'selected' :''}>alphabets and numbers</option>
+          							         <option value="specialcharacters" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'specialcharacters' ? 'selected' :''}>special characters</option>
+          							       </select>                
+							                 <div class="help-block with-errors red-txt"></div>    
 			                     </div>
 			                     
 		                     </div>
-		                     <div class="col-md-1">
-			                     <div class="form-group">
-			    					<div class="mt-xs">except</div>
+		                     <div class="col-md-6">
+			                     <div class="form-group float__left">
+			    					          <div class="mt-xs mr-md float__left">except</div>
 			                     </div>
+                            <div class="float__left">
+                           <div class="form-group">
+                    <textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>${questionsBo.questionReponseTypeBo.validationExceptText}</textarea>
+                           </div>
+                           <div class="help-block with-errors red-txt"></div>
+                         </div>
+                         <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
 		                     </div>
-		                     <div class="col-md-4">
-			                     <div class="form-group">
-			    					<textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>${questionsBo.questionReponseTypeBo.validationExceptText}</textarea>
-			                     </div>
-			                     <div class="help-block with-errors red-txt"></div>
-		                     </div>
-		                     <div class="col-md-1">
-			    				<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
-		                     </div>
+			    				
 		                  </div>
 		            </div>
 	            </div>
@@ -755,8 +754,8 @@ function isNumberKey(evt)
 	            </div>
            </div>
            <div id="Timeinterval" style="display: none;">
-	           <div class="row mt-sm">
-	           	<div class="col-md-6 pl-none">
+	           <div class="row mt-sm display__flex__center">
+	           	<div class="col-md-2 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
@@ -764,7 +763,7 @@ function isNumberKey(evt)
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	            </div>
-	            <div class="col-md-6">
+	            <div class="col-md-2">
 	               <div class="gray-xs-f mb-xs">Default Value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The default value to be seen by the participant on the time interval picker widget."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90 clock"  name="questionReponseTypeBo.defaultTime" id="timeIntervalDefaultId" value="${questionsBo.questionReponseTypeBo.defaultTime}">
@@ -772,6 +771,7 @@ function isNumberKey(evt)
 	               </div>
 	            </div>
 	         </div>
+           <div class="clearfix"></div>
           </div>
           <div id="Numeric" style="display: none;">
           	<div class="mt-lg">
