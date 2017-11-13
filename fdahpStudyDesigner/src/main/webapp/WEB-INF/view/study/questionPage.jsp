@@ -673,7 +673,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pl-none">
 			                     <div class="form-group">
 			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
-							         <option value=''>select</option>
+							         <option value='' disabled selected>Select</option>
 							         <option value="allow" ${questionsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
 							         <option value="disallow" ${questionsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
 							       </select>                    
@@ -683,7 +683,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pr-none pr-xs">
 			                     <div class="form-group">
           			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionsBo.questionReponseTypeBo.validationCondition}">TextRequired</c:if>" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>
-          							         <option value=''>select</option>
+          							         <option value='' disabled selected>Select</option>
           							         <option value="allcharacters" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
           							         <option value="alphabets" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
           							         <option value="numbers" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>

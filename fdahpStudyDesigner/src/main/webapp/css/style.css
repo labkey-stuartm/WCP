@@ -264,9 +264,9 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     background-color: #fff;    
 }
 
-.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+/*.bootstrap-select.btn-group .dropdown-toggle .filter-option{
 	color:rgba(0, 0, 0, 0.53) !important;
-}
+}*/
 
 .error_msg{
     color: #eb3941;
@@ -452,6 +452,8 @@ div.mce-edit-area{
 
 .red-txt{
     color: #eb3941 !important;
+    font-weight: normal !important;
+    font-size: 11px !important;
 }
 
 .has-error input,.has-error textarea{
@@ -471,7 +473,7 @@ div.mce-edit-area{
 
 .help-block ul{
     position: absolute;
-    font-size: 11px;
+    font-size: 11px !important;
     line-height: 12px;
     margin: 0px;
 }
@@ -1969,6 +1971,14 @@ option:first-child {
     vertical-align: top;
 }
 
+
+/*#condtionalBranchingId .sm__in{
+    width:114px;
+}*/
+.numeric__define > div.sm-selection {
+    width: 100px !important;
+}
+
 .cursor-none-disabled-event {
 	background-color: #eee !important ;
     opacity: 1 !important ;
@@ -2101,7 +2111,7 @@ option:first-child {
     height:32px;
 }
 #outputId span b{
-    text-transform: capitalize;
+    text-transform: capitalize !important;
 }
 /*.numeric__row{
     display: flex;
@@ -2113,9 +2123,29 @@ option:first-child {
 .numeric__row >span{
     width:50px;
 }
-.numeric__form .sm__in  help-block{
+.sm__in  .help-block{
     width:130px;
 }
+
+.sm-selection .help-block{
+    width:160px;
+}
+
+/*select:required:invalid {
+  color: red;
+}
+option[value=""][disabled] {
+  display: none;
+}
+option {
+  color: green;
+}*/
+
+.bootstrap-select.btn-group .dropdown-toggle.bs-placeholder .filter-option{
+    color:rgba(124, 113, 113, 0.67);
+   /* color:red;*/
+}
+
 
 /*common*/
 .text-right{
