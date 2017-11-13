@@ -777,8 +777,8 @@ function isNumberKey(evt)
 	            </div>
            </div>
            <div id="Timeinterval" style="display: none;">
-	           <div class="row mt-lg">
-	           	<div class="col-md-6 pl-none">
+	           <div class="row mt-lg display__flex__center">
+	           	<div class="col-md-2 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
@@ -786,7 +786,7 @@ function isNumberKey(evt)
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	            </div>
-	            <div class="col-md-6">
+	            <div class="col-md-2">
 	               <div class="gray-xs-f mb-xs">Default Value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The default value to be seen by the participant on the time interval picker widget."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90 clock"  name="questionReponseTypeBo.defaultTime" id="timeIntervalDefaultId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultTime}">

@@ -2135,4 +2135,8 @@ option:first-child {
     display: flex;
     align-items: baseline;
 }
+.display__flex__center{
+    display: flex;
+    align-items: center;
+}
 /*common*/
