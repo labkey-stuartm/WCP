@@ -1427,11 +1427,11 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
     	}
     	var maximumFailure = $('#maximumFailureId').val();
-    	if(value && parseInt(maximumFailure) > parseInt($(this).val())){
+    	if(value && parseInt(maximumFailure) >= parseInt($(this).val())){
     		$('#maximumFailureId').val('');
    		    $('#maximumFailureId').parent().addClass("has-danger").addClass("has-error");
             $('#maximumFailureId').parent().find(".help-block").empty();
-            $('#maximumFailureId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+            $('#maximumFailureId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always < Maximum tests</li></ul>");
     	}
     });
     $("#maximumFailureId").blur(function(){	
@@ -1445,11 +1445,11 @@ $(document).ready(function(){
             $(this).parent().find(".help-block").empty();
             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
     	}
-    	if(maxmimunTestVal && parseInt($(this).val()) > parseInt(maxmimunTestVal)){
+    	if(maxmimunTestVal && parseInt($(this).val()) >= parseInt(maxmimunTestVal)){
     		$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always < Maximum tests</li></ul>");
     	}
     });
     
