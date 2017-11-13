@@ -981,9 +981,9 @@ public class FdahpStudyDesignerUtil {
     		}
     		if(result!=null){
     			if(result.intValue() == 1){
-    				formulaInfoBean.setOutPutData("true");
+    				formulaInfoBean.setOutPutData("True");
     			}else{
-    				formulaInfoBean.setOutPutData("false");
+    				formulaInfoBean.setOutPutData("False");
     			}
     			formulaInfoBean.setLhsData(operand1);
     			formulaInfoBean.setRhsData(operand2);

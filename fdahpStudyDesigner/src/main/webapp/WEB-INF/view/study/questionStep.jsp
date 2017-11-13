@@ -2753,7 +2753,7 @@ $(document).ready(function(){
   				if(message == "SUCCESS"){
   					$('#lhsValueId').html("<b>"+formulaResponseJsonObject.lhsData+"</b>");
   					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
-		            if (formulaResponseJsonObject.outPutData =='true') {
+		            if (formulaResponseJsonObject.outPutData =='true' || formulaResponseJsonObject.outPutData =='True') {
 		              $('#outputId').html("<span class='gtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
 		            }else{
 		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
