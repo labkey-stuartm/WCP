@@ -696,15 +696,15 @@ function isNumberKey(evt)
 		                     <div class="gray-xs-f mb-xs">Special Validations<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span></div>
 		                     <div class="col-md-3 pl-none">
 			                     <div class="form-group">
-			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
-							         <option value=''>Select</option>
-							         <option value="allow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
-							         <option value="disallow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
-							       </select>                    
+          			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
+          							         <option value=''>Select</option>
+          							         <option value="allow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
+          							         <option value="disallow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
+          							       </select>                    
 			                     </div>
 			                     <div class="help-block with-errors red-txt"></div>
 		                     </div>
-		                     <div class="col-md-3">
+		                     <div class="col-md-3 pr-none pr-xs">
 			                     <div class="form-group">
 			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if>>
 							         <option value=''>Select</option>
@@ -722,7 +722,7 @@ function isNumberKey(evt)
 			    					            
 			                     </div>
 		                     </div> -->
-		                     <div class="col-md-6 pl-none">
+		                     <div class="col-md-6">
                             <div class="mt-xs mr-md float__left">except</div>
 			                      <div class="form-group float__left">
                               
@@ -1201,26 +1201,26 @@ function isNumberKey(evt)
                </div>
           </div>
          <div class="clearfix"></div>
-         <div class="gray-choice-f mb-xs mt-md">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span></div>
-		 <%-- <div class="row">
-		   <div class="col-md-3 pl-none">
-		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
-		   </div>
-		  <!--  <div class="col-md-2 pl-none">
-		      <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
-		   </div>  -->
-		   <div class="col-md-3 pl-none">
-		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
-		   </div>
-		   <div class="col-md-2 pl-none">
-		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
-		   </div>
-		   <c:if test="${questionnaireBo.branching}">
-		      <div class="col-md-2 pl-none">
-		         <div class="gray-xs-f mb-xs">Destination Step  </div>
-		      </div>
-		   </c:if>
-		 </div> --%>
+         <div class="gray-choice-f mb-xs mt-md">Text Choices (dddddddd)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span></div>
+      		 <%-- <div class="row">
+      		   <div class="col-md-3 pl-none">
+      		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+      		   </div>
+      		  <!--  <div class="col-md-2 pl-none">
+      		      <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
+      		   </div>  -->
+      		   <div class="col-md-3 pl-none">
+      		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
+      		   </div>
+      		   <div class="col-md-2 pl-none">
+      		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
+      		   </div>
+      		   <c:if test="${questionnaireBo.branching}">
+      		      <div class="col-md-2 pl-none">
+      		         <div class="gray-xs-f mb-xs">Destination Step  </div>
+      		      </div>
+      		   </c:if>
+      		 </div> --%>
          <div class="TextChoiceContainer">
          	<c:choose>
 				<c:when test="${questionnairesStepsBo.questionsBo.responseType eq 6 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
