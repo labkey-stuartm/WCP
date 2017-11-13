@@ -4493,7 +4493,6 @@ function deleteChildElements(index,type){
 	}
 }
 var f="";
-var i=0;
 function makeAFormula(index,isRecursive){
 		var rootId = "rootId"+index;
 		var root_value = $("#rootId"+index).find('select').val();
@@ -4506,19 +4505,22 @@ function makeAFormula(index,isRecursive){
 				if(input_type != 'F'){
 					if(!isRecursive){
 						if(j==0){
-							f+=input_type_value+root_value;
+							f += "("+input_type_value+root_value;	
+						}else if(j==subroot_length){
+							f += input_type_value+")";
 						}else{
-							f+=input_type_value;
+							f += input_type_value+root_value;	
 						}
+						isRecursive = false;
 					}
 				}else{
-					makeAFormula(id,true);
 					if(j==0){
-						f+=makeFunction(id)+root_value;
+						f+="("+makeFunction(id)+root_value;
+					}else if(j==subroot_length){
+						f+=makeFunction(id)+")";
 					}else{
-						f+=makeFunction(id);
+						f+=makeFunction(id)+root_value;
 					}
-					
 				}
 			});
 		}else{
@@ -4535,14 +4537,18 @@ function makeFunction(index){
 		var id = $(this).attr("id");
 		var input_type_value = $("#inputSubTypeValueId"+id).val();
 		var input_type=$("#inputTypeId"+id+j).val();
-		if(j==0){
-			i += "("+input_type_value+root_value;	
-		}else if(j==subroot_length) {
-			i += input_type_value+")";
+		if(input_type != 'F'){
+			if(j==0){
+				i += "("+input_type_value+root_value;	
+			}else if(j==subroot_length){
+				i += input_type_value+")";
+			}else{
+				i += input_type_value+root_value;
+			}
 		}else{
-			i += input_type_value+root_value;
+			var k = makeFunction(id);
+			i+=k+")";
 		}
-		
 	});
 	return i;
 }
