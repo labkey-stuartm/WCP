@@ -191,7 +191,7 @@
                    <input type="hidden" name="taskAttributeValueBos[7].attributeValueId" value="">
                    <input type="hidden" name="taskAttributeValueBos[7].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                    <input type="hidden" name="taskAttributeValueBos[7].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">    
-                   <div class="bullets black-md-f pt-md"><div>${taskMasterAttributeBo.displayName}</div></div>
+                   <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
 					<div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
 						<div class="chartSection" style="display: none">
 							<div class="mb-lg">
