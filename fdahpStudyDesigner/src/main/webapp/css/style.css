@@ -1705,10 +1705,10 @@ height:0px !important;
 	margin-top:8px;
 }
 
-#questionStep .image-choice:last-child .addBtnDis,#questionStep .value-picker:last-child .addBtnDis,#questionStep .text-choice:last-child .addBtnDis,#questionStep .text-scale:last-child .addBtnDis {
+#questionStep .image-choice:last-child .addBtnDis,#questionStep .value-picker:last-child .addBtnDis,#questionStep .addBtnDis,#questionStep .text-scale:last-child .addBtnDis {
     margin-top: -8px;
 }
-#questionPage .image-choice:last-child .addBtnDis,#questionPage .value-picker:last-child .addBtnDis,#questionPage .text-choice:last-child .addBtnDis,#questionPage .text-scale:last-child .addBtnDis{
+#questionPage .image-choice:last-child .addBtnDis,#questionPage .value-picker:last-child .addBtnDis,#questionPage .addBtnDis,#questionPage .text-scale:last-child .addBtnDis{
 	margin-top:-7px;
 }
 
@@ -2152,6 +2152,12 @@ option {
 }
 .add_var_show{
     display:block;
+}
+#questionStep .text-choice:last-child .addBtnDis{
+    margin-top:0;
+}
+#questionPage .text-choice:last-child .addBtnDis{
+    margin-top:0;
 }
 
 /*common*/

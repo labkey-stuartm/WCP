@@ -1111,21 +1111,21 @@ function isNumberKey(evt)
 						 <!-- Section Start  -->
 						   <div class="text-choice mt-xlg" id="${subtype.index}">
 						      <input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
-							  <div class="txtchoice_section1">
+							  <div class="col-md-3 pl-none">
 						         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 						         <div class="form-group mb-none">
 						            <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 						            <div class="help-block with-errors red-txt"></div>
 						         </div>
 						      </div>
-						      <div class="txtchoice_section2">
+						      <div class="col-md-3 pl-none">
 						         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
 						         <div class="form-group mb-none">
 						            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						            <div class="help-block with-errors red-txt"></div>
 						         </div>
 						      </div>
-						      <div class="txtchoice_section3">
+						      <div class="col-md-2 pl-none">
 						         <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 						         <div class="form-group">
 						            <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> >
@@ -1135,16 +1135,18 @@ function isNumberKey(evt)
 						            <div class="help-block with-errors red-txt"></div>
 						         </div>
 						      </div>      
-						      <div class="txtchoice_section5">
-						         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
-						         <div class="form-group">					     
-						            <textarea class="form-control" name="questionResponseSubTypeList[${subtype.index}].description" id="displayTextChoiceDescription${subtype.index}" value="${fn:escapeXml(questionResponseSubType.description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
-						         </div>
-						      </div>
-						      <div class="txtchoice_section6">
-								 <span class="addBtnDis addbtn align-span-center top6" onclick='addTextChoice();'>+</span>
-								 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm" onclick='removeTextChoice(this);'></span>        
-						      </div>
+                  <div class="col-md-12 p-none display__flex__center">
+  						      <div class="col-md-10 pl-none">
+  						         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
+  						         <div class="form-group">					     
+  						            <textarea class="form-control" name="questionResponseSubTypeList[${subtype.index}].description" id="displayTextChoiceDescription${subtype.index}" value="${fn:escapeXml(questionResponseSubType.description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
+  						         </div>
+  						      </div>
+  						      <div class="col-md-2 pl-none">
+  								 <span class="addBtnDis addbtn align-span-center top6" onclick='addTextChoice();'>+</span>
+  								 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm" onclick='removeTextChoice(this);'></span>        
+  						      </div>
+                  </div>
 						   </div>
 						   <!-- Section End  -->
 					</c:forEach>
@@ -1152,21 +1154,21 @@ function isNumberKey(evt)
 				<c:otherwise>
 					 <!-- Section Start  -->
 					   <div class="text-choice mt-xlg" id="0">
-						  <div class="txtchoice_section1">
+						  <div class="col-md-3 pl-none">
 					         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 					         <div class="form-group mb-none">
 					            <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
-					      <div class="txtchoice_section2">
+					      <div class="col-md-3 pl-none">
 					         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
 					         <div class="form-group mb-none">
 					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
-					      <div class="txtchoice_section3">
+					      <div class="col-md-2 pl-none">
 					         <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 					         <div class="form-group">
 					             <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive" <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> >
@@ -1175,35 +1177,37 @@ function isNumberKey(evt)
 						          </select>
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
-					      </div>      
-					      <div class="txtchoice_section5">
-					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) <span class="requiredStar">*</span> </div>
-					         <div class="form-group">					     
-					            <textarea class="form-control" name="questionResponseSubTypeList[0].description" id="displayTextChoiceDescription0" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
-					         </div>
-					      </div>
-					      <div class="txtchoice_section6">
-							 <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
-							 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm" onclick='removeTextChoice(this);'></span>        
-					      </div>
+					      </div> 
+                <div class="col-md-12 p-none display__flex__center">     
+  					      <div class="col-md-10 pl-none">
+  					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) <span class="requiredStar">*</span> </div>
+  					         <div class="form-group">					     
+  					            <textarea class="form-control" name="questionResponseSubTypeList[0].description" id="displayTextChoiceDescription0" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
+  					         </div>
+  					      </div>
+  					      <div class="col-md-2 pl-none">
+  							 <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+  							 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm" onclick='removeTextChoice(this);'></span>       
+  					      </div>
+                </div>
 					   </div>
 					   <!-- Section End  -->
 					   <div class="text-choice mt-xlg" id="1">
-						  <div class="txtchoice_section1">
+						  <div class="col-md-3 pl-none">
 					         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 					         <div class="form-group mb-none">
 					            <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
-					      <div class="txtchoice_section2">
+					      <div class="col-md-3 pl-none">
 					         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
 					         <div class="form-group mb-none">
 					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
-					      <div class="txtchoice_section3">
+					      <div class="col-md-2 pl-none">
 					         <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span> </div>
 					         <div class="form-group">
 					             <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive" <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> >
@@ -1212,17 +1216,19 @@ function isNumberKey(evt)
 						          </select>
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
-					      </div>      
-					      <div class="txtchoice_section5">
-					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) <span class="requiredStar">*</span> </div>
-					         <div class="form-group">					     
-					            <textarea class="form-control" name="questionResponseSubTypeList[1].description" id="displayTextChoiceDescription1" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
-					         </div>
-					      </div>
-					      <div class="txtchoice_section6">
-							 <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
-							 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm" onclick='removeTextChoice(this);'></span>        
-					      </div>
+					      </div>  
+                <div class="col-md-12 p-none display__flex__center">    
+  					      <div class="col-md-10 pl-none">
+  					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) <span class="requiredStar">*</span> </div>
+  					         <div class="form-group">					     
+  					            <textarea class="form-control" name="questionResponseSubTypeList[1].description" id="displayTextChoiceDescription1" value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}" maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
+  					         </div>
+  					      </div>
+  					      <div class="col-md-2 pl-none">
+  							 <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+  							 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm" onclick='removeTextChoice(this);'></span>        
+  					      </div>
+                </div>
 					   </div>
 					   <!-- Section End  -->
 				</c:otherwise>
@@ -3086,21 +3092,21 @@ function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
 	var newTextChoice = "<div class='text-choice mt-xlg' id='"+choiceCount+"'>"+     
-						  "<div class='txtchoice_section1'>"+
+						  "<div class='col-md-3 pl-none'>"+
 					    "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"+
 					    "   <div class='form-group mb-none'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextChoiceText"+choiceCount+"'  maxlength='100' required>"+
 					    "      <div class='help-block with-errors red-txt'></div>"+
 					    "   </div>"+
 					    "</div>"+
-					    "<div class='txtchoice_section2'>"+
+					    "<div class='col-md-3 pl-none'>"+
 					    "   <div class='gray-xs-f mb-xs'>Value (1 to 50 characters)<span class='requiredStar'>*</span> </div>"+
 					    "   <div class='form-group mb-none'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
 					    "      <div class='help-block with-errors red-txt'></div>"+
 					    "   </div>"+
 					    "</div>"+
-					    "<div class='txtchoice_section3'>"+
+					    "<div class='col-md-2 pl-none'>"+
 					    "   <div class='gray-xs-f mb-xs'>Mark as exclusive ? <span class='requiredStar'>*</span> </div>"+
 					    "   <div class='form-group'>";
 						if(selectionStyle == 'Single'){
@@ -3115,16 +3121,16 @@ function addTextChoice(){
 					    "   </div>"+
 					    "</div> "; 
 						  newTextChoice += 	  
-					    "<div class='txtchoice_section5'>"+
+					    "<div class='col-md-12 p-none display__flex__center'><div class='col-md-10 pl-none'>"+
 					    "   <div class='gray-xs-f mb-xs'>Mark as exclusive ? <span class='requiredStar'>*</span> </div>"+
 					    "   <div class='form-group'>					     "+
 					    "      <textarea class='form-control' name='questionResponseSubTypeList["+choiceCount+"].description' id='displayTextChoiceDescription"+choiceCount+"' maxlength='150'></textarea>"+
 					    "   </div>"+
 					    "</div>"+
-					    "<div class='txtchoice_section6'>"+
+					    "<div class='col-md-2 pl-none'>"+
 						  "	 <span class='addBtnDis addbtn align-span-center top6' onclick='addTextChoice();'>+</span>"+
 						  "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm' onclick='removeTextChoice(this);'></span>        "+
-					    " </div>"+
+					    " </div></div>"+
 					   "</div>";
 	$(".text-choice:last").after(newTextChoice);
 	$('.selectpicker').selectpicker('refresh');

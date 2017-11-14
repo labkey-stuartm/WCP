@@ -308,12 +308,8 @@ $(document).ready(function(){
 		
 		$('#userListTable').DataTable({
 	        "paging":   false,
-	        "aoColumns": [
-			   { "width":'5%',"bSortable": false },
-	           { "width":'35%',"bSortable": true },
-	           { "width":'30%',"bSortable": false },
-	           { "width":'30%',"bSortable": false }
-	          ], 
+             "columns": [
+    { "width": "25%" }],
 	        "emptyTable": "No data available",
 	        "info" : false, 
 	        "lengthChange": true, 
