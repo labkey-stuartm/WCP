@@ -1303,33 +1303,33 @@ $(document).ready(function(){
             	$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
             }
         	if(parseInt($(this).val()) > 20){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan should <= 20  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span should be <= 20  </li></ul>");
     		}
         	var minimumSpanVal = $('#minimumspanId').val();
         	if(minimumSpanVal && (parseInt(minimumSpanVal) > parseInt($(this).val()))){
         		$('#minimumspanId').val('');
        		    $('#minimumspanId').parent().addClass("has-danger").addClass("has-error");
                 $('#minimumspanId').parent().find(".help-block").empty();
-                $('#minimumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+                $('#minimumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= Initial Span</li></ul>");
         	}
         	var maxmimumSpanVal = $('#maximumspanId').val();
         	if(maxmimumSpanVal && (parseInt(maxmimumSpanVal) < parseInt($(this).val()))){
         		$('#maximumspanId').val('');
        		    $('#maximumspanId').parent().addClass("has-danger").addClass("has-error");
                 $('#maximumspanId').parent().find(".help-block").empty();
-                $('#maximumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+                $('#maximumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
         	}
         }else{
         	$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
         }
     });
     $("#minimumspanId").blur(function(){	
@@ -1342,18 +1342,18 @@ $(document).ready(function(){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>");
     		}
     	}else{
     		$('#initialspanId').val('');
    		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
             $('#initialspanId').parent().find(".help-block").empty();
-            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
             
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>");
     	}
     });
     
@@ -1367,23 +1367,23 @@ $(document).ready(function(){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should <= 20  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be <= 20  </li></ul>");
     		}else if(parseInt($(this).val()) < parseInt(initialSpanVal)){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
     		}
     	}else{
     		$('#initialspanId').val('');
    		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
             $('#initialspanId').parent().find(".help-block").empty();
-            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
             
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
     	}
     });
     
@@ -1401,19 +1401,19 @@ $(document).ready(function(){
             	$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
             }
         	if(parseFloat(value) > parseFloat(20)){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be <= 20 seconds  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be <= 20 seconds</li></ul>");
     		}
         }else{
         	$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
         }
     });
     $("#maximumtestId").blur(function(){	
@@ -1424,7 +1424,7 @@ $(document).ready(function(){
     		$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Tests should be >= 1</li></ul>");
     	}
     	var maximumFailure = $('#maximumFailureId').val();
     	if(value && parseInt(maximumFailure) >= parseInt($(this).val())){
@@ -1443,7 +1443,7 @@ $(document).ready(function(){
     		$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Tests should be >= 1</li></ul>");
     	}
     	if(maxmimunTestVal && parseInt($(this).val()) >= parseInt(maxmimunTestVal)){
     		$(this).val('');
