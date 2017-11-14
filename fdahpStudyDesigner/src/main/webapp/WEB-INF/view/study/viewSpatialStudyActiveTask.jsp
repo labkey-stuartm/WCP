@@ -1338,10 +1338,10 @@ $(document).ready(function(){
                 $('#maximumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
         	}
         }else{
-        	$(this).val('');
+        	/* $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>"); */
         }
     });
     $("#minimumspanId").blur(function(){	
@@ -1357,7 +1357,7 @@ $(document).ready(function(){
                 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>");
     		}
     	}else{
-    		$('#initialspanId').val('');
+    		/* $('#initialspanId').val('');
    		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
             $('#initialspanId').parent().find(".help-block").empty();
             $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
@@ -1365,7 +1365,7 @@ $(document).ready(function(){
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>"); */
     	}
     });
     
@@ -1387,7 +1387,7 @@ $(document).ready(function(){
                 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
     		}
     	}else{
-    		$('#initialspanId').val('');
+    		/* $('#initialspanId').val('');
    		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
             $('#initialspanId').parent().find(".help-block").empty();
             $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
@@ -1395,37 +1395,38 @@ $(document).ready(function(){
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>"); */
     	}
     });
     
     $("#playspeedId").blur(function(){
     	var value= $(this).val();
-    	$(this).parent().removeClass("has-danger").removeClass("has-error");
-        $(this).parent().find(".help-block").empty();
+    	$("#playspeedId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#playspeedId").parent().find(".help-block").empty();
+        console.log("playspeedId value:"+value);
         if(value){
         	if(value == '.'){
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a valid number</li></ul>");
+        		$("#playspeedId").val('');
+       		    $("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+                $("#playspeedId").parent().find(".help-block").empty();
+                $("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a valid number</li></ul>");
         	}else if(parseFloat(value) < 0.5){
-            	$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
+            	$("#playspeedId").val('');
+       		    $("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+                $("#playspeedId").parent().find(".help-block").empty();
+                $("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
             }
         	if(parseFloat(value) > parseFloat(20)){
-    			$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be <= 20 seconds</li></ul>");
+    			$("#playspeedId").val('');
+       		    $("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+                $("#playspeedId").parent().find(".help-block").empty();
+                $("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be <= 20 seconds</li></ul>");
     		}
         }else{
-        	$(this).val('');
-   		    $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
+        	//$("#playspeedId").val('');
+   		    //$("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+            //$("#playspeedId").parent().find(".help-block").empty();
+            //$("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
         }
     });
     $("#maximumtestId").blur(function(){	
