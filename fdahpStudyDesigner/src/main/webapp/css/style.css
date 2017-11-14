@@ -1,4 +1,4 @@
-/*
+
 
 Name: 			style.css
 Written by: 	BTC - Maari Vanaraj
@@ -1198,18 +1198,18 @@ height:0px !important;
     opacity: 0;
 }
 
-/*::-webkit-input-placeholder { 
-    color:#7c868d  !important;
+::-webkit-input-placeholder { 
+    color:rgba(124, 113, 113, 0.67);  !important;
     text-overflow: ellipsis; 
 }
 ::-moz-input-placeholder { 
-    color: #7c868d !important; 
+    color: rgba(124, 113, 113, 0.67); !important; 
     text-overflow: ellipsis; 
 }
 :-ms-input-placeholder { 
-    color: #7c868d !important; 
+    color: rgba(124, 113, 113, 0.67); !important; 
     text-overflow: ellipsis; 
-}*/
+}
 .switch-input:disabled ~ .switch-label,  .switch-input:disabled ~ .switch-handle{
 	opacity: 0.6;
     cursor: not-allowed;
@@ -1998,12 +1998,12 @@ option:first-child {
     cursor: pointer;
 }
 
-.add_var_hide{
+/*.add_var_hide{
 	visibility: hidden;
 }
 .add_var_show{
 	visibility: visible;
-}
+}*/
 
 /*.numeric__define > span,.numeric__row span{
 	vertical-align: top;
@@ -2113,10 +2113,6 @@ option:first-child {
 #outputId span b{
     text-transform: capitalize !important;
 }
-/*.numeric__row{
-    display: flex;
-    align-items: baseline;
-}*/
 .filter-option{
     text-transform: capitalize;
 }
@@ -2146,6 +2142,17 @@ option {
    /* color:red;*/
 }
 
+.logout{
+    padding:50px 50px 0;
+    top:0;
+}
+
+.add_var_hide{
+    display:none;
+}
+.add_var_show{
+    display:block;
+}
 
 /*common*/
 .text-right{
@@ -2171,4 +2178,4 @@ option {
     display: flex;
     align-items: center;
 }
-/*common*/
+/*common

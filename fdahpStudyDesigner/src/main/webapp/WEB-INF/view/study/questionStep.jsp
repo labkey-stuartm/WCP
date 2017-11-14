@@ -213,7 +213,7 @@ function isNumberKey(evt)
 	            <div id="healthKitContainerId" style="display: none">
 	            	<div class="col-md-4 p-none">
 		               <div class="gray-xs-f mb-xs">Select a HealthKit quantity data type <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" data-html=true title="- Please select the appropriate HealthKit data type as suited to the question<br>- Please note that only the most recent value available in HealthKit would be read by the app<br>- Access to HealthKit data is subject to the user providing permissions for the app to read the data"></span></div>
-		               <div class="form-group">
+		               <div class="form-group mb-xs">
 		                  <select class="selectpicker elaborateClass healthkitrequireClass" id="healthkitDatatypeId" name="questionsBo.healthkitDatatype" value="${questionnairesStepsBo.questionsBo.healthkitDatatype}">
 		                       <option value="" selected disabled>Select</option>
 			                   <c:forEach items="${healthKitKeysInfo}" var="healthKitKeys">
@@ -1202,7 +1202,7 @@ function isNumberKey(evt)
                </div>
           </div>
          <div class="clearfix"></div>
-         <div class="gray-choice-f mb-xs mt-md">Text Choices (dddddddd)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span></div>
+         <div class="gray-choice-f mb-xs mt-md">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span></div>
       		 <%-- <div class="row">
       		   <div class="col-md-3 pl-none">
       		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
@@ -4212,7 +4212,7 @@ function addFunctions(item){
 	$("#inputSubTypeValueId"+index).val('');
 	if(value === "F"){
 		count = parseInt(count)+1;
-		var addFunction="<div class='numeric__section mt-md' id='rootId"+index+"'>"+
+		var addFunction="<div class='numeric__section' id='rootId"+index+"'>"+
 		   "<div class='numeric__define gray__t'>"+
 		   "   <span>V"+index+"</span>"+
 		   "   <div class='form-group sm-selection'>"+
