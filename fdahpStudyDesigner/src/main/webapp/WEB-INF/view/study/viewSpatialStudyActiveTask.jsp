@@ -60,7 +60,7 @@
 		<c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
 			<c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -76,7 +76,7 @@
 	               </div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -93,7 +93,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					   class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -110,7 +110,7 @@
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					  class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -127,7 +127,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -144,7 +144,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6}">
-				<div class="col-md-3 col-lg-3 p-none">
+				<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -199,8 +199,7 @@
 									type="checkbox"
 									id="${taskMasterAttributeBo.attributeName}_chart_id"
 									name="taskAttributeValueBos[7].addToLineChart" value="option1">
-									<label for="${taskMasterAttributeBo.attributeName}_chart_id">Add
-										to line chart</label>
+									<label for="${taskMasterAttributeBo.attributeName}_chart_id">Add to line chart</label>
 								</span>
 							</div>
 
@@ -209,7 +208,7 @@
 								style="display: none">
 								<div class="pb-lg">
 									<div class="gray-xs-f mt-md mb-sm">
-										Time range for the chart<span class="requiredStar"> *</span> <span
+										Time range for the chart<span class="requiredStar">*</span> <span
 											class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 											title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span>
 									</div>
@@ -350,7 +349,7 @@
 									<div class="help-block with-errors red-txt"></div>
 								</div>
 							</div>
-							<div>
+							<!-- <div>
 								<div class="gray-xs-f mb-sm">Time ranges options available
 									to the mobile app user</div>
 								<div>
@@ -363,7 +362,7 @@
 										class="txt-gray">(Rollback option provided for these
 										three options)</span>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -712,7 +711,7 @@
 									<div class="help-block with-errors red-txt"></div>
 								</div>
 							</div>
-							<div>
+						<!-- 	<div>
 								<div class="gray-xs-f mb-sm">Time ranges options available
 									to the mobile app user</div>
 								<div>
@@ -725,7 +724,7 @@
 										class="txt-gray">(Rollback option provided for these
 										three options)</span>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -877,7 +876,7 @@
 	                        <input type="hidden" name="taskAttributeValueBos[7].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                        <input type="hidden" name="taskAttributeValueBos[7].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                        <input type="hidden" name="taskAttributeValueBos[7].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-	                        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
+	                        <div class="bullets black-md-f pt-md"><div>${taskMasterAttributeBo.displayName}</div></div>
 	                        
 	                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
 	                        <div class="chartSection" style="display:none">
@@ -994,7 +993,7 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                        <!--  <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
@@ -1002,7 +1001,7 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				            </div>
+				            </div> -->
 	                        </div>
 	                            
 	                         </div>
@@ -1129,7 +1128,7 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                         <!-- <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
@@ -1137,7 +1136,7 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				            </div>
+				            </div> -->
 	                        </div>
 	                            
 	                         </div>
@@ -1148,7 +1147,6 @@
 	                        <input type="hidden" name="taskAttributeValueBos[9].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                        <input type="hidden" name="taskAttributeValueBos[9].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
-	                        
 	                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
 	                        <div class="chartSection" style="display:none">
 	                          <div class="mb-lg">
@@ -1263,7 +1261,7 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                         <!-- <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
@@ -1271,7 +1269,7 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				            </div>
+				            </div> -->
 	                        </div>
 	                            
 	                         </div>
@@ -1279,7 +1277,21 @@
 	                    </c:if>
 			</c:forEach>	
 			</c:forEach>
+							
 		</c:if>
+		<div class="mt-md ml-xs">
+			<div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
+			<div>
+				<span class="mr-lg"><span class="mr-sm"><img
+						src="../images/icons/tick.png" /></span><span>Current Day</span></span> <span
+					class="mr-lg"><span class="mr-sm"><img
+						src="../images/icons/tick.png" /></span><span>Current Week</span></span> <span
+					class="mr-lg"><span class="mr-sm"><img
+						src="../images/icons/tick.png" /></span><span>Current Month</span></span> <span
+					class="txt-gray">(Rollback option provided for these
+					three options)</span>
+			</div>
+		</div>
 	</form:form>
 </div>
 <script>
