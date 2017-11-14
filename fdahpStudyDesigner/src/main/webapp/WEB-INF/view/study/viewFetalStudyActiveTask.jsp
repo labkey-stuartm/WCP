@@ -55,8 +55,8 @@
 	                    <%-- <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}"> --%>
 	                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
 	                    <div class="pt-xs">
-	                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
-	                        ${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span>
+	                        <div class="bullets bor-b-2-gray pt-md pb-md">
+	                        <span class="black-md-f">${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span></span>
 	                        <div class="clearfix"></div>
 	                        <div class="form-group mt-sm" style="width: 230px;">
 	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
@@ -222,8 +222,8 @@
 	                    	<c:if test="${taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 		                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
 		                    <div class="pt-xs">
-		                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">
-		                        ${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span>
+		                        <div class="bullets bor-b-2-gray pt-md pb-md">
+		                       <span class="black-md-f"> ${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span></span>
 		                        <div class="clearfix"></div>
 		                        <div class="form-group mt-sm" style="width: 230px;">
 		                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${activeTaskBo.taskAttributeValueBos[0].attributeValueId}">
