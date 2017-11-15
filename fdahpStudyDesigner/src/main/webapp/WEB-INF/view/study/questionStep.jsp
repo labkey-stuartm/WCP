@@ -1787,11 +1787,17 @@ function isNumberKey(evt)
 					                           <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
 				                     	  	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
 				                     	   	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
-					                           <c:if test="${subStatus.last}">
-					                           <div class="add_varible <c:if test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')
-					                           && questionConditionBranchBo.inputTypeValue ne ('&&') && questionConditionBranchBo.inputTypeValue ne ('||')}">add_var_hide</c:if> " 
-					                           		index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${status.index}" onclick="addVariable(this);">+ Add Variable</div>
-					                           </c:if>
+					                          <%--  <c:if test="${subStatus.last}"> --%>
+					                           <c:choose>
+					                           		<c:when test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')}">
+					                           			<div class="add_varible add_var_hide" index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${subStatus.index}" onclick="addVariable(this);">+ Add Variable</div>
+					                           		</c:when>
+					                           		<c:otherwise>
+					                           		 <div class="add_varible <c:if test="${!subStatus.last}">add_var_hide</c:if>" index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${subStatus.index}" onclick="addVariable(this);">+ Add Variable</div>
+					                           		</c:otherwise>
+					                           </c:choose>
+					                          
+					                         <%--   </c:if> --%>
 					                        </div>
 					                        <div class="form-group sm__in">
 					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isNumberKey(event)"/>
@@ -4203,6 +4209,7 @@ function validateForUniqueValue(item,responsetype,callback){
 }
 function addFunctions(item){
 	var index = $(item).attr('index');
+	
 	var count = parseInt($(item).attr('count'));
 	var preCount = parseInt($(item).attr('count'));
 	var value = $(item).val();
@@ -4211,8 +4218,11 @@ function addFunctions(item){
 	var parent_sequence_no = $("#parentSequenceNoId"+index+count).val();
 	var parent_input = $("#rootId"+parent_sequence_no).find('select').val();
 	deleteChildElements(index,"child");
-	var total = parseInt($('.numeric__row').length);
-	var v= total+1;
+	
+	//var total = parseInt($('.numeric__row').length);
+	
+	var total  = parseInt($(".numeric__row").last().attr("id"));
+	var v= total;
 	$(item).find('input').addClass("add_var_hide");
 	
 	$("#constantValId"+index+count).addClass('add_var_hide');	
@@ -4380,8 +4390,6 @@ function selectFunction(item){
 			$("#constantValId"+id+j).val('');
 			$("#constantValId"+id+j).attr('required',false);
 			$("#constantValId"+id+j).addClass('add_var_hide');
-			//$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
-			//$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
 			$('.selectpicker').selectpicker('refresh');
 			$("#inputTypeErrorValueId"+id).hide();
 			if(j > 1){
@@ -4393,8 +4401,10 @@ function selectFunction(item){
 function addVariable(item){
 	var index = parseInt($(item).attr('index'));
 	var rowCount = parseInt($('.numeric__section').length);
-	var total = parseInt($('.numeric__row').length);
-	var v= total+2;
+	//var totalNUmericRows = $('.numeric__row').length
+	var total = parseInt($(".numeric__row").last().attr("id"));
+	
+	var v= total+1;
 	var parent_index = parseInt($(item).attr('parentIndex'));
 	var count = parseInt($("#rootId"+parent_index+" .numeric__row").length);
 	var addVar = "<div class='numeric__row display__flex__base' id='"+v+"'>"+
