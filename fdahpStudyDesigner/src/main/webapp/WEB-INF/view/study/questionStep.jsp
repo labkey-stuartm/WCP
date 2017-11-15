@@ -1666,7 +1666,7 @@ function isNumberKey(evt)
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
 				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
-				            <span data-toggle="modal" data-target="#myModal" id="trailId">Trial</span>
+				            <span data-toggle="modal" id="trailId">Trial</span>
 				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
 				         <div class="numeric__container mb-sm">
@@ -2736,6 +2736,10 @@ $(document).ready(function(){
         	$('#lhsValueId').html("");
 			$('#rhsValueId').html("");
 			$('#outputId').html("");
+			$('#myModal').modal('hide');
+    });
+    $('#trailId').click(function(){
+    	$('#myModal').modal('show');
     });
     $('#formulaSubmitId').on('click',function(){
     	var left_input = $('#lhsId').val();
@@ -4509,6 +4513,9 @@ var f="";
 function makeAFormula(index,isRecursive){
 		var rootId = "rootId"+index;
 		var root_value = $("#rootId"+index).find('select').val();
+		if(root_value==null){
+			root_value="";
+		}
 		var subroot_length = $('#'+rootId+' .numeric__row').length-1;
 		if(subroot_length > 0){
 			$('#'+rootId+' .numeric__row').each(function(j){
@@ -4544,6 +4551,9 @@ function makeAFormula(index,isRecursive){
 function makeFunction(index){
 	var rootId = "rootId"+index;
 	var root_value = $("#rootId"+index).find('select').val();
+	if(root_value==null){
+		root_value="";
+	}
 	var i="";
 	var subroot_length = $('#'+rootId+' .numeric__row').length-1;
 	$('#'+rootId+' .numeric__row').each(function(j){
@@ -4567,6 +4577,7 @@ function makeFunction(index){
 }
 function createFormula(){
 	var mf = $("#inputTypeValueId0").val();
+	var formula="-NA-";
 	if(mf == '=='){
 		mf="=";
 	}
@@ -4574,9 +4585,24 @@ function createFormula(){
 	var lhs = makeAFormula(2,false);
 	f="";
 	var rhs = makeAFormula(3,false);
-	var formula = lhs+" "+mf+" "+rhs;
-	$(".formula").text(formula);
-	$(".tryFormula").text(formula);
+	if(lhs == '' && (mf =='' || mf ==null) && rhs == ''){
+		formula = "";
+	}else{
+		formula = lhs+" "+mf+" "+rhs;	
+	}
+	if(formula != ''){
+		$(".formula").text(formula);
+		$(".tryFormula").text(formula);
+		if(formula.indexOf("x") !== -1){
+			$("#trailId").css("pointer-events", "auto");
+		}else{
+			$("#trailId").css("pointer-events", "none");
+		}
+	}else{
+		$(".formula").text("-NA-");
+		$(".tryFormula").text("-NA-");
+		$("#trailId").css("pointer-events", "none");
+	}
 	$("#lhsId").val(lhs);
 	$("#rhsId").val(rhs);
 	$("#operatorId").val(mf);
