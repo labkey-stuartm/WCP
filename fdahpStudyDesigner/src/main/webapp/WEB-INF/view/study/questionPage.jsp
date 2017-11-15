@@ -371,7 +371,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mt-md mb-xs">
                <div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${fn:escapeXml(
@@ -394,7 +394,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(
@@ -417,7 +417,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6 pl-none">
-	               <div class="col-md-8 col-lg-8 p-none">
+	               <div class="col-md-9 col-lg-9 p-none">
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13. "></span></div>
 		               <div class="form-group">
 		               	  <c:if test="${not empty questionsBo.questionReponseTypeBo.step}">
@@ -441,7 +441,7 @@ function isNumberKey(evt)
 	        <div class="clearfix"></div>
 	        <div class="row mb-xs">
 	        	<div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicates the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value. "></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${fn:escapeXml(
@@ -498,7 +498,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mt-md mb-xs">
                <div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumberKey(event)">
@@ -507,7 +507,7 @@ function isNumberKey(evt)
                   </div>
                </div>
                <div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumberKey(event)">
@@ -519,7 +519,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6  pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumberKey(event)">
@@ -540,7 +540,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}"  maxlength="20"/>
