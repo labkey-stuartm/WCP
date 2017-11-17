@@ -230,7 +230,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-4 col-lg-3 p-none">
+            <div class="col-md-4 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Title for the chart (1 to 30 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
                   <input type="text" class="form-control chartrequireClass" name="chartTitle" id="chartTitleId" value="${fn:escapeXml(
