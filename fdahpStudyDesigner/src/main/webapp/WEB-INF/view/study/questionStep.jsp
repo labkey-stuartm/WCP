@@ -1646,6 +1646,7 @@ function isNumberKey(evt)
 			            </span>
 			         </div>
 			      </div>
+			      
 			      <div id="conditionalFormulaId">
 				      <div class="col-md-12 p-none mt-lg mb-md">
 				         <div class="black-s-f">Define Formula and Destination Steps</div>
@@ -1654,8 +1655,8 @@ function isNumberKey(evt)
 				         <ul class="pl_18">
 				            <li class="display__flex__base">
 				               <span class="col-md-3 p-none">If V1 = True, Destination Step &nbsp;&nbsp;&nbsp;&nbsp;= </span>
+				               <input type="hidden" name="questionResponseSubTypeList[0].value" value="true" id="conditionDestinationValueId0">
 				               <div class="form-group sm-selection col-md-4 p-none">
-				                  <input type="hidden" name="questionResponseSubTypeList[0].value" value="true" id="conditionDestinationValueId0">
 				                  <select name="questionResponseSubTypeList[0].destinationStepId" id="conditionDestinationId0"  class="selectpicker conditionalBranchingRequired">
 							         <option value=""  selected>select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -1666,11 +1667,10 @@ function isNumberKey(evt)
 				                  <div class="help-block with-errors red-txt"></div>
 				               </div>
 				            </li>
-                    <div class="clearfix"></div>
 				            <li class="display__flex__base">
 				               <span class="col-md-3 p-none">If V1 = False, Destination Step &nbsp;&nbsp;&nbsp;=</span>
+				               <input type="hidden" name="questionResponseSubTypeList[1].value" value="false" id="conditionDestinationValueId1">
 				               <div class="form-group sm-selection col-md-4 p-none">
-				               	  <input type="hidden" name="questionResponseSubTypeList[1].value" value="false" id="conditionDestinationValueId1">
 				                  <select name="questionResponseSubTypeList[1].destinationStepId" id="conditionDestinationId1"  class="selectpicker conditionalBranchingRequired">
 							         <option value=""  selected>select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
