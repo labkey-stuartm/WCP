@@ -1757,6 +1757,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							if(questionnairesStepsBo.getQuestionConditionBranchBoList() != null && !questionnairesStepsBo.getQuestionConditionBranchBoList().isEmpty()){
 								String deleteQuery = "delete from question_condtion_branching where question_id="+questionsBo.getId();
 								session.createSQLQuery(deleteQuery).executeUpdate();
+								int i=1;
 								for(QuestionConditionBranchBo questionConditionBranchBo : questionnairesStepsBo.getQuestionConditionBranchBoList()){
 									if(questionConditionBranchBo.getQuestionId() == null){
 										questionConditionBranchBo.setQuestionId(questionsBo.getId());
@@ -1766,11 +1767,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									}
 									if(questionConditionBranchBo.getQuestionConditionBranchBos() != null && !questionConditionBranchBo.getQuestionConditionBranchBos().isEmpty()){
 										for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchBo.getQuestionConditionBranchBos()) {
-											if(conditionBranchBo.getQuestionId() == null){
-												conditionBranchBo.setQuestionId(questionsBo.getId());
+											if(conditionBranchBo.getInputType() != null && conditionBranchBo.getInputTypeValue() != null){
+												if(conditionBranchBo.getQuestionId() == null){
+													conditionBranchBo.setQuestionId(questionsBo.getId());
+												}
+												session.save(conditionBranchBo);
+												i++;
+												//System.out.println("i:"+i);
 											}
-											session.save(conditionBranchBo);
 										}
+										//System.out.println("parent sequence no:"+i);
 									}
 								}
 							}

@@ -181,7 +181,7 @@ function isNumberKey(evt)
 		               <div class="gray-xs-f mt-lg">Select a HealthKit quantity data type <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-html=true data-toggle="tooltip" title="- Please select the appropriate HealthKit data type as suited to the question<br>- Please note that only the most recent value available in HealthKit would be read by the app<br>- Access to HealthKit data is subject to the user providing permissions for the app to read the data"></span></div>
 		               <div class="form-group">
 		                  <select class="selectpicker elaborateClass healthkitrequireClass" id="healthkitDatatypeId" name="healthkitDatatype" value="${questionsBo.healthkitDatatype}">
-		                       <option value="" selected disabled>Select</option>
+		                       <option value="" selected >Select</option>
 			                   <c:forEach items="${healthKitKeysInfo}" var="healthKitKeys">
 			                        <option value="${healthKitKeys.key}" ${questionsBo.healthkitDatatype eq healthKitKeys.key ? 'selected':''}>${healthKitKeys.displayName}</option>
 			                   </c:forEach>
@@ -206,7 +206,7 @@ function isNumberKey(evt)
                <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="lineChartTimeRange" value="${questionsBo.lineChartTimeRange}">
-                       <option value="" selected disabled>Select</option>
+                       <option value="" selected >Select</option>
 	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                        <option value="${timeRangeAttr}" ${questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
 	                   </c:forEach>
@@ -283,7 +283,7 @@ function isNumberKey(evt)
                <div class="gray-xs-f mb-xs">Stat Type for image upload <span class="requiredStar">*</span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass requireClass" id="statTypeId" title="Select" name="statType">
-			         <option value="" selected disabled>Select</option>
+			         <option value="" selected >Select</option>
 			         <c:forEach items="${statisticImageList}" var="statisticImage">
 			            <option value="${statisticImage.statisticImageId}" ${questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
 			         </c:forEach>
@@ -296,7 +296,7 @@ function isNumberKey(evt)
                <div class="gray-xs-f mb-xs">Formula for to be applied <span class="requiredStar">*</span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass requireClass" id="statFormula" title="Select" name="statFormula">
-			         <option value="" selected disabled>Select</option>
+			         <option value="" selected >Select</option>
 			         <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
 			         </c:forEach>
@@ -673,7 +673,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pl-none">
 			                     <div class="form-group">
 			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
-							         <option value='' disabled selected>Select</option>
+							         <option value=''  selected>Select</option>
 							         <option value="allow" ${questionsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
 							         <option value="disallow" ${questionsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
 							       </select>                    
@@ -683,7 +683,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pr-none pr-xs">
 			                     <div class="form-group">
           			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionsBo.questionReponseTypeBo.validationCondition}">TextRequired</c:if>" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>
-          							         <option value='' disabled selected>Select</option>
+          							         <option value=''  selected>Select</option>
           							         <option value="allcharacters" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
           							         <option value="alphabets" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
           							         <option value="numbers" ${questionsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
@@ -834,17 +834,36 @@ function isNumberKey(evt)
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
 	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
-	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${questionsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
+	                  <input type="radio" class="DateRequired DateStyleRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${questionsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
 	                  <label for="date">Date</label>
 	                  </span>
 	                  <span class="radio radio-inline">
-	                  <input type="radio" class="DateRequired" id="dateTime" value="Date-Time" name="questionReponseTypeBo.style" ${questionsBo.questionReponseTypeBo.style eq 'Date-Time' ? 'checked':''} >
+	                  <input type="radio" class="DateRequired DateStyleRequired" id="dateTime" value="Date-Time" name="questionReponseTypeBo.style" ${questionsBo.questionReponseTypeBo.style eq 'Date-Time' ? 'checked':''} >
 	                  <label for="dateTime">Date-Time</label>
 	                  </span>
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	        </div>
+	        <div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Set allowed date range<span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="choose one of 3 options given below"></span></div>
+	               <div class="form-group">
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="DateRequired DateRangeRequired" id="untilCurrentDateId" value="Until current date" name="questionReponseTypeBo.selectionStyle"  ${questionsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' ? 'checked':''} >
+	                  <label for="untilCurrentDateId">Until current date</label>
+	                  </span>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="DateRequired DateRangeRequired" id="afterCurrentDateId" value="After current date" name="questionReponseTypeBo.selectionStyle" ${questionsBo.questionReponseTypeBo.selectionStyle eq 'After current date' ? 'checked':''} >
+	                  <label for="afterCurrentDateId">After current date</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="DateRequired DateRangeRequired" id="customDateId" value="Custom" name="questionReponseTypeBo.selectionStyle" ${questionsBo.questionReponseTypeBo.selectionStyle eq 'Custom' ? 'checked':''} >
+	                  <label for="customDateId">Custom</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	        </div>
            	<div class="clearfix"></div>
+           	<div id="customDateContainerId" <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' || questionsBo.questionReponseTypeBo.selectionStyle eq 'After current date'}">style="display: none;"</c:if>>
           	<div class="row">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
@@ -877,6 +896,7 @@ function isNumberKey(evt)
 	                     </div>
 	                  </div>
 	               </div>
+	        </div>
 	        </div>
           </div>
           <div id="Boolean" style="display: none;">
@@ -2104,10 +2124,21 @@ $(document).ready(function(){
     	console.log(value);
     	 getResponseType(value);
     });
-    $('.DateRequired').on("change",function(){
+    $('.DateStyleRequired').on("change",function(){
     	var value= $(this).val();
     	setResponseDate(value);
     	
+    });
+    $('.DateRangeRequired').on("change",function(){
+    	var value= $(this).val();
+    	if(value == 'Custom'){
+    		$("#customDateContainerId").show();
+    	}else{
+    		$("#customDateContainerId").hide();
+    		$("#defaultDate").data("DateTimePicker").clear();
+            $('#maxDateId').data("DateTimePicker").clear();
+    		$('#minDateId').data("DateTimePicker").clear();
+    	}
     });
     $("#minDateId").on('dp.change',function(e){
         $("#defaultDate").data("DateTimePicker").clear();
@@ -2446,6 +2477,7 @@ function getResponseType(id){
 		    if(responseType == 'Date'){
 		    	$('input[name="questionReponseTypeBo.style"]').attr("checked",false); 
 		    	$("#date").attr("checked",true);
+		    	$("#customDateId").attr("checked",true);
 		    }
 		    $("#useAnchorDateId").attr("checked",false);
 		 }
@@ -2713,10 +2745,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 		var max_date = $("#maxDateId").val(); 
 		var default_date = $("#defaultDate").val(); 
 		var style=$('input[name="questionReponseTypeBo.style"]:checked').val();
+		var allowedDateRange = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
 		questionReponseTypeBo.minDate = min_date;
 		questionReponseTypeBo.maxDate = max_date;
 		questionReponseTypeBo.defaultDate = default_date;
 		questionReponseTypeBo.style=style;
+		questionReponseTypeBo.selectionStyle=allowedDateRange;
 	}else if(resType == "Boolean"){
 		var questionSubResponseArray  = new Array();
 		$('#Boolean .row').each(function(){
