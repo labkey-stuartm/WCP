@@ -1686,7 +1686,7 @@ function isNumberKey(evt)
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
 				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
-				            <span data-toggle="modal" id="trailId">Trial</span>
+				            <span data-toggle="modal" id="trailId" style="pointer-events: none;">Trial</span>
 				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
 				         <div class="numeric__container mb-sm">
@@ -2817,7 +2817,12 @@ $(document).ready(function(){
 		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
 		            }
   				}else{
-  					bootbox.alert(formulaResponseJsonObject.statusMessage);
+  					if(typeof formulaResponseJsonObject !='undefined' && typeof formulaResponseJsonObject.statusMessage != 'undefined'){
+  						bootbox.alert(formulaResponseJsonObject.statusMessage);	
+  					}else{
+  						bootbox.alert("Please create the valid formula");
+  					}
+  					
   				}
   				//setTimeout(hideDisplayMessage, 4000);
   	          },
@@ -4368,7 +4373,7 @@ function addFunctions(item){
 			$('.numeric__section').each(function(i){
 			    var index =  $("#inputTypeValueId"+i).attr('index');
 			    var rootId = "rootId"+index;
-			    if(parent_input != "+" && parent_input != "-" ){
+			    if(parent_input != "+" && parent_input != "*" ){
 			    	$('#'+rootId+' .numeric__row').each(function(j){
 						var id = $(this).attr("id");
 						var rde_value = $("#inputSubTypeValueId"+id).val();
@@ -4433,6 +4438,7 @@ function selectFunction(item){
 	var value = $(item).val();
 	$("#inputSubTypeValueId"+index).val(value);
 	var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
+	$("#rootId"+index+" .numeric__row .remBtnDis").addClass("hide");
 	
 	if(value == '+' || value == '*' || value == '&&' || value == '||'){
 		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
@@ -4544,7 +4550,7 @@ function validateSingleResponseDataElement(){
 						    setTimeout(hideDisplayMessage, 3000);
 							isSingle = false;
 						}else{
-							 if(parent_input != "+" && parent_input != "-" ){
+							 if(parent_input != "+" && parent_input != "*" ){
 								responseDataElementArray.push(val);		
 							 }
 						}
