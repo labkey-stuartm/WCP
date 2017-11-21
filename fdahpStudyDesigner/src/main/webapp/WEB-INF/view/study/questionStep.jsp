@@ -96,7 +96,7 @@ function isNumberKey(evt)
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span></div>
                   <div class="form-group">
-                     <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" 
+                     <input  type="text" <c:if test="${empty questionnairesStepsBo.stepShortTitle}">autofocus="autofocus"</c:if> custAttType="cust" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" 
                        <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if> required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
@@ -215,7 +215,7 @@ function isNumberKey(evt)
 		               <div class="gray-xs-f mb-xs">Select a HealthKit quantity data type <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" data-html=true title="- Please select the appropriate HealthKit data type as suited to the question<br>- Please note that only the most recent value available in HealthKit would be read by the app<br>- Access to HealthKit data is subject to the user providing permissions for the app to read the data"></span></div>
 		               <div class="form-group mb-xs">
 		                  <select class="selectpicker elaborateClass healthkitrequireClass" id="healthkitDatatypeId" name="questionsBo.healthkitDatatype" value="${questionnairesStepsBo.questionsBo.healthkitDatatype}">
-		                       <option value="" selected disabled>Select</option>
+		                       <option value="" selected >Select</option>
 			                   <c:forEach items="${healthKitKeysInfo}" var="healthKitKeys">
 			                        <option value="${healthKitKeys.key}" ${questionnairesStepsBo.questionsBo.healthkitDatatype eq healthKitKeys.key ? 'selected':''}>${healthKitKeys.displayName}</option>
 			                   </c:forEach>
@@ -240,7 +240,7 @@ function isNumberKey(evt)
                <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}">
-                       <option value="" selected disabled>Select</option>
+                       <option value="" selected >Select</option>
 	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                        <option value="${timeRangeAttr}" ${questionnairesStepsBo.questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
 	                   </c:forEach>
@@ -264,7 +264,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-4 col-lg-3 p-none">
+            <div class="col-md-4 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Title for the chart (1 to 30 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
                   <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}" maxlength="30">
@@ -314,7 +314,7 @@ function isNumberKey(evt)
                <div class="gray-xs-f mb-xs">Stat Type for image upload <span class="requiredStar">*</span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass requireClass" id="statTypeId" title="Select" name="questionsBo.statType">
-			         <option value="" selected disabled>Select</option>
+			         <option value="" selected >Select</option>
 			         <c:forEach items="${statisticImageList}" var="statisticImage">
 			            <option value="${statisticImage.statisticImageId}" ${questionnairesStepsBo.questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
 			         </c:forEach>
@@ -327,7 +327,7 @@ function isNumberKey(evt)
                <div class="gray-xs-f mb-xs">Formula for to be applied <span class="requiredStar">*</span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass requireClass" id="statFormula" title="Select" name="questionsBo.statFormula">
-			         <option value="" selected disabled>Select</option>
+			         <option value="" selected >Select</option>
 			         <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionnairesStepsBo.questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
 			         </c:forEach>
@@ -402,7 +402,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(event)">
@@ -423,7 +423,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
@@ -444,7 +444,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6 pl-none">
-	               <div class="col-md-8 col-lg-8 p-none">
+	               <div class="col-md-9 col-lg-9 p-none">
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13."></span></div>
 		               <div class="form-group">
 		               	  <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.step && questionnairesStepsBo.questionReponseTypeBo.step ne 0}">
@@ -470,7 +470,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6  pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicates the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
@@ -525,7 +525,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isNumberKey(event)">
@@ -534,7 +534,7 @@ function isNumberKey(evt)
                   </div>
                </div>
                <div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isNumberKey(event)">
@@ -546,7 +546,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
                <div class="col-md-6  pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isNumberKey(event)">
@@ -567,7 +567,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
@@ -698,7 +698,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pl-none">
 			                     <div class="form-group">
           			    					<select name="questionReponseTypeBo.validationCondition" id="validationConditionId"  class="selectpicker">
-          							         <option value='' disabled selected>Select</option>
+          							         <option value=''  selected>Select</option>
           							         <option value="allow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'allow' ? 'selected' :''}>Allow</option>
           							         <option value="disallow" ${questionnairesStepsBo.questionReponseTypeBo.validationCondition eq 'disallow' ? 'selected' :''}>Disallow</option>
           							       </select>                    
@@ -708,7 +708,7 @@ function isNumberKey(evt)
 		                     <div class="col-md-3 pr-none pr-xs">
 			                     <div class="form-group">
 			    					<select name="questionReponseTypeBo.validationCharacters" id="validationCharactersId"  class="selectpicker <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">TextRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if>>
-							         <option value='' disabled selected>Select</option>
+							         <option value=''  selected>Select</option>
 							         <option value="allcharacters" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'allcharacters' ? 'selected' :''}>All Characters</option>
 							         <option value="alphabets" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'alphabets' ? 'selected' :''}>alphabets</option>
 							         <option value="numbers" ${questionnairesStepsBo.questionReponseTypeBo.validationCharacters eq 'numbers' ? 'selected' :''}>numbers</option>
@@ -857,49 +857,69 @@ function isNumberKey(evt)
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose whether you wish to capture only date from the user or date and time."></span></div>
 	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
-	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
+	                  <input type="radio" class="DateRequired DateStyleRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
 	                  <label for="date">Date</label>
 	                  </span>
 	                  <span class="radio radio-inline">
-	                  <input type="radio" class="DateRequired" id="dateTime" value="Date-Time" name="questionReponseTypeBo.style" ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date-Time' ? 'checked':''} >
+	                  <input type="radio" class="DateRequired DateStyleRequired" id="dateTime" value="Date-Time" name="questionReponseTypeBo.style" ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date-Time' ? 'checked':''} >
 	                  <label for="dateTime">Date-Time</label>
 	                  </span>
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	        </div>
-           	<div class="clearfix"></div>
-          	<div class="row">
-	               <div class="col-md-6 pl-none">
-	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Minimum Date  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter minimum date allowed."></span></div>
-	                     <div class="form-group">
-	                        <input type="text" class="form-control"  name="questionReponseTypeBo.minDate" id="minDateId" value="${questionnairesStepsBo.questionReponseTypeBo.minDate}" >
-	                        <div class="help-block with-errors red-txt"></div>
-	                     </div>
-	                  </div>
-	               </div>
-	       </div>
-	       <div class="row">
-	               <div class="col-md-6  pl-none">
-	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Maximum Date <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter maximum date allowed"></span></div>
-	                     <div class="form-group">
-	                        <input type="text" class="form-control"  name="questionReponseTypeBo.maxDate"id="maxDateId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDate}" >
-	                        <div class="help-block with-errors red-txt"></div>
-	                     </div>
-	                  </div>
+	        <div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Set allowed date range<span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="choose one of 3 options given below"></span></div>
+	               <div class="form-group">
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="DateRequired DateRangeRequired" id="untilCurrentDateId" value="Until current date" name="questionReponseTypeBo.selectionStyle"  ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' ? 'checked':''} >
+	                  <label for="untilCurrentDateId">Until current date</label>
+	                  </span>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="DateRequired DateRangeRequired" id="afterCurrentDateId" value="After current date" name="questionReponseTypeBo.selectionStyle" ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'After current date' ? 'checked':''} >
+	                  <label for="afterCurrentDateId">After current date</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="DateRequired DateRangeRequired" id="customDateId" value="Custom" name="questionReponseTypeBo.selectionStyle" ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Custom' ? 'checked':''} >
+	                  <label for="customDateId">Custom</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	        </div>
-	        <div class="row">
-	               <div class="col-md-6  pl-none">
-	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Default Date <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter default date to be shown as selected"></span></div>
-	                     <div class="form-group">
-	                        <input type="text" class="form-control"  name="questionReponseTypeBo.defaultDate" id="defaultDate" value="${questionnairesStepsBo.questionReponseTypeBo.defaultDate}">
-	                        <div class="help-block with-errors red-txt"></div>
-	                     </div>
-	                  </div>
-	               </div>
+           	<div class="clearfix"></div>
+          	<div id="customDateContainerId" <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'After current date'}">style="display: none;"</c:if>>
+	          	<div class="row">
+		               <div class="col-md-6 pl-none">
+		                  <div class="col-md-8 col-lg-8 p-none">
+		                     <div class="gray-xs-f mb-xs">Minimum Date  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter minimum date allowed."></span></div>
+		                     <div class="form-group">
+		                        <input type="text" class="form-control"  name="questionReponseTypeBo.minDate" id="minDateId" value="${questionnairesStepsBo.questionReponseTypeBo.minDate}" >
+		                        <div class="help-block with-errors red-txt"></div>
+		                     </div>
+		                  </div>
+		               </div>
+		       </div>
+		       <div class="row">
+		               <div class="col-md-6  pl-none">
+		                  <div class="col-md-8 col-lg-8 p-none">
+		                     <div class="gray-xs-f mb-xs">Maximum Date <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter maximum date allowed"></span></div>
+		                     <div class="form-group">
+		                        <input type="text" class="form-control"  name="questionReponseTypeBo.maxDate"id="maxDateId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDate}" >
+		                        <div class="help-block with-errors red-txt"></div>
+		                     </div>
+		                  </div>
+		               </div>
+		        </div>
+		        <div class="row">
+		               <div class="col-md-6  pl-none">
+		                  <div class="col-md-8 col-lg-8 p-none">
+		                     <div class="gray-xs-f mb-xs">Default Date <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter default date to be shown as selected"></span></div>
+		                     <div class="form-group">
+		                        <input type="text" class="form-control"  name="questionReponseTypeBo.defaultDate" id="defaultDate" value="${questionnairesStepsBo.questionReponseTypeBo.defaultDate}">
+		                        <div class="help-block with-errors red-txt"></div>
+		                     </div>
+		                  </div>
+		               </div>
+		        </div>
 	        </div>
           </div>
           <div id="Boolean" style="display: none;">
@@ -926,7 +946,7 @@ function isNumberKey(evt)
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
 				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0"  class="selectpicker destionationYes">
-				         <option disabled selected value=''>Select</option>
+				         <option  selected value=''>Select</option>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -956,7 +976,7 @@ function isNumberKey(evt)
 				<div class="col-md-3 pl-none">
 				   <div class="form-group">
 				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" class="selectpicker" >
-				        <option value='' disabled selected>Select</option>
+				        <option value=''  selected>Select</option>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -1085,7 +1105,7 @@ function isNumberKey(evt)
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
 							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" class="selectpicker" >
-								         <option value="" disabled selected>Select</option>
+								         <option value=""  selected>Select</option>
 								         <c:forEach items="${destinationStepList}" var="destinationStep">
 								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 								         </c:forEach> 
@@ -1123,7 +1143,7 @@ function isNumberKey(evt)
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0"  class="selectpicker" >
-							         <option value="" disabled selected>Select</option>
+							         <option value=""  selected>Select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -1155,7 +1175,7 @@ function isNumberKey(evt)
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1"  class="selectpicker" >
-							        <option value="" disabled selected>Select</option>
+							        <option value=""  selected>Select</option>
 							        <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -1316,7 +1336,7 @@ function isNumberKey(evt)
 				         <div class="gray-xs-f mb-xs">Destination Step  </div>
 				         <div class="form-group">
 				             <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0"  class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
-								<option value="" disabled selected>Select</option>
+								<option value=""  selected>Select</option>
 									<c:forEach items="${destinationStepList}" var="destinationStep">
 									<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 									</c:forEach>
@@ -1371,7 +1391,7 @@ function isNumberKey(evt)
 					         <div class="gray-xs-f mb-xs">Destination Step  </div>
 					         <div class="form-group">
 					             <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1"  class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if>>
-									<option value="" disabled selected>select</option>
+									<option value=""  selected>select</option>
 										<c:forEach items="${destinationStepList}" var="destinationStep">
 										<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 										</c:forEach>
@@ -1474,7 +1494,7 @@ function isNumberKey(evt)
 						   <div class="col-md-2 col-lg-2 pl-none">
 						      <div class="form-group">
 						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}"  class="selectpicker">
-							        <option value="" disabled selected>select</option>
+							        <option value=""  selected>select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach>
@@ -1536,7 +1556,7 @@ function isNumberKey(evt)
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
 					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0"  class="selectpicker">
-						         <option value="" disabled selected>select</option>
+						         <option value=""  selected>select</option>
 						         <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						         </c:forEach>
@@ -1595,7 +1615,7 @@ function isNumberKey(evt)
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
 					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1"  class="selectpicker destionationYes" >
-						         <option value="" disabled selected>select</option>
+						         <option value=""  selected>select</option>
 						         <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						         </c:forEach>
@@ -1626,6 +1646,7 @@ function isNumberKey(evt)
 			            </span>
 			         </div>
 			      </div>
+			      
 			      <div id="conditionalFormulaId">
 				      <div class="col-md-12 p-none mt-lg mb-md">
 				         <div class="black-s-f">Define Formula and Destination Steps</div>
@@ -1634,10 +1655,10 @@ function isNumberKey(evt)
 				         <ul class="pl_18">
 				            <li class="display__flex__base">
 				               <span class="col-md-3 p-none">If V1 = True, Destination Step &nbsp;&nbsp;&nbsp;&nbsp;= </span>
+				               <input type="hidden" name="questionResponseSubTypeList[0].value" value="true" id="conditionDestinationValueId0">
 				               <div class="form-group sm-selection col-md-4 p-none">
-				                  <input type="hidden" name="questionResponseSubTypeList[0].value" value="true" id="conditionDestinationValueId0">
 				                  <select name="questionResponseSubTypeList[0].destinationStepId" id="conditionDestinationId0"  class="selectpicker conditionalBranchingRequired">
-							         <option value="" disabled selected>select</option>
+							         <option value=""  selected>select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach>
@@ -1646,13 +1667,12 @@ function isNumberKey(evt)
 				                  <div class="help-block with-errors red-txt"></div>
 				               </div>
 				            </li>
-                    <div class="clearfix"></div>
 				            <li class="display__flex__base">
 				               <span class="col-md-3 p-none">If V1 = False, Destination Step &nbsp;&nbsp;&nbsp;=</span>
+				               <input type="hidden" name="questionResponseSubTypeList[1].value" value="false" id="conditionDestinationValueId1">
 				               <div class="form-group sm-selection col-md-4 p-none">
-				               	  <input type="hidden" name="questionResponseSubTypeList[1].value" value="false" id="conditionDestinationValueId1">
 				                  <select name="questionResponseSubTypeList[1].destinationStepId" id="conditionDestinationId1"  class="selectpicker conditionalBranchingRequired">
-							         <option value="" disabled selected>select</option>
+							         <option value=""  selected>select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach>
@@ -1666,7 +1686,7 @@ function isNumberKey(evt)
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
 				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
-				            <span data-toggle="modal" id="trailId">Trial</span>
+				            <span data-toggle="modal" id="trailId" style="pointer-events: none;">Trial</span>
 				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
 				         <div class="numeric__container mb-sm">
@@ -1683,7 +1703,7 @@ function isNumberKey(evt)
 				                     <span>V1</span>
 				                     <div class="form-group sm-selection">
 				                        <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].inputTypeValue" id="inputTypeValueId0" index="1" count="0" onchange='selectFunction(this);'>
-				                           <option value="" disabled selected>Select</option>
+				                           <option value=""  selected>Select</option>
 				                           <option value=">" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq ">" ? 'selected' :''}>&gt;</option>
 				                           <option value="<" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "<" ? 'selected' :''}>&lt;</option>
 				                           <option value="==" ${questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq "==" ? 'selected' :''}>&equals;</option>
@@ -1702,8 +1722,8 @@ function isNumberKey(evt)
 				                     <div class="numeric__row display__flex__base" id="2">
 				                        <span>V2 =</span>
 				                        <div class="form-group sm-selection">
-				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputTypeId20" index="2" count=0 onchange="addFunctions(this);">
-				                              <option value="" disabled selected>Select</option>
+				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputTypeId2" index="2" count=0 onchange="addFunctions(this);">
+				                              <option value=""  selected>Select</option>
 				                              <option value="C" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'C' ? 'selected' :''}>Constant</option>
 				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'F' ? 'selected' :''}>Function</option>
 				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
@@ -1711,19 +1731,19 @@ function isNumberKey(evt)
 				                           <div class="mt-sm black-xs-f italic-txt red-txt" id="inputTypeErrorValueId2" style="display: none;"></div>
 				                           <div class="help-block with-errors red-txt"></div>
 				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue" id="inputSubTypeValueId2" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}">
-				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].sequenceNo" id="sequenceNoId20" value="2">
-				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].parentSequenceNo" id="parentSequenceNoId20" value="1">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].sequenceNo" id="sequenceNoId2" value="2">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].parentSequenceNo" id="parentSequenceNoId2" value="1">
 				                        </div>
 				                        <div class="form-group sm__in">
-				                           <input type="text" id="constantValId20" index="2" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}" onkeypress="return isNumberKey(event)"/>
+				                           <input type="text" id="constantValId2" index="2" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[0].inputTypeValue}" onkeypress="return isNumberKey(event)"/>
 				                           <div class="help-block with-errors red-txt"></div>
 				                        </div>
 				                     </div>
 				                     <div class="numeric__row display__flex__base"  id="3">
 				                        <span>V3 =</span>
 				                        <div class="form-group sm-selection">
-				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputTypeId31" index="3" count=1 onchange="addFunctions(this);">
-				                              <option value="" disabled selected>Select</option>
+				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputTypeId3" index="3" count=1 onchange="addFunctions(this);">
+				                              <option value=""  selected>Select</option>
 				                              <option value="C" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C' ? 'selected' :''}>Constant</option>
 				                              <option value="F" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'F' ? 'selected' :''}>Function</option>
 				                              <option value="RDE" ${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
@@ -1731,11 +1751,11 @@ function isNumberKey(evt)
 				                           <div class="mt-sm black-xs-f italic-txt red-txt" id="inputTypeErrorValueId3" style="display: none;"></div>
 				                           <div class="help-block with-errors red-txt"></div>
 				                           <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue" id="inputSubTypeValueId3" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}">
-				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].sequenceNo" id="sequenceNoId31" value="3">
-				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].parentSequenceNo" id="parentSequenceNoId31" value="1">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].sequenceNo" id="sequenceNoId3" value="3">
+				                     	   <input type="hidden" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].parentSequenceNo" id="parentSequenceNoId3" value="1">
 				                        </div>
 				                        <div class="form-group sm__in">
-				                           <input type="text" id="constantValId31" index="3" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}" onkeypress="return isNumberKey(event)"/>
+				                           <input type="text" id="constantValId3" index="3" class="constant form-control <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType ne 'C'}">add_var_hide</c:if>" value="${questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos[1].inputTypeValue}" onkeypress="return isNumberKey(event)"/>
 				                           <div class="help-block with-errors red-txt"></div>
 				                        </div>
 				                     </div>
@@ -1750,7 +1770,7 @@ function isNumberKey(evt)
 					                     <span>V${questionConditionBranchBo.sequenceNo}</span>
 					                     <div class="form-group sm-selection">
 					                        <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[${status.index}].inputTypeValue" id="inputTypeValueId${status.index}" count="${status.index}" index="${questionConditionBranchBo.sequenceNo}" onchange='selectFunction(this);'>
-					                           <option value="" disabled selected>Select</option>
+					                           <option value=""  selected>Select</option>
 					                           <c:choose>
 					                             <%-- <c:if test="${status.index lt 2}"></c:if> --%>
 					                           	 <c:when test="${status.index le 2 && (questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq '&&' || questionnairesStepsBo.questionConditionBranchBoList[0].inputTypeValue eq '||' )}">
@@ -1772,12 +1792,13 @@ function isNumberKey(evt)
 					                     </div>
 					                 </div>
 					         		 <div class="numeric__define_input gray__t">
+					         		 	 <c:set var = "childCount" value = "${fn:length(questionConditionBranchBo.questionConditionBranchBos)}"/>
 					                     <c:forEach items="${questionConditionBranchBo.questionConditionBranchBos}" var="questionConditionsSubBranchBo" varStatus="subStatus">
 					                     <div class="numeric__row display__flex__base" id="${questionConditionsSubBranchBo.sequenceNo}">
 					                        <span>V${questionConditionsSubBranchBo.sequenceNo} =</span>
 					                        <div class="form-group sm-selection">
-					                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputType" id="inputTypeId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onchange='addFunctions(this);'>
-					                              <option value="" disabled selected>Select</option>
+					                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputType" id="inputTypeId${questionConditionsSubBranchBo.sequenceNo}" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onchange='addFunctions(this);'>
+					                              <option value=""  selected>Select</option>
 					                              <option value="C" ${questionConditionsSubBranchBo.inputType eq 'C' ? 'selected' :''}>Constant</option>
 					                              <option value="F" ${questionConditionsSubBranchBo.inputType eq 'F' ? 'selected' :''}>Function</option>
 					                              <option value="RDE" ${questionConditionsSubBranchBo.inputType eq 'RDE' ? 'selected' :''}>Response Data Element (x)</option>
@@ -1785,17 +1806,29 @@ function isNumberKey(evt)
 					                           <div class="mt-sm black-xs-f italic-txt red-txt" id="inputTypeErrorValueId${questionConditionsSubBranchBo.sequenceNo}" style="display: none;"></div>
 					                           <div class="help-block with-errors red-txt"></div>
 					                           <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
-				                     	  	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.sequenceNo}">
-				                     	   	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
-					                           <c:if test="${subStatus.last}">
-					                           <div class="add_varible <c:if test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')
-					                           && questionConditionBranchBo.inputTypeValue ne ('&&') && questionConditionBranchBo.inputTypeValue ne ('||')}">add_var_hide</c:if> " 
-					                           		index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${status.index}" onclick="addVariable(this);">+ Add Variable</div>
-					                           </c:if>
+				                     	  	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.sequenceNo}">
+				                     	   	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
+					                          <%--  <c:if test="${subStatus.last}"> --%>
+					                           <c:choose>
+					                           		<c:when test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')}">
+					                           			<div class="add_varible add_var_hide" index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${subStatus.index}" onclick="addVariable(this);">+ Add Variable</div>
+					                           		</c:when>
+					                           		<c:otherwise>
+					                           		 <div class="add_varible <c:if test="${!subStatus.last}">add_var_hide</c:if>" index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${subStatus.index}" onclick="addVariable(this);">+ Add Variable</div>
+					                           		</c:otherwise>
+					                           </c:choose>
+					                          
+					                         <%--   </c:if> --%>
+					                        </div>
+					                        <div class="form-group sm__in <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>">
+					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}" index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isNumberKey(event)"/>
+					                           <div class="help-block with-errors red-txt"></div>
 					                        </div>
 					                        <div class="form-group sm__in">
-					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}${subStatus.index}" index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isNumberKey(event)"/>
-					                           <div class="help-block with-errors red-txt"></div>
+						                        <c:choose>
+						                        	<c:when test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')}"><span class="delete vertical-align-middle remBtnDis pl-md align-span-center hide" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}"></span></c:when>
+						                        	<c:otherwise><span class="delete vertical-align-middle remBtnDis pl-md align-span-center <c:if test="${childCount eq 2}">hide</c:if>" index="${questionConditionsSubBranchBo.sequenceNo}" count="${subStatus.index}" onclick="removeVaraiable(this);"></span></c:otherwise>
+						                        </c:choose>
 					                        </div>
 					                     </div>
 					                     </c:forEach>
@@ -2565,11 +2598,24 @@ $(document).ready(function(){
     	var value= $(this).val();
     	getResponseType(value);
     });
-    $('.DateRequired').on("change",function(){
+    $('.DateStyleRequired').on("change",function(){
     	var value= $(this).val();
     	setResponseDate(value);
     	
     });
+    $('.DateRangeRequired').on("change",function(){
+    	var value= $(this).val();
+    	if(value == 'Custom'){
+    		$("#customDateContainerId").show();
+    	}else{
+    		$("#customDateContainerId").hide();
+    		$("#defaultDate").data("DateTimePicker").clear();
+            $('#maxDateId').data("DateTimePicker").clear();
+    		$('#minDateId').data("DateTimePicker").clear();
+    	}
+    });
+    
+    
     $("#minDateId").on('dp.change',function(){
     	$("#defaultDate").data("DateTimePicker").clear();
         $('#maxDateId').data("DateTimePicker").clear()
@@ -2771,7 +2817,12 @@ $(document).ready(function(){
 		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
 		            }
   				}else{
-  					bootbox.alert(formulaResponseJsonObject.statusMessage);
+  					if(typeof formulaResponseJsonObject !='undefined' && typeof formulaResponseJsonObject.statusMessage != 'undefined'){
+  						bootbox.alert(formulaResponseJsonObject.statusMessage);	
+  					}else{
+  						bootbox.alert("Please create the valid formula");
+  					}
+  					
   				}
   				//setTimeout(hideDisplayMessage, 4000);
   	          },
@@ -2984,17 +3035,18 @@ function getResponseType(id){
 		     if(responseType == 'Date'){
 		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
 		    	 $("#date").attr("checked",true);
+		    	 $("#customDateId").attr("checked",true);
 		     }
 		     $("#useAnchorDateId").attr("checked",false);
 		     
 		     deleteChildElements(1,"parent");
 		     $("#inputTypeValueId0").val('');
-		     $("#inputTypeId20").val('');
-		     $("#inputTypeId31").val('');
+		     $("#inputTypeId2").val('');
+		     $("#inputTypeId3").val('');
 		     $(".formula").text("-NA-");
 		     $(".tryFormula").text("-NA-");
-		     $("#constantValId31").val('');
-		     $("#constantValId31").addClass("add_var_hide");
+		     $("#constantValId3").val('');
+		     $("#constantValId3").addClass("add_var_hide");
 		     $("#inputSubTypeValueId2").val('');
 		     $('.selectpicker').selectpicker('refresh');
 		     $("#formulaBasedLogicId").prop("checked",false);
@@ -3318,10 +3370,14 @@ function saveQuestionStepQuestionnaire(item,callback){
 		var max_date = $("#maxDateId").val(); 
 		var default_date = $("#defaultDate").val(); 
 		var style=$('input[name="questionReponseTypeBo.style"]:checked').val();
+		
+		var allowedDateRange = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
+		
 		questionReponseTypeBo.minDate = min_date;
 		questionReponseTypeBo.maxDate = max_date;
 		questionReponseTypeBo.defaultDate = default_date;
 		questionReponseTypeBo.style=style;
+		questionReponseTypeBo.selectionStyle=allowedDateRange;
 	}else if(resType == "Boolean"){
 		var questionSubResponseArray  = new Array();
 		$('#Boolean .row').each(function(){
@@ -3463,9 +3519,9 @@ function saveQuestionStepQuestionnaire(item,callback){
 				var id = $(this).attr("id");
 				
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
-				var input_type=$("#inputTypeId"+id+j).val();
-				var sequence_no=$("#sequenceNoId"+id+j).val();
-				var parent_sequence_no=$("#parentSequenceNoId"+id+j).val();
+				var input_type=$("#inputTypeId"+id).val();
+				var sequence_no=$("#sequenceNoId"+id).val();
+				var parent_sequence_no=$("#parentSequenceNoId"+id).val();
 				
 				questionConditionBranchBos.inputTypeValue = input_type_value;
 				questionConditionBranchBos.sequenceNo = sequence_no;
@@ -4203,20 +4259,26 @@ function validateForUniqueValue(item,responsetype,callback){
 }
 function addFunctions(item){
 	var index = $(item).attr('index');
-	var count = parseInt($(item).attr('count'));
-	var preCount = parseInt($(item).attr('count'));
+	
+	//var count = parseInt($(item).attr('count'));
+	//var preCount = parseInt($(item).attr('count'));
 	var value = $(item).val();
 	var isValid = true;
 	$("#inputTypeErrorValueId"+index).hide();
-	var parent_sequence_no = $("#parentSequenceNoId"+index+count).val();
+	var parent_sequence_no = $("#parentSequenceNoId"+index).val();
 	var parent_input = $("#rootId"+parent_sequence_no).find('select').val();
 	deleteChildElements(index,"child");
-	var total = parseInt($('.numeric__row').length);
-	var v= total+1;
+	
+	//var total = parseInt($('.numeric__row').length);
+	
+	//var total  = parseInt($(".numeric__row").last().attr("id"));
+	var total = maxSquenceValue();
+	var v= total;
 	$(item).find('input').addClass("add_var_hide");
 	
-	$("#constantValId"+index+count).addClass('add_var_hide');	
-	$("#constantValId"+index+count).attr('required',false);
+	$("#constantValId"+index).addClass('add_var_hide');	
+	$("#constantValId"+index).attr('required',false);
+	$("#constantValId"+index).parent().addClass('add_var_hide');
 	
 	var rowCount = parseInt($('.numeric__section').length);
 	$("#inputSubTypeValueId"+index).val('');
@@ -4227,7 +4289,7 @@ function addFunctions(item){
 		   "   <span>V"+index+"</span>"+
 		   "   <div class='form-group sm-selection'>"+
 		   "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].inputTypeValue' id='inputTypeValueId"+rowCount+"' index='"+index+"' count='"+rowCount+"' onchange='selectFunction(this);' required>"+
-		   "         <option value='' disabled selected>Select</option>";
+		   "         <option value=''  selected>Select</option>";
 		   if(parent_input == '&&' || parent_input == '||'){
 			   addFunction+= "         <option value='>' >&gt;</option>"+
 			   "         <option value='<' >&lt;</option>"+
@@ -4248,8 +4310,8 @@ function addFunctions(item){
 		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+1)+"'>"+
 		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
 		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
-		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
-		   "            <option value='' disabled selected>Select</option>"+
+		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
+		   "            <option value=''  selected>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
@@ -4257,19 +4319,22 @@ function addFunctions(item){
 		   "		 <div class='mt-sm black-xs-f italic-txt red-txt' id='inputTypeErrorValueId"+(parseInt(v)+1)+"' style='display: none;'></div>"+
 		   "		 <div class='help-block with-errors red-txt'></div>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v)+1)+"'>"+
-		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].sequenceNo' id='sequenceNoId"+(parseInt(v)+1)+0+"'  value='"+(parseInt(v)+1)+"'>"+
-		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].parentSequenceNo'  id='parentSequenceNoId"+(parseInt(v)+1)+0+"' value='"+parseInt(index)+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].sequenceNo' id='sequenceNoId"+(parseInt(v)+1)+"'  value='"+(parseInt(v)+1)+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].parentSequenceNo'  id='parentSequenceNoId"+(parseInt(v)+1)+"' value='"+parseInt(index)+"'>"+
 		   "      </div>"+
-		   "         <div class='form-group sm__in'>"+
-		   "            <input type='text' id='constantValId"+(parseInt(v)+1)+0+"' index='"+(parseInt(v)+1)+"' class='constant form-control add_var_hide' value='' onkeypress='return isNumberKey(event)'/>"+
+		   "         <div class='form-group sm__in add_var_hide'>"+
+		   "            <input type='text' id='constantValId"+(parseInt(v)+1)+"' index='"+(parseInt(v)+1)+"' class='constant form-control add_var_hide' value='' onkeypress='return isNumberKey(event)'/>"+
 		   "			<div class='help-block with-errors red-txt'></div>"+
+		   "         </div>"+
+		   "		 <div class='form-group sm__in'>"+
+		   "           <span class='delete vertical-align-middle remBtnDis pl-md align-span-center hide' index='"+(parseInt(v)+1)+"' count='0' onclick=removeVaraiable(this);></span>"+
 		   "         </div>"+
 		   "   </div>"+
 		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+2)+"'>"+
 		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
 		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
-		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
-		   "            <option value='' disabled selected>Select</option>"+
+		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
+		   "            <option value=''  selected>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
 		   "            <option value='F'>Function</option>"+
 		   "            <option value='RDE'>Response Data Element (x)</option>"+
@@ -4277,13 +4342,16 @@ function addFunctions(item){
 		   "		 <div class='mt-sm black-xs-f italic-txt red-txt' id='inputTypeErrorValueId"+(parseInt(v)+2)+"' style='display: none;'></div>"+
 		   "	     <div class='help-block with-errors red-txt'></div>"+
 		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v)+2)+"' >"+
-		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].sequenceNo' id='sequenceNoId"+(parseInt(v)+2)+1+"' value='"+(parseInt(v)+2)+"'>"+
-		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].parentSequenceNo'id='parentSequenceNoId"+(parseInt(v)+2)+1+"' value='"+parseInt(index)+"' >"+
-		   "         <div class='add_varible add_var_hide' parentIndex="+parseInt(index)+" index='"+rowCount+"' onclick='addVariable(this);' id='addVaraiable"+rowCount+"'>+ Add Variable</div>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].sequenceNo' id='sequenceNoId"+(parseInt(v)+2)+"' value='"+(parseInt(v)+2)+"'>"+
+		   "         <input type='hidden' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].parentSequenceNo'id='parentSequenceNoId"+(parseInt(v)+2)+"' value='"+parseInt(index)+"' >"+
+		   "         <div class='add_varible add_var_hide' parentIndex="+parseInt(index)+" index='"+rowCount+"' onclick='addVariable(this);' id='addVaraiable1'>+ Add Variable</div>"+
 		   "      </div>"+
-		   "         <div class='form-group sm__in'>"+
-		   "            <input type='text' id='constantValId"+(parseInt(v)+2)+1+"' index='"+(parseInt(v)+2)+"' class='constant form-control add_var_hide' value='' onkeypress='return isNumberKey(event)'/>"+
+		   "         <div class='form-group sm__in add_var_hide'>"+
+		   "            <input type='text' id='constantValId"+(parseInt(v)+2)+"' index='"+(parseInt(v)+2)+"' class='constant form-control add_var_hide' value='' onkeypress='return isNumberKey(event)'/>"+
 		   "			<div class='help-block with-errors red-txt'></div>"+
+		   "         </div>"+
+		   "		 <div class='form-group sm__in'>"+
+		   "           <span class='delete vertical-align-middle remBtnDis pl-md align-span-center hide' index='"+(parseInt(v)+2)+"' count='1' onclick=removeVaraiable(this);></span>"+
 		   "         </div>"+
 		   "   </div>"+
 		   "</div>"+
@@ -4292,9 +4360,11 @@ function addFunctions(item){
 		$(".numeric__section:last").after(addFunction);
 		$('.selectpicker').selectpicker('refresh');
 	}else if(value === "C"){
-		$("#constantValId"+index+count).removeClass('add_var_hide');
-		$("#constantValId"+index+count).val('');
-		$("#constantValId"+index+count).attr('required',true);
+		$("#constantValId"+index).removeClass('add_var_hide');
+		$("#constantValId"+index).val('');
+		$("#constantValId"+index).attr('required',true);
+		$("#constantValId"+index).parent().removeClass('add_var_hide');
+		
 	}else if(value === "RDE"){
 		var id= $(item).attr('id');
 		var noofrows = parseInt($('.numeric__section').length);
@@ -4303,7 +4373,7 @@ function addFunctions(item){
 			$('.numeric__section').each(function(i){
 			    var index =  $("#inputTypeValueId"+i).attr('index');
 			    var rootId = "rootId"+index;
-			    if(parent_input != "+" && parent_input != "-" ){
+			    if(parent_input != "+" && parent_input != "*" ){
 			    	$('#'+rootId+' .numeric__row').each(function(j){
 						var id = $(this).attr("id");
 						var rde_value = $("#inputSubTypeValueId"+id).val();
@@ -4367,21 +4437,23 @@ function selectFunction(item){
 	var count = parseInt($(item).attr('count'));
 	var value = $(item).val();
 	$("#inputSubTypeValueId"+index).val(value);
+	var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
+	$("#rootId"+index+" .numeric__row .remBtnDis").addClass("hide");
+	
 	if(value == '+' || value == '*' || value == '&&' || value == '||'){
-		$("#addVaraiable"+count).removeClass('add_var_hide');
+		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
 	}else{
-		$("#addVaraiable"+count).addClass('add_var_hide');
+		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
 	}
 	deleteChildElements(index,"parent");
 	$('#rootId'+index+' .numeric__row').each(function(j){
 			var id = $(this).attr("id");
-			$("#inputTypeId"+id+j).val("");
+			$("#inputTypeId"+id).val("");
 			$("#inputSubTypeValueId"+id).val("");
-			$("#constantValId"+id+j).val('');
-			$("#constantValId"+id+j).attr('required',false);
-			$("#constantValId"+id+j).addClass('add_var_hide');
-			//$("#inputTypeId"+id+j+" option[value='C']").prop('disabled', false);
-			//$("#inputTypeId"+id+j+" option[value='RDE']").prop('disabled', false);
+			$("#constantValId"+id).val('');
+			$("#constantValId"+id).attr('required',false);
+			$("#constantValId"+id).addClass('add_var_hide');
+			$("#constantValId"+id).parent().addClass('add_var_hide');
 			$('.selectpicker').selectpicker('refresh');
 			$("#inputTypeErrorValueId"+id).hide();
 			if(j > 1){
@@ -4390,18 +4462,20 @@ function selectFunction(item){
 	});
 	createFormula();
 }
+
 function addVariable(item){
 	var index = parseInt($(item).attr('index'));
 	var rowCount = parseInt($('.numeric__section').length);
-	var total = parseInt($('.numeric__row').length);
-	var v= total+2;
+	var total = maxSquenceValue();
 	var parent_index = parseInt($(item).attr('parentIndex'));
-	var count = parseInt($("#rootId"+parent_index+" .numeric__row").length);
+	var count = parseInt($("#rootId"+parent_index+" .numeric__row").last().find('select').attr("count"));
+	var v= total+1;
+	count = count+1;
 	var addVar = "<div class='numeric__row display__flex__base' id='"+v+"'>"+
 				 "   <span>V"+v+" =</span>"+
 				 "   <div class='form-group sm-selection' style='margin-left: 18px;'>"+
-				 "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputType' id='inputTypeId"+(parseInt(v))+count+"' index='"+(parseInt(v))+"' count='"+count+"' onchange='addFunctions(this);' required>"+
-				 "         <option value='' disabled selected>Select</option>"+
+				 "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputType' id='inputTypeId"+(parseInt(v))+"' index='"+(parseInt(v))+"' count='"+count+"' onchange='addFunctions(this);' required>"+
+				 "         <option value='' selected>Select</option>"+
 				 "         <option value='C'>Constant</option>"+
 				 "         <option value='F'>Function</option>"+
 				 "         <option value='RDE'>Response Data Element (x)</option>"+
@@ -4409,12 +4483,15 @@ function addVariable(item){
 				 "		<div class='mt-sm black-xs-f italic-txt red-txt' id='inputTypeErrorValueId"+v+"' style='display: none;'></div>"+
 				 "      <div class='help-block with-errors red-txt'></div>"+
 				 "      <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputTypeValue' id='inputSubTypeValueId"+(parseInt(v))+"' >"+
-				 " 	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].sequenceNo' id='sequenceNoId"+(parseInt(v))+count+"' value='"+(parseInt(v))+"'>"+
-				 "	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].parentSequenceNo' id='parentSequenceNoId"+(parseInt(v))+count+"' value='"+parseInt(parent_index)+"'>"+
-				 "     <div class='add_varible' parentIndex="+parseInt(parent_index)+" index='"+index+"' onclick='addVariable(this);' id='addVaraiable"+index+"'>+ Add Variable</div> "+
+				 " 	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].sequenceNo' id='sequenceNoId"+(parseInt(v))+"' value='"+(parseInt(v))+"'>"+
+				 "	   <input type='hidden' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].parentSequenceNo' id='parentSequenceNoId"+(parseInt(v))+"' value='"+parseInt(parent_index)+"'>"+
+				 "     <div class='add_varible' parentIndex="+parseInt(parent_index)+" index='"+index+"' onclick='addVariable(this);' id='addVaraiable"+count+"'>+ Add Variable</div> "+
+				 "   </div>"+
+				 "   <div class='form-group sm__in add_var_hide'>"+
+				 "      <input type='text' id='constantValId"+v+"' index='"+v+"' class='constant form-control add_var_hide' onkeypress='return isNumberKey(event)'/>"+
 				 "   </div>"+
 				 "   <div class='form-group sm__in'>"+
-				 "      <input type='text' id='constantValId"+v+count+"' index='"+v+"' class='constant form-control add_var_hide' onkeypress='return isNumberKey(event)'/>"+
+				 "           <span class='delete vertical-align-middle remBtnDis pl-md align-span-center' index='"+(parseInt(v))+"' count='"+count+"' onclick=removeVaraiable(this);></span>"+
 				 "   </div>"+
 				 "</div>";
 	$(item).parents(".numeric__row").after(addVar);
@@ -4424,7 +4501,34 @@ function addVariable(item){
     $(".numeric__loop").parent().find(".help-block").empty();
 	$(".numeric__loop").parents("form").validator("destroy");
 	$(".numeric__loop").parents("form").validator();
+	if($("#rootId"+parent_index+" .numeric__row").length > 2){
+		$("#rootId"+parent_index+" .numeric__row .remBtnDis").removeClass("hide");
+	}else{
+		$("#rootId"+parent_index+" .numeric__row .remBtnDis").addClass("hide");
+	}
 	createFormula();
+}
+function removeVaraiable(item){
+	var index = $(item).attr('index');
+	var count = parseInt($(item).attr('count'));
+	var parent_sequence_no = $("#parentSequenceNoId"+index).val();
+	var siblingCount = $("#rootId"+parent_sequence_no+" .numeric__row").length;
+	var value = $("#inputTypeId"+index).val();
+	if(siblingCount > 2){
+		if(value == "F"){
+			deleteChildElements(index,"child");
+		}
+		$("#"+index).remove();
+		var lastSeqenceNO = parseInt($("#rootId"+parent_sequence_no+" .numeric__row").last().find('select').attr("count"));
+		
+		$("#rootId"+parent_sequence_no+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+		createFormula();
+	}
+	if($("#rootId"+parent_sequence_no+" .numeric__row").length > 2){
+		$("#rootId"+parent_sequence_no+" .numeric__row .remBtnDis").removeClass("hide");
+	}else{
+		$("#rootId"+parent_sequence_no+" .numeric__row .remBtnDis").addClass("hide");
+	}
 }
 function validateSingleResponseDataElement(){
 	var responseDataElementArray  = new Array();
@@ -4438,7 +4542,7 @@ function validateSingleResponseDataElement(){
 			    var parent_input = $("#inputTypeValueId"+i).val();
 				$('#'+rootId+' .numeric__row').each(function(j){
 					var id = $(this).attr("id");
-					var val  = $("#inputTypeId"+id+j).val();
+					var val  = $("#inputTypeId"+id).val();
 					if(val != '' && val == 'RDE'){
 						if(responseDataElementArray.indexOf(val) != -1) {
 							$('#alertMsg').show();
@@ -4446,7 +4550,7 @@ function validateSingleResponseDataElement(){
 						    setTimeout(hideDisplayMessage, 3000);
 							isSingle = false;
 						}else{
-							 if(parent_input != "+" && parent_input != "-" ){
+							 if(parent_input != "+" && parent_input != "*" ){
 								responseDataElementArray.push(val);		
 							 }
 						}
@@ -4457,7 +4561,7 @@ function validateSingleResponseDataElement(){
 		}else{
 			$('#rootId1 .numeric__row').each(function(j){
 				var id = $(this).attr("id");
-				var val  = $("#inputTypeId"+id+j).val();
+				var val  = $("#inputTypeId"+id).val();
 				if(val != '' && val == 'RDE'){
 					if(responseDataElementArray.indexOf(val) != -1) {
 						$('#alertMsg').show();
@@ -4499,7 +4603,7 @@ function deleteChildElements(index,type){
 	var rootId = "rootId"+index;
 	$('#'+rootId+' .numeric__row').each(function(j){
 		var id = $(this).attr("id");
-		var input_type=$("#inputTypeId"+id+j).val();
+		var input_type=$("#inputTypeId"+id).val();
 		if(input_type == 'F'){
 			deleteChildElements(id,type);
 			$("#rootId"+id).remove();
@@ -4521,7 +4625,7 @@ function makeAFormula(index,isRecursive){
 			$('#'+rootId+' .numeric__row').each(function(j){
 				var id = $(this).attr("id");
 				var input_type_value = $("#inputSubTypeValueId"+id).val();
-				var input_type=$("#inputTypeId"+id+j).val();
+				var input_type=$("#inputTypeId"+id).val();
 				if(input_type != 'F'){
 					if(!isRecursive){
 						if(j==0){
@@ -4559,7 +4663,7 @@ function makeFunction(index){
 	$('#'+rootId+' .numeric__row').each(function(j){
 		var id = $(this).attr("id");
 		var input_type_value = $("#inputSubTypeValueId"+id).val();
-		var input_type=$("#inputTypeId"+id+j).val();
+		var input_type=$("#inputTypeId"+id).val();
 		if(input_type != 'F'){
 			if(j==0){
 				i += "("+input_type_value+root_value;	
@@ -4615,5 +4719,13 @@ function removeImage(item){
 	$("#"+id2).val('');
 	$('.textLabel'+id2).text("Upload");
 	$(item).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
+}
+function maxSquenceValue() {
+    var max=3;
+    $(".numeric__row").each(function() {
+        var id = parseInt(this.id, 10);
+        if(id > max){max = id;}
+    }); 
+    return max; 
 }
 </script>

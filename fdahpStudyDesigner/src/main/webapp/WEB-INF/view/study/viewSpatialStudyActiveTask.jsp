@@ -1354,7 +1354,7 @@ $(document).ready(function(){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= Initial Span  </li></ul>");
     		}
     	}else{
     		/* $('#initialspanId').val('');
@@ -1365,7 +1365,7 @@ $(document).ready(function(){
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= initialSpan  </li></ul>"); */
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= Initial Span  </li></ul>"); */
     	}
     });
     
