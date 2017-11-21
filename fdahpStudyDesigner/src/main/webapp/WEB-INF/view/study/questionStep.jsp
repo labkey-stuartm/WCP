@@ -1686,7 +1686,7 @@ function isNumberKey(evt)
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
 				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
-				            <span data-toggle="modal" id="trailId" style="pointer-events: none;">Trial</span>
+				            <span data-toggle="modal" id="trailId">Trial</span>
 				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
 				         <div class="numeric__container mb-sm">
@@ -1790,6 +1790,7 @@ function isNumberKey(evt)
 					                        </select>
 					                        <div class="help-block with-errors red-txt"></div>
 					                     </div>
+					                     <input type="hidden" id="previousInputTypeValueId${status.index}" value="${questionConditionBranchBo.inputTypeValue}" />
 					                 </div>
 					         		 <div class="numeric__define_input gray__t">
 					         		 	 <c:set var = "childCount" value = "${fn:length(questionConditionBranchBo.questionConditionBranchBos)}"/>
@@ -2085,7 +2086,7 @@ $(document).ready(function(){
     		  }
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
-		     if(isValid && isImageValid && validateResponseDataElement() &&validateSingleResponseDataElement()){
+		     if(isValid && isImageValid && validateResponseDataElement() && validateSingleResponseDataElement()){
 		    	 validateQuestionShortTitle('',function(val){
 		    		 if(val){
 		    			 var statShortName =  $("#statShortNameId").val();
@@ -2785,54 +2786,66 @@ $(document).ready(function(){
 			$('#myModal').modal('hide');
     });
     $('#trailId').click(function(){
-    	$('#myModal').modal('show');
+    	if(validateResponseDataElement()){
+    		$('#myModal').modal('show');	
+    	}else{
+    		bootbox.alert("Please add atleast one response data element in conditional formula.");
+    	}
     });
     $('#formulaSubmitId').on('click',function(){
     	var left_input = $('#lhsId').val();
     	var right_input = $('#rhsId').val();
     	var oprator_input = $('#operatorId').val();
     	var trialInputVal = $('#trailInputId').val();
+    	
+    	var text = "";
     	if(trialInputVal){
-    		$.ajax({ 
-	  	        url: "/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do?_S=${param._S}",
-	            type: "POST",
-	            datatype: "json",
-	            data: {
-	            	left_input:left_input,
-		        	  right_input:right_input,
-		        	  oprator_input:oprator_input,
-		        	  trialInput:trialInputVal,
-	                "${_csrf.parameterName}":"${_csrf.token}",
-	          },
-  	          success:function(data){
-  	        	var jsonobject = eval(data);			                       
-  				var message = jsonobject.message;
-  				var formulaResponseJsonObject = jsonobject.formulaResponseJsonObject; 
-  				if(message == "SUCCESS"){
-  					$('#lhsValueId').html("<b>"+formulaResponseJsonObject.lhsData+"</b>");
-  					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
-		            if (formulaResponseJsonObject.outPutData =='true' || formulaResponseJsonObject.outPutData =='True') {
-		              $('#outputId').html("<span class='gtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
-		            }else{
-		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
-		            }
-  				}else{
-  					if(typeof formulaResponseJsonObject !='undefined' && typeof formulaResponseJsonObject.statusMessage != 'undefined'){
-  						bootbox.alert(formulaResponseJsonObject.statusMessage);	
-  					}else{
-  						bootbox.alert("Please create the valid formula");
-  					}
-  					
-  				}
-  				//setTimeout(hideDisplayMessage, 4000);
-  	          },
-  	          error: function(xhr, status, error) {
-    			  $(item).prop('disabled', false);
-    			  //$('#alertMsg').show();
-    			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-    			  //setTimeout(hideDisplayMessage, 4000);
-    		  },global:false
-  	      });
+    		text = validateMinMaxforX();
+    		if(text == ''){
+    			$.ajax({ 
+    	  	        url: "/fdahpStudyDesigner/adminStudies/validateconditionalFormula.do?_S=${param._S}",
+    	            type: "POST",
+    	            datatype: "json",
+    	            data: {
+    	            	left_input:left_input,
+    		        	  right_input:right_input,
+    		        	  oprator_input:oprator_input,
+    		        	  trialInput:trialInputVal,
+    	                "${_csrf.parameterName}":"${_csrf.token}",
+    	          },
+      	          success:function(data){
+      	        	var jsonobject = eval(data);			                       
+      				var message = jsonobject.message;
+      				var formulaResponseJsonObject = jsonobject.formulaResponseJsonObject; 
+      				if(message == "SUCCESS"){
+      					$('#lhsValueId').html("<b>"+formulaResponseJsonObject.lhsData+"</b>");
+      					$('#rhsValueId').html("<b>"+formulaResponseJsonObject.rhsData+"</b>");
+    		            if (formulaResponseJsonObject.outPutData =='true' || formulaResponseJsonObject.outPutData =='True') {
+    		              $('#outputId').html("<span class='gtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
+    		            }else{
+    		              $('#outputId').html("<span class='rtxtf'><b>"+formulaResponseJsonObject.outPutData+"</b></span>");
+    		            }
+      				}else{
+      					if(typeof formulaResponseJsonObject !='undefined' && typeof formulaResponseJsonObject.statusMessage != 'undefined'){
+      						bootbox.alert(formulaResponseJsonObject.statusMessage);	
+      					}else{
+      						bootbox.alert("Please create the valid formula");
+      					}
+      					
+      				}
+      				//setTimeout(hideDisplayMessage, 4000);
+      	          },
+      	          error: function(xhr, status, error) {
+        			  $(item).prop('disabled', false);
+        			  //$('#alertMsg').show();
+        			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+        			  //setTimeout(hideDisplayMessage, 4000);
+        		  },global:false
+      	      });
+    		}else{
+    			bootbox.alert(text);
+    		}
+    		
     	}else{
     		bootbox.alert("Please pass input ");
     	}
@@ -4305,6 +4318,7 @@ function addFunctions(item){
 		   addFunction+="      </select>"+
 		   "      <div class='help-block with-errors red-txt'></div>"+
 		   "   </div>"+
+		   "<input type='hidden' id='previousInputTypeValueId"+rowCount+"'  />"+
 		   "</div>"+
 		   "<div class='numeric__define_input gray__t' style='margin-left:4px;'>"+
 		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+1)+"'>"+
@@ -4378,7 +4392,6 @@ function addFunctions(item){
 						var id = $(this).attr("id");
 						var rde_value = $("#inputSubTypeValueId"+id).val();
 						if(rde_value != '' && rde_value == 'x'){
-							//$(item).val('');
 							isValid=false;
 						}
 					});
@@ -4388,7 +4401,6 @@ function addFunctions(item){
 							var id = $(this).attr("id");
 							var rde_value = $("#inputSubTypeValueId"+id).val();
 							if(rde_value != '' && rde_value == 'x'){
-								//$(item).val('');
 								isValid=false;
 							}
 						});
@@ -4401,7 +4413,6 @@ function addFunctions(item){
 					var id = $(this).attr("id");
 					var val  = $("#inputSubTypeValueId"+id).val();
 					if(val != '' && val == 'x'){
-						//$(item).val('');
 						isValid=false;
 					}
 				}); 			
@@ -4412,6 +4423,11 @@ function addFunctions(item){
 			//$("#inputSubTypeValueId"+index).val('x');
 			$("#inputTypeErrorValueId"+index).show();
 			$("#inputTypeErrorValueId"+index).html('RDE (x) should be used only once.');
+		}else{
+			$(".numeric__row").each(function(j){
+				var id = $(this).attr("id");
+				$("#inputTypeErrorValueId"+id).hide();
+			});
 		}
 	}
 	$(".numeric__loop").parent().removeClass("has-danger").removeClass("has-error");
@@ -4424,12 +4440,6 @@ function addFunctions(item){
     	$("#inputSubTypeValueId"+index).val(value);
     	createFormula();
     });
-	if(isValid){
-		$(".numeric__row").each(function(j){
-			var id = $(this).attr("id");
-			$("#inputTypeErrorValueId"+id).hide();
-		});
-	}
 	createFormula();
 }
 function selectFunction(item){
@@ -4437,29 +4447,71 @@ function selectFunction(item){
 	var count = parseInt($(item).attr('count'));
 	var value = $(item).val();
 	$("#inputSubTypeValueId"+index).val(value);
-	var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
 	$("#rootId"+index+" .numeric__row .remBtnDis").addClass("hide");
+	var previousInputTypeValue = $("#previousInputTypeValueId"+count).val();
 	
-	if(value == '+' || value == '*' || value == '&&' || value == '||'){
-		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+	if(typeof previousInputTypeValue!= 'undefined' && previousInputTypeValue!=null && previousInputTypeValue!= ''){
+		if(previousInputTypeValue == "+" || previousInputTypeValue == "*"){
+			bootbox.confirm({
+				closeButton: false,
+				message : 'This action will reset the inputs for this function in the right side column. Are you sure you wish to proceed?',	
+			    buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	deleteChildElements(index,"parent");
+						$('#rootId'+index+' .numeric__row').each(function(j){
+								var id = $(this).attr("id");
+								$("#inputTypeId"+id).val("");
+								$("#inputSubTypeValueId"+id).val("");
+								$("#constantValId"+id).val('');
+								$("#constantValId"+id).attr('required',false);
+								$("#constantValId"+id).addClass('add_var_hide');
+								$("#constantValId"+id).parent().addClass('add_var_hide');
+								$('.selectpicker').selectpicker('refresh');
+								$("#inputTypeErrorValueId"+id).hide();
+								if(j > 1){
+									$("#"+id).remove();
+								}
+						});
+						$("#previousInputTypeValueId"+count).val(value);
+						var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
+			        	if(value == '+' || value == '*'){
+			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+			        	}else{
+			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+			        	}
+			        }else{
+			        	$(item).val(previousInputTypeValue);
+			        	$('.selectpicker').selectpicker('refresh');
+			        }
+			    }
+		   });
+			
+		}else{
+			$("#previousInputTypeValueId"+count).val(value);
+			var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
+        	if(value == '+' || value == '*'){
+        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+        	}else{
+        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+        	}
+		}
 	}else{
-		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+		$("#previousInputTypeValueId"+count).val(value);
+		var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
+    	if(value == '+' || value == '*'){
+    		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+    	}else{
+    		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+    	}
 	}
-	deleteChildElements(index,"parent");
-	$('#rootId'+index+' .numeric__row').each(function(j){
-			var id = $(this).attr("id");
-			$("#inputTypeId"+id).val("");
-			$("#inputSubTypeValueId"+id).val("");
-			$("#constantValId"+id).val('');
-			$("#constantValId"+id).attr('required',false);
-			$("#constantValId"+id).addClass('add_var_hide');
-			$("#constantValId"+id).parent().addClass('add_var_hide');
-			$('.selectpicker').selectpicker('refresh');
-			$("#inputTypeErrorValueId"+id).hide();
-			if(j > 1){
-				$("#"+id).remove();
-			}
-	});
 	createFormula();
 }
 
@@ -4535,46 +4587,24 @@ function validateSingleResponseDataElement(){
 	if($("#formulaBasedLogicId").is(":checked")){
 		var isSingle = true;
 		var noofrows = parseInt($('.numeric__section').length);
-		if(noofrows > 1){
-			$('.numeric__section').each(function(i){
-			    var index =  $("#inputTypeValueId"+i).attr('index');
-			    var rootId = "rootId"+index;
-			    var parent_input = $("#inputTypeValueId"+i).val();
-				$('#'+rootId+' .numeric__row').each(function(j){
-					var id = $(this).attr("id");
-					var val  = $("#inputTypeId"+id).val();
-					if(val != '' && val == 'RDE'){
-						if(responseDataElementArray.indexOf(val) != -1) {
-							$('#alertMsg').show();
-						    $("#alertMsg").removeClass('s-box').addClass('e-box').html("RDE (x) should be used only once.");
-						    setTimeout(hideDisplayMessage, 3000);
-							isSingle = false;
-						}else{
-							 if(parent_input != "+" && parent_input != "*" ){
-								responseDataElementArray.push(val);		
-							 }
-						}
-				   }
-				});
-			});
-			return isSingle;
-		}else{
-			$('#rootId1 .numeric__row').each(function(j){
-				var id = $(this).attr("id");
-				var val  = $("#inputTypeId"+id).val();
-				if(val != '' && val == 'RDE'){
-					if(responseDataElementArray.indexOf(val) != -1) {
-						$('#alertMsg').show();
-					    $("#alertMsg").removeClass('s-box').addClass('e-box').html("RDE (x) should be used only once.");
-					    setTimeout(hideDisplayMessage, 3000);
-						isSingle = false;
-					}else{
-						responseDataElementArray.push(val);
-					}
-				}
-			}); 
-			return isSingle;
-		}
+		$('.numeric__section').each(function(i){
+		    var index =  $("#inputTypeValueId"+i).attr('index');
+		    var rootId = "rootId"+index;
+		    var parent_input = $("#inputTypeValueId"+i).val();
+		    var parent_sequence_no = $("#parentSequenceNoId"+index).val();
+		    $('#'+rootId+' .numeric__row').each(function(j){
+		    	var id = $(this).attr("id");
+		    	if($("#inputTypeErrorValueId"+id).is(':visible')){
+					isSingle = false;
+		    	}
+		    });
+		    if(!isSingle){
+		    	$('#alertMsg').show();
+			    $("#alertMsg").removeClass('s-box').addClass('e-box').html("RDE (x) should be used only once.");
+			    setTimeout(hideDisplayMessage, 3000);
+		    }
+		});
+		return isSingle;
 	}else{
 		return true;
 	}
@@ -4697,15 +4727,9 @@ function createFormula(){
 	if(formula != ''){
 		$(".formula").text(formula);
 		$(".tryFormula").text(formula);
-		if(formula.indexOf("x") !== -1){
-			$("#trailId").css("pointer-events", "auto");
-		}else{
-			$("#trailId").css("pointer-events", "none");
-		}
 	}else{
 		$(".formula").text("-NA-");
 		$(".tryFormula").text("-NA-");
-		$("#trailId").css("pointer-events", "none");
 	}
 	$("#lhsId").val(lhs);
 	$("#rhsId").val(rhs);
@@ -4727,5 +4751,43 @@ function maxSquenceValue() {
         if(id > max){max = id;}
     }); 
     return max; 
+}
+function validateMinMaxforX(){
+	var responseType = $("#rlaResonseType").val();
+	var minValue = "";
+	var maxValue = "";
+	var value = $("#trailInputId").val();
+	if(responseType == 'Scale'){
+		minValue = $("#scaleMinValueId").val();
+		maxValue = $("#scaleMaxValueId").val();
+	}else if(responseType == 'Continuous Scale'){
+		minValue = $("#continuesScaleMinValueId").val();
+		maxValue = $("#continuesScaleMaxValueId").val();
+	}else if(responseType == 'Numeric'){
+		minValue = $("#numericMinValueId").val();
+		maxValue = $("#numericMaxValueId").val();
+	}
+	if(minValue != '' &&  maxValue!= ''){
+		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
+			//return "values should be less than max and greater than max";
+			return "";
+		}else{
+			return "x value should be less than maximum value and greater than minimum value";
+		}
+	}else if(minValue == '' &&  maxValue != ''){
+		if(parseInt(value) > parseInt(maxValue)){
+			return "x value should be less than maximum value";
+		}else{
+			return "";
+		}
+	}else if(minValue != '' &&  maxValue == ''){
+		if(parseInt(value) < parseInt(minValue)){
+			return "x value should be greater than minimum value";
+		}else{
+			return "";
+		}
+	}else{
+		return "";
+	}
 }
 </script>
