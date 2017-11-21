@@ -47,6 +47,12 @@
 		</form:form>
 	         <!-- change password box ends-->
   		</div>
+  		<div class="clearfix"></div>
+            
+             <div class="footer">
+                    <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+              </div>
+  	</div>
   	</div>
   <script>
     	$(document).ready(function(e) {

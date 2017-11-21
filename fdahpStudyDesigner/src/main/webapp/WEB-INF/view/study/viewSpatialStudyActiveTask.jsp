@@ -530,7 +530,7 @@
 									<div class="help-block with-errors red-txt"></div>
 								</div>
 							</div>
-							<div>
+							<!-- <div>
 								<div class="gray-xs-f mb-sm">Time ranges options available
 									to the mobile app user</div>
 								<div>
@@ -543,7 +543,7 @@
 										class="txt-gray">(Rollback option provided for these
 										three options)</span>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -737,7 +737,7 @@
             <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -754,7 +754,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -772,7 +772,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -790,7 +790,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg">
 					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -808,7 +808,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -825,7 +825,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-	                <div class="col-md-3 col-lg-3 p-none">
+	                <div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -876,7 +876,7 @@
 	                        <input type="hidden" name="taskAttributeValueBos[7].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                        <input type="hidden" name="taskAttributeValueBos[7].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                        <input type="hidden" name="taskAttributeValueBos[7].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-	                        <div class="bullets black-md-f pt-md"><div>${taskMasterAttributeBo.displayName}</div></div>
+	                        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
 	                        
 	                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
 	                        <div class="chartSection" style="display:none">

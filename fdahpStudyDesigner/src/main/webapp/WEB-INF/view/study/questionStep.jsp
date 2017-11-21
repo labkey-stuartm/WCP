@@ -724,13 +724,13 @@ function isNumberKey(evt)
 			                     </div>
 		                     </div> -->
 		                     <div class="col-md-6">
-                            <div class="mt-xs mr-md float__left">except</div>
+                            <div class="mt-xs mr-sm float__left">except</div>
 			                      <div class="form-group float__left">
                               
 			    					          <div class=""><textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if> >${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea></div>
                                <div class="help-block with-errors red-txt"></div>
 			                     </div>
-                           <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
+                           <span class="ml-xs sprites_v3 filled-tooltip float__left" data-toggle="tooltip" title="Enter text strings separated by the | symbol. E.g. AB | O Note that each of the strings will be individually checked for occurrence in the user input and allowed or disallowed based on how you have defined the rule. "></span>
 		                     </div>
 		                  </div>
 		            </div>

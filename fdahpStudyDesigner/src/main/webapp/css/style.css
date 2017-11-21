@@ -1199,15 +1199,15 @@ height:0px !important;
 }
 
 ::-webkit-input-placeholder { 
-    color:rgba(124, 113, 113, 0.67);  !important;
+    color:rgba(124, 113, 113, 0.67)  !important;
     text-overflow: ellipsis; 
 }
 ::-moz-input-placeholder { 
-    color: rgba(124, 113, 113, 0.67); !important; 
+    color: rgba(124, 113, 113, 0.67) !important; 
     text-overflow: ellipsis; 
 }
 :-ms-input-placeholder { 
-    color: rgba(124, 113, 113, 0.67); !important; 
+    color: rgba(124, 113, 113, 0.67) !important; 
     text-overflow: ellipsis; 
 }
 .switch-input:disabled ~ .switch-label,  .switch-input:disabled ~ .switch-handle{

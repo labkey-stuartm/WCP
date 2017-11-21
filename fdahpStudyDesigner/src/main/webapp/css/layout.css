@@ -39,7 +39,7 @@ Version: 		1.0
 }
 
 .lg-space-right{
-    width: 60%;
+    /*width: 60%;*/
     display: inline-block;
     float: left;
 }
@@ -151,7 +151,7 @@ Version: 		1.0
 }
 
 .lg-space-right{
-    width: 60%;
+    width: 59%;
 }
     
 .lg-icons-list li{
@@ -461,7 +461,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .lg-space-right{
-    width: 76%;
+    width: 72%;
 }
     
 .lg-icons-list li{
@@ -507,7 +507,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .lg-space-right{
-    width: 75%;
+    width: 74%;
 }
     
 .lg-space-container{
