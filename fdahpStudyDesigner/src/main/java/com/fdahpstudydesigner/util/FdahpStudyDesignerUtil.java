@@ -1066,7 +1066,7 @@ public class FdahpStudyDesignerUtil {
 				StringBuilder except = new StringBuilder("\\b");
 				for(int i=0;i<exceptChar.length;i++){
 					//except+="(?!\\b"+exceptChar[i]+"\\b)";
-					except.append("(?!\\b"+exceptChar[i]+"\\b)");
+					except.append("(?!\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
 				}
 				System.out.println("except:"+except);
 				regEx = except+regEx+"]+";
