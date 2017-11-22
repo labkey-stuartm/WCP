@@ -2171,7 +2171,7 @@ $(document).ready(function(){
     			 var statShortName =  $("#statShortNameId").val();
     	    	 if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
     	    			validateStatsShorTitle('',function(val){
-    	    				if(val){
+    	    				if(val && validateSingleResponseDataElement()){
     	    					 saveQuestionStepQuestionnaire('', '');
     	    	    		 }else{
     	    	    			 $("body").removeClass("loading");
@@ -2188,9 +2188,12 @@ $(document).ready(function(){
     	    				 }
     	    			 });
     	    		 }else{
-    	    			 saveQuestionStepQuestionnaire('', '');	 
+    	    			 if(validateSingleResponseDataElement()){
+    	    				 saveQuestionStepQuestionnaire('', '');	 
+    	    			 }else{
+    	    				 $("body").removeClass("loading");
+    	    			 }
     	    		 }
-    	    		 
     	    	 }
     		 }else{
     			 $("body").removeClass("loading");
@@ -2280,6 +2283,22 @@ $(document).ready(function(){
     		 $(this).val("No");
     		 $("#conditionalFormulaId").hide();
     		 $(".conditionalBranchingRequired").attr('required',false);
+    		 
+    		 deleteChildElements(1,"parent");
+		     $("#inputTypeValueId0").val('');
+		     $("#inputTypeId2").val('');
+		     $("#inputTypeId3").val('');
+		     $(".formula").text("-NA-");
+		     $(".tryFormula").text("-NA-");
+		     $("#constantValId2").val('')
+		     $("#constantValId3").val('');
+		     $("#constantValId3").addClass("add_var_hide");
+		     $("#constantValId2").addClass("add_var_hide");
+		     $("#constantValId2").prop("required",false);
+		     $("#constantValId3").prop("required",false);
+		     $("#constantValId2").addClass("add_var_hide");
+		     $("#inputSubTypeValueId2").val('');
+		     $('.selectpicker').selectpicker('refresh');
     	 }
      });
     $("#useStasticData").on('change',function(){
