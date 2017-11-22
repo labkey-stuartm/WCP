@@ -4768,20 +4768,20 @@ function validateMinMaxforX(){
 		maxValue = $("#numericMaxValueId").val();
 	}
 	if(minValue != '' &&  maxValue!= ''){
-		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
+		if(Number(value) >= Number(minValue) && Number(value) <= Number(maxValue)){
 			//return "values should be less than max and greater than max";
 			return "";
 		}else{
 			return "x value should be less than maximum value and greater than minimum value";
 		}
 	}else if(minValue == '' &&  maxValue != ''){
-		if(parseInt(value) > parseInt(maxValue)){
+		if(Number(value) > Number(maxValue)){
 			return "x value should be less than maximum value";
 		}else{
 			return "";
 		}
 	}else if(minValue != '' &&  maxValue == ''){
-		if(parseInt(value) < parseInt(minValue)){
+		if(Number(value) < Number(minValue)){
 			return "x value should be greater than minimum value";
 		}else{
 			return "";

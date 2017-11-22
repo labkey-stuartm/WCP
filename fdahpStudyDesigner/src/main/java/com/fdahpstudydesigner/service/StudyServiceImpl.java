@@ -829,7 +829,7 @@ public class StudyServiceImpl implements StudyService {
 				updateConsentBo.setStudyId(consentBo.getStudyId());
 			}
 			
-			updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
+			
 			if(consentBo.getNeedComprehensionTest() != null){
 				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
 			}
@@ -919,6 +919,7 @@ public class StudyServiceImpl implements StudyService {
 			}
 			if(consentBo.getComprehensionTest() != null){
 				updateConsentBo.setComprehensionTest(consentBo.getComprehensionTest());
+				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			}
 			if(consentBo.getAggrementOfTheConsent() != null){
 				updateConsentBo.setAggrementOfTheConsent(consentBo.getAggrementOfTheConsent());
