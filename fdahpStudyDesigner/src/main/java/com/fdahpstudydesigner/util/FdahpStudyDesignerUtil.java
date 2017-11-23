@@ -1062,10 +1062,13 @@ public class FdahpStudyDesignerUtil {
 			}
 			if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
 				String[] exceptChar = exceptCharacters.split("\\|");
-				String except = "\\b";
+				//String except = "\\b";
+				StringBuilder except = new StringBuilder("\\b");
 				for(int i=0;i<exceptChar.length;i++){
-					except+="(?!\\b"+exceptChar[i]+"\\b)";
+					//except+="(?!\\b"+exceptChar[i]+"\\b)";
+					except.append("(?!\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
 				}
+				System.out.println("except:"+except);
 				regEx = except+regEx+"]+";
 			}else{
 				regEx +="]+";
