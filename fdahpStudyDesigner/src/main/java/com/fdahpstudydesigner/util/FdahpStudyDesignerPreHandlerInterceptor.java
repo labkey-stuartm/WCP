@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.service.LoginServiceImpl;
+import com.fdahpstudydesigner.service.UsersService;
 
 /**
  * @author 
@@ -22,6 +24,9 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 	private static final Logger logger = Logger.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
 	
 	private LoginServiceImpl loginService;
+	
+	@Autowired
+	private UsersService usersService;
 	
 	
 	
@@ -118,11 +123,18 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 						logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
 					}
 					//Checking for force logout for current user
-					Boolean forceLogout = loginService.isFrocelyLogOutUser(session);
-					if(forceLogout){
-						response.sendRedirect(sessionOutUrl+"?msg="+timeoutMsg);
-						logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force logout");
-						return false;
+					//Boolean forceLogout = loginService.isFrocelyLogOutUser(session);
+					UserBO user = usersService.getUserDetails(session.getUserId());
+					if(null != user){
+						if(user.isForceLogout()){
+							response.sendRedirect(sessionOutUrl+"?msg="+timeoutMsg);
+							logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force logout");
+							return false;
+						}else if(user.getEmailChanged()){
+							response.sendRedirect(sessionOutUrl+"?msg="+propMap.get("email.not.varified.error"));
+							logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): email change");
+							return false;
+						}
 					}
 				}
 			} else if (uri.contains(defaultURL) && null != session) {

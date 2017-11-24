@@ -327,7 +327,7 @@ public class UsersController {
 				if(StringUtils.isNotEmpty(userId)){
 					userBo = usersService.getUserDetails(Integer.parseInt(userId));
 					if(userBo!=null){
-						msg = loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "USER");
+						msg = loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "", "USER");
 					}
 					if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("resent.link.success.message"));
@@ -360,14 +360,14 @@ public class UsersController {
 					if(StringUtils.isNotEmpty(emailId) && StringUtils.isNotEmpty(changePassworduserId)){
 						msg = usersService.enforcePasswordChange(Integer.parseInt(changePassworduserId), emailId);
 						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
-						  loginService.sendPasswordResetLinkToMail(request, emailId, "enforcePasswordChange");
+						  loginService.sendPasswordResetLinkToMail(request, emailId, "", "enforcePasswordChange");
 					}else{
 						msg = usersService.enforcePasswordChange(null, "");
 						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 							emails = usersService.getActiveUserEmailIds();
 							if(emails!=null && !emails.isEmpty()){
 								for(String email: emails){
-									loginService.sendPasswordResetLinkToMail(request, email, "enforcePasswordChange");
+									loginService.sendPasswordResetLinkToMail(request, email, "", "enforcePasswordChange");
 								}
 								
 							}

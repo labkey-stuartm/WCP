@@ -125,7 +125,7 @@ public class LoginController {
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 			String email = (null != request.getParameter("email") && !"".equals(request.getParameter("email"))) ? request.getParameter("email") : "";
-			message   = loginService.sendPasswordResetLinkToMail(request, email, "");
+			message   = loginService.sendPasswordResetLinkToMail(request, email, "","");
 			if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				request.getSession().setAttribute("sucMsg", propMap.get("user.forgot.success.msg"));
 			} else {
@@ -380,5 +380,67 @@ public class LoginController {
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - appDetails() - Ends");
 		return new ModelAndView("appDetails", map);
+	}
+	
+	@RequestMapping("/validateSecurityToken.do")
+	public ModelAndView securityTokenValidate(HttpServletRequest request){
+		ModelMap map = new ModelMap();
+		logger.info("LoginController - createPassword() - Starts");
+		String securityToken = null;
+		boolean  checkSecurityToken = false;
+		UserBO userBO = null;
+		ModelAndView mv = new ModelAndView();
+		try {
+			if(null != request.getSession(false).getAttribute("sucMsg")){
+				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
+				request.getSession(false).removeAttribute("sucMsg");
+			}
+			if(null != request.getSession(false).getAttribute("errMsg")){
+				map.addAttribute("errMsg", request.getSession(false).getAttribute("errMsg"));
+				request.getSession(false).removeAttribute("errMsg");
+			}
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
+			userBO = loginService.checkSecurityToken(securityToken);
+			map.addAttribute("securityToken", securityToken);
+			if(userBO != null){
+				checkSecurityToken = true;
+			}
+			map.addAttribute("isValidToken", checkSecurityToken);
+			mv = new ModelAndView("emailChangeVarificationPage", map);
+		} catch (Exception e) {
+			logger.error("LoginController - createPassword() - ERROR " , e);
+		}
+		logger.info("LoginController - createPassword() - Ends");
+		return mv;
+	}
+	
+	/**		
+	 * @author Pradyumn		
+	 * @param request		
+	 * @param userBO		
+	 * @return mv		
+	 */		
+	@RequestMapping("/validateAccessCode.do")		
+	public ModelAndView validateAccessCode(HttpServletRequest request){		
+		logger.info("LoginController - addPassword() - Starts");		
+		String securityToken = null;		
+		String accessCode = null;		
+		String  errorMsg = FdahpStudyDesignerConstants.FAILURE;		
+		ModelAndView mv = new ModelAndView("redirect:login.do");		
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();		
+		try {		
+			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode")) ? request.getParameter("accessCode") :"";		
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";		
+			errorMsg = loginService.validateAccessCode(securityToken, accessCode);		
+			if(!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)){		
+				request.getSession(false).setAttribute("errMsg", errorMsg);		
+			} else {		
+					request.getSession(false).setAttribute("sucMsg", propMap.get("user.access.code.success"));		
+			}		
+		} catch (Exception e) {		
+			logger.error("LoginController - addPassword() - ERROR " , e);		
+		}		
+		logger.info("LoginController - addPassword() - Ends");		
+		return mv;		
 	}
 }

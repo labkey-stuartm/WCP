@@ -13,7 +13,7 @@ import com.fdahpstudydesigner.util.SessionObject;
  */
 public interface LoginService {
 	
-	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type);
+	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String oldEmail, String type);
 	
 	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj);
 	

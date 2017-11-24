@@ -48,7 +48,7 @@ public class UsersDAOImpl implements UsersDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.status,"
-					+ "u.password FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id "
+					+ "u.password,u.email_changed FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id "
 					+ "not in (select upm.user_id from user_permission_mapping upm where "
 					+ "upm.permission_id = (select up.permission_id from user_permissions up "
 					+ "where up.permissions ='ROLE_SUPERADMIN')) ORDER BY u.user_id DESC ");
@@ -64,6 +64,7 @@ public class UsersDAOImpl implements UsersDAO{
 					userBO.setRoleName(null != obj[4] ? String.valueOf(obj[4]) : "");
 					userBO.setEnabled(null != obj[5] ? (Boolean)obj[5] : false);
 					userBO.setUserPassword(null != obj[6] ? String.valueOf(obj[6]) : "");
+					userBO.setEmailChanged(null != obj[7] ? (Boolean)obj[7] : false);
 					userBO.setUserFullName(userBO.getFirstName()+" "+userBO.getLastName());
 					userList.add(userBO);
 				}

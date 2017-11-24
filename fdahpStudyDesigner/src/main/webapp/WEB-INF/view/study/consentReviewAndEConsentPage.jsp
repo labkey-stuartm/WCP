@@ -95,7 +95,7 @@
 		                        <div class="help-block with-errors red-txt"></div>
 		                     </div>
 		                </div>
-		                <div class="col-md-12 pl-none mt-lg">
+		                <%-- <div class="col-md-12 pl-none mt-lg">
 		                	<div class="gray-xs-f mb-sm">Allow user to proceed if permission not provided</div>
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
@@ -107,7 +107,7 @@
 	                                <label for="allowWithoutPermissionNo">No</label>
 	                            </span>
 	                        </div>
-                    	</div>
+                    	</div> --%>
                     	 <div class="col-md-12 pl-none mt-lg mb-xlg">
                     	 	<!-- <span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span> -->
                     	 </div>
