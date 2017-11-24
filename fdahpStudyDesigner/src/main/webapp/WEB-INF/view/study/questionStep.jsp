@@ -495,7 +495,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="scaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="scaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.minImage}">hide</c:if>" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -514,7 +514,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="scaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="scaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.maxImage}">hide</c:if>" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -601,7 +601,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="continuesScaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="continuesScaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.minImage}">hide</c:if>"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -620,7 +620,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="continuesScaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="continuesScaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.maxImage}">hide</c:if>"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -2745,6 +2745,7 @@ $(document).ready(function(){
     $(document).on('change', '.upload-image', function(e) {
         var file, img;
         var thisAttr = this;
+        var response_type = $("#rlaResonseType").val();
         if ((file = this.files[0])) {
             img = new Image();
             img.onload = function() {
@@ -2754,6 +2755,10 @@ $(document).ready(function(){
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
+                    
+                    if(response_type == "Scale" || response_type == "Continuous Scale"){
+                    	$("#"+id).next().removeClass("hide");
+                    }
                    
                     $("#"+id).val('');
                     $('.textLabel'+id).text("Change");
@@ -2767,6 +2772,9 @@ $(document).ready(function(){
                     $("#"+id).val('');
                     $("#"+$(thisAttr).attr("id")).val('');
                     $('.textLabel'+id).text("Upload");
+                    if(response_type == "Scale" || response_type == "Continuous Scale"){
+                    	$("#"+id).next().addClass("hide");
+                    }
                 }
             };
             img.onerror = function() {
@@ -4798,6 +4806,7 @@ function removeImage(item){
 	$("#"+id2).val('');
 	$('.textLabel'+id2).text("Upload");
 	$(item).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
+	$(item).addClass("hide");
 }
 function maxSquenceValue() {
     var max=3;
