@@ -51,6 +51,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 		
         String targetUrl = determineTargetUrl(authentication);
+        logger.info("targetUrl:"+targetUrl);
         UserBO userdetails;
 		SessionObject sesObj;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
@@ -95,10 +96,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 			if(null != request.getSession(false).getAttribute("errMsg")){
 			   request.getSession(false).removeAttribute("errMsg");
 			}
+			logger.info("loginBackUrl:"+request.getParameter("loginBackUrl"));
 			if(StringUtils.isNotBlank(request.getParameter("loginBackUrl"))){
 			   String[] uri = request.getParameter("loginBackUrl").split(projectName);
 			   targetUrl = uri[1];
 			}
+			logger.info("targetUrl:"+targetUrl);
 //	        redirectStrategy.sendRedirect(request, response, targetUrl);
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
@@ -117,7 +120,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	 * @return {@link String} , the URI
 	 */
 	protected String determineTargetUrl(Authentication authentication) {
-        String url = "";
+		logger.info("CustomSuccessHandler - determineTargetUrl - Starts");
+		String url = "";
         try{
         
         if (authentication!=null){
@@ -128,6 +132,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         }catch(Exception e){
         	logger.error("CustomSuccessHandler - determineTargetUrl - ERROR", e);
         }
+        logger.info("CustomSuccessHandler - determineTargetUrl - Ends");
         return url;
     }
 }

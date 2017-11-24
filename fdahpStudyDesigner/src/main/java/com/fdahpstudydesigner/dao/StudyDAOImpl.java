@@ -41,6 +41,7 @@ import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -129,7 +130,7 @@ public class StudyDAOImpl implements StudyDAO{
 								referenceTablesBos =query.list();
 								if(referenceTablesBos!=null && !referenceTablesBos.isEmpty()){
 									bean.setCategory(referenceTablesBos.get(0).getValue());
-									bean.setResearchSponsor(referenceTablesBos.get(1).getValue());
+									bean.setResearchSponsor(referenceTablesBos.size() == 2?referenceTablesBos.get(1).getValue() : "");
 								}
 							}
 							if(StringUtils.isNotEmpty(bean.getCustomStudyId())){
@@ -1901,7 +1902,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(resourceBOList != null && !resourceBOList.isEmpty()){
 				int sequenceNo = 1;
 				for(ResourceBO rBO:resourceBOList){
-					if(rBO.getSequenceNo().equals(0)){
+					if(rBO.getSequenceNo() == null || rBO.getSequenceNo().equals(0)){
 						rBO.setSequenceNo(sequenceNo);
 						session.update(rBO);
 						sequenceNo++;
@@ -3738,6 +3739,7 @@ public class StudyDAOImpl implements StudyDAO{
 													if(questionsBo!=null){
 														//Question response subType 
 														List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
+														List<QuestionConditionBranchBo> questionConditionBranchList = session.getNamedQuery("getQuestionConditionBranchList").setInteger("questionId", questionsBo.getId()).list();
 
 														//Question response Type 
 														questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).setMaxResults(1).uniqueResult();
@@ -3753,6 +3755,16 @@ public class StudyDAOImpl implements StudyDAO{
 															newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
 															session.save(newQuestionReponseTypeBo);
 														}
+														
+														//Question Condition branching logic
+														  if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+															  for(QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList){
+																  QuestionConditionBranchBo newQuestionConditionBranchBo = SerializationUtils.clone(questionConditionBranchBo);
+																  newQuestionConditionBranchBo.setConditionId(null);
+																  newQuestionConditionBranchBo.setQuestionId(newQuestionsBo.getId());
+																  session.save(newQuestionConditionBranchBo);
+															  }
+														  }
 
 														//Question response subType 
 														if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
@@ -3923,7 +3935,7 @@ public class StudyDAOImpl implements StudyDAO{
 					subString.append('"');
 					subString.append("',shortTitle,'");
 					subString.append('"');
-					subString.append("') from QuestionnaireBo where active=0 and studyId="+studyBo.getId()+"");
+					subString.append("') from QuestionnaireBo where active=0 and studyId="+studyBo.getId()+" and shortTitle is NOT NULL");
 					query = session.createQuery(subString.toString());
 					objectList = query.list();
 					if(objectList!=null && !objectList.isEmpty()){
@@ -3942,7 +3954,7 @@ public class StudyDAOImpl implements StudyDAO{
 						//ActiveTasks
 						query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId());
 						activeTasks = query.list();
-						if(activeTasks!=null && !activeTasks.isEmpty()){
+						if(activeTasks!=null && !activeTasks.isEmpty()){ 
 							for(ActiveTaskBo activeTaskBo:activeTasks){
 								Float activeTaskversion =  activeTaskBo.getVersion();
 								ActiveTaskBo newActiveTaskBo = SerializationUtils.clone(activeTaskBo);
@@ -4826,7 +4838,6 @@ public class StudyDAOImpl implements StudyDAO{
 							if(StringUtils.isNotEmpty(bo.getPdfUrl()) && StringUtils.isNotEmpty(bo.getPdfName())){
 								resourceBO.setAction(false);
 							}
-							resourceBO.setPdfUrl(null);
 							resourceBO.setId(null);
 							if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)){
 								resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -4835,6 +4846,8 @@ public class StudyDAOImpl implements StudyDAO{
 							    resourceBO.setModifiedOn(null);
 							}else{
 								resourceBO.setPdfName(null);
+								resourceBO.setPdfUrl(null);
+
 							}
 							session.save(resourceBO);
 						}
@@ -4957,6 +4970,8 @@ public class StudyDAOImpl implements StudyDAO{
 												  //Question response subType 
 												  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
 												  
+												  List<QuestionConditionBranchBo> questionConditionBranchList = session.getNamedQuery("getQuestionConditionBranchList").setInteger("questionId", questionsBo.getId()).list();
+												  
 												  //Question response Type 
 												  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
 												  
@@ -4979,6 +4994,16 @@ public class StudyDAOImpl implements StudyDAO{
 													  newQuestionReponseTypeBo.setResponseTypeId(null);
 													  newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
 													  session.save(newQuestionReponseTypeBo);
+												  }
+												  
+												//Question Condition branching logic
+												  if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+													  for(QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList){
+														  QuestionConditionBranchBo newQuestionConditionBranchBo = SerializationUtils.clone(questionConditionBranchBo);
+														  newQuestionConditionBranchBo.setConditionId(null);
+														  newQuestionConditionBranchBo.setQuestionId(newQuestionsBo.getId());
+														  session.save(newQuestionConditionBranchBo);
+													  }
 												  }
 												  
 												  //Question response subType 
@@ -5623,14 +5648,17 @@ public class StudyDAOImpl implements StudyDAO{
     @SuppressWarnings("unchecked")
     @Override
     public String validateEligibilityTestKey(Integer eligibilityTestId,
-            String shortTitle) {
+            String shortTitle, Integer eligibilityId) {
         logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
         Session session = null;
         List<EligibilityTestBo> eligibilityTestBos;
         String result= FdahpStudyDesignerConstants.FAILURE;
         try{
             session = hibernateTemplate.getSessionFactory().openSession();
-            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle").setString("shortTitle", shortTitle).setInteger("eligibilityTestId", eligibilityTestId);
+            query = session.getNamedQuery("EligibilityTestBo.validateShortTitle")
+            			.setString("shortTitle", shortTitle)
+            			.setInteger("eligibilityTestId", eligibilityTestId)
+            			.setInteger("eligibilityId", eligibilityId);
             eligibilityTestBos = query.list();
             if(eligibilityTestBos.isEmpty()) {
                 result = FdahpStudyDesignerConstants.SUCCESS;
@@ -5883,7 +5911,7 @@ public class StudyDAOImpl implements StudyDAO{
 		ResourceBO resourceBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ResourceBO RBO where RBO.studyId="+studyId+" and RBO.status=1 order by RBO.sequenceNo DESC");
+			query = session.createQuery("From ResourceBO RBO where RBO.studyId="+studyId+" and RBO.studyProtocol = false and RBO.status=1 order by RBO.sequenceNo DESC");
 			query.setMaxResults(1);
 			resourceBo = ((ResourceBO) query.uniqueResult());
 			if(resourceBo != null){

@@ -3,9 +3,12 @@ package com.fdahpstudydesigner.dao;
 import java.util.List;
 import java.util.SortedMap;
 
+import org.hibernate.Session;
+
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
@@ -20,7 +23,7 @@ public interface StudyQuestionnaireDAO {
 	
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId,String customStudyId);
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId);
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle);
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId);
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
@@ -53,4 +56,7 @@ public interface StudyQuestionnaireDAO {
 	public String validateRepetableFormQuestionStats(Integer formId);
 	
 	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList(); 
+	public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(Session session,Integer questionId);
+	
+	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId,SessionObject sessionObject);
 }

@@ -305,20 +305,21 @@ $(document).ready(function(){
 			  var userId = $(this).attr('studyUserId');
 			  $('#user'+userId).removeClass('checkCount').hide();
 		});
-		
-		$('#userListTable').DataTable({
-	        "paging":   false,
-	        "aoColumns": [
-			   { "width":'5%',"bSortable": false },
-	           { "width":'35%',"bSortable": true },
-	           { "width":'30%',"bSortable": false },
-	           { "width":'30%',"bSortable": false }
-	          ], 
-	        "emptyTable": "No data available",
-	        "info" : false, 
-	        "lengthChange": true, 
-	        "searching": false, 
-	    });
+
+        $('#userListTable').DataTable({
+         "paging":   false,
+         "aoColumns": [
+            { "width":'5%',"bSortable": false },
+            { "width":'35%',"bSortable": true },
+            { "width":'30%',"bSortable": false },
+            { "width":'30%',"bSortable": false }
+           ], 
+            "columns": [{ "width": "25%" }],
+         "emptyTable": "No data available",
+         "info" : false, 
+         "lengthChange": true, 
+         "searching": false, 
+     });
 		
 		$('.addAdminCheckbox').on('click',function(){
 			 var count = 0;

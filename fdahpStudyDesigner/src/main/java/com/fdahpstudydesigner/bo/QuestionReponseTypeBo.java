@@ -124,6 +124,9 @@ public class QuestionReponseTypeBo implements Serializable {
 	@Column(name="formula_based_logic")
 	private String formulaBasedLogic="No";
 	
+	@Column(name="condition_formula")
+	private String conditionFormula;
+	
 	@Transient
 	private MultipartFile minImageFile;
 	
@@ -408,6 +411,14 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setFormulaBasedLogic(String formulaBasedLogic) {
 		this.formulaBasedLogic = formulaBasedLogic;
+	}
+
+	public String getConditionFormula() {
+		return conditionFormula;
+	}
+
+	public void setConditionFormula(String conditionFormula) {
+		this.conditionFormula = conditionFormula;
 	}
 	
 }

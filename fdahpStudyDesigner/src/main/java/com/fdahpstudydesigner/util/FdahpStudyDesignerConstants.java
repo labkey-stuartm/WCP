@@ -373,7 +373,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String PLATFORM_ACTIVETASK_ERROR_MSG_ANDROID = "One or more Active task have type that are not supported for the selected platform(s). Please correct the same and try again. Note that there is Help Text available on this page that explains differences in supported features for iOS vs. Android.";
 	public static final String COPY_STUDY = "copy";
 	public static final String RESET_STUDY = "reset";
-	public static final String COPY_STUDY_SUCCESS_MSG = "The new study has been created with existing study.";
+	public static final String COPY_STUDY_SUCCESS_MSG = "A new study has been created with existing study.";
 	public static final String COPY_STUDY_FAILURE_MSG = "Sorry, a technical error occurred and copy could not be happened.";
 	
 	public static final String LOGOUT_LOGIN_USER = "logout_login_user";

@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
@@ -718,7 +719,31 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					message = studyQuestionnaireService.reOrderQuestionnaireSteps(Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.valueOf(questionnaireId));
-						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						if(qTreeMap != null){
+							boolean isDone =true;
+							for(Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()){
+								 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+								 if(questionnaireStepBean.getStatus() != null && !questionnaireStepBean.getStatus()){
+									 isDone = false;
+									 break;
+								 }
+								 if(entry.getValue().getFromMap() != null){
+									 if(!entry.getValue().getFromMap().isEmpty()){
+										 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
+											 if(!entryKey.getValue().getStatus()){
+												 isDone = false;
+												 break;
+											 }
+										 } 
+									 }else{
+										 isDone = false;
+										 break;
+									 }
+								 }
+							 }
+							jsonobject.put("isDone", isDone);
+							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						}
 						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 						String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
@@ -1549,7 +1574,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			if(formId!= null && !formId.isEmpty()){
 				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 				if(questionId != null && !questionId.isEmpty()){
-					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle());
+					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle(),studyBo.getCustomStudyId());
 					map.addAttribute("questionsBo", questionsBo);
 					request.getSession().setAttribute(sessionStudyCount+"questionId", questionId);
 					if(questionnairesStepsBo != null){
@@ -1909,5 +1934,92 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.error("StudyQuestionnaireController - validateRepeatableQuestion - ERROR",e);
 		}
 		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateconditionalFormula.do", method = RequestMethod.POST)
+	public void validateconditionalFormula(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateconditionalFormula - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject formulaResponseJsonObject = null;
+		FormulaInfoBean formulaInfoBean = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String left_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("left_input"))?"":request.getParameter("left_input");
+		    	String right_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("right_input"))?"":request.getParameter("right_input");
+		    	String oprator_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("oprator_input"))?"":request.getParameter("oprator_input");
+		    	String trialInputVal =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("trialInput"))?"":request.getParameter("trialInput");
+				if(!left_input.isEmpty() && !right_input.isEmpty() && !oprator_input.isEmpty() && !trialInputVal.isEmpty()){
+					formulaInfoBean = studyQuestionnaireService.validateQuestionConditionalBranchingLogic(left_input, right_input, oprator_input, trialInputVal);
+					if(formulaInfoBean!=null){
+						formulaResponseJsonObject = new JSONObject(mapper.writeValueAsString(formulaInfoBean));
+						jsonobject.put("formulaResponseJsonObject", formulaResponseJsonObject);
+						if(formulaInfoBean.getMessage().equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+						 message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateconditionalFormula - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateconditionalFormula - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/copyQuestionnaire.do")
+	public ModelAndView copyStudyQuestionnaire(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Starts");
+		ModelAndView mav = new ModelAndView("instructionsStepPage");
+		ModelMap map = new ModelMap();
+		QuestionnaireBo copyQuestionnaireBo = null;
+		String customStudyId = "";
+		String studyId="";
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
+				
+				if(StringUtils.isNotEmpty(questionnaireId) && StringUtils.isNotEmpty(customStudyId)){
+					copyQuestionnaireBo = studyQuestionnaireService.copyStudyQuestionnaireBo(Integer.valueOf(questionnaireId), customStudyId, sesObj);
+				}
+				if(copyQuestionnaireBo != null){
+					request.getSession().setAttribute(sessionStudyCount+"actionType","edit");
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire copyied successfully.");
+					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", String.valueOf(copyQuestionnaireBo.getId()));
+					map.addAttribute("_S", sessionStudyCount);
+					if(StringUtils.isNotEmpty(studyId)){
+						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+				    }
+					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+				}else{
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Questionnaire not copyied successfully.");
+					map.addAttribute("_S", sessionStudyCount);
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do", map);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveOrUpdateFormQuestion - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Ends");
+		return mav;
 	}
 }

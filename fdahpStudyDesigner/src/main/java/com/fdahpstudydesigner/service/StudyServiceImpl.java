@@ -829,7 +829,7 @@ public class StudyServiceImpl implements StudyService {
 				updateConsentBo.setStudyId(consentBo.getStudyId());
 			}
 			
-			updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
+			
 			if(consentBo.getNeedComprehensionTest() != null){
 				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
 			}
@@ -919,6 +919,7 @@ public class StudyServiceImpl implements StudyService {
 			}
 			if(consentBo.getComprehensionTest() != null){
 				updateConsentBo.setComprehensionTest(consentBo.getComprehensionTest());
+				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			}
 			if(consentBo.getAggrementOfTheConsent() != null){
 				updateConsentBo.setAggrementOfTheConsent(consentBo.getAggrementOfTheConsent());
@@ -1517,11 +1518,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
     @Override
-    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle) {
+    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId) {
         logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
         String message = FdahpStudyDesignerConstants.SUCCESS;
         try {
-            message = studyDAO.validateEligibilityTestKey(eligibilityTestId, shortTitle);
+            message = studyDAO.validateEligibilityTestKey(eligibilityTestId, shortTitle, eligibilityId);
         } catch (Exception e) {
             logger.error(
                     "StudyServiceImpl - validateEligibilityTestKey - Error", e);

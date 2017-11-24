@@ -17,6 +17,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.collections.set.CompositeSet.SetMutator;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -524,7 +525,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle) {
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Starts");
 		Session session = null;
 		QuestionsBo questionsBo = null;
@@ -534,10 +535,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(questionsBo != null){
 				try{
 					if(StringUtils.isNotEmpty(questionnaireShortTitle)){
-						
+						/*BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires_steps qs where qs.questionnaires_id  "
+								+ "in(select q.id from questionnaires q where q.short_title='"+questionnaireShortTitle+"' and q.active=1 and q.is_live=1 and q.custom_study_id='"+customStudyId+"') "
+								+ "and qs.step_short_title = '"+questionnairesStepsBo.getStepShortTitle()+"' and qs.active=1").uniqueResult();*/
 						//Duplicate ShortTitle per questionsBo Start 
 						BigInteger quesionshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.short_title='"+questionnaireShortTitle+"'"
-								+ " and Q.active=1 and Q.is_live=1 and QSBO.step_type='Form' and QBO.short_title='"+questionsBo.getShortTitle()+"' and QBO.active=1").uniqueResult();
+								+ " and Q.active=1 and Q.is_live=1 and Q.custom_study_id='"+customStudyId+"' and QSBO.step_type='Form' and QBO.short_title='"+questionsBo.getShortTitle()+"' and QBO.active=1").uniqueResult();
 						if(quesionshortTitleCount!=null && quesionshortTitleCount.intValue() > 0)
 							questionsBo.setIsShorTitleDuplicate(quesionshortTitleCount.intValue());
 						else
@@ -547,7 +550,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						//Duplicate statShortTitle per questionsBo Start 
 						if(StringUtils.isNotEmpty(questionsBo.getStatShortName())){
 							BigInteger quesionStatshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.short_title='"+questionnaireShortTitle+"'"
-									+ " and Q.active=1 and Q.is_live=1 and QSBO.step_type='Form' and QBO.stat_short_name='"+questionsBo.getStatShortName()+"' and QBO.active=1").uniqueResult();
+									+ " and Q.active=1 and Q.is_live=1 and Q.custom_study_id='"+customStudyId+"' and QSBO.step_type='Form' and QBO.stat_short_name='"+questionsBo.getStatShortName()+"' and QBO.active=1").uniqueResult();
 							if(quesionStatshortTitleCount!=null && quesionStatshortTitleCount.intValue() > 0)
 							questionsBo.setIsStatShortNameDuplicate(quesionStatshortTitleCount.intValue());
 						else
@@ -767,6 +770,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo ="+oldOrderNumber+" and QSBO.active=1");
 			questionnairesStepsBo = (QuestionnairesStepsBo)query.uniqueResult();
 			if(questionnairesStepsBo != null){
+				
 				if (oldOrderNumber < newOrderNumber) {
 					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo <="+newOrderNumber+" and QSBO.sequenceNo >"+oldOrderNumber+" and QSBO.active=1";
 					query = session.createQuery(updateQuery);
@@ -786,6 +790,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
+				
 				//Reset destination steps in Questionnaire Starts
 				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 					String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
@@ -810,6 +815,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					String questionResponseQuery = "update response_sub_type_value rs,questionnaires_steps q set rs.destination_step_id = NULL "
 							+ "where rs.response_type_id=q.instruction_form_id and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and q.questionnaires_id="+questionnaireId+" and rs.active=1 and q.active=1";
 					query = session.createSQLQuery(questionResponseQuery);
+					query.executeUpdate();
+					
+					
+					String questionConditionResponseQuery="update questions qs,questionnaires_steps q,response_type_value rs  set qs.status = 0 where"
+							+ " rs.questions_response_type_id=q.instruction_form_id and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'"
+									+ " and q.questionnaires_id="+questionnaireId+" and qs.id=q.instruction_form_id and qs.active=1 and rs.active=1 and q.active=1 and rs.formula_based_logic='Yes'";
+					
+					query = session.createSQLQuery(questionConditionResponseQuery);
 					query.executeUpdate();
 				}
 				//Reset destination steps in Questionnaire Ends
@@ -1736,23 +1749,34 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									session.save(questionResponseSubTypeBo);
 								}	
 							}
+						}else{
+							String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
+							session.createQuery(deletQuesry).executeUpdate();
 						}
 						if(questionResponseTypeBo != null && questionResponseTypeBo.getFormulaBasedLogic().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 							if(questionnairesStepsBo.getQuestionConditionBranchBoList() != null && !questionnairesStepsBo.getQuestionConditionBranchBoList().isEmpty()){
 								String deleteQuery = "delete from question_condtion_branching where question_id="+questionsBo.getId();
 								session.createSQLQuery(deleteQuery).executeUpdate();
+								int i=1;
 								for(QuestionConditionBranchBo questionConditionBranchBo : questionnairesStepsBo.getQuestionConditionBranchBoList()){
-									if(questionConditionBranchBo.getQuestionId() != null){
+									if(questionConditionBranchBo.getQuestionId() == null){
 										questionConditionBranchBo.setQuestionId(questionsBo.getId());
 									}
-									session.save(questionConditionBranchBo);
+									if(questionConditionBranchBo.getInputType() != null && questionConditionBranchBo.getInputType().equalsIgnoreCase("MF")){
+										session.save(questionConditionBranchBo);
+									}
 									if(questionConditionBranchBo.getQuestionConditionBranchBos() != null && !questionConditionBranchBo.getQuestionConditionBranchBos().isEmpty()){
 										for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchBo.getQuestionConditionBranchBos()) {
-											if(conditionBranchBo.getQuestionId() != null){
-												conditionBranchBo.setQuestionId(questionsBo.getId());
+											if(conditionBranchBo.getInputType() != null && conditionBranchBo.getInputTypeValue() != null){
+												if(conditionBranchBo.getQuestionId() == null){
+													conditionBranchBo.setQuestionId(questionsBo.getId());
+												}
+												session.save(conditionBranchBo);
+												i++;
+												//System.out.println("i:"+i);
 											}
-											session.save(conditionBranchBo);
 										}
+										//System.out.println("parent sequence no:"+i);
 									}
 								}
 							}
@@ -1886,9 +1910,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionsResponseTypeBo.getValidationRegex() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationRegex())){
 					addOrUpdateQuestionsResponseTypeBo.setValidationRegex(questionsResponseTypeBo.getValidationRegex());
 				}
-				if(questionsResponseTypeBo.getInvalidMessage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getInvalidMessage())){
+				//if(questionsResponseTypeBo.getInvalidMessage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getInvalidMessage())){
 					addOrUpdateQuestionsResponseTypeBo.setInvalidMessage(questionsResponseTypeBo.getInvalidMessage());
-				}
+				//}
 				if(questionsResponseTypeBo.getMultipleLines() != null){
 					addOrUpdateQuestionsResponseTypeBo.setMultipleLines(questionsResponseTypeBo.getMultipleLines());
 				}
@@ -1902,7 +1926,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				addOrUpdateQuestionsResponseTypeBo.setValidationCharacters(questionsResponseTypeBo.getValidationCharacters());
 				addOrUpdateQuestionsResponseTypeBo.setValidationExceptText(questionsResponseTypeBo.getValidationExceptText());
 				
-				System.out.println("regEx:"+FdahpStudyDesignerUtil.getRegExpression(questionsResponseTypeBo.getValidationCondition(), questionsResponseTypeBo.getValidationCharacters(), questionsResponseTypeBo.getValidationExceptText()));
+				logger.info("regEx:"+FdahpStudyDesignerUtil.getRegExpression(questionsResponseTypeBo.getValidationCondition(), questionsResponseTypeBo.getValidationCharacters(), questionsResponseTypeBo.getValidationExceptText()));
 				addOrUpdateQuestionsResponseTypeBo.setValidationRegex(FdahpStudyDesignerUtil.getRegExpression(questionsResponseTypeBo.getValidationCondition(), questionsResponseTypeBo.getValidationCharacters(), questionsResponseTypeBo.getValidationExceptText()));
 				
 				String fileName;
@@ -1910,18 +1934,35 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
 						addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
 					}else{
-						fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+0,questionsResponseTypeBo.getMinImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
-						String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMinImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
-						addOrUpdateQuestionsResponseTypeBo.setMinImage(imagePath);
+						if(questionsResponseTypeBo.getMinImageFile().getOriginalFilename() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImageFile().getOriginalFilename())){
+							fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+0,questionsResponseTypeBo.getMinImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
+							String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMinImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+							addOrUpdateQuestionsResponseTypeBo.setMinImage(imagePath);
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setMinImage(null);
+						}
+						
+					}
+				}else{
+					if(StringUtils.isEmpty(questionsResponseTypeBo.getMinImage())){
+						addOrUpdateQuestionsResponseTypeBo.setMinImage(null);
 					}
 				}
 				if(questionsResponseTypeBo.getMaxImageFile() != null){
 					if(questionsResponseTypeBo.getMaxImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImage())){
 						addOrUpdateQuestionsResponseTypeBo.setMaxImage(questionsResponseTypeBo.getMaxImage());
 					}else{
-						fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+1,questionsResponseTypeBo.getMaxImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
-						String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMaxImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
-						addOrUpdateQuestionsResponseTypeBo.setMaxImage(imagePath);
+						if(questionsResponseTypeBo.getMaxImageFile().getOriginalFilename() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImageFile().getOriginalFilename())){
+							fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+1,questionsResponseTypeBo.getMaxImageFile().getOriginalFilename(), String.valueOf(questionsResponseTypeBo.getQuestionsResponseTypeId()));
+							String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionsResponseTypeBo.getMaxImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+							addOrUpdateQuestionsResponseTypeBo.setMaxImage(imagePath);
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setMaxImage(null);
+						}
+					}
+				}else{
+					if(StringUtils.isEmpty(questionsResponseTypeBo.getMaxImage())){
+						addOrUpdateQuestionsResponseTypeBo.setMaxImage(null);
 					}
 				}
 				if(questionsResponseTypeBo.getDefaultTime() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultTime())){
@@ -1929,6 +1970,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				if(questionsResponseTypeBo.getFormulaBasedLogic() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getFormulaBasedLogic())){
 					addOrUpdateQuestionsResponseTypeBo.setFormulaBasedLogic(questionsResponseTypeBo.getFormulaBasedLogic());
+				}
+				if(questionsResponseTypeBo.getConditionFormula() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getConditionFormula())){
+					addOrUpdateQuestionsResponseTypeBo.setConditionFormula(questionsResponseTypeBo.getConditionFormula());
 				}
 			}
 		}catch(Exception e){
@@ -2585,66 +2629,388 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		return healthKitKeysInfoList;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(Session session,Integer questionId){
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - Starts");
 		//Map<QuestionConditionBranchBo, List<QuestionConditionBranchBo>> questionConditionalMap = new LinkedHashMap<>();
 		List<QuestionConditionBranchBo> questionConditionBranchList = null;
 		List<QuestionConditionBranchBo> newQuestionConditionBranchList = null;
+		Session newSession = null;
 		try{
+			if(session == null){
+				newSession = hibernateTemplate.getSessionFactory().openSession();
+			}
 			String searchQuery = "From QuestionConditionBranchBo QCBO where QCBO.questionId="+questionId+" order by QCBO.sequenceNo ASC";
-			query=session.createQuery(searchQuery);
+			if(newSession!=null){
+				query=session.createQuery(searchQuery);
+			}else{
+				query=session.createQuery(searchQuery);
+			}
 			questionConditionBranchList = query.list();
-			if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
-				 newQuestionConditionBranchList = new ArrayList<>();
-				/*for (QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList) {
-					if(questionConditionBranchBo.getInputType() != null && 
-							(questionConditionBranchBo.getInputType().equalsIgnoreCase("MF") || questionConditionBranchBo.getInputType().equalsIgnoreCase("F"))){
-						List<QuestionConditionBranchBo> conditionBranchList = new ArrayList<>();
-						for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchList) {
-							if(questionConditionBranchBo.getSequenceNo().equals(conditionBranchBo.getParentSequenceNo())){
-								conditionBranchList.add(conditionBranchBo);
+			if(session == null){
+				newQuestionConditionBranchList = new ArrayList<>();
+				newQuestionConditionBranchList = questionConditionBranchList;
+			}else{
+				if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+					newQuestionConditionBranchList = new ArrayList<>();
+					for (QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList) {
+						if(questionConditionBranchBo.getInputType() != null && 
+								(questionConditionBranchBo.getInputType().equalsIgnoreCase("MF") || questionConditionBranchBo.getInputType().equalsIgnoreCase("F"))){
+							List<QuestionConditionBranchBo> conditionBranchList = new ArrayList<>();
+							for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchList) {
+								if(questionConditionBranchBo.getSequenceNo().equals(conditionBranchBo.getParentSequenceNo())){
+									conditionBranchList.add(conditionBranchBo);
+								}
 							}
+							questionConditionBranchBo.setQuestionConditionBranchBos(conditionBranchList);
+							newQuestionConditionBranchList.add(questionConditionBranchBo);
 						}
-						questionConditionalMap.put(questionConditionBranchBo, conditionBranchList);
-					}
-				}*/
-				for (QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList) {
-					if(questionConditionBranchBo.getInputType() != null && 
-							(questionConditionBranchBo.getInputType().equalsIgnoreCase("MF") || questionConditionBranchBo.getInputType().equalsIgnoreCase("F"))){
-						List<QuestionConditionBranchBo> conditionBranchList = new ArrayList<>();
-						for (QuestionConditionBranchBo conditionBranchBo : questionConditionBranchList) {
-							if(questionConditionBranchBo.getSequenceNo().equals(conditionBranchBo.getParentSequenceNo())){
-								conditionBranchList.add(conditionBranchBo);
-							}
-						}
-						questionConditionBranchBo.setQuestionConditionBranchBos(conditionBranchList);
-						newQuestionConditionBranchList.add(questionConditionBranchBo);
 					}
 				}
 			}
-			for (QuestionConditionBranchBo questionConditionBranchBo : newQuestionConditionBranchList) {
-				System.out.println("key:"+questionConditionBranchBo.getSequenceNo()+" "+questionConditionBranchBo.getInputType()+" "+questionConditionBranchBo.getInputTypeValue());
-				List<QuestionConditionBranchBo> list = questionConditionBranchBo.getQuestionConditionBranchBos();
-				for (QuestionConditionBranchBo questionConditionBranchBo2 : list) {
-					System.out.println("Values:"+questionConditionBranchBo2.getSequenceNo()+" "+questionConditionBranchBo2.getInputType()+" "+questionConditionBranchBo2.getInputTypeValue());
-				}
-				System.out.println("#####################");
-			}
-			/*System.out.println("#####################");
-			for(Map.Entry<QuestionConditionBranchBo, List<QuestionConditionBranchBo>> entry : questionConditionalMap.entrySet()){
-				QuestionConditionBranchBo questionConditionBranchBo = entry.getKey();
-				System.out.println("key:"+questionConditionBranchBo.getSequenceNo()+" "+questionConditionBranchBo.getInputType()+" "+questionConditionBranchBo.getInputTypeValue());
-				List<QuestionConditionBranchBo> list = entry.getValue();
-				for (QuestionConditionBranchBo questionConditionBranchBo2 : list) {
-					System.out.println("Values:"+questionConditionBranchBo2.getSequenceNo()+" "+questionConditionBranchBo2.getInputType()+" "+questionConditionBranchBo2.getInputTypeValue());
-				}
-				System.out.println("#####################");
-			}*/
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - ERROR ", e);
+		}finally{
+			if(null != newSession){
+				newSession.close();
+			}
 		}
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - Ends");
 		return newQuestionConditionBranchList;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @return QuestionnaireBo
+	 * 
+	 * This method is used to copy the questionnaire bo into study
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId,SessionObject sessionObject) {
+		logger.info("StudyQuestionnaireDAOImpl - copyStudyQuestionnaireBo() - Starts");
+		QuestionnaireBo questionnaireBo=null;
+		QuestionnaireBo newQuestionnaireBo=null;
+		Session session = null;
+		QuestionReponseTypeBo questionReponseTypeBo=null;
+		try{
+			//Questionarries
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			query = session.createQuery(" From QuestionnaireBo QBO WHERE QBO.id="+questionnaireId);
+			questionnaireBo = (QuestionnaireBo) query.uniqueResult();
+		    if(questionnaireBo!=null){
+		    	String searchQuery=null;
+					newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
+					newQuestionnaireBo.setId(null);
+					//newQuestionnaireBo.setCustomStudyId(null);
+					newQuestionnaireBo.setLive(0);
+					newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+					newQuestionnaireBo.setCreatedBy(sessionObject.getUserId());
+					newQuestionnaireBo.setModifiedBy(null);
+					newQuestionnaireBo.setModifiedDate(null);
+					newQuestionnaireBo.setShortTitle(null);
+					newQuestionnaireBo.setStatus(false);
+					newQuestionnaireBo.setVersion(0f);
+					session.save(newQuestionnaireBo);
+					
+					/**Schedule Purpose creating draft Start **/
+					if(StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
+						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+							searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
+							List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
+						    if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
+						    	for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
+						    		QuestionnaireCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
+						    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
+						    		newCustomScheduleBo.setId(null);
+						    		newCustomScheduleBo.setUsed(false);
+						    		session.save(newCustomScheduleBo);
+						    	}
+						    }
+						}else{
+							searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+							List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
+							if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
+								for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
+									QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = SerializationUtils.clone(questionnairesFrequenciesBo);
+									newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
+									newQuestionnairesFrequenciesBo.setId(null);
+									session.save(newQuestionnairesFrequenciesBo);
+								}
+							}
+						}
+					}
+					/** Schedule Purpose creating draft End **/
+					
+					/**  Content purpose creating draft Start **/
+					
+					List<Integer> destinationList = new ArrayList<>();
+					Map<Integer, Integer> destionationMapList = new HashMap<>();
+					
+					List<QuestionnairesStepsBo> existedQuestionnairesStepsBoList  = null;
+					List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
+					List<QuestionResponseSubTypeBo> existingQuestionResponseSubTypeList = new ArrayList<>();
+					List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList = new ArrayList<>();
+					query = session.getNamedQuery("getQuestionnaireStepList").setInteger("questionnaireId", questionnaireBo.getId());
+					existedQuestionnairesStepsBoList = query.list();
+					if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
+						   for(QuestionnairesStepsBo questionnairesStepsBo:existedQuestionnairesStepsBoList){
+							   Integer destionStep = questionnairesStepsBo.getDestinationStep();
+							   if(destionStep.equals(0)){
+								   destinationList.add(-1);
+							   }else{
+								   for(int i=0;i<existedQuestionnairesStepsBoList.size();i++){
+									   if(existedQuestionnairesStepsBoList.get(i).getStepId() != null 
+											   && destionStep.equals(existedQuestionnairesStepsBoList.get(i).getStepId())){
+										   destinationList.add(i);
+										   break;
+									   }
+								   } 
+							   }
+							   destionationMapList.put(questionnairesStepsBo.getSequenceNo(), questionnairesStepsBo.getStepId());
+						   }
+						for(QuestionnairesStepsBo questionnairesStepsBo:existedQuestionnairesStepsBoList){
+							if(StringUtils.isNotEmpty(questionnairesStepsBo.getStepType())){
+								QuestionnairesStepsBo newQuestionnairesStepsBo = SerializationUtils.clone(questionnairesStepsBo);
+								 newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
+								 newQuestionnairesStepsBo.setStepId(null);
+								 newQuestionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								 newQuestionnairesStepsBo.setCreatedBy(sessionObject.getUserId());
+								 newQuestionnairesStepsBo.setModifiedBy(null);
+								 newQuestionnairesStepsBo.setModifiedOn(null);
+								 //newQuestionnairesStepsBo.setStatus(false);
+								 session.save(newQuestionnairesStepsBo);
+								if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
+									InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+									  if(instructionsBo!=null){
+										  InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
+										  newInstructionsBo.setId(null);
+										  newInstructionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+										  newInstructionsBo.setCreatedBy(sessionObject.getUserId());
+										  newInstructionsBo.setModifiedBy(null);
+										  newInstructionsBo.setModifiedOn(null);
+										 // newInstructionsBo.setStatus(false);
+										  session.save(newInstructionsBo);
+										  
+										  //updating new InstructionId
+										  newQuestionnairesStepsBo.setInstructionFormId(newInstructionsBo.getId());
+									  }
+								}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+									QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+									  if(questionsBo!=null){
+										  
+										  //Question response subType 
+										  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
+										  
+										  List<QuestionConditionBranchBo> questionConditionBranchList = session.getNamedQuery("getQuestionConditionBranchList").setInteger("questionId", questionsBo.getId()).list();
+										  
+										  //Question response Type 
+										  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+										  
+										  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+										  newQuestionsBo.setId(null);
+										  newQuestionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+										  newQuestionsBo.setCreatedBy(sessionObject.getUserId());
+										  newQuestionsBo.setModifiedBy(null);
+										  newQuestionsBo.setModifiedOn(null);
+										  //newQuestionsBo.setShortTitle(null);
+										  if(questionsBo.getUseStasticData().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
+											  newQuestionsBo.setStatShortName(null);
+											  newQuestionsBo.setStatus(false);
+											  newQuestionnairesStepsBo.setStatus(false);
+										  }
+										  session.save(newQuestionsBo);
+										  
+										//Question response Type 
+										  if(questionReponseTypeBo!=null){
+											  QuestionReponseTypeBo newQuestionReponseTypeBo =  SerializationUtils.clone(questionReponseTypeBo);
+											  newQuestionReponseTypeBo.setResponseTypeId(null);
+											  newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
+											  session.save(newQuestionReponseTypeBo);
+										  }
+										  
+										//Question Condition branching logic
+										  if(questionConditionBranchList != null && !questionConditionBranchList.isEmpty()){
+											  for(QuestionConditionBranchBo questionConditionBranchBo : questionConditionBranchList){
+												  QuestionConditionBranchBo newQuestionConditionBranchBo = SerializationUtils.clone(questionConditionBranchBo);
+												  newQuestionConditionBranchBo.setConditionId(null);
+												  newQuestionConditionBranchBo.setQuestionId(newQuestionsBo.getId());
+												  session.save(newQuestionConditionBranchBo);
+											  }
+										  }
+										  
+										  //Question response subType 
+										  if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
+											  existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
+											  
+											  for(QuestionResponseSubTypeBo questionResponseSubTypeBo: questionResponseSubTypeList){
+												  
+												  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
+												  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
+												  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
+												  newQuestionResponseSubTypeBo.setDestinationStepId(null);
+												  session.save(newQuestionResponseSubTypeBo);
+												  newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
+											  }
+										  }
+										  
+										  //updating new InstructionId
+										  newQuestionnairesStepsBo.setInstructionFormId(newQuestionsBo.getId());
+									  }
+								}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
+									  FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+									  if(formBo!=null){
+										 
+										  FormBo newFormBo = SerializationUtils.clone(formBo);
+										  newFormBo.setFormId(null);
+										  session.save(newFormBo);
+										
+										  List<FormMappingBo> formMappingBoList = session.getNamedQuery("getFormByFormId").setInteger("formId", formBo.getFormId()).list(); 
+										  if(formMappingBoList!=null && !formMappingBoList.isEmpty()){
+											  for(FormMappingBo formMappingBo : formMappingBoList){
+												  FormMappingBo newMappingBo = SerializationUtils.clone(formMappingBo);
+												  newMappingBo.setFormId(newFormBo.getFormId());
+												  newMappingBo.setId(null);
+												  
+												  
+												  
+												  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
+												  if(questionsBo!=null){
+													  
+													  //Question response subType 
+													  List<QuestionResponseSubTypeBo> questionResponseSubTypeList = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId()).list();
+													  
+													  //Question response Type 
+													  questionReponseTypeBo = (QuestionReponseTypeBo) session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId()).uniqueResult();
+													  
+													  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+													  newQuestionsBo.setId(null);
+													  
+														  newQuestionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+														  newQuestionsBo.setCreatedBy(sessionObject.getUserId());
+														  newQuestionsBo.setModifiedBy(null);
+														  newQuestionsBo.setModifiedOn(null);
+														  if(questionsBo.getUseStasticData().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
+															  newQuestionsBo.setStatShortName(null);
+															  newQuestionsBo.setStatus(false);
+															  newQuestionnairesStepsBo.setStatus(false);
+														  }
+														  
+													  
+													  session.save(newQuestionsBo);
+													  
+													//Question response Type 
+													  if(questionReponseTypeBo!=null){
+														  QuestionReponseTypeBo newQuestionReponseTypeBo =  SerializationUtils.clone(questionReponseTypeBo);
+														  newQuestionReponseTypeBo.setResponseTypeId(null);
+														  newQuestionReponseTypeBo.setQuestionsResponseTypeId(newQuestionsBo.getId());
+														  session.save(newQuestionReponseTypeBo);
+													  }
+													  
+													  //Question response subType 
+													  if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
+														  for(QuestionResponseSubTypeBo questionResponseSubTypeBo: questionResponseSubTypeList){
+															  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
+															  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
+															  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
+															  session.save(newQuestionResponseSubTypeBo);
+														  }
+													  }
+													  
+													  //adding questionId
+													  newMappingBo.setQuestionId(newQuestionsBo.getId());
+													  session.save(newMappingBo);
+													  
+												  }
+												  
+											  }
+										  }
+										  //updating new formId
+										  
+										  newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
+										  
+									  }
+								}
+								session.update(newQuestionnairesStepsBo);
+								newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
+							}
+						}
+					}
+					if (destinationList != null
+									&& !destinationList.isEmpty()) {
+								for (int i = 0; i < destinationList.size(); i++) {
+									int desId = 0;
+									if (destinationList.get(i) != -1) {
+										desId = newQuestionnairesStepsBoList
+												.get(destinationList.get(i))
+												.getStepId();
+									}
+									newQuestionnairesStepsBoList.get(i)
+											.setDestinationStep(desId);
+									session.update(newQuestionnairesStepsBoList
+											.get(i));
+								}
+					}
+					List<Integer> sequenceSubTypeList = new ArrayList<>();
+					List<Integer> destinationResList = new ArrayList<>();
+					if(existingQuestionResponseSubTypeList!=null && !existingQuestionResponseSubTypeList.isEmpty()){
+						for(QuestionResponseSubTypeBo questionResponseSubTypeBo:existingQuestionResponseSubTypeList){
+							if(questionResponseSubTypeBo.getDestinationStepId()==null){
+								sequenceSubTypeList.add(null);
+							}else if(questionResponseSubTypeBo.getDestinationStepId()!=null &&
+									questionResponseSubTypeBo.getDestinationStepId().equals(0)){
+								    sequenceSubTypeList.add(-1);
+							}else{
+								if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
+									for(QuestionnairesStepsBo questionnairesStepsBo: existedQuestionnairesStepsBoList){
+										if(questionResponseSubTypeBo.getDestinationStepId()!=null 
+												&& questionResponseSubTypeBo.getDestinationStepId().equals(questionnairesStepsBo.getStepId())){
+											sequenceSubTypeList.add(questionnairesStepsBo.getSequenceNo());
+											break;
+										}
+									}
+									
+								}
+							}
+						}
+					}
+					if (sequenceSubTypeList != null
+							&& !sequenceSubTypeList.isEmpty()) {
+							for (int i = 0; i < sequenceSubTypeList.size(); i++) {
+								Integer desId = null;
+								if(sequenceSubTypeList.get(i)==null){
+									desId = null;
+								}else if(sequenceSubTypeList.get(i).equals(-1)){
+									desId = 0;
+								}else{
+									for(QuestionnairesStepsBo questionnairesStepsBo: newQuestionnairesStepsBoList){
+										if (sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())){
+											 desId = questionnairesStepsBo.getStepId();
+											 break;
+										}
+								    }
+								}
+							destinationResList.add(desId);	
+						}
+						for (int i = 0; i < destinationResList.size(); i++) {
+							newQuestionResponseSubTypeList.get(i)
+									.setDestinationStepId(destinationResList.get(i));
+							session.update(newQuestionResponseSubTypeList
+									.get(i));
+						}
+			        }
+				}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - resetDraftStudyByCustomStudyId() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - copyStudyQuestionnaireBo() - Ends");
+		return newQuestionnaireBo;
 	}
 }

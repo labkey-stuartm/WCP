@@ -85,6 +85,31 @@
 				       			<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeAns(this);'></span>
 				       	     </div> 
 				       </div>
+			       </div>
+			       <div class="ans-opts col-md-12 p-none" id="1"> 
+				       <div class='col-md-6 pl-none'>
+				        	<div class='form-group'>
+					      	 <input type='text' class='form-control' name="responseList[1].responseOption" id="responseOptionId1" required maxlength="150"/>
+					       	 <div class='help-block with-errors red-txt'></div>
+					       </div>
+			           </div>
+				       <div class='col-md-3'>
+					     <div class="form-group">
+							       <select class='selectpicker wid100'  name="responseList[1].correctAnswer" id="correctAnswerId1" required data-error='Please choose one option'>
+								       <option value=''>Select</option>
+								       <option value="true">Yes</option>
+								       <option value="false">No</option>
+							       </select>
+							       <div class='help-block with-errors red-txt'></div>
+						       </div>  	   
+				       </div>
+				       <div class="col-md-3 pl-none">
+				       		<div class="clearfix"></div>
+				       		<div class="mt-xs formgroup"> 
+				       			<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addAns();'>+</span>
+				       			<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeAns(this);'></span>
+				       	     </div> 
+				       </div>
 			       </div>  
 		         </c:if>          
 				 <c:if test="${fn:length(comprehensionQuestionBo.responseList) gt 0}">
@@ -169,7 +194,7 @@ $(document).ready(function() {
 	    $(".right-content-body").parents("form").validator();
 		saveComrehensionTestQuestion();
 	});
-	if($('.ans-opts').length > 1){
+	if($('.ans-opts').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
@@ -177,7 +202,7 @@ $(document).ready(function() {
 });
 var ansCount = $(".ans-opts").length;
 function addAns(){
-	ansCount = $(".ans-opts").length;
+	ansCount = ansCount+1;
 	var newAns = "<div class='ans-opts col-md-12 p-none' id='"+ansCount+"'><div class='col-md-6 pl-none'>"
         +"<div class='form-group'>"
 	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"'  maxlength='150'/>"
@@ -219,12 +244,11 @@ function removeAns(param){
     $(param).parents(".ans-opts").remove();
     $(".ans-opts").parents("form").validator("destroy");
 		$(".ans-opts").parents("form").validator();
-		if($('.ans-opts').length > 1){
+		if($('.ans-opts').length > 2){
 			$(".remBtnDis").removeClass("hide");
 			console.log("ifffffff");
 		}else{
 			$(".remBtnDis").addClass("hide");
-			
 			console.log("else");
 		}
 }

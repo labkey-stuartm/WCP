@@ -21,10 +21,10 @@ $(document).ready(function(){
   $("#error").hide();  
  //Login left section
   var wht = $(window).height();
-  /*var wdt = $(window).width();*/
+  var wdt = $(window).width();
   
   $(".lg-space-left").css("min-height",wht); 
- /* $(".lg-space-right").css("width", wdt-410);*/
+  /*$(".lg-space-right").css("width", wdt-410);*/
   
   var lsimg = $(".lg-space-img").innerHeight();
   var lscov = $(".lg-space-cover").innerHeight();
@@ -111,12 +111,14 @@ function resizeend() {
 }
 
 function responsiveScreen() {
+  /*alert("njxncj");*/
 	//Login left section
 	var wht = $(window).height();
 	var wdt = $(window).width();
+  $(".lg-space-left").width();
 	
 	$(".lg-space-left").css("min-height",wht);
-	$(".lg-space-right").css("width", wdt-410);
+/*	$(".lg-space-right").css("width", wdt-410);*/
 	$(".lg-space-left").css("width", "410px");	
 	
 

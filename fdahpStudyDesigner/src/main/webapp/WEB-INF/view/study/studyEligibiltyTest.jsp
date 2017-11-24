@@ -53,7 +53,7 @@
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 		  <div class="clearfix"></div>
-		  <div class="col-lg-4 col-md-5 p-none">
+		  <div class="col-lg-5 col-md-5 p-none">
              <div class="form-group col-md-12 p-none mr-md mb-none">
              	 <div class="gray-xs-f mb-xs col-md-6 pl-none ">Response Options</div>
              	 <div class="gray-xs-f mb-xs col-md-6 pr-none">Pass / Fail<span class="requiredStar"> *</span></div>
@@ -158,7 +158,8 @@ function validateShortTitle(item, callback){
 	                datatype: "json",
 	                data: {
 	                	shortTitle : shortTitle,
-	                	eligibilityTestId : '${eligibilityTest.id}'
+	                	eligibilityTestId : '${eligibilityTest.id}',
+	                	eligibilityId : '${eligibilityId}'
 	                },
 	                beforeSend: function(xhr, settings){
 	                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

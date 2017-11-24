@@ -60,7 +60,7 @@
 		<c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
 			<c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -76,7 +76,7 @@
 	               </div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -93,7 +93,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					   class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -110,7 +110,7 @@
 					<div class="clearfix"></div>
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					  class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -127,7 +127,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 					  <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -144,7 +144,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6}">
-				<div class="col-md-3 col-lg-3 p-none">
+				<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -199,8 +199,7 @@
 									type="checkbox"
 									id="${taskMasterAttributeBo.attributeName}_chart_id"
 									name="taskAttributeValueBos[7].addToLineChart" value="option1">
-									<label for="${taskMasterAttributeBo.attributeName}_chart_id">Add
-										to line chart</label>
+									<label for="${taskMasterAttributeBo.attributeName}_chart_id">Add to line chart</label>
 								</span>
 							</div>
 
@@ -209,7 +208,7 @@
 								style="display: none">
 								<div class="pb-lg">
 									<div class="gray-xs-f mt-md mb-sm">
-										Time range for the chart<span class="requiredStar"> *</span> <span
+										Time range for the chart<span class="requiredStar">*</span> <span
 											class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 											title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span>
 									</div>
@@ -350,7 +349,7 @@
 									<div class="help-block with-errors red-txt"></div>
 								</div>
 							</div>
-							<div>
+							<!-- <div>
 								<div class="gray-xs-f mb-sm">Time ranges options available
 									to the mobile app user</div>
 								<div>
@@ -363,7 +362,7 @@
 										class="txt-gray">(Rollback option provided for these
 										three options)</span>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -531,7 +530,7 @@
 									<div class="help-block with-errors red-txt"></div>
 								</div>
 							</div>
-							<div>
+							<!-- <div>
 								<div class="gray-xs-f mb-sm">Time ranges options available
 									to the mobile app user</div>
 								<div>
@@ -544,7 +543,7 @@
 										class="txt-gray">(Rollback option provided for these
 										three options)</span>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -712,7 +711,7 @@
 									<div class="help-block with-errors red-txt"></div>
 								</div>
 							</div>
-							<div>
+						<!-- 	<div>
 								<div class="gray-xs-f mb-sm">Time ranges options available
 									to the mobile app user</div>
 								<div>
@@ -725,7 +724,7 @@
 										class="txt-gray">(Rollback option provided for these
 										three options)</span>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -738,7 +737,7 @@
             <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -755,7 +754,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 2 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -773,7 +772,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -791,7 +790,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 4 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg">
 					<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -809,7 +808,7 @@
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 5 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 					
-					<div class="col-md-2 col-lg-2 p-none mr-xlg ml-xlg">
+					<div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 							class="requiredStar"> *</span><span
 					class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -826,7 +825,7 @@
 					
 				</c:if>
 				<c:if test="${taskMasterAttributeBo.orderByTaskType eq 6 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-	                <div class="col-md-3 col-lg-3 p-none">
+	                <div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
 						<div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
 								class="requiredStar"> *</span><span
 						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -994,7 +993,7 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                        <!--  <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
@@ -1002,7 +1001,7 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				            </div>
+				            </div> -->
 	                        </div>
 	                            
 	                         </div>
@@ -1129,7 +1128,7 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                         <!-- <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
@@ -1137,7 +1136,7 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				            </div>
+				            </div> -->
 	                        </div>
 	                            
 	                         </div>
@@ -1148,7 +1147,6 @@
 	                        <input type="hidden" name="taskAttributeValueBos[9].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                        <input type="hidden" name="taskAttributeValueBos[9].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
 	                        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
-	                        
 	                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
 	                        <div class="chartSection" style="display:none">
 	                          <div class="mb-lg">
@@ -1263,7 +1261,7 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                         <!-- <div>
 	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
@@ -1271,7 +1269,7 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				            </div>
+				            </div> -->
 	                        </div>
 	                            
 	                         </div>
@@ -1279,7 +1277,21 @@
 	                    </c:if>
 			</c:forEach>	
 			</c:forEach>
+							
 		</c:if>
+		<div class="mt-md ml-xs">
+			<div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
+			<div>
+				<span class="mr-lg"><span class="mr-sm"><img
+						src="../images/icons/tick.png" /></span><span>Current Day</span></span> <span
+					class="mr-lg"><span class="mr-sm"><img
+						src="../images/icons/tick.png" /></span><span>Current Week</span></span> <span
+					class="mr-lg"><span class="mr-sm"><img
+						src="../images/icons/tick.png" /></span><span>Current Month</span></span> <span
+					class="txt-gray">(Rollback option provided for these
+					three options)</span>
+			</div>
+		</div>
 	</form:form>
 </div>
 <script>
@@ -1303,33 +1315,33 @@ $(document).ready(function(){
             	$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
             }
         	if(parseInt($(this).val()) > 20){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan should <= 20  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span should be <= 20  </li></ul>");
     		}
         	var minimumSpanVal = $('#minimumspanId').val();
         	if(minimumSpanVal && (parseInt(minimumSpanVal) > parseInt($(this).val()))){
         		$('#minimumspanId').val('');
        		    $('#minimumspanId').parent().addClass("has-danger").addClass("has-error");
                 $('#minimumspanId').parent().find(".help-block").empty();
-                $('#minimumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+                $('#minimumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= Initial Span</li></ul>");
         	}
         	var maxmimumSpanVal = $('#maximumspanId').val();
         	if(maxmimumSpanVal && (parseInt(maxmimumSpanVal) < parseInt($(this).val()))){
         		$('#maximumspanId').val('');
        		    $('#maximumspanId').parent().addClass("has-danger").addClass("has-error");
                 $('#maximumspanId').parent().find(".help-block").empty();
-                $('#maximumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+                $('#maximumspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
         	}
         }else{
-        	$(this).val('');
+        	/* $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>"); */
         }
     });
     $("#minimumspanId").blur(function(){	
@@ -1342,18 +1354,18 @@ $(document).ready(function(){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= Initial Span  </li></ul>");
     		}
     	}else{
-    		$('#initialspanId').val('');
+    		/* $('#initialspanId').val('');
    		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
             $('#initialspanId').parent().find(".help-block").empty();
-            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
             
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>minimumSpan should be always <= initialSpan  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Minimum Span should be always <= Initial Span  </li></ul>"); */
     	}
     });
     
@@ -1367,53 +1379,54 @@ $(document).ready(function(){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should <= 20  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be <= 20  </li></ul>");
     		}else if(parseInt($(this).val()) < parseInt(initialSpanVal)){
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>");
     		}
     	}else{
-    		$('#initialspanId').val('');
+    		/* $('#initialspanId').val('');
    		    $('#initialspanId').parent().addClass("has-danger").addClass("has-error");
             $('#initialspanId').parent().find(".help-block").empty();
-            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>initialSpan must be >= 2  </li></ul>");
+            $('#initialspanId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Initial Span must be >= 2</li></ul>");
             
             $(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumSpan should be always >= initialSpan  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Span should be always >= Initial Span</li></ul>"); */
     	}
     });
     
     $("#playspeedId").blur(function(){
     	var value= $(this).val();
-    	$(this).parent().removeClass("has-danger").removeClass("has-error");
-        $(this).parent().find(".help-block").empty();
+    	$("#playspeedId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#playspeedId").parent().find(".help-block").empty();
+        console.log("playspeedId value:"+value);
         if(value){
         	if(value == '.'){
-        		$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a valid number</li></ul>");
+        		$("#playspeedId").val('');
+       		    $("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+                $("#playspeedId").parent().find(".help-block").empty();
+                $("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a valid number</li></ul>");
         	}else if(parseFloat(value) < 0.5){
-            	$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+            	$("#playspeedId").val('');
+       		    $("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+                $("#playspeedId").parent().find(".help-block").empty();
+                $("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
             }
         	if(parseFloat(value) > parseFloat(20)){
-    			$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be <= 20 seconds  </li></ul>");
+    			$("#playspeedId").val('');
+       		    $("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+                $("#playspeedId").parent().find(".help-block").empty();
+                $("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be <= 20 seconds</li></ul>");
     		}
         }else{
-        	$(this).val('');
-   		    $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>playSpeed should be >= 0.5 seconds  </li></ul>");
+        	//$("#playspeedId").val('');
+   		    //$("#playspeedId").parent().addClass("has-danger").addClass("has-error");
+            //$("#playspeedId").parent().find(".help-block").empty();
+            //$("#playspeedId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Play Speed should be >= 0.5 seconds  </li></ul>");
         }
     });
     $("#maximumtestId").blur(function(){	
@@ -1424,14 +1437,14 @@ $(document).ready(function(){
     		$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Tests should be >= 1</li></ul>");
     	}
     	var maximumFailure = $('#maximumFailureId').val();
-    	if(value && parseInt(maximumFailure) > parseInt($(this).val())){
+    	if(value && parseInt(maximumFailure) >= parseInt($(this).val())){
     		$('#maximumFailureId').val('');
    		    $('#maximumFailureId').parent().addClass("has-danger").addClass("has-error");
             $('#maximumFailureId').parent().find(".help-block").empty();
-            $('#maximumFailureId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+            $('#maximumFailureId').parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always < Maximum tests</li></ul>");
     	}
     });
     $("#maximumFailureId").blur(function(){	
@@ -1443,13 +1456,13 @@ $(document).ready(function(){
     		$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>maximumTests should be >= 1  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Tests should be >= 1</li></ul>");
     	}
-    	if(maxmimunTestVal && parseInt($(this).val()) > parseInt(maxmimunTestVal)){
+    	if(maxmimunTestVal && parseInt($(this).val()) >= parseInt(maxmimunTestVal)){
     		$(this).val('');
    		    $(this).parent().addClass("has-danger").addClass("has-error");
             $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always <= Maximum tests  </li></ul>");
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Maximum Consecutive Failures should be always < Maximum tests</li></ul>");
     	}
     });
     

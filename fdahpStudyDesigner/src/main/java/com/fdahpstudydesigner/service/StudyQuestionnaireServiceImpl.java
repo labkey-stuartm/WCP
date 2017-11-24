@@ -1,17 +1,21 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
@@ -395,7 +399,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			if(null != questionsBo){
 				if(questionsBo.getId() != null){
-					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(),customStudyId);
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(),null,customStudyId);
 				}else{
 					addQuestionsBo = new QuestionsBo();
 					addQuestionsBo.setActive(true);
@@ -511,11 +515,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle) {
+	public QuestionsBo getQuestionsById(Integer questionId,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
 		QuestionsBo questionsBo = null;
 		try{
-			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,questionnaireShortTitle);
+			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId,questionnaireShortTitle,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
 		}
@@ -785,7 +789,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			QuestionsBo addQuestionsBo = null;
 			if(questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null ){
 				if(questionnairesStepsBo.getQuestionsBo().getId() != null){
-					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId(),customStudyId);
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId(),null,customStudyId);
 					if(questionnairesStepsBo.getModifiedOn() != null){
 						addQuestionsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
 					}
@@ -978,4 +982,32 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		return studyQuestionnaireDAO.getHeanlthKitKeyInfoList();
 	}
 	
+	/**
+	 * @author Ronalin
+	 * @return List of QuestionConditionBranchBo
+	 * 
+	 * This method is used to get the FormulaInfoBean
+	 */
+	@Override
+	public FormulaInfoBean validateQuestionConditionalBranchingLogic(String lhs, String rhs, String operator, String input){
+		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Starts");
+		FormulaInfoBean formulaInfoBean = new FormulaInfoBean();
+		if(StringUtils.isNotEmpty(lhs) && StringUtils.isNotEmpty(rhs) && StringUtils.isNotEmpty(operator)){
+					formulaInfoBean = FdahpStudyDesignerUtil.getConditionalFormulaResult(lhs, rhs, operator, input);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - validateQuestionConditionalBranchingLogic - Ends");
+		return formulaInfoBean;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @return QuestionnaireBo
+	 * 
+	 * This method is used to copy the questionnaire bo into study
+	 */
+	@Override
+	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId, SessionObject sessionObject) {
+		logger.info("StudyQuestionnaireServiceImpl - copyStudyQuestionnaireBo - Starts");
+		return studyQuestionnaireDAO.copyStudyQuestionnaireBo(questionnaireId, customStudyId, sessionObject);
+	}
 }

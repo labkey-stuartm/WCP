@@ -460,6 +460,7 @@ public class StudyController {
 					map.addAttribute("studyPermissionList",studyPermissionList);
 					map.addAttribute("permissions",permissions);
 					map.addAttribute("user", user);
+					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 					mav = new ModelAndView(FdahpStudyDesignerConstants.VIEW_SETTING_AND_ADMINS, map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -1649,8 +1650,10 @@ public class StudyController {
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyId);
 					if(StringUtils.isNotEmpty(consentStudyId)){
 						consentInfoBoList = studyService.getConsentInfoDetailsListByStudyId(consentStudyId);
+						consentBo = studyService.getConsentDetailsByStudyId(consentStudyId);
 					}else{
 						consentInfoBoList = studyService.getConsentInfoDetailsListByStudyId(studyId);
+						consentBo = studyService.getConsentDetailsByStudyId(studyId);
 					}	
 					if( null != consentInfoBoList && !consentInfoBoList.isEmpty()){
 						map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoBoList);
@@ -1660,8 +1663,6 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 					
-					//get consentId if exists for studyId
-					consentBo = studyService.getConsentDetailsByStudyId(studyId);
 					if( consentBo != null){
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
 						map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
@@ -1971,7 +1972,7 @@ public class StudyController {
 					}else{
 						resourceBO.setResourceType(false);
 					}
-					if(resourceBO.getStudyId() != null && resourceBO.getId() == null){
+					if(resourceBO.getStudyId() != null && resourceBO.getId() == null && !resourceBO.isStudyProtocol()){
 						int order = studyService.resourceOrder(resourceBO.getStudyId());
 						resourceBO.setSequenceNo(order);
 					}
@@ -3185,10 +3186,12 @@ public class StudyController {
 		        return mav;
 		    }
             /**
-             * @author Ronalin
+             * This method is used to validate the Eligibility Short Title 
+             * 
+             * @author Vivek
              * @param request
              * @param response
-             * This method is used to validate the questionnaire have response type scale for android platform 
+             * 
              */
             @RequestMapping(value="/adminStudies/validateEligibilityTestKey.do",method = RequestMethod.POST)
             public void validateEligibilityTestKey(HttpServletRequest request ,HttpServletResponse response){
@@ -3197,14 +3200,16 @@ public class StudyController {
                 PrintWriter out = null;
                 String message = FdahpStudyDesignerConstants.FAILURE;
                 Integer eligibilityTestId;
+                Integer eligibilityId;
                 String shortTitle;
                 try{
                     SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
                     Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
                     eligibilityTestId = StringUtils.isNumeric(request.getParameter("eligibilityTestId")) ? Integer.parseInt(request.getParameter("eligibilityTestId")) : 0 ;
                     shortTitle = StringUtils.isNotBlank(request.getParameter("shortTitle")) ? request.getParameter("shortTitle") : "" ;
+                    eligibilityId = StringUtils.isNumeric(request.getParameter("eligibilityId")) ? Integer.parseInt(request.getParameter("eligibilityId")) : 0 ;
                     if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
-                        message = studyService.validateEligibilityTestKey(eligibilityTestId, shortTitle);
+                        message = studyService.validateEligibilityTestKey(eligibilityTestId, shortTitle, eligibilityId);
                     }
                     jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
                     response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);

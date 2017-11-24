@@ -7,6 +7,13 @@
 .cursonMove{
  cursor: move !important;
 }
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
 </style>
  <div class="col-sm-10 col-rc white-bg p-none">
   <!--  Start top tab section-->
@@ -130,6 +137,7 @@
       if((!chkDone) && eligibilityMechanism != "1" ) {
     	  $('#doneBut').prop('disabled', true);
     	  $('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
+    	  $('[data-toggle="tooltip"]').tooltip();
       }
       initActions();
 	   $('.submitEle').click(function(e) {
