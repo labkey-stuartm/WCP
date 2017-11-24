@@ -695,10 +695,8 @@ function isNumberKey(evt)
 			                     
 		                     </div>
 		                     <div class="col-md-6">
-			                     <div class="form-group float__left">
-			    					          <div class="mt-xs mr-sm float__left">except</div>
-			                     </div>
-                            <div class="float__left">
+			    					        <div class="form-group mr-xs col-md-2 pr-none">except</div>
+                            <div class="col-md-9 pl-none pr-none">
                            <div class="form-group">
                             <textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionsBo.questionReponseTypeBo.validationCondition}">disabled</c:if>>${questionsBo.questionReponseTypeBo.validationExceptText}</textarea>
                            </div>

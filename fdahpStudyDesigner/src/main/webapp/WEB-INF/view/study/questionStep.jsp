@@ -724,8 +724,8 @@ function isNumberKey(evt)
 			                     </div>
 		                     </div> -->
 		                     <div class="col-md-6">
-                            <div class="mt-xs mr-sm float__left">except</div>
-			                      <div class="form-group float__left">
+                            <div class="mr-xs col-md-2 pr-none">except</div>
+			                      <div class="form-group col-md-9 pl-none pr-none">
                               
 			    					          <div class=""><textarea class="form-control" rows="3" cols="40" name="questionReponseTypeBo.validationExceptText" id="validationExceptTextId" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.validationCondition }">disabled</c:if> >${questionnairesStepsBo.questionReponseTypeBo.validationExceptText}</textarea></div>
                                <div class="help-block with-errors red-txt"></div>
@@ -1719,7 +1719,7 @@ function isNumberKey(evt)
 				                  </div>
 				                  <%-- <c:if test="${fn:length(questionnairesStepsBo.questionConditionBranchBoList[0].questionConditionBranchBos) le 2}"> --%>
 				                  <div class="numeric__define_input gray__t">
-				                     <div class="numeric__row display__flex__base" id="2">
+				                     <div class="numeric__row display__flex__base-webkit" id="2">
 				                        <span>V2 =</span>
 				                        <div class="form-group sm-selection">
 				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[0].inputType" id="inputTypeId2" index="2" count=0 onchange="addFunctions(this);">
@@ -1739,7 +1739,7 @@ function isNumberKey(evt)
 				                           <div class="help-block with-errors red-txt"></div>
 				                        </div>
 				                     </div>
-				                     <div class="numeric__row display__flex__base"  id="3">
+				                     <div class="numeric__row display__flex__base-webkit"  id="3">
 				                        <span>V3 =</span>
 				                        <div class="form-group sm-selection">
 				                           <select class="selectpicker conditionalBranchingRequired" name="questionConditionBranchBoList[0].questionConditionBranchBos[1].inputType" id="inputTypeId3" index="3" count=1 onchange="addFunctions(this);">
@@ -4340,7 +4340,7 @@ function addFunctions(item){
 		   "<input type='hidden' id='previousInputTypeValueId"+rowCount+"'  />"+
 		   "</div>"+
 		   "<div class='numeric__define_input gray__t' style='margin-left:4px;'>"+
-		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+1)+"'>"+
+		   "   <div class='numeric__row display__flex__base-webkit' id='"+(parseInt(v)+1)+"'>"+
 		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
 		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
@@ -4363,7 +4363,7 @@ function addFunctions(item){
 		   "           <span class='delete vertical-align-middle remBtnDis pl-md align-span-center hide' index='"+(parseInt(v)+1)+"' count='0' onclick=removeVaraiable(this);></span>"+
 		   "         </div>"+
 		   "   </div>"+
-		   "   <div class='numeric__row display__flex__base' id='"+(parseInt(v)+2)+"'>"+
+		   "   <div class='numeric__row display__flex__base-webkit' id='"+(parseInt(v)+2)+"'>"+
 		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
 		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
