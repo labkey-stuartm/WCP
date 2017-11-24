@@ -2848,7 +2848,7 @@ $(document).ready(function(){
       					if(typeof formulaResponseJsonObject !='undefined' && typeof formulaResponseJsonObject.statusMessage != 'undefined'){
       						bootbox.alert(formulaResponseJsonObject.statusMessage);	
       					}else{
-      						bootbox.alert("Please create the valid formula");
+      						bootbox.alert("Please create a valid formula");
       					}
       					
       				}
@@ -4518,6 +4518,16 @@ function selectFunction(item){
 			var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
         	if(value == '+' || value == '*'){
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+        		$('#rootId'+index+' .numeric__row').each(function(j){
+        			var id = $(this).attr("id");
+        			if($("#inputTypeErrorValueId"+id).is(':visible')){
+        				$("#inputTypeId"+id).val("");
+						$("#inputSubTypeValueId"+id).val("");
+						$('.selectpicker').selectpicker('refresh');
+						$("#inputTypeErrorValueId"+id).hide();
+        			}
+        		});
+        		
         	}else{
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
         	}
@@ -4527,6 +4537,15 @@ function selectFunction(item){
 		var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
     	if(value == '+' || value == '*'){
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+    		var id = $(this).attr("id");
+    		$('#rootId'+index+' .numeric__row').each(function(j){
+    			if($("#inputTypeErrorValueId"+id).is(':visible')){
+    				$("#inputTypeId"+id).val("");
+					$("#inputSubTypeValueId"+id).val("");
+					$('.selectpicker').selectpicker('refresh');
+					$("#inputTypeErrorValueId"+id).hide();
+    			}
+    		});
     	}else{
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
     	}
@@ -4688,9 +4707,9 @@ function makeAFormula(index,isRecursive){
 					}
 				}else{
 					if(j==0){
-						f+="("+makeFunction(id)+root_value;
+						f+= makeFunction(id)+root_value;
 					}else if(j==subroot_length){
-						f+=makeFunction(id)+")";
+						f+=validateFunction(makeFunction(id));
 					}else{
 						f+=makeFunction(id)+root_value;
 					}
@@ -4699,17 +4718,17 @@ function makeAFormula(index,isRecursive){
 		}else{
 			f = $("#inputSubTypeValueId"+index).val();
 		}
-	return f;
+	return validateFunction(f);
 }
 function makeFunction(index){
+	var i=""
 	var rootId = "rootId"+index;
-	var root_value = $("#rootId"+index).find('select').val();
-	if(root_value==null){
-		root_value="";
-	}
-	var i="";
 	var subroot_length = $('#'+rootId+' .numeric__row').length-1;
 	$('#'+rootId+' .numeric__row').each(function(j){
+		var root_value = $("#rootId"+index).find('select').val();
+		if(root_value==null){
+			root_value="";
+		}
 		var id = $(this).attr("id");
 		var input_type_value = $("#inputSubTypeValueId"+id).val();
 		var input_type=$("#inputTypeId"+id).val();
@@ -4717,13 +4736,20 @@ function makeFunction(index){
 			if(j==0){
 				i += "("+input_type_value+root_value;	
 			}else if(j==subroot_length){
-				i += input_type_value+")";
+					i += input_type_value+")";
 			}else{
 				i += input_type_value+root_value;
 			}
 		}else{
-			var k = makeFunction(id);
-			i+=k+")";
+			var k="";
+			if(j==0){
+				k=makeFunction(id)+root_value;	
+			}else if(j==subroot_length){
+				k=validateFunction(makeFunction(id));
+			}else{
+				k=makeFunction(id)+root_value;
+			}
+			i+=k;
 		}
 	});
 	return i;
@@ -4808,5 +4834,22 @@ function validateMinMaxforX(){
 	}else{
 		return "";
 	}
+}
+function validateFunction(functionText){
+	var c1 = 0;
+	var c2 = 0;
+	for (var i = 0; i < functionText.length; i++) {
+		if ('(' == functionText[i]) {
+			c1++;
+		} else if (')' == functionText[i]) {
+			c2++;
+		}
+	}
+	if(c1 > c2){
+		functionText += ")";
+	} else if(c1 < c2){
+		functionText = "(" + functionText;
+	}
+	return functionText;
 }
 </script>
