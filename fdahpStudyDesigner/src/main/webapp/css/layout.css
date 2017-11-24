@@ -7,10 +7,10 @@ Version: 		1.0
 */
 
 @media screen and (min-width: 760px) {
-    
+/*    
 .lg-space-title{
     padding: 0px 20px 40px;
-}
+}*/
     
 .lg-space-left{
     position: relative;
@@ -34,7 +34,6 @@ Version: 		1.0
     font-size: 32px;
     line-height: 36px;
     font-weight: 200; 
-    text-align: left;
     padding: 0px 50px;
 }
 
@@ -45,9 +44,9 @@ Version: 		1.0
 }
     
 .lg-icons-list li{
-    width: 220px;
-    height: 150px;
-    padding: 30px;
+    /*width: 220px;
+    height: 150px;*/
+    padding: 20px;
 }
     
 .lg-space-container{
@@ -142,9 +141,9 @@ Version: 		1.0
 
 @media screen and (min-width: 1020px) {
    
-.lg-space-title{
+/*.lg-space-title{
     padding: 0px 20px 40px;
-}
+}*/
     
 .lg-space-left{
     width: 0%;
@@ -156,7 +155,7 @@ Version: 		1.0
     
 .lg-icons-list li{
     height: 160px;
-    padding: 30px;
+    padding: 20px;
 }
     
 .lg-space-container{

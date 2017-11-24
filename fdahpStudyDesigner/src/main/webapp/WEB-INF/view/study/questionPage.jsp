@@ -694,7 +694,7 @@ function isNumberKey(evt)
 			                     </div>
 			                     
 		                     </div>
-		                     <div class="col-md-6">
+		                     <div class="col-md-6 pl-none">
 			    					        <div class="form-group mr-xs col-md-2 pr-none">except</div>
                             <div class="col-md-9 pl-none pr-none">
                            <div class="form-group">

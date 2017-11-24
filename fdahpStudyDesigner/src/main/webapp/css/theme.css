@@ -345,6 +345,9 @@ a:hover{
 .pl-xlg {
 	padding-left: 30px !important;
 }
+.pl-xxlg {
+  padding-left: 40px !important;
+}
 
 /* spacement right	*/
 .pr-none {
@@ -521,17 +524,20 @@ a:hover{
 }
 
 /*Icons rotate*/
+.lg-space-title{
+  padding-top:40px;
+}
 .lg-space-title span:first-child{
-    color: #95a2ab;
+    color: #fff;
     font-size: 26px;
     font-weight: 300;
-    padding-right: 5px;
+    padding-right: 10px;
 }
 
 .lg-space-title span:last-child{
-    color: #036eb7;
+    color: #fff;
     font-size: 26px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .lg-icons-list{
@@ -545,14 +551,15 @@ a:hover{
     cursor: pointer;
 }
 
-.lg-icons-list li:hover{
+/*.lg-icons-list li:hover{
     background: #eef2f5;
-}
+}*/
 
 .lg-icons-list li div{
-    color: #95a2ab;
+    color: #fff;
     font-size: 14px;
-    margin-top: 5px;    
+    margin-top: 5px;   
+    text-transform: uppercase; 
 }
 
 .row{

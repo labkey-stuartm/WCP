@@ -2189,3 +2189,129 @@ option {
     align-items: center;
 }
 /*common*/
+
+
+/*new login and landing*/
+.background__img{
+    background: url('../images/banner.jpg') no-repeat;
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size:  cover;
+}
+.landing__container{
+    display: table;
+    width: 1000px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    text-align: center;  
+}
+
+.manage-content{
+    width:180px;
+    height:152px;
+    float:left;
+    margin: 4px;
+    color:#fff;
+}
+
+.manage-content:hover{
+    background : rgba(0, 191, 243, 0.37);
+}
+#lg-container .login-box {
+    width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height:350px;
+}
+#lg-container .logo__ll{
+    padding-top: 25px;
+    padding-left: 40px;
+    width:250px;
+}
+#lg-container .logo__ll img{
+    width:250px;
+}
+#lg-container .input-field, #lg-container .input-field:active, #lg-container .input-field:focus, #lg-container .input-field:hover{
+    height: 40px;
+    background: #0c5377a6;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    outline: none;
+    border: 1px solid #1b7b89;
+}
+#lg-container .login-box ::-webkit-input-placeholder { 
+    color:#fff !important; 
+}
+#lg-container .login-box ::-moz-input-placeholder { 
+    color: #fff !important; 
+}
+#lg-container .login-box :-ms-input-placeholder { 
+    color: #fff !important; 
+}
+#lg-container .login, #lg-container .pwd{
+    width: 384px;
+    margin: 0 auto;
+}
+#lg-container .lg-btn {
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    color: #007cba;
+    font-size: 14px;
+    border: 0px;
+    border-radius: 3px;
+    outline: none;
+    height:40px;
+    font-weight:600;
+}
+#lg-container .lg-btn:hover{
+    background: #fff;
+    color: #007cba;
+}
+#lg-container .footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding-bottom: 46px;
+}
+#lg-container .footer span, #lg-container .foot span{
+    color:#fff;
+}
+#lg-container .footer span a, #lg-container .foot span a{
+    color:#fff;
+}
+#lg-container .footer span a:hover, #lg-container .foot span a:hover{
+    color:#fff;
+}
+#lg-container .gray-link:hover, #lg-container .gray-link:active, #lg-container .gray-link:focus{
+    color:#9daab3;
+}
+#lg-container .ll__border__bottom{
+    width: 140px;
+    height: 4px;
+    background: #fff;
+    margin: 20px auto;
+}
+#lg-container .forgot_pwd{
+    margin-top:56px;
+}
+#lg-container .lg-icons-list li div{
+    color:#fff !important;
+}
+.white__text{
+    color:#fff;
+}
+/*new login and landing*/
