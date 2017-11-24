@@ -22,7 +22,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name="active_task_attrtibutes_values")
 @NamedQueries({
-	@NamedQuery(name = "getAttributeListByActiveTAskId", query = "From ActiveTaskAtrributeValuesBo ABO where ABO.activeTaskId=:activeTaskId and ABO.active IS NOT NULL and ABO.active=1 order by attributeValueId desc"),
+	@NamedQuery(name = "getAttributeListByActiveTAskId", query = "From ActiveTaskAtrributeValuesBo ABO where ABO.activeTaskId=:activeTaskId and ABO.active IS NOT NULL and ABO.active=1 order by attributeValueId asc"),
 })
 public class ActiveTaskAtrributeValuesBo implements Serializable{
 	private static final long serialVersionUID = 1L;
