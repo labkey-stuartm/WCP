@@ -48,7 +48,7 @@
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
 </head>
-<body class="loading white-bg" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
+<body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
      <form:form action="" name="studyListForm" id="studyListForm" method="post">
      </form:form>
@@ -56,10 +56,10 @@
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
-    <div class="lg-container">
+    <div id="lg-container" class="lg-container">
         
         <!-- Login Left Section-->
-        <div class="lg-space-left">
+        <!-- <div class="lg-space-left">
             <div class="lg-space-img">
                 <img src="/fdahpStudyDesigner/images/logo/fda-logo-w.png"/>
             </div>
@@ -69,13 +69,13 @@
              <div class="lg-space-cover">
                 <img src="/fdahpStudyDesigner/images/icons/web.png"/>
             </div>
-        </div>
+        </div> -->
         <!-- End Login Left Section-->
         <!-- <div>
           <a href="javascript:formSubmit();">Logout</a>
         </div> -->
         <!-- Login Right Section-->
-        <div class="lg-space-right">
+        <!-- <div class="lg-space-right">
         	<div class="logout">
                <div class="dis-line pull-right ml-md line34">
                  <a href="/fdahpStudyDesigner/sessionOut.do" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
@@ -120,8 +120,64 @@
              
             
              
-        </div>
+        </div> -->
         <!-- End Login Right Section-->
+        <div class="logo__ll">
+            <img src="../images/logo/fda-logo-w.png"/>
+        </div>
+        <div class="landing__container">
+        <!--container-->
+        <div class="landing__content">
+            <div class="manage-content-parent">
+                <div class="lg-space-center">
+                    <div class="lg-space-txt">
+                        FDA My Studies Management Portal
+                    </div>
+                    <div class="ll__border__bottom"></div>
+                    <div class="lg-space-title">
+                        <span>Welcome,</span><span>${sessionObject.firstName}</span>
+                    </div>
+                    <div class='lg-icons'> 
+                       <ul class="lg-icons-list"> 
+                        <li class="studyListId">
+                            <a class='' href='javascript:void(0)'>
+                                <img class="mt-xlg" src="../images/icons/studies-w.png">
+                            </a>
+                            <div class='studyList'>Studies<br><span>&nbsp;</span></div>
+                        </li>
+                        <li class="linkDis hide">
+                            <a class='repository-g' href='javascript:void(0)'></a>
+                            <div>Repository</div>
+                        </li> 
+                        <li class="notificationListId">
+                             <a class='' href='javascript:void(0)'>
+                                <img class="mt-xlg" src="../images/icons/notifications-w.png">
+                            </a>
+                            <div class='studyList'>Notifications<br><span>&nbsp;</span></div>
+                        </li> 
+                       <li class="userListId">
+                             <a class='' href='javascript:void(0)'>
+                                <img class="mt-xlg" src="../images/icons/user-w.png">
+                            </a>
+                            <div>Users<br><span>&nbsp;</span></div>
+                        </li> 
+                        <li class="myAccountId">
+                            <a class='' href='javascript:void(0)'>
+                                <img class="mt-xlg" src="../images/icons/account-w.png">
+                            </a>
+                            <div>My Account<br><span>&nbsp;</span></div>
+                        </li>
+                     </ul> 
+                    </div>
+                </div>
+              <div class="clearfix"></div>
+          </div>
+        </div> 
+        <div class="footer">
+            <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
+      </div>  
+        <!--container-->
+        </div>
         
     </div>
     
