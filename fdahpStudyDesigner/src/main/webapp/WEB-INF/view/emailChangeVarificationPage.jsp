@@ -77,7 +77,7 @@
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-                    <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email.</p>
+                    <p>To complete your email verification process, kindly use the access code provided on your email.</p>
                         <div class="mb-lg form-group">
                              <input autofocus="autofocus" type="text" class="input-field wow_input" id="" tabindex="1" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>

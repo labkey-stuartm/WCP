@@ -434,7 +434,6 @@ public class LoginController {
 			errorMsg = loginService.validateAccessCode(securityToken, accessCode);		
 			if(!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)){		
 				request.getSession(false).setAttribute("errMsg", errorMsg);		
-				mv = new ModelAndView("redirect:securityTokenValidate.do?securityToken="+securityToken);		
 			} else {		
 					request.getSession(false).setAttribute("sucMsg", propMap.get("user.access.code.success"));		
 			}		
