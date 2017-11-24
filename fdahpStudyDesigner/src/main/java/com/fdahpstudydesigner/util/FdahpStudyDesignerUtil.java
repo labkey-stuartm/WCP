@@ -1043,11 +1043,23 @@ public class FdahpStudyDesignerUtil {
 		    	}
 		    	if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
 					String[] exceptChar = exceptCharacters.split("\\|");
-					StringBuilder except = new StringBuilder("\\b");
-					for(int i=0;i<exceptChar.length;i++){
-						except.append("(?!\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
+					if(!validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+						StringBuilder except = new StringBuilder("\\b");
+						for(int i=0;i<exceptChar.length;i++){
+							except.append("(?!\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
+						}
+						regEx = except+"\\w"+regEx+"]+";
+					}else{
+						if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+							StringBuilder except = new StringBuilder();
+							for(int i=0;i<exceptChar.length;i++){
+			                    except.append(exceptChar[i]);
+							}
+			                regEx +="&&[^"+except+"]";
+						}else{
+							regEx +="]+";
+						}
 					}
-					regEx = except+regEx+"]+";
 				}else{
 					regEx +="]+";
 				}
@@ -1069,8 +1081,11 @@ public class FdahpStudyDesignerUtil {
 					for(int i=0;i<exceptChar.length;i++){
 	                    except.append(exceptChar[i]);
 					}
-	                regEx +="&&[^"+except+"]";
-					//regEx = except+regEx+"]+";
+					 if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+						 regEx +="&&[^"+except+"]";
+					 }else{
+						 regEx = except+regEx+"]+";
+					 }
 				}else{
 					regEx +="]+";
 				}

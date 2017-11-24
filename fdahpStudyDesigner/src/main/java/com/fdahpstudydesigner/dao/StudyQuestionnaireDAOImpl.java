@@ -922,6 +922,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.createSQLQuery(questionResponseQuery);
 			query.executeUpdate();
 			
+			String questionConditionResponseQuery="update questions qs,questionnaires_steps q,response_type_value rs  set qs.status = 0 where"
+					+ " rs.questions_response_type_id=q.instruction_form_id and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'"
+							+ " and q.questionnaires_id="+questionnaireId+" and qs.id=q.instruction_form_id and qs.active=1 and rs.active=1 and q.active=1 and rs.formula_based_logic='Yes'";
+			
+			query = session.createSQLQuery(questionConditionResponseQuery);
+			query.executeUpdate();
+			
 			//Reset destination steps in Questionnaire Ends
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestionnaireStep");
 			transaction.commit();
