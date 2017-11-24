@@ -525,7 +525,7 @@ a:hover{
 
 /*Icons rotate*/
 .lg-space-title{
-  padding-top:80px;
+  padding-top:40px;
 }
 .lg-space-title span:first-child{
     color: #fff;
@@ -537,7 +537,7 @@ a:hover{
 .lg-space-title span:last-child{
     color: #fff;
     font-size: 26px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .lg-icons-list{

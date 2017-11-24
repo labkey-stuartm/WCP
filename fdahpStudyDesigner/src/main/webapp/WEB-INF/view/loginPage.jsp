@@ -226,7 +226,7 @@
                         <div class="mb-lg form-group">
                             <button type="button" class="btn lg-btn" id="siginNoteBtnId">SIGN IN</button>
                         </div>
-                        <div class="pb-md pt-xxlg">
+                        <div class="pb-md pt-xs">
                             <a id="forgot_pwd" class="gray-link white__text" href="javascript:void(0)">Forgot Password?</a>
                         </div>
                    </div>
@@ -235,7 +235,7 @@
                 <form:form id="forgotForm" data-toggle="validator" role="form" action="forgotPassword.do" method="post" autocomplete="off">
                    <div class="pwd dis-none">
                      <div class="mb-lg">
-                         <h3 style="" class="mt-none text-weight-bold">Forgot Password?</h3>
+                         <h3 style="    color: #fff; padding-top: 20px;" class="mt-none">Forgot Password?</h3>
                         <div class="mt-md">Enter your Email address to get  a link to reset password</div>
                         </div>
                         <div class="mb-lg form-group">
@@ -245,9 +245,9 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg">
-                            <button type="submit" class="btn lg-btn" id="log-btn">SIGN IN</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">SUBMIT</button>
                         </div>
-                        <div class="pt-xxlg">
+                        <div class="pt-xs">
                             <a id="login" class="gray-link white__text" href="javascript:void(0)">Back to Sign in</a>
                         </div>
                    </div>
