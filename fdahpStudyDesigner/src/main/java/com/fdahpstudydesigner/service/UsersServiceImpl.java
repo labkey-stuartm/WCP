@@ -87,7 +87,7 @@ public class UsersServiceImpl implements UsersService {
 					}
 					if(userBo!=null && Integer.valueOf(userStatus).equals(0)){
 						if( !userBo.isCredentialsNonExpired()){
-							loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "ReactivateMailAfterEnforcePassChange");
+							loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "", "ReactivateMailAfterEnforcePassChange");
 					} else {
 						customerCareMail = propMap.get("email.address.customer.service");
 						keyValueForSubject.put("$userFirstName", userBo.getFirstName());
@@ -141,7 +141,7 @@ public class UsersServiceImpl implements UsersService {
 		boolean addFlag = false;
 		String activity = "";
 		String activityDetail = ""; 
-		//boolean emailIdChange = false;
+		boolean emailIdChange = false;
 		List<String> superAdminEmailList = null;
 		Map<String, String> keyValueForSubject = null;
 		String dynamicContent = "";
@@ -169,9 +169,10 @@ public class UsersServiceImpl implements UsersService {
 				userBO3 = usersDAO.getUserDetails(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
-				/*if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
+				if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
 					emailIdChange = true;
-				}*/
+					userBO2.setEmailChanged(true);
+				}
 				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
 				userBO2.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO.getPhoneNumber().trim() : "");
 				userBO2.setRoleId(userBO.getRoleId());
@@ -187,16 +188,16 @@ public class UsersServiceImpl implements UsersService {
 				if(addFlag){
 					activity = "User account created.";
 					activityDetail ="New user created and Invite sent to user to activate account. (Account Details:- First Name = "+userBO.getFirstName()+" Last Name = "+userBO.getLastName()+ ", Email ="+userBO.getUserEmail()+")";
-					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "", "USER");
 				}
 				if(!addFlag){
 					activity = "User account updated.";
 					activityDetail = "User account details updated. (Previous Account Details:- First Name = "+userBO3.getFirstName()+", Last Name = "+userBO3.getLastName()+ ", Email ="+userBO3.getUserEmail()+") (New Account Details:- First Name = "+userBO.getFirstName()+", Last Name = "+userBO.getLastName()+ ", Email ="+userBO.getUserEmail()+")";
-					/*if(emailIdChange){
-						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
-					}else{*/
-						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
-					/*}*/
+					if(emailIdChange){
+						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), userBO3.getUserEmail(), "USER_EMAIL_UPDATE");
+					}else{
+						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "", "USER_UPDATE");
+					}
 				}
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			

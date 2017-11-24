@@ -24,7 +24,7 @@
             <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
             <div class="dis-line pull-right">
                  <div class="form-group mb-none">
-                 	<c:if test="${not empty userBO.userPassword && userBO.enabled}">
+                 	<c:if test="${not empty userBO.userPassword && userBO.enabled && not userBO.emailChanged}">
                  	 	<div class="dis-inline mt-sm"><span class="stat"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Active</span></span></span></div>
                  	 </c:if>
                  	 <c:if test="${not empty userBO.userPassword &&  not userBO.enabled}">
@@ -32,6 +32,9 @@
                  	 </c:if>
                  	 <c:if test="${empty userBO.userPassword}">
                  	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs pr-md"> Invitation Sent, Account Activation Pending</span></span><span class="black-sm-f resend pl-md"><a href="javascript:void(0)" id="resendLinkId">Re-send Activation Link</a></span></div>
+                 	 </c:if>
+                 	 <c:if test="${userBO.emailChanged}">
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Email Activation Pending</span></span></div>
                  	 </c:if>
                  </div>
              </div>
@@ -49,7 +52,7 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
-    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword}">
+    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword && not userBO.emailChanged}">
     <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn" id="enforcePasswordId">Enforce Password Change</button></div>
     </c:if>
         <div class="ed-user-layout row">
@@ -81,7 +84,9 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required 
+                                <%-- <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/> --%>
+                                <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO)}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -120,7 +125,7 @@
                      <span class="ml-xs">&nbsp;
                         <label class="switch bg-transparent mt-xs">
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
-                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE'}">disabled</c:if> 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || userBO.emailChanged}">disabled</c:if> 
                           onclick="activateOrDeactivateUser(${userBO.userId});" >
                           <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>

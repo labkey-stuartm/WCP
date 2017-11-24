@@ -59,6 +59,8 @@
 	
 	<definition name="userPasswordReset" template="/WEB-INF/view/userPasswordReset.jsp"></definition>
 	
+	<definition name="emailChangeVarificationPage" template="/WEB-INF/view/emailChangeVarificationPage.jsp"></definition>
+	
 	<definition name="signUpPage" template="/WEB-INF/view/signUpPage.jsp"></definition>
 	
 	<definition name="inAppNotificationList" extends="base.definition">
