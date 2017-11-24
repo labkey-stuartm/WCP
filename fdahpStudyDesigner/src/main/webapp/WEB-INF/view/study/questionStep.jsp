@@ -4502,9 +4502,11 @@ function selectFunction(item){
 						$("#previousInputTypeValueId"+count).val(value);
 						var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
 			        	if(value == '+' || value == '*'){
+			        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base-webkit').addClass('display__flex__base');
 			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
 			        	}else{
 			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+			        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
 			        	}
 			        }else{
 			        	$(item).val(previousInputTypeValue);
@@ -4518,6 +4520,7 @@ function selectFunction(item){
 			var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
         	if(value == '+' || value == '*'){
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base-webkit').addClass('display__flex__base');
         		$('#rootId'+index+' .numeric__row').each(function(j){
         			var id = $(this).attr("id");
         			if($("#inputTypeErrorValueId"+id).is(':visible')){
@@ -4530,6 +4533,7 @@ function selectFunction(item){
         		
         	}else{
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
         	}
 		}
 	}else{
@@ -4537,6 +4541,7 @@ function selectFunction(item){
 		var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
     	if(value == '+' || value == '*'){
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+    		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base-webkit').addClass('display__flex__base');
     		var id = $(this).attr("id");
     		$('#rootId'+index+' .numeric__row').each(function(j){
     			if($("#inputTypeErrorValueId"+id).is(':visible')){
@@ -4548,6 +4553,7 @@ function selectFunction(item){
     		});
     	}else{
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+    		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
     	}
 	}
 	createFormula();
@@ -4593,8 +4599,10 @@ function addVariable(item){
 	$(".numeric__loop").parents("form").validator();
 	if($("#rootId"+parent_index+" .numeric__row").length > 2){
 		$("#rootId"+parent_index+" .numeric__row .remBtnDis").removeClass("hide");
+		$("#rootId"+parent_index+" .numeric__row").removeClass('display__flex__base-webkit').addClass('display__flex__base');
 	}else{
 		$("#rootId"+parent_index+" .numeric__row .remBtnDis").addClass("hide");
+		$("#rootId"+parent_index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
 	}
 	createFormula();
 }
@@ -4616,8 +4624,10 @@ function removeVaraiable(item){
 	}
 	if($("#rootId"+parent_sequence_no+" .numeric__row").length > 2){
 		$("#rootId"+parent_sequence_no+" .numeric__row .remBtnDis").removeClass("hide");
+		$("#rootId"+parent_sequence_no+" .numeric__row").removeClass('display__flex__base-webkit').addClass('display__flex__base');
 	}else{
 		$("#rootId"+parent_sequence_no+" .numeric__row .remBtnDis").addClass("hide");
+		$("#rootId"+parent_sequence_no+" .numeric__row").removeClass('display__flex__base').addClass('display__flex__base-webkit');
 	}
 }
 function validateSingleResponseDataElement(){
@@ -4697,9 +4707,9 @@ function makeAFormula(index,isRecursive){
 				if(input_type != 'F'){
 					if(!isRecursive){
 						if(j==0){
-							f += "("+input_type_value+root_value;	
+							f += input_type_value+root_value;	
 						}else if(j==subroot_length){
-							f += input_type_value+")";
+							f += input_type_value;
 						}else{
 							f += input_type_value+root_value;	
 						}
@@ -4707,18 +4717,18 @@ function makeAFormula(index,isRecursive){
 					}
 				}else{
 					if(j==0){
-						f+= makeFunction(id)+root_value;
+						f+= validateFunction(makeFunction(id))+root_value;
 					}else if(j==subroot_length){
 						f+=validateFunction(makeFunction(id));
 					}else{
-						f+=makeFunction(id)+root_value;
+						f+=validateFunction(makeFunction(id))+root_value;
 					}
 				}
 			});
 		}else{
 			f = $("#inputSubTypeValueId"+index).val();
 		}
-	return validateFunction(f);
+	return f;
 }
 function makeFunction(index){
 	var i=""
@@ -4743,11 +4753,11 @@ function makeFunction(index){
 		}else{
 			var k="";
 			if(j==0){
-				k=makeFunction(id)+root_value;	
+				k=validateFunction(makeFunction(id))+root_value;	
 			}else if(j==subroot_length){
 				k=validateFunction(makeFunction(id));
 			}else{
-				k=makeFunction(id)+root_value;
+				k=validateFunction(makeFunction(id))+root_value;
 			}
 			i+=k;
 		}
@@ -4761,9 +4771,9 @@ function createFormula(){
 		mf="=";
 	}
 	f="";
-	var lhs = makeAFormula(2,false);
+	var lhs = validateFunction(makeAFormula(2,false));
 	f="";
-	var rhs = makeAFormula(3,false);
+	var rhs = validateFunction(makeAFormula(3,false));
 	if(lhs == '' && (mf =='' || mf ==null) && rhs == ''){
 		formula = "";
 	}else{
