@@ -88,6 +88,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			if(!StringUtils.isEmpty(passwordResetToken)){
 				userdetails = loginDAO.getValidUserByEmail(email);
 				
+				if("".equals(type) && userdetails.getEmailChanged()){
+					userdetails = null;
+				 }
+				
 				UserAttemptsBo userAttempts = loginDAO.getUserAttempts(email);
 				//Restricting the user to login for specified minutes if the user has max fails attempts
 				if (type != null && "".equals(type) && userAttempts != null && userAttempts.getAttempts() >= MAX_ATTEMPTS && new SimpleDateFormat(
@@ -167,7 +171,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							if(flag){
 								message = FdahpStudyDesignerConstants.SUCCESS;
 							}
-							 if("".equals(type) && (!userdetails.isEnabled() || userdetails.getEmailChanged())){
+							 if("".equals(type) && (!userdetails.isEnabled())){
 								 message = propMap.get("user.forgot.error.msg");
 							 }
 							}
