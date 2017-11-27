@@ -2301,7 +2301,7 @@ option {
 }
 #lg-container .ll__border__bottom{
     width: 140px;
-    height: 4px;
+    height: 3px;
     background: #fff;
     margin: 20px auto;
 }
@@ -2313,5 +2313,11 @@ option {
 }
 .white__text{
     color:#fff;
+}
+#lg-container .red-txt{
+    color:#fff !important;
+}
+#lg-container .has-error input, #lg-container .has-error textarea{
+        border-color: #fff !important;
 }
 /*new login and landing*/
