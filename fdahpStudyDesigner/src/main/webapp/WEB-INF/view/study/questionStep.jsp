@@ -495,7 +495,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="scaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="scaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.minImage}">hide</c:if>" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -514,7 +514,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="scaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="scaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.maxImage}">hide</c:if>" onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -601,7 +601,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='0' name="questionReponseTypeBo.minImageFile" id="continuesScaleMinImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.minImage" id="continuesScaleMinImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.minImage}">hide</c:if>"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -620,7 +620,7 @@ function isNumberKey(evt)
 				      </div>
 				      <input class="dis-none upload-image" data-imageId='1' name="questionReponseTypeBo.maxImageFile" id="continuesScaleMaxImageFileId" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 				      <input type="hidden" name="questionReponseTypeBo.maxImage" id="continuesScaleMaxImagePathId" value="${questionnairesStepsBo.questionReponseTypeBo.maxImage}">
-				      <span id="removeUrl" class="blue-link elaborateHide removeImageId"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+				      <span id="removeUrl" class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.maxImage}">hide</c:if>"  onclick="removeImage(this);">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -2745,6 +2745,7 @@ $(document).ready(function(){
     $(document).on('change', '.upload-image', function(e) {
         var file, img;
         var thisAttr = this;
+        var response_type = $("#rlaResonseType").val();
         if ((file = this.files[0])) {
             img = new Image();
             img.onload = function() {
@@ -2754,6 +2755,10 @@ $(document).ready(function(){
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
+                    
+                    if(response_type == "Scale" || response_type == "Continuous Scale"){
+                    	$("#"+id).next().removeClass("hide");
+                    }
                    
                     $("#"+id).val('');
                     $('.textLabel'+id).text("Change");
@@ -2767,6 +2772,9 @@ $(document).ready(function(){
                     $("#"+id).val('');
                     $("#"+$(thisAttr).attr("id")).val('');
                     $('.textLabel'+id).text("Upload");
+                    if(response_type == "Scale" || response_type == "Continuous Scale"){
+                    	$("#"+id).next().addClass("hide");
+                    }
                 }
             };
             img.onerror = function() {
@@ -4502,9 +4510,11 @@ function selectFunction(item){
 						$("#previousInputTypeValueId"+count).val(value);
 						var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
 			        	if(value == '+' || value == '*'){
+			        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base-webkit').addClass('display__flex__base');
 			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
 			        	}else{
 			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+			        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
 			        	}
 			        }else{
 			        	$(item).val(previousInputTypeValue);
@@ -4518,6 +4528,7 @@ function selectFunction(item){
 			var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
         	if(value == '+' || value == '*'){
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base-webkit').addClass('display__flex__base');
         		$('#rootId'+index+' .numeric__row').each(function(j){
         			var id = $(this).attr("id");
         			if($("#inputTypeErrorValueId"+id).is(':visible')){
@@ -4530,6 +4541,7 @@ function selectFunction(item){
         		
         	}else{
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
         	}
 		}
 	}else{
@@ -4537,6 +4549,7 @@ function selectFunction(item){
 		var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
     	if(value == '+' || value == '*'){
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).removeClass('add_var_hide');
+    		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base-webkit').addClass('display__flex__base');
     		var id = $(this).attr("id");
     		$('#rootId'+index+' .numeric__row').each(function(j){
     			if($("#inputTypeErrorValueId"+id).is(':visible')){
@@ -4548,6 +4561,7 @@ function selectFunction(item){
     		});
     	}else{
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
+    		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
     	}
 	}
 	createFormula();
@@ -4593,8 +4607,10 @@ function addVariable(item){
 	$(".numeric__loop").parents("form").validator();
 	if($("#rootId"+parent_index+" .numeric__row").length > 2){
 		$("#rootId"+parent_index+" .numeric__row .remBtnDis").removeClass("hide");
+		$("#rootId"+parent_index+" .numeric__row").removeClass('display__flex__base-webkit').addClass('display__flex__base');
 	}else{
 		$("#rootId"+parent_index+" .numeric__row .remBtnDis").addClass("hide");
+		$("#rootId"+parent_index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
 	}
 	createFormula();
 }
@@ -4616,8 +4632,10 @@ function removeVaraiable(item){
 	}
 	if($("#rootId"+parent_sequence_no+" .numeric__row").length > 2){
 		$("#rootId"+parent_sequence_no+" .numeric__row .remBtnDis").removeClass("hide");
+		$("#rootId"+parent_sequence_no+" .numeric__row").removeClass('display__flex__base-webkit').addClass('display__flex__base');
 	}else{
 		$("#rootId"+parent_sequence_no+" .numeric__row .remBtnDis").addClass("hide");
+		$("#rootId"+parent_sequence_no+" .numeric__row").removeClass('display__flex__base').addClass('display__flex__base-webkit');
 	}
 }
 function validateSingleResponseDataElement(){
@@ -4697,9 +4715,9 @@ function makeAFormula(index,isRecursive){
 				if(input_type != 'F'){
 					if(!isRecursive){
 						if(j==0){
-							f += "("+input_type_value+root_value;	
+							f += input_type_value+root_value;	
 						}else if(j==subroot_length){
-							f += input_type_value+")";
+							f += input_type_value;
 						}else{
 							f += input_type_value+root_value;	
 						}
@@ -4707,18 +4725,18 @@ function makeAFormula(index,isRecursive){
 					}
 				}else{
 					if(j==0){
-						f+= makeFunction(id)+root_value;
+						f+= validateFunction(makeFunction(id))+root_value;
 					}else if(j==subroot_length){
 						f+=validateFunction(makeFunction(id));
 					}else{
-						f+=makeFunction(id)+root_value;
+						f+=validateFunction(makeFunction(id))+root_value;
 					}
 				}
 			});
 		}else{
 			f = $("#inputSubTypeValueId"+index).val();
 		}
-	return validateFunction(f);
+	return f;
 }
 function makeFunction(index){
 	var i=""
@@ -4743,11 +4761,11 @@ function makeFunction(index){
 		}else{
 			var k="";
 			if(j==0){
-				k=makeFunction(id)+root_value;	
+				k=validateFunction(makeFunction(id))+root_value;	
 			}else if(j==subroot_length){
 				k=validateFunction(makeFunction(id));
 			}else{
-				k=makeFunction(id)+root_value;
+				k=validateFunction(makeFunction(id))+root_value;
 			}
 			i+=k;
 		}
@@ -4761,9 +4779,9 @@ function createFormula(){
 		mf="=";
 	}
 	f="";
-	var lhs = makeAFormula(2,false);
+	var lhs = validateFunction(makeAFormula(2,false));
 	f="";
-	var rhs = makeAFormula(3,false);
+	var rhs = validateFunction(makeAFormula(3,false));
 	if(lhs == '' && (mf =='' || mf ==null) && rhs == ''){
 		formula = "";
 	}else{
@@ -4788,6 +4806,7 @@ function removeImage(item){
 	$("#"+id2).val('');
 	$('.textLabel'+id2).text("Upload");
 	$(item).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
+	$(item).addClass("hide");
 }
 function maxSquenceValue() {
     var max=3;
