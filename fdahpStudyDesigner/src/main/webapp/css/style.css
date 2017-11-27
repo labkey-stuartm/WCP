@@ -2243,7 +2243,7 @@ option {
 }
 #lg-container .input-field, #lg-container .input-field:active, #lg-container .input-field:focus, #lg-container .input-field:hover{
     height: 40px;
-    background: #0c5377a6;
+    background: rgba(12, 83, 119, 0.54);
     border-radius: 5px;
     color: #fff;
     text-align: center;
