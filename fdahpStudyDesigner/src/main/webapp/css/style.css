@@ -2201,13 +2201,13 @@ option {
 }
 .landing__container{
     display: table;
-    width: 1000px;
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
+    margin: 0 auto;
     text-align: center;  
 }
 
