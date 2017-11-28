@@ -2880,7 +2880,7 @@ $(document).ready(function(){
  	});
     $("#numericUnitId").keypress(function(event){
         var inputValue = event.charCode;
-        if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)){
+        if(!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)){
             event.preventDefault();
         }
     });
@@ -4350,7 +4350,7 @@ function addFunctions(item){
 		   "<div class='numeric__define_input gray__t' style='margin-left:4px;'>"+
 		   "   <div class='numeric__row display__flex__base-webkit' id='"+(parseInt(v)+1)+"'>"+
 		   "      <span>V"+(parseInt(v)+1)+" =</span>"+
-		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
+		   "      <div class='form-group sm-selection' style=''>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[0].inputType' id='inputTypeId"+(parseInt(v)+1)+"' index='"+(parseInt(v)+1)+"' count='0' onchange='addFunctions(this);' required>"+
 		   "            <option value=''  selected>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
@@ -4373,7 +4373,7 @@ function addFunctions(item){
 		   "   </div>"+
 		   "   <div class='numeric__row display__flex__base-webkit' id='"+(parseInt(v)+2)+"'>"+
 		   "      <span>V"+(parseInt(v)+2)+" =</span>"+
-		   "      <div class='form-group sm-selection' style='margin-left: 18px;'>"+
+		   "      <div class='form-group sm-selection' style=''>"+
 		   "         <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+rowCount+"].questionConditionBranchBos[1].inputType' id='inputTypeId"+(parseInt(v)+2)+"' index='"+(parseInt(v)+2)+"' count='1' onchange='addFunctions(this);' required>"+
 		   "            <option value=''  selected>Select</option>"+
 		   "            <option value='C'>Constant</option>"+
@@ -4577,7 +4577,7 @@ function addVariable(item){
 	count = count+1;
 	var addVar = "<div class='numeric__row display__flex__base' id='"+v+"'>"+
 				 "   <span>V"+v+" =</span>"+
-				 "   <div class='form-group sm-selection' style='margin-left: 18px;'>"+
+				 "   <div class='form-group sm-selection' style=''>"+
 				 "      <select class='selectpicker conditionalBranchingRequired' name='questionConditionBranchBoList["+index+"].questionConditionBranchBos["+count+"].inputType' id='inputTypeId"+(parseInt(v))+"' index='"+(parseInt(v))+"' count='"+count+"' onchange='addFunctions(this);' required>"+
 				 "         <option value='' selected>Select</option>"+
 				 "         <option value='C'>Constant</option>"+

@@ -236,7 +236,7 @@
                    <div class="pwd dis-none">
                      <div class="mb-lg">
                          <h3 style="    color: #fff; padding-top: 20px;" class="mt-none">Forgot Password?</h3>
-                        <div class="mt-md">Enter your Email address to get  a link to reset password</div>
+                        <div class="mt-md white__text">Enter your Email address to get  a link to reset password</div>
                         </div>
                         <div class="mb-lg form-group">
                             <input type="text" class="input-field wow_input" id="emailReg" name="email" maxlength="100" placeholder="Email Address" 

@@ -2201,13 +2201,13 @@ option {
 }
 .landing__container{
     display: table;
-    width: 1000px;
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
+    margin: 0 auto;
     text-align: center;  
 }
 
@@ -2243,7 +2243,7 @@ option {
 }
 #lg-container .input-field, #lg-container .input-field:active, #lg-container .input-field:focus, #lg-container .input-field:hover{
     height: 40px;
-    background: #0c5377a6;
+    background: rgba(12, 83, 119, 0.54);
     border-radius: 5px;
     color: #fff;
     text-align: center;
@@ -2301,7 +2301,7 @@ option {
 }
 #lg-container .ll__border__bottom{
     width: 140px;
-    height: 4px;
+    height: 3px;
     background: #fff;
     margin: 20px auto;
 }
@@ -2313,5 +2313,11 @@ option {
 }
 .white__text{
     color:#fff;
+}
+#lg-container .red-txt{
+    color:#fff !important;
+}
+#lg-container .has-error input, #lg-container .has-error textarea{
+        border-color: #fff !important;
 }
 /*new login and landing*/

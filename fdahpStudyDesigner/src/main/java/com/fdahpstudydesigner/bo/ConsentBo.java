@@ -67,7 +67,7 @@ public class ConsentBo implements Serializable{
 	private String consentDocContent;
 	
 	@Column(name = "allow_without_permission")
-	private String allowWithoutPermission;
+	private String allowWithoutPermission="No";
 	
 	@Column(name = "html_consent")
 	private String htmlConsent;
