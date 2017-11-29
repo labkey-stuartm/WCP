@@ -196,7 +196,7 @@
               </div> -->
 
     <div class="logo__ll">
-      <img src="../images/logo/fda-logo-w.png"/>
+      <img src="images/logo/fda-logo-w.png"/>
     </div>
     <div class="signup__container">
       <!--container-->
