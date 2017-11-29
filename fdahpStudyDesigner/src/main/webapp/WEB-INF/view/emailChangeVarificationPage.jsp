@@ -129,7 +129,7 @@
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Activation Link is either expired or invalid.</p></c:if>
                         <div>
-                            <a id="login" class="gray-link backToLogin class="white__text"" href="javascript:void(0)">Back to Sign in</a>
+                            <a id="login" class="gray-link backToLogin white__text" href="javascript:void(0)">Back to Sign in</a>
                         </div>
                         <input type="hidden" name="securityToken" value="${securityToken}" />
                 </form:form>
