@@ -52,12 +52,12 @@
     
    
 </head>
-<body class="loading white-bg">
+<body class="loading background__img">
     <div id="loader"><span></span></div>
-    <div class="lg-container">
+    <div id="lg-container" class="lg-container">
         
         <!-- Login Left Section-->
-        <div class="lg-space-left">
+        <!-- <div class="lg-space-left">
             <div class="lg-space-img">
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
@@ -67,11 +67,11 @@
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
             </div>
-        </div>
+        </div> -->
         <!-- End Login Left Section-->
         
         <!-- Login Right Section-->
-        <div class="lg-space-right">
+        <!-- <div class="lg-space-right">
              <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
              <form:form id="accessCodeForm" data-toggle="validator" role="form" action="validateAccessCode.do" method="post" autocomplete="off">
                     <div id="errMsg" class="error_msg">${errMsg}</div>
@@ -99,7 +99,46 @@
             
              <div class="footer">
                     <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
-              </div>
+              </div> -->
+
+
+              <div class="logo__ll">
+            <img src="images/logo/fda-logo-w.png"/>
+        </div>
+        
+        <div class="login__container">
+            <div class="">
+             <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
+             <!-- <div class="lg-space-txt text-center">
+                    FDA My Studies Management Portal
+                </div>
+                <div class="ll__border__bottom"></div> -->
+             <form:form id="accessCodeForm" data-toggle="validator" role="form" action="validateAccessCode.do" method="post" autocomplete="off">
+
+                    <div id="errMsg" class="error_msg">${errMsg}</div>
+                    <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
+                    <c:if test="${isValidToken}">
+                    <p class="white__text">To complete your email verification process, kindly use the access code provided on your email.</p>
+                        <div class="mb-lg form-group">
+                             <input autofocus="autofocus" type="text" class="input-field wow_input" id="" tabindex="1" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <button type="submit" class="btn lg-btn">Submit</button>
+                        </div>
+                        </c:if>
+                        <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Activation Link is either expired or invalid.</p></c:if>
+                        <div>
+                            <a id="login" class="gray-link backToLogin class="white__text"" href="javascript:void(0)">Back to Sign in</a>
+                        </div>
+                        <input type="hidden" name="securityToken" value="${securityToken}" />
+                </form:form>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+        </div>
              
         </div>
         <!-- End Login Right Section-->

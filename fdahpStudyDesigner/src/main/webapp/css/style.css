@@ -8,9 +8,9 @@ Version: 		1.0
 
 @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
 
-*{
+/**{
     transition: all .2s ease;
-}
+}*/
 
 @font-face {
   font-family: 'FontAwesome';
@@ -497,6 +497,11 @@ div.mce-edit-area{
 	width: 384px;    
     margin: 0 auto;
     text-align: center;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
 }
 
 .left-content-container ul{
@@ -1873,6 +1878,11 @@ option:first-child {
 	width: 384px;    
     margin: 0 auto;
     text-align: center;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
 }
 
 .tealtxt-md{
@@ -2250,13 +2260,13 @@ option {
     outline: none;
     border: 1px solid #1b7b89;
 }
-#lg-container .login-box ::-webkit-input-placeholder { 
+#lg-container ::-webkit-input-placeholder { 
     color:#fff !important; 
 }
-#lg-container .login-box ::-moz-input-placeholder { 
+#lg-container ::-moz-input-placeholder { 
     color: #fff !important; 
 }
-#lg-container .login-box :-ms-input-placeholder { 
+#lg-container :-ms-input-placeholder { 
     color: #fff !important; 
 }
 #lg-container .login, #lg-container .pwd{
@@ -2314,10 +2324,17 @@ option {
 .white__text{
     color:#fff;
 }
+.grey__text{
+    color:#98c9e1;
+}
 #lg-container .red-txt{
     color:#fff !important;
 }
 #lg-container .has-error input, #lg-container .has-error textarea{
         border-color: #fff !important;
 }
+#lg-container .error_msg, #lg-container .suceess_msg{
+    color:#fff !important;
+}
+
 /*new login and landing*/

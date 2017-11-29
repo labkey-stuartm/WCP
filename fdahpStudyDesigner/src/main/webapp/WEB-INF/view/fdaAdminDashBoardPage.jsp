@@ -78,7 +78,7 @@
         <!-- <div class="lg-space-right">
         	<div class="logout">
                <div class="dis-line pull-right ml-md line34">
-                 <a href="/fdahpStudyDesigner/sessionOut.do" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
+                 <a href="/fdahpStudyDesigner/sessionOut.do" class="blue-link text-weight-normal text-uppercase"><span class="white__text">sign Out</span> <!-- <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span> --></a>  
                </div>
            	</div>
             <div class="lg-space-container wd">
@@ -122,6 +122,11 @@
              
         </div> -->
         <!-- End Login Right Section-->
+        <div class="logout">
+	        <div class="dis-line pull-right ml-md line34">
+	          <a href="/fdahpStudyDesigner/sessionOut.do" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
+	        </div>
+        </div>
         <div class="logo__ll">
             <img src="../images/logo/fda-logo-w.png"/>
         </div>
