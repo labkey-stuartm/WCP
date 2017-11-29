@@ -34,7 +34,7 @@
                  	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs pr-md"> Invitation Sent, Account Activation Pending</span></span><span class="black-sm-f resend pl-md"><a href="javascript:void(0)" id="resendLinkId">Re-send Activation Link</a></span></div>
                  	 </c:if>
                  	 <c:if test="${userBO.emailChanged}">
-                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Email Activation Pending</span></span></div>
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Pending Verification</span></span></div>
                  	 </c:if>
                  </div>
              </div>

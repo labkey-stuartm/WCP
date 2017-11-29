@@ -141,7 +141,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							customerCareMail = propMap.get("email.address.customer.service");
 							keyValueForSubject.put("$customerCareMail", customerCareMail);
 							keyValueForSubject2.put("$customerCareMail", customerCareMail);
+							keyValueForSubject.put("$newUpdatedMail", userdetails.getUserEmail());
 							keyValueForSubject2.put("$newUpdatedMail", userdetails.getUserEmail());
+							keyValueForSubject.put("$oldMail", oldEmail);
 							contact = propMap.get("phone.number.to");
 							keyValueForSubject.put("$contact", contact);
 							if("USER".equals(type) && !userdetails.isEnabled()){

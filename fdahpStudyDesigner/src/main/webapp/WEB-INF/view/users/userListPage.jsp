@@ -78,7 +78,7 @@
 	                    <span class="ml-lg">
 	                        <label class="switch" data-toggle="tooltip" id="label${user.userId}" data-placement="top"
 	                        <c:if test="${empty user.userPassword}">title="Status: Invitation Sent, Account Activation Pending"</c:if>
-	                        <c:if test="${user.emailChanged}">title="Status: Email Activation Pending"</c:if>
+	                        <c:if test="${user.emailChanged}">title="Status: Pending Verification"</c:if>
 	                        <c:if test="${!user.emailChanged && not empty user.userPassword && user.enabled}">title="Status: Active"</c:if>
 	                        <c:if test="${!user.emailChanged && not empty user.userPassword &&  not user.enabled}">title="Status: Deactivated"</c:if> >
 	                          <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}"
