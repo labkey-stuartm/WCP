@@ -84,7 +84,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required 
+                                <input type="text" class="form-control" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required 
                                 <%-- <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/> --%>
                                 <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO)}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
@@ -441,31 +441,49 @@
 
    
   $('.addUpdate').on('click',function(){
-  	var selectedStudies = "";
-  	var permissionValues = "";
-  	$('#emailId').prop('disabled',false);
-  	if(isFromValid($(this).parents('form'))){
-	  	$('.selStd').each(function(){
-	  		var studyId = $(this).find('.stdCls').val();
-	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-	  		if(selectedStudies == ""){
-	  			selectedStudies = studyId;
-	  		}else{
-	  			selectedStudies += ","+studyId;
-	  		}
-	  		if(permissionValues == ""){
-	  			permissionValues = permissionValue;
-	  		}else{
-	  			permissionValues += ","+permissionValue;
-	  		}
-	  	});
-	  	$('#selectedStudies').val(selectedStudies);
-	  	$('#permissionValues').val(permissionValues);
-	  	<c:if test="${sessionObject.userId eq userBO.userId}">
-	  		$('#ownUser').val('1');
-	  	</c:if>
-  		$(this).parents('form').submit();	
-  	}
+	  var email = $('#emailId').val();
+      var oldEmail = $('#emailId').attr('oldVal');
+      var isEmail;
+      var regEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+      isEmail = regEX.test(email);
+      if(isEmail && ('' === oldEmail || ('' !== oldEmail && oldEmail !== email))){
+      	var csrfDetcsrfParamName = $('#csrfDet').attr('csrfParamName');
+          var csrfToken = $('#csrfDet').attr('csrfToken');
+          //var thisAttr= this;
+          $('#emailId').parent().find(".help-block").html("<ul class='list-unstyled'><li></li></ul>");
+              if(email !== ''){
+            	  $("body").addClass("loading");
+                  $.ajax({
+                      url: "/fdahpStudyDesigner/isEmailValid.do?"+csrfDetcsrfParamName+"="+csrfToken,
+                      type: "POST",
+                      datatype: "json",
+                      data: {
+                          email : email,
+                      },
+                      success:  function getResponse(data){
+                          var message = data.message;
+                          if('SUCCESS' !== message){
+                              $('#emailId').validator('validate');
+                              $('#emailId').parent().removeClass("has-danger").removeClass("has-error");
+                              $('#emailId').parent().find(".help-block").html("");
+                              saveUser();
+                          }else{
+                        	  $("body").removeClass("loading");
+                        	  isFromValid($('.addUpdate').parents('form'));
+                              $('#emailId').val('');
+                              $('#emailId').parent().addClass("has-danger").addClass("has-error");
+                              $('#emailId').parent().find(".help-block").empty();
+                              $('#emailId').parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + email + "' already exists.</li></ul>");
+                          }
+                      }
+                });
+            }
+      }else{
+    	  $('#emailId').validator('validate');
+          $('#emailId').parent().removeClass("has-danger").removeClass("has-error");
+          $('#emailId').parent().find(".help-block").html("");
+    	  saveUser();
+      }
   });
   
       $('#resendLinkId').on('click',function(){
@@ -584,6 +602,34 @@
     		return;
     	}
     	});
+    }
+    
+    function saveUser(){
+    	$('#emailId').prop('disabled',false);
+    	var selectedStudies = "";
+      	var permissionValues = "";
+      	if(isFromValid($('.addUpdate').parents('form'))){
+    	  	$('.selStd').each(function(){
+    	  		var studyId = $(this).find('.stdCls').val();
+    	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+    	  		if(selectedStudies == ""){
+    	  			selectedStudies = studyId;
+    	  		}else{
+    	  			selectedStudies += ","+studyId;
+    	  		}
+    	  		if(permissionValues == ""){
+    	  			permissionValues = permissionValue;
+    	  		}else{
+    	  			permissionValues += ","+permissionValue;
+    	  		}
+    	  	});
+    	  	$('#selectedStudies').val(selectedStudies);
+    	  	$('#permissionValues').val(permissionValues);
+    	  	<c:if test="${sessionObject.userId eq userBO.userId}">
+    	  		$('#ownUser').val('1');
+    	  	</c:if>
+      		$('.addUpdate').parents('form').submit();	
+      	}
     }
 </script>
 
