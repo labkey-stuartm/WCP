@@ -868,7 +868,7 @@ function isNumberKey(evt)
 	               </div>
 	        </div>
 	        <div class="mt-lg">
-	               <div class="gray-xs-f mb-xs">Set allowed date range<span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="choose one of 3 options given below"></span></div>
+	               <div class="gray-xs-f mb-xs">Set allowed date range<span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Participants will be allowed to choose a date from the date range you set here. The option 'Until current date' includes the current date as well.Date or date/time will apply as per your selection in the previous field."></span></div>
 	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="DateRequired DateRangeRequired" id="untilCurrentDateId" value="Until current date" name="questionReponseTypeBo.selectionStyle"  ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' ? 'checked':''} >

@@ -314,7 +314,7 @@
 		    			success: function deleteConsentInfo(data){
 		    				var status = data.message;
 		    				if(status == "SUCCESS"){
-		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Question deleted successfully");
 		    					$('#alertMsg').show();
 		    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 								    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
@@ -325,7 +325,7 @@
 		    						$('#doneBut').prop('disabled', true);
 		    					}
 		    				} else {
-		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete Question");
 		    					$('#alertMsg').show();
 		    	            }
 		    				setTimeout(hideDisplayMessage, 4000);
