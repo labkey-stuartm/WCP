@@ -202,12 +202,9 @@
       <!--container-->
       <div>
             <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-            <div class="lg-register-center col-xs-12">
+            <div class=" col-xs-12"><!--lg-register-center  -->
              <form:form id="signUpForm" data-toggle="validator"  role="form" action="addPassword.do" method="post" autocomplete="off">
-             <div class="lg-space-txt text-center">
-                    FDA My Studies Management Portal
-                </div>
-                <div class="ll__border__bottom"></div>
+             
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
@@ -277,9 +274,9 @@
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                             <a id="login" class="gray-link backToLogin white__text" href="javascript:void(0)">Back to Sign in</a>
-                        </div>
+                        </div> -->
                    </div>
                    <input type="hidden" name="securityToken" value="${securityToken}" />
                    <input type="password" name="password" id="hidePass" style="display: none;" />
