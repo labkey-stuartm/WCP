@@ -457,6 +457,7 @@
                       url: "/fdahpStudyDesigner/isEmailValid.do?"+csrfDetcsrfParamName+"="+csrfToken,
                       type: "POST",
                       datatype: "json",
+                      global : false,
                       data: {
                           email : email,
                       },
