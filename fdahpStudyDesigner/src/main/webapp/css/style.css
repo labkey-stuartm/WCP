@@ -2190,12 +2190,12 @@ option {
     align-items: unset;
 }
 .display__flex__base-webkit{
-    -webkit-display: flex; 
-    -webkit-align-items: baseline;
-}
-.display__flex__center{
     display: flex;
-    align-items: center;
+    align-items: unset;
+}
+
+.numeric__row > span{
+    margin-top:8px;
 }
 /*common*/
 

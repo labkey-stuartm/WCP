@@ -1765,7 +1765,7 @@ function isNumberKey(evt)
 				               <!-- Numeric section -->
 				               <c:forEach items="${questionnairesStepsBo.questionConditionBranchBoList}" var="questionConditionBranchBo" varStatus="status">
 				         		 <c:if test="${not status.first}">
-				         		  <div class="numeric__section mt-md" id="rootId${questionConditionBranchBo.sequenceNo}">
+				         		  <div class="numeric__section" id="rootId${questionConditionBranchBo.sequenceNo}">
 				         		 	<div class="numeric__define gray__t">
 					                     <span>V${questionConditionBranchBo.sequenceNo}</span>
 					                     <div class="form-group sm-selection">
