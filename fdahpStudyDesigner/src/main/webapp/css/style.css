@@ -555,7 +555,7 @@ div.mce-edit-area{
 }
 
 .right-content-body{
-   padding: 6px 30px;  
+   padding: 6px 20px;  
 }
 
 .lg-icons-list li a:disabled{
@@ -2187,10 +2187,10 @@ option {
 }
 .display__flex__base{
     display: flex;
-    align-items: baseline;
+    align-items: unset;
 }
 .display__flex__base-webkit{
-    -webkit-display: flex;
+    -webkit-display: flex; 
     -webkit-align-items: baseline;
 }
 .display__flex__center{
