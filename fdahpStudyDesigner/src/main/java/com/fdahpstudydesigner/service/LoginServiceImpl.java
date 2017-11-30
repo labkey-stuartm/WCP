@@ -127,9 +127,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						}
 						if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
 							if("USER_EMAIL_UPDATE".equalsIgnoreCase(type)){
-								acceptLinkMail = propMap.get("emailChangeLink");
+								acceptLinkMail = propMap.get("emailChangeLink").trim();
 							}else{
-								acceptLinkMail = propMap.get("acceptLinkMail");
+								acceptLinkMail = propMap.get("acceptLinkMail").trim();
 							}
 							keyValueForSubject = new HashMap<String, String>();
 							keyValueForSubject2 = new HashMap<String, String>();
