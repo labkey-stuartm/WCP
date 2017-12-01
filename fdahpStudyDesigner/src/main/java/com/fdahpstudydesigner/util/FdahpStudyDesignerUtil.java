@@ -1044,21 +1044,17 @@ public class FdahpStudyDesignerUtil {
 		    	if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
 					String[] exceptChar = exceptCharacters.split("\\|");
 					if(!validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
-						StringBuilder except = new StringBuilder("\\b");
+						StringBuilder except = new StringBuilder();
 						for(int i=0;i<exceptChar.length;i++){
-							except.append("(?!\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
+							except.append("^(?!.*"+exceptChar[i].trim().replace(" ", "")+")");
 						}
-						regEx = except+"\\w"+regEx+"]+";
+						regEx = except+regEx+"]+";
 					}else{
-						if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
-							StringBuilder except = new StringBuilder();
-							for(int i=0;i<exceptChar.length;i++){
-			                    except.append(exceptChar[i]);
-							}
-			                regEx +="&&[^"+except+"]";
-						}else{
-							regEx +="]+";
+						StringBuilder except = new StringBuilder();
+						for(int i=0;i<exceptChar.length;i++){
+		                    except.append(exceptChar[i]);
 						}
+		                regEx +="&&[^"+except+"]";
 					}
 				}else{
 					regEx +="]+";
