@@ -56,6 +56,13 @@
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="" />
 	</definition>
+	<definition name="blank.definition.expired.password" template="/WEB-INF/view/changeExpiredPassword.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+	</definition>
 	<!--Template for Study Page -->
 	<definition name="study.definition" template="/WEB-INF/templates/layout.jsp">
 		<put-attribute name="title" value="" />
@@ -100,7 +107,7 @@
 		<put-attribute name="body" value="/WEB-INF/view/403.jsp" />
 	</definition>
 
-	<definition name="changeExpiredPassword" extends="base.definition.changePassword">
+	<definition name="changeExpiredPassword" extends="blank.definition.expired.password">
 		<put-attribute name="body" value="/WEB-INF/view/changeExpiredPassword.jsp" />
 	</definition>
 	

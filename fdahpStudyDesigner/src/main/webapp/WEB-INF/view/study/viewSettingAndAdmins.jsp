@@ -7,6 +7,11 @@
 <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
+<style>
+table.dataTable thead th:last-child{
+    width: 100px !important;
+}
+</style>
        <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">
@@ -222,7 +227,7 @@
 						<th></th>
 						<th>USERS<span class="sort"></span></th>
 						<th>E-MAIL ADDRESS</th>
-						<th>ROLE</th>
+						<th style="width:100px !important">ROLE</th>
 
 					</tr>
 				</thead>
@@ -307,14 +312,10 @@ $(document).ready(function(){
 		});
 
         $('#userListTable').DataTable({
+            "columnDefs": [
+                { "width": "100px", "targets": 3 }
+            ],
          "paging":   false,
-         "aoColumns": [
-            { "width":'5%',"bSortable": false },
-            { "width":'35%',"bSortable": true },
-            { "width":'30%',"bSortable": false },
-            { "width":'30%',"bSortable": false }
-           ], 
-            "columns": [{ "width": "25%" }],
          "emptyTable": "No data available",
          "info" : false, 
          "lengthChange": true, 
