@@ -381,6 +381,19 @@
  	var durationFlag = true;
    $(document).ready(function(){
 		   $('#fetalKickId').mask("99");
+		   $('#fetalKickId').keyup(function(event){	   
+			   var fetalKick = $(this).val();
+			   console.log(fetalKick);
+			   if(fetalKick){
+				   if(fetalKick == 0){
+					   console.log("inside 0");
+					   $('#fetalKickId').val('');
+					   $('.timeDurationClass').find('.help-block').html('<ul class="list-unstyled"><li>Number of kicks should be greater than zero.</li></ul>');
+				   }else{
+					   $('.timeDurationClass').find('.help-block').html(''); 
+				   }
+			   }
+		    });
            var taskId = $('#taskContentId').val();
            if(taskId){
         	   var frequencyType = '${activeTaskBo.frequency}';
