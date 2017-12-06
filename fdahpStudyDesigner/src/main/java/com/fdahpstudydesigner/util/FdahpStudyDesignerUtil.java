@@ -1028,67 +1028,66 @@ public class FdahpStudyDesignerUtil {
 	   String regEx = ""; 
 	   if((validCharacters != null && StringUtils.isNotEmpty(validCharacters)) && 
 			   (validCondition != null && StringUtils.isNotEmpty(validCondition))){
-		    regEx += "["; 
 		    if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+		    	regEx += "["; 
 		    	if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
 		    		regEx +="^.";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETS)){
-		    		regEx +="a-zA-Z";
+		    		regEx +="a-zA-Z ";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.NUMBERS)){
-		    		regEx +="0-9";
+		    		regEx +="0-9 ";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETSANDNUMBERS)){
-		    		regEx +="a-zA-Z0-9";
+		    		regEx +="a-zA-Z0-9 ";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
 		    		regEx +="^A-Za-z0-9";
 		    	}
 		    	if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
 					String[] exceptChar = exceptCharacters.split("\\|");
-					if(!validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
-						StringBuilder except = new StringBuilder("\\b");
-						for(int i=0;i<exceptChar.length;i++){
-							except.append("(?!\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
-						}
-						regEx = except+"\\w"+regEx+"]+";
-					}else{
-						if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
-							StringBuilder except = new StringBuilder();
-							for(int i=0;i<exceptChar.length;i++){
-			                    except.append(exceptChar[i]);
-							}
-			                regEx +="&&[^"+except+"]";
-						}else{
-							regEx +="]+";
-						}
+					StringBuilder except = new StringBuilder();
+					for(int i=0;i<exceptChar.length;i++){
+						except.append("^(?!.*"+exceptChar[i].trim().replace(" ", "")+")");
 					}
+					regEx = except+regEx+"]+";
 				}else{
 					regEx +="]+";
 				}
 		    }else {
 		    	if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
-		    		regEx +=".";
+		    		if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+		    			regEx +="^(?:"+exceptCharacters.trim().replace(" ", "")+")$";
+		    		}else{
+		    			regEx +="[.]";
+		    		}
+		    		
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETS)){
-		    		regEx +="^a-zA-Z";
+		    		regEx +="^([^a-zA-Z]";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.NUMBERS)){
-		    		regEx +="^0-9";
+		    		regEx +="^([^0-9]";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETSANDNUMBERS)){
-		    		regEx +="^a-zA-Z0-9";
+		    		regEx +="^([^a-zA-Z0-9]";
 		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
-		    		regEx +="A-Za-z0-9";
+		    		regEx +="^([A-Za-z0-9 ]";
 		    	}
-		    	if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
-					String[] exceptChar = exceptCharacters.split("\\|");
-					StringBuilder except = new StringBuilder();
-					for(int i=0;i<exceptChar.length;i++){
-	                    except.append(exceptChar[i]);
+		    	if(!validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
+		    		if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+			    		String[] exceptChar = exceptCharacters.split("\\|");
+						StringBuilder except = new StringBuilder();
+						if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+							for(int i=0;i<exceptChar.length;i++){
+			                    except.append(exceptChar[i].trim().replace(" ", ""));
+							}
+							regEx +="|["+except+"]*)+$";
+						}else{
+							for(int i=0;i<exceptChar.length;i++){
+			                    except.append("|\\b(\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
+							}
+							regEx +=except+"*)+$";
+						}
+						
+					}else{
+						 regEx +="*)+$";
 					}
-					 if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
-						 regEx +="&&[^"+except+"]";
-					 }else{
-						 regEx = except+regEx+"]+";
-					 }
-				}else{
-					regEx +="]+";
-				}
+	    		}
 		    }
 		}
 		return regEx;

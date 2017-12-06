@@ -55,17 +55,15 @@
 	                    <%-- <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}"> --%>
 	                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
 	                    <div class="pt-xs">
-	                        <div class="bullets bor-b-2-gray pt-md pb-md">
-	                        <span style="margin-left:-6px;" class="black-md-f">${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span></span>
+	                        <div class="bullets bor-b-2-gray pt-md">
+	                        <span style="margin-left:-6px;" class="black-md-f">${activeTaskBo.taskMasterAttributeBos[0].displayName}</span>
 	                        <div class="clearfix"></div>
-	                        <div class="form-group mt-sm" style="width: 230px;">
+	                        <div class="mt-sm" style="width: 230px;">
 	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
 	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${activeTaskBo.taskMasterAttributeBos[0].masterId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${activeTaskBo.taskMasterAttributeBos[0].addToDashboard}">
-	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
-	                           required />    
-	                            
-	                         <div class="help-block with-errors red-txt"></div>
+	                         <input type="hidden" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
+	                           value="23:59" />   
 	                        </div>
 	                        </div>
 	                    <%-- </c:if> --%>
@@ -222,17 +220,15 @@
 	                    	<c:if test="${taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 		                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
 		                    <div class="pt-xs">
-		                        <div class="bullets bor-b-2-gray pt-md pb-md">
-		                       <span style="margin-left:-6px;" class="black-md-f"> ${activeTaskBo.taskMasterAttributeBos[0].displayName} <span class="requiredStar"> *</span></span>
+		                        <div class="bullets bor-b-2-gray pt-md">
+		                       <span style="margin-left:-6px;" class="black-md-f"> ${activeTaskBo.taskMasterAttributeBos[0].displayName}</span>
 		                        <div class="clearfix"></div>
-		                        <div class="form-group mt-sm" style="width: 230px;">
+		                        <div class="mt-sm" style="width: 230px;">
 		                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${activeTaskBo.taskAttributeValueBos[0].attributeValueId}">
 		                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${activeTaskBo.taskMasterAttributeBos[0].masterId}">
 		                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${activeTaskBo.taskMasterAttributeBos[0].addToDashboard}">
-		                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" 
-		                                  name="taskAttributeValueBos[0].attributeVal" value="${activeTaskBo.taskAttributeValueBos[0].attributeVal}" required/>
-		                                  
-		                        <div class="help-block with-errors red-txt"></div>
+		                         <input type="hidden" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" 
+		                                  name="taskAttributeValueBos[0].attributeVal" value="23:59" required/>
 		                        </div>
 		                        </div>
 		                    </c:if>
@@ -385,6 +381,19 @@
  	var durationFlag = true;
    $(document).ready(function(){
 		   $('#fetalKickId').mask("99");
+		   $('#fetalKickId').keyup(function(event){	   
+			   var fetalKick = $(this).val();
+			   console.log(fetalKick);
+			   if(fetalKick){
+				   if(fetalKick == 0){
+					   console.log("inside 0");
+					   $('#fetalKickId').val('');
+					   $('.timeDurationClass').find('.help-block').html('<ul class="list-unstyled"><li>Number of kicks should be greater than zero.</li></ul>');
+				   }else{
+					   $('.timeDurationClass').find('.help-block').html(''); 
+				   }
+			   }
+		    });
            var taskId = $('#taskContentId').val();
            if(taskId){
         	   var frequencyType = '${activeTaskBo.frequency}';
