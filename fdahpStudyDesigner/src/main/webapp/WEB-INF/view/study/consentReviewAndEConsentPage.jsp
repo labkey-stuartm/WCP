@@ -109,6 +109,11 @@
 	                        </div>
                     	</div> --%>
                     	 <div class="col-md-12 pl-none mt-lg mb-xlg">
+                    	<!--  <div class="mt-lg"> -->
+		                   	<a  class="preview__text" href="javascript:void()" data-toggle="modal" onclick="previewDataSharing();">
+							   <img class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
+							</a>
+						 <!-- </div> -->
                     	 	<!-- <span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span> -->
                     	 </div>
                     	 </div>
@@ -138,11 +143,6 @@
 							</div> -->
                    </div>
                    <div class="clearfix"></div>
-                   <div class="mt-lg">
-	                   	<a  class="preview__text" href="#" data-toggle="modal" data-target="#myModal">
-						   <img class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
-						</a>
-					</div>
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					  <div class="modal-dialog modal-sm">
 					    <div class="">              
@@ -153,16 +153,16 @@
 								  	<div class="pl-lg pr-lg"><button class="float__right cancel__close"  data-dismiss="modal">Cancel</button></div>
 								  	 <div class="clearfix"></div>
 								  	<div class="pl-md pr-md pp__scroll">
-								  		<div class="pp__title">Title</div>
-									    <div class="pp__tagline">Tagline Description</div>
+								  		<div class="pp__title" id="titleModalId">- NA -</div>
+									    <div class="pp__tagline" id="tagLineDescriptionModalId">- NA -</div>
 									    <div class="pp__learnmore"><a href="#">Learn more</a></div>
 									    <div class="pp__ul mt-xlg">
 									    	<ul class="">
-									    		<li>
-									    			Share my data with short description for RO and qualified researces worldwide
+									    		<li id="shortDescriptionModalId">
+									    			- NA -
 									    		</li>
-									    		<li>
-									    			Only share my data with long description for RO
+									    		<li id="longDescriptionModalId">
+									    			- NA - 
 									    		</li>
 									    	</ul>
 										</div>
@@ -765,4 +765,33 @@ function maxLenLearnMoreEditor() {
 	}
 	return isValid;
 }
+function previewDataSharing(){
+	var titleText = $("#titleId").val();
+	var tagline_description = $("#taglineDescriptionId").val();
+	var short_description = $("#shortDescriptionId").val();
+	var long_descriptionId = $("#longDescriptionId").val();
+	
+	if(titleText != '' && titleText!= null && typeof titleText != 'undefined'){
+		$("#titleModalId").text(titleText);
+	}else{
+		$("#titleModalId").text(' -NA-');
+	}
+	if(tagline_description != '' && tagline_description!= null && typeof tagline_description != 'undefined'){
+		$("#tagLineDescriptionModalId").text(tagline_description);	
+	}else{
+		$("#tagLineDescriptionModalId").text(' -NA-');		
+	}
+	if(short_description != '' && short_description!= null && typeof short_description != 'undefined'){
+		$("#shortDescriptionModalId").text(short_description);
+	}else{
+		$("#shortDescriptionModalId").text(' -NA-');
+	}
+	if(long_descriptionId != '' && long_descriptionId!= null && typeof long_descriptionId != 'undefined'){
+		$("#longDescriptionModalId").text(long_descriptionId);
+	}else{
+		$("#longDescriptionModalId").text(' -NA-');
+	}
+	$("#myModal").modal('show');
+}
+
 </script>
