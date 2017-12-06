@@ -2336,4 +2336,60 @@ option {
     color:#fff !important;
 }
 
+.pp__img__container {
+    position: relative;
+    text-align: center;
+    top:20px;
+}
+.pp__top{
+    position: absolute;
+    top: 16%;
+    left: 0;
+    right:0;
+    margin:0 auto;
+    padding: 0 8px;
+}
+.preview__text{
+	padding: 8px 10px;
+    background: #ddd;
+    border-radius: 4px;
+    color: #577386;
+}
+.pp__ul ul{
+	padding-left:0;
+	list-style:none;
+}
+.pp__ul ul li{
+	padding: 10px 2px;
+    text-align: left;
+    border-top: 1px solid #ddd;
+}
+.pp__ul ul li:last-child{
+    border-bottom: 1px solid #ddd;
+}
+.cancel__close{
+	color: #000;
+    font-size: 16px;
+    background: transparent;
+    border: none;
+}
+.pp__title{
+	color: #000;
+    font-weight: 600;
+    font-size: 25px;
+}
+.pp__tagline{
+	color: #999;
+    font-weight: 600;
+    font-size: 18px;
+}
+.pp__learnmore a{
+	color: #000;
+	font-weight: 600;
+    font-size: 15px;
+}
+.pp__scroll{
+	height: 400px;
+    overflow-y: auto;
+}
 /*new login and landing*/

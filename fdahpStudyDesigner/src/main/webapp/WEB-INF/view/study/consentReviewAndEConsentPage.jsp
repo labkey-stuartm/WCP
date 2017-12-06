@@ -137,6 +137,41 @@
 							  
 							</div> -->
                    </div>
+                   <div class="clearfix"></div>
+                   <div class="mt-lg">
+	                   	<a  class="preview__text" href="#" data-toggle="modal" data-target="#myModal">
+						   <img class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
+						</a>
+					</div>
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-sm">
+					    <div class="">              
+					     	<button style="position: absolute;left: 0;right: 0;margin: auto;top: -10px;" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					         <div class="pp__img__container">
+								  <img src="../images/preview_phone.png" alt="Norway" style="width:100%;">
+								  <div class="pp__top">
+								  	<div class="pl-lg pr-lg"><button class="float__right cancel__close"  data-dismiss="modal">Cancel</button></div>
+								  	 <div class="clearfix"></div>
+								  	<div class="pl-md pr-md pp__scroll">
+								  		<div class="pp__title">Title</div>
+									    <div class="pp__tagline">Tagline Description</div>
+									    <div class="pp__learnmore"><a href="#">Learn more</a></div>
+									    <div class="pp__ul mt-xlg">
+									    	<ul class="">
+									    		<li>
+									    			Share my data with short description for RO and qualified researces worldwide
+									    		</li>
+									    		<li>
+									    			Only share my data with long description for RO
+									    		</li>
+									    	</ul>
+										</div>
+								  	</div>
+								  </div>
+							</div>
+					    </div>
+					  </div>
+					</div>
                 </div>
 	                <div id="menu2" class="tab-pane fade">
 	                    <div class="mt-lg">
