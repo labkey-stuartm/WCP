@@ -2376,17 +2376,17 @@ option {
 .pp__title{
 	color: #000;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 20px;
 }
 .pp__tagline{
 	color: #999;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 14px;
 }
 .pp__learnmore a{
 	color: #000;
 	font-weight: 600;
-    font-size: 15px;
+    font-size: 13px;
 }
 .pp__scroll{
 	height: 400px;
