@@ -3584,6 +3584,9 @@ public class StudyDAOImpl implements StudyDAO{
 								session.createSQLQuery("UPDATE eligibility_test set is_used='Y' where id in("+StringUtils.join(eligibilityTestIds,",")+")").executeUpdate();
 						}
 					}
+					
+					
+					
 					//resources
 					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
 					query = session.createQuery(searchQuery);
@@ -4029,6 +4032,12 @@ public class StudyDAOImpl implements StudyDAO{
 						}//Active TAsk End
 					} //In ActiveTask change or not 
 					//Activities End
+					
+					//If Consent updated flag -1 then update
+					query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyBo.getId()+"");
+					ConsentBo consentBo = (ConsentBo) query.uniqueResult();
+					
+					
 					if(studyVersionBo == null || studyBo.getHasConsentDraft().equals(1)){
 						//update all consentBo to archive (live as 2)
 						query = session.getNamedQuery("updateStudyConsentVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
@@ -4039,8 +4048,8 @@ public class StudyDAOImpl implements StudyDAO{
 						query.executeUpdate();
 
 						//If Consent updated flag -1 then update
-						query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyBo.getId()+"");
-						ConsentBo consentBo = (ConsentBo) query.uniqueResult();
+						/*query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyBo.getId()+"");
+						ConsentBo consentBo = (ConsentBo) query.uniqueResult();*/
 						if(consentBo!=null){
 								ConsentBo newConsentBo = SerializationUtils.clone(consentBo);
 								newConsentBo.setId(null);
@@ -4049,41 +4058,6 @@ public class StudyDAOImpl implements StudyDAO{
 								newConsentBo.setLive(1);
 								newConsentBo.setCustomStudyId(studyBo.getCustomStudyId());
 								session.save(newConsentBo);
-								
-								//Comprehension test Start
-								if(StringUtils.isNotEmpty(consentBo.getNeedComprehensionTest()) && consentBo.getNeedComprehensionTest().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
-									List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
-									List<Integer> comprehensionIds = new ArrayList<>();
-									List<ComprehensionTestResponseBo> comprehensionTestResponseList =null;
-									query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyBo.getId()+" and CTQBO.active=1 order by CTQBO.sequenceNo asc");
-									comprehensionTestQuestionList = query.list();
-									if(comprehensionTestQuestionList!=null && !comprehensionTestQuestionList.isEmpty()){
-										for(ComprehensionTestQuestionBo comprehensionTestQuestionBo: comprehensionTestQuestionList){
-											comprehensionIds.add(comprehensionTestQuestionBo.getId());
-										}
-									comprehensionTestResponseList = session.createQuery("From ComprehensionTestResponseBo CTRBO "
-									                           + "where CTRBO.comprehensionTestQuestionId IN("+StringUtils.join(comprehensionIds, ",")
-									                           +") order by comprehensionTestQuestionId").list();
-									for(ComprehensionTestQuestionBo comprehensionTestQuestionBo: comprehensionTestQuestionList){
-										ComprehensionTestQuestionBo newComprehensionTestQuestionBo = SerializationUtils.clone(comprehensionTestQuestionBo);
-										newComprehensionTestQuestionBo.setStudyId(studyDreaftBo.getId());
-										newComprehensionTestQuestionBo.setId(null);
-										session.save(newComprehensionTestQuestionBo);
-										if(comprehensionTestResponseList!=null && !comprehensionTestResponseList.isEmpty()){
-											for(ComprehensionTestResponseBo comprehensionTestResponseBo: comprehensionTestResponseList){
-												if(comprehensionTestQuestionBo.getId().intValue() == comprehensionTestResponseBo.getComprehensionTestQuestionId().intValue()){
-													ComprehensionTestResponseBo newComprehensionTestResponseBo = SerializationUtils.clone(comprehensionTestResponseBo);
-													newComprehensionTestResponseBo.setId(null);
-													newComprehensionTestResponseBo.setComprehensionTestQuestionId(newComprehensionTestQuestionBo.getId());
-													session.save(newComprehensionTestResponseBo);
-												}
-											}
-										}
-									 }
-									}
-									
-								}
-								//Comprehension test End
 						}
 						query = session.getNamedQuery("getConsentInfoByStudyId").setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId());
 						List<ConsentInfoBo> consentInfoBoList = query.list();
@@ -4099,6 +4073,44 @@ public class StudyDAOImpl implements StudyDAO{
 							}
 						}
 					}
+					
+					if(consentBo!=null){
+						//Comprehension test Start
+						if(StringUtils.isNotEmpty(consentBo.getNeedComprehensionTest()) && consentBo.getNeedComprehensionTest().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
+							List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
+							List<Integer> comprehensionIds = new ArrayList<>();
+							List<ComprehensionTestResponseBo> comprehensionTestResponseList =null;
+							query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyBo.getId()+" and CTQBO.active=1 order by CTQBO.sequenceNo asc");
+							comprehensionTestQuestionList = query.list();
+							if(comprehensionTestQuestionList!=null && !comprehensionTestQuestionList.isEmpty()){
+								for(ComprehensionTestQuestionBo comprehensionTestQuestionBo: comprehensionTestQuestionList){
+									comprehensionIds.add(comprehensionTestQuestionBo.getId());
+								}
+							comprehensionTestResponseList = session.createQuery("From ComprehensionTestResponseBo CTRBO "
+							                           + "where CTRBO.comprehensionTestQuestionId IN("+StringUtils.join(comprehensionIds, ",")
+							                           +") order by comprehensionTestQuestionId").list();
+							for(ComprehensionTestQuestionBo comprehensionTestQuestionBo: comprehensionTestQuestionList){
+								ComprehensionTestQuestionBo newComprehensionTestQuestionBo = SerializationUtils.clone(comprehensionTestQuestionBo);
+								newComprehensionTestQuestionBo.setStudyId(studyDreaftBo.getId());
+								newComprehensionTestQuestionBo.setId(null);
+								session.save(newComprehensionTestQuestionBo);
+								if(comprehensionTestResponseList!=null && !comprehensionTestResponseList.isEmpty()){
+									for(ComprehensionTestResponseBo comprehensionTestResponseBo: comprehensionTestResponseList){
+										if(comprehensionTestQuestionBo.getId().intValue() == comprehensionTestResponseBo.getComprehensionTestQuestionId().intValue()){
+											ComprehensionTestResponseBo newComprehensionTestResponseBo = SerializationUtils.clone(comprehensionTestResponseBo);
+											newComprehensionTestResponseBo.setId(null);
+											newComprehensionTestResponseBo.setComprehensionTestQuestionId(newComprehensionTestQuestionBo.getId());
+											session.save(newComprehensionTestResponseBo);
+										}
+									}
+								}
+							 }
+							}
+							
+						}
+						//Comprehension test End
+					}
+					
 					//updating the edited study to draft 
 					if(studyDreaftBo!=null && studyDreaftBo.getId()!=null){
 						studyBo.setVersion(0f);

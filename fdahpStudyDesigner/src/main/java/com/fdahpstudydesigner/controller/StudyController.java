@@ -1087,10 +1087,11 @@ public class StudyController {
 				//Added for live version End
 				if(StringUtils.isNotEmpty(studyId)){
 					if(StringUtils.isNotEmpty(consentStudyId)){
-						comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(consentStudyId));
+						consentBo = studyService.getConsentDetailsByStudyId(consentStudyId);
 					}else{
-						comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
+						consentBo = studyService.getConsentDetailsByStudyId(studyId);
 					}
+					comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
 					boolean markAsComplete = true;
 					if(comprehensionTestQuestionList != null && !comprehensionTestQuestionList.isEmpty()){
 						for(ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList){
@@ -1105,7 +1106,6 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 					//get consentId if exists for studyId
-					consentBo = studyService.getConsentDetailsByStudyId(studyId);
 					if( consentBo != null){
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
 						map.addAttribute(FdahpStudyDesignerConstants.CONESENT, consentBo.getId());
