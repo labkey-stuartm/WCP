@@ -2363,6 +2363,7 @@ option {
 	padding: 10px 2px;
     text-align: left;
     border-top: 1px solid #ddd;
+    word-wrap: break-word;
 }
 .pp__ul ul li:last-child{
     border-bottom: 1px solid #ddd;
@@ -2376,17 +2377,19 @@ option {
 .pp__title{
 	color: #000;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 20px;
+    word-wrap: break-word;
 }
 .pp__tagline{
 	color: #999;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 14px;
+    word-wrap: break-word;
 }
 .pp__learnmore a{
 	color: #000;
 	font-weight: 600;
-    font-size: 15px;
+    font-size: 13px;
 }
 .pp__scroll{
 	height: 400px;
