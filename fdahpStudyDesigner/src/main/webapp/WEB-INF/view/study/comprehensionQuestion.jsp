@@ -64,7 +64,7 @@
 			       <div class="ans-opts col-md-12 p-none" id="0"> 
 				       <div class='col-md-6 pl-none'>
 				        	<div class='form-group'>
-					      	 <input type='text' class='form-control' name="responseList[0].responseOption" id="responseOptionId0" required maxlength="150"/>
+					      	 <input type='text' class='form-control responseOptionClass' name="responseList[0].responseOption" id="responseOptionId0" required maxlength="150" onblur="validateForUniqueValue(this,function(){});" onkeypress="resetValue(this);"/>
 					       	 <div class='help-block with-errors red-txt'></div>
 					       </div>
 			           </div>
@@ -89,7 +89,7 @@
 			       <div class="ans-opts col-md-12 p-none" id="1"> 
 				       <div class='col-md-6 pl-none'>
 				        	<div class='form-group'>
-					      	 <input type='text' class='form-control' name="responseList[1].responseOption" id="responseOptionId1" required maxlength="150"/>
+					      	 <input type='text' class='form-control' name="responseList[1].responseOption" id="responseOptionId1" required maxlength="150" onblur="validateForUniqueValue(this,function(){});" onkeypress="resetValue(this);"/>
 					       	 <div class='help-block with-errors red-txt'></div>
 					       </div>
 			           </div>
@@ -130,7 +130,7 @@
 				        <div class="ans-opts col-md-12 p-none" id="${responseBoVar.index}"> 
 					       <div class='col-md-6 pl-none'>
 					        	<div class='form-group'>
-						      	 <input type='text' class='form-control' name="responseList[${responseBoVar.index}].responseOption" id="responseOptionId${responseBoVar.index}" value="${responseBo.responseOption}" required maxlength="150"/>
+						      	 <input type='text' class='form-control' name="responseList[${responseBoVar.index}].responseOption" id="responseOptionId${responseBoVar.index}" value="${responseBo.responseOption}" required maxlength="150" onblur="validateForUniqueValue(this,function(){});" onkeypress="resetValue(this);"/>
 						       	 <div class='help-block with-errors red-txt'></div>
 						       </div>
 				           </div>
@@ -186,7 +186,11 @@ $(document).ready(function() {
 	</c:if>
 	$("#doneId").on("click",function(){
     	if(isFromValid("#comprehensionFormId") && validateCorrectAnswers()){
-    		$("#comprehensionFormId").submit();
+    		validateForUniqueValue('',function(val){
+    			if(val){
+    				$("#comprehensionFormId").submit();
+    			}
+    		});
     	}
     });
 	$("#saveId").on("click",function(){
@@ -205,7 +209,7 @@ function addAns(){
 	ansCount = ansCount+1;
 	var newAns = "<div class='ans-opts col-md-12 p-none' id='"+ansCount+"'><div class='col-md-6 pl-none'>"
         +"<div class='form-group'>"
-	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"'  maxlength='150'/>"
+	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"'  maxlength='150' onblur='validateForUniqueValue(this,function(){});' onkeypress='resetValue(this);'/>"
 	        +"<div class='help-block with-errors red-txt'></div>"
 	        +"</div>"
         +"</div>"
@@ -367,5 +371,35 @@ function validateCorrectAnswers(){
 	    setTimeout(hideDisplayMessage, 3000);
 		return false;
 	}
+}
+function validateForUniqueValue(item,callback){
+	var isValid = true;
+	var valueArray = new Array();
+	$('.ans-opts').each(function(){
+		var id = $(this).attr("id");
+		var diaplay_value = $("#responseOptionId"+id).val();
+		$("#responseOptionId"+id).parent().removeClass("has-danger").removeClass("has-error");
+        $("#responseOptionId"+id).parent().find(".help-block").empty();
+		if(diaplay_value != ''){
+			if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
+				isValid=false;
+				//$("#responseOptionId"+id).val('');
+	    		$("#responseOptionId"+id).parent().addClass("has-danger").addClass("has-error");
+	            $("#responseOptionId"+id).parent().find(".help-block").empty();
+	            $("#responseOptionId"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+	        }
+	        else
+	        valueArray.push(diaplay_value.toLowerCase());
+		}else{
+			$("#responseOptionId"+id).parent().addClass("has-danger").addClass("has-error");
+            $("#responseOptionId"+id).parent().find(".help-block").empty();
+		}
+		
+	});
+	callback(isValid);
+}
+function resetValue(item){
+	$(item).parent().addClass("has-danger").addClass("has-error");
+    $(item).parent().find(".help-block").empty();
 }
 </script>

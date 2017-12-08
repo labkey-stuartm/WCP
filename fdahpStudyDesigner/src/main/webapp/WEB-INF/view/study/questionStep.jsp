@@ -4211,7 +4211,7 @@ function validateForUniqueValue(item,responsetype,callback){
 			$("#displayTextSclValue"+id).parent().removeClass("has-danger").removeClass("has-error");
             $("#displayTextSclValue"+id).parent().find(".help-block").empty();
 			if(diaplay_value != ''){
-				if(valueArray.indexOf(diaplay_value) != -1) {
+				if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
 					isValid=false;
 					$("#displayTextSclValue"+id).val('');
 		    		$("#displayTextSclValue"+id).parent().addClass("has-danger").addClass("has-error");
@@ -4219,7 +4219,7 @@ function validateForUniqueValue(item,responsetype,callback){
 		            $("#displayTextSclValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
 		        }
 		        else
-		        valueArray.push(diaplay_value);
+		        valueArray.push(diaplay_value.toLowerCase());
 			}else{
 				//isValid=true;
 			}
@@ -4234,7 +4234,7 @@ function validateForUniqueValue(item,responsetype,callback){
 			$("#displayValPickValue"+id).parent().removeClass("has-danger").removeClass("has-error");
             $("#displayValPickValue"+id).parent().find(".help-block").empty();
 			if(diaplay_value != ''){
-				if(valueArray.indexOf(diaplay_value) != -1) {
+				if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
 					isValid=false;
 					$("#displayValPickValue"+id).val('');
 		    		$("#displayValPickValue"+id).parent().addClass("has-danger").addClass("has-error");
@@ -4242,7 +4242,7 @@ function validateForUniqueValue(item,responsetype,callback){
 		            $("#displayValPickValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
 		        }
 		        else
-		        valueArray.push(diaplay_value);
+		        valueArray.push(diaplay_value.toLowerCase());
 			}else{
 				
 			}
@@ -4257,7 +4257,7 @@ function validateForUniqueValue(item,responsetype,callback){
 			$("#displayImageChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
             $("#displayImageChoiceValue"+id).parent().find(".help-block").empty();
 			if(diaplay_value != ''){
-				if(valueArray.indexOf(diaplay_value) != -1) {
+				if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
 					isValid=false;
 					$("#displayImageChoiceValue"+id).val('');
 		    		$("#displayImageChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
@@ -4265,7 +4265,7 @@ function validateForUniqueValue(item,responsetype,callback){
 		            $("#displayImageChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
 		        }
 		        else
-		        valueArray.push(diaplay_value);
+		        valueArray.push(diaplay_value.toLowerCase());
 			}else{
 				
 			}
@@ -4280,7 +4280,7 @@ function validateForUniqueValue(item,responsetype,callback){
 			$("#displayTextChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
             $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
 			if(diaplay_value != ''){
-				if(valueArray.indexOf(diaplay_value) != -1) {
+				if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
 					isValid=false;
 					$("#displayTextChoiceValue"+id).val('');
 		    		$("#displayTextChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
@@ -4288,7 +4288,7 @@ function validateForUniqueValue(item,responsetype,callback){
 		            $("#displayTextChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
 		        }
 		        else
-		        valueArray.push(diaplay_value);
+		        valueArray.push(diaplay_value.toLowerCase());
 			}else{
 				
 			}
