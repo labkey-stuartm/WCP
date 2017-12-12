@@ -838,14 +838,14 @@ function previewDataSharing(){
 		data += ' -NA-</div>';		
 	}
 	
-	data += '<div class="pp__title"><a href="javascript:void(0)" data-toggle="modal" onclick="previewLearnMore();">Learn more</a>'
+	data += '<div class="pp__learnMore"><a href="javascript:void(0)" data-toggle="modal" onclick="previewLearnMore();">Learn more</a>'
             +'</div>'
             +'<div class="pp__ul mt-xlg">';
 	if(short_description != '' && short_description!= null && typeof short_description != 'undefined'){
 		data += '<div class="panel-group overview-panel" id="accordion">'
 		        + '<div class="panel panel-default">'
 		        + '<div class="panel-heading">'
-		        + '<div class="panel-title">'
+		        + '<div class="panel-title" style="font-weight: bold;">'
 		        + '<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">'
 		        + '<div class="text-left dis-inline pull-left">'
 		        + '<span class="ellipsis__">'+'Share my data with '+short_description+' and qualified researchers worldwide'+'</span>'
@@ -856,14 +856,14 @@ function previewDataSharing(){
 		        + 'Share my data with '+short_description+' and qualified researchers worldwide' + '</div></div></div></div>';
 				
 	}else{
-		data += '<ul class=""><li id="shortDescriptionModalId"> - NA - </li></ul>';
+		data += '<ul class=""><li id="shortDescriptionModalId" style="font-weight: bold;"> - NA - </li></ul>';
 	}
 	
 	if(long_descriptionId != '' && long_descriptionId!= null && typeof long_descriptionId != 'undefined'){
 		data += '<div class="panel-group overview-panel" id="accordion1">'
 	        + '<div class="panel panel-default">'
 	        + '<div class="panel-heading">'
-	        + '<div class="panel-title">'
+	        + '<div class="panel-title" style="font-weight: bold;">'
 	        + '<a data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="true">'
 	        + '<div class="text-left dis-inline pull-left">'
 	        + '<span class="ellipsis__">'+'Only share my data with '+long_descriptionId+'</span>'
@@ -873,7 +873,7 @@ function previewDataSharing(){
 			+ '<div id="collapse2" class="panel-collapse collapse"><div class="panel-body">'
 	        + 'Only share my data with '+long_descriptionId+'</div></div></div></div>';
 	}else{
-		data += '<ul class=""><li id="longDescriptionModalId"> - NA - </li></ul>';
+		data += '<ul class=""><li id="longDescriptionModalId" style="font-weight: bold;"> - NA - </li></ul>';
 	}
 	data += '</div>' ;
 
@@ -895,7 +895,7 @@ function previewLearnMore(){
 		data += '<div class="panel-group overview-panel" id="accordion1">'
 	        + '<div class="panel panel-default">'
 	        + '<div class="panel-heading">'
-	        + '<div class="panel-title">'
+	        + '<div class="panel-title" style="font-weight: bold;">'
 	        + '<a data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="true">'
 	        + '<div class="text-left dis-inline pull-left">'
 	        + '<span class="ellipsis__">'+learn_more_desc+'</span>'
@@ -905,7 +905,7 @@ function previewLearnMore(){
 			+ '<div id="collapse2" class="panel-collapse collapse"><div class="panel-body">'
 	        + learn_more_desc+'</div></div></div></div>';
 	}else{
-		data += '<ul class=""><li id="learnMoreDescId"> - NA - </li></ul>';
+		data += '<ul class=""><li id="learnMoreDescId" style="font-weight: bold;"> - NA - </li></ul>';
 	}
 	data += '</div>' ;
 	$('.force-overflow__').html(data);

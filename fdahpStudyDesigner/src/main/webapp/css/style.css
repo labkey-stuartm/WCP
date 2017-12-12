@@ -2378,6 +2378,12 @@ option {
     font-size: 20px;
     word-wrap: break-word;
 }
+.pp__learnMore{
+	color: #000;
+    font-weight: 500;
+    font-size: 17px;
+    word-wrap: break-word;
+}
 .pp__tagline{
 	color: #999;
     font-weight: 600;
