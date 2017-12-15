@@ -1642,7 +1642,7 @@ function isNumberKey(evt)
 			         <div>
 			            <span class="checkbox checkbox-inline p-45">
 			            <input type="checkbox" id="formulaBasedLogicId" value="Yes" name="questionReponseTypeBo.formulaBasedLogic" ${questionnairesStepsBo.questionReponseTypeBo.formulaBasedLogic eq 'Yes' ? 'checked':''}>
-			            <label for="formulaBasedLogicId"><span class="tealtxt-md">User formula-based conditional branching logic</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="Enter the applicable units for the numeric input"></span></label>
+			            <label for="formulaBasedLogicId"><span class="tealtxt-md">Use formula-based conditional branching logic</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="Enter the applicable units for the numeric input"></span></label>
 			            </span>
 			         </div>
 			      </div>
@@ -1685,7 +1685,7 @@ function isNumberKey(evt)
 				      </div>
 				      <div class="col-xs-12 p-none numeric__form">
 				         <div class="numeric__header">
-				            <span><span>Formula:</span> <b class="formula"> -NA- </b></span>
+				            <span><span class="tealtxt-md">Formula: </span> <b class="formula"> -NA- </b></span>
 				            <span data-toggle="modal" id="trailId">Trial</span>
 				            <input type="hidden" name="questionReponseTypeBo.conditionFormula" id="conditionFormulaId" value="${questionnairesStepsBo.questionReponseTypeBo.conditionFormula}">
 				         </div>
