@@ -4473,7 +4473,6 @@ function selectFunction(item){
 	var index = $(item).attr('index');
 	var count = parseInt($(item).attr('count'));
 	var value = $(item).val();
-	$("#inputSubTypeValueId"+index).val(value);
 	$("#rootId"+index+" .numeric__row .remBtnDis").addClass("hide");
 	var previousInputTypeValue = $("#previousInputTypeValueId"+count).val();
 	
@@ -4492,6 +4491,7 @@ function selectFunction(item){
 			    },
 			    callback: function(result) {
 			        if (result) {
+			        	$("#inputSubTypeValueId"+index).val(value);
 			        	deleteChildElements(index,"parent");
 						$('#rootId'+index+' .numeric__row').each(function(j){
 								var id = $(this).attr("id");
@@ -4516,6 +4516,7 @@ function selectFunction(item){
 			        		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
 			        		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
 			        	}
+			        	createFormula();
 			        }else{
 			        	$(item).val(previousInputTypeValue);
 			        	$('.selectpicker').selectpicker('refresh');
@@ -4524,6 +4525,7 @@ function selectFunction(item){
 		   });
 			
 		}else{
+			$("#inputSubTypeValueId"+index).val(value);
 			$("#previousInputTypeValueId"+count).val(value);
 			var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
         	if(value == '+' || value == '*'){
@@ -4543,8 +4545,10 @@ function selectFunction(item){
         		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
         		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
         	}
+        	createFormula();
 		}
 	}else{
+		$("#inputSubTypeValueId"+index).val(value);
 		$("#previousInputTypeValueId"+count).val(value);
 		var lastSeqenceNO = parseInt($("#rootId"+index+" .numeric__row").last().find('select').attr("count"));
     	if(value == '+' || value == '*'){
@@ -4563,8 +4567,9 @@ function selectFunction(item){
     		$("#rootId"+index+" .numeric__row #addVaraiable"+lastSeqenceNO).addClass('add_var_hide');
     		$("#rootId"+index+" .numeric__row").last().removeClass('display__flex__base').addClass('display__flex__base-webkit');
     	}
+    	createFormula();
 	}
-	createFormula();
+	
 }
 
 function addVariable(item){
