@@ -354,7 +354,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					isIntialPasswordSetUp = true;
 				}
 				if(userBO.getAccessCode().equals(accessCode)){
-					if(password != null && (password.contains(userBO2.getFirstName()) || password.contains(userBO2.getLastName()))) {
+					if(password != null && (password.contains(FdahpStudyDesignerUtil.isNotEmpty(userBO2.getFirstName())?userBO2.getFirstName():userBO.getFirstName()) || password.contains(FdahpStudyDesignerUtil.isNotEmpty(userBO2.getLastName())?userBO2.getLastName():userBO.getLastName()))) {
 						isValidPassword = false;
 					}
 					if(isValidPassword) {
