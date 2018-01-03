@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import junit.framework.Test;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -31,6 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import sun.awt.image.ImageWatched.Link;
 
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
@@ -63,7 +67,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 @Controller
@@ -84,10 +88,11 @@ public class StudyController {
 	private UsersService usersService;
 	
 	/**
-     * @author Ronalin
-	 * Getting Study list
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 * Getting Study list
+	 * This method shows the user present with a list of studies 
 	 */
 	@RequestMapping("/adminStudies/studyList.do")
 	public ModelAndView getStudies(HttpServletRequest request){
@@ -149,6 +154,19 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Setting Request Sessions
+	 * (setting of study session count for each request
+	 * is study live or not,
+	 * study permission for view/edit,
+	 * setting studyId to the Request session,
+	 *  )
+	 *  of particular study and redirecting study basic page
+	 */
 	@RequestMapping("/adminStudies/viewStudyDetails.do")
 	public ModelAndView viewStudyDetails(HttpServletRequest request){
 		Integer sessionStudyCount;
@@ -206,10 +224,13 @@ public class StudyController {
 		return modelAndView;
 	}
 	/**
-     * @author Ronalin
-	 * add baisc info page
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 * This method shows the basic information about the study
+	 * basic info like Study ID, Study name, Study full name, Study Category,
+	 * Research Sponsor,Data Partner, Estimated Duration in weeks/months/years,
+	 * Study Tagline, Study Description, Study website, Study Type
 	 */
 	@RequestMapping("/adminStudies/viewBasicInfo.do")
 	public ModelAndView viewBasicInfo(HttpServletRequest request){
@@ -313,12 +334,12 @@ public class StudyController {
 	}
 	
 	/** 
-	  * @author Ronalin
-	  * validating particular Study custom Id
+	  * @author BTC
 	  * @param request , {@link HttpServletRequest}
 	  * @param response , {@link HttpServletResponse}
 	  * @throws IOException
 	  * @return void
+	  * validated for uniqueness of customStudyId throughout the application
 	  */
 		@RequestMapping(value="/adminStudies/validateStudyId.do",  method = RequestMethod.POST)
 		public void validateStudyId(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -347,10 +368,13 @@ public class StudyController {
 		}
 	
 	/**
-     * @author Ronalin
-	 * save or update baisc info page
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 * This method captures basic information about the study
+	 * basic info like Study ID, Study name, Study full name, Study Category,
+	 * Research Sponsor,Data Partner, Estimated Duration in weeks/months/years,
+	 * Study Tagline, Study Description, Study website, Study Type
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateBasicInfo.do")
 	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request,@ModelAttribute(FdahpStudyDesignerConstants.STUDY_BO) StudyBo studyBo){
@@ -411,10 +435,16 @@ public class StudyController {
 	}
 	
 	/**
-     * @author Ronalin
-	 * view baisc info page
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 * This method shows configuration of study settings and  admin list of the study 
+	 * 
+	 * study settings like Platforms supported, Is the Study currently enrolling participants,
+	 * Allow user to rejoin s the Study once they leave it?,
+	 * Retain participant data when they leave a study?,
+	 * 
+	 * 
 	 */
 	@RequestMapping("/adminStudies/viewSettingAndAdmins.do")
 	public ModelAndView viewSettingAndAdmins(HttpServletRequest request){
@@ -474,12 +504,12 @@ public class StudyController {
 	}
 	
 	/** 
-	  * @author Ronalin
-	  * Removing particular Study permission for the current user
+	  * @author BTC
 	  * @param request , {@link HttpServletRequest}
 	  * @param response , {@link HttpServletResponse}
 	  * @throws IOException
 	  * @return void
+	  * Removing particular Study permission for the current user
 	  */
 		@RequestMapping("/adminStudies/removeStudyPermissionById.do")
 		public void removeStudyPermissionById(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -508,12 +538,12 @@ public class StudyController {
 		}
 		
 		/** 
-		  * @author Ronalin
-		  * Adding particular Study permission for the users
+		  * @author BTC
 		  * @param request , {@link HttpServletRequest}
 		  * @param response , {@link HttpServletResponse}
 		  * @throws IOException
 		  * @return void
+		  * Adding particular Study permission for the users
 		  */
 			@RequestMapping("/adminStudies/addStudyPermissionByuserIds.do")
 			public void addStudyPermissionByuserIds(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -543,10 +573,15 @@ public class StudyController {
 			}
 		
 		/**
-	     * @author Ronalin
-		 * save or update setting and admins page
+	     * @author BTC
 		 * @param request , {@link HttpServletRequest}
 		 * @return {@link ModelAndView}
+		 * save or update study setting and admins page
+		 * study settings like Platforms supported, Is the Study currently enrolling participants,
+	     * Allow user to rejoin s the Study once they leave it?,
+	     * Retain participant data when they leave a study?
+	     * 
+	     * we are managing admins in this method
 		 */
 		@RequestMapping("/adminStudies/saveOrUpdateSettingAndAdmins.do")
 		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo){
@@ -570,7 +605,6 @@ public class StudyController {
 					map.addAttribute("_S", sessionStudyCount);
 					if(FdahpStudyDesignerConstants.SUCCESS.equals(message) || FdahpStudyDesignerConstants.WARNING.equals(message)) {
 						if(FdahpStudyDesignerConstants.WARNING.equals(message)){
-							//map.addAttribute(FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER, FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER, FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 						}
 						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
@@ -592,10 +626,10 @@ public class StudyController {
 			return mav;
 		}
 		/**
-	     * @author Ronalin
-		 * view Overview Study page
+	     * @author BTC
 		 * @param request , {@link HttpServletRequest}
 		 * @return {@link ModelAndView}
+		 * This method shows content for the Overview section of the Study
 		 */
 		@RequestMapping("/adminStudies/overviewStudyPages.do")
 		public ModelAndView overviewStudyPages(HttpServletRequest request){
@@ -628,7 +662,6 @@ public class StudyController {
 					}
 					String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
 					user = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
-					//user = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
 					if(StringUtils.isNotEmpty(studyId)){
 						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -651,10 +684,10 @@ public class StudyController {
 			return mav;
 		}
 				/**
-			     * @author Ronalin
-				 * save or update study page
+			     * @author BTC
 				 * @param request , {@link HttpServletRequest}
 				 * @return {@link ModelAndView}
+				 *  save or update study page
 				 */
 				@RequestMapping("/adminStudies/saveOrUpdateStudyOverviewPage.do")
 				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,StudyPageBean studyPageBean){
@@ -692,9 +725,10 @@ public class StudyController {
 				}
 				
 	/**
-	 * @author Ravinder			
-	 * @param request
+     * @author BTC
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 *  get all consent list based on study
 	 */
 	@RequestMapping("/adminStudies/consentListPage.do")
 	public ModelAndView getConsentListPage(HttpServletRequest request){
@@ -777,9 +811,10 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+     * @author BTC
+	 * @param request , {@link HttpServletRequest}
+	 * @return void
+	 *  reordering the consent info list 
 	 */
 	@RequestMapping(value="/adminStudies/reOrderConsentInfo.do", method = RequestMethod.POST)
 	public void reOrderConsentInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -827,10 +862,10 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder			
-	 * @param request
-	 * @param response
-	 * @return {@link ModelAndView}
+	 * @author BTC			
+	 * @param request , {@link HttpServletRequest}
+	 * @return void
+	 * reloading the consent info list 
 	 */
 	@RequestMapping("/adminStudies/reloadConsentListPage.do")
 	public void reloadConsentListPage(HttpServletRequest request,HttpServletResponse response){
@@ -881,9 +916,11 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
 	 * @param response
+	 * @return void
+	 * deleting consent based on consent Info id
 	 */
 	@RequestMapping(value="/adminStudies/deleteConsentInfo.do",method = RequestMethod.POST)
 	public void deleteConsentInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -915,10 +952,11 @@ public class StudyController {
 	
 	/**
 	 * 
-	 * @author Ravinder
-	 * @param request
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
 	 * @param consentInfoBo
-	 * @return
+	 * @return {@link ModelAndView}
+	 *  save or update consent info 
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateConsentInfo.do")
 	public ModelAndView saveOrUpdateConsentInfo(HttpServletRequest request,ConsentInfoBo consentInfoBo){
@@ -962,9 +1000,11 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @return
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @param consentInfoBo
+	 * @return {@link ModelAndView}
+	 * get consent Info Page
 	 */
 	@RequestMapping("/adminStudies/consentInfo.do")
 	public ModelAndView getConsentPage(HttpServletRequest request){
@@ -1044,9 +1084,11 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @return
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @param consentInfoBo
+	 * @return {@link ModelAndView}
+	 * get comprehension Question List Page
 	 */
 	@RequestMapping("/adminStudies/comprehensionQuestionList.do")
 	public ModelAndView getComprehensionQuestionList(HttpServletRequest request){
@@ -1124,6 +1166,13 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @param consentInfoBo
+	 * @return {@link ModelAndView}
+	 * get comprehensionQuestion details Page
+	 */
 	@RequestMapping("/adminStudies/comprehensionQuestionPage.do")
 	public ModelAndView getComprehensionQuestionPage(HttpServletRequest request){
 		logger.info("StudyController - getConsentPage - Starts");
@@ -1154,13 +1203,7 @@ public class StudyController {
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 				}
-				/*//Added for live version Start
-				String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
-				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
-					consentStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_STUDY_ID);
-				}
-				//Added for live version End
-*/				if(StringUtils.isEmpty(comprehensionQuestionId)){
+				if(StringUtils.isEmpty(comprehensionQuestionId)){
 					comprehensionQuestionId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.COMPREHENSION_QUESTION_ID);
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.COMPREHENSION_QUESTION_ID, comprehensionQuestionId);
 				}
@@ -1189,9 +1232,11 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @param consentInfoBo
+	 * @return {@link ModelAndView}
+	 * delete comprehensionQuestion details Page
 	 */
 	@RequestMapping("/adminStudies/deleteComprehensionQuestion.do")
 	public void deleteComprehensionTestQuestion(HttpServletRequest request ,HttpServletResponse response){
@@ -1219,11 +1264,11 @@ public class StudyController {
 	}
 	
 	/**
-	 * 
-	 * @author Ravinder
-	 * @param request
-	 * @param consentInfoBo
-	 * @return
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @param comprehensionTestQuestionBo
+	 * @return {@link ModelAndView}
+	 * save or update ComprehensionTestQuestion Page
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateComprehensionTestQuestion.do")
 	public ModelAndView saveOrUpdateComprehensionTestQuestionPage(HttpServletRequest request,ComprehensionTestQuestionBo comprehensionTestQuestionBo){
@@ -1273,9 +1318,10 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * re order ComprehensionTestQuestion Page
 	 */
 	@RequestMapping("/adminStudies/reOrderComprehensionTestQuestion.do")
 	public void reOrderComprehensionTestQuestion(HttpServletRequest request ,HttpServletResponse response){
@@ -1311,9 +1357,10 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * save or update saveConsentInfo Page
 	 */
 	@RequestMapping(value="/adminStudies/saveConsentInfo.do")
 	public void saveConsentInfo(HttpServletRequest request,HttpServletResponse response){
@@ -1357,10 +1404,10 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder			
-	 * @param request
-	 * @param response
-	 * @return {@link ModelAndView}
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @return void
+	 * reload Comprehension Question List
 	 */
 	@RequestMapping("/adminStudies/reloadComprehensionQuestionListPage.do")
 	public void reloadComprehensionQuestionListPage(HttpServletRequest request,HttpServletResponse response){
@@ -1400,6 +1447,12 @@ public class StudyController {
 		
 	}
 	
+	/**
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * update consent flag as partially done or completely done
+	 */
 	@RequestMapping("/adminStudies/consentMarkAsCompleted.do")
 	public ModelAndView consentMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - consentMarkAsCompleted() - Starts");
@@ -1435,6 +1488,12 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * update consentReview flag as partially done or completely done
+	 */
 	@RequestMapping("/adminStudies/consentReviewMarkAsCompleted.do")
 	public ModelAndView consentReviewMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - consentReviewMarkAsCompleted() - Starts");
@@ -1472,8 +1531,8 @@ public class StudyController {
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	/**
 	 * view Eligibility page
-	 * @author Vivek 
-	 * 
+	 * @author BTC 
+	 *
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
@@ -1501,11 +1560,6 @@ public class StudyController {
 					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 				}
-//				String lastEligibilityOpt = (String) request.getSession().getAttribute(sessionStudyCount+"lastEligibilityOpt");
-//				if(StringUtils.isNotBlank(lastEligibilityOpt)) {
-//					map.addAttribute("lastEligibilityOpt", lastEligibilityOpt);
-//					request.getSession().removeAttribute(sessionStudyCount+"lastEligibilityOpt");
-//				}
 				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 				
 				if (StringUtils.isEmpty(studyId)) {
@@ -1538,7 +1592,7 @@ public class StudyController {
 	
 	/**
 	 * save or update Study Eligibility
-	 * @author Vivek 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @param eligibilityBo , {@link EligibilityBo}
@@ -1592,7 +1646,7 @@ public class StudyController {
 	
 	/*----------------------------------------added by MOHAN T starts----------------------------------------*/
 	/**
-	 * @author Mohan
+	 * @author BTC
 	 * @param request
 	 * @return ModelAndView
 	 * 
@@ -1689,7 +1743,7 @@ public class StudyController {
 	
 	
 	/**
-	 * @author Mohan
+	 * @author BTC
 	 * @param request
 	 * @param response
 	 * @param consentInfoBo
@@ -1750,9 +1804,10 @@ public class StudyController {
 	/*----------------------------------------added by MOHAN T ends----------------------------------------*/
 	
 	/**
-	 * @author Pradyumn			
+	 * @author BTC			
 	 * @param request
 	 * @return {@link ModelAndView}
+	 * Description : get resource list based on study 
 	 */
 	@RequestMapping("/adminStudies/getResourceList.do")
 	public ModelAndView getResourceList(HttpServletRequest request){
@@ -1810,9 +1865,11 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Pradyumn
-	 * @param request
+	 * @author BTC
+	 * @param request, {@link HttpServletResponse}
 	 * @param response
+	 * @return void
+	 * Description : delete Resource based resource id 
 	 */
 	@RequestMapping(value="/adminStudies/deleteResourceInfo",method = RequestMethod.POST)
 	public void deleteResourceInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1854,7 +1911,7 @@ public class StudyController {
 	
 	/**
 	 * add or edit Study Resource
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -1927,7 +1984,7 @@ public class StudyController {
 	
 	/**
 	 * save or update Study Resource
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @param resourceBO , {@link ResourceBO}
@@ -2017,8 +2074,8 @@ public class StudyController {
 	}
 	
 	/**
-	 * Set Mark as completed
-	 * @author Pradyumn 
+	 * Set resource to Mark as completed
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
@@ -2074,6 +2131,12 @@ public class StudyController {
 	
 	 /*Study notification starts*/
 	
+	/**
+	 * @author BTC 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * Description : get all notification based on study
+	 */
 	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
 	public ModelAndView viewStudyNotificationList(HttpServletRequest request){
 		logger.info("StudyController - viewNotificationList() - Starts");
@@ -2141,6 +2204,12 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * @author BTC 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * Description : get study notification details page
+	 */
 	@RequestMapping("/adminStudies/getStudyNotification.do")
 	public ModelAndView getStudyNotification(HttpServletRequest request){
 		logger.info("StudyController - getStudyNotification - Starts");
@@ -2231,7 +2300,12 @@ public class StudyController {
 	}
 	
 	
-	
+	/**
+	 * @author BTC 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * Description : save or update study notification details 
+	 */
 	@RequestMapping("/adminStudies/saveOrUpdateStudyNotification.do")
 	public ModelAndView saveOrUpdateStudyNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
@@ -2345,6 +2419,12 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * @author BTC 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * Description : delete study notification details 
+	 */
 	@RequestMapping("/adminStudies/deleteStudyNotification.do")
 	public ModelAndView deleteStudyNotification(HttpServletRequest request){
 		logger.info("StudyController - deleteStudyNotification - Starts");
@@ -2377,6 +2457,12 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * @author BTC 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 * Description : save notification as mark as completed
+	 */
 	@RequestMapping("/adminStudies/notificationMarkAsCompleted.do")
 	public ModelAndView notificationMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - notificationMarkAsCompleted() - Starts");
@@ -2416,9 +2502,10 @@ public class StudyController {
 	
 	/*Study CheckList Starts*/
 	/**
-	 * @author Pradyumn			
+	 * @author BTC			
 	 * @param request
 	 * @return {@link ModelAndView}
+	 * Description : get checklist 
 	 */
 	@RequestMapping("/adminStudies/getChecklist.do")
 	public ModelAndView getChecklist(HttpServletRequest request){
@@ -2468,7 +2555,7 @@ public class StudyController {
 	
 	/**
 	 * Save or Done Checklist
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @param checklist , {@link Checklist}
@@ -2527,7 +2614,7 @@ public class StudyController {
 	
 	/*Study checkList ends*/
 	/**
-     * @author Ronalin
+     * @author BTC
 	 * Getting Actions
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -2581,7 +2668,7 @@ public class StudyController {
 	}
 	
 	/** 
-	  * @author Ronalin
+	  * @author BTC
 	  * validating particular action should be update for each study or not
 	  * @param request , {@link HttpServletRequest}
 	  * @param response , {@link HttpServletResponse}
@@ -2665,65 +2752,12 @@ public class StudyController {
 			out.print(jsonobject);
 		}
 		
-		/*@RequestMapping("/adminStudies/updateStudyAction.do")
-		public ModelAndView updateStudyActionOnAction(HttpServletRequest request) {
-			logger.info("StudyController - updateStudyActionOnAction() - Starts");
-			ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-			ModelMap map = new ModelMap();
-			Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-			String message = FdahpStudyDesignerConstants.FAILURE;
-			String successMessage = "";
-			String actionSucMsg = "";
-			try {
-				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
-				if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
-					String	studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
-					String buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))?"":request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
-					if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
-						message = studyService.updateStudyActionOnAction(studyId, buttonText, sesObj);
-						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
-							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_PUBLISH_SUCCESS_MSG;
-							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_UNPUBLISH_SUCCESS_MSG;
-							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_LUNCH_SUCCESS_MSG;
-							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_UPDATES_SUCCESS_MSG;
-							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_RESUME_SUCCESS_MSG;
-							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_PAUSE_SUCCESS_MSG;
-							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
-								successMessage = FdahpStudyDesignerConstants.ACTION_DEACTIVATE_SUCCESS_MSG;
-							}
-							if(request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTION_SUC_MSG) != null){
-								map.addAttribute(FdahpStudyDesignerConstants.ACTION_SUC_MSG, actionSucMsg);
-								request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTION_SUC_MSG);
-							}
-							map.addAttribute("_S", sessionStudyCount);
-							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)
-									|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
-								request.getSession().setAttribute(FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
-								mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-							}else{
-								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
-								mav = new ModelAndView("redirect:/adminStudies/actionList.do", map);
-							}
-						}else{
-							if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
-							  request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
-						}
-					}
-				}
-			} catch (Exception e) {
-				logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
-			}
-			logger.info("StudyController - updateStudyActionOnAction() - Ends");
-			return mav;
-		}*/
-		
+		/**
+		 * @author BTC
+		 * @param request
+		 * @param response
+		 * Description : save Questionnaire as mark as completed
+		 */
 		@RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
 		public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
 			logger.info("StudyController - questionnaireMarkAsCompleted() - Starts");
@@ -2760,7 +2794,7 @@ public class StudyController {
 		}
 		
 		/**
-		 * @author Ronalin
+		 * @author BTC
 		 * @param request
 		 * @param response
 		 * This method is used to validate the questionnaire have response type scale for android platform 
@@ -2800,7 +2834,7 @@ public class StudyController {
 		}
 		
 	/**
-	 * @author Vivek
+	 * @author BTC
 	 * @param request
 	 * @param response
 	 *            This method is used to validate the questionnaire have
@@ -2832,7 +2866,6 @@ public class StudyController {
 				is = new FileInputStream(pdfFile);
 				response.setContentType("application/pdf");
 				response.setContentLength((int)pdfFile.length());
-	//			response.setHeader("Content-Transfer-Encoding", "binary");
 				response.setHeader("Content-Disposition","inline; filename=\""+fileName+"\"");
 				IOUtils.copy(is, response.getOutputStream());
 				response.flushBuffer();
@@ -2848,7 +2881,12 @@ public class StudyController {
 		return mav;
 	}
 	
-
+	/**
+	 * @author BTC
+	 * @param request
+	 * @param response
+	 * Description : save ComprehensionTest Question as mark as completed
+	 */
 	@RequestMapping("/adminStudies/comprehensionTestMarkAsCompleted.do")
 	public ModelAndView comprehensionTestMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - consentReviewMarkAsCompleted() - Starts");
@@ -2883,9 +2921,10 @@ public class StudyController {
 		return mav;
 	}
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request
 	 * @param response
+	 * Description : save ComprehensionTest Question
 	 */
 	@RequestMapping(value="/adminStudies/saveComprehensionTestQuestion.do")
 	public void saveComprehensionTestQuestion(HttpServletRequest request,HttpServletResponse response){
@@ -2941,9 +2980,10 @@ public class StudyController {
 		logger.info("StudyQuestionnaireController - saveQuestion - Ends");
 	}
 	/**
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 * @param response
+	 *  Description : delete study by customStudyId
 	 */
 		@RequestMapping("/deleteStudy.do")
 		public ModelAndView deleteStudy(HttpServletRequest request) {
@@ -2971,9 +3011,10 @@ public class StudyController {
 	}
 		
 		/**
-		 * @author Ronalin
+		 * @author BTC
 		 * @param request
 		 * @param response
+		 * Description : reset study by customStudyId
 		 */
 			@RequestMapping("/resetStudy.do")
 			public ModelAndView resetStudy(HttpServletRequest request) {
@@ -2997,7 +3038,12 @@ public class StudyController {
 			logger.info("StudyController - resetStudy - Ends");
 			return mav;
 		}	
-			
+			/**
+		     * @author BTC 
+		     * @param request , {@link HttpServletRequest}
+		     * @return {@link ModelAndView}
+		     * Description : update study status
+		     */
 			@RequestMapping(value="/adminStudies/updateStudyAction",method = RequestMethod.POST)
 			public ModelAndView updateStudyActionOnAction(HttpServletRequest request ,HttpServletResponse response) {
 				logger.info("StudyController - updateStudyActionOnAction() - Starts");
@@ -3033,15 +3079,10 @@ public class StudyController {
 								if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)
 										|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 									 request.getSession().setAttribute(FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
-									//mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 								}else{
 									request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
-									//mav = new ModelAndView("redirect:/adminStudies/actionList.do", map);
-									//jsonobject.put(FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
 								}
 							}else{
-								/*if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
-									jsonobject.put("errorMessage", errorMessage);*/
 								if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE))
 									  request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.FAILURE_UPDATE_STUDY_MESSAGE);
 							}
@@ -3063,7 +3104,7 @@ public class StudyController {
 	
 		    /**
 		     * view Eligibility page
-		     * @author Vivek 
+		     * @author BTC 
 		     * 
 		     * @param request , {@link HttpServletRequest}
 		     * @return {@link ModelAndView}
@@ -3094,7 +3135,6 @@ public class StudyController {
 		                }
 		                
 		                String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
-//		                String  lastEligibilityOpt = FdahpStudyDesignerUtil.isEmpty(request.getParameter("lastEligibilityOpt")) ? "1" : request.getParameter("lastEligibilityOpt");
 		                Integer eligibilityTestId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityTestId"));
 		                Integer eligibilityId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId")) ? 0 : Integer.parseInt(request.getParameter("eligibilityId"));
 		                if (StringUtils.isEmpty(studyId)) {
@@ -3123,7 +3163,6 @@ public class StudyController {
 		                    map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 		                    map.addAttribute("_S", sessionStudyCount);
 		                    map.addAttribute("actionTypeForQuestionPage", actionTypeForQuestionPage);
-//		                    map.addAttribute("lastEligibilityOpt", lastEligibilityOpt);
 		                    mav = new ModelAndView("studyEligibiltyTestPage", map);
 		                }
 		            }
@@ -3136,7 +3175,7 @@ public class StudyController {
 		    
 		    /**
 		     * save or update Study Eligibility
-		     * @author Vivek 
+		     * @author BTC 
 		     * 
 		     * @param request , {@link HttpServletRequest}
 		     * @param eligibilityBo , {@link EligibilityBo}
@@ -3155,14 +3194,12 @@ public class StudyController {
 		            Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 		            String studyId =  (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 		            String actionTypeForQuestionPage = StringUtils.isNotBlank(request.getParameter("actionTypeForQuestionPage")) ? request.getParameter("actionTypeForQuestionPage"):"";
-//		            String  lastEligibilityOpt = FdahpStudyDesignerUtil.isEmpty(request.getParameter("lastEligibilityOpt")) ? "1" : request.getParameter("lastEligibilityOpt");
 		            if(sesObj != null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)) {
 		                if (eligibilityTestBo != null) {
 		                    customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 		                    result = studyService.saveOrUpdateEligibilityTestQusAns(eligibilityTestBo, Integer.parseInt(studyId), sesObj, customStudyId);
 		                }
 		                map.addAttribute("_S", sessionStudyCount);
-//		                request.getSession().setAttribute(sessionStudyCount+"lastEligibilityOpt", lastEligibilityOpt);
 		                if(result > 0) {
 		                    if(eligibilityTestBo != null && (FdahpStudyDesignerConstants.ACTION_TYPE_SAVE).equals(eligibilityTestBo.getType())){
 		                        request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
@@ -3188,7 +3225,7 @@ public class StudyController {
             /**
              * This method is used to validate the Eligibility Short Title 
              * 
-             * @author Vivek
+             * @author BTC
              * @param request
              * @param response
              * 
@@ -3222,9 +3259,10 @@ public class StudyController {
             }
             
             /**
-             * @author Ravinder
+             * @author BTC
              * @param request
              * @param response
+             * Description : reorder the eligibility {@link Test} Question and Answers
              */
             @RequestMapping(value="/adminStudies/reOrderStudyEligibiltyTestQusAns.do", method = RequestMethod.POST)
             public void reOrderStudyEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
@@ -3262,9 +3300,10 @@ public class StudyController {
                 logger.info("StudyController - reOrderStudyEligibiltyTestQusAns - Ends");
             }
             /**
-             * @author Vivek
+             * @author BTC
              * @param request
              * @param response
+             * Description : delete the eligibility question and answer
              */
             @RequestMapping(value="/adminStudies/deleteEligibiltyTestQusAns.do",method = RequestMethod.POST)
             public void deleteEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
@@ -3304,7 +3343,7 @@ public class StudyController {
             }
    
             /**
-    		 * @author Ronalin
+    		 * @author BTC
     		 * @param request
     		 * @param response
     		 * This method is used to validate the activetaskType for android platform  
@@ -3340,7 +3379,7 @@ public class StudyController {
     		}
     		
     		 /**
-    		 * @author Ronalin
+    		 * @author BTC
     		 * @param request
     		 * @param response
     		 * This method is used to crate copy of live study new study   
@@ -3367,7 +3406,13 @@ public class StudyController {
     			return modelAndView;
     		}
     		
-    		
+    		/**
+		     * reorder the resource list page
+		     * @author BTC 
+		     * 
+		     * @param request , {@link HttpServletRequest}
+		     * @return {@link ModelAndView}
+		     */
     		@RequestMapping(value="/adminStudies/reOrderResourceList.do", method = RequestMethod.POST)
     		public void reOrderResourceList(HttpServletRequest request ,HttpServletResponse response){
     			logger.info("StudyController - reOrderResourceList - Starts");
@@ -3413,6 +3458,12 @@ public class StudyController {
     			logger.info("StudyController - reOrderResourceList - Ends");
     		}
     		
+    		/**
+		     * reload the resource list page
+		     * @author BTC 
+		     * @param request , {@link HttpServletRequest}
+		     * @return {@link ModelAndView}
+		     */
     		@RequestMapping("/adminStudies/reloadResourceListPage.do")
     		public void reloadResourceListPage(HttpServletRequest request,HttpServletResponse response){
     			logger.info("StudyController - reloadResourceListPage - Starts");
