@@ -48,7 +48,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * 
- * @author Vivek
+ * @author BTC
  *
  */
 @Controller
@@ -68,10 +68,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	
 	/**
 	 * view Questionnaires page
-	 * @author Vivek 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 * 
+	 * List of all the Questionnaires of an study
 	 */
 	@RequestMapping("/adminStudies/viewStudyQuestionnaires.do")
 	public ModelAndView viewStudyQuestionnaires(HttpServletRequest request) {
@@ -145,10 +147,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return {@link ModelAndView}
+	 * 
+	 * Instruction Step Page in Questionnaire
 	 */
 	@RequestMapping("/adminStudies/instructionsStep.do")
 	public ModelAndView getInstructionsPage(HttpServletRequest request , HttpServletResponse response){
@@ -254,11 +258,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
 	 * @param instructionsBo
-	 * @return
+	 * @return {@link ModelAndView}
+	 * 
+	 * Save or update of an  instruction step in questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateInstructionStep.do")
 	public ModelAndView saveOrUpdateInstructionStep(HttpServletRequest request ,HttpServletResponse response,InstructionsBo instructionsBo){
@@ -316,9 +322,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 *  
+	 *  Saving the instruction step information in the questionnaire
 	 */
 	@RequestMapping(value="/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,HttpServletResponse response){
@@ -379,10 +388,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - saveInstructionStep - Ends");
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Questionnaire page of study with all the steps(instruction,question,form) with schedule information
 	 */
 	@RequestMapping(value="/adminStudies/viewQuestionnaire.do")
 	public ModelAndView getQuestionnairePage(HttpServletRequest request,HttpServletResponse response){
@@ -496,11 +507,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @param questionnaireBo
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @param questionnaireBo {@link QuestionnaireBo}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Save or update of Questionnaire Schedule information
 	 */
 	@RequestMapping(value="/adminStudies/saveorUpdateQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public ModelAndView saveorUpdateQuestionnaireSchedule(HttpServletRequest request , HttpServletResponse response,QuestionnaireBo questionnaireBo){
@@ -553,6 +566,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Save or update of the Questionnaire Schedule Information
+	 */
 	@RequestMapping(value="/adminStudies/saveQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
@@ -575,16 +596,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						if(questionnaireBo.getId() != null){
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							//questionnaireBo.setStatus(false);
-							//questionnaireBo.setIsChange(0);
 							if(questionnaireBo.getStatus()){
 								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire Updated successfully.");
 							}
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							//questionnaireBo.setStatus(false);
-							//questionnaireBo.setIsChange(0);
 							if(questionnaireBo.getStatus()){
 								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire added successfully.");
 							}
@@ -614,9 +631,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Ends");
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Delete of an Questionnaire step(Instruction,Question,Form)
 	 */
 	@RequestMapping(value="/adminStudies/deleteQuestionnaireStep.do",method = RequestMethod.POST)
 	public void deleteQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -691,9 +711,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request  {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Reordering of an Questionnaire steps(Instruction,Question,Form) in Questionnaire page
 	 */
 	@RequestMapping(value="/adminStudies/reOrderQuestionnaireStepInfo.do", method = RequestMethod.POST)
 	public void reOrderQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -765,9 +788,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}\
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Unique validation for Questionnaire Short Title
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -803,9 +829,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Unique validation for questionnaire step(Instruction,Question,Form) short title
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireStepShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -840,10 +869,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Form Step with all the questions inside the form
 	 */
 	@RequestMapping("/adminStudies/formStep.do")
 	public ModelAndView getFormStepPage(HttpServletRequest request , HttpServletResponse response){
@@ -958,9 +989,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Save or update of Form Step in questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateFormStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
@@ -1009,9 +1043,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Sucess or Failure
+	 * 
+	 * Saving the Form step information in Questionnaire
 	 */
 	@RequestMapping(value="/adminStudies/saveFromStep.do")
 	public void saveFormStep(HttpServletRequest request,HttpServletResponse response){
@@ -1063,9 +1100,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Success/Failure
+	 *  Reordering of an Questions inside the From Step
 	 */
 	@RequestMapping(value="/adminStudies/reOrderFormQuestions.do", method = RequestMethod.POST)
 	public void reOrderFromStepQuestionsInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1106,9 +1145,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Success/Failure
+	 * 
+	 * Deleting of an Question inside Form Step 
 	 */
 	@RequestMapping(value="/adminStudies/deleteFormQuestion.do",method = RequestMethod.POST)
 	public void deleteFormQuestionInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1169,10 +1211,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - deleteFormQuestionInfo - Ends");
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Question step page in questionnaire 
 	 */
 	@RequestMapping("/adminStudies/questionStep.do")
 	public ModelAndView getQuestionStepPage(HttpServletRequest request , HttpServletResponse response){
@@ -1290,10 +1334,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				/*if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
-					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
-						questionResponseTypeMasterInfoList.remove(2);
-				}*/
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){
 					healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 					map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
@@ -1316,9 +1356,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Save or update of an Question step inside Questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateQuestionStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
@@ -1368,9 +1411,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Save or update Question step inside of an Questionnaire
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestionStep.do",method = RequestMethod.POST )
 	public void saveQuestionStep(HttpServletResponse response,MultipartHttpServletRequest multipleRequest,HttpServletRequest request){
@@ -1459,10 +1505,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Question page of form step inside questionnaire
 	 */
 	@RequestMapping("/adminStudies/formQuestion.do")
 	public ModelAndView getFormStepQuestionPage(HttpServletRequest request , HttpServletResponse response){
@@ -1590,10 +1638,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				/*if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
-					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
-						questionResponseTypeMasterInfoList.remove(2);
-				}*/
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){ 
 						healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 						map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
@@ -1614,9 +1658,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Save or update of an Question of form step inside questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromQuestion.do")
 	public ModelAndView saveOrUpdateFormQuestion(HttpServletRequest request,HttpServletResponse response,QuestionsBo questionsBo){
@@ -1666,9 +1713,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Success/Failure
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
 	public void saveQuestion(HttpServletRequest request,HttpServletResponse response,MultipartHttpServletRequest multipleRequest){
@@ -1751,9 +1799,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Deleting of an Questionnaire in Study
 	 */
 	@RequestMapping(value="/adminStudies/deleteQuestionnaire.do",method = RequestMethod.POST)
 	public void deleteQuestionnaireInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1802,9 +1853,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Unique Validation of question short title inside form step 
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionKey.do", method = RequestMethod.POST)
 	public void validateQuestionShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -1838,9 +1892,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Unique Validation of States Short title in Question Stastic Data
 	 */
 	@RequestMapping(value="/adminStudies/validateStatsShortName.do", method = RequestMethod.POST)
 	public void validateQuestionStatsShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -1870,9 +1927,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Validation for line chart in Questionnaire Schedule 
 	 */
 	@RequestMapping(value="/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
 	public void validateQuestionnaireLineChartSchedule(HttpServletRequest request ,HttpServletResponse response){
@@ -1908,9 +1968,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * validate the stats information for repeatable form in questionnaire
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
 	public void validateRepeatableQuestion(HttpServletRequest request ,HttpServletResponse response){
@@ -1937,9 +2001,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 *  
+	 *  Trail of an Formula in Question Step formula based branching
 	 */
 	@RequestMapping(value="/adminStudies/validateconditionalFormula.do", method = RequestMethod.POST)
 	public void validateconditionalFormula(HttpServletRequest request ,HttpServletResponse response){
@@ -1978,9 +2045,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return  {@link ModelAndView}
+	 *  
+	 *  Copy of an Questionnaire in Study
 	 */
 	@RequestMapping("/adminStudies/copyQuestionnaire.do")
 	public ModelAndView copyStudyQuestionnaire(HttpServletRequest request,HttpServletResponse response){

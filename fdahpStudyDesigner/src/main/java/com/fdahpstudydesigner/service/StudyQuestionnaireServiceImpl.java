@@ -1,18 +1,17 @@
 package com.fdahpstudydesigner.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
@@ -31,7 +30,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * 
- * @author Vivek
+ * @author BTC
  *
  */
 @Service
@@ -70,9 +69,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : instructionId
-	 * @return Object : InstructutionBo
+	 * @author BTC
+	 * @param Integer : instructionId in {@link InstructionsBo}
+	 * @param String : questionnaireShortTitle in {@link QuestionnairesBo}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @param Integer : questionnaireId in {@link QuestionnairesStepsBo}
+	 * @return Object : {@link InstructionsBo}
+	 * 
 	 * 
 	 * This method is used get the instruction of an questionnaire in study
 	 */
@@ -90,9 +93,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param Object  :InstructionBo
-	 * @return Object : InstructioBo
+	 * @author BTC
+	 * @param Object  : {@link InstructionsBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @return Object : {@link InstructionsBo}
 	 * 
 	 * This method is used to save the instruction step of an questionnaire in study
 	 */
@@ -150,11 +155,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Object : Questionnaire
-	 * @return Object : Questionnaire
+	 * @author BTC
+	 * @param Object : {@link QuestionnaireBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @return Object : {@link QuestionnaireBo}
 	 * 
-	 * This method is used to save the questionnaire information od an study
+	 * This method is used to save the questionnaire information of an study
 	 */
 	@Override
 	public QuestionnaireBo saveOrUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId) {
@@ -204,9 +211,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getModifiedBy() != null){
 					addQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
 				}
-				//if(questionnaireBo.getRepeatQuestionnaire() != null){
-					addQuestionnaireBo.setRepeatQuestionnaire(questionnaireBo.getRepeatQuestionnaire());
-				//}
+				addQuestionnaireBo.setRepeatQuestionnaire(questionnaireBo.getRepeatQuestionnaire());
 				if(questionnaireBo.getDayOfTheWeek() != null){
 					addQuestionnaireBo.setDayOfTheWeek(questionnaireBo.getDayOfTheWeek());
 				}
@@ -286,9 +291,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Object : QuestionnaireBo
-	 * @param @object : QuestionnaireBo
+	 * @author BTC
+	 * @param Object : {@link QuestionnaireBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @return object : {@link QuestionnaireBo}
 	 * 
 	 * This method is used to save the questionnaire schedule information of an study
 	 */
@@ -306,9 +313,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer :questionnaireId
-	 * @return Object : QuestionnaireBo
+	 * @author BTC
+	 * @param Integer :questionnaireId in {@link QuestionnaireBo}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @return Object : {@link QuestionnaireBo}
 	 * 
 	 * This method is used to get the questionnaire of an study by using the questionnaireId
 	 */
@@ -364,8 +372,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : stepId
+	 * @author BTC
+	 * @param Integer : stepId {@link QuestionnairesStepsBo}
+	 * @param Integer : questionnaireId {@link QuestionnairesStepsBo}
+	 * @param String :stepType {@link QuestionnairesStepsBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
 	 * 
 	 * This method is used to delete the questionnaire step
@@ -385,9 +397,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Object : QuestionBo
-	 * @return Object :QuestionBo
+	 * @author BTC
+	 * @param Object : {@link QuestionsBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @return Object : {@link QuestionsBo}
 	 *  This method is used to add the question step in questionnaire of an study
 	 */
 	@Override
@@ -507,9 +521,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : questionId
-	 * @return Object  : QuestionBo
+	 * @author BTC
+	 * @param Integer : questionId {@link QuestionsBo}
+	 * @param String : questionnaireShortTitle {@link QuestionnaireBo}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @return Object  : {@link QuestionsBo} 
 	 * 
 	 * This method is used to get QuestionBo based on questionId in Study questionnaire
 	 * 
@@ -528,8 +544,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer questionnaireId
+	 * @author BTC
+	 * @param Integer questionnaireId {@link QuestionnairesStepsBo}
 	 * @param int oldOrderNumber
 	 * @param int newOrderNumber
 	 * @return String SUCCESS or FAILURE
@@ -550,8 +566,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer questionnaireId
+	 * @author BTC
+	 * @param Integer questionnaireId {@link QuestionnaireBo}
 	 * @return Map : TreeMap<Integer, QuestionnaireStepBean>
 	 * 
 	 * This method is used to get the all the step inside questionnaire 
@@ -599,9 +615,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer:studyId
-	 * @param String : shortTitle
+	 * @author BTC
+	 * @param Integer:studyId {@link StudyBo}
+	 * @param String : shortTitle {@link StudyBo}
+	 * @param String : customStudyId {@link StudyBo}
 	 * @return String : SUCCESS or FAILURE
 	 * 
 	 * This method is used to check the if the questionnaire short title existed ot not in a study
@@ -621,10 +638,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : QuestionnaireId
-	 * @param String : stepType
-	 * @param String : shortTitle
+	 * @author BTC
+	 * @param Integer : QuestionnaireId {@link QuestionnairesStepsBo} 
+	 * @param String : stepType {@link QuestionnairesStepsBo}
+	 * @param String : shortTitle {@link QuestionnairesStepsBo}
+	 * @param String : questionnaireShortTitle {@link QuestionnaireBo}
+	 * @param String : customStudyId {@link StudyBo}
+	 * 
+	 * Unique Validation for Questionnaire step short title
 	 */
 	@Override
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle,String questionnaireShortTitle,String customStudyId) {
@@ -640,9 +661,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * 
-	 * This method is used to get the Resonse Type Master Data
+	 * @author BTC
+	 * @return List Object  : {@link List<QuestionResponseTypeMasterInfoBo>}
+	 * This method is used to get the Response Type Master Data
 	 */
 	@Override
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList() {
@@ -658,9 +679,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Object : QuestionnaireStepBo
-	 * @return Object : QuestionnaireStepBo
+	 * @author BTC
+	 * @param Object : {@link QuestionnairesStepsBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @return Object : {@link QuestionnairesStepsBo}
 	 * 
 	 * This method is used to save the form step questionnaire
 	 */
@@ -678,11 +701,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : fromId
+	 * @author BTC
+	 * @param Integer : fromId {@link FormBo}
 	 * @param int : oldOrderNumber
 	 * @param int : newOrderNumber
 	 * @return String : SUCCESS or FAILURE
+	 * 
+	 * Reordering of an Questions inside form step
 	 */
 	@Override
 	public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber,
@@ -699,9 +724,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer formId
-	 * @param Integer questionId;
+	 * @author BTC
+	 * @param Integer formId {@link FormBo}
+	 * @param Integer questionId {@link QuestionsBo}
+	 * @param Object {@link SessionObject}
+	 * @param String customStudyId {@link StudyBo}
 	 * @return String SUCESS or FAILURE
 	 * 
 	 * This method is used to delete the question inside the form step
@@ -719,9 +746,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		return message;
 	}
 
-	/**@author Ravinder
-	 * @param Integer : stepId
-	 * @return Object : questionnaireStepBo
+	/**@author BTC
+	 * @param Integer : stepId {@link QuestionnairesStepsBo}
+	 * @param String : stepType {@link QuestionnairesStepsBo}
+	 * @param String : questionnaireShortTitle {@link QuestionnaireBo}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @param Integer : questionnaireId {@link QuestionnaireBo}
+	 * @return Object : {@link QuestionnairesStepsBo}
 	 * This method is used to get the step information of questionnaire in a study
 	 */
 	@Override
@@ -756,8 +787,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer : questionnaireId
+	 * @param Integer : sequenceNo
 	 * @return List : QuestionnaireStepList
 	 * This method is used to get the forward question step of an questionnaire based on sequence no
 	 */
@@ -775,9 +807,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Object : QuestionnaireStepBo
-	 * @return Object : QuestionnaireStepBo
+	 * @author BTC
+	 * @param Object : {@link QuestionnairesStepsBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @return Object : {@link QuestionnairesStepsBo}
 	 * 
 	 * This method is used to save the question step questionnaire
 	 */
@@ -862,9 +896,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						addQuestionsBo.setStatus(true);
 					}
 				}
-				/*if(questionnairesStepsBo.getQuestionConditionBranchBoList() != null && !questionnairesStepsBo.getQuestionConditionBranchBoList().isEmpty()){
-					
-				}*/
+				
 				questionnairesStepsBo.setQuestionsBo(addQuestionsBo);
 			}
 			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo, sessionObject,customStudyId);
@@ -877,9 +909,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : studyId
-	 * @param Integer : questionnaireId
+	 * @author BTC
+	 * @param Integer : studyId {@link StudyBo}
+	 * @param Integer : questionnaireId {@link QuestionnaireBo}
+	 * @param Object  : {@link SessionObject}
+	 * @param String : customStudyId {@link StudyBo}
 	 * 
 	 * @return String : SUCCESS or FAILURE
 	 */
@@ -890,6 +924,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 
+	/**
+	 * @author BTC
+	 * @param Integer : questionnaireId {@link QuestionnairesStepsBo}
+	 * @param String : shortTitle {@link QuestionsBo}
+	 * @param String : questionnaireShortTitle {@link QuestionnaireBo}
+	 * @param String : customStudyId {@link StudyBo}
+	 * 
+	 * @return String Success/Failure
+	 * 
+	 * Unique Validation of question short title inside form step 
+	 */
 	@Override
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkFromQuestionShortTitle - Starts");
@@ -897,9 +942,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : studyId
+	 * @author BTC
+	 * @param Integer : studyId {@link StudyBo}
+	 * @param String : customStudyId {@link StudyBo}
 	 * @return Boolean true or false
+	 * 
+	 * Checking for Already anchor date existed or not
 	 */
 	@Override
 	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId) {
@@ -908,9 +956,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : studyId
+	 * @author BTC
+	 * @param Integer : studyId {@link StudyBo}
 	 * @return Boolean true r false
+	 * 
+	 * Checking for Questionnaire creation is completed or not
 	 */
 	@Override
 	public Boolean isQuestionnairesCompleted(Integer studyId) {
@@ -920,8 +970,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : StudyId
+	 * @author BTC
+	 * @param Integer : StudyId {@link StudyBo}
+	 * @param String : shortTitle {@link QuestionsBo}
+	 * @param String : customStudyId {@link StudyBo}
 	 * @return String SUCCESS or FAILUE
 	 * 
 	 * This method is used to check the stastic short title unique
@@ -933,8 +985,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : studyId
+	 * @author BTC
+	 * @param Integer : studyId {@link StudyBo}
+	 * @param String : customStudyId {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
 	 * 
 	 * This method is used to validate the questionnaire have response type scale for android platform 
@@ -946,10 +999,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : questionnaireId
-	 * @param String : frequency
+	 * @author BTC
+	 * @param Integer : questionnaireId {@link QuestionnaireBo}
+	 * @param String : frequency {@link QuestionnaireBo}
 	 * @param String Success or failre
+	 * 
+	 * validate of an line chart info while changing the schedule info in questionnaire
 	 */
 	@Override
 	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
@@ -958,10 +1013,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @param Integer : formId
+	 * @author BTC
+	 * @param Integer : formId {@link FormBo}
 	 * @param String : Success or failure
-	 * This method is used to validate the stats information for repeatable form in questionnaire
+	 * This method is used to validate the states information for repeatable form in questionnaire
 	 * 
 	 */
 	@Override
@@ -971,8 +1026,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
-	 * @return List of HealthKityKeyInfo
+	 * @author BTC
+	 * @return List of {@link HealthKitKeysInfo}
 	 * 
 	 * This method is used to get the Health Kit key master info
 	 */
@@ -984,7 +1039,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	
 	/**
 	 * @author Ronalin
-	 * @return List of QuestionConditionBranchBo
+	 * @param String :lhs
+	 * @param String : rhs
+	 * @param String : operator
+	 * @param String : input
+	 * @return List of {@link QuestionConditionBranchBo}
 	 * 
 	 * This method is used to get the FormulaInfoBean
 	 */
@@ -1000,10 +1059,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	}
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
+	 * @param Integer : questionnaireId {@link QuestionnaireBo}
+	 * @param String : customStudyId {@link StudyBo}
+	 * @param Object  : {@link SessionObject}
 	 * @return QuestionnaireBo
 	 * 
-	 * This method is used to copy the questionnaire bo into study
+	 * This method is used to copy the questionnaire in the study
 	 */
 	@Override
 	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,String customStudyId, SessionObject sessionObject) {
