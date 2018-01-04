@@ -162,8 +162,6 @@ function validateStudyStatus(obj){
 				    },
 				    callback: function(result) {
 				        if (result) {
-				        	//$('#buttonText').val(buttonText);
-                     	   // $('#actionInfoForm').submit();
 				        	updateStudyByAction(buttonText);
 				        }
 				    }
@@ -255,8 +253,6 @@ function showBootBoxMessage(buttonText, messageText){
 		    },
 		    callback: function(result) {
 		        if (result) {
-		        	  //$('#buttonText').val(buttonText);
-               	      //$('#actionInfoForm').submit();
 		        	  updateStudyByAction(buttonText);
 		             }	
 		        }

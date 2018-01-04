@@ -531,7 +531,6 @@
 		      var file, img;
 		      var thisAttr = this;
 		      var thisId = $(this).attr("data-imageId");
-		      console.log('thisId'+thisId);
 		      if ((file = this.files[0])) {
 		          img = new Image();
 		          img.onload = function() {

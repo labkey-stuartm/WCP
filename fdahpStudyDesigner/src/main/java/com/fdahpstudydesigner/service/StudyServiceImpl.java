@@ -153,7 +153,7 @@ public class StudyServiceImpl implements StudyService {
 
 
 	/**
-	 * return Study based on id
+	 * return Study based on studyId, userId
 	 * @author BTC
 	 * 
 	 * @return StudyBo
@@ -174,9 +174,12 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * @author BTC
-	 * Add/Update the Study
 	 * @param StudyBo , {@link StudyBo}
 	 * @return {@link String}
+	 * This method captures basic information about the study
+	 * basic info like Study ID, Study name, Study full name, Study Category,
+	 * Research Sponsor,Data Partner, Estimated Duration in weeks/months/years,
+	 * Study Tagline, Study Description, Study website, Study Type
 	 */
 	@Override
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject) {
@@ -238,12 +241,18 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	 /**
-		 * return study overview pageList based on studyId 
 		 * @author BTC
-		 * 
 		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study list
 		 * @exception Exception
+		 * 
+		 * This method return  content of Overview pages of the Study
+		 * those pages shows in mobile side as 
+		 * a set of swipe-able screens that carry information about the study, with each screen having
+					A title
+				    Description
+				    Image
+		 * 
 	*/
 	@Override
 	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) {
@@ -254,6 +263,7 @@ public class StudyServiceImpl implements StudyService {
 			 if(null != studyPageBos && !studyPageBos.isEmpty()){
 				 for(StudyPageBo s : studyPageBos){
 					 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImagePath())){
+						 //to make unique image 
 						 if(s.getImagePath().contains("?v=")){
 							 String imagePathArr[] = s.getImagePath().split("\\?");
 							 s.setImagePath(imagePathArr[0]+ "?v=" + new Date().getTime());
@@ -289,9 +299,10 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * @author BTC
-	 * Add/Update the Study Overview Pages
 	 * @param studyPageBean {@link StudyPageBean}
 	 * @return {@link String}
+	 * save or update content(title,description,image) for the Overview pages of the Study
+	 *  those pages will reflect on mobile overview screen 
 	 */
 	@Override
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean ,SessionObject sesObj) {
@@ -734,7 +745,7 @@ public class StudyServiceImpl implements StudyService {
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 
 	/**
-	 * return false or true of validating study Custom id
+	 * validated for uniqueness of customStudyId of study throughout the application
 	 * @author BTC
 	 * 
 	 * @return boolean
@@ -755,12 +766,15 @@ public class StudyServiceImpl implements StudyService {
 
 
 	/**
-	 * Save or update settings and admins of study
 	 * @author BTC
-	 * 
 	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
+	 * @return {@link String} , the status SUCCESS or FAILURE
 	 * @exception Exception
+	 * save or update study setting and admins for the particular study
+	 * study settings like Platforms supported, Is the Study currently enrolling participants,
+     * Allow user to rejoin s the Study once they leave it?,
+     * Retain participant data when they leave a study?
+     * managing admins for the particular study
 	 */
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj,String userIds,String permissions,String projectLead) {
