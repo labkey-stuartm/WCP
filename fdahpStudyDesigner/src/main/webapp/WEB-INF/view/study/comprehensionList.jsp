@@ -3,9 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
-/* .cursonMove{
- cursor: move !important;
-} */
 .tool-tip {
   display: inline-block;
 }
@@ -67,7 +64,6 @@ function isNumber(evt) {
    <!--  Start body tab section -->
    <div class="right-content-body pt-none pb-none <c:if test="${empty consentBo.needComprehensionTest || consentBo.needComprehensionTest eq 'No'}">ct_panel</c:if>" id="mainContainer">
       <div>
-        <!--  This feature is work in progress and coming soon. -->
          <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
            <thead>
 			   <tr>
@@ -137,7 +133,7 @@ $(document).ready(function(){
 		var val = $(this).val();
 		$("#addQuestionId").attr("disabled",true);
 		if(val == "Yes"){
-			//$("#comprehensionTestMinimumScore").attr("required",true);
+			
 			$("#mainContainer").show();
 			var markAsComplete = "${markAsComplete}"
 			if(markAsComplete == "false"){
@@ -149,7 +145,7 @@ $(document).ready(function(){
 				$("#addHelpNote").show();
 			}
 		}else{
-			//$("#comprehensionTestMinimumScore").attr("required",false);
+			
 			$("#comprehensionTestMinimumScore").val('');
 			$("#mainContainer").hide();
 			$("#addHelpNote").hide();
@@ -160,7 +156,7 @@ $(document).ready(function(){
 		}
 	});
     var viewPermission = "${permission}";
-    console.log("viewPermission:"+viewPermission);
+    
     var reorder = true;
     if(viewPermission == 'view'){
         reorder = false;
@@ -203,9 +199,7 @@ $(document).ready(function(){
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
 
-	    console.log('oldOrderNumber:'+oldOrderNumber);
-	    console.log('newOrderNumber:'+newOrderNumber);
-	    console.log('studyId:'+studyId);
+	    
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
 	    	$.ajax({
@@ -248,7 +242,7 @@ $(document).ready(function(){
 		var value = $(this).val();
 		var questionCount = $("#comprehension_list").find("tbody").find("tr").length;
 		if(value != '' && value != null && (value == 0 || parseInt(value) > parseInt(questionCount))){
-			//$(this).val('');
+			
 			$("#comprehensionTestMinimumScore").parent().addClass("has-danger").addClass("has-error");
 			$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
             $("#comprehensionTestMinimumScore").parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should not be more than no of questions or zero</li></ul>");
@@ -379,7 +373,7 @@ function markAsCompleted(){
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
 	if(needComprehensionTestTxt == "Yes"){
-		 //$("#comprehensionTestMinimumScore").trigger('blur');
+		 
 		 if (!table.data().count() ) {
 		    $('#alertMsg').show();
 			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question !");
@@ -423,7 +417,7 @@ function saveConsent(type){
 		var questionCount = $("#comprehension_list").find("tbody").find("tr").length;
 		if(value != '' && value != null && (value == 0 || parseInt(value) > parseInt(questionCount))){
 			minScoreFlag = false;
-			//$(this).val('');
+			
 			$("#comprehensionTestMinimumScore").parent().addClass("has-danger").addClass("has-error");
 			$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
             $("#comprehensionTestMinimumScore").parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should not be more than no of questions or zero</li></ul>");
@@ -446,15 +440,11 @@ function saveConsent(type){
 					var message = jsonobject.message;
 					if(message == "SUCCESS"){
 						var consentId = jsonobject.consentId;
-						console.log(consentId);
+						
 						$("#consentId").val(consentId);
 						$("#addQuestionId").attr("disabled",false);
 						$("#addHelpNote").hide();
 						if(type != "save"){
-							//$("body").removeClass("loading");	
-							/* var a = document.createElement('a');
-							a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
-							document.body.appendChild(a).click(); */
 							document.comprehensionInfoForm.action="/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
 							document.comprehensionInfoForm.submit();
 						}else{

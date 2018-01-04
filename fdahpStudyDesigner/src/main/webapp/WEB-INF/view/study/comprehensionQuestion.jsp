@@ -157,7 +157,7 @@
 	         </div>
 	      </div>
 	      <div class="clearfix"></div>
-      <!-- -->
+      
       <div>
          <div class="gray-xs-f mb-sm">Choose structure of the correct answer <span class="requiredStar">*</span></div>
          <div class="form-group">
@@ -236,10 +236,10 @@ function addAns(){
     $(".ans-opts").parents("form").validator();
 	if($('.ans-opts').length > 1){
 		$(".remBtnDis").removeClass("hide");
-		console.log("ifffffff");
+		
 	}else{
 		$('.unitDivParent').find(".remBtnDis").addClass("hide");
-		console.log("else");
+		
 	}
 	$('.selectpicker').selectpicker('refresh');
 	$('#'+ansCount).find('input:first').focus();
@@ -250,10 +250,10 @@ function removeAns(param){
 		$(".ans-opts").parents("form").validator();
 		if($('.ans-opts').length > 2){
 			$(".remBtnDis").removeClass("hide");
-			console.log("ifffffff");
+			
 		}else{
 			$(".remBtnDis").addClass("hide");
-			console.log("else");
+			
 		}
 }
 function goToBackPage(item){
@@ -302,7 +302,7 @@ function saveComrehensionTestQuestion(){
 		testQuestionResponse.responseOption=responseOption;
 		testQuestionResponse.correctAnswer=correctAnswer;
 		testQuestionResponse.comprehensionTestQuestionId=testQuestionId;
-		console.log("id:"+id);
+		
 		questionResponseArray.push(testQuestionResponse);
 	});
 	comprehensionTestQuestion.id=testQuestionId;
@@ -383,7 +383,7 @@ function validateForUniqueValue(item,callback){
 		if(diaplay_value != ''){
 			if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
 				isValid=false;
-				//$("#responseOptionId"+id).val('');
+				
 	    		$("#responseOptionId"+id).parent().addClass("has-danger").addClass("has-error");
 	            $("#responseOptionId"+id).parent().find(".help-block").empty();
 	            $("#responseOptionId"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
