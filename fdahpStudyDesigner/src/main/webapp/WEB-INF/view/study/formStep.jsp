@@ -29,7 +29,6 @@
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
-	         <%-- <c:if test="${empty permission}"> --%>
 	         <div class="dis-line form-group mb-none mr-sm">
 				<c:choose>
 					<c:when test="${not empty questionnairesStepsBo.stepId}"><button type="button" id="saveBtn" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Save</button></c:when>
@@ -47,7 +46,7 @@
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
 	            </span>
 	         </div>
-	         <%-- </c:if> --%>
+	        
          </c:if>
       </div>
    </div>
@@ -186,13 +185,8 @@
                                     <span class="sprites_icon preview-g mr-sm" onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
                                     <span class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
 		                         	<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
-                                    
-                                    <%-- <span class="sprites_icon edit-g mr-sm" onclick="editQuestion(${entry.value.questionInstructionId});"></span> --%>
-                                    
                                      <span class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
 		                         		<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"</c:if>></span>
-                                    
-                                    <%-- <span class="sprites_icon delete" onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"></span> --%>
                                  </div>
                               </div>
                            </div>
@@ -229,7 +223,7 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	var question = "${Question}";
-	console.log("question:"+question);
+	
 	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
 		$('.formLevel a').tab('show');
 	}else{
@@ -343,7 +337,7 @@ $(document).ready(function(){
              $("#repeatableText").parent().find(".help-block").html("");
     	 }
      });
-     /* var viewPermission = "${permission}"; */
+     
      var actionPage = "${actionTypeForQuestionPage}";
      var reorder = true;
      if(actionPage == 'view'){
@@ -599,7 +593,7 @@ function deletQuestion(formId,questionId){
 		    				if(status == "SUCCESS"){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
-		    					console.log(jsonobject.questionnaireJsonObject);
+		    					
 		    					var questionnaireSteps = jsonobject.questionnaireJsonObject;
 		    					var isDone = jsonobject.isDone;
 		    					reloadQuestionsData(questionnaireSteps,isDone);
@@ -663,7 +657,7 @@ function reloadQuestionsData(questions,isDone){
 				datarow.push(dynamicAction);    	 
 			$('#content').DataTable().row.add(datarow);
 		 });
-		 console.log("isDone:"+isDone);
+		 
 		 if(isDone != null && isDone){
 			 $("#doneId").attr("disabled",false);
 			 $('#helpNote').attr('data-original-title', '');
@@ -732,7 +726,7 @@ function validateShortTitle(item,callback){
                  },
                  success:  function getResponse(data){
                      var message = data.message;
-                     console.log(message);
+                    
                      if('SUCCESS' != message){
                          $(thisAttr).validator('validate');
                          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -772,7 +766,7 @@ function validateRepeatableQuestion(item,callback){
             },
             success:  function getResponse(data){
                 var message = data.message;
-                console.log(message);
+                
                 if('SUCCESS' == message){
                     callback(true);
                     showErrMsg("The following properties for questions cannot be used if the form is of Repeatable type:  Anchor Date, Charts/Statistics for Dashboard.");

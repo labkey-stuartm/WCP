@@ -112,7 +112,6 @@ function isNumberKey(evt)
                   <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The step that the user must be directed to from this step."></span></div>
                   <div class="form-group">
                      <select name="destinationStep" id="destinationStepId" data-error="Please choose one option" class="selectpicker" required>
-                     <!-- <option disabled selected>Select</option> -->
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -348,9 +347,6 @@ function isNumberKey(evt)
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
                   <span class="txt-gray">(Rollback option provided for these three options)</span>
                </div>
-               <!-- <div class="mt-sm">
-                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-               </div> -->
             </div>
 		  </div>
          </div>
@@ -614,7 +610,6 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				         <!-- <div class="scaleMaximagePathId">Change</div> -->
 				         <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.maxImage}"><div class="textLabelcontinuesScaleMaxImagePathId" >Upload</div></c:if>
 					     <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.maxImage}"><div class="textLabelcontinuesScaleMaxImagePathId" >Change</div></c:if>
 				      </div>
@@ -692,7 +687,7 @@ function isNumberKey(evt)
 	            <div class="clearfix"></div>
 	            <div class="row mt-md">
 		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
-		            <%-- <input type="hidden" name="questionReponseTypeBo.validationRegex" id="validationRegexId" value="${questionnairesStepsBo.questionReponseTypeBo.validationRegex}"> --%>
+		            
 		                  <div class="col-md-12 col-lg-12 p-none">
 		                     <div class="gray-xs-f mb-xs">Special Validations<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span></div>
 		                     <div class="col-md-3 pl-none">
@@ -718,11 +713,7 @@ function isNumberKey(evt)
 							       <div class="help-block with-errors red-txt"></div>                    
 			                     </div>
 		                     </div>
-		                     <!-- <div class="col-md-1 text-right">
-			                     <div class="form-group">
-			    					            
-			                     </div>
-		                     </div> -->
+		                     
 		                     <div class="col-md-6 pl-none">
                             <div class="mr-xs col-md-2 pr-none">except</div>
 			                      <div class="form-group col-md-9 pl-none pr-none">
@@ -1223,25 +1214,7 @@ function isNumberKey(evt)
           </div>
          <div class="clearfix"></div>
          <div class="gray-choice-f mb-xs mt-md">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span></div>
-      		 <%-- <div class="row">
-      		   <div class="col-md-3 pl-none">
-      		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
-      		   </div>
-      		  <!--  <div class="col-md-2 pl-none">
-      		      <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
-      		   </div>  -->
-      		   <div class="col-md-3 pl-none">
-      		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
-      		   </div>
-      		   <div class="col-md-2 pl-none">
-      		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
-      		   </div>
-      		   <c:if test="${questionnaireBo.branching}">
-      		      <div class="col-md-2 pl-none">
-      		         <div class="gray-xs-f mb-xs">Destination Step  </div>
-      		      </div>
-      		   </c:if>
-      		 </div> --%>
+      		 
          <div class="TextChoiceContainer">
          	<c:choose>
 				<c:when test="${questionnairesStepsBo.questionsBo.responseType eq 6 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
@@ -1809,7 +1782,7 @@ function isNumberKey(evt)
 					                           <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].inputTypeValue" id="inputSubTypeValueId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.inputTypeValue}">
 				                     	  	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].sequenceNo" id="sequenceNoId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.sequenceNo}">
 				                     	   	   <input type="hidden" name="questionConditionBranchBoList[${status.index}].questionConditionBranchBos[${subStatus.index}].parentSequenceNo" id="parentSequenceNoId${questionConditionsSubBranchBo.sequenceNo}" value="${questionConditionsSubBranchBo.parentSequenceNo}">
-					                          <%--  <c:if test="${subStatus.last}"> --%>
+					                          
 					                           <c:choose>
 					                           		<c:when test="${questionConditionBranchBo.inputTypeValue ne ('*') && questionConditionBranchBo.inputTypeValue ne ('+')}">
 					                           			<div class="add_varible add_var_hide" index="${status.index}" parentIndex="${questionConditionBranchBo.sequenceNo}" id="addVaraiable${subStatus.index}" onclick="addVariable(this);">+ Add Variable</div>
@@ -1819,7 +1792,7 @@ function isNumberKey(evt)
 					                           		</c:otherwise>
 					                           </c:choose>
 					                          
-					                         <%--   </c:if> --%>
+					                         
 					                        </div>
 					                        <div class="form-group sm__in <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>">
 					                           <input type="text" id="constantValId${questionConditionsSubBranchBo.sequenceNo}" index="${questionConditionsSubBranchBo.sequenceNo}" class="constant form-control <c:if test="${questionConditionsSubBranchBo.inputType eq 'C'}">conditionalBranchingRequired</c:if> <c:if test="${questionConditionsSubBranchBo.inputType ne 'C'}">add_var_hide</c:if>" value="${questionConditionsSubBranchBo.inputTypeValue}" onkeypress="return isNumberKey(event)"/>
@@ -2034,10 +2007,7 @@ $(document).ready(function(){
 		   				minImageFile = document.getElementById("scaleMinImageFileId").files[0];
 		     			maxImageFile = document.getElementById("scaleMaxImageFileId").files[0];
 		   			}
-    	   			/* alert("minImagePath:"+minImagePath);
-    	   			alert("maxImagePath:"+maxImagePath);
-    	   			alert("minImageFile:"+minImageFile);
-    	   			alert("maxImageFile:"+maxImageFile); */
+    	   			
     	   			if(minImagePath == '' && maxImagePath == '' && ((typeof minImageFile == 'undefined' && typeof maxImageFile == 'undefined') ||  (minImageFile == null && maxImageFile == null))){
     	   				isImageValid = true;
     	   			}else if (((minImageFile != null && typeof minImageFile != 'undefined') || minImagePath != '') && ((maxImageFile != null && typeof maxImageFile != 'undefined') || maxImagePath != '')){
@@ -2701,7 +2671,7 @@ $(document).ready(function(){
         		$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
                 $("#textScalePositionId").parent().find(".help-block").empty();
         	}else{
-        	     //$("#textScalePositionId").val('');
+        	    
         		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
                  $("#textScalePositionId").parent().find(".help-block").empty();
                  $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices</li></ul>");
@@ -2731,11 +2701,7 @@ $(document).ready(function(){
 		}
      });
  // File Upload    
-   /*  $(".sm-thumb-btn").click(function(){
-    	//$(this).next().click();
-    	//console.log("sm-thumb-btn");
-    	$(this).siblings('.upload-image').click();
-    }); */
+   
     openUploadWindow=function(item){
     	$(item).siblings('.upload-image').click();
     }
@@ -2860,13 +2826,11 @@ $(document).ready(function(){
       					}
       					
       				}
-      				//setTimeout(hideDisplayMessage, 4000);
+      				
       	          },
       	          error: function(xhr, status, error) {
         			  $(item).prop('disabled', false);
-        			  //$('#alertMsg').show();
-        			  //$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-        			  //setTimeout(hideDisplayMessage, 4000);
+        			  
         		  },global:false
       	      });
     		}else{
@@ -3022,7 +2986,7 @@ function getResponseType(id){
 			 var responseType = $("#responseTypeId>option:selected").html();
 			 resetTheLineStatData();
 			 if(responseType != 'Boolean'){
-				// $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 $("#"+responseType.replace(/\s/g, '')).find('img').attr("src",''); 
 				 if(responseType == "Date"){
@@ -3052,8 +3016,7 @@ function getResponseType(id){
 			 }
 			 $("#timeIntervalStepId").val(1);
 			 $("#timeIntervalDefaultId").val("00:01");
-			// $("#invalidMessageId").val("Invalid Input. Please try again.");
-			// $("#scaleStepId").val(5);
+			
 		     $("#textScalePositionId").val(2);
 		     $("#scaleDefaultValueId").val(1);
 		     if(responseType == 'Text Scale'){
@@ -3094,13 +3057,7 @@ function getResponseType(id){
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
-		 //var type='';
-		 /* if(responseType == 'Continuous Scale'){
-			 type = 'Scale';
-		 }else{
-			 type = responseType;
-			 $("#"+type.replace(/\s/g, '')).hide();
-		 } */
+		 
 		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
 			 var style = '${questionnairesStepsBo.questionReponseTypeBo.style}';
@@ -3674,7 +3631,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	}
 }
 function goToBackPage(item){
-	//window.history.back();
+	
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({
@@ -4009,9 +3966,7 @@ function addImageChoice(){
     $(".image-choice").parent().find(".help-block").empty();
 	$(".image-choice").parents("form").validator("destroy");
 	$(".image-choice").parents("form").validator();
-	/* $(".sm-thumb-btn").click(function(){
-		$(this).siblings('.upload-image').click();
-    }); */
+	
 	if($('.image-choice').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
@@ -4221,7 +4176,7 @@ function validateForUniqueValue(item,responsetype,callback){
 		        else
 		        valueArray.push(diaplay_value.toLowerCase());
 			}else{
-				//isValid=true;
+				
 			}
 			
 		});
@@ -4300,8 +4255,7 @@ function validateForUniqueValue(item,responsetype,callback){
 function addFunctions(item){
 	var index = $(item).attr('index');
 	
-	//var count = parseInt($(item).attr('count'));
-	//var preCount = parseInt($(item).attr('count'));
+	
 	var value = $(item).val();
 	var isValid = true;
 	$("#inputTypeErrorValueId"+index).hide();
@@ -4309,9 +4263,7 @@ function addFunctions(item){
 	var parent_input = $("#rootId"+parent_sequence_no).find('select').val();
 	deleteChildElements(index,"child");
 	
-	//var total = parseInt($('.numeric__row').length);
 	
-	//var total  = parseInt($(".numeric__row").last().attr("id"));
 	var total = maxSquenceValue();
 	var v= total;
 	$(item).find('input').addClass("add_var_hide");
@@ -4447,7 +4399,7 @@ function addFunctions(item){
 		}
 		$("#inputSubTypeValueId"+index).val('x');
 		if(!isValid){
-			//$("#inputSubTypeValueId"+index).val('x');
+			
 			$("#inputTypeErrorValueId"+index).show();
 			$("#inputTypeErrorValueId"+index).html('RDE (x) should be used only once.');
 		}else{
@@ -4838,7 +4790,6 @@ function validateMinMaxforX(){
 	}
 	if(minValue != '' &&  maxValue!= ''){
 		if(Number(value) >= Number(minValue) && Number(value) <= Number(maxValue)){
-			//return "values should be less than max and greater than max";
 			return "";
 		}else{
 			return "x value should be less than maximum value and greater than minimum value";

@@ -32,21 +32,13 @@
 .tool-tip [disabled] {
   pointer-events: none;
 }
-/* .time-opts .remBtnDis{
-	display: initial;
-} */
+
 .yourTableClass { 
     border-collapse: separate; 
     border-spacing: 10px; 
     *border-collapse: expression('separate', cellSpacing = '10px');
 }
-/* .dataTables_wrapper.no-footer .dataTables_scrollBody {
-    border-bottom: none !important;
-}
 
-.dataTables_scrollBody{
-	overflow-x: hidden !important;
-} */
 </style>
 
 <script type="text/javascript">
@@ -101,7 +93,7 @@ function isNumber(evt, thisAttr) {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <%-- <input type="hidden" name="id" value=" ${questionnaireBo.id}"> --%>
+   
    <div class="right-content-body pt-none pl-none" id="rootContainer">
       <ul class="nav nav-tabs review-tabs" id="tabContainer">
          <li class="contentqusClass active"><a data-toggle="tab" href="#contentTab">Content</a></li>
@@ -182,9 +174,6 @@ function isNumber(evt, thisAttr) {
 		            	<div>
 		                  <div class="text-right pos-relative">
 		                  	 <c:if test="${entry.value.stepType ne 'Instruction'}">
-		                    <!--  <span class="sprites_v3 status-blue mr-md"></span>
-		                     <span class="sprites_v3 heart-blue mr-md"></span>
-		                     <span class="sprites_v3 calender-blue mr-md"></span> -->
 		                     <c:choose>
                               	 	<c:when test="${entry.value.responseTypeText eq 'Double'  && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
@@ -263,7 +252,6 @@ function isNumber(evt, thisAttr) {
 	            		<input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	            	</c:otherwise>
 	            </c:choose>
-	            
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
@@ -554,9 +542,6 @@ function isNumber(evt, thisAttr) {
       </div>
       
          <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
-            <!-- <ul class="circle">
-               <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
-            </ul> -->
             <div>               
                <div>
                   <ul class="square">
@@ -634,7 +619,7 @@ $(document).ready(function() {
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
-    /* var viewPermission = "${permission}"; */
+    
     var actionPage= "${actionType}";
     var reorder = true;
     if(actionPage == 'view'){
@@ -650,9 +635,6 @@ $(document).ready(function() {
          "columnDefs": [ 
           { orderable: false, targets: [0,1,2,3] },
           ],
-          /* scrollY: 400,
-          scrollX: false,
-          scrollCollapse: true, */
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(actionPage != 'view'){
 	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
@@ -685,12 +667,6 @@ $(document).ready(function() {
 		      }  	
 				 	
 		    }
-	        /* if(i==0){
-	        	oldOrderNumber = $(diff[i].oldData).attr('id');
-	            newOrderNumber = $(diff[i].newData).attr('id');
-	            oldClass = $(diff[i].oldData).attr('class');
-	            newclass = $(diff[i].newData).attr('class');
-	        } */
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
@@ -745,7 +721,7 @@ $(document).ready(function() {
 	if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
  	}
-	//var previousFrequency = $("previousFrequency").val();
+	
 	$(".schedule").change(function() {
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
@@ -913,12 +889,10 @@ $(document).ready(function() {
     });
     $('#startDateMonthly').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
-       // minDate: new Date(),
-       useCurrent :false,
+        useCurrent :false,
     }).on("dp.show", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(serverDate());
     }).on("dp.change",function(e){
-    	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
     	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
     		$('#pickStartDate').val('');
     	}
@@ -933,7 +907,6 @@ $(document).ready(function() {
 	    	}
 	    }
     	 $('#pickStartDate').data("DateTimePicker").enabledDates(dateArr);
-    	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
     
     $(".clock").not('.cursor-none').datetimepicker({
@@ -970,9 +943,6 @@ $(document).ready(function() {
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-//     		var monthCount = Number(months)*30;
-//          dt.setDate(dt.getDate() + Number(monthCount));	
-//             endDate = formatDate(dt);
 			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
@@ -1052,11 +1022,9 @@ $(document).ready(function() {
 				}
 				if(isFromValid("#contentFormId")){
 					doneQuestionnaire(this, 'done', function(val) {
-						console.log("val:"+val);
 						if(val) {
 							validateLinceChartSchedule('','',function(valid){
 								if(valid){
-									//document.contentFormId.submit();
 									document.contentFormId.action="/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}";
 									document.contentFormId.submit();
 								}else{
@@ -1166,10 +1134,6 @@ $(document).ready(function() {
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-//     		var monthCount = Number(months)*30;
-    		
-//             dt.setDate(dt.getDate() + Number(monthCount));	
-//             endDate = formatDate(dt);
 			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
@@ -1268,9 +1232,7 @@ $(document).ready(function() {
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = moment(serverDate()).format("MM/DD/YYYY"); // month + '/' +  day + '/' + date.getFullYear();
-// 	   	if($(this).is('#startDate')) {
-// 			$(document).find('.dailyClock').val('');
-// 		}
+
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
@@ -1448,7 +1410,7 @@ function toJSDate( dateTime ) {
 	}
 }
 function saveQuestionnaire(item, callback){
-	console.log("saveQuestionnaire");
+	
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#titleId").val();
@@ -1463,7 +1425,7 @@ function saveQuestionnaire(item, callback){
 	
 	branching =  $('input[name="branching"]:checked').val();
    
-	//var type_text = $("#type").val();
+	
 	var type_text = "";
 	var tab = $("#tabContainer li.active").text();
 	
@@ -1471,7 +1433,7 @@ function saveQuestionnaire(item, callback){
 	type_text = "schedule";
 	var questionnaire = new Object();
 	questionnaire.status = statusText;
-	console.log("statusText:"+statusText);
+	
 	if(id != null && id != '' && typeof id != 'undefined'){
 		questionnaire.id=id;
 	}
@@ -1679,9 +1641,7 @@ function saveQuestionnaire(item, callback){
 			isFormValid = false;
 		}
 	}
-	console.log("currentFrequency:"+questionnaire.currentFrequency);
-	console.log("frequency:"+questionnaire.frequency);
-	console.log("previousFrequency:"+questionnaire.previousFrequency);
+	
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
@@ -1746,7 +1706,6 @@ function saveQuestionnaire(item, callback){
 				}
 	        },
 	        error: function(xhr, status, error) {
- 				//  showErrMsg("Something went Wrong");
 					$("body").removeClass("loading");
 					if (callback)
   						callback(false);
@@ -1807,7 +1766,7 @@ function doneQuestionnaire(item, actType, callback) {
 		var frequency = $('input[name="frequency"]:checked').val();
     	
     	var valForm = false;
-    	console.log("valForm:"+valForm);
+    	
     	if(actType !=='save'){
     		$("#status").val(true);
 	    	if(frequency == 'One time'){
@@ -1975,7 +1934,7 @@ function reloadQuestionnaireStepData(questionnaire,isDone){
 					              '</div>'+
 					           '</div>';
 					           
-					           //<span class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
+					           
 				if(value.stepType == 'Form'){
 					if(Object.keys(value.fromMap).length > 0){
 						for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
@@ -1987,7 +1946,7 @@ function reloadQuestionnaireStepData(questionnaire,isDone){
 				datarow.push(dynamicAction);    	 
 			$('#content').DataTable().row.add(datarow);
 		 });
-		 console.log("isDone:"+isDone);
+		 
 		 if(isDone != null && isDone){
 			 $("#doneId").attr("disabled",false);
 			 $('#helpNote').attr('data-original-title', '');
@@ -2167,7 +2126,7 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
 			frequencyTxt = "Within a day";
 		}
 	}
-	console.log("frequencyTxt:"+frequencyTxt);
+	
 	if((questionnaireId != null && questionnaireId !='' && typeof questionnaireId!= 'undefined') &&
 			(frequencyTxt != null && frequencyTxt !='' && typeof frequencyTxt!= 'undefined')){
 		 $.ajax({
@@ -2202,7 +2161,7 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
 }
 function validateTime(dateRef, timeRef) {
 var valid = true;
-//$(dateRef+","+timeRef).change(function() {
+
 	 var tm = $('#timepicker1').val();
 	 var dt;
 	 
@@ -2213,9 +2172,9 @@ var valid = true;
 			  if(dt < serverDate()) {
 				  $(this).data("DateTimePicker").clear();
 				  $(this).parent().addClass('has-error has-danger');
-// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a date that has not already passed for the current date.</li></ul>');
+
 			  } else {
-// 				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+
 			  }
 			  timeRef.each(function() {
 				  if($(this).val()){
@@ -2225,17 +2184,15 @@ var valid = true;
 					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
 					   $(this).parent().addClass('has-error has-danger');
-// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 					   if(valid)
 						   valid = false;
 					  } else {
-// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 					  }
 				  }
 			  });  
 		  }
   });
-//});
+
  return valid;
 }
 </script>

@@ -135,13 +135,13 @@ $(document).ready(function(){
     $('input[name="consentItemType"]').change(function(){
     	$('.visualStepDiv').find(".help-block").empty();
     	resetValidation($("#consentInfoFormId"));
-    	//resetTitle();
+    	
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
     		$("#titleContainer").hide();
     		$("#consentItemTitleId").prop('required', false);
     	}else{
-    		/* setTimeout(function(){ consentInfoDetails(); }, 1000); */
+    		
     		consentInfoDetails();
     		$("#consentItemTitleId").prop('required', true);
     		$("#titleContainer").show();
@@ -152,7 +152,7 @@ $(document).ready(function(){
     $("#consentItemTitleId").change(function(){
     	var titleText = this.options[this.selectedIndex].text;
     	resetValidation($("#consentInfoFormId"));
-    	console.log("titleText:"+titleText);
+    	
     	$(".consentTitle").parent().removeClass('has-error has-danger');
 		$(".consentTitle").parent().find(".help-block").empty();
 		$("#displayTitle").parent().removeClass('has-error has-danger');
@@ -181,7 +181,7 @@ $(document).ready(function(){
     	valid =  maxLenValEditor();
     	if(valid && isFromValid("#consentInfoFormId")){
     		var visualStepData = '';
-    		console.log($('input[name=visualStep]:checked').val());
+    		
     		visualStepData = $('input[name=visualStep]:checked').val();
     		if(visualStepData != '' && visualStepData!= null && typeof visualStepData != 'undefined'){
     			
@@ -326,7 +326,7 @@ function goToBackPage(item){
 
 //remove the default vallues from the fields when the consent type is changed
 function addDefaultData(){
-	console.log("addDefaultData");
+	
 	var consentInfoId = $("#id").val();
 	$("#displayTitle").val('');
 	$("#briefSummary").val('');
@@ -339,7 +339,7 @@ function addDefaultData(){
 		var consentType = "${consentInfoBo.consentItemType}";
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
-			//tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
+			
 			var elaboratedText = $("#elaboratedTemp").val();
 			tinymce.get('elaboratedRTE').setContent(elaboratedText);
 			var displayTitle = $("#displayTitleTemp").val();
@@ -408,7 +408,7 @@ function initTinyMCEEditor(){
 function maxLenValEditor() {
 	var isValid = true; 
 	var value = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
-	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
+	
 	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 15000){
 		if(isValid){
 			isValid = false;

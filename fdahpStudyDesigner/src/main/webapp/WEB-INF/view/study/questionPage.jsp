@@ -317,9 +317,7 @@ function isNumberKey(evt)
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
                   <span class="txt-gray">(Rollback option provided for these three options)</span>
                </div>
-               <!-- <div class="mt-sm">
-                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-               </div> -->
+               
             </div>
 		</div>
          </div>
@@ -461,7 +459,7 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.minImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				        <!--  <div class="scaleMinimagePathId">Change</div> -->
+				        
 				         <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelscaleMinImagePathId" >Upload</div></c:if>
 					     <c:if test="${not empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelscaleMinImagePathId" >Change</div></c:if>
 				      </div>
@@ -480,7 +478,7 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				        <!--  <div class="scaleMaximagePathId">Change</div> -->
+				        
 				         <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelscaleMaxImagePathId" >Upload</div></c:if>
 					     <c:if test="${not empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelscaleMaxImagePathId" >Change</div></c:if>
 				      </div>
@@ -568,7 +566,7 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.minImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				        <!--  <div class="scaleMinimagePathId">Change</div> -->
+				       
 				         <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelcontinuesScaleMinImagePathId" >Upload</div></c:if>
 					     <c:if test="${not empty questionsBo.questionReponseTypeBo.minImage}"><div class="textLabelcontinuesScaleMinImagePathId" >Change</div></c:if>
 				      </div>
@@ -587,7 +585,7 @@ function isNumberKey(evt)
 				         <div class="thumb-img">
 				            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.maxImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 				         </div>
-				        <!--  <div class="scaleMaximagePathId">Change</div> -->
+				       
 				         <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelcontinuesScaleMaxImagePathId" >Upload</div></c:if>
 					     <c:if test="${not empty questionsBo.questionReponseTypeBo.maxImage}"><div class="textLabelcontinuesScaleMaxImagePathId" >Change</div></c:if>
 				      </div>
@@ -667,7 +665,7 @@ function isNumberKey(evt)
 	            <div class="clearfix"></div>
 	            <div class="row mt-md">
 		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
-		           <%--  <input type="hidden" name="questionReponseTypeBo.validationRegex" id="validationRegexId" value="${questionsBo.questionReponseTypeBo.validationRegex}"> --%>
+		           
 		                  <div class="col-md-12 col-lg-12 p-none">
 		                     <div class="gray-xs-f mb-xs">Special Validations<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span></div>
 		                     <div class="col-md-3 pl-none">
@@ -1756,7 +1754,7 @@ $(document).ready(function(){
     	}
      });
      $("#allowHealthKit").on('change',function(){
-    	 console.log("change:"+$(this).is(":checked"));
+    	
     	 if($(this).is(":checked")){
      		$(this).val("Yes");
      		$("#healthKitContainerId").show();
@@ -1877,7 +1875,7 @@ $(document).ready(function(){
     			var stepsCount = (parseInt(diff)/parseInt(value)); 
     			if((parseInt(diff)%parseInt(value)) == 0){
     	            displayStepsCount = parseInt(stepsCount);
-    	            console.log(displayStepsCount);
+    	           
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
         	    		$("#displayStepsCount").parent().removeClass("has-danger").removeClass("has-error");
         	            $("#displayStepsCount").parent().find(".help-block").empty();
@@ -1954,7 +1952,7 @@ $(document).ready(function(){
         		$("#textScalePositionId").parent().removeClass("has-danger").removeClass("has-error");
                 $("#textScalePositionId").parent().find(".help-block").empty();
         	}else{
-        	     //$("#textScalePositionId").val('');
+        	     
         		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
                  $("#textScalePositionId").parent().find(".help-block").empty();
                  $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices </li></ul>");
@@ -2119,7 +2117,7 @@ $(document).ready(function(){
     }
     $("#responseTypeId").on("change",function(){
     	var value= $(this).val();
-    	console.log(value);
+    	
     	 getResponseType(value);
     });
     $('.DateStyleRequired').on("change",function(){
@@ -2174,7 +2172,7 @@ $(document).ready(function(){
     });
     $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#textmaxLengthId').bind('input', function(e) {
         var id= $(this).attr('id');
-        console.log(id);
+       
     	var str = $("#"+id).val();
         var dec = str.indexOf(".");
         var first_char = str.charAt(0);
@@ -2225,9 +2223,7 @@ $(document).ready(function(){
 	}
     $('[data-toggle="tooltip"]').tooltip();
  // File Upload    
-    /* $(".sm-thumb-btn").click(function(){
-        $(this).next().click();
-    }); */
+    
     openUploadWindow=function(item){
     	$(item).siblings('.upload-image').click();
     }
@@ -2376,7 +2372,7 @@ function toJSDate( dateTime ) {
 	}
 }
 function setResponseDate(type){
-	console.log("type:"+type);
+	
 	
 	if(type == 'Date-Time'){
 		
@@ -2451,7 +2447,7 @@ function getResponseType(id){
 			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
 				 	var container = document.getElementById(responseType.replace(/\s/g, ''));
 				    var children = container.getElementsByTagName('select');
-				    console.log("children.length:"+children.length);
+				    
 				    for (var i = 0; i < children.length; i++) {
 				        children[i].selectedIndex = 0;
 				    }
@@ -2459,7 +2455,7 @@ function getResponseType(id){
 			}
 			$("#timeIntervalStepId").val(1);
 			$("#timeIntervalDefaultId").val("00:01");
-			//$("#invalidMessageId").val("Invalid Input. Please try again.");
+			
 			$("#textScalePositionId").val(2);
 			$("#scaleDefaultValueId").val(1);
 			if(responseType == 'Text Scale'){
@@ -2492,7 +2488,7 @@ function getResponseType(id){
 		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
 			 var style = "${questionsBo.questionReponseTypeBo.style}";
-			 console.log("style:"+style);
+			
 			 setResponseDate(style);
 		 }
 		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
@@ -2559,7 +2555,7 @@ function getResponseType(id){
    			 	$("#useAnchorDateContainerId").show();
    			 	var anchorDate = "${questionsBo.useAnchorDate}";
 			 	if(anchorDate == "true"){
-			 		console.log("anchorDate:"+anchorDate);
+			 		
 			 		$("#useAnchorDateId").attr("checked",true);
 			 	}
 	   		}else{
@@ -2781,7 +2777,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 		$('.value-picker').each(function(){
 			var questionSubResponseType = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
+			
 			var response_sub_type_id = $("#valPickSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayValPickText"+id).val();
 			var diaplay_value = $("#displayValPickValue"+id).val();
@@ -2798,16 +2794,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 			
 			var questionSubResponseType = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
+			
 			
 			var response_sub_type_id = $("#textScaleSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayTextSclText"+id).val();
 			var diaplay_value = $("#displayTextSclValue"+id).val();
-			
-			
-			console.log("diasplay_text:"+diasplay_text);
-			console.log("diaplay_value:"+diaplay_value);
-			
 			
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
@@ -2825,7 +2816,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 		$('.text-choice').each(function(){
 			var questionSubResponseType = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
+			
 			
 			var response_sub_type_id = $("#textChoiceSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayTextChoiceText"+id).val();
@@ -2848,7 +2839,6 @@ function saveQuestionStepQuestionnaire(item,callback){
 		$('.image-choice').each(function(){
 			var questionSubResponseType = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
 			
 			var response_sub_type_id = $("#imageChoiceSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayImageChoiceText"+id).val();
@@ -2961,7 +2951,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	}
 }
 function goToBackPage(item){
-	//window.history.back();
+	
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForFormStep ne 'view'}">
 		bootbox.confirm({
@@ -3247,9 +3237,7 @@ function addImageChoice(){
     $(".image-choice").parent().find(".help-block").empty();
 	$(".image-choice").parents("form").validator("destroy");
 	$(".image-choice").parents("form").validator();
-	/* $(".sm-thumb-btn").click(function(){
-		   $(this).next().click();
-    }); */
+	
 	if($('.image-choice').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
@@ -3290,7 +3278,7 @@ function validateStatsShorTitle(event,callback){
                  },
                  success:  function getResponse(data){
                      var message = data.message;
-                     console.log(message);
+                    
                      if('SUCCESS' != message){
                          $("#statShortNameId").validator('validate');
                          $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
@@ -3347,7 +3335,7 @@ function validateTheQuestionshortTitle(item,callback){
                  },
                  success:  function getResponse(data){
                      var message = data.message;
-                     console.log(message);
+                     
                      if('SUCCESS' != message){
                          $(thisAttr).validator('validate');
                          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -3397,7 +3385,7 @@ function validateFractionDigits(item){
 				maxTemp = 0;
 			}
 			
-			console.log("maxTemp:"+maxTemp);
+			
 			
 			//min value check
 			if(parseFloat(minValue)>=-10000&&parseFloat(minValue)<-1000){
@@ -3412,10 +3400,10 @@ function validateFractionDigits(item){
 				minTemp = 4;
 			}
 			
-			console.log("minTemp:"+minTemp);
+			
 			
 			maxFracDigits = (parseInt(maxTemp)>parseInt(minTemp)) ? parseInt(minTemp):parseInt(maxTemp);
-			console.log("maxFracDigits:"+maxFracDigits);
+			
 			
 			if(parseInt(value) <= parseInt(maxFracDigits)){
 				$(item).validator('validate');
@@ -3461,7 +3449,7 @@ function validateForUniqueValue(item,responsetype,callback){
 		        else
 		        valueArray.push(diaplay_value.toLowerCase());
 			}else{
-				//isValid=true;
+				
 			}
 			
 		});
@@ -3542,8 +3530,7 @@ function validateForUniqueValue(item,responsetype,callback){
 function removeImage(item){
 	var id = $(item).parent().find('input').attr('id');
 	var id2 = $(item).parent().find('input[type="hidden"]').attr('id')
-	console.log("id:"+id);
-	console.log("id2:"+id2);
+	
 	$("#"+id).val('');
 	$("#"+id2).val('');
 	$('.textLabel'+id2).text("Upload");
