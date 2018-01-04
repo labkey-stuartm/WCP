@@ -73,7 +73,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * 
-	 * List of all the Questionnaires of an study
+	 * List of all the Questionnaires of an study.A Study can have 0 or more Questionnaires and
+	 *  admin can manage a list of questionnaires for the study 
 	 */
 	@RequestMapping("/adminStudies/viewStudyQuestionnaires.do")
 	public ModelAndView viewStudyQuestionnaires(HttpServletRequest request) {
@@ -148,11 +149,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	/**
 	 * @author BTC
-	 * @param request
-	 * @param response
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Instruction Step Page in Questionnaire
+	 * Instruction Step Page in Questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
+	 * instruction title and text
 	 */
 	@RequestMapping("/adminStudies/instructionsStep.do")
 	public ModelAndView getInstructionsPage(HttpServletRequest request , HttpServletResponse response){
@@ -261,10 +263,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @author BTC
 	 * @param request {@link HttpServletRequest}
 	 * @param response {@link HttpServletResponse}
-	 * @param instructionsBo
+	 * @param instructionsBo {@link InstructionsBo}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Save or update of an  instruction step in questionnaire
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the short title
+	 * instruction title and instruction text.
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateInstructionStep.do")
 	public ModelAndView saveOrUpdateInstructionStep(HttpServletRequest request ,HttpServletResponse response,InstructionsBo instructionsBo){
@@ -327,7 +330,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 *  
-	 *  Saving the instruction step information in the questionnaire
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the short title
+	 * instruction title and instruction text.
 	 */
 	@RequestMapping(value="/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,HttpServletResponse response){
@@ -393,7 +397,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Load the Questionnaire page of study with all the steps(instruction,question,form) with schedule information
+	 * Load the Questionnaire page of study with all the steps(instruction,question,form) with schedule information.
+	 * Each step corresponds to one screen on the mobile app.There can be multiple types of QA in a questionnaire depending on the 
+	 * type of response format selected per QA.
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/viewQuestionnaire.do")
 	public ModelAndView getQuestionnairePage(HttpServletRequest request,HttpServletResponse response){
@@ -513,7 +520,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param questionnaireBo {@link QuestionnaireBo}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Save or update of Questionnaire Schedule information
+	 * Create or update of questionnaire in study which contains content and scheduling which can be managed by the admin.The questionnaire schedule
+	 * frequency can be One time, Daily,Weekly,Monthly,Custom and admin has to select any one frequency. 
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/saveorUpdateQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public ModelAndView saveorUpdateQuestionnaireSchedule(HttpServletRequest request , HttpServletResponse response,QuestionnaireBo questionnaireBo){
@@ -572,7 +581,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Save or update of the Questionnaire Schedule Information
+	 * Create or update of Questionnaire in study which contains content and scheduling which can be managed.The Questionnaire schedule
+	 * can be One time, Daily,Weekly,Monthly,Custom.The schedule decides how often the user needs to take it
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
@@ -636,7 +646,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Delete of an Questionnaire step(Instruction,Question,Form)
+	 * Delete of an questionnaire step(Instruction,Question,Form) which are listed in questionnaire.
 	 */
 	@RequestMapping(value="/adminStudies/deleteQuestionnaireStep.do",method = RequestMethod.POST)
 	public void deleteQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -716,7 +726,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Reordering of an Questionnaire steps(Instruction,Question,Form) in Questionnaire page
+	 * A questionnaire is an ordered set of one or more steps (screens on the mobile app).The questionnaire by default follows the master order of steps 
+	 * admin can manage the order of an step.Here we can do the reordering of an questionnaire steps(Instruction,Question,Form) 
+	 * which are listed on questionnaire content page.
 	 */
 	@RequestMapping(value="/adminStudies/reOrderQuestionnaireStepInfo.do", method = RequestMethod.POST)
 	public void reOrderQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -793,7 +805,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Unique validation for Questionnaire Short Title
+	 * Questionnaire contains the content,schedule as two tabs.Each questionnaire contains the short title in content tab this will be created as the column for the
+	 * questionnaire response in response server for this we are doing the unique title validation for each questionnaire in study level
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -834,7 +847,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Unique validation for questionnaire step(Instruction,Question,Form) short title
+	 * A questionnaire is an ordered set of one or more steps.Each step contains the step short title field.
+	 * Which will be response column for the step in response server.so it should be the unique.Here validating the unique for step short title
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireStepShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -874,7 +889,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Load the Form Step with all the questions inside the form
+	 * A questionnaire contains the form step.form step carries multiple questions.Here we described to load the
+	 * form step of an questionnaire
 	 */
 	@RequestMapping("/adminStudies/formStep.do")
 	public ModelAndView getFormStepPage(HttpServletRequest request , HttpServletResponse response){
@@ -994,7 +1010,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Save or update of Form Step in questionnaire
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes.
+	 * which are step level attribute,form level attribute.Admin has fill the required fields and click on done it save the info here.
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateFormStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
@@ -1046,9 +1063,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @author BTC
 	 * @param request {@link HttpServletRequest}
 	 * @param response {@link HttpServletResponse}
-	 * @return String : Sucess or Failure
+	 * @return String : Success or Failure
 	 * 
-	 * Saving the Form step information in Questionnaire
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes.
+	 * which are step level attribute,form level attribute.Admin has fill the required fields and click on save request come here
 	 */
 	@RequestMapping(value="/adminStudies/saveFromStep.do")
 	public void saveFormStep(HttpServletRequest request,HttpServletResponse response){
@@ -1104,7 +1122,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param request {@link HttpServletRequest}
 	 * @param response {@link HttpServletResponse}
 	 * @return String : Success/Failure
-	 *  Reordering of an Questions inside the From Step
+	 * 
+	 * From step contains the list of questions with default admin created master order.Admin can manage these orders by reordering the question on
+	 * drag and drop of a questions in the list
 	 */
 	@RequestMapping(value="/adminStudies/reOrderFormQuestions.do", method = RequestMethod.POST)
 	public void reOrderFromStepQuestionsInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1150,7 +1170,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String : Success/Failure
 	 * 
-	 * Deleting of an Question inside Form Step 
+	 * Form step contains group of questions.Admin can delete the questions using this method and we will return the list of remaining
+	 * question to refresh the list
 	 */
 	@RequestMapping(value="/adminStudies/deleteFormQuestion.do",method = RequestMethod.POST)
 	public void deleteFormQuestionInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1216,7 +1237,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Load the Question step page in questionnaire 
+	 * Load the Question step page in questionnaire which contains the question and answer.
+	 * Which Carries one QA per screen in Mobile app
 	 */
 	@RequestMapping("/adminStudies/questionStep.do")
 	public ModelAndView getQuestionStepPage(HttpServletRequest request , HttpServletResponse response){
@@ -1361,7 +1383,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Save or update of an Question step inside Questionnaire
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections
+	 * admin has to fill the sub section such as step level attribute,question level attribute,response level attributes.Questions 
+	 * can be various types as defined by the response format. Depending on the response format, the attributes of the QA would vary 
+	 * Here we can create or update the question step in questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateQuestionStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
@@ -1416,7 +1441,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Save or update Question step inside of an Questionnaire
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections
+	 * admin has to fill the sub section such as step level attribute,question level attribute,response level attributes.Questions 
+	 * can be various types as defined by the response format. Depending on the response format, the attributes of the QA would vary
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestionStep.do",method = RequestMethod.POST )
 	public void saveQuestionStep(HttpServletResponse response,MultipartHttpServletRequest multipleRequest,HttpServletRequest request){
@@ -1510,7 +1537,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Load the Question page of form step inside questionnaire
+	 * Load the Question page of form step inside questionnaire.Question contains the question level attributes and response level attributes
 	 */
 	@RequestMapping("/adminStudies/formQuestion.do")
 	public ModelAndView getFormStepQuestionPage(HttpServletRequest request , HttpServletResponse response){
@@ -1663,7 +1690,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Save or update of an Question of form step inside questionnaire
+	 * Question of a form step contains the two attributes .Question-level attributes – these are the same set of attributes as that for question step with the 
+	 * exception of the skippable property and branching logic based on participant choice of response or the conditional logic based branching
+	 * Response-level attributes (same as that for Question Step).Here we can save or update the form questions.
+	 * 
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromQuestion.do")
 	public ModelAndView saveOrUpdateFormQuestion(HttpServletRequest request,HttpServletResponse response,QuestionsBo questionsBo){
@@ -1716,7 +1746,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @author BTC
 	 * @param request {@link HttpServletRequest}
 	 * @param response {@link HttpServletResponse}
+	 * 
 	 * @return String : Success/Failure
+	 * Question of a form step contains the two attributes .Question-level attributes – these are the same set of attributes as that for question step with the 
+	 * exception of the skippable property and branching logic based on participant choice of response or the conditional logic based branching
+	 * Response-level attributes (same as that for Question Step).Here we can save or update the form questions.
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
 	public void saveQuestion(HttpServletRequest request,HttpServletResponse response,MultipartHttpServletRequest multipleRequest){
@@ -1858,7 +1892,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Unique Validation of question short title inside form step 
+	 * From step have a one or more question.Each question have the short title field this will be created the as column in response server
+	 * so its should be unique across all the steps.Validateing the Unique of question short title inside form step 
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionKey.do", method = RequestMethod.POST)
 	public void validateQuestionShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -1897,7 +1932,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Unique Validation of States Short title in Question Stastic Data
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding 
+	 * a statistic to the dashboard needs the admin to specify the short name should be unique across all the state in the  study
+	 * So validating the unique validation for short name in states.
 	 */
 	@RequestMapping(value="/adminStudies/validateStatsShortName.do", method = RequestMethod.POST)
 	public void validateQuestionStatsShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -1932,7 +1969,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * Validation for line chart in Questionnaire Schedule 
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding a line chart to the 
+	 * dashboard needs the admin to specify The options time range for the chart which depend on the scheduling frequency set for the activity.when admin change the 
+	 * frequency in questionnaire schedule its validate the options in the time range for chart options.
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
 	public void validateQuestionnaireLineChartSchedule(HttpServletRequest request ,HttpServletResponse response){
@@ -1973,7 +2013,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 * 
-	 * validate the stats information for repeatable form in questionnaire
+	 * In Questionnaire form step carries the multiple question and Answers .In form level attributes we can make form form as repeatable 
+	 * if the form is repeatable we can not add the line chart and states data to the dashbord.here we are validating the added line chart and 
+	 * statistics data before updating the form as repeatable.
+	 * 
 	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
@@ -2005,8 +2048,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param request {@link HttpServletRequest}
 	 * @param response {@link HttpServletResponse}
 	 * @return String Success/Failure
+	 * 
+	 *  For QA of response type that results in the data type 'double', the admin can define conditional logic (formula-based) to evaluate with 
+	 *  user response as the input. A condition or formula is to be defined along with a destination step to navigate to if the result of evaluation 
+	 *  is TRUE and an alternative destination step if FALSE.Admin can check the condition is valid or not here.
 	 *  
-	 *  Trail of an Formula in Question Step formula based branching
 	 */
 	@RequestMapping(value="/adminStudies/validateconditionalFormula.do", method = RequestMethod.POST)
 	public void validateconditionalFormula(HttpServletRequest request ,HttpServletResponse response){
@@ -2050,7 +2096,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response {@link HttpServletResponse}
 	 * @return  {@link ModelAndView}
 	 *  
-	 *  Copy of an Questionnaire in Study
+	 *  Admin want copy the already existed question into the same study admin has to click the copy icon in the questionnaire list.It
+	 *  will copy the existed questionnaire into the study with out questionnaire short title because the short title will be unique
+	 *  across the study
 	 */
 	@RequestMapping("/adminStudies/copyQuestionnaire.do")
 	public ModelAndView copyStudyQuestionnaire(HttpServletRequest request,HttpServletResponse response){

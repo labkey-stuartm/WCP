@@ -68,7 +68,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	}
 	
 	/**
-	 * return  Questionnaires based on user's Study Id
+	 * return List of all the Questionnaires of an study.A Study can have 0 or more Questionnaires and
+	 *  admin can manage a list of questionnaires for the study Questionnaires based on user's Study Id
 	 * @author BTC
 	 * 
 	 * @param studyId, studyId of the {@link StudyBo}
@@ -116,7 +117,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Integer : questionnaireId in {@link QuestionnaireBo}
 	 * @return Object : InstructutionBo {@link InstructionsBo}
 	 * 
-	 * This method is used get the instruction of an questionnaire in study
+	 * Instruction step page in questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
+	 * instruction title and text
 	 */
 	@Override
 	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle,String customStudyId,Integer questionnaireId) {
@@ -167,7 +169,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Object : InstructioBo {@link InstructionsBo}
 	 * 
-	 * This method is used to save the instruction step of an questionnaire in study
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the short title
+	 * instruction title and instruction text.
 	 */
 	@Override
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId) {
@@ -272,7 +275,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Object : QuestionnaireBo {@link QuestionnaireBo}
 	 * 
-	 * This method is used to get the questionnaire of an study by using the questionnaireId
+	 * Load the questionnaire of study with all the steps(instruction,question,form) with schedule information.
+	 * Each step corresponds to one screen on the mobile app.There can be multiple types of QA in a questionnaire depending on the 
+	 * type of response format selected per QA.
 	 */
 
 	@SuppressWarnings("unchecked")
@@ -341,7 +346,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Object : {@link QuestionnaireBo}
 	 * 
-	 * This method is used to save the questionnaire information od an study
+	 * Create or update of questionnaire in study which contains content and scheduling which can be managed by the admin.The questionnaire schedule
+	 * frequency can be One time, Daily,Weekly,Monthly,Custom and admin has to select any one frequency. 
 	 */
 
 	@Override
@@ -409,6 +415,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 			}
+			//updating the anchor date of an study while change the questionnaire frequency in schedule part
 			if(!questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 				String updateFromQuery = "update questions QBO,form_mapping f,questionnaires_steps QSBO SET QBO.use_anchor_date = 0 where "
 						+ "QBO.id=f.question_id and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireBo.getId()+" and QSBO.active=1 "
@@ -423,6 +430,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query.executeUpdate();
 				
 			}
+			// updating the stastic option of dashboard while change the questionnaire frequency 
 			if(questionnaireBo.getFrequency() != null && questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
 				if(questionnaireBo.getCurrentFrequency() != null && questionnaireBo.getPreviousFrequency() != null && !questionnaireBo.getCurrentFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
 					updateLineChartSchedule(questionnaireBo.getId(), questionnaireBo.getCurrentFrequency(), sessionObject, session, transaction, customStudyId);	
@@ -488,7 +496,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Object  : {@link QuestionsBo}
 	 * 
-	 * This method is used to get QuestionBo based on questionId in Study questionnaire
+	 * Load the question of form step inside questionnaire.Question contains the question level attributes and response level attributes
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -537,6 +545,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
 					if(questionReponseTypeBo != null && questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
 						questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
+						// changing the date format to database date format
 						if((FdahpStudyDesignerConstants.DATE).equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
 								questionReponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
@@ -564,6 +573,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
 				query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
 				questionResponseSubTypeList =  query.list();
+				//appending the current date and time for image urls
 				if(null != questionResponseSubTypeList && !questionResponseSubTypeList.isEmpty()){
 					 for(QuestionResponseSubTypeBo s : questionResponseSubTypeList){
 						 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImage())){
@@ -600,7 +610,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @author BTC
 	 * @param Object : {@link QuestionsBo}
 	 * @return Object : {@link QuestionsBo}
-	 *  This method is used to add the question step in questionnaire of an study
+	 * Question of a form step contains the two attributes .Question-level attributes – these are the same set of attributes as that for question step with the 
+	 * exception of the skippable property and branching logic based on participant choice of response or the conditional logic based branching
+	 * Response-level attributes (same as that for Question Step).Here we can save or update the form questions.
 	 */
 	@Override
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
@@ -625,6 +637,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionsBo.getResponseType() == 4 || questionsBo.getResponseType() == 3 ||
 							questionsBo.getResponseType() == 6 || questionsBo.getResponseType() == 5){
 						int i=0;
+						//uploading the images for ImageChoice response type questions
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 							if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 									(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
@@ -662,6 +675,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}	
 					}
 				}
+				//updating the questionnaire and questionnaire step status to incomplete because the admin saving the content question not mark as completed
 				if(!questionsBo.getStatus()){
 					if(questionsBo.getQuestionnaireId() != null){
 						query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+questionsBo.getFromId()+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1 and QSBO.questionnairesId="+questionsBo.getQuestionnaireId());
@@ -717,7 +731,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param int newOrderNumber
 	 * @return String SUCCESS or FAILURE
 	 * 
-	 * This method is used to update the order of an questionnaire steps
+	 * A questionnaire is an ordered set of one or more steps (screens on the mobile app).The questionnaire by default follows the master order of steps 
+	 * admin can manage the order of an step.Here we can do the reordering of an questionnaire steps(Instruction,Question,Form) 
+	 * which are listed on questionnaire content page.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -813,7 +829,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
 	 * 
-	 * This method is used to delete the questionnaire step
+	 * Delete of an questionnaire step(Instruction,Question,Form) which are listed in questionnaire.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -837,6 +853,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			studyVersionBo = (StudyVersionBo)query.uniqueResult();
 			
 			if(studyVersionBo != null){
+				// doing the soft delete after study launch
 				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+stepId+" and QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+stepType+"'";
 				questionnairesStepsBo = (QuestionnairesStepsBo) session.createQuery(searchQuery).uniqueResult();
 				if(questionnairesStepsBo != null){
@@ -861,6 +878,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
 			}else{
+				//doing the hard delete before study launch
 				message = deleteQuestionnaireStep(stepId, questionnaireId, stepType, customStudyId, sessionObject, session, transaction);
 			}
 			//Reset destination steps in Questionnaire Starts
@@ -918,7 +936,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Integer questionnaireId uin {@link QuestionnaireBo}
 	 * @return Map : SortedMap<Integer, QuestionnaireStepBean>
 	 * 
-	 * This method is used to get the all the step inside questionnaire 
+	 * Load the questionnaires of study with all the steps(instruction,question,form) with schedule information.
+	 * Each step corresponds to one screen on the mobile app.There can be multiple types of QA in a questionnaire depending on the 
+	 * type of response format selected per QA. 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -939,6 +959,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	        Map<String, Integer> destinationMap = new HashMap<>();
 	        Map<Integer, Boolean> formStatusMap = new HashMap<>();
 	        destinationText.put(0, "Completion Step");
+	        //setting the sequenceNo and destination steps to the map based on the individual steps later using this map to set the destination step name
 	        for(QuestionnairesStepsBo questionaireSteps : questionnairesStepsList){
 	         destinationText.put(questionaireSteps.getStepId(), questionaireSteps.getSequenceNo()+":"+questionaireSteps.getStepShortTitle());
 	         switch (questionaireSteps.getStepType()) {
@@ -958,6 +979,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		         default: break;
 	          }
 	        }
+	        // get the list of instruction step in questionnaire
 	        if(!instructionIdList.isEmpty()){
 		            List<InstructionsBo> instructionsList = null;
 		            query = session.createQuery(" from InstructionsBo IBO where IBO.active=1 and IBO.id in ("+StringUtils.join(instructionIdList, ",")+")");
@@ -976,6 +998,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		            	}
 		            }
 	        }
+	        //get the list of question step inside the questionnaire
 	        if(!questionIdList.isEmpty()){
 	        	List<QuestionsBo> questionsList = null;
 	            query = session.createQuery(" from QuestionsBo QBO where QBO.active=1 and QBO.id in ("+StringUtils.join(questionIdList, ",")+")");
@@ -998,6 +1021,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            	}
 	            }
 		     }
+	        //get the list of form step which contains the multiple questions of questionnaire
 	        if(!formIdList.isEmpty()){
 	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") and f.active=1 order by f.form_id";
 	            List<?> result = session.createSQLQuery(fromQuery).list();
@@ -1058,7 +1082,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return String : SUCCESS or FAILURE
 	 * 
-	 *  This method is used to check the if the questionnaire short title existed or not in a study
+	 * Questionnaire contains the content,schedule as two tabs.Each questionnaire contains the short title on the content tab this will be created as the column for the
+	 * questionnaire response in response server for this we are doing the unique title validation for each questionnaire in study level
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1071,6 +1096,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(customStudyId != null && !customStudyId.isEmpty()){
+				//checking in the live version questionnaire
 				query = session.createQuery("From QuestionnaireBo QBO where QBO.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') and QBO.shortTitle='"+shortTitle+"'");
 				questionnaireBo = query.list();
 				if(questionnaireBo != null && !questionnaireBo.isEmpty()){
@@ -1084,6 +1110,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 			}else{
+				//checking in the draft version questionnaire
 				query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
 				questionnaireBo = query.list();
 				
@@ -1116,7 +1143,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @param Integer : questionnaireId in {@link QuestionnaireBo}
 	 * @return Object : questionnaireStepBo {@link QuestionnairesStepsBo}
-	 * This method is used to get the step information of questionnaire in a study
+	 * 
+	 * Load the Question step page in questionnaire which contains the question and answer.
+	 * Which Carries one QA per screen in Mobile app
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	@Override
@@ -1146,7 +1175,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					questionnairesStepsBo.setIsShorTitleDuplicate(0);
 				}
 				//Duplicate ShortTitle per QuestionnaireStepBo End
+				
 				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+					//get the one question step of questionnaire
 					QuestionsBo questionsBo= null; 
 					query = session.getNamedQuery("getQuestionStep").setInteger("stepId", stepId);
 					questionsBo = (QuestionsBo) query.uniqueResult();
@@ -1166,6 +1197,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}
 						//Duplicate statShortTitle per questionsBo End 
 						
+						// get the response level attributes values of an questions
 						QuestionReponseTypeBo questionReponseTypeBo = null;
 						logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStep() - questionsResponseTypeId:"+questionsBo.getId());
 						query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
@@ -1204,6 +1236,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
 						query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
 						questionResponseSubTypeList =  query.list();
+						//appending the current date time to the image url
 						if(null != questionResponseSubTypeList && !questionResponseSubTypeList.isEmpty()){
 							 for(QuestionResponseSubTypeBo s : questionResponseSubTypeList){
 								 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImage())){
@@ -1230,6 +1263,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
 					
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
+					//get the one from step of an questionnaire
 					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" and f.active=1 order by f.form_id";
 					Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 		            TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
@@ -1284,6 +1318,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : questionnaireShortTitle in {@link QuestionnaireBo}
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return String : Success/Failure
+	 * 
+	 * A questionnaire is an ordered set of one or more steps.Each step contains the step short title field.
+	 * Which will be response column for the step in response server.so it should be the unique.Here validating the unique for step short title
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1336,7 +1373,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @author BTC
 	 * @return List Object {@link QuestionResponseTypeMasterInfoBo}
 	 * 
-	 * This method is used to get the Resonse Type Master Data
+	 * This method is used to get the Response Type Master information which research kit and research stack supports
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1365,7 +1402,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Object : {@link SessionObject}
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Object : {@link QuestionnairesStepsBo}
-	 * This method is used to save the form step in questionnaire 
+	 * 
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes.
+	 * which are step level attribute,form level attribute.Admin has fill the required fields and click on done it save the info here.
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId) {
@@ -1433,6 +1472,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 				int count = 0;
+				//adding the form step to questionnaire for the first time form step creation
 				if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 					FormBo formBo = new FormBo();
 					formBo.setActive(true);
@@ -1483,7 +1523,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Integer : newOrderNumber
 	 * @return String : Success/Failure
 	 * 
-	 * Reordering the questions inside the form step in questionnaire
+	 * From step contains the list of questions with default admin created master order.Admin can manage these orders by reordering the question  on
+	 * drag and drop of a questions in the list
 	 * 
 	 */
 	@Override
@@ -1540,7 +1581,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Object : {@link SessionObject}
 	 * @param String : customStudyId in {@link StudyBo}
 	 * 
-	 * Deleting the question inside the form step in questionnaire
+	 * This method is used to delete the question inside the form step of an questionnaire
 	 */
 	@Override
 	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject,String customStudyId) {
@@ -1565,6 +1606,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
 				if(studyVersionBo != null ){
+					//doing the soft delete after study is launched
 					formMappingBo.setActive(false);
 					session.saveOrUpdate(formMappingBo);
 					String deleteQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id="+questionId;
@@ -1579,6 +1621,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query = session.createQuery(deleteSubResponse);
 					query.executeUpdate();
 				}else{
+					//doing the hard delete before study launched
 					String deleteQuery = "delete QuestionsBo QBO where QBO.id="+questionId;
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
@@ -1615,7 +1658,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Integer : questionnaireId in {@link QuestionnaireBo}
 	 * @param Integer : sequenceNo in {@link QuestionnairesStepsBo}
 	 * @return List : {@link QuestionnairesStepsBo}
-	 * This method is used to get the forward question step of an questionnaire based on sequence no
+	 * 
+	 * This method is used to get the forward question step of an questionnaire based on sequence no.Thease questions are populated
+	 * in the destination step drop down in the step level attributes of question step,from step and instruction step to 
+	 * select the destination step if branching is enabled for that questionnaire
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1643,7 +1689,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Object : {@link QuestionnairesStepsBo}
 	 * 
-	 * This method is used to save the question step in questionnaire 
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections
+	 * admin has to fill the sub section such as step level attribute,question level attribute,response level attributes.Questions 
+	 * can be various types as defined by the response format. Depending on the response format, the attributes of the QA would vary 
+	 * Here we can create or update the question step in questionnaire
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject,String customStudyId) {
@@ -1706,6 +1755,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					QuestionsBo questionsBo = questionnairesStepsBo.getQuestionsBo();
 					session.saveOrUpdate(questionsBo);
 					addOrUpdateQuestionnairesStepsBo.setQuestionsBo(questionsBo);
+					//adding or updating the response level attributes
 					if(questionsBo != null && questionsBo.getId() != null && questionnairesStepsBo.getQuestionReponseTypeBo() != null){
 						QuestionReponseTypeBo questionResponseTypeBo = getQuestionsResponseTypeBo(questionnairesStepsBo.getQuestionReponseTypeBo(), session);
 						if(questionResponseTypeBo != null ){
@@ -1718,6 +1768,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
 							String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
 							session.createQuery(deletQuesry).executeUpdate();
+							//upload the images in response level
 							if(questionnairesStepsBo.getQuestionsBo().getResponseType() == 4 || questionnairesStepsBo.getQuestionsBo().getResponseType() == 3 ||
 									questionnairesStepsBo.getQuestionsBo().getResponseType() == 6 || questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
 								int j=0;
@@ -1761,6 +1812,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
 							session.createQuery(deletQuesry).executeUpdate();
 						}
+						//condition branching adding for the response type that results in the data type 'double' and checked as formula based branching is yes
 						if(questionResponseTypeBo != null && questionResponseTypeBo.getFormulaBasedLogic().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 							if(questionnairesStepsBo.getQuestionConditionBranchBoList() != null && !questionnairesStepsBo.getQuestionConditionBranchBoList().isEmpty()){
 								String deleteQuery = "delete from question_condtion_branching where question_id="+questionsBo.getId();
@@ -1793,6 +1845,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(questionsBo != null){
 						addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
 					}
+					//updating the sequence no of step based on the previous sequence no
 					if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 						QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
 						query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
@@ -1807,6 +1860,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 				session.saveOrUpdate(addOrUpdateQuestionnairesStepsBo);
+				//updating the destination step for previous step
 				if(addOrUpdateQuestionnairesStepsBo != null && count > 0){
 					String updateQuery="update QuestionnairesStepsBo QSBO set QSBO.destinationStep="+addOrUpdateQuestionnairesStepsBo.getStepId()+" where "
 							+ "QSBO.destinationStep=0 and QSBO.sequenceNo="+(count-1)+" and QSBO.questionnairesId="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId();
@@ -1834,7 +1888,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param session : {@link Session}
 	 * @return Object : {@link QuestionReponseTypeBo}
 	 * 
-	 * Return the QuestionReponsetype based on the response type id which already exists for question
+	 * Return the QuestionReponsetype based on the response type id which already exists for question.These values are listed
+	 * in response level attributes
 	 */
 	public QuestionReponseTypeBo getQuestionsResponseTypeBo(QuestionReponseTypeBo questionsResponseTypeBo,Session session){
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Starts");
@@ -2018,11 +2073,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			studyVersionBo = (StudyVersionBo)query.uniqueResult();
 			
 			if(studyVersionBo != null){
+				//doing the soft delete after study launch
 				query=session.createSQLQuery("CALL deleteQuestionnaire(:questionnaireId,:modifiedOn,:modifiedBy,:studyId)").setInteger("questionnaireId", questionnaireId).
 					       setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime()).setInteger("modifiedBy", sessionObject.getUserId()).setInteger("studyId", studyId);
 			    query.executeUpdate();
 			    message = FdahpStudyDesignerConstants.SUCCESS;
 			 }else{
+				 //doing the hard delete before study launch
 				 message = deleteQuestuionnaireInfo(studyId, questionnaireId, customStudyId, session, transaction);
 			 }
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted.";
@@ -2052,7 +2109,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILUE
 	 * 
-	 * Unique validation for question short title in Form step
+	 * From step have a one or more question.Each question have the short title field this will be created the as column in response server
+	 * so its should be unique across all the steps.Validateing the Unique of question short title inside form step 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2108,7 +2166,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Boolean : true/false
 	 * 
-	 * Unique anchor date validation with in a study
+	 * In Questionnaire for question step and question in form step for date response type we can chose those question as anchor date.
+	 * The anchor date question is unique across the study so here we are validating for anchor date is checked or not for any other question 
+	 * while create or updating the new question in a study
 	 * 
 	 */
 	@Override
@@ -2119,12 +2179,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(customStudyId != null && StringUtils.isNotEmpty(customStudyId)){
+				//checking in the question step  anchor date is selected or not
 				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.study_id in(select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.is_live=0) and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
 				BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 				if(count.intValue() > 0){
 					isExists = true;
 				}else{
+					//checking in the form step question anchor date is selected or not
 					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and study_id in (select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.is_live=0) and q.use_anchor_date=1 and q.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
@@ -2133,12 +2195,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 			}else{
+				//checking in the question step  anchor date is selected or not
 				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.study_id="+studyId+" and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
 				BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 				if(count.intValue() > 0){
 					isExists = true;
 				}else{
+					//checking in the form step question anchor date is selected or not
 					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and study_id="+studyId+" and q.use_anchor_date=1 and q.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
@@ -2195,7 +2259,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILUE
 	 * 
-	 * This method is used to check the stastic short title unique
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding 
+	 * a statistic to the dashboard needs the admin to specify the short name should be unique across all the state in the  study
+	 * So validating the unique validation for short name in states.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2206,18 +2272,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		List<QuestionsBo> questionsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
+			//checking with custom study in live version and draft version
 			if(customStudyId != null && !customStudyId.isEmpty()){
+				//checking in the question step stastic data
 				String serachQuery = "select count(*) from questions qbo,questionnaires_steps qsbo,questionnaires q where qbo.id=qsbo.instruction_form_id and qsbo.questionnaires_id=q.id and q.study_id in(select id From studies SBO WHERE custom_study_id='"+customStudyId+"') and qsbo.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and qbo.stat_short_name='"+shortTitle+"'";
 				BigInteger count = (BigInteger) session.createSQLQuery(serachQuery).uniqueResult();
 				if(count != null && count.intValue() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}else{
+					//checking in the form step questions stastic data
 					String searchQuery = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
 							+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id IN(select id From studies SBO WHERE custom_study_id='"+customStudyId+"') and QSBO.step_type='Form' and QBO.stat_short_name='"+shortTitle+"'";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 					if(subCount != null && subCount.intValue() > 0){
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}else{
+						//checking in the active task stastic data
 						String taskQuery = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and identifierNameStat='"+shortTitle+"'";
 						List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = session.createQuery(taskQuery).list();
 						if(activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()){
@@ -2226,6 +2296,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 			}else{
+				//checking with study if custom study id is not available 
 				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.statShortName='"+shortTitle+"'");
 				questionsBo =  query.list();
 				if(questionsBo != null && !questionsBo.isEmpty()){
@@ -2263,7 +2334,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
 	 * 
-	 * This method is used to validate the questionnaire have response type scale for android platform 
+	 * This method is used to validate the questionnaire have response type text scale while changing the platform
+	 * in study settings page 
 	 */
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
@@ -2273,6 +2345,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		BigInteger questionCount = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
+			//checking of all the question step of questionnaire
 			String searchQuery = "select count(*) from questions QBO,questionnaires_steps QSBO,questionnaires Q where QBO.id=QSBO.instruction_form_id"
 					+ " and QSBO.questionnaires_id=Q.id and Q.study_id="+studyId+" and Q.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"'"
 					+ " and QSBO.active=1 and QBO.active=1 and QBO.response_type=3";
@@ -2280,6 +2353,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(count!=null && count.intValue() > 0){	
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
+				//checking of all question of form step of questionnaire
 				String searchQuuery = "select count(*) from questions q,form_mapping f,questionnaires_steps qs,questionnaires qq where q.id=f.question_id"
 						+ " and f.form_id=qs.instruction_form_id and qs.questionnaires_id=qq.id and qq.study_id="+studyId+""
 								+ " and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
@@ -2304,7 +2378,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : frequency
 	 * @param String Success or failure
 	 * 
-	 * Validation of line chart of question while changing the schedule in questionnaire 
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding a line chart to the 
+	 * dashboard needs the admin to specify The options time range for the chart which depend on the scheduling frequency set for the activity.when admin change the 
+	 * frequency in questionnaire schedule its validate the options in the time range for chart options.
 	 */
 	@Override
 	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
@@ -2315,11 +2391,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			timeRange = FdahpStudyDesignerUtil.getTimeRangeString(frequency);
+			//checking in the question step
 			String searchQuery = "select count(*) from questions QBO,questionnaires_steps QSBO where QBO.id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
 			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 			if(count != null && count.intValue() > 0){
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
+				//checking in the form step questions
 				String searchSubQuery = "select count(*) from questions QBO,form_mapping f,questionnaires_steps QSBO where QBO.id=f.question_id and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.active=1 and QSBO.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QBO.active=1 and QBO.add_line_chart = 'Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
 				BigInteger subCount = (BigInteger) session.createSQLQuery(searchSubQuery).uniqueResult();
 				if(subCount != null && subCount.intValue() > 0){
@@ -2346,7 +2424,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @return Success/Failure
 	 * 
-	 * Update the questions status when changing the frequency of questionnaire if the line chart is enabled for that question
+	 * Update the questions status to draft when changing the frequency of questionnaire if the line chart is 
+	 * enabled for that question in user for statistics section
 	 */
 	public String updateLineChartSchedule(Integer questionnaireId,String frequency,SessionObject sessionObject,Session session,Transaction transaction,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - starts");
@@ -2361,6 +2440,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				transaction = newSession.beginTransaction();
 			}
 			timeRange = FdahpStudyDesignerUtil.getTimeRangeString(frequency);
+			//updating the question steps
 			String searchQuery ="update questions QBO,questionnaires_steps QSBO set QBO.status=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id=QSBO.instruction_form_id and QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Question' and QSBO.active=1 and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
 			if(newSession != null){
 				newSession.createSQLQuery(searchQuery).executeUpdate();
@@ -2368,6 +2448,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			else{
 				session.createSQLQuery(searchQuery).executeUpdate();
 			}
+			//updating the form step questions
 			String formQuery="update questionnaires_steps qs,form_mapping f, questions QBO  set qs.status=0,qs.modified_by="+sessionObject.getUserId()+",qs.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',QBO.status=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where qs.step_type = 'Form' and qs.instruction_form_id= f.form_id"
 					+ " and f.question_id = QBO.id and f.active=1 and QBO.active=1 and QBO.add_line_chart='Yes' "
 					+ "and QBO.line_chart_timerange not in ('"+timeRange+"') and qs.questionnaires_id="+questionnaireId+" and qs.active=1";
@@ -2408,7 +2489,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param Integer : formId
 	 * @param String : Success or failure
 	 * 
-	 * This method is used to validate the states information for repeatable form in questionnaire
+	 * In Questionnaire form step carries the multiple question and Answers .In form level attributes we can make form form as repeatable 
+	 * if the form is repeatable we can not add the line chart and states data to the dashbord.here we are validating the added line chart and 
+	 * statistics data before updating the form as repeatable.
 	 * 
 	 */
 	@Override
@@ -2614,7 +2697,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @author BTC
 	 * @return List of HealthKityKeyInfo
 	 * 
-	 * This method is used to get the Health Kit key master info
+	 *  For QA of response type that results in the data type 'double', the admin can also choose to give the user a provision to allow the app to read 
+	 *  the response from HealthKit this method is used to get the pre-defined list of HealthKit quantity data types 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2642,6 +2726,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param session {@link Session}
 	 * @param questionId in {@link QuestionsBo}
 	 * @return List of {@link QuestionConditionBranchBo}
+	 * 
+	 * Get the condition(formula) of question which are created in the response level attributes of question
+	 * in formula based destination enabled section
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(Session session,Integer questionId){
@@ -2699,7 +2786,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param sessionObject {@link SessionObject}
 	 * @return {@link QuestionnaireBo}
 	 * 
-	 * This method is used to copy the questionnaire bo into study
+	 *  Admin want copy the already existed question into the same study admin has to click the copy icon in the questionnaire list.It
+	 *  will copy the existed questionnaire into the study with out questionnaire short title because the short title will be unique
+	 *  across the study
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2729,7 +2818,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					newQuestionnaireBo.setVersion(0f);
 					session.save(newQuestionnaireBo);
 					
-					/**Schedule Purpose creating draft Start **/
+					/** Questionnaire Schedule Purpose copying Start **/
 					if(StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
 						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
 							searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
@@ -2756,9 +2845,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							}
 						}
 					}
-					/** Schedule Purpose creating draft End **/
+					/** Questionnaire Schedule Purpose copying End **/
 					
-					/**  Content purpose creating draft Start **/
+					/**  Questionnaire Content purpose copying Start **/
 					
 					List<Integer> destinationList = new ArrayList<>();
 					Map<Integer, Integer> destionationMapList = new HashMap<>();
@@ -2769,6 +2858,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList = new ArrayList<>();
 					query = session.getNamedQuery("getQuestionnaireStepList").setInteger("questionnaireId", questionnaireBo.getId());
 					existedQuestionnairesStepsBoList = query.list();
+					//copying the questionnaire steps
 					if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
 						   for(QuestionnairesStepsBo questionnairesStepsBo:existedQuestionnairesStepsBoList){
 							   Integer destionStep = questionnairesStepsBo.getDestinationStep();
@@ -2796,6 +2886,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								 newQuestionnairesStepsBo.setModifiedOn(null);
 								 session.save(newQuestionnairesStepsBo);
 								if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
+									//copying the instruction step
 									InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 									  if(instructionsBo!=null){
 										  InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
@@ -2810,6 +2901,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 										  newQuestionnairesStepsBo.setInstructionFormId(newInstructionsBo.getId());
 									  }
 								}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+									//copying the question step
 									QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 									  if(questionsBo!=null){
 										  
@@ -2871,6 +2963,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 										  newQuestionnairesStepsBo.setInstructionFormId(newQuestionsBo.getId());
 									  }
 								}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
+									  //copying the form step
 									  FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 									  if(formBo!=null){
 										 
@@ -2949,6 +3042,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							}
 						}
 					}
+					//updating the copied destination steps for questionnaire steps
 					if (destinationList != null
 									&& !destinationList.isEmpty()) {
 								for (int i = 0; i < destinationList.size(); i++) {
@@ -2966,6 +3060,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 					List<Integer> sequenceSubTypeList = new ArrayList<>();
 					List<Integer> destinationResList = new ArrayList<>();
+					//getting the list of all copied choice based destinations
 					if(existingQuestionResponseSubTypeList!=null && !existingQuestionResponseSubTypeList.isEmpty()){
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo:existingQuestionResponseSubTypeList){
 							if(questionResponseSubTypeBo.getDestinationStepId()==null){
@@ -3005,6 +3100,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								}
 							destinationResList.add(desId);	
 						}
+						//updating the choice based destination steps
 						for (int i = 0; i < destinationResList.size(); i++) {
 							newQuestionResponseSubTypeList.get(i)
 									.setDestinationStepId(destinationResList.get(i));
