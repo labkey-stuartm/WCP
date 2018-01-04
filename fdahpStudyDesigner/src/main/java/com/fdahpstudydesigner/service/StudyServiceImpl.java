@@ -14,6 +14,8 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sun.awt.image.ImageWatched.Link;
+
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
@@ -63,7 +65,7 @@ public class StudyServiceImpl implements StudyService {
     
     /**
 	 * return study List based on user 
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @param userId of the user
 	 * @return the Study list
@@ -86,7 +88,7 @@ public class StudyServiceImpl implements StudyService {
 	
 	/**
 	 * return active and live study List based on user 
-	 * @author Pradyumn
+	 * @author BTC
 	 * 
 	 * @param userId of the user
 	 * @return the Study list
@@ -107,7 +109,7 @@ public class StudyServiceImpl implements StudyService {
 	
 	/**
 	 * return active and live study List
-	 * @author Pradyumn
+	 * @author BTC
 	 * 
 	 * @return the Study list
 	 * @exception Exception
@@ -129,7 +131,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * return reference List based on category
-	 * @author Ronalin
+	 * @author BTC 
 	 * 
 	 * @return the reference table List
 	 * @exception Exception
@@ -152,7 +154,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * return Study based on id
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @return StudyBo
 	 * @exception Exception
@@ -171,7 +173,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author Ronalin
+	 * @author BTC
 	 * Add/Update the Study
 	 * @param StudyBo , {@link StudyBo}
 	 * @return {@link String}
@@ -194,7 +196,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * return false or true of deleting record of studyPermission based on studyId and userId
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @return boolean
 	 * @exception Exception
@@ -217,7 +219,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * return false or true of adding record of studyPermission based on studyId and userId
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @return boolean
 	 * @exception Exception
@@ -237,7 +239,7 @@ public class StudyServiceImpl implements StudyService {
 
 	 /**
 		 * return study overview pageList based on studyId 
-		 * @author Ronalin
+		 * @author BTC
 		 * 
 		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study list
@@ -268,7 +270,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author Ronalin
+	 * @author BTC
 	 * delete the Study Overview Page By Page Id
 	 * @param studyId ,pageId
 	 * @return {@link String}
@@ -286,7 +288,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author Ronalin
+	 * @author BTC
 	 * Add/Update the Study Overview Pages
 	 * @param studyPageBean {@link StudyPageBean}
 	 * @return {@link String}
@@ -321,7 +323,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer : studyId
 	 * @return List :ConsentInfoList
 	 *  This method used to get the consent info list of an study
@@ -343,7 +345,7 @@ public class StudyServiceImpl implements StudyService {
 
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer : consentInfoId
 	 * @return String :SUCCESS or FAILURE
 	 *  TThis method used to get the delete the consent information
@@ -365,7 +367,7 @@ public class StudyServiceImpl implements StudyService {
 
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer studyId
 	 * @param int oldOrderNumber
 	 * @param int newOrderNumber
@@ -387,9 +389,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author Ravinder
-	 * 
-	 * 
+	 * @author BTC
+	 * @param Object : {@link ConsentInfoBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @return {@link ConsentInfoBo}
+	 * Description : This method is to save or update consent
 	 */
 	@Override
 	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject,String customStudyId) {
@@ -457,7 +462,7 @@ public class StudyServiceImpl implements StudyService {
 
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer :ConsentInfoId
 	 * @return Object :ConsentInfoBo
 	 * 
@@ -480,7 +485,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param studyId
 	 * @return int count
 	 * 
@@ -500,7 +505,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer : studyId
 	 * @return List : ComprehensionTestQuestions
 	 * 
@@ -520,7 +525,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer :QuestionId
 	 * @return Object : ComprehensionTestQuestionBo
 	 * 
@@ -540,7 +545,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer  :questionId
 	 * @return String : SUCCESS or FAILURE
 	 * 
@@ -561,7 +566,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer : comprehensionQuestionId
 	 * @param List : ComprehensionTestResponseBo List
 	 * 
@@ -581,7 +586,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Object : ComprehensionTestQuestionBo
 	 * @return Object  :ComprehensionTestQuestionBo
 	 * 
@@ -640,7 +645,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param studyId
 	 * @return int count
 	 * 
@@ -660,7 +665,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param Integer studyId
 	 * @param int oldOrderNumber
 	 * @param int newOrderNumber
@@ -686,7 +691,7 @@ public class StudyServiceImpl implements StudyService {
 	
 	/**
 	 * return  eligibility based on user's Study Id
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 * @param studyId, studyId of the {@link StudyBo}
 	 * @return {@link EligibilityBo}
@@ -707,7 +712,7 @@ public class StudyServiceImpl implements StudyService {
 	
 	/**
 	 * Save or update eligibility of study
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 * @param eligibilityBo , {@link EligibilityBo}
 	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
@@ -730,7 +735,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * return false or true of validating study Custom id
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @return boolean
 	 * @exception Exception
@@ -751,7 +756,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * Save or update settings and admins of study
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @param studyBo , {@link studyBo}
 	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
@@ -774,7 +779,7 @@ public class StudyServiceImpl implements StudyService {
 
 
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @return List : ConsentMasterInfoBo List
 	 * This method is used get consent master data
 	 */
@@ -792,7 +797,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * @author Mohan
+	 * @author BTC
 	 * @param studyId
 	 * @return List<ConsentInfoBo>
 	 * @throws Exception
@@ -810,6 +815,14 @@ public class StudyServiceImpl implements StudyService {
 		return consentInfoBoList;
 	}
 
+	/**
+	 * @author BTC
+	 * @param Object : {@link ConsentBo}
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @return {@link ConsentBo}
+	 * Description : This method is to save or update ConsentReview
+	 */
 	@Override
 	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,String customStudyId) {
 		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
@@ -932,6 +945,12 @@ public class StudyServiceImpl implements StudyService {
 		return updateConsentBo;
 	}
 
+	/**
+	 * @author BTC
+	 * @param String : studyId in {@link StudyBo}
+	 * @return {@link ConsentBo}
+	 * Description : This method is to get ConsentDetails
+	 */
 	@Override
 	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
@@ -945,6 +964,12 @@ public class StudyServiceImpl implements StudyService {
 		return consentBo;
 	}
 
+	/**
+	 * @author BTC
+	 * @param Integer : studyId in {@link StudyBo}
+	 * @return List Object  : {@link List<ResourceBO>}
+	 * Description : This method is to get list of Resource
+	 */
 	@Override
 	public List<ResourceBO> getResourceList(Integer studyId) {
 		logger.info("StudyServiceImpl - getResourceList() - Starts");
@@ -958,6 +983,12 @@ public class StudyServiceImpl implements StudyService {
 		return resourceBOList;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param Integer : studyId in {@link StudyBo}
+	 * @return Object  : {@link ResourceBO}
+	 * Description : This method is to get StudyProtocol
+	 */
 	public ResourceBO getStudyProtocol(Integer studyId) {
 		logger.info("StudyServiceImpl - getStudyProtocol() - Starts");
 		ResourceBO studyprotocol = null;
@@ -970,6 +1001,12 @@ public class StudyServiceImpl implements StudyService {
 		return studyprotocol;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param Integer : studyId in {@link StudyBo}
+	 * @return list Object  : {@link List<ResourceBO>}
+	 * Description : This method is to save Resource
+	 */
 	@Override
 	public List<ResourceBO> resourcesSaved(Integer studyId) {
 		logger.info("StudyServiceImpl - resourcesSaved() - Starts");
@@ -983,6 +1020,15 @@ public class StudyServiceImpl implements StudyService {
 		return resourceBOList;
 	}
 
+	/**
+	 * @author BTC
+	 * @param Integer : resourceInfoId
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @param Integer : studyId in {@link StudyBo}
+	 * @return String : {SUCCES/FAILURE}
+	 * Description : This method is to delete Resource
+	 */
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId,int studyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
@@ -1007,6 +1053,12 @@ public class StudyServiceImpl implements StudyService {
 		return message;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param Integer : resourceInfoId
+	 * @return Object : {@link ResourceBO}
+	 * Description : This method is to get Resource Info details
+	 */
 	@Override
 	public ResourceBO getResourceInfo(Integer resourceInfoId) {
 		logger.info("StudyServiceImpl - getResourceInfo() - Starts");
@@ -1024,6 +1076,13 @@ public class StudyServiceImpl implements StudyService {
 		return resourceBO;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param Object : {@link ResourceBO}
+	 * @param Object : {@link SessionObject}
+	 * @return Integer : resourceId from {@link ResourceBO}
+	 * Description : This method is to save or update Resource
+	 */
 	@Override
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
@@ -1135,10 +1194,6 @@ public class StudyServiceImpl implements StudyService {
      						}
      						notificationBO.setScheduleDate(null);
      						notificationBO.setScheduleTime(null);
-     						/*if(!resourceBO.isResourceType())
-     							studyDAO.saveResourceNotification(notificationBO,notiFlag);
-     						if(resourceBO.isResourceType() && resourceBO.getStartDate()!=null)
-     						  studyDAO.saveResourceNotification(notificationBO,notiFlag);*/
      						if(saveNotiFlag){
      							studyDAO.saveResourceNotification(notificationBO,notiFlag);
      						}
@@ -1151,6 +1206,15 @@ public class StudyServiceImpl implements StudyService {
 		return resourseId;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param Integer : studyId
+	 * @param String : markCompleted can be resource/notification/consent/consentreview/checkList/activeTaskList/questionnaire/comprehenstionTest
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @return String : {SUCCES/FAILURE}
+	 * Description : This method is to make mark as completed of study
+	 */
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
@@ -1165,9 +1229,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/**
-	 * Kanchana
-	 * @param studyId
-	 * @return
+	 * @author BTC
+	 * @param Integer : studyId
+	 * @return list of Object : {@link List<NotificationBO>}
+	 * Description : This method is to get list of notification 
 	 */
 	@Override
 	public List<NotificationBO> getSavedNotification(Integer studyId) {
@@ -1181,10 +1246,12 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
 		return notificationSavedList;
 	}
+	
 	/**
-	 * Kanchana
-	 * @param customStudyId
-	 * @return
+	 * @author BTC
+	 * @param String : customStudyId
+	 * @return Object : {@link StudyBo}
+	 * Description : This method is to get live Study
 	 */
 	@Override
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
@@ -1199,7 +1266,12 @@ public class StudyServiceImpl implements StudyService {
 		return studyLive;
 	}
 	
-	
+	/**
+	 * @author BTC
+	 * @param Integer : studyId
+	 * @return Object : {@link Checklist}
+	 * Description : This method is to get Checklist
+	 */
 	@Override
 	public Checklist getchecklistInfo(Integer studyId) {
 		logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
@@ -1213,6 +1285,14 @@ public class StudyServiceImpl implements StudyService {
 		return checklist;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param Object : {@link Checklist}
+	 * @param Object : {@link SessionObject}
+	 * @param string : customStudyId
+	 * @return Integer : checklistId
+	 * Description : This method is to save or update Checklist
+	 */
 	@Override
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
@@ -1255,6 +1335,13 @@ public class StudyServiceImpl implements StudyService {
 		return checklistId;
 	}
 
+	/**
+	 * @author BTC
+	 * @param string : studyId
+	 * @param string : buttonText can be lunchId/updatesId/publishId
+	 * @return String : success/failure
+	 * Description : This method is to validate Study eligible for launch/publish based on some condition 
+	 */
 	@Override
 	public String validateStudyAction(String studyId, String buttonText) {
 		logger.info("StudyServiceImpl - validateStudyAction() - Starts");
@@ -1268,6 +1355,14 @@ public class StudyServiceImpl implements StudyService {
 		return message;
 	}
 
+	/**
+	 * @author BTC
+	 * @param string : studyId
+	 * @param string : buttonText can be lunchId/updatesId/publishId/unpublishId/resumeId/pauseId/deactivateId
+	 * @param Object : {@link SessionObject}
+	 * @return String : success/failure
+	 * Description : This method is to upadte status of Study 
+	 */
 	@Override
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
@@ -1284,7 +1379,16 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 
-
+	/**
+	 * @author BTC
+	 * @param Integer : studyId
+	 * @param String : markCompleted can be consent/consentreview/questionnaire/comprehenstionTest
+	 * @param Boolean : flag(true/false)
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId in {@link StudyBo}
+	 * @return String : {SUCCES/FAILURE}
+	 * Description : This method is to make mark as completed of study
+	 */
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
@@ -1300,7 +1404,7 @@ public class StudyServiceImpl implements StudyService {
 	
 	/**
 	 * return Study vesion on customStudyid
-	 * @author Ronalin
+	 * @author BTC
 	 * 
 	 * @return StudyIdBean
 	 * @exception Exception
@@ -1318,6 +1422,12 @@ public class StudyServiceImpl implements StudyService {
 		return studyIdBean;
 	}
 
+	/**
+	 * @author BTC
+	 * @param Integer : studyId
+	 * @return list of Object :{@link List<ResourceBO>}
+	 * Description : This method is get all resource without anchordate
+	 */
 	@Override
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
 		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Starts");
@@ -1331,6 +1441,13 @@ public class StudyServiceImpl implements StudyService {
 		return resourceList;
 	}
 
+	/**
+	 * @author BTC
+	 * @param String : studyId
+	 * @param String : action cane be Activetask/Questionnaire
+	 * @return String :{success/failure}
+	 * Description : This method is validate the activity(Activetask/Questionnarie) done or not
+	 */
 	@Override
 	public String validateActivityComplete(String studyId, String action) {
 		logger.info("StudyServiceImpl - validateActivityComplete() - Starts");
@@ -1345,7 +1462,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	
-	/**
+	/**@author BTC
 	 * Save or update eligibility test question and answer
 	 * 
 	 * @param eligibilityTestBo
@@ -1386,6 +1503,15 @@ public class StudyServiceImpl implements StudyService {
 		return eligibilityTestId;
 	}
 
+	/**
+	 * @author BTC
+	 * @param Integer : eligibilityTestId
+	 * @param Integer : studyId
+	 * @param Object : {@link SessionObject}
+	 * @param String : customStudyId
+	 * @return String :{success/failure}
+	 * Description : This method is delete eligibility test 
+	 */
 	@Override
 	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId,
 			Integer studyId, SessionObject sessionObject, String customStudyId) {
@@ -1406,7 +1532,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * View eligibility test question answer by id
 	 * 
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 * @param eligibilityTestId
 	 *            , Id of {@link EligibilityTestBo}
@@ -1432,7 +1558,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * View eligibility test question answer by eligibility id
 	 * 
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 * @param eligibilityId
 	 *            , Id of {@link EligibilityBo}
@@ -1458,7 +1584,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * Reorder the eligibility test questions
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 * @param eligibilityId
 	 *            , Eligibility Id of the study
@@ -1488,6 +1614,12 @@ public class StudyServiceImpl implements StudyService {
 		return message;
 	}
 
+	/**
+	 * @author BTC
+	 * @param String : customStudyId
+	 * @return boolean :{true/false}
+	 * Description : This method is to delete Study 
+	 */
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
 		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Starts");
@@ -1501,6 +1633,12 @@ public class StudyServiceImpl implements StudyService {
 		return flag;
 	}
 
+	/**
+	 * @author BTC
+	 * @param String : customStudyId
+	 * @return boolean :{true/false}
+	 * Description : This method is to delete Study 
+	 */
 	@Override
 	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
 		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Starts");

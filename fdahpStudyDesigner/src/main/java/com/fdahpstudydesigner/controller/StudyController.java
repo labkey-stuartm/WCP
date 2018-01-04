@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import junit.framework.Test;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -65,7 +67,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 @Controller
@@ -86,10 +88,11 @@ public class StudyController {
 	private UsersService usersService;
 	
 	/**
-     * @author Ronalin
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * Getting Study list
+	 * This method shows the user present with a list of studies 
 	 */
 	@RequestMapping("/adminStudies/studyList.do")
 	public ModelAndView getStudies(HttpServletRequest request){
@@ -152,11 +155,17 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Setting permission of particular study and redirecting study basic page
+	 * Setting Request Sessions
+	 * (setting of study session count for each request
+	 * is study live or not,
+	 * study permission for view/edit,
+	 * setting studyId to the Request session,
+	 *  )
+	 *  of particular study and redirecting study basic page
 	 */
 	@RequestMapping("/adminStudies/viewStudyDetails.do")
 	public ModelAndView viewStudyDetails(HttpServletRequest request){
@@ -215,10 +224,13 @@ public class StudyController {
 		return modelAndView;
 	}
 	/**
-     * @author Ronalin
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
-	 * view of study baisc info page
+	 * This method shows the basic information about the study
+	 * basic info like Study ID, Study name, Study full name, Study Category,
+	 * Research Sponsor,Data Partner, Estimated Duration in weeks/months/years,
+	 * Study Tagline, Study Description, Study website, Study Type
 	 */
 	@RequestMapping("/adminStudies/viewBasicInfo.do")
 	public ModelAndView viewBasicInfo(HttpServletRequest request){
@@ -322,12 +334,12 @@ public class StudyController {
 	}
 	
 	/** 
-	  * @author Ronalin
+	  * @author BTC
 	  * @param request , {@link HttpServletRequest}
 	  * @param response , {@link HttpServletResponse}
 	  * @throws IOException
 	  * @return void
-	  * validating particular Study custom Id
+	  * validated for uniqueness of customStudyId throughout the application
 	  */
 		@RequestMapping(value="/adminStudies/validateStudyId.do",  method = RequestMethod.POST)
 		public void validateStudyId(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -356,10 +368,13 @@ public class StudyController {
 		}
 	
 	/**
-     * @author Ronalin
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
-	 * save or update baisc info page
+	 * This method captures basic information about the study
+	 * basic info like Study ID, Study name, Study full name, Study Category,
+	 * Research Sponsor,Data Partner, Estimated Duration in weeks/months/years,
+	 * Study Tagline, Study Description, Study website, Study Type
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateBasicInfo.do")
 	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request,@ModelAttribute(FdahpStudyDesignerConstants.STUDY_BO) StudyBo studyBo){
@@ -420,10 +435,16 @@ public class StudyController {
 	}
 	
 	/**
-     * @author Ronalin
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
-	 * get study SettingAndAdmins info page
+	 * This method shows configuration of study settings and  admin list of the study 
+	 * 
+	 * study settings like Platforms supported, Is the Study currently enrolling participants,
+	 * Allow user to rejoin s the Study once they leave it?,
+	 * Retain participant data when they leave a study?,
+	 * 
+	 * 
 	 */
 	@RequestMapping("/adminStudies/viewSettingAndAdmins.do")
 	public ModelAndView viewSettingAndAdmins(HttpServletRequest request){
@@ -483,7 +504,7 @@ public class StudyController {
 	}
 	
 	/** 
-	  * @author Ronalin
+	  * @author BTC
 	  * @param request , {@link HttpServletRequest}
 	  * @param response , {@link HttpServletResponse}
 	  * @throws IOException
@@ -517,7 +538,7 @@ public class StudyController {
 		}
 		
 		/** 
-		  * @author Ronalin
+		  * @author BTC
 		  * @param request , {@link HttpServletRequest}
 		  * @param response , {@link HttpServletResponse}
 		  * @throws IOException
@@ -552,10 +573,15 @@ public class StudyController {
 			}
 		
 		/**
-	     * @author Ronalin
+	     * @author BTC
 		 * @param request , {@link HttpServletRequest}
 		 * @return {@link ModelAndView}
-		 * save or update setting and admins page
+		 * save or update study setting and admins page
+		 * study settings like Platforms supported, Is the Study currently enrolling participants,
+	     * Allow user to rejoin s the Study once they leave it?,
+	     * Retain participant data when they leave a study?
+	     * 
+	     * we are managing admins in this method
 		 */
 		@RequestMapping("/adminStudies/saveOrUpdateSettingAndAdmins.do")
 		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo){
@@ -600,10 +626,10 @@ public class StudyController {
 			return mav;
 		}
 		/**
-	     * @author Ronalin
+	     * @author BTC
 		 * @param request , {@link HttpServletRequest}
 		 * @return {@link ModelAndView}
-		 * view Overview Study page
+		 * This method shows content for the Overview section of the Study
 		 */
 		@RequestMapping("/adminStudies/overviewStudyPages.do")
 		public ModelAndView overviewStudyPages(HttpServletRequest request){
@@ -658,7 +684,7 @@ public class StudyController {
 			return mav;
 		}
 				/**
-			     * @author Ronalin
+			     * @author BTC
 				 * @param request , {@link HttpServletRequest}
 				 * @return {@link ModelAndView}
 				 *  save or update study page
@@ -699,7 +725,7 @@ public class StudyController {
 				}
 				
 	/**
-     * @author Ravinder
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 *  get all consent list based on study
@@ -785,7 +811,7 @@ public class StudyController {
 	}
 	
 	/**
-     * @author Ravinder
+     * @author BTC
 	 * @param request , {@link HttpServletRequest}
 	 * @return void
 	 *  reordering the consent info list 
@@ -836,7 +862,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder			
+	 * @author BTC			
 	 * @param request , {@link HttpServletRequest}
 	 * @return void
 	 * reloading the consent info list 
@@ -890,7 +916,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param response
 	 * @return void
@@ -926,7 +952,7 @@ public class StudyController {
 	
 	/**
 	 * 
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param consentInfoBo
 	 * @return {@link ModelAndView}
@@ -974,7 +1000,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param consentInfoBo
 	 * @return {@link ModelAndView}
@@ -1058,7 +1084,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param consentInfoBo
 	 * @return {@link ModelAndView}
@@ -1141,7 +1167,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param consentInfoBo
 	 * @return {@link ModelAndView}
@@ -1206,7 +1232,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param consentInfoBo
 	 * @return {@link ModelAndView}
@@ -1238,7 +1264,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @param comprehensionTestQuestionBo
 	 * @return {@link ModelAndView}
@@ -1292,7 +1318,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * re order ComprehensionTestQuestion Page
@@ -1331,7 +1357,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * save or update saveConsentInfo Page
@@ -1378,7 +1404,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return void
 	 * reload Comprehension Question List
@@ -1422,7 +1448,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * update consent flag as partially done or completely done
@@ -1463,7 +1489,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * update consentReview flag as partially done or completely done
@@ -1505,7 +1531,7 @@ public class StudyController {
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	/**
 	 * view Eligibility page
-	 * @author Vivek 
+	 * @author BTC 
 	 *
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -1566,7 +1592,7 @@ public class StudyController {
 	
 	/**
 	 * save or update Study Eligibility
-	 * @author Vivek 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @param eligibilityBo , {@link EligibilityBo}
@@ -1620,7 +1646,7 @@ public class StudyController {
 	
 	/*----------------------------------------added by MOHAN T starts----------------------------------------*/
 	/**
-	 * @author Mohan
+	 * @author BTC
 	 * @param request
 	 * @return ModelAndView
 	 * 
@@ -1717,7 +1743,7 @@ public class StudyController {
 	
 	
 	/**
-	 * @author Mohan
+	 * @author BTC
 	 * @param request
 	 * @param response
 	 * @param consentInfoBo
@@ -1778,7 +1804,7 @@ public class StudyController {
 	/*----------------------------------------added by MOHAN T ends----------------------------------------*/
 	
 	/**
-	 * @author Pradyumn			
+	 * @author BTC			
 	 * @param request
 	 * @return {@link ModelAndView}
 	 * Description : get resource list based on study 
@@ -1839,7 +1865,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request, {@link HttpServletResponse}
 	 * @param response
 	 * @return void
@@ -1885,7 +1911,7 @@ public class StudyController {
 	
 	/**
 	 * add or edit Study Resource
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -1958,7 +1984,7 @@ public class StudyController {
 	
 	/**
 	 * save or update Study Resource
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @param resourceBO , {@link ResourceBO}
@@ -2049,7 +2075,7 @@ public class StudyController {
 	
 	/**
 	 * Set resource to Mark as completed
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
@@ -2106,7 +2132,7 @@ public class StudyController {
 	 /*Study notification starts*/
 	
 	/**
-	 * @author Kanchana 
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * Description : get all notification based on study
@@ -2179,7 +2205,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Kanchana 
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * Description : get study notification details page
@@ -2275,7 +2301,7 @@ public class StudyController {
 	
 	
 	/**
-	 * @author Kanchana 
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * Description : save or update study notification details 
@@ -2394,7 +2420,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Kanchana 
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * Description : delete study notification details 
@@ -2432,7 +2458,7 @@ public class StudyController {
 	}
 	
 	/**
-	 * @author Kanchana 
+	 * @author BTC 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * Description : save notification as mark as completed
@@ -2476,7 +2502,7 @@ public class StudyController {
 	
 	/*Study CheckList Starts*/
 	/**
-	 * @author Pradyumn			
+	 * @author BTC			
 	 * @param request
 	 * @return {@link ModelAndView}
 	 * Description : get checklist 
@@ -2529,7 +2555,7 @@ public class StudyController {
 	
 	/**
 	 * Save or Done Checklist
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @param checklist , {@link Checklist}
@@ -2588,7 +2614,7 @@ public class StudyController {
 	
 	/*Study checkList ends*/
 	/**
-     * @author Ronalin
+     * @author BTC
 	 * Getting Actions
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -2642,7 +2668,7 @@ public class StudyController {
 	}
 	
 	/** 
-	  * @author Ronalin
+	  * @author BTC
 	  * validating particular action should be update for each study or not
 	  * @param request , {@link HttpServletRequest}
 	  * @param response , {@link HttpServletResponse}
@@ -2726,6 +2752,12 @@ public class StudyController {
 			out.print(jsonobject);
 		}
 		
+		/**
+		 * @author BTC
+		 * @param request
+		 * @param response
+		 * Description : save Questionnaire as mark as completed
+		 */
 		@RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
 		public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
 			logger.info("StudyController - questionnaireMarkAsCompleted() - Starts");
@@ -2762,7 +2794,7 @@ public class StudyController {
 		}
 		
 		/**
-		 * @author Ronalin
+		 * @author BTC
 		 * @param request
 		 * @param response
 		 * This method is used to validate the questionnaire have response type scale for android platform 
@@ -2802,7 +2834,7 @@ public class StudyController {
 		}
 		
 	/**
-	 * @author Vivek
+	 * @author BTC
 	 * @param request
 	 * @param response
 	 *            This method is used to validate the questionnaire have
@@ -2849,7 +2881,12 @@ public class StudyController {
 		return mav;
 	}
 	
-
+	/**
+	 * @author BTC
+	 * @param request
+	 * @param response
+	 * Description : save ComprehensionTest Question as mark as completed
+	 */
 	@RequestMapping("/adminStudies/comprehensionTestMarkAsCompleted.do")
 	public ModelAndView comprehensionTestMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - consentReviewMarkAsCompleted() - Starts");
@@ -2884,9 +2921,10 @@ public class StudyController {
 		return mav;
 	}
 	/**
-	 * @author Ravinder
+	 * @author BTC
 	 * @param request
 	 * @param response
+	 * Description : save ComprehensionTest Question
 	 */
 	@RequestMapping(value="/adminStudies/saveComprehensionTestQuestion.do")
 	public void saveComprehensionTestQuestion(HttpServletRequest request,HttpServletResponse response){
@@ -2942,9 +2980,10 @@ public class StudyController {
 		logger.info("StudyQuestionnaireController - saveQuestion - Ends");
 	}
 	/**
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 * @param response
+	 *  Description : delete study by customStudyId
 	 */
 		@RequestMapping("/deleteStudy.do")
 		public ModelAndView deleteStudy(HttpServletRequest request) {
@@ -2972,9 +3011,10 @@ public class StudyController {
 	}
 		
 		/**
-		 * @author Ronalin
+		 * @author BTC
 		 * @param request
 		 * @param response
+		 * Description : reset study by customStudyId
 		 */
 			@RequestMapping("/resetStudy.do")
 			public ModelAndView resetStudy(HttpServletRequest request) {
@@ -2998,7 +3038,12 @@ public class StudyController {
 			logger.info("StudyController - resetStudy - Ends");
 			return mav;
 		}	
-			
+			/**
+		     * @author BTC 
+		     * @param request , {@link HttpServletRequest}
+		     * @return {@link ModelAndView}
+		     * Description : update study status
+		     */
 			@RequestMapping(value="/adminStudies/updateStudyAction",method = RequestMethod.POST)
 			public ModelAndView updateStudyActionOnAction(HttpServletRequest request ,HttpServletResponse response) {
 				logger.info("StudyController - updateStudyActionOnAction() - Starts");
@@ -3059,7 +3104,7 @@ public class StudyController {
 	
 		    /**
 		     * view Eligibility page
-		     * @author Vivek 
+		     * @author BTC 
 		     * 
 		     * @param request , {@link HttpServletRequest}
 		     * @return {@link ModelAndView}
@@ -3130,7 +3175,7 @@ public class StudyController {
 		    
 		    /**
 		     * save or update Study Eligibility
-		     * @author Vivek 
+		     * @author BTC 
 		     * 
 		     * @param request , {@link HttpServletRequest}
 		     * @param eligibilityBo , {@link EligibilityBo}
@@ -3180,7 +3225,7 @@ public class StudyController {
             /**
              * This method is used to validate the Eligibility Short Title 
              * 
-             * @author Vivek
+             * @author BTC
              * @param request
              * @param response
              * 
@@ -3214,9 +3259,10 @@ public class StudyController {
             }
             
             /**
-             * @author Ravinder
+             * @author BTC
              * @param request
              * @param response
+             * Description : reorder the eligibility {@link Test} Question and Answers
              */
             @RequestMapping(value="/adminStudies/reOrderStudyEligibiltyTestQusAns.do", method = RequestMethod.POST)
             public void reOrderStudyEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
@@ -3254,9 +3300,10 @@ public class StudyController {
                 logger.info("StudyController - reOrderStudyEligibiltyTestQusAns - Ends");
             }
             /**
-             * @author Vivek
+             * @author BTC
              * @param request
              * @param response
+             * Description : delete the eligibility question and answer
              */
             @RequestMapping(value="/adminStudies/deleteEligibiltyTestQusAns.do",method = RequestMethod.POST)
             public void deleteEligibiltyTestQusAns(HttpServletRequest request ,HttpServletResponse response){
@@ -3296,7 +3343,7 @@ public class StudyController {
             }
    
             /**
-    		 * @author Ronalin
+    		 * @author BTC
     		 * @param request
     		 * @param response
     		 * This method is used to validate the activetaskType for android platform  
@@ -3332,7 +3379,7 @@ public class StudyController {
     		}
     		
     		 /**
-    		 * @author Ronalin
+    		 * @author BTC
     		 * @param request
     		 * @param response
     		 * This method is used to crate copy of live study new study   
@@ -3359,7 +3406,13 @@ public class StudyController {
     			return modelAndView;
     		}
     		
-    		
+    		/**
+		     * reorder the resource list page
+		     * @author BTC 
+		     * 
+		     * @param request , {@link HttpServletRequest}
+		     * @return {@link ModelAndView}
+		     */
     		@RequestMapping(value="/adminStudies/reOrderResourceList.do", method = RequestMethod.POST)
     		public void reOrderResourceList(HttpServletRequest request ,HttpServletResponse response){
     			logger.info("StudyController - reOrderResourceList - Starts");
@@ -3405,6 +3458,12 @@ public class StudyController {
     			logger.info("StudyController - reOrderResourceList - Ends");
     		}
     		
+    		/**
+		     * reload the resource list page
+		     * @author BTC 
+		     * @param request , {@link HttpServletRequest}
+		     * @return {@link ModelAndView}
+		     */
     		@RequestMapping("/adminStudies/reloadResourceListPage.do")
     		public void reloadResourceListPage(HttpServletRequest request,HttpServletResponse response){
     			logger.info("StudyController - reloadResourceListPage - Starts");
