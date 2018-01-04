@@ -273,8 +273,7 @@ table.dataTable thead th:last-child{
                      
 	                      <ul class="no-disc">
 	                      <li>Given below is a list of features currently NOT available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks.</li>
-	                     	<!--  <li>i. Questionnaires: Question with Response Type Text Scale</li> -->
-	                     	<li>i. Activetasks: Activetask with type Tower Of Hanoi, Spatial Span Memory</li>
+	                      <li>i. Activetasks: Activetask with type Tower Of Hanoi, Spatial Span Memory</li>
 	                     </ul>
                      </li>
                     
@@ -436,7 +435,6 @@ function setAllowRejoinText(){
 	}
 }
 function platformTypeValidation(buttonText){
-	/* Ronalin */
 	var platformNames = '';
 	$("input:checkbox[name=platform]:checked").each(function() {
 		platformNames = platformNames + $(this).val();
@@ -452,7 +450,6 @@ function platformTypeValidation(buttonText){
 		$('.actBut').prop('disabled',true);
 		$("body").addClass("loading");
 		$.ajax({
-            //url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidation.do?_S=${param._S}",
             url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidationforActiveTask.do?_S=${param._S}",		
             type: "POST",
             datatype: "json",
