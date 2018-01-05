@@ -67,14 +67,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	
 	
 	/**
-	 * view Questionnaires page
+	 * List of all the Questionnaires of an study.A Study can have 0 or more Questionnaires and
+	 * admin can manage a list of questionnaires for the study 
 	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 * 
-	 * List of all the Questionnaires of an study.A Study can have 0 or more Questionnaires and
-	 *  admin can manage a list of questionnaires for the study 
+	 * 
 	 */
 	@RequestMapping("/adminStudies/viewStudyQuestionnaires.do")
 	public ModelAndView viewStudyQuestionnaires(HttpServletRequest request) {
@@ -148,13 +148,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
+	 * Instruction Step Page in Questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
+	 * instruction title and text
 	 * @author BTC
 	 * @param request {@link HttpServletRequest}
 	 * @param response {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * 
-	 * Instruction Step Page in Questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
-	 * instruction title and text
 	 */
 	@RequestMapping("/adminStudies/instructionsStep.do")
 	public ModelAndView getInstructionsPage(HttpServletRequest request , HttpServletResponse response){

@@ -70,15 +70,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 
 	/**
+	 * Instruction step page in questionnaire.Lays down instructions for the user in mobile app.
+	 * Which contains the short title instruction title and text
+	 * 
 	 * @author BTC
+	 * 
 	 * @param Integer : instructionId in {@link InstructionsBo}
 	 * @param String : questionnaireShortTitle in {@link QuestionnairesBo}
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @param Integer : questionnaireId in {@link QuestionnairesStepsBo}
 	 * @return Object : {@link InstructionsBo}
 	 *  
-	 * Instruction step page in questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
-	 * instruction title and text
+	 
 	 */
 	@Override
 	public InstructionsBo getInstructionsBo(Integer instructionId,String questionnaireShortTitle,String customStudyId,Integer questionnaireId) {
