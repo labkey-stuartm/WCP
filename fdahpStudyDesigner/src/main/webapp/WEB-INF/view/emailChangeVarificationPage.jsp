@@ -107,93 +107,41 @@
         </div>
         
         <div class="login__container">
+            <div class="">
              <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-            <div>
-             <form:form id="passwordResetForm" data-toggle="validator" role="form" action="addPassword.do" method="post" autocomplete="off">
+             <!-- <div class="lg-space-txt text-center">
+                    FDA My Studies Management Portal
+                </div>
+                <div class="ll__border__bottom"></div> -->
+             <form:form id="accessCodeForm" data-toggle="validator" role="form" action="validateAccessCode.do" method="post" autocomplete="off">
+
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-                    <div>
-                    <p class="white__text">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                    <p class="white__text">To complete your email verification process, kindly use the access code provided on your email.</p>
                         <div class="mb-lg form-group">
                              <input autofocus="autofocus" type="text" class="input-field wow_input" id="" tabindex="1" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" maxlength="64"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}"  data-error="Password is invalid" autocomplete="off"/>
-                        <div class="help-block with-errors red-txt"></div>
-                        <span class="arrowLeftSugg"></span>
-                            
-                        </div>
-                        
-                        <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="cfnPassword" tabindex="3" name="" maxlength="64" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
-                              required  autocomplete="off"/> 
-                            <div class="help-block with-errors red-txt"></div>
-                        </div>
-                        <div class="mb-lg form-group">
-                            <button type="button" class="btn lg-btn" id="resetPasswordBut">Submit</button>
+                            <button type="submit" class="btn lg-btn">Submit</button>
                         </div>
                         </c:if>
-                        <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
+                        <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Activation Link is either expired or invalid.</p></c:if>
                         <div>
                             <a id="login" class="gray-link backToLogin white__text" href="javascript:void(0)">Back to Sign in</a>
                         </div>
-                   </div>
-                   <input type="hidden" name="securityToken" value="${securityToken}" />
-                    <input type="password" name="password" id="hidePass" style="display: none;" />
+                        <input type="hidden" name="securityToken" value="${securityToken}" />
                 </form:form>
             </div>
-            
-            
-            <div class="clearfix"></div>
-            
-             <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
-              </div>
+        </div>
+
+        <div class="footer">
+            <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+        </div>
              
         </div>
         <!-- End Login Right Section-->
-<!-- Modal -->
-<div class="modal fade" id="termsModal" role="dialog">
-   <div class="modal-dialog modal-lg">
-      <!-- Modal content-->
-      <div class="modal-content">
-      
-      <div class="modal-header cust-hdr">
-        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
-      </div>
-      <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
-      		 <div>
-      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
-		               <span>${masterDataBO.termsText}</span>
-            </div>
-      </div>
-      </div>
-   </div>
-</div>
-
-<div class="modal fade" id="privacyModal" role="dialog">
-   <div class="modal-dialog modal-lg">
-      <!-- Modal content-->
-      <div class="modal-content">
-      
-      <div class="modal-header cust-hdr">
-        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
-      </div>
-      
-      <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
-      		 <div>
-      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
-		               <span>${masterDataBO.privacyPolicyText}</span>
-            </div>
-      </div>
-      </div>
-   </div>
-</div>
-        
-    </div>
     <form:form action="/fdahpStudyDesigner/login.do" id="backToLoginForm" name="backToLoginForm" method="post">
 	</form:form>
     

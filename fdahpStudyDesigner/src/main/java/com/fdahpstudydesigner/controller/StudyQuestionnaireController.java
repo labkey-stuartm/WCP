@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
@@ -47,7 +48,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * 
- * @author Vivek
+ * @author BTC
  *
  */
 @Controller
@@ -67,10 +68,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	
 	/**
 	 * view Questionnaires page
-	 * @author Vivek 
+	 * @author BTC 
 	 * 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
+	 * 
+	 * List of all the Questionnaires of an study.A Study can have 0 or more Questionnaires and
+	 *  admin can manage a list of questionnaires for the study 
 	 */
 	@RequestMapping("/adminStudies/viewStudyQuestionnaires.do")
 	public ModelAndView viewStudyQuestionnaires(HttpServletRequest request) {
@@ -144,10 +148,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Instruction Step Page in Questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
+	 * instruction title and text
 	 */
 	@RequestMapping("/adminStudies/instructionsStep.do")
 	public ModelAndView getInstructionsPage(HttpServletRequest request , HttpServletResponse response){
@@ -253,11 +260,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @param instructionsBo
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @param instructionsBo {@link InstructionsBo}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the short title
+	 * instruction title and instruction text.
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateInstructionStep.do")
 	public ModelAndView saveOrUpdateInstructionStep(HttpServletRequest request ,HttpServletResponse response,InstructionsBo instructionsBo){
@@ -315,9 +325,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 *  
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the short title
+	 * instruction title and instruction text.
 	 */
 	@RequestMapping(value="/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,HttpServletResponse response){
@@ -378,10 +392,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - saveInstructionStep - Ends");
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Questionnaire page of study with all the steps(instruction,question,form) with schedule information.
+	 * Each step corresponds to one screen on the mobile app.There can be multiple types of QA in a questionnaire depending on the 
+	 * type of response format selected per QA.
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/viewQuestionnaire.do")
 	public ModelAndView getQuestionnairePage(HttpServletRequest request,HttpServletResponse response){
@@ -495,11 +514,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @param questionnaireBo
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @param questionnaireBo {@link QuestionnaireBo}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Create or update of questionnaire in study which contains content and scheduling which can be managed by the admin.The questionnaire schedule
+	 * frequency can be One time, Daily,Weekly,Monthly,Custom and admin has to select any one frequency. 
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/saveorUpdateQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public ModelAndView saveorUpdateQuestionnaireSchedule(HttpServletRequest request , HttpServletResponse response,QuestionnaireBo questionnaireBo){
@@ -552,6 +575,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	
+	/**
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Create or update of Questionnaire in study which contains content and scheduling which can be managed.The Questionnaire schedule
+	 * can be One time, Daily,Weekly,Monthly,Custom.The schedule decides how often the user needs to take it
+	 */
 	@RequestMapping(value="/adminStudies/saveQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
@@ -574,16 +606,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						if(questionnaireBo.getId() != null){
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							//questionnaireBo.setStatus(false);
-							//questionnaireBo.setIsChange(0);
 							if(questionnaireBo.getStatus()){
 								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire Updated successfully.");
 							}
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-							//questionnaireBo.setStatus(false);
-							//questionnaireBo.setIsChange(0);
 							if(questionnaireBo.getStatus()){
 								request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire added successfully.");
 							}
@@ -613,9 +641,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Ends");
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Delete of an questionnaire step(Instruction,Question,Form) which are listed in questionnaire.
 	 */
 	@RequestMapping(value="/adminStudies/deleteQuestionnaireStep.do",method = RequestMethod.POST)
 	public void deleteQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -690,9 +721,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request  {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * A questionnaire is an ordered set of one or more steps (screens on the mobile app).The questionnaire by default follows the master order of steps 
+	 * admin can manage the order of an step.Here we can do the reordering of an questionnaire steps(Instruction,Question,Form) 
+	 * which are listed on questionnaire content page.
 	 */
 	@RequestMapping(value="/adminStudies/reOrderQuestionnaireStepInfo.do", method = RequestMethod.POST)
 	public void reOrderQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -718,7 +754,31 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					message = studyQuestionnaireService.reOrderQuestionnaireSteps(Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.valueOf(questionnaireId));
-						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						if(qTreeMap != null){
+							boolean isDone =true;
+							for(Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()){
+								 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+								 if(questionnaireStepBean.getStatus() != null && !questionnaireStepBean.getStatus()){
+									 isDone = false;
+									 break;
+								 }
+								 if(entry.getValue().getFromMap() != null){
+									 if(!entry.getValue().getFromMap().isEmpty()){
+										 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
+											 if(!entryKey.getValue().getStatus()){
+												 isDone = false;
+												 break;
+											 }
+										 } 
+									 }else{
+										 isDone = false;
+										 break;
+									 }
+								 }
+							 }
+							jsonobject.put("isDone", isDone);
+							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						}
 						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 						String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
@@ -740,9 +800,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}\
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Questionnaire contains the content,schedule as two tabs.Each questionnaire contains the short title in content tab this will be created as the column for the
+	 * questionnaire response in response server for this we are doing the unique title validation for each questionnaire in study level
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -778,9 +842,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * A questionnaire is an ordered set of one or more steps.Each step contains the step short title field.
+	 * Which will be response column for the step in response server.so it should be the unique.Here validating the unique for step short title
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireStepShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -815,10 +884,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * A questionnaire contains the form step.form step carries multiple questions.Here we described to load the
+	 * form step of an questionnaire
 	 */
 	@RequestMapping("/adminStudies/formStep.do")
 	public ModelAndView getFormStepPage(HttpServletRequest request , HttpServletResponse response){
@@ -933,9 +1005,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes.
+	 * which are step level attribute,form level attribute.Admin has fill the required fields and click on done it save the info here.
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateFormStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
@@ -984,9 +1060,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Success or Failure
+	 * 
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes.
+	 * which are step level attribute,form level attribute.Admin has fill the required fields and click on save request come here
 	 */
 	@RequestMapping(value="/adminStudies/saveFromStep.do")
 	public void saveFormStep(HttpServletRequest request,HttpServletResponse response){
@@ -1038,9 +1118,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Success/Failure
+	 * 
+	 * From step contains the list of questions with default admin created master order.Admin can manage these orders by reordering the question on
+	 * drag and drop of a questions in the list
 	 */
 	@RequestMapping(value="/adminStudies/reOrderFormQuestions.do", method = RequestMethod.POST)
 	public void reOrderFromStepQuestionsInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1081,9 +1165,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String : Success/Failure
+	 * 
+	 * Form step contains group of questions.Admin can delete the questions using this method and we will return the list of remaining
+	 * question to refresh the list
 	 */
 	@RequestMapping(value="/adminStudies/deleteFormQuestion.do",method = RequestMethod.POST)
 	public void deleteFormQuestionInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1144,10 +1232,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - deleteFormQuestionInfo - Ends");
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Question step page in questionnaire which contains the question and answer.
+	 * Which Carries one QA per screen in Mobile app
 	 */
 	@RequestMapping("/adminStudies/questionStep.do")
 	public ModelAndView getQuestionStepPage(HttpServletRequest request , HttpServletResponse response){
@@ -1265,10 +1356,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				/*if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
-					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
-						questionResponseTypeMasterInfoList.remove(2);
-				}*/
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){
 					healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 					map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
@@ -1291,9 +1378,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections
+	 * admin has to fill the sub section such as step level attribute,question level attribute,response level attributes.Questions 
+	 * can be various types as defined by the response format. Depending on the response format, the attributes of the QA would vary 
+	 * Here we can create or update the question step in questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateQuestionStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
@@ -1343,9 +1436,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections
+	 * admin has to fill the sub section such as step level attribute,question level attribute,response level attributes.Questions 
+	 * can be various types as defined by the response format. Depending on the response format, the attributes of the QA would vary
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestionStep.do",method = RequestMethod.POST )
 	public void saveQuestionStep(HttpServletResponse response,MultipartHttpServletRequest multipleRequest,HttpServletRequest request){
@@ -1434,10 +1532,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
-	 * @return
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Load the Question page of form step inside questionnaire.Question contains the question level attributes and response level attributes
 	 */
 	@RequestMapping("/adminStudies/formQuestion.do")
 	public ModelAndView getFormStepQuestionPage(HttpServletRequest request , HttpServletResponse response){
@@ -1549,7 +1649,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			if(formId!= null && !formId.isEmpty()){
 				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, questionnaireBo.getShortTitle(),studyBo.getCustomStudyId(),questionnaireBo.getId());
 				if(questionId != null && !questionId.isEmpty()){
-					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle());
+					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),questionnaireBo.getShortTitle(),studyBo.getCustomStudyId());
 					map.addAttribute("questionsBo", questionsBo);
 					request.getSession().setAttribute(sessionStudyCount+"questionId", questionId);
 					if(questionnairesStepsBo != null){
@@ -1565,10 +1665,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				/*if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
-					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
-						questionResponseTypeMasterInfoList.remove(2);
-				}*/
 				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.IOS)){ 
 						healthKitKeysInfo = studyQuestionnaireService.getHeanlthKitKeyInfoList();
 						map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
@@ -1589,9 +1685,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
+	 * 
+	 * Question of a form step contains the two attributes .Question-level attributes – these are the same set of attributes as that for question step with the 
+	 * exception of the skippable property and branching logic based on participant choice of response or the conditional logic based branching
+	 * Response-level attributes (same as that for Question Step).Here we can save or update the form questions.
+	 * 
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromQuestion.do")
 	public ModelAndView saveOrUpdateFormQuestion(HttpServletRequest request,HttpServletResponse response,QuestionsBo questionsBo){
@@ -1641,9 +1743,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * 
+	 * @return String : Success/Failure
+	 * Question of a form step contains the two attributes .Question-level attributes – these are the same set of attributes as that for question step with the 
+	 * exception of the skippable property and branching logic based on participant choice of response or the conditional logic based branching
+	 * Response-level attributes (same as that for Question Step).Here we can save or update the form questions.
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
 	public void saveQuestion(HttpServletRequest request,HttpServletResponse response,MultipartHttpServletRequest multipleRequest){
@@ -1726,9 +1833,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * Deleting of an Questionnaire in Study
 	 */
 	@RequestMapping(value="/adminStudies/deleteQuestionnaire.do",method = RequestMethod.POST)
 	public void deleteQuestionnaireInfo(HttpServletRequest request ,HttpServletResponse response){
@@ -1777,9 +1887,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * From step have a one or more question.Each question have the short title field this will be created the as column in response server
+	 * so its should be unique across all the steps.Validateing the Unique of question short title inside form step 
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionKey.do", method = RequestMethod.POST)
 	public void validateQuestionShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -1813,9 +1927,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding 
+	 * a statistic to the dashboard needs the admin to specify the short name should be unique across all the state in the  study
+	 * So validating the unique validation for short name in states.
 	 */
 	@RequestMapping(value="/adminStudies/validateStatsShortName.do", method = RequestMethod.POST)
 	public void validateQuestionStatsShortTitle(HttpServletRequest request ,HttpServletResponse response){
@@ -1845,9 +1964,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding a line chart to the 
+	 * dashboard needs the admin to specify The options time range for the chart which depend on the scheduling frequency set for the activity.when admin change the 
+	 * frequency in questionnaire schedule its validate the options in the time range for chart options.
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
 	public void validateQuestionnaireLineChartSchedule(HttpServletRequest request ,HttpServletResponse response){
@@ -1883,9 +2008,16 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	}
 	
 	/**
-	 * @author Ravinder
-	 * @param request
-	 * @param response
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 * In Questionnaire form step carries the multiple question and Answers .In form level attributes we can make form form as repeatable 
+	 * if the form is repeatable we can not add the line chart and states data to the dashbord.here we are validating the added line chart and 
+	 * statistics data before updating the form as repeatable.
+	 * 
+	 * 
 	 */
 	@RequestMapping(value="/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
 	public void validateRepeatableQuestion(HttpServletRequest request ,HttpServletResponse response){
@@ -1909,5 +2041,103 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.error("StudyQuestionnaireController - validateRepeatableQuestion - ERROR",e);
 		}
 		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Ends");
+	}
+	
+	/**
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 * 
+	 *  For QA of response type that results in the data type 'double', the admin can define conditional logic (formula-based) to evaluate with 
+	 *  user response as the input. A condition or formula is to be defined along with a destination step to navigate to if the result of evaluation 
+	 *  is TRUE and an alternative destination step if FALSE.Admin can check the condition is valid or not here.
+	 *  
+	 */
+	@RequestMapping(value="/adminStudies/validateconditionalFormula.do", method = RequestMethod.POST)
+	public void validateconditionalFormula(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateconditionalFormula - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject formulaResponseJsonObject = null;
+		FormulaInfoBean formulaInfoBean = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String left_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("left_input"))?"":request.getParameter("left_input");
+		    	String right_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("right_input"))?"":request.getParameter("right_input");
+		    	String oprator_input =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("oprator_input"))?"":request.getParameter("oprator_input");
+		    	String trialInputVal =  FdahpStudyDesignerUtil.isEmpty(request.getParameter("trialInput"))?"":request.getParameter("trialInput");
+				if(!left_input.isEmpty() && !right_input.isEmpty() && !oprator_input.isEmpty() && !trialInputVal.isEmpty()){
+					formulaInfoBean = studyQuestionnaireService.validateQuestionConditionalBranchingLogic(left_input, right_input, oprator_input, trialInputVal);
+					if(formulaInfoBean!=null){
+						formulaResponseJsonObject = new JSONObject(mapper.writeValueAsString(formulaInfoBean));
+						jsonobject.put("formulaResponseJsonObject", formulaResponseJsonObject);
+						if(formulaInfoBean.getMessage().equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+						 message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateconditionalFormula - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateconditionalFormula - Ends");
+	}
+	
+	/**
+	 * @author BTC
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return  {@link ModelAndView}
+	 *  
+	 *  Admin want copy the already existed question into the same study admin has to click the copy icon in the questionnaire list.It
+	 *  will copy the existed questionnaire into the study with out questionnaire short title because the short title will be unique
+	 *  across the study
+	 */
+	@RequestMapping("/adminStudies/copyQuestionnaire.do")
+	public ModelAndView copyStudyQuestionnaire(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Starts");
+		ModelAndView mav = new ModelAndView("instructionsStepPage");
+		ModelMap map = new ModelMap();
+		QuestionnaireBo copyQuestionnaireBo = null;
+		String customStudyId = "";
+		String studyId="";
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
+				
+				if(StringUtils.isNotEmpty(questionnaireId) && StringUtils.isNotEmpty(customStudyId)){
+					copyQuestionnaireBo = studyQuestionnaireService.copyStudyQuestionnaireBo(Integer.valueOf(questionnaireId), customStudyId, sesObj);
+				}
+				if(copyQuestionnaireBo != null){
+					request.getSession().setAttribute(sessionStudyCount+"actionType","edit");
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire copyied successfully.");
+					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", String.valueOf(copyQuestionnaireBo.getId()));
+					map.addAttribute("_S", sessionStudyCount);
+					if(StringUtils.isNotEmpty(studyId)){
+						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+				    }
+					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+				}else{
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Questionnaire not copyied successfully.");
+					map.addAttribute("_S", sessionStudyCount);
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do", map);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveOrUpdateFormQuestion - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Ends");
+		return mav;
 	}
 }

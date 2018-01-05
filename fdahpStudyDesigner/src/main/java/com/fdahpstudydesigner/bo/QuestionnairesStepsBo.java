@@ -16,7 +16,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the questionnaires_steps database table.
+ *
+ */
 @Entity
 @Table(name="questionnaires_steps")
 @NamedQueries({

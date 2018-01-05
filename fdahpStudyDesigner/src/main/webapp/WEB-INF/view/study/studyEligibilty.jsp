@@ -7,6 +7,13 @@
 .cursonMove{
  cursor: move !important;
 }
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
 </style>
  <div class="col-sm-10 col-rc white-bg p-none">
   <!--  Start top tab section-->
@@ -130,6 +137,7 @@
       if((!chkDone) && eligibilityMechanism != "1" ) {
     	  $('#doneBut').prop('disabled', true);
     	  $('#spancomId').attr('data-original-title', 'Please ensure individual list items are marked Done, before marking the section as Complete');
+    	  $('[data-toggle="tooltip"]').tooltip();
       }
       initActions();
 	   $('.submitEle').click(function(e) {
@@ -306,7 +314,7 @@
 		    			success: function deleteConsentInfo(data){
 		    				var status = data.message;
 		    				if(status == "SUCCESS"){
-		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Question deleted successfully");
 		    					$('#alertMsg').show();
 		    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 								    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
@@ -317,7 +325,7 @@
 		    						$('#doneBut').prop('disabled', true);
 		    					}
 		    				} else {
-		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete Question");
 		    					$('#alertMsg').show();
 		    	            }
 		    				setTimeout(hideDisplayMessage, 4000);
@@ -344,7 +352,7 @@
 				 if(typeof obj.question === "undefined" && typeof obj.question === "undefined" ){
 						datarow.push(' ');
 				 }else{
-						datarow.push(obj.question);
+						datarow.push("<span class='dis-ellipsis' title='"+obj.question+"'>"+obj.question+"</span>");
 				 }	
 				 var actions ='<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="'+obj.id+'"></span> '+
 				 '<span class="'+(obj.status ? "edit-inc" : "edit-inc-draft") + ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'+obj.id+'"></span>'+

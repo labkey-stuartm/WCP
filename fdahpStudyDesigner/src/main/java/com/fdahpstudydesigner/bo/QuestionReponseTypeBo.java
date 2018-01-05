@@ -13,7 +13,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.web.multipart.MultipartFile;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the response_type_value database table.
+ */
 @Entity
 @Table(name="response_type_value")
 @NamedQueries({
@@ -123,6 +127,9 @@ public class QuestionReponseTypeBo implements Serializable {
 	
 	@Column(name="formula_based_logic")
 	private String formulaBasedLogic="No";
+	
+	@Column(name="condition_formula")
+	private String conditionFormula;
 	
 	@Transient
 	private MultipartFile minImageFile;
@@ -408,6 +415,14 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setFormulaBasedLogic(String formulaBasedLogic) {
 		this.formulaBasedLogic = formulaBasedLogic;
+	}
+
+	public String getConditionFormula() {
+		return conditionFormula;
+	}
+
+	public void setConditionFormula(String conditionFormula) {
+		this.conditionFormula = conditionFormula;
 	}
 	
 }

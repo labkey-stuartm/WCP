@@ -24,7 +24,7 @@
             <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
             <div class="dis-line pull-right">
                  <div class="form-group mb-none">
-                 	<c:if test="${not empty userBO.userPassword && userBO.enabled}">
+                 	<c:if test="${not empty userBO.userPassword && userBO.enabled && not userBO.emailChanged}">
                  	 	<div class="dis-inline mt-sm"><span class="stat"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Active</span></span></span></div>
                  	 </c:if>
                  	 <c:if test="${not empty userBO.userPassword &&  not userBO.enabled}">
@@ -32,6 +32,9 @@
                  	 </c:if>
                  	 <c:if test="${empty userBO.userPassword}">
                  	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs pr-md"> Invitation Sent, Account Activation Pending</span></span><span class="black-sm-f resend pl-md"><a href="javascript:void(0)" id="resendLinkId">Re-send Activation Link</a></span></div>
+                 	 </c:if>
+                 	 <c:if test="${userBO.emailChanged}">
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Pending Verification</span></span></div>
                  	 </c:if>
                  </div>
              </div>
@@ -49,7 +52,7 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
-    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword}">
+    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword && not userBO.emailChanged}">
     <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn" id="enforcePasswordId">Enforce Password Change</button></div>
     </c:if>
         <div class="ed-user-layout row">
@@ -81,7 +84,9 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/>
+                                <input type="text" class="form-control" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required 
+                                <%-- <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/> --%>
+                                <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO)}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -120,7 +125,7 @@
                      <span class="ml-xs">&nbsp;
                         <label class="switch bg-transparent mt-xs">
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
-                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE'}">disabled</c:if> 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || userBO.emailChanged}">disabled</c:if> 
                           onclick="activateOrDeactivateUser(${userBO.userId});" >
                           <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
@@ -436,31 +441,50 @@
 
    
   $('.addUpdate').on('click',function(){
-  	var selectedStudies = "";
-  	var permissionValues = "";
-  	$('#emailId').prop('disabled',false);
-  	if(isFromValid($(this).parents('form'))){
-	  	$('.selStd').each(function(){
-	  		var studyId = $(this).find('.stdCls').val();
-	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-	  		if(selectedStudies == ""){
-	  			selectedStudies = studyId;
-	  		}else{
-	  			selectedStudies += ","+studyId;
-	  		}
-	  		if(permissionValues == ""){
-	  			permissionValues = permissionValue;
-	  		}else{
-	  			permissionValues += ","+permissionValue;
-	  		}
-	  	});
-	  	$('#selectedStudies').val(selectedStudies);
-	  	$('#permissionValues').val(permissionValues);
-	  	<c:if test="${sessionObject.userId eq userBO.userId}">
-	  		$('#ownUser').val('1');
-	  	</c:if>
-  		$(this).parents('form').submit();	
-  	}
+	  var email = $('#emailId').val();
+      var oldEmail = $('#emailId').attr('oldVal');
+      var isEmail;
+      var regEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+      isEmail = regEX.test(email);
+      if(isEmail && ('' === oldEmail || ('' !== oldEmail && oldEmail !== email))){
+      	var csrfDetcsrfParamName = $('#csrfDet').attr('csrfParamName');
+          var csrfToken = $('#csrfDet').attr('csrfToken');
+          //var thisAttr= this;
+          $('#emailId').parent().find(".help-block").html("<ul class='list-unstyled'><li></li></ul>");
+              if(email !== ''){
+            	  $("body").addClass("loading");
+                  $.ajax({
+                      url: "/fdahpStudyDesigner/isEmailValid.do?"+csrfDetcsrfParamName+"="+csrfToken,
+                      type: "POST",
+                      datatype: "json",
+                      global : false,
+                      data: {
+                          email : email,
+                      },
+                      success:  function getResponse(data){
+                          var message = data.message;
+                          if('SUCCESS' !== message){
+                              $('#emailId').validator('validate');
+                              $('#emailId').parent().removeClass("has-danger").removeClass("has-error");
+                              $('#emailId').parent().find(".help-block").html("");
+                              saveUser();
+                          }else{
+                        	  $("body").removeClass("loading");
+                        	  isFromValid($('.addUpdate').parents('form'));
+                              $('#emailId').val('');
+                              $('#emailId').parent().addClass("has-danger").addClass("has-error");
+                              $('#emailId').parent().find(".help-block").empty();
+                              $('#emailId').parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + email + "' already exists.</li></ul>");
+                          }
+                      }
+                });
+            }
+      }else{
+    	  $('#emailId').validator('validate');
+          $('#emailId').parent().removeClass("has-danger").removeClass("has-error");
+          $('#emailId').parent().find(".help-block").html("");
+    	  saveUser();
+      }
   });
   
       $('#resendLinkId').on('click',function(){
@@ -579,6 +603,34 @@
     		return;
     	}
     	});
+    }
+    
+    function saveUser(){
+    	$('#emailId').prop('disabled',false);
+    	var selectedStudies = "";
+      	var permissionValues = "";
+      	if(isFromValid($('.addUpdate').parents('form'))){
+    	  	$('.selStd').each(function(){
+    	  		var studyId = $(this).find('.stdCls').val();
+    	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+    	  		if(selectedStudies == ""){
+    	  			selectedStudies = studyId;
+    	  		}else{
+    	  			selectedStudies += ","+studyId;
+    	  		}
+    	  		if(permissionValues == ""){
+    	  			permissionValues = permissionValue;
+    	  		}else{
+    	  			permissionValues += ","+permissionValue;
+    	  		}
+    	  	});
+    	  	$('#selectedStudies').val(selectedStudies);
+    	  	$('#permissionValues').val(permissionValues);
+    	  	<c:if test="${sessionObject.userId eq userBO.userId}">
+    	  		$('#ownUser').val('1');
+    	  	</c:if>
+      		$('.addUpdate').parents('form').submit();	
+      	}
     }
 </script>
 

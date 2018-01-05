@@ -95,7 +95,7 @@
 			<div class="clearfix"></div>
 			<div>
 				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish this section to appear as a standalone Visual Step in the app prior to the full Consent Document. A Visual Step screen shows the section Title, and the Brief Summary with a link to the elaborated version of the content."></span></div>
-				<div class="form-group">
+				<div class="form-group visualStepDiv">
 					<span class="radio radio-info radio-inline p-45"> 
 						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 
 						<label for="inlineRadio3">Yes</label>
@@ -133,14 +133,15 @@ $(document).ready(function(){
 	initTinyMCEEditor();
     //get the selected consent type on change
     $('input[name="consentItemType"]').change(function(){
+    	$('.visualStepDiv').find(".help-block").empty();
     	resetValidation($("#consentInfoFormId"));
-    	//resetTitle();
+    	
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
     		$("#titleContainer").hide();
     		$("#consentItemTitleId").prop('required', false);
     	}else{
-    		/* setTimeout(function(){ consentInfoDetails(); }, 1000); */
+    		
     		consentInfoDetails();
     		$("#consentItemTitleId").prop('required', true);
     		$("#titleContainer").show();
@@ -151,7 +152,7 @@ $(document).ready(function(){
     $("#consentItemTitleId").change(function(){
     	var titleText = this.options[this.selectedIndex].text;
     	resetValidation($("#consentInfoFormId"));
-    	console.log("titleText:"+titleText);
+    	
     	$(".consentTitle").parent().removeClass('has-error has-danger');
 		$(".consentTitle").parent().find(".help-block").empty();
 		$("#displayTitle").parent().removeClass('has-error has-danger');
@@ -179,15 +180,26 @@ $(document).ready(function(){
     	tinyMCE.triggerSave();
     	valid =  maxLenValEditor();
     	if(valid && isFromValid("#consentInfoFormId")){
-    		var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
-        	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
-        	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
-        	$("#elaborated").val(elaboratedContent);
-        	$("#briefSummary").val(briefSummaryText);
-        	var displayTitleText = $("#displayTitle").val();
-        	displayTitleText = replaceSpecialCharacters(displayTitleText);
-        	$("#displayTitle").val(displayTitleText);
-    		$("#consentInfoFormId").submit();
+    		var visualStepData = '';
+    		
+    		visualStepData = $('input[name=visualStep]:checked').val();
+    		if(visualStepData != '' && visualStepData!= null && typeof visualStepData != 'undefined'){
+    			
+    			var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+            	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
+            	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
+            	$("#elaborated").val(elaboratedContent);
+            	$("#briefSummary").val(briefSummaryText);
+            	var displayTitleText = $("#displayTitle").val();
+            	displayTitleText = replaceSpecialCharacters(displayTitleText);
+            	$("#displayTitle").val(displayTitleText);
+        		$("#consentInfoFormId").submit();
+        		
+    		}else{
+    			$('.visualStepDiv').addClass('has-error has-danger');
+    			$('.visualStepDiv').find(".help-block").empty().html('<ul class="list-unstyled"><li>Please choose one visual step</li></ul>');
+    			$("#doneId").prop('disabled', false);
+    		}
     	}else{
     		$("#doneId").prop('disabled', false);
     	}
@@ -314,7 +326,7 @@ function goToBackPage(item){
 
 //remove the default vallues from the fields when the consent type is changed
 function addDefaultData(){
-	console.log("addDefaultData");
+	
 	var consentInfoId = $("#id").val();
 	$("#displayTitle").val('');
 	$("#briefSummary").val('');
@@ -327,7 +339,7 @@ function addDefaultData(){
 		var consentType = "${consentInfoBo.consentItemType}";
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
-			//tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
+			
 			var elaboratedText = $("#elaboratedTemp").val();
 			tinymce.get('elaboratedRTE').setContent(elaboratedText);
 			var displayTitle = $("#displayTitleTemp").val();
@@ -396,7 +408,7 @@ function initTinyMCEEditor(){
 function maxLenValEditor() {
 	var isValid = true; 
 	var value = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
-	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
+	
 	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 15000){
 		if(isValid){
 			isValid = false;

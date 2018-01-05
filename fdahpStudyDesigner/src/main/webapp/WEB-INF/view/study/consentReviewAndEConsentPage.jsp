@@ -95,7 +95,7 @@
 		                        <div class="help-block with-errors red-txt"></div>
 		                     </div>
 		                </div>
-		                <div class="col-md-12 pl-none mt-lg">
+		                <%-- <div class="col-md-12 pl-none mt-lg">
 		                	<div class="gray-xs-f mb-sm">Allow user to proceed if permission not provided</div>
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
@@ -107,8 +107,14 @@
 	                                <label for="allowWithoutPermissionNo">No</label>
 	                            </span>
 	                        </div>
-                    	</div>
+                    	</div> --%>
                     	 <div class="col-md-12 pl-none mt-lg mb-xlg">
+                    	<!--  <div class="mt-lg"> -->
+<!-- 		                   	<a  class="preview__text" href="javascript:void()" data-toggle="modal" data-target="#myModal"> -->
+		                   	<a  class="preview__text" href="javascript:void()" data-toggle="modal" onclick="previewDataSharing();">
+							   <img class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
+							</a>
+						 <!-- </div> -->
                     	 	<!-- <span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span> -->
                     	 </div>
                     	 </div>
@@ -137,6 +143,10 @@
 							  
 							</div> -->
                    </div>
+                   <div class="clearfix"></div>
+					
+					
+					
                 </div>
 	                <div id="menu2" class="tab-pane fade">
 	                    <div class="mt-lg">
@@ -247,6 +257,85 @@
        
         <!-- End right Content here -->
 	</form:form>
+	              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-sm">
+					    <div class="">              
+					     	<!-- <button style="position: absolute;left: 0;right: 0;margin: auto;top: -10px;" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> -->
+					         <div class="pp__img__container">
+								  <img src="../images/preview_phone.png" alt="Norway" style="width:100%;">
+								  <div class="pp__top">
+								  	<div id="cancelButtonId" class="pl-lg pr-lg" style="display:none;"><button class="float__right cancel__close mb-sm"  data-dismiss="modal">Cancel</button></div>
+								  	<div id="doneButtonId" class="pl-lg pr-lg" style="display:none;"><button class="float__right cancel__close"  onclick="previewDataSharing();">Done</button></div>
+								  	 <div class="clearfix"></div>
+								  	<div class="pl-md pr-md">
+								  		<div id="wrapper__">  
+										   <div class="scrollbar__" id="style-2">
+										    <div class="force-overflow__">
+												   <!--1st modal Start -->
+												   <div class="pp__title" id="titleModalId">- NA -</div>
+												    <div class="pp__tagline" id="tagLineDescriptionModalId">- NA -</div>
+												    <div class="pp__learnmore"><a href="javascript:void(0)" data-toggle="modal" onclick="previewLearnMore();">Learn more</a>
+												    </div>
+												    <div class="pp__ul mt-xlg">
+												    	<div class="panel-group overview-panel" id="accordion">
+												    		<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a data-toggle="collapse" data-parent="#accordion"
+																			href="#collapse1" aria-expanded="true">
+																			<div class="text-left dis-inline pull-left">
+																				<span class="ellipsis__">dis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsisdis-ellipsis dis-ellipsis dis-ellipsis dis-ellipsis</span>
+																			</div>
+																			<div class="text-right dis-inline pull-right">
+																				<span class="glyphicon glyphicon-chevron-right"></span>
+																			</div>
+																			<div class="clearfix"></div>
+																		</a>
+																	</div>
+																</div>
+																<div id="collapse1" class="panel-collapse collapse">
+																	<div class="panel-body">
+																		kfjdf;ljhdlfhjd;lhjb
+																		dskfdsjfnhslkdnghlkdsfglkd bfdskjfbkjd
+																	</div>
+																</div>
+															</div>
+												    	</div>
+												    	<div class="panel-group overview-panel" id="accordion1">
+												    		<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a data-toggle="collapse" data-parent="#accordion1"
+																			href="#collapse2" aria-expanded="true">
+																			<div class="text-left dis-inline pull-left">
+																				<span class="ellipsis__">ronalin sahoo ejrerhewuirew ronalinefewf</span>
+																			</div>
+																			<div class="text-right dis-inline pull-right">
+																				<span class="glyphicon glyphicon-chevron-right"></span>
+																			</div>
+																			<div class="clearfix"></div>
+																		</a>
+																	</div>
+																</div>
+																<div id="collapse2" class="panel-collapse collapse">
+																	<div class="panel-body">
+																		kfjdf;ljhdlfhjd;lhjb
+																		dskfdsjfnhslkdnghlkdsfglkd bfdskjfbkjd
+																	</div>
+																</div>
+															</div>
+												    	</div>
+													</div>	
+													<!-- 1st Modal  End-->
+											  </div>
+											</div>
+										</div>
+								  	</div>
+								  </div>
+							</div>
+					    </div>
+					  </div>
+					</div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
@@ -729,5 +818,113 @@ function maxLenLearnMoreEditor() {
 	     $('#learnMoreTextId').parent().find(".help-block").html(""); 
 	}
 	return isValid;
+}
+function previewDataSharing(){
+	var titleText = $("#titleId").val();
+	var tagline_description = $("#taglineDescriptionId").val();
+	var short_description = $("#shortDescriptionId").val();
+	var long_descriptionId = $("#longDescriptionId").val();
+	$('.force-overflow__').html('');
+	var data = '<div class="pp__title" id="titleModalId">';
+	if(titleText != '' && titleText!= null && typeof titleText != 'undefined'){
+		data += titleText + '</div>';
+	}else{
+		data += ' -NA-</div>';
+	}
+	data += '<div class="pp__tagline" id="tagLineDescriptionModalId">';
+	if(tagline_description != '' && tagline_description!= null && typeof tagline_description != 'undefined'){
+		data += tagline_description + '</div>';
+	}else{
+		data += ' -NA-</div>';		
+	}
+	
+	data += '<div class="pp__learnMore"><a href="javascript:void(0)" data-toggle="modal" onclick="previewLearnMore();">Learn more</a>'
+            +'</div>'
+            +'<div class="pp__ul mt-xlg">';
+	if(short_description != '' && short_description!= null && typeof short_description != 'undefined'){
+		data += '<div class="panel-group overview-panel" id="accordion">'
+		        + '<div class="panel panel-default">'
+		        + '<div class="panel-heading">'
+		        + '<div class="panel-title" style="font-weight: bold;">'
+		        + '<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">'
+		        + '<div class="text-left dis-inline pull-left">'
+		        + '<span class="ellipsis__">'+'Share my data with '+short_description+' and qualified researchers worldwide'+'</span>'
+		        + '</div>'
+		        + '<div class="text-right dis-inline pull-right"><span class="glyphicon glyphicon-chevron-right"></span>'
+				+ '</div><div class="clearfix"></div></a></div></div>'
+				+ '<div id="collapse1" class="panel-collapse collapse"><div class="panel-body">'
+		        + 'Share my data with '+short_description+' and qualified researchers worldwide' + '</div></div></div></div>';
+				
+	}else{
+		data += '<ul class=""><li id="shortDescriptionModalId" style="font-weight: bold;"> - NA - </li></ul>';
+	}
+	
+	if(long_descriptionId != '' && long_descriptionId!= null && typeof long_descriptionId != 'undefined'){
+		data += '<div class="panel-group overview-panel" id="accordion1">'
+	        + '<div class="panel panel-default">'
+	        + '<div class="panel-heading">'
+	        + '<div class="panel-title" style="font-weight: bold;">'
+	        + '<a data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="true">'
+	        + '<div class="text-left dis-inline pull-left">'
+	        + '<span class="ellipsis__">'+'Only share my data with '+long_descriptionId+'</span>'
+	        + '</div>'
+	        + '<div class="text-right dis-inline pull-right"><span class="glyphicon glyphicon-chevron-right"></span>'
+			+ '</div><div class="clearfix"></div></a></div></div>'
+			+ '<div id="collapse2" class="panel-collapse collapse"><div class="panel-body">'
+	        + 'Only share my data with '+long_descriptionId+'</div></div></div></div>';
+	}else{
+		data += '<ul class=""><li id="longDescriptionModalId" style="font-weight: bold;"> - NA - </li></ul>';
+	}
+	data += '</div>' ;
+
+	$('.force-overflow__').html(data);
+	$('.scrollbar__').scrollTop(0);
+	colapseUpAndDown();
+	$('#cancelButtonId').show();
+	$('#doneButtonId').hide();
+	$("#myModal").modal('show');
+}
+function previewLearnMore(){
+	$('#cancelButtonId').hide();
+	$('#doneButtonId').show();
+	$('.force-overflow__').html('');
+    var  learn_more_desc = tinymce.get('learnMoreTextId').getContent({format : 'text'}).trim();
+    var data = '<div class="pp__title">Learn more</div>'
+	           +'<div class="pp__ul mt-xlg">';
+	if(learn_more_desc != ' ' && learn_more_desc != '' && learn_more_desc!= null && typeof learn_more_desc != 'undefined'){
+		data += '<div class="panel-group overview-panel" id="accordion1">'
+	        + '<div class="panel panel-default">'
+	        + '<div class="panel-heading">'
+	        + '<div class="panel-title" style="font-weight: bold;">'
+	        + '<a data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="true">'
+	        + '<div class="text-left dis-inline pull-left">'
+	        + '<span class="ellipsis__">'+learn_more_desc+'</span>'
+	        + '</div>'
+	        + '<div class="text-right dis-inline pull-right"><span class="glyphicon glyphicon-chevron-right"></span>'
+			+ '</div><div class="clearfix"></div></a></div></div>'
+			+ '<div id="collapse2" class="panel-collapse collapse"><div class="panel-body">'
+	        + learn_more_desc+'</div></div></div></div>';
+	}else{
+		data += '<ul class=""><li id="learnMoreDescId" style="font-weight: bold;"> - NA - </li></ul>';
+	}
+	data += '</div>' ;
+	$('.force-overflow__').html(data);
+	$('.scrollbar__').scrollTop(0);
+	colapseUpAndDown();
+  }
+
+
+$(document).on('show.bs.collapse','.collapse', function(){
+    $('.collapse').not(this).collapse('hide').removeClass('in');
+});
+
+function colapseUpAndDown(){
+	$('.collapse').on('shown.bs.collapse', function(){ 
+	    console.log("shown");   
+	    $(this).parent().find(".glyphicon-chevron-right").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
+	   }).on('hidden.bs.collapse', function(){
+	    console.log("hidden");
+	    $(this).parent().find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
+	  });
 }
 </script>

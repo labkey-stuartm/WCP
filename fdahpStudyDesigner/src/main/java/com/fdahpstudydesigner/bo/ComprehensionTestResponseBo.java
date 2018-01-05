@@ -8,7 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the comprehension_test_response database table.
+ *
+ */
 @Entity
 @Table(name="comprehension_test_response")
 public class ComprehensionTestResponseBo implements Serializable {

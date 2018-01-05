@@ -7,10 +7,10 @@ Version: 		1.0
 */
 
 @media screen and (min-width: 760px) {
-    
+/*    
 .lg-space-title{
     padding: 0px 20px 40px;
-}
+}*/
     
 .lg-space-left{
     position: relative;
@@ -34,20 +34,19 @@ Version: 		1.0
     font-size: 32px;
     line-height: 36px;
     font-weight: 200; 
-    text-align: left;
     padding: 0px 50px;
 }
 
 .lg-space-right{
-    width: 60%;
+    /*width: 60%;*/
     display: inline-block;
     float: left;
 }
     
 .lg-icons-list li{
-    width: 220px;
-    height: 150px;
-    padding: 30px;
+    /*width: 220px;
+    height: 150px;*/
+    padding: 20px;
 }
     
 .lg-space-container{
@@ -95,6 +94,23 @@ Version: 		1.0
 .lg-ellipsis{
 	width:300px !important;
 }
+
+.txtchoice_section1,.txtchoice_section2{
+	width: 250px;
+	display: inline-block;
+	margin-right: 15px;	
+}
+
+.txtchoice_section3,.txtchoice_section4{
+	width:200px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.txtchoice_section5{
+	width: 960px;
+	display: inline-block;
+}
     
 }
 
@@ -125,21 +141,21 @@ Version: 		1.0
 
 @media screen and (min-width: 1020px) {
    
-.lg-space-title{
+/*.lg-space-title{
     padding: 0px 20px 40px;
-}
+}*/
     
 .lg-space-left{
     width: 0%;
 }
 
 .lg-space-right{
-    width: 60%;
+    width: 59%;
 }
     
 .lg-icons-list li{
     height: 160px;
-    padding: 30px;
+    padding: 20px;
 }
     
 .lg-space-container{
@@ -183,6 +199,41 @@ Version: 		1.0
     width: 116px;
     text-align: center;
 } 
+
+.txtchoice_section1,.txtchoice_section2{
+	width: 290px;
+	display: inline-block;
+	margin-right: 15px;	
+}
+
+.txtchoice_section3,.txtchoice_section4{
+	width: 290px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.txtchoice_section5{
+	width: 600px;
+	display: inline-block;
+}
+
+.txtchoice_section6{
+	width: 76px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-bottom: 18px;
+    height: 32px;
+    margin-left: 10px;
+}
+
+.txtchoice_section6 > button{
+	width: 38px;
+    height: 32px;   
+    background: #007cba;
+    border: 1px solid #007cba;
+    color: #fff;
+    border-radius: 4px;
+}
 
 }
 
@@ -288,6 +339,41 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     margin-left: 5px;
 }
 
+.txtchoice_section1,.txtchoice_section2{
+	width: 190px;
+	display: inline-block;
+	margin-right: 15px;	
+}
+
+.txtchoice_section3,.txtchoice_section4{
+	width:104px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.txtchoice_section5{
+	width: 688px;
+	display: inline-block;
+}
+
+.txtchoice_section6{
+	width: 76px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-bottom: 18px;
+    height: 32px;
+    margin-left: 15px;
+}
+
+.txtchoice_section6 > button{
+	width: 38px;
+    height: 32px;   
+    background: #007cba;
+    border: 1px solid #007cba;
+    color: #fff;
+    border-radius: 4px;
+}
+
 
 
 }
@@ -305,6 +391,23 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .cs-model-box > div:last-child{
 	width: 762px;
 	height: 340px;
+}
+
+.txtchoice_section1,.txtchoice_section2{
+	width: 220px;
+	display: inline-block;
+	margin-right: 15px;	
+}
+
+.txtchoice_section3,.txtchoice_section4{
+	width:135px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.txtchoice_section5{
+	width: 770px;
+	display: inline-block;
 }
     
 }
@@ -357,7 +460,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .lg-space-right{
-    width: 76%;
+    width: 72%;
 }
     
 .lg-icons-list li{
@@ -375,6 +478,23 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
    width: 81.333333%;
 }
 
+.txtchoice_section1,.txtchoice_section2{
+	width: 230px;
+	display: inline-block;
+	margin-right: 15px;	
+}
+
+.txtchoice_section3,.txtchoice_section4{
+	width:180px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.txtchoice_section5{
+	width: 920px;
+	display: inline-block;
+}
+
     
 }
 
@@ -386,7 +506,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .lg-space-right{
-    width: 75%;
+    width: 74%;
 }
     
 .lg-space-container{
@@ -406,6 +526,23 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 
 .studylist-txtoverflow{
 	width:400px;
+}
+
+.txtchoice_section1,.txtchoice_section2{
+	width: 250px;
+	display: inline-block;
+	margin-right: 15px;	
+}
+
+.txtchoice_section3,.txtchoice_section4{
+	width:200px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.txtchoice_section5{
+	width: 960px;
+	display: inline-block;
 }
     
 }

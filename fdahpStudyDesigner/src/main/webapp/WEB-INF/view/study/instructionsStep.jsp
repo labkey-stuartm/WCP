@@ -102,13 +102,12 @@ $(document).ready(function(){
 		$("#doneId").attr("disabled",true);
 		validateShortTitle('',function(val){
 			if(val){
-				 console.log(val);
 				 $('#shortTitleId').prop('disabled', false);
 				 if(isFromValid("#basicInfoFormId")){
 					document.basicInfoFormId.submit();
 				 }else{
 					 $("#doneId").attr("disabled",false);	
-					 console.log("else");
+					 
 				 } 
 			}else{
 				 $("#doneId").attr("disabled",false);	
@@ -152,7 +151,7 @@ function validateShortTitle(item,callback){
                 },
                 success:  function getResponse(data){
                     var message = data.message;
-                    console.log(message);
+                    
                     if('SUCCESS' != message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");

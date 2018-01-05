@@ -71,6 +71,7 @@ public interface StudyService {
 	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj,String customStudyId);
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
+	public ResourceBO getStudyProtocol(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj,String customStudyId);
@@ -86,7 +87,7 @@ public interface StudyService {
     public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
     public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
     public String reorderEligibilityTestQusAns(Integer eligibilityId,int oldOrderNumber,int newOrderNumber, Integer studyId);
-    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle);
+    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId);

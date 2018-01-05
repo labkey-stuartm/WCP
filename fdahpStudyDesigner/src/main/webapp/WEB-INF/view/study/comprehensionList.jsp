@@ -3,9 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
-/* .cursonMove{
- cursor: move !important;
-} */
 .tool-tip {
   display: inline-block;
 }
@@ -15,10 +12,10 @@
 </style> 
 <script type="text/javascript">
 function isNumber(evt) {
-	evt = (evt) ? evt : window.event;
+    evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
-    	 return false;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
     }
     return true;
 }
@@ -67,7 +64,6 @@ function isNumber(evt) {
    <!--  Start body tab section -->
    <div class="right-content-body pt-none pb-none <c:if test="${empty consentBo.needComprehensionTest || consentBo.needComprehensionTest eq 'No'}">ct_panel</c:if>" id="mainContainer">
       <div>
-        <!--  This feature is work in progress and coming soon. -->
          <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
            <thead>
 			   <tr>
@@ -100,7 +96,7 @@ function isNumber(evt) {
       
       <div class="mt-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
-         <div class="form-group col-md-5 p-none">
+         <div class="form-group col-md-5 p-none scoreClass">
             <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" value="${consentBo.comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)" >
             <div class="help-block with-errors red-txt"></div>
          </div>
@@ -137,7 +133,7 @@ $(document).ready(function(){
 		var val = $(this).val();
 		$("#addQuestionId").attr("disabled",true);
 		if(val == "Yes"){
-			//$("#comprehensionTestMinimumScore").attr("required",true);
+			
 			$("#mainContainer").show();
 			var markAsComplete = "${markAsComplete}"
 			if(markAsComplete == "false"){
@@ -149,7 +145,7 @@ $(document).ready(function(){
 				$("#addHelpNote").show();
 			}
 		}else{
-			//$("#comprehensionTestMinimumScore").attr("required",false);
+			
 			$("#comprehensionTestMinimumScore").val('');
 			$("#mainContainer").hide();
 			$("#addHelpNote").hide();
@@ -160,7 +156,7 @@ $(document).ready(function(){
 		}
 	});
     var viewPermission = "${permission}";
-    console.log("viewPermission:"+viewPermission);
+    
     var reorder = true;
     if(viewPermission == 'view'){
         reorder = false;
@@ -203,9 +199,7 @@ $(document).ready(function(){
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
 
-	    console.log('oldOrderNumber:'+oldOrderNumber);
-	    console.log('newOrderNumber:'+newOrderNumber);
-	    console.log('studyId:'+studyId);
+	    
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
 	    	$.ajax({
@@ -248,7 +242,7 @@ $(document).ready(function(){
 		var value = $(this).val();
 		var questionCount = $("#comprehension_list").find("tbody").find("tr").length;
 		if(value != '' && value != null && (value == 0 || parseInt(value) > parseInt(questionCount))){
-			$(this).val('');
+			
 			$("#comprehensionTestMinimumScore").parent().addClass("has-danger").addClass("has-error");
 			$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
             $("#comprehensionTestMinimumScore").parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should not be more than no of questions or zero</li></ul>");
@@ -270,7 +264,7 @@ $(document).ready(function(){
 	}
 });
 function deleteComprehensionQuestion(questionId){
-	bootbox.confirm("Are you sure you want to delete this consent?", function(result){ 
+	bootbox.confirm("Are you sure you want to delete this question?", function(result){ 
 		if(result){
 			var studyId = $("#studyId").val();
 	    	if(questionId != '' && questionId != null && typeof questionId!= 'undefined'){
@@ -379,7 +373,7 @@ function markAsCompleted(){
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
 	if(needComprehensionTestTxt == "Yes"){
-		 $("#comprehensionTestMinimumScore").trigger('blur');
+		 
 		 if (!table.data().count() ) {
 		    $('#alertMsg').show();
 			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question !");
@@ -398,6 +392,7 @@ function saveConsent(type){
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
 	var studyId = $("#studyId").val();
+	var minScoreFlag = true;
 	if(studyId != null && studyId != '' && typeof studyId != 'undefined' &&
 			needComprehensionTestTxt != null && needComprehensionTestTxt != '' && typeof needComprehensionTestTxt != 'undefined'){
 		if(type == "save"){
@@ -415,54 +410,69 @@ function saveConsent(type){
 		}else{
 			consentInfo.comprehensionTest="done";
 		}
-		var data = JSON.stringify(consentInfo);
-		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
-	          type: "POST",
-	          datatype: "json",
-	          data: {consentInfo:data},
-	          beforeSend: function(xhr, settings){
-	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-	          },
-	          success:function(data){
-	        	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
-				if(message == "SUCCESS"){
-					var consentId = jsonobject.consentId;
-					console.log(consentId);
-					$("#consentId").val(consentId);
-					$("#addQuestionId").attr("disabled",false);
-					$("#addHelpNote").hide();
-					if(type != "save"){
-						//$("body").removeClass("loading");	
-						/* var a = document.createElement('a');
-						a.href = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
-						document.body.appendChild(a).click(); */
-						document.comprehensionInfoForm.action="/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
-						document.comprehensionInfoForm.submit();
+		
+		$("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass("has-error");
+        $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+		var value = $('#comprehensionTestMinimumScore').val();
+		var questionCount = $("#comprehension_list").find("tbody").find("tr").length;
+		if(value != '' && value != null && (value == 0 || parseInt(value) > parseInt(questionCount))){
+			minScoreFlag = false;
+			
+			$("#comprehensionTestMinimumScore").parent().addClass("has-danger").addClass("has-error");
+			$("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+            $("#comprehensionTestMinimumScore").parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should not be more than no of questions or zero</li></ul>");
+		}else{
+			$("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass("has-error");
+            $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+		}
+		if(minScoreFlag){
+			var data = JSON.stringify(consentInfo);
+			$.ajax({ 
+		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
+		          type: "POST",
+		          datatype: "json",
+		          data: {consentInfo:data},
+		          beforeSend: function(xhr, settings){
+		              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+		          },
+		          success:function(data){
+		        	var jsonobject = eval(data);			                       
+					var message = jsonobject.message;
+					if(message == "SUCCESS"){
+						var consentId = jsonobject.consentId;
+						
+						$("#consentId").val(consentId);
+						$("#addQuestionId").attr("disabled",false);
+						$("#addHelpNote").hide();
+						if(type != "save"){
+							document.comprehensionInfoForm.action="/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
+							document.comprehensionInfoForm.submit();
+						}else{
+							$("body").removeClass("loading");
+							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
+							$('#alertMsg').show(); 
+							if ($('.fifthComre').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+								 $('.fifthComre').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							}
+						}
 					}else{
 						$("body").removeClass("loading");
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft");
-						$('#alertMsg').show(); 
-						if ($('.fifthComre').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
-							 $('.fifthComre').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-						}
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+						$('#alertMsg').show();
 					}
-				}else{
-					$("body").removeClass("loading");
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-					$('#alertMsg').show();
-				}
-				setTimeout(hideDisplayMessage, 4000);
-	          },
-	          error: function(xhr, status, error) {
-	        	  $("body").removeClass("loading");
-    			  $('#alertMsg').show();
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-    			  setTimeout(hideDisplayMessage, 4000);
-    		  },
-    		  global : false,
-	   });
+					setTimeout(hideDisplayMessage, 4000);
+		          },
+		          error: function(xhr, status, error) {
+		        	  $("body").removeClass("loading");
+	    			  $('#alertMsg').show();
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+	    			  setTimeout(hideDisplayMessage, 4000);
+	    		  },
+	    		  global : false,
+		   });
+		}else{
+			$("body").removeClass("loading");
+		}
 	}
 }
 </script>

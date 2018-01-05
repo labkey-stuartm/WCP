@@ -25,11 +25,6 @@
 <!-- ============================================================== --> 
 <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
-	<!-- <div class="right-content-head">
-	   <div class="text-left">
-	      <div class="black-md-f text-uppercase dis-line line34">Consent / Educational Info</div>
-	   </div>
-	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections 
@@ -104,7 +99,7 @@ $(document).ready(function(){
 	$("#createStudyId").show();
     var viewPermission = "${permission}";
     var permission = "${permission}";
-    console.log("viewPermission:"+viewPermission);
+    
     var reorder = true;
     if(viewPermission == 'view'){
         reorder = false;
@@ -303,7 +298,7 @@ function addConsentPage(){
 function markAsCompleted(){
 	var table = $('#consent_list').DataTable();
 	if (!table.data().count() ) {
-	    console.log( 'Add atleast one consent !' );
+	    
 	    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
 	    $('#markAsCompleteBtnId').prop('disabled',true);
 	    $('[data-toggle="tooltip"]').tooltip();
@@ -312,7 +307,7 @@ function markAsCompleted(){
 	}
 }
 function editConsentInfo(consentInfoId){
-	console.log("consentInfoId:"+consentInfoId);
+	
 	if(consentInfoId != null && consentInfoId != '' && typeof consentInfoId !='undefined'){
 		$("#consentInfoId").val(consentInfoId);
 		$("#actionType").val('addEdit');
@@ -321,7 +316,7 @@ function editConsentInfo(consentInfoId){
 }
 
 function viewConsentInfo(consentInfoId){
-	console.log("consentInfoId:"+consentInfoId);
+	
 	if(consentInfoId != null && consentInfoId != '' && typeof consentInfoId !='undefined'){
 		$("#actionType").val('view');
 		$("#consentInfoId").val(consentInfoId);

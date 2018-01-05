@@ -64,13 +64,38 @@
 			       <div class="ans-opts col-md-12 p-none" id="0"> 
 				       <div class='col-md-6 pl-none'>
 				        	<div class='form-group'>
-					      	 <input type='text' class='form-control' name="responseList[0].responseOption" id="responseOptionId0" required maxlength="150"/>
+					      	 <input type='text' class='form-control responseOptionClass' name="responseList[0].responseOption" id="responseOptionId0" required maxlength="150" onblur="validateForUniqueValue(this,function(){});" onkeypress="resetValue(this);"/>
 					       	 <div class='help-block with-errors red-txt'></div>
 					       </div>
 			           </div>
 				       <div class='col-md-3'>
 					     <div class="form-group">
 							       <select class='selectpicker wid100'  name="responseList[0].correctAnswer" id="correctAnswerId0" required data-error='Please choose one option'>
+								       <option value=''>Select</option>
+								       <option value="true">Yes</option>
+								       <option value="false">No</option>
+							       </select>
+							       <div class='help-block with-errors red-txt'></div>
+						       </div>  	   
+				       </div>
+				       <div class="col-md-3 pl-none">
+				       		<div class="clearfix"></div>
+				       		<div class="mt-xs formgroup"> 
+				       			<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addAns();'>+</span>
+				       			<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeAns(this);'></span>
+				       	     </div> 
+				       </div>
+			       </div>
+			       <div class="ans-opts col-md-12 p-none" id="1"> 
+				       <div class='col-md-6 pl-none'>
+				        	<div class='form-group'>
+					      	 <input type='text' class='form-control' name="responseList[1].responseOption" id="responseOptionId1" required maxlength="150" onblur="validateForUniqueValue(this,function(){});" onkeypress="resetValue(this);"/>
+					       	 <div class='help-block with-errors red-txt'></div>
+					       </div>
+			           </div>
+				       <div class='col-md-3'>
+					     <div class="form-group">
+							       <select class='selectpicker wid100'  name="responseList[1].correctAnswer" id="correctAnswerId1" required data-error='Please choose one option'>
 								       <option value=''>Select</option>
 								       <option value="true">Yes</option>
 								       <option value="false">No</option>
@@ -105,7 +130,7 @@
 				        <div class="ans-opts col-md-12 p-none" id="${responseBoVar.index}"> 
 					       <div class='col-md-6 pl-none'>
 					        	<div class='form-group'>
-						      	 <input type='text' class='form-control' name="responseList[${responseBoVar.index}].responseOption" id="responseOptionId${responseBoVar.index}" value="${responseBo.responseOption}" required maxlength="150"/>
+						      	 <input type='text' class='form-control' name="responseList[${responseBoVar.index}].responseOption" id="responseOptionId${responseBoVar.index}" value="${responseBo.responseOption}" required maxlength="150" onblur="validateForUniqueValue(this,function(){});" onkeypress="resetValue(this);"/>
 						       	 <div class='help-block with-errors red-txt'></div>
 						       </div>
 				           </div>
@@ -132,7 +157,7 @@
 	         </div>
 	      </div>
 	      <div class="clearfix"></div>
-      <!-- -->
+      
       <div>
          <div class="gray-xs-f mb-sm">Choose structure of the correct answer <span class="requiredStar">*</span></div>
          <div class="form-group">
@@ -161,7 +186,11 @@ $(document).ready(function() {
 	</c:if>
 	$("#doneId").on("click",function(){
     	if(isFromValid("#comprehensionFormId") && validateCorrectAnswers()){
-    		$("#comprehensionFormId").submit();
+    		validateForUniqueValue('',function(val){
+    			if(val){
+    				$("#comprehensionFormId").submit();
+    			}
+    		});
     	}
     });
 	$("#saveId").on("click",function(){
@@ -169,7 +198,7 @@ $(document).ready(function() {
 	    $(".right-content-body").parents("form").validator();
 		saveComrehensionTestQuestion();
 	});
-	if($('.ans-opts').length > 1){
+	if($('.ans-opts').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
@@ -177,10 +206,10 @@ $(document).ready(function() {
 });
 var ansCount = $(".ans-opts").length;
 function addAns(){
-	ansCount = $(".ans-opts").length;
+	ansCount = ansCount+1;
 	var newAns = "<div class='ans-opts col-md-12 p-none' id='"+ansCount+"'><div class='col-md-6 pl-none'>"
         +"<div class='form-group'>"
-	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"'  maxlength='150'/>"
+	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"'  maxlength='150' onblur='validateForUniqueValue(this,function(){});' onkeypress='resetValue(this);'/>"
 	        +"<div class='help-block with-errors red-txt'></div>"
 	        +"</div>"
         +"</div>"
@@ -207,10 +236,10 @@ function addAns(){
     $(".ans-opts").parents("form").validator();
 	if($('.ans-opts').length > 1){
 		$(".remBtnDis").removeClass("hide");
-		console.log("ifffffff");
+		
 	}else{
 		$('.unitDivParent').find(".remBtnDis").addClass("hide");
-		console.log("else");
+		
 	}
 	$('.selectpicker').selectpicker('refresh');
 	$('#'+ansCount).find('input:first').focus();
@@ -219,13 +248,12 @@ function removeAns(param){
     $(param).parents(".ans-opts").remove();
     $(".ans-opts").parents("form").validator("destroy");
 		$(".ans-opts").parents("form").validator();
-		if($('.ans-opts').length > 1){
+		if($('.ans-opts').length > 2){
 			$(".remBtnDis").removeClass("hide");
-			console.log("ifffffff");
+			
 		}else{
 			$(".remBtnDis").addClass("hide");
 			
-			console.log("else");
 		}
 }
 function goToBackPage(item){
@@ -274,7 +302,7 @@ function saveComrehensionTestQuestion(){
 		testQuestionResponse.responseOption=responseOption;
 		testQuestionResponse.correctAnswer=correctAnswer;
 		testQuestionResponse.comprehensionTestQuestionId=testQuestionId;
-		console.log("id:"+id);
+		
 		questionResponseArray.push(testQuestionResponse);
 	});
 	comprehensionTestQuestion.id=testQuestionId;
@@ -343,5 +371,35 @@ function validateCorrectAnswers(){
 	    setTimeout(hideDisplayMessage, 3000);
 		return false;
 	}
+}
+function validateForUniqueValue(item,callback){
+	var isValid = true;
+	var valueArray = new Array();
+	$('.ans-opts').each(function(){
+		var id = $(this).attr("id");
+		var diaplay_value = $("#responseOptionId"+id).val();
+		$("#responseOptionId"+id).parent().removeClass("has-danger").removeClass("has-error");
+        $("#responseOptionId"+id).parent().find(".help-block").empty();
+		if(diaplay_value != ''){
+			if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
+				isValid=false;
+				
+	    		$("#responseOptionId"+id).parent().addClass("has-danger").addClass("has-error");
+	            $("#responseOptionId"+id).parent().find(".help-block").empty();
+	            $("#responseOptionId"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+	        }
+	        else
+	        valueArray.push(diaplay_value.toLowerCase());
+		}else{
+			$("#responseOptionId"+id).parent().addClass("has-danger").addClass("has-error");
+            $("#responseOptionId"+id).parent().find(".help-block").empty();
+		}
+		
+	});
+	callback(isValid);
+}
+function resetValue(item){
+	$(item).parent().addClass("has-danger").addClass("has-error");
+    $(item).parent().find(".help-block").empty();
 }
 </script>

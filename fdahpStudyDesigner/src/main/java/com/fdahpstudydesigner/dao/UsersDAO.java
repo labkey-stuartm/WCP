@@ -15,7 +15,6 @@ public interface UsersDAO {
 	public String addOrUpdateUserDetails(UserBO userBO,String permissions,String selectedStudies,String permissionValues);
 	public List<RoleBO> getUserRoleList();
 	public List<Integer> getPermissionsByUserId(Integer userId);
-	public String forceLogOut(SessionObject userSession);
 	public List<String> getSuperAdminList();
 	public UserBO getSuperAdminNameByEmailId(String emailId);
 	public Integer getUserPermissionByUserId(Integer sessionUserId);

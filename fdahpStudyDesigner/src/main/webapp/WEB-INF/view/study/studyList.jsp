@@ -14,7 +14,7 @@
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
-                <th>Created by <span class="sort"></span></th>
+                <th>FDA PROJECT LEAD <span class="sort"></span></th>
                 <th>Research Sponsor <span class="sort"></span></th>
                 <th>Status <span class="sort"></span></th>
                 <th>Actions</th>
@@ -28,7 +28,7 @@
                 <td>${study.customStudyId}</td>
                 <td><div class="studylist-txtoverflow" title="${fn:escapeXml(study.name)}">${study.name}</div></td>
                 <td>${study.category}</td>
-                <td><div class="createdFirstname">${study.createdFirstName}</div></td>
+                <td><div class="createdFirstname">${study.projectLeadName}</div></td>
                 <td>${study.researchSponsor}</td>
                 <td>${study.status}</td>
                 <td>
@@ -46,9 +46,11 @@
 					</c:choose>" data-toggle="tooltip" data-placement="top" title="${(not empty study.liveStudyId)?((study.flag)?'Draft Version':'Edit'):'Draft Version'}" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
                     <span class="eye-inc viewStudyClass mr-lg" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
-					<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
-					<span class="sprites_icon copy copyStudyClass" customStudyId="${study.customStudyId}" data-toggle="tooltip" data-placement="top" title="Copy"></span>
-					</c:if>
+<!-- Copy study functionality start -->
+<%-- 					<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}"> --%>
+<%-- 					<span class="sprites_icon copy copyStudyClass" customStudyId="${study.customStudyId}" data-toggle="tooltip" data-placement="top" title="Copy"></span> --%>
+<%-- 					</c:if> --%>
+<!-- Copy study functionality end-->
 					</c:if>
                   </td>        
               </tr>

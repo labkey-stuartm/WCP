@@ -12,6 +12,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+/**
+ * 
+ * @author BTC
+ * The persistent class for the instructions database table.
+ *
+ */
 @Entity
 @Table(name="instructions")
 @NamedQueries({

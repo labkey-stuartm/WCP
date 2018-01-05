@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -28,6 +29,12 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+
+
+
+//import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,8 +53,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPermissions;
+import com.udojava.evalex.Expression;
 
 public class FdahpStudyDesignerUtil {
 	private static Logger logger = Logger.getLogger(FdahpStudyDesignerUtil.class.getName());
@@ -841,15 +850,148 @@ public class FdahpStudyDesignerUtil {
 	   }
 	
 	   public static void main(String[] args) {
-		String firstDateTime = "2017-05-05 08:44";
-		String secondDateTime = "2017-05-05 07:44";
-		
-		String hour = "00";
-		String minute = "30";
-		Integer durationSeconds = (Integer.valueOf(hour) * 60 * 60) + (Integer.valueOf(minute)* 60);
-		System.out.println(durationSeconds);
-		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));
+		   BigDecimal result1 = null; 
+		   result1 = new com.udojava.evalex.Expression("(1&&1)").eval();
+		   System.out.println("result::"+result1);
+		   /*net.objecthunter.exp4j.Expression e1 = new ExpressionBuilder("x+10")
+	        .variables("x")
+	        .build()
+	        .setVariable("x", 10);
+	        double op1 = e1.evaluate();
+	        System.out.println("op1::"+op1);*/
+		   /*net.objecthunter.exp4j.Expression e2 = new ExpressionBuilder("(25+x/(x+1))")
+	        .variables("x")
+	        .build()
+	        .setVariable("x", 10);
+	        double op2 = e2.evaluate();
+	        System.out.println("op2::"+op2);
+		   BigDecimal result1 = null;
+		   String operator = ">";
+		   System.out.println("operator::"+operator);
+		   result1 = new com.udojava.evalex.Expression("x "+operator+" y").with("x", BigDecimal.valueOf(op1)).with("y", BigDecimal.valueOf(op2)).eval();
+		   System.out.println(result1);*/
+		   //System.out.println(getConditionalFormulaResult("(x*10)", "(25+x/x=1)", ">", "10"));
 	}
+	   
+	   
+    public static FormulaInfoBean getConditionalFormulaResult(String lhs, String rhs, String operator, String trialInput){
+    	FormulaInfoBean formulaInfoBean = new FormulaInfoBean();
+    	String operand1 = "";
+    	String operand2= "";
+    	BigDecimal result = null;
+    	BigDecimal oprandResult = null;
+    	if(lhs.contains("x")){
+    		if(lhs.contains("!=") || lhs.contains("==") || lhs.contains(">") || lhs.contains("<") || lhs.contains("&&") || lhs.contains("||")){
+    			oprandResult = null;
+    			try{
+    				oprandResult= new com.udojava.evalex.Expression(lhs).with("x",trialInput).eval();
+    				if(oprandResult.intValue() == 1)
+    					operand1 = "true";
+    				else
+    					operand1 = "false";	
+    			}catch(Exception e){
+    				logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+        			formulaInfoBean.setStatusMessage("Error in LHS");
+    			}
+    		}else{
+    			try{
+    				net.objecthunter.exp4j.Expression e;
+    				if(trialInput.contains(".")){
+    					 e = new ExpressionBuilder(lhs)
+        		        .variables("x")
+        		        .build()
+        		        .setVariable("x", Float.parseFloat(trialInput));
+    				}else{
+    					 e = new ExpressionBuilder(lhs)
+        		        .variables("x")
+        		        .build()
+        		        .setVariable("x", Integer.parseInt(trialInput));
+    				}
+    		        double op = e.evaluate();
+    		        operand1 = Double.toString( Math.round( op * 100.0 ) / 100.0);
+    	    		}catch(Exception e){
+    	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    	    			formulaInfoBean.setStatusMessage("Error in LHS");
+    	    		}
+    		}
+    	}else{
+    		//operand1 = lhs;
+    		try{
+		        double op = new ExpressionBuilder(lhs).build().evaluate();
+		        operand1 = Double.toString(Math.round( op * 100.0 ) / 100.0);
+    		}catch(Exception e){
+    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		}
+    	}
+    	if(rhs.contains("x")){
+    		if(rhs.contains("!=") || rhs.contains("==") || rhs.contains(">") || rhs.contains("<") || rhs.contains("&&") || rhs.contains("||")){
+    			oprandResult = null;
+    			try{
+    				oprandResult= new com.udojava.evalex.Expression(rhs).with("x",trialInput).eval();
+    				if(oprandResult.intValue() == 1)
+    					operand2 = "true";
+    				else
+    					operand2 = "false";	
+    			}catch(Exception e){
+    				logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+        			formulaInfoBean.setStatusMessage("Error in LHS");
+    			}
+    		}else{
+    			try{
+    	    		net.objecthunter.exp4j.Expression e;
+    				if(trialInput.contains(".")){
+    					 e = new ExpressionBuilder(rhs)
+        		        .variables("x")
+        		        .build()
+        		        .setVariable("x", Float.parseFloat(trialInput));
+    				}else{
+    					 e = new ExpressionBuilder(rhs)
+        		        .variables("x")
+        		        .build()
+        		        .setVariable("x", Integer.parseInt(trialInput));
+    				}
+    	    		
+    	    		
+    		        double op = e.evaluate();
+    		        operand2 = Double.toString(Math.round( op * 100.0 ) / 100.0);
+    	    		}catch(Exception e){
+    	    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    	    			formulaInfoBean.setStatusMessage("Error in RHS");
+    	    		}
+    		}
+    	}else{
+    		//operand2 = rhs;
+    		try{
+		        double op = new ExpressionBuilder(rhs).build().evaluate();
+		        operand2 = Double.toString(Math.round( op * 100.0 ) / 100.0);
+    		}catch(Exception e){
+    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    			formulaInfoBean.setStatusMessage("Error in RHS");
+    		}
+    	}
+    	if(formulaInfoBean.getStatusMessage().isEmpty()){
+    		try{
+    		result = new com.udojava.evalex.Expression("x "+operator+" y").with("x", operand1).with("y", operand2).eval();
+    		System.out.println("result::"+result);
+    		}catch(Exception e){
+    			logger.error("FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",e);
+    			formulaInfoBean.setStatusMessage("Error in Result");
+    			
+    		}
+    		if(result!=null){
+    			if(result.intValue() == 1){
+    				formulaInfoBean.setOutPutData("True");
+    			}else{
+    				formulaInfoBean.setOutPutData("False");
+    			}
+    			formulaInfoBean.setLhsData(operand1);
+    			formulaInfoBean.setRhsData(operand2);
+    			formulaInfoBean.setMessage(FdahpStudyDesignerConstants.SUCCESS);
+    		}
+    	}
+    	return formulaInfoBean;
+    }
 	   
 	public static String getTimeRangeString(String frequency){
 			String timeRange = "";
@@ -886,47 +1028,67 @@ public class FdahpStudyDesignerUtil {
 	   String regEx = ""; 
 	   if((validCharacters != null && StringUtils.isNotEmpty(validCharacters)) && 
 			   (validCondition != null && StringUtils.isNotEmpty(validCondition))){
-		    regEx += "["; 
-			if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
-				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
-					regEx +=".";
+		    if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
+		    	regEx += "["; 
+		    	if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
+		    		regEx +="^.";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETS)){
+		    		regEx +="a-zA-Z ";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.NUMBERS)){
+		    		regEx +="0-9 ";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETSANDNUMBERS)){
+		    		regEx +="a-zA-Z0-9 ";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+		    		regEx +="^A-Za-z0-9";
+		    	}
+		    	if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+					String[] exceptChar = exceptCharacters.split("\\|");
+					StringBuilder except = new StringBuilder();
+					for(int i=0;i<exceptChar.length;i++){
+						except.append("^(?!.*"+exceptChar[i].trim().replace(" ", "")+")");
+					}
+					regEx = except+regEx+"]+";
 				}else{
-					regEx +="^.";
+					regEx +="]+";
 				}
-			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETS)){
-				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
-					regEx +="a-zA-Z";
-				}else{
-					regEx +="^a-zA-Z";
-				}
-			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.NUMBERS)){
-				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
-					regEx +="0-9";
-				}else{
-					regEx +="^0-9";
-				}
-			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETSANDNUMBERS)){
-				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
-					regEx +="a-zA-Z0-9";
-				}else{
-					regEx +="^a-zA-Z0-9";
-				}
-			}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
-				if(validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)){
-					regEx +="^A-Za-z0-9";
-				}else{
-				   regEx +="A-Za-z0-9";
-				}
-			}
-			if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
-				String[] exceptChar = exceptCharacters.split("\\|");
-				String except ="";
-				for(int i=0;i<exceptChar.length;i++){
-					except+=exceptChar[i];
-				}
-				regEx +="&&[^"+except+"]";
-			}
-			regEx +="]+";
+		    }else {
+		    	if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
+		    		if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+		    			regEx +="^(?:"+exceptCharacters.trim().replace(" ", "")+")$";
+		    		}else{
+		    			regEx +="[.]";
+		    		}
+		    		
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETS)){
+		    		regEx +="^([^a-zA-Z]";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.NUMBERS)){
+		    		regEx +="^([^0-9]";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALPHABETSANDNUMBERS)){
+		    		regEx +="^([^a-zA-Z0-9]";
+		    	}else if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+		    		regEx +="^([A-Za-z0-9 ]";
+		    	}
+		    	if(!validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)){
+		    		if(exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)){
+			    		String[] exceptChar = exceptCharacters.split("\\|");
+						StringBuilder except = new StringBuilder();
+						if(validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)){
+							for(int i=0;i<exceptChar.length;i++){
+			                    except.append(exceptChar[i].trim().replace(" ", ""));
+							}
+							regEx +="|["+except+"]*)+$";
+						}else{
+							for(int i=0;i<exceptChar.length;i++){
+			                    except.append("|\\b(\\b"+exceptChar[i].trim().replace(" ", "")+"\\b)");
+							}
+							regEx +=except+"*)+$";
+						}
+						
+					}else{
+						 regEx +="*)+$";
+					}
+	    		}
+		    }
 		}
 		return regEx;
    }

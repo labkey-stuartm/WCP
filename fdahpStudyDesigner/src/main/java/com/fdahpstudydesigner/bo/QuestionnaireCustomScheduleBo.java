@@ -10,7 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the questionnaires_custom_frequencies database table.
+ *
+ */
 @Entity
 @Table(name="questionnaires_custom_frequencies")
 public class QuestionnaireCustomScheduleBo implements Serializable{

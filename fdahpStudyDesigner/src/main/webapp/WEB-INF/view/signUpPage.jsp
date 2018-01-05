@@ -85,12 +85,12 @@
     </script>
         
 </head>
-<body class="loading white-bg">
-    <div id="loader"><span></span></div>
-    <div class="lg-container">
+<body class="loading background__img">
+  <div id="loader"><span></span></div>
+  <div id="lg-container" class="lg-container">
         
         <!-- Login Left Section-->
-        <div class="lg-space-left">
+        <!-- <div class="lg-space-left">
             <div class="lg-space-img">
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
@@ -100,11 +100,11 @@
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
             </div>
-        </div>
+        </div> -->
         <!-- End Login Left Section-->
         
         <!-- Login Right Section-->
-        <div class="lg-space-right">
+        <!-- <div class="lg-space-right">
             <div>
              <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
             <div class="lg-register-center col-xs-12">
@@ -193,12 +193,101 @@
             
              <div class="footer">
                     <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span>
-              </div>
-             
-        </div>
-        <!-- End Login Right Section-->
-        
+              </div> -->
+
+    <div class="logo__ll">
+      <img src="images/logo/fda-logo-w.png"/>
     </div>
+    <div class="signup__container">
+      <!--container-->
+      <div>
+            <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
+            <div class=" col-xs-12"><!--lg-register-center  -->
+             <form:form id="signUpForm" data-toggle="validator"  role="form" action="addPassword.do" method="post" autocomplete="off">
+             
+                    <div id="errMsg" class="error_msg">${errMsg}</div>
+                    <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
+                    <c:if test="${isValidToken}">
+                    <p class="col-xs-12  text-center boxcenter mb-xlg white__text">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                    <div class=" col-md-6 boxcenter">
+                      <div class="col-xs-6">
+                        <div class="mb-lg form-group">
+                             <input type="text" class="input-field wow_input" id="" name="firstName" placeholder="First Name"  value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                      </div>
+                      <div class="col-xs-6">
+                        <div class="mb-lg form-group">
+                             <input type="text" class="input-field wow_input" id="" name="lastName" placeholder="Last Name"  value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                      </div>
+                      <div class="col-xs-6">
+                        <div class="mb-lg form-group">
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" placeholder="Email Address"  value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
+                        <div class="col-xs-6">
+                        <div class="mb-lg form-group">
+                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber" placeholder="Phone Number"  value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
+                        <div class="col-xs-12">
+                        <div class="mb-lg form-group">
+                             <input autofocus="autofocus" type="text" class="input-field wow_input" id="" name="accessCode"  maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
+                        <div class="col-xs-6">
+                        <div class="mb-lg form-group">
+                            <input type="password" class="input-field wow_input" id="password"  maxlength="64"  data-minlength="8" placeholder="Password"  required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" data-error="Password is invalid" />
+                        <div class="help-block with-errors red-txt"></div>
+                        <span class="arrowLeftSugg"></span>
+                            
+                        </div>
+                        </div>
+                        <div class="col-xs-6">
+                        <div class="mb-lg form-group">
+                            <input type="password" class="input-field wow_input" id="cfnPassword" name=""  maxlength="64" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
+                              required  autocomplete="off"/> 
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
+                        <div class="col-xs-12">
+                        <div class="mb-lg form-group">
+                             <span class="checkbox checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
+                                <label for="inlineCheckbox">
+                                  <span class="white__text">I agree to the <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="grey__text" target="_blank">Terms</a> and 
+                                  <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="grey__text" target="_blank">Privacy Policy</a> associated with using this portal</span>
+                                </label>
+                            </span> 
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="mb-lg form-group text-center col-md-4 col-lg-4 boxcenter">
+                             <button type="button" class="btn lg-btn" id="signPasswordBut">Submit</button>
+                        </div>
+                        </c:if>
+                        <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
+                        <!-- <div class="text-center">
+                            <a id="login" class="gray-link backToLogin white__text" href="javascript:void(0)">Back to Sign in</a>
+                        </div> -->
+                   </div>
+                   <input type="hidden" name="securityToken" value="${securityToken}" />
+                   <input type="password" name="password" id="hidePass" style="display: none;" />
+                </form:form>
+                </div>
+                <!--container-->
+                <div class="footer">
+                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
+                </div>  
+              </div>    
+  </div>
     
     <!-- Modal -->
 <div class="modal fade" id="termsModal" role="dialog">

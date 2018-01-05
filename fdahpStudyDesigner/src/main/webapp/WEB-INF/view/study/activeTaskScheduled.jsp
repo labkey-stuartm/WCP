@@ -1196,77 +1196,72 @@ function saveActiveTask(item, actType, callback){
 			console.log("inside schedule");
 			var activetaskType = $('#targetOptionId').val();
 			console.log("activetaskType::"+activetaskType);
-			if((activetaskType && parseInt(activetaskType) == 1) && (frequency_text == 'One time' || frequency_text == 'Daily' || frequency_text == 'Manually Schedule')){
-				if(frequency_text == 'One time')
-		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
-		    	if(frequency_text == 'Daily' || frequency_text == 'Manually Schedule')
-		    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time?";
-		    	bootbox.confirm({
-					closeButton: false,
-					message : messageText,	
-				    buttons: {
-				        'cancel': {
-				            label: 'No',
-				        },
-				        'confirm': {
-				            label: 'Yes',
-				        },
-				    },
-				    callback: function(result) {
-				        if (result) {
-				        	$("body").addClass("loading");
-				    		$.ajax({ 
-				    	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do?_S=${param._S}",
-				    	        type: "POST",
-				    	        datatype: "json",
-				    	        data: {activeTaskScheduleInfo:data},
-				    	        beforeSend: function(xhr, settings){
-				    	            xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-				    	        },
-				    	        success:function(data){
-				    	      	var jsonobject = eval(data);			                       
-				    				var message = jsonobject.message;
-				    				//var errorMessage = jsonobject.errorMessage;
-				    				if(message == "SUCCESS"){
-				    					var activeTaskId = jsonobject.activeTaskId;
-				    					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
-				    					$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
-				    					$("#previousFrequency").val(frequency_text);
-				    					if(frequency_text == 'One time'){
-				    						$("#oneTimeFreId").val(activeTaskFrequenceId);
-				    					}else if(frequency_text == 'Weekly'){
-				    						$("#weeklyFreId").val(activeTaskFrequenceId);
-				    					}else if(frequency_text == 'Monthly'){
-				    						$("#monthFreId").val(activeTaskFrequenceId);
-				    					}
-				    					frequencey = frequency_text;
-				    					//alert("activeTaskId"+activeTaskId);
-//				     					showSucMsg("Active task saved successfully");
-				    				 	if (callback)
-				    						callback(true);
-				    				}else{
-				    					//showErrMsg(errorMessage);
-				    					if (callback)
-				      						callback(false);
-				    				}
-				    	        },
-				    				error: function(xhr, status, error) {
-//				    				  	showErrMsg("Something went Wrong");
-				    					$("body").removeClass("loading");
-				    					if (callback)
-				    						callback(false);
-				    			  },
-				    			complete : function() {
-				    				$(item).prop('disabled', false);
-				    			},
-				    			global : false
-				    	 	});
-				        }else{
-				        	$("#doneId").attr("disabled",false);
-				        }
-				    }
-			   });
-			}else{
+// 			if((activetaskType && parseInt(activetaskType) == 1) && (frequency_text == 'One time' || frequency_text == 'Daily' || frequency_text == 'Manually Schedule')){
+// 				if(frequency_text == 'One time')
+// 		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
+// 		    	if(frequency_text == 'Daily' || frequency_text == 'Manually Schedule')
+// 		    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time?";
+// 		    	bootbox.confirm({
+// 					closeButton: false,
+// 					message : messageText,	
+// 				    buttons: {
+// 				        'cancel': {
+// 				            label: 'No',
+// 				        },
+// 				        'confirm': {
+// 				            label: 'Yes',
+// 				        },
+// 				    },
+// 				    callback: function(result) {
+// 				        if (result) {
+// 				        	$("body").addClass("loading");
+// 				    		$.ajax({ 
+// 				    	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do?_S=${param._S}",
+// 				    	        type: "POST",
+// 				    	        datatype: "json",
+// 				    	        data: {activeTaskScheduleInfo:data},
+// 				    	        beforeSend: function(xhr, settings){
+// 				    	            xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+// 				    	        },
+// 				    	        success:function(data){
+// 				    	      	var jsonobject = eval(data);			                       
+// 				    				var message = jsonobject.message;
+// 				    				if(message == "SUCCESS"){
+// 				    					var activeTaskId = jsonobject.activeTaskId;
+// 				    					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
+// 				    					$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
+// 				    					$("#previousFrequency").val(frequency_text);
+// 				    					if(frequency_text == 'One time'){
+// 				    						$("#oneTimeFreId").val(activeTaskFrequenceId);
+// 				    					}else if(frequency_text == 'Weekly'){
+// 				    						$("#weeklyFreId").val(activeTaskFrequenceId);
+// 				    					}else if(frequency_text == 'Monthly'){
+// 				    						$("#monthFreId").val(activeTaskFrequenceId);
+// 				    					}
+// 				    					frequencey = frequency_text;
+// 				    				 	if (callback)
+// 				    						callback(true);
+// 				    				}else{
+// 				    					if (callback)
+// 				      						callback(false);
+// 				    				}
+// 				    	        },
+// 				    				error: function(xhr, status, error) {
+// 				    					$("body").removeClass("loading");
+// 				    					if (callback)
+// 				    						callback(false);
+// 				    			  },
+// 				    			complete : function() {
+// 				    				$(item).prop('disabled', false);
+// 				    			},
+// 				    			global : false
+// 				    	 	});
+// 				        }else{
+// 				        	$("#doneId").attr("disabled",false);
+// 				        }
+// 				    }
+// 			   });
+// 			}else{
 				$("body").addClass("loading");
 				$.ajax({ 
 			        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do?_S=${param._S}",
@@ -1314,7 +1309,7 @@ function saveActiveTask(item, actType, callback){
 					},
 					global : false
 			 	});	
-			}
+			//}
 		}else{
 			$("body").addClass("loading");
 			$.ajax({ 

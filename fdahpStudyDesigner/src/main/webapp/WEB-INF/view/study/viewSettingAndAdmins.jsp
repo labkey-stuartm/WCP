@@ -7,6 +7,11 @@
 <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
+<style>
+table.dataTable thead th:last-child{
+    width: 100px !important;
+}
+</style>
        <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">
@@ -171,7 +176,7 @@
 								</td>
 								<td align="center">
 									<span class="radio radio-info radio-inline p-45">
-	                            		<input type="radio" id="inlineRadio3${perm.userId}" class="radcls" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
+	                            		<input type="radio" id="inlineRadio3${perm.userId}" class="radcls leadCls" value="" name="projectLead" <c:if test="${perm.projectLead eq 1}">checked</c:if>>
 	                            		<label for="inlineRadio3${perm.userId}"></label>
                         			</span>
 								</td>
@@ -222,7 +227,7 @@
 						<th></th>
 						<th>USERS<span class="sort"></span></th>
 						<th>E-MAIL ADDRESS</th>
-						<th>ROLE</th>
+						<th style="width:100px !important">ROLE</th>
 
 					</tr>
 				</thead>
@@ -268,8 +273,7 @@
                      
 	                      <ul class="no-disc">
 	                      <li>Given below is a list of features currently NOT available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks.</li>
-	                     	<!--  <li>i. Questionnaires: Question with Response Type Text Scale</li> -->
-	                     	<li>i. Activetasks: Activetask with type Tower Of Hanoi, Spatial Span Memory</li>
+	                      <li>i. Activetasks: Activetask with type Tower Of Hanoi, Spatial Span Memory</li>
 	                     </ul>
                      </li>
                     
@@ -285,6 +289,18 @@ $(document).ready(function(){
 	
 	<c:if test="${empty permission && fn:contains(permissions,5)}">
 	
+		<c:if test="${user eq 'logout_login_user'}">
+			bootbox.alert({
+				closeButton: false,
+				message : 'Your user account details have been updated. Please sign in again to continue using the portal.',	
+			    callback: function(result) {
+			    	var a = document.createElement('a');
+			    	a.href = "/fdahpStudyDesigner/sessionOut.do";
+					document.body.appendChild(a).click();
+			    }
+		    });
+		</c:if>
+	
 		$('[data-toggle="tooltip"]').tooltip();
 	
 		$('#adminsId').hide();
@@ -293,20 +309,17 @@ $(document).ready(function(){
 			  var userId = $(this).attr('studyUserId');
 			  $('#user'+userId).removeClass('checkCount').hide();
 		});
-		
-		$('#userListTable').DataTable({
-	        "paging":   false,
-	        "aoColumns": [
-			   { "width":'5%',"bSortable": false },
-	           { "width":'35%',"bSortable": true },
-	           { "width":'30%',"bSortable": false },
-	           { "width":'30%',"bSortable": false }
-	          ], 
-	        "emptyTable": "No data available",
-	        "info" : false, 
-	        "lengthChange": true, 
-	        "searching": false, 
-	    });
+
+        $('#userListTable').DataTable({
+            "columnDefs": [
+                { "width": "100px", "targets": 3 }
+            ],
+         "paging":   false,
+         "emptyTable": "No data available",
+         "info" : false, 
+         "lengthChange": true, 
+         "searching": false, 
+     });
 		
 		$('.addAdminCheckbox').on('click',function(){
 			 var count = 0;
@@ -351,9 +364,26 @@ $(document).ready(function(){
     	</c:if>
 		
 		$("#completedId").on('click', function(e){
+			var rowCount = 0;
 			if(isFromValid("#settingfoFormId")) {
-				$('#completedId').prop('disabled',true);
-				platformTypeValidation('completed');
+				rowCount = $('.leadCls').length;
+				if (rowCount != 0) {
+				if ($("#studyAdminsTable .leadCls:checked").length > 0)
+				{
+					$('#completedId').prop('disabled',true);
+					platformTypeValidation('completed');
+				}
+				else
+				{
+					bootbox.alert({
+						closeButton: false,
+						message : 'Please select one of the admin as a project lead',	
+		    		});
+				}
+				}else{
+					$('#completedId').prop('disabled',true);
+					platformTypeValidation('completed');
+				}
  			}
          });
          
@@ -405,7 +435,6 @@ function setAllowRejoinText(){
 	}
 }
 function platformTypeValidation(buttonText){
-	/* Ronalin */
 	var platformNames = '';
 	$("input:checkbox[name=platform]:checked").each(function() {
 		platformNames = platformNames + $(this).val();
@@ -421,7 +450,6 @@ function platformTypeValidation(buttonText){
 		$('.actBut').prop('disabled',true);
 		$("body").addClass("loading");
 		$.ajax({
-            //url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidation.do?_S=${param._S}",
             url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidationforActiveTask.do?_S=${param._S}",		
             type: "POST",
             datatype: "json",
@@ -581,7 +609,7 @@ function admins(){
 			          					'<label for="inlineRadio2'+userId+'"></label>'+
 			          					'</span></td>';
 					  domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">'+
-										'<input type="radio" id="inlineRadio3'+userId+'" name="projectLead">'+
+										'<input type="radio" id="inlineRadio3'+userId+'" class="leadCls" name="projectLead">'+
 										'<label for="inlineRadio3'+userId+'"></label>'+
 										'</span></td>';
 					 domStr = domStr + '<td align="center"><span class="sprites_icon copy delete" onclick="removeUser('+userId+')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';

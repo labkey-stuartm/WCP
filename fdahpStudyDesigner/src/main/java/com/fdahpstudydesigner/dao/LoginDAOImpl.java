@@ -180,7 +180,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			userBO = (UserBO) session.getNamedQuery("getUserBySecurityToken").setString("securityToken", securityToken).uniqueResult();
-			if(!userBO.getSecurityToken().equals(securityToken)){
+			if(null != userBO && !userBO.getSecurityToken().equals(securityToken)){
 				userBO = null;
 			}
 		} catch (Exception e) {

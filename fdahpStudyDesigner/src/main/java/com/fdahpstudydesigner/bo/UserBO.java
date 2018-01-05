@@ -117,6 +117,9 @@ public class UserBO implements Serializable{
 	@Type(type="yes_no")
 	private boolean forceLogout = false;
 	
+	@Column(name = "email_changed", columnDefinition = "TINYINT(1)")
+	private Boolean emailChanged = false;
+	
 	@Transient
 	private String userFullName;
 	
@@ -386,6 +389,14 @@ public class UserBO implements Serializable{
 
 	public void setUserFullName(String userFullName) {
 		this.userFullName = userFullName;
+	}
+
+	public Boolean getEmailChanged() {
+		return emailChanged;
+	}
+
+	public void setEmailChanged(Boolean emailChanged) {
+		this.emailChanged = emailChanged;
 	}
 }
 

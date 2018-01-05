@@ -9,6 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author BTC	
+ * The persistent class for the consent_master_info database table.
+ *
+ */
 @Entity
 @Table(name="consent_master_info")
 public class ConsentMasterInfoBo implements Serializable{

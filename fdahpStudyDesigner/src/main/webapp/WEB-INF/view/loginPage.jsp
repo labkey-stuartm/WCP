@@ -78,12 +78,10 @@
     </script>
         
 </head>
-<body class="loading white-bg" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
+<body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
     <div id="loader"><span></span></div>
-    <div class="lg-container">
-        
-        <!-- Login Left Section-->
-        <div class="lg-space-left">
+    <div id="lg-container" class="lg-container">
+       <!--  <div class="lg-space-left">
             <div class="lg-space-img">
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
@@ -93,11 +91,8 @@
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
             </div>
-        </div>
-        <!-- End Login Left Section-->
-        
-        <!-- Login Right Section-->
-        <div class="lg-space-right">
+        </div> -->
+        <!-- <div class="lg-space-right">
         
 	        <div class="cs-model-box hide askSignInCls">        
 		        <div></div>
@@ -176,9 +171,95 @@
                     <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
               </div>
              
+        </div> -->
+
+        <!-- new login -->
+        <!-- Logo-->
+        <div class="logo__ll">
+            <img src="images/logo/fda-logo-w.png"/>
         </div>
-        <!-- End Login Right Section-->
-        
+        <div class="clearfix"></div>
+        <div class="login__container">
+            <div class="cs-model-box hide askSignInCls">        
+                <div></div>
+                <div>
+                    <div>Important Note</div>
+                    <ul>
+                        <li>You Are Accessing a U.S. Government Information System </li>
+                        <li>Usage Of This Information System May Be Monitored, Recorded, And Subject To Audit</li>
+                        <li>Unauthorized Use Of This Information System Is Prohibited And Subject To Criminal And Civil Penalties</li>
+                        <li>Use Of This Information System Indicates Consent To Monitoring And Recording</li>
+                    </ul>
+                    
+                    <div>
+                        By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA My Studies Management Portal <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a>
+                    </div>
+                    
+                    <div class="mt-lg">
+                        <button id="loginBtnId" type="button" class="btn btn-primary blue-btn float__left" >Sign In</button>
+                        <button id="cancelbtn" type="button" class="btn btn-default gray-btn ml-sm float__left">Cancel</button>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="login-box">
+                <div class="lg-space-txt">
+                    FDA My Studies Management Portal
+                </div>
+                <div class="ll__border__bottom"></div>
+             <c:url value='/j_spring_security_check' var="fdaLink"/>
+             <input type="hidden" id="fdaLink" value="${fdaLink}" >
+             <form:form id="loginForm" data-toggle="validator" role="form" action="#"  name="loginForm" method="post" autocomplete="off">  
+                    <div id="errMsg" class="error_msg">${errMsg}</div>
+                    <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
+                    <div class="login pt-xlg">
+                        <div class="mb-lg form-group">
+                            <input type="text" class="input-field wow_input" id="email" name="username" data-pattern-error="Email address is invalid" 
+                                placeholder="Email Address" required maxlength="100" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autofocus autocomplete="off">
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <input type="password" class="input-field wow_input" id="password" 
+                                placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off"  readonly onfocus="$(this).removeAttr('readonly');">
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <button type="button" class="btn lg-btn" id="siginNoteBtnId">SIGN IN</button>
+                        </div>
+                        <div class="pb-md pt-xs">
+                            <a id="forgot_pwd" class="gray-link white__text" href="javascript:void(0)">Forgot Password?</a>
+                        </div>
+                   </div>
+                   <input type="password" name="password" id="hidePass" style="display: none;"/>
+                </form:form>
+                <form:form id="forgotForm" data-toggle="validator" role="form" action="forgotPassword.do" method="post" autocomplete="off">
+                   <div class="pwd dis-none">
+                     <div class="mb-lg">
+                         <h3 style="    color: #fff; padding-top: 20px;" class="mt-none">Forgot Password?</h3>
+                        <div class="mt-md white__text">Enter your Email address to get  a link to reset password</div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <input type="text" class="input-field wow_input" id="emailReg" name="email" maxlength="100" placeholder="Email Address" 
+                            data-pattern-error = "Email address is invalid"  required maxlength="100" 
+                               pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg">
+                            <button type="submit" class="btn lg-btn" id="log-btn">SUBMIT</button>
+                        </div>
+                        <div class="pt-xs">
+                            <a id="login" class="gray-link white__text" href="javascript:void(0)">Back to Sign in</a>
+                        </div>
+                   </div>
+              </form:form>   
+            </div> 
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+        </div>
+        <!-- new login --> 
     </div>
     
     <!-- Modal -->
