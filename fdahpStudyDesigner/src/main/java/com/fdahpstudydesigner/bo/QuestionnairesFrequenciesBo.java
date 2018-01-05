@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author BTC The persistent class for the questionnaires_frequencies database
- *         table.
+ * The persistent class for the questionnaires_frequencies database table.
+ * 
+ * @author BTC 
  *
  */
 @Entity

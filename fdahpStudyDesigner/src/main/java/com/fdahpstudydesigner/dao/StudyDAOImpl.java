@@ -578,7 +578,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to delete the resource
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param resourceInfoId
 	 * @param resourceVisibility
 	 * @param studyId
@@ -1101,7 +1101,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * This method is used to get the active user list whom are not yet added to
 	 * the particular study
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @param userId
 	 * @return List of {@link UserBO}
@@ -1165,7 +1165,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * This method is used to get the users whom are already added to the
 	 * particular study
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @param userId
 	 * @return List of {@link StudyPermissionBO}
@@ -1221,7 +1221,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * return all active study List based
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 *
 	 * @return the Study list
 	 * @exception Exception
@@ -1253,7 +1253,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to get the checklist info
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return {@link Checklist}
 	 */
@@ -1685,6 +1685,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return studyIdBean;
 	}
 
+	/**
+	 * This method is used to get the notification data
+	 * 
+	 * @author BTC
+	 * @param resourseId
+	 * @return {@link NotificationBO}
+	 */
 	@Override
 	public NotificationBO getNotificationByResourceId(Integer resourseId) {
 		logger.info("StudyDAOImpl - getNotificationByResourceId() - Starts");
@@ -1709,7 +1716,6 @@ public class StudyDAOImpl implements StudyDAO {
 		return notificationBO;
 	}
 
-	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 
 	/**
 	 * @author Ronalin
@@ -1816,6 +1822,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return referenceMap;
 	}
 
+	/**
+	 * This method is used to get the resource information
+	 * 
+	 * @author BTC
+	 * @param resourceInfoId
+	 * @return {@link ResourceBO}
+	 */
 	@Override
 	public ResourceBO getResourceInfo(Integer resourceInfoId) {
 		logger.info("StudyDAOImpl - getResourceInfo() - Starts");
@@ -1837,6 +1850,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return resourceBO;
 	}
 
+	/**
+	 * This method is used to get the list of resources
+	 * 
+	 * @author BTC
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ResourceBO> getResourceList(Integer studyId) {
@@ -2127,14 +2147,11 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * return study List based on user
+	 * This method is used to return study List based on user
 	 *
-	 * @author Pradyumn
-	 *
+	 * @author BTC
 	 * @param userId
-	 *            of the user
-	 * @return the Study list
-	 * @exception Exception
+	 * @return List of {@link StudyListBean}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2189,6 +2206,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return studyLive;
 	}
 
+	/**
+	 * This method is used to get the a special resource called study protocol
+	 * 
+	 * @author BTC
+	 * @param studyId
+	 * @return {@link ResourceBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResourceBO getStudyProtocol(Integer studyId) {
@@ -2228,6 +2252,12 @@ public class StudyDAOImpl implements StudyDAO {
 		return studyVersionBos;
 	}
 
+	/**
+	 * This method is used to get the super admins user Ids
+	 * 
+	 * @author BTC
+	 * @return 
+	 */
 	public List<Integer> getSuperAdminUserIds() {
 		logger.info("StudyDAOImpl - getSuperAdminUserIds() - Starts");
 		Session session = null;
@@ -3817,7 +3847,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to get the sequence number to set to the resource
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return sequence number
 	 */
@@ -3852,7 +3882,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to get the saved resource list
 	 * 
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -3883,7 +3913,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to get the list of resources having anchor date
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -4047,7 +4077,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to Save or Done Checklist
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param checklist
 	 *            , {@link Checklist}
 	 * @return checklist Id
@@ -4446,7 +4476,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to save or update the Study Resource
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param resourceBO
 	 *            , {@link ResourceBO}
 	 * @return resource Id
@@ -4712,7 +4742,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Save or update settings and admins of study
 	 *
-	 * @author Ronalin(Settings)/Pradyumn(Admins)
+	 * @author BTC
 	 * @param studyBo
 	 *            , {@link studyBo}
 	 * @param sesObj, {@link SessionObject}
@@ -5035,6 +5065,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return pageId;
 	}
 
+	/**
+	 * This method is used to save the resource notification
+	 * 
+	 * @author BTC
+	 * @param notificationBO
+	 *            , {@link NotificationBO}
+	 * @return message, Success/Failure message.
+	 */
 	@Override
 	public String saveResourceNotification(NotificationBO notificationBO,
 			boolean notiFlag) {

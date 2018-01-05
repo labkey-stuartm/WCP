@@ -12,9 +12,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 /**
- *
- * @author BTC The persistent class for the questionnaires_custom_frequencies
- *         database table.
+ * The persistent class for the questionnaires_custom_frequencies database table.
+ * 
+ * @author BTC 
  *
  */
 @Entity

@@ -18,8 +18,9 @@ import javax.persistence.Transient;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 
 /**
- *
- * @author BTC The persistent class for the questionnaires_steps database table.
+ * The persistent class for the questionnaires_steps database table.
+ * 
+ * @author BTC 
  *
  */
 @Entity

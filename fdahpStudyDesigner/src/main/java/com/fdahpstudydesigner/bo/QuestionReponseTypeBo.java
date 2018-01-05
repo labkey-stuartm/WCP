@@ -15,8 +15,9 @@ import javax.persistence.Transient;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
- * @author BTC The persistent class for the response_type_value database table.
+ * The persistent class for the response_type_value database table.
+ * 
+ * @author BTC 
  */
 @Entity
 @Table(name = "response_type_value")

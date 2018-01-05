@@ -237,7 +237,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to delete the resource
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param resourceInfoId
 	 * @param sesObj
 	 *            , {@link SessionObject}
@@ -299,7 +299,7 @@ public class StudyServiceImpl implements StudyService {
 	 * This method is used to get the active user list whom are not yet added to
 	 * the particular study
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @param userId
 	 * @return List of {@link UserBO}
@@ -323,7 +323,7 @@ public class StudyServiceImpl implements StudyService {
 	 * This method is used to get the users whom are already added to the
 	 * particular study
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @param userId
 	 * @return List of {@link StudyPermissionBO}
@@ -347,7 +347,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the active and live study List
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @return List of {@link StudyBo}
 	 */
 	@Override
@@ -366,7 +366,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the checklist info
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return {@link Checklist}
 	 */
@@ -661,7 +661,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the resource information
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param resourceInfoId
 	 * @return {@link ResourceBO}
 	 */
@@ -695,7 +695,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the list of resources
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -803,14 +803,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return active and live study List based on user
+	 * This method is used to return study List based on user
 	 *
 	 * @author BTC
-	 *
 	 * @param userId
-	 *            of the user
-	 * @return the Study list
-	 * @exception Exception
+	 * @return List of {@link StudyListBean}
 	 */
 	@Override
 	public List<StudyListBean> getStudyListByUserId(Integer userId) {
@@ -851,7 +848,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the a special resource called study protocol
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return {@link ResourceBO}
 	 */
@@ -1013,7 +1010,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to reorder the resource list page
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @param oldOrderNumber
 	 * @param newOrderNumber
@@ -1063,7 +1060,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the sequence number to set to the resource
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return sequence number
 	 */
@@ -1083,7 +1080,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the saved resource list
 	 * 
-	 * @author Pradyumn 
+	 * @author BTC 
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -1103,7 +1100,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the list of resources having anchor date
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -1275,7 +1272,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to Save or Done Checklist
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param checklist, {@link Checklist}
 	 * @param actionBut
 	 * @param sesObj, {@link SessionObject}
@@ -1612,7 +1609,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to save or update the Study Resource
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param resourceBO
 	 *            , {@link ResourceBO}
 	 * @param sesObj

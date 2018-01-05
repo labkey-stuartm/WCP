@@ -14,8 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- *
- * @author BTC The persistent class for the questionnaires database table.
+ * The persistent class for the questionnaires database table.
+ * 
+ * @author BTC 
  *
  */
 @Entity

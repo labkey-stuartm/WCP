@@ -13,8 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- *
- * @author BTC The persistent class for the consent_info database table.
+ * The persistent class for the consent_info database table.
+ * 
+ * @author BTC 
  */
 @Entity
 @Table(name = "consent_info")

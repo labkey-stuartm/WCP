@@ -176,7 +176,7 @@ public class StudyController {
 	/**
 	 * This method is used add or edit Study Resource
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -719,7 +719,7 @@ public class StudyController {
 	/**
 	 * This method is used to delete the resource
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletResponse}
 	 * @param response
@@ -947,7 +947,7 @@ public class StudyController {
 	/**
 	 * This method is used to get checklist data
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -1748,7 +1748,7 @@ public class StudyController {
 	/**
 	 * This method is used to get the list of resources
 	 * 
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -2472,7 +2472,7 @@ public class StudyController {
 	/**
 	 * This method is used to reload the resource list
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response, {@link HttpServletResponse}
@@ -2675,7 +2675,7 @@ public class StudyController {
 	/**
 	 * This method is used to reorder the resource list page
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -2858,7 +2858,7 @@ public class StudyController {
 	/**
 	 * This method is user to set resources to Mark as completed
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -3189,7 +3189,7 @@ public class StudyController {
 	/**
 	 * This method is used to Save or Done Checklist
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param checklist
@@ -3563,7 +3563,7 @@ public class StudyController {
 	/**
 	 * This method is used to save or update the Study Resource
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param resourceBO
