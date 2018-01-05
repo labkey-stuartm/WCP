@@ -5168,7 +5168,7 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			if (studyBo != null) {
 				logger.info("StudyDAOImpl - studyDraftCreation() getStudyByCustomStudyId- Starts");
-				// if already lunch if study hasStudyDraft()==1 , then update
+				// if already launch and study hasStudyDraft()==1 , then update
 				// and create draft version , otherwise not
 				query = session.getNamedQuery("getStudyByCustomStudyId")
 						.setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID,
@@ -5185,6 +5185,7 @@ public class StudyDAOImpl implements StudyDAO {
 					if (studyVersionBo != null) {
 						logger.info("StudyDAOImpl - studyDraftCreation() updateStudyVersion- Starts");
 						// update all studies to archive (live as 2)
+						//pass customstudyId and making all study status belongs to same customstudyId as 2(archive)  
 						query = session
 								.getNamedQuery("updateStudyVersion")
 								.setString(
@@ -5213,7 +5214,7 @@ public class StudyDAOImpl implements StudyDAO {
 						session.save(newstudyVersionBo);
 					}
 
-					// create new Study and made it archive
+					// create new Study and made it draft study
 					StudyBo studyDreaftBo = SerializationUtils.clone(studyBo);
 					if (newstudyVersionBo != null) {
 						studyDreaftBo.setVersion(newstudyVersionBo
@@ -5223,7 +5224,7 @@ public class StudyDAOImpl implements StudyDAO {
 					studyDreaftBo.setId(null);
 					session.save(studyDreaftBo);
 
-					// Study Permission
+					//clone of Study Permission
 
 					studyPermissionList = session.createQuery(
 							"from StudyPermissionBO where studyId="
@@ -5240,7 +5241,7 @@ public class StudyDAOImpl implements StudyDAO {
 						logger.info("StudyDAOImpl - studyDraftCreation() StudyPermissionBO- Ends");
 					}
 
-					// Sequence
+					//clone of Study Sequence
 					StudySequenceBo studySequence = (StudySequenceBo) session
 							.getNamedQuery(
 									FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
@@ -5252,7 +5253,7 @@ public class StudyDAOImpl implements StudyDAO {
 					newStudySequenceBo.setStudySequenceId(null);
 					session.save(newStudySequenceBo);
 
-					// Over View
+					//clone of Over View section
 					query = session
 							.createQuery("from StudyPageBo where studyId="
 									+ studyBo.getId());
@@ -5267,7 +5268,7 @@ public class StudyDAOImpl implements StudyDAO {
 						}
 					}
 
-					// Eligibility
+					//clone of Eligibility
 					query = session.getNamedQuery("getEligibiltyByStudyId")
 							.setInteger(FdahpStudyDesignerConstants.STUDY_ID,
 									studyBo.getId());
@@ -5309,7 +5310,7 @@ public class StudyDAOImpl implements StudyDAO {
 						}
 					}
 
-					// resources
+					//clone of resources
 					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="
 							+ studyBo.getId()
 							+ " AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
@@ -5326,7 +5327,7 @@ public class StudyDAOImpl implements StudyDAO {
 						}
 						logger.info("StudyDAOImpl - studyDraftCreation() ResourceBO- Ends");
 					}
-					// If Questionnaire updated flag -1 then update
+					// If Questionnaire updated flag -1 then update(clone)
 					if (studyVersionBo == null
 							|| (studyBo.getHasQuestionnaireDraft() != null && studyBo
 									.getHasQuestionnaireDraft().equals(1))) {
@@ -5913,7 +5914,7 @@ public class StudyDAOImpl implements StudyDAO {
 					}// In Questionnarie change or not
 
 					// which are already in live those are deleted in draft to
-					// make update those questionnarie to archived and make it
+					// making update those questionnarie to archived and make it
 					// inactive(status=0)
 					StringBuilder subString = new StringBuilder();
 					subString.append("select CONCAT('");
@@ -5938,6 +5939,7 @@ public class StudyDAOImpl implements StudyDAO {
 					}
 
 					// In ActiveTask change or not Start
+					//is there any change doing clone of active task
 					if (studyVersionBo == null
 							|| (studyBo.getHasActivetaskDraft() != null && studyBo
 									.getHasActivetaskDraft().equals(1))) {
@@ -6015,7 +6017,7 @@ public class StudyDAOImpl implements StudyDAO {
 												session.update(customScheduleBo);
 											}
 											// updating draft version of
-											// schecule to Yes
+											// schedule to Yes
 											session.createQuery(
 													"UPDATE ActiveTaskCustomScheduleBo set used=true where activeTaskId="
 															+ activeTaskBo
