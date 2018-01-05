@@ -13,6 +13,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
+ * The persistent class for the study_checklist database table.
+ * 
  * @author BTC
  *
  */
@@ -24,19 +26,17 @@ public class Checklist implements Serializable {
 
 	private static final long serialVersionUID = 7206666243059395497L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "checklist_id")
-	private Integer checklistId;
-
-	@Column(name = "study_id")
-	private Integer studyId;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
-
 	@Column(name = "checkbox1", length = 1)
 	private boolean checkbox1 = false;
+
+	@Column(name = "checkbox10", length = 1)
+	private boolean checkbox10 = false;
+
+	@Column(name = "checkbox11", length = 1)
+	private boolean checkbox11 = false;
+
+	@Column(name = "checkbox12", length = 1)
+	private boolean checkbox12 = false;
 
 	@Column(name = "checkbox2", length = 1)
 	private boolean checkbox2 = false;
@@ -62,14 +62,10 @@ public class Checklist implements Serializable {
 	@Column(name = "checkbox9", length = 1)
 	private boolean checkbox9 = false;
 
-	@Column(name = "checkbox10", length = 1)
-	private boolean checkbox10 = false;
-
-	@Column(name = "checkbox11", length = 1)
-	private boolean checkbox11 = false;
-
-	@Column(name = "checkbox12", length = 1)
-	private boolean checkbox12 = false;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "checklist_id")
+	private Integer checklistId;
 
 	@Column(name = "created_by")
 	private Integer createdBy;
@@ -77,11 +73,17 @@ public class Checklist implements Serializable {
 	@Column(name = "created_on")
 	private String createdOn;
 
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
 	@Column(name = "modified_on")
 	private String modifiedOn;
+
+	@Column(name = "study_id")
+	private Integer studyId;
 
 	public Integer getChecklistId() {
 		return checklistId;

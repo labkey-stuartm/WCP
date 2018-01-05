@@ -14,6 +14,9 @@ import org.apache.log4j.Logger;
 
 public class EmailNotification {
 
+	private static Logger logger = Logger.getLogger(EmailNotification.class
+			.getName());
+
 	/**
 	 * @param subjectProprtyName
 	 * @param content
@@ -125,7 +128,6 @@ public class EmailNotification {
 	public static boolean sendMailWithAttachment(String subjectProprtyName,
 			String content, String toMail, List<String> ccMailList,
 			List<String> bccMailList, String attachmentPath) {
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "
 				+ toMail
@@ -159,7 +161,4 @@ public class EmailNotification {
 				+ " : ");
 		return sentMail;
 	}
-
-	private static Logger logger = Logger.getLogger(EmailNotification.class
-			.getName());
 }

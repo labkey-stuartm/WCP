@@ -102,7 +102,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								&& !passwordHistories.isEmpty()) {
 							for (UserPasswordHistory userPasswordHistory : passwordHistories) {
 								if (FdahpStudyDesignerUtil
-										.compairEncryptedPassword(
+										.compareEncryptedPassword(
 												userPasswordHistory
 														.getUserPassword(),
 												password)) {
@@ -249,7 +249,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							&& !passwordHistories.isEmpty()) {
 						for (UserPasswordHistory userPasswordHistory : passwordHistories) {
 							if (FdahpStudyDesignerUtil
-									.compairEncryptedPassword(
+									.compareEncryptedPassword(
 											userPasswordHistory
 													.getUserPassword(),
 											newPassword)) {

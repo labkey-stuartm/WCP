@@ -8,10 +8,10 @@ package com.fdahpstudydesigner.bean;
  *
  */
 public class StudySessionBean {
+	private String isLive;
+	private String permission;
 	private Integer sessionStudyCount;
 	private String studyId;
-	private String permission;
-	private String isLive;
 
 	/**
 	 * @return the isLive

@@ -21,10 +21,6 @@ import javax.persistence.Table;
 public class ActiveTaskFrequencyBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
 	@Column(name = "active_task_id")
 	private Integer activeTaskId;
 
@@ -33,6 +29,10 @@ public class ActiveTaskFrequencyBo implements Serializable {
 
 	@Column(name = "frequency_time")
 	private String frequencyTime;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(name = "is_launch_study")
 	private Boolean isLaunchStudy = false;

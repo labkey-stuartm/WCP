@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the consent database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity
@@ -27,49 +27,38 @@ public class ConsentBo implements Serializable {
 
 	private static final long serialVersionUID = 5564057544960167010L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Integer id;
-
-	@Column(name = "study_id")
-	private Integer studyId;
-
-	@Column(name = "comprehension_test_minimum_score")
-	private Integer comprehensionTestMinimumScore;
-
-	@Column(name = "need_comprehension_test")
-	private String needComprehensionTest;
-
-	@Column(name = "share_data_permissions")
-	private String shareDataPermissions;
-
-	@Column(name = "title")
-	private String title;
-
-	@Column(name = "tagline_description")
-	private String taglineDescription;
-
-	@Column(name = "short_description")
-	private String shortDescription;
-
-	@Column(name = "long_description")
-	private String longDescription;
-
-	@Column(name = "learn_more_text")
-	private String learnMoreText;
-
-	@Column(name = "consent_doc_type")
-	private String consentDocType;
-
-	@Column(name = "consent_doc_content")
-	private String consentDocContent;
+	@Column(name = "aggrement_of_consent")
+	private String aggrementOfTheConsent;
 
 	@Column(name = "allow_without_permission")
 	private String allowWithoutPermission = "No";
 
-	@Column(name = "html_consent")
-	private String htmlConsent;
+	@Transient
+	private String comprehensionTest;
+
+	@Column(name = "comprehension_test_minimum_score")
+	private Integer comprehensionTestMinimumScore;
+
+	@Column(name = "consent_doc_content")
+	private String consentDocContent;
+
+	@Column(name = "consent_doc_type")
+	private String consentDocType;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
+	@Column(name = "e_consent_agree")
+	private String eConsentAgree = "Yes";
+
+	@Column(name = "e_consent_datetime")
+	private String eConsentDatetime = "Yes";
 
 	@Column(name = "e_consent_firstname")
 	private String eConsentFirstName = "Yes";
@@ -77,44 +66,55 @@ public class ConsentBo implements Serializable {
 	@Column(name = "e_consent_lastname")
 	private String eConsentLastName = "Yes";
 
-	@Column(name = "e_consent_agree")
-	private String eConsentAgree = "Yes";
-
 	@Column(name = "e_consent_signature")
 	private String eConsentSignature = "Yes";
 
-	@Column(name = "e_consent_datetime")
-	private String eConsentDatetime = "Yes";
+	@Column(name = "html_consent")
+	private String htmlConsent;
 
-	@Column(name = "created_on")
-	private String createdOn;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Integer id;
 
-	@Column(name = "modified_on")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-
-	@Column(name = "version")
-	private Float version = 0f;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
+	@Column(name = "learn_more_text")
+	private String learnMoreText;
 
 	@Column(name = "is_live")
 	private Integer live = 0;
 
-	@Column(name = "aggrement_of_consent")
-	private String aggrementOfTheConsent;
+	@Column(name = "long_description")
+	private String longDescription;
+
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+
+	@Column(name = "modified_on")
+	private String modifiedOn;
+
+	@Column(name = "need_comprehension_test")
+	private String needComprehensionTest;
+
+	@Column(name = "share_data_permissions")
+	private String shareDataPermissions;
+
+	@Column(name = "short_description")
+	private String shortDescription;
+
+	@Column(name = "study_id")
+	private Integer studyId;
+
+	@Column(name = "tagline_description")
+	private String taglineDescription;
+
+	@Column(name = "title")
+	private String title;
 
 	@Transient
 	private String type;
 
-	@Transient
-	private String comprehensionTest;
+	@Column(name = "version")
+	private Float version = 0f;
 
 	public String getAggrementOfTheConsent() {
 		return aggrementOfTheConsent;

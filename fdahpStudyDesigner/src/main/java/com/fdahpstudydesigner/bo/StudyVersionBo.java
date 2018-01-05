@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the study_version database table.
  *
+ * @author Vivek
+ *
  */
 @Entity
 @Table(name = "study_version")
@@ -25,31 +27,31 @@ import javax.persistence.Transient;
 public class StudyVersionBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "version_id")
-	private Integer versionId;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
-
-	@Column(name = "study_version")
-	private Float studyVersion = 0f;
+	@Transient
+	private String activityLVersion = "";
 
 	@Column(name = "activity_version")
 	private Float activityVersion = 0f;
 
+	@Transient
+	private String consentLVersion = "";
+
 	@Column(name = "consent_version")
 	private Float consentVersion = 0f;
+
+	@Column(name = "custom_study_id")
+	private String customStudyId;
 
 	@Transient
 	private String studyLVersion = "";
 
-	@Transient
-	private String activityLVersion = "";
+	@Column(name = "study_version")
+	private Float studyVersion = 0f;
 
-	@Transient
-	private String consentLVersion = "";
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "version_id")
+	private Integer versionId;
 
 	public String getActivityLVersion() {
 		return activityLVersion;

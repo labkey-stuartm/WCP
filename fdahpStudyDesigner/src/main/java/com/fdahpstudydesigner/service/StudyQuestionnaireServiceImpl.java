@@ -39,10 +39,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 			.getLogger(StudyQuestionnaireServiceImpl.class);
 
 	@Autowired
-	private StudyQuestionnaireDAO studyQuestionnaireDAO;
+	private AuditLogDAO auditLogDAO;
 
 	@Autowired
-	private AuditLogDAO auditLogDAO;
+	private StudyQuestionnaireDAO studyQuestionnaireDAO;
 
 	/**
 	 * From step have a one or more question.Each question have the short title field this will be created the as column in response

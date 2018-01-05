@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-//import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.io.FilenameUtils;
@@ -54,7 +52,21 @@ import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPermissions;
 
+/**
+ * An helper class with static utility methods
+ * 
+ * @author Vivek
+ *
+ */
 public class FdahpStudyDesignerUtil {
+
+	/* Read Properties file */
+	protected static final Map<String, String> configMap = FdahpStudyDesignerUtil
+			.getAppProperties();
+
+	private static Logger logger = Logger
+			.getLogger(FdahpStudyDesignerUtil.class.getName());
+
 	public static Date addDaysToDate(Date date, int days) {
 		logger.info("fdahpStudyDesignerUtiltyLinkUtil: addDaysToDate :: Starts");
 		try {
@@ -88,8 +100,9 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
-	 * @author BTC {Description This method is used to add minutes to the input
-	 *         dateTime}}
+	 * This method is used to add minutes to the input dateTime
+	 * 
+	 * @author BTC
 	 * @param dtStr
 	 * @param minutes
 	 * @return
@@ -115,7 +128,9 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
-	 *
+	 * This method is used to build user's spring security authorities from it's
+	 * granted permission
+	 * 
 	 * @author BTC
 	 *
 	 * @param userRoles
@@ -125,20 +140,18 @@ public class FdahpStudyDesignerUtil {
 	public static List<GrantedAuthority> buildUserAuthority(
 			Set<UserPermissions> userRoles) {
 
-		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+		Set<GrantedAuthority> setAuths = new HashSet<>();
 
 		// Build user's authorities
 		for (UserPermissions userRole : userRoles) {
 			setAuths.add(new SimpleGrantedAuthority(userRole.getPermissions()));
 		}
 
-		List<GrantedAuthority> result = new ArrayList<>(setAuths);
-
-		return result;
+		return new ArrayList<>(setAuths);
 	}
 
 	/**
-	 * This method map db user details to spring user details.
+	 * This method map database user details to spring user details.
 	 *
 	 * @author BTC
 	 *
@@ -154,58 +167,6 @@ public class FdahpStudyDesignerUtil {
 				user.isEnabled(), user.isAccountNonExpired(),
 				user.isCredentialsNonExpired(), user.isAccountNonLocked(),
 				authorities);
-	}
-
-	/**
-	 * @param input
-	 * @return {@link BCryptPasswordEncoder}
-	 */
-	/* getEncodedString(String test) method returns Encoded String */
-	public static Boolean compairEncryptedPassword(String dbEncryptPassword,
-			String uiPassword) {
-		Boolean isMatch = false;
-		logger.info("getEncryptedString start");
-		try {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			isMatch = passwordEncoder.matches(uiPassword, dbEncryptPassword);
-		} catch (Exception e) {
-			logger.error(
-					"FdahpStudyDesignerUtil - compairEncryptedPassword() - ERROR",
-					e);
-		}
-		logger.info("getEncryptedString end");
-		return isMatch;
-	}
-
-	/**
-	 * comparing time duration with two dates
-	 *
-	 * @return
-	 */
-	public static boolean compareDateCustomDateTime(String firstInputDateTime,
-			String secondInputDateTime, String inputFormat, Integer duration) {
-		boolean flag = false;
-		final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
-		Date firstDateTime = null;
-		Date secondDateTime = null;
-		String diff = "";
-		try {
-			firstDateTime = sdf.parse(firstInputDateTime);
-			secondDateTime = sdf.parse(secondInputDateTime);
-			long timeDiff = Math.abs(firstDateTime.getTime()
-					- secondDateTime.getTime());
-			diff = String.format("%d",
-					TimeUnit.MILLISECONDS.toSeconds(timeDiff));
-			if (StringUtils.isNotEmpty(diff)
-					&& duration.equals(Integer.valueOf(diff))) {
-				flag = true;
-			}
-		} catch (ParseException e) {
-			logger.error(
-					"FdahpStudyDesignerUtil - addTimeCompareDateCustomDateTime() : ",
-					e);
-		}
-		return flag;
 	}
 
 	public static boolean compareDateWithCurrentDateResource(String inputDate,
@@ -230,18 +191,18 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
-	 * Comapring user date with current date
+	 * Comparing user date with current date
 	 *
 	 * @param inputDate
+	 *            , date string
 	 * @param inputFormat
+	 *            , date string format
 	 * @return
 	 */
 	public static boolean compareDateWithCurrentDateTime(String inputDate,
 			String inputFormat) {
 		boolean flag = false;
 		final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
-		// TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
-		// sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		try {
 			if (new Date().before(sdf.parse(inputDate))) {
 				flag = true;
@@ -255,6 +216,31 @@ public class FdahpStudyDesignerUtil {
 					e);
 		}
 		return flag;
+	}
+
+	/**
+	 * Compare encrypted password with password string
+	 * 
+	 * @param dbEncryptPassword
+	 *            , encrypted password
+	 * @param uiPassword
+	 *            , password string
+	 * @return {@link Boolean}
+	 */
+	public static Boolean compareEncryptedPassword(String dbEncryptPassword,
+			String uiPassword) {
+		Boolean isMatch = false;
+		logger.info("getEncryptedString start");
+		try {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			isMatch = passwordEncoder.matches(uiPassword, dbEncryptPassword);
+		} catch (Exception e) {
+			logger.error(
+					"FdahpStudyDesignerUtil - compairEncryptedPassword() - ERROR",
+					e);
+		}
+		logger.info("getEncryptedString end");
+		return isMatch;
 	}
 
 	public static boolean fieldsValidation(String... fields) {
@@ -330,8 +316,11 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
-	 * @return HashMap
-	 * @throws MalformedURLException
+	 * This methods read all property from properties file by using
+	 * {@link ResourceBundle} and add it to a map
+	 * 
+	 * @return {@link Map} of properties
+	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map<String, String> getAppProperties() {
@@ -409,7 +398,6 @@ public class FdahpStudyDesignerUtil {
 				}
 			}
 		} else {
-			// operand1 = lhs;
 			try {
 				double op = new ExpressionBuilder(lhs).build().evaluate();
 				operand1 = Double.toString(Math.round(op * 100.0) / 100.0);
@@ -459,7 +447,6 @@ public class FdahpStudyDesignerUtil {
 				}
 			}
 		} else {
-			// operand2 = rhs;
 			try {
 				double op = new ExpressionBuilder(rhs).build().evaluate();
 				operand2 = Double.toString(Math.round(op * 100.0) / 100.0);
@@ -474,7 +461,6 @@ public class FdahpStudyDesignerUtil {
 			try {
 				result = new com.udojava.evalex.Expression("x " + operator
 						+ " y").with("x", operand1).with("y", operand2).eval();
-				System.out.println("result::" + result);
 			} catch (Exception e) {
 				logger.error(
 						"FdahpStudyDesignerUtil - getConditionalFormulaResult() : ",
@@ -496,7 +482,11 @@ public class FdahpStudyDesignerUtil {
 		return formulaInfoBean;
 	}
 
-	/* Get Current Date */
+	/**
+	 * Get Current Date as {@link String} with yyyy-MM-dd format
+	 * 
+	 * @return {@link String}
+	 */
 	public static String getCurrentDate() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -505,9 +495,11 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
-	 * @return String
+	 * Return Current Date and Time as {@link String} with yyyy-MM-dd HH:mm:ss
+	 * format
+	 * 
+	 * @return {@link String}
 	 */
-	/* Get Current Date and Time */
 	public static String getCurrentDateTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat(
@@ -538,6 +530,11 @@ public class FdahpStudyDesignerUtil {
 		return dateNow;
 	}
 
+	/**
+	 * Return Current Time as {@link String} with HH:mm:ss format
+	 * 
+	 * @return {@link String}
+	 */
 	public static String getCurrentTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -696,8 +693,12 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
+	 * Return {@link BCryptPasswordEncoder} encrypted {@link String} of given
+	 * string
+	 * 
 	 * @param input
-	 * @return {@link BCryptPasswordEncoder}
+	 *            , password string
+	 * @return {@link BCryptPasswordEncoder} encrypted {@link String}
 	 */
 	/* getEncodedString(String test) method returns Encoded String */
 	public static String getEncryptedPassword(String input) {
@@ -750,6 +751,17 @@ public class FdahpStudyDesignerUtil {
 		return sb.toString();
 	}
 
+	/**
+	 * Return last exception in spring security authentication for current
+	 * {@link HttpServletRequest}
+	 * 
+	 * @author BTC
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @param key
+	 *            , error key of the current request
+	 * @return {@link String}
+	 */
 	public static String getErrorMessage(HttpServletRequest request, String key) {
 
 		Exception exception = (Exception) request.getSession()
@@ -779,6 +791,18 @@ public class FdahpStudyDesignerUtil {
 		return error;
 	}
 
+	/**
+	 * Get formatted date of given date string with give output format
+	 * 
+	 * @author BTC
+	 * @param inputDate
+	 *            , input date string
+	 * @param inputFormat
+	 *            , Input date string format
+	 * @param outputFormat
+	 *            , desired date output format
+	 * @return {@link String}
+	 */
 	public static String getFormattedDate(String inputDate, String inputFormat,
 			String outputFormat) {
 		String finalDate = "";
@@ -892,14 +916,14 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
-	 * Get the current user's roles
 	 *
 	 * @author BTC
 	 *
 	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @return {@link String} , A comma separated roles
 	 */
-	public static String getSessionUserRole(HttpServletRequest request) {
+	public static String getSessionUserRole() {
 		logger.info("FdahpStudyDesignerUtil - getSessionUser() :: Starts");
 		String userRoles = "";
 		try {
@@ -919,6 +943,17 @@ public class FdahpStudyDesignerUtil {
 		return userRoles;
 	}
 
+	/**
+	 * This method create a custom unique name for new file
+	 * 
+	 * @param actualFileName
+	 *            , actual name of the uploaded file
+	 * @param userFirstName
+	 *            , User first name who uploaded the file
+	 * @param userLastName
+	 *            , User last name who uploaded the file
+	 * @return {@link String}
+	 */
 	public static String getStandardFileName(String actualFileName,
 			String userFirstName, String userLastName) {
 		String intial = userFirstName.charAt(0) + "" + userLastName.charAt(0);
@@ -1040,6 +1075,8 @@ public class FdahpStudyDesignerUtil {
 	}
 
 	/**
+	 * Checks if a CharSequence is empty ("") or null.
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -1091,29 +1128,18 @@ public class FdahpStudyDesignerUtil {
 		return flag;
 	}
 
-	public static void main(String[] args) {
-		BigDecimal result1 = null;
-		result1 = new com.udojava.evalex.Expression("(1&&1)").eval();
-		System.out.println("result::" + result1);
-		/*
-		 * net.objecthunter.exp4j.Expression e1 = new ExpressionBuilder("x+10")
-		 * .variables("x") .build() .setVariable("x", 10); double op1 =
-		 * e1.evaluate(); System.out.println("op1::"+op1);
-		 */
-		/*
-		 * net.objecthunter.exp4j.Expression e2 = new
-		 * ExpressionBuilder("(25+x/(x+1))") .variables("x") .build()
-		 * .setVariable("x", 10); double op2 = e2.evaluate();
-		 * System.out.println("op2::"+op2); BigDecimal result1 = null; String
-		 * operator = ">"; System.out.println("operator::"+operator); result1 =
-		 * new com.udojava.evalex.Expression("x "+operator+" y").with("x",
-		 * BigDecimal.valueOf(op1)).with("y", BigDecimal.valueOf(op2)).eval();
-		 * System.out.println(result1);
-		 */
-		// System.out.println(getConditionalFormulaResult("(x*10)",
-		// "(25+x/x=1)", ">", "10"));
-	}
-
+	/**
+	 * Return Date Time string with subtract minutes from given date time
+	 * 
+	 * @author BTC
+	 * @param sysDateTime
+	 *            , Date Time string
+	 * @param format
+	 *            , Date Time string format
+	 * @param min
+	 *            , minutes to subtract from given date time.
+	 * @return {@link String}
+	 */
 	public static String privMinDateTime(String sysDateTime, String format,
 			int min) {
 		String newSysDateTime = null;
@@ -1141,13 +1167,6 @@ public class FdahpStudyDesignerUtil {
 			return str;
 		}
 	}
-
-	/*
-	 * public static void main(String[] args) { String dateTime =
-	 * "2017-02-14 07:41:21";
-	 * System.out.println(compareDateWithCurrentDateTime(dateTime,
-	 * "yyyy-MM-dd HH:mm:ss")); }
-	 */
 
 	public static String round(double value) {
 		logger.info("FdahpStudyDesignerUtil: double round :: Starts");
@@ -1187,6 +1206,15 @@ public class FdahpStudyDesignerUtil {
 		return rounded;
 	}
 
+	/**
+	 * Upload the file from {@link MultipartFile}
+	 * 
+	 * @param file , {@link MultipartFile}
+	 * @param fileName , file name
+	 * @param folderName , folder name where to store file
+	 * @return {@link String} , file name
+	 * @throws IOException
+	 */
 	public static String uploadImageFile(MultipartFile file, String fileName,
 			String folderName) throws IOException {
 		File serverFile;
@@ -1243,11 +1271,4 @@ public class FdahpStudyDesignerUtil {
 		}
 		return flag;
 	}
-
-	private static Logger logger = Logger
-			.getLogger(FdahpStudyDesignerUtil.class.getName());
-
-	/* Read Properties file */
-	protected static final Map<String, String> configMap = FdahpStudyDesignerUtil
-			.getAppProperties();
 }

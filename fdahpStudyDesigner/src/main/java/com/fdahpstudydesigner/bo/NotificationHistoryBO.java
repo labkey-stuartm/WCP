@@ -11,7 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Kanchana
+ * The persistent class for the notification_history database table.
+ * 
+ * @author Kanchana
  *
  */
 @Entity
