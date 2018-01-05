@@ -65,10 +65,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 *  Describes the order of an comprehension question while creating the new comprehension question
-	 *  
+	 * Describes the order of an comprehension question while creating the new
+	 * comprehension question
+	 * 
 	 * @author BTC
-	 * @param studyId {@link StudyBo}
+	 * @param studyId
+	 *            {@link StudyBo}
 	 * @return int count
 	 */
 	@Override
@@ -87,10 +89,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes the order of an consent item  while creating the new consent item in the study consent section
+	 * Describes the order of an consent item while creating the new consent
+	 * item in the study consent section
 	 * 
 	 * @author BTC
-	 * @param studyId {@link StudyBo}
+	 * @param studyId
+	 *            {@link StudyBo}
 	 * @return int count
 	 */
 	@Override
@@ -134,14 +138,16 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes the delete of an comprehension test question from the list of test question in the
-	 * study consent section
-	 *   
+	 * Describes the delete of an comprehension test question from the list of
+	 * test question in the study consent section
+	 * 
 	 * @author BTC
 	 * @param Integer
 	 *            , questionId {@link ComprehensionTestQuestionBo}
-	 * @param Integer , studyId {@link StudyBo}
-	 * @param Object , sessionObject {@link SessionObject}
+	 * @param Integer
+	 *            , studyId {@link StudyBo}
+	 * @param Object
+	 *            , sessionObject {@link SessionObject}
 	 * @return String : SUCCESS or FAILURE
 	 *
 	 */
@@ -163,15 +169,20 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes the delete of an consent item from the list of consent items in the study consent section
+	 * Describes the delete of an consent item from the list of consent items in
+	 * the study consent section
 	 * 
 	 * @author BTC
-	 * @param Integer , consentInfoId {@link ConsentInfoBo}
-	 * @param Integer , studyId {@link StudyBo}
-	 * @param Object , sessionObject {@link SessionObject}
-	 * @param String , customStudyId {@link StudyBo}
-	 *             
-	 * @return String :SUCCESS or FAILURE 
+	 * @param Integer
+	 *            , consentInfoId {@link ConsentInfoBo}
+	 * @param Integer
+	 *            , studyId {@link StudyBo}
+	 * @param Object
+	 *            , sessionObject {@link SessionObject}
+	 * @param String
+	 *            , customStudyId {@link StudyBo}
+	 * 
+	 * @return String :SUCCESS or FAILURE
 	 */
 	@Override
 	public String deleteConsentInfo(Integer consentInfoId, Integer studyId,
@@ -390,11 +401,13 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 *  Study Consent have the 0 or more comprehension test question.Each question contains the question text and 
-	 *  answers and make correct response to the question as being ANY or ALL of the 'correct' answer options.
-	 *  
+	 * Study Consent have the 0 or more comprehension test question.Each
+	 * question contains the question text and answers and make correct response
+	 * to the question as being ANY or ALL of the 'correct' answer options.
+	 * 
 	 * @author BTC
-	 * @param Integer , questionId {@link ComprehensionTestQuestionBo}
+	 * @param Integer
+	 *            , questionId {@link ComprehensionTestQuestionBo}
 	 * 
 	 * @return {@link ComprehensionTestQuestionBo}
 	 */
@@ -416,13 +429,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Study consent have the 0 or more comprehension test question to check the understanding of the consent to a participant
-	 * here will show the list comprehension test question of consent of a study
+	 * Study consent have the 0 or more comprehension test question to check the
+	 * understanding of the consent to a participant here will show the list
+	 * comprehension test question of consent of a study
 	 * 
 	 * @author BTC
 	 * @param Integer
 	 *            , studyId {@link StudyBo}
-	 * @return {@link List<ComprehensionTestQuestionBo>} 
+	 * @return {@link List<ComprehensionTestQuestionBo>}
 	 */
 	@Override
 	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(
@@ -442,7 +456,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes the get the comprehension test question response 
+	 * Describes the get the comprehension test question response
 	 * 
 	 * @author BTC
 	 * @param Integer
@@ -467,12 +481,13 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes the get consent of an study which contains the shara data permission and e-consent from details
+	 * Describes the get consent of an study which contains the shara data
+	 * permission and e-consent from details
 	 * 
 	 * @author BTC
 	 * @param String
 	 *            : studyId in {@link StudyBo}
-	 * @return {@link ConsentBo} 
+	 * @return {@link ConsentBo}
 	 */
 	@Override
 	public ConsentBo getConsentDetailsByStudyId(String studyId) {
@@ -490,7 +505,8 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes the get the consent of item from the list consent items of an study in the consent section
+	 * Describes the get the consent of item from the list consent items of an
+	 * study in the consent section
 	 * 
 	 * @author BTC
 	 * @param Integer
@@ -515,10 +531,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes to get the list of consent item which are added in the study consent section
+	 * Describes to get the list of consent item which are added in the study
+	 * consent section
 	 * 
 	 * @author BTC
-	 * @param studyId {@link StudyBo}
+	 * @param studyId
+	 *            {@link StudyBo}
 	 * @return List<ConsentInfoBo>
 	 * 
 	 */
@@ -539,7 +557,8 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Describes to get the list of consent item which are added in the study consent section
+	 * Describes to get the list of consent item which are added in the study
+	 * consent section
 	 * 
 	 * @author BTC
 	 * @param Integer
@@ -560,11 +579,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * ResearchKit already provides a few Consent Items screens by default.Here describes the getting the 
-	 * list of research kit consents
-	 *  
+	 * ResearchKit already provides a few Consent Items screens by default.Here
+	 * describes the getting the list of research kit consents
+	 * 
 	 * @author BTC
-	 * @return List : {@link ConsentMasterInfoBo} 
+	 * @return List : {@link ConsentMasterInfoBo}
 	 */
 	@Override
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
@@ -941,11 +960,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Comprehension question will be created by default in the master order.Admin can manage the order by drag and drop questions
-	 * in the list
+	 * Comprehension question will be created by default in the master
+	 * order.Admin can manage the order by drag and drop questions in the list
 	 * 
 	 * @author BTC
-	 * @param Integer , studyId {@link StudyBo}
+	 * @param Integer
+	 *            , studyId {@link StudyBo}
 	 * @param int , oldOrderNumber
 	 * @param int , newOrderNumber
 	 * @return String SUCCESS or FAILURE
@@ -969,8 +989,9 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Consent items will be created by default in master order.Admin can manage the order by reordering the consents with in a list
-	 * to make reorder admin can drag and drop the consent with in a list 
+	 * Consent items will be created by default in master order.Admin can manage
+	 * the order by reordering the consents with in a list to make reorder admin
+	 * can drag and drop the consent with in a list
 	 * 
 	 * @author BTC
 	 * @param Integer
@@ -1142,10 +1163,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Study consent section have the consent review sub section which contain the share data permission allows the admin to specify
-	 * if as part of the Consent process, participants need to be asked to provide permission for their response data to be shared with 3rd parties
-	 * and consent document review section is section is meant for the admin to confirm the content seen by users in the Review Terms (Consent Document) screen on the mobile app
-	 * In e-consent section The admin sees the elements of the e-consent form as provided to the user in the mobile app
+	 * Study consent section have the consent review sub section which contain
+	 * the share data permission allows the admin to specify if as part of the
+	 * Consent process, participants need to be asked to provide permission for
+	 * their response data to be shared with 3rd parties and consent document
+	 * review section is section is meant for the admin to confirm the content
+	 * seen by users in the Review Terms (Consent Document) screen on the mobile
+	 * app In e-consent section The admin sees the elements of the e-consent
+	 * form as provided to the user in the mobile app
 	 * 
 	 * @author BTC
 	 * @param Object
@@ -1154,7 +1179,7 @@ public class StudyServiceImpl implements StudyService {
 	 *            , {@link SessionObject}
 	 * @param String
 	 *            , customStudyId in {@link StudyBo}
-	 * @return {@link ConsentBo} 
+	 * @return {@link ConsentBo}
 	 * 
 	 */
 	@Override
@@ -1363,11 +1388,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 *  Study consent can have 0 or more comprehension test questions.Admin can mark whether or not this is required for the study
-	 *  if required admin will need to add question text,answer options and correct option and minimum score
-	 *  
+	 * Study consent can have 0 or more comprehension test questions.Admin can
+	 * mark whether or not this is required for the study if required admin will
+	 * need to add question text,answer options and correct option and minimum
+	 * score
+	 * 
 	 * @author BTC
-	 * @param Object , {@link ComprehensionTestQuestionBo}
+	 * @param Object
+	 *            , {@link ComprehensionTestQuestionBo}
 	 * @return Object , {@link ComprehensionTestQuestionBo}
 	 */
 	@Override
@@ -1450,8 +1478,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Study consent section is mandatory in mobile section admin can add one or more consent items here.The consent item are two types 
-	 * which are research kit provided consents and custom defined consent items admin can create the custom consent items which are not available in research kit
+	 * Study consent section is mandatory in mobile section admin can add one or
+	 * more consent items here.The consent item are two types which are research
+	 * kit provided consents and custom defined consent items admin can create
+	 * the custom consent items which are not available in research kit
 	 * 
 	 * @author BTC
 	 * @param Object
@@ -1460,7 +1490,7 @@ public class StudyServiceImpl implements StudyService {
 	 *            : {@link SessionObject}
 	 * @param String
 	 *            : customStudyId in {@link StudyBo}
-	 * @return {@link ConsentInfoBo} 
+	 * @return {@link ConsentInfoBo}
 	 */
 	@Override
 	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,

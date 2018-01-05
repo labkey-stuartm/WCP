@@ -45,7 +45,8 @@ public class DashBoardAndProfileServiceImpl implements
 	}
 
 	/**
-	 * Validating whether userEmail already existing in DB 
+	 * Validating whether userEmail already existing in DB
+	 * 
 	 * @author BTC
 	 * @param email
 	 * @return message, Success/Failure
@@ -84,7 +85,7 @@ public class DashBoardAndProfileServiceImpl implements
 						+ userBO.getLastName()
 						+ " ,Email = "
 						+ userBO.getUserEmail() + ")";
-				//Audit log capturing the action performed
+				// Audit log capturing the action performed
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity,
 						activityDetail,
 						"DashBoardAndProfileDAOImpl - updateProfileDetails()");

@@ -52,6 +52,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
 
 	/**
 	 * Validating whether userEmail already existing in DB
+	 * 
 	 * @author BTC
 	 * @param email
 	 * @return message, Success/Failure
@@ -91,9 +92,11 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
 
 	/**
 	 * Updating User Details
+	 * 
 	 * @author BTC
 	 * @param userId
-	 * @param userBO , {@link UserBO}
+	 * @param userBO
+	 *            , {@link UserBO}
 	 */
 	@Override
 	public String updateProfileDetails(UserBO userBO, int userId) {
