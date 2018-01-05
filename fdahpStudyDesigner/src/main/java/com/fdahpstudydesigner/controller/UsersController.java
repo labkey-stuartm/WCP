@@ -45,6 +45,13 @@ public class UsersController {
 	@Autowired
 	private LoginService loginService;
 	
+	/**
+	 * This method is used to get the list of users
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminUsersView/getUserList.do")
 	public ModelAndView getUserList(HttpServletRequest request){
 		logger.info("UsersController - getUserList() - Starts");
@@ -82,6 +89,16 @@ public class UsersController {
 		return mav;
 	}
 	
+	/**
+	 * This method is used to activate or deactivate the user
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @param response, {@link HttpServletResponse}
+	 * @param userId
+	 * @param userStatus
+	 * @throws IOException
+	 */
 	@RequestMapping("/adminUsersEdit/activateOrDeactivateUser.do")
 	public void activateOrDeactivateUser(HttpServletRequest request,HttpServletResponse response,String userId,String userStatus) throws IOException{
 		logger.info("UsersController - activateOrDeactivateUser() - Starts");
@@ -104,6 +121,13 @@ public class UsersController {
 		out.print(jsonobject);
 	}
 	
+	/**
+	 * This method is used to get data for add or edit the user
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminUsersEdit/addOrEditUserDetails.do")
 	public ModelAndView addOrEditUserDetails(HttpServletRequest request){
 		logger.info("UsersController - addOrEditUserDetails() - Starts");
@@ -152,6 +176,13 @@ public class UsersController {
 		return mav;
 	}
 	
+	/**
+	 * This method is used to view the user details
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminUsersView/viewUserDetails.do")
 	public ModelAndView viewUserDetails(HttpServletRequest request){
 		logger.info("UsersController - viewUserDetails() - Starts");
@@ -195,6 +226,15 @@ public class UsersController {
 		return mav;
 	}
 	
+	/**
+	 * This method is used to add or update the user details
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @param userBO, {@link UserBO}
+	 * @param result, {@link BindingResult}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminUsersEdit/addOrUpdateUserDetails.do")
 	public ModelAndView addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, BindingResult result){
 		logger.info("UsersController - addOrUpdateUserDetails() - Starts");
@@ -288,30 +328,13 @@ public class UsersController {
 		return mav;
 	}
 	
-	/*@RequestMapping("/adminUsersEdit/forceLogOut.do")
-	public ModelAndView forceLogOut(HttpServletRequest request){
-		logger.info("UsersController - forceLogOut() - Starts");
-		ModelAndView mav = new ModelAndView();
-		String msg = FdahpStudyDesignerConstants.FAILURE;
-		try{
-			HttpSession session = request.getSession();
-			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != userSession){
-				msg = usersService.forceLogOut(userSession);
-				if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
-					mav = new ModelAndView("loginPage");
-				}
-			}
-			if(null != request.getSession().getAttribute("ownUser")){
-				request.getSession().removeAttribute("ownUser");
-			}
-		}catch(Exception e){
-			logger.error("UsersController - forceLogOut() - ERROR",e);
-		}
-		logger.info("UsersController - forceLogOut() - Ends");
-		return mav;
-	}*/
-	
+	/**
+	 * This method is used to resend the activation link to the user
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminUsersEdit/resendActivateDetailsLink.do")
 	public ModelAndView resendActivateDetailsLink(HttpServletRequest request){
 		logger.info("UsersController - resendActivateDetailsLink() - Starts");
@@ -344,6 +367,13 @@ public class UsersController {
 		return mav;
 	}
 	
+	/**
+	 * This method is used to enforce the user to change the password
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminUsersEdit/enforcePasswordChange.do")
 	public ModelAndView enforcePasswordChange(HttpServletRequest request){
 		logger.info("UsersController - enforcePasswordChange() - Starts");

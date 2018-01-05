@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -33,6 +34,12 @@ public class UsersServiceImpl implements UsersService {
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 
+	/**
+	 * This method is used to get the list of users
+	 * 
+	 * @author Pradyumn
+	 * @return List of {@link UserBO}
+	 */
 	@Override
 	public List<UserBO> getUserList() {
 		logger.info("UsersServiceImpl - getUserList() - Starts");
@@ -46,6 +53,17 @@ public class UsersServiceImpl implements UsersService {
 		return userList;
 	}
 
+	/**
+	 * This method is used to activate or deactivate the user
+	 * 
+	 * @author Pradyumn
+	 * @param userId
+	 * @param userStatus
+	 * @param loginUser
+	 * @param userSession, {@link SessionObject}
+	 * @param request, {@link HttpServletRequest}
+	 * @return message, Success/Failure message
+	 */
 	@Override
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession,HttpServletRequest request) {
 		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
@@ -104,6 +122,13 @@ public class UsersServiceImpl implements UsersService {
 		return msg;
 	}
 
+	/**
+	 * This method is used to get the user details
+	 * 
+	 * @author Pradyumn 
+	 * @param userId
+	 * @return {@link UserBO}
+	 */
 	@Override
 	public UserBO getUserDetails(Integer userId) {
 		logger.info("UsersServiceImpl - getUserDetails() - Starts");
@@ -117,7 +142,13 @@ public class UsersServiceImpl implements UsersService {
 		return userBO;
 	}
 	
-	// kanchana
+	/**
+	 * This method is used to get user permissions
+	 * 
+	 * @author Pradyumn
+	 * @param sessionUserId
+	 * @return userId
+	 */
 	@Override
 	public Integer getUserPermissionByUserId(Integer sessionUserId) {
 		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
@@ -131,8 +162,19 @@ public class UsersServiceImpl implements UsersService {
 		return userId;
 	}
 	
-	
-
+	/**
+	 * This method is used to add or update the user details
+	 * 
+	 * @author Pradyumn
+	 * @param request, {@link HttpServletRequest}
+	 * @param userBO, {@link UserBO}
+	 * @param permissions
+	 * @param permissionList
+	 * @param selectedStudies
+	 * @param permissionValues
+	 * @param userSession, object of {@link SessionObject}
+	 * @return {@link ModelAndView}
+	 */
 	@Override
 	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues,SessionObject userSession){
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
@@ -241,20 +283,13 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Ends");
 		return msg;
 	}
-	
-	@Override
-	public String forceLogOut(SessionObject userSession) {
-		logger.info("UsersServiceImpl - forceLogOut() - Starts");
-		String msg = FdahpStudyDesignerConstants.FAILURE;
-		try{
-			msg = usersDAO.forceLogOut(userSession);
-		}catch(Exception e){
-			logger.error("UsersServiceImpl - forceLogOut() - ERROR",e);
-		}
-		logger.info("UsersServiceImpl - forceLogOut() - Ends");
-		return msg;
-	}
 
+	/**
+	 * This method is to get the list of user roles
+	 * 
+	 * @author Pradyumn
+	 * @return List of {@link RoleBO}
+	 */
 	@Override
 	public List<RoleBO> getUserRoleList() {
 		logger.info("UsersServiceImpl - getUserRoleList() - Starts");
@@ -270,7 +305,12 @@ public class UsersServiceImpl implements UsersService {
 	
 	
 	/**
-	 * Kanchana
+	 * This method is used to get the role of the user
+	 * 
+	 * @author Kanchana
+	 * @param roleId
+	 * @return {@link RoleBO}
+	 * 
 	 */
 	@Override
 	public RoleBO getUserRole(int roleId) {
@@ -285,6 +325,13 @@ public class UsersServiceImpl implements UsersService {
 		return roleBO;
 	}
 	
+	/**
+	 * This method is used to get the permissions of the user
+	 * 
+	 * @author Pradyumn
+	 * @param userId
+	 * @return permissions
+	 */
 	@Override
 	public List<Integer> getPermissionsByUserId(Integer userId){
 		logger.info("UsersServiceImpl - permissionsByUserId() - Starts");
@@ -298,6 +345,12 @@ public class UsersServiceImpl implements UsersService {
 		return permissions;
 	}
 	
+	/**
+	 * This method is to get the list of active user email ids
+	 * 
+	 *  @author Pradyumn
+	 *  @return emails
+	 */
 	@Override
 	public List<String> getActiveUserEmailIds() {
 		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Starts");
@@ -311,6 +364,14 @@ public class UsersServiceImpl implements UsersService {
 		return emails;
 	}
 
+	/**
+	 * This method is used to enforce the user to change the password
+	 * 
+	 * @author Pradyumn
+	 * @param userId
+	 * @param email
+	 * @return message, Success/Failure message
+	 */
 	@Override
 	public String enforcePasswordChange(Integer userId, String email) {
 		logger.info("UsersServiceImpl - enforcePasswordChange() - Starts");

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -14,6 +16,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
@@ -37,6 +40,12 @@ public class UsersDAOImpl implements UsersDAO{
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 
+	/**
+	 * This method is used to get the list of users
+	 * 
+	 * @author Pradyumn
+	 * @return List of {@link UserBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserBO> getUserList() {
@@ -80,6 +89,16 @@ public class UsersDAOImpl implements UsersDAO{
 		return userList;
 	}
 
+	/**
+	 * This method is used to activate or deactivate the user
+	 * 
+	 * @author Pradyumn
+	 * @param userId, id of the user
+	 * @param userStatus, current status of the user
+	 * @param loginUser, id of the user who is logged in
+	 * @param userSession, {@link SessionObject}
+	 * @param request, {@link HttpServletRequest}
+	 */
 	@Override
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
 		logger.info("UsersDAOImpl - activateOrDeactivateUser() - Starts");
@@ -126,6 +145,13 @@ public class UsersDAOImpl implements UsersDAO{
 		return msg;
 	}
 
+	/**
+	 * This method is used to get the user details
+	 * 
+	 * @author Pradyumn 
+	 * @param userId
+	 * @return {@link UserBO}
+	 */
 	@Override
 	public UserBO getUserDetails(int userId) {
 		logger.info("UsersDAOImpl - getUserDetails() - Starts");
@@ -147,6 +173,13 @@ public class UsersDAOImpl implements UsersDAO{
 		return userBO;
 	}
 
+	/**
+	 * This method is to get the role of the user
+	 * 
+	 * @author Pradyumn
+	 * @param roleId, roleId of the user
+	 * @return {@link RoleBO}
+	 */
 	@Override
 	public RoleBO getUserRole(int roleId) {
 		logger.info("UsersDAOImpl - getUserRole() - Starts");
@@ -168,6 +201,16 @@ public class UsersDAOImpl implements UsersDAO{
 		return roleBO;
 	}
 
+	/**
+	 * This method is used to add or update the user details
+	 * 
+	 * @author Pradyumn
+	 * @param userBO, {@link UserBO}
+	 * @param permissions, permissions for the user
+	 * @param selectedStudies, selected studies to the user
+	 * @param permissionValues, values containing 0/1 i.e., view/edit permissions
+	 * @return {@link ModelAndView}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String addOrUpdateUserDetails(UserBO userBO,String permissions,String selectedStudies,String permissionValues) {
@@ -247,35 +290,13 @@ public class UsersDAOImpl implements UsersDAO{
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Ends");
 		return msg;
 	}
-	
-	@Override
-	public String forceLogOut(SessionObject userSession) {
-		logger.info("UsersDAOImpl - forceLogOut() - Starts");
-		String msg = FdahpStudyDesignerConstants.FAILURE;
-		Session session = null;
-		Query query = null;
-		Integer count = 0;
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
-			query = session.createQuery(" UPDATE UserBO SET forceLogout = true WHERE userId = "+userSession.getUserId());
-			count = query.executeUpdate();
-			transaction.commit();
-			if(count > 0){
-				msg = FdahpStudyDesignerConstants.SUCCESS;
-			}
-		}catch(Exception e){
-			transaction.rollback();
-			logger.error("UsersDAOImpl - forceLogOut() - ERROR",e);
-		}finally{
-			if(null != session){
-				session.close();
-			}
-		}
-		logger.info("UsersDAOImpl - forceLogOut() - Ends");
-		return msg;
-	}
 
+	/**
+	 * This method is to get the list of user roles
+	 * 
+	 * @author Pradyumn
+	 * @return List of {@link RoleBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<RoleBO> getUserRoleList() {
@@ -298,6 +319,13 @@ public class UsersDAOImpl implements UsersDAO{
 		return roleBOList;
 	}
 	
+	/**
+	 * This method is used to get the permissions of the user
+	 * 
+	 * @author Pradyumn
+	 * @param userId, id of the user
+	 * @return permissions, permissions of the user
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Integer> getPermissionsByUserId(Integer userId){
@@ -320,6 +348,12 @@ public class UsersDAOImpl implements UsersDAO{
 		return permissions;
 	}
 
+	/**
+	 * This method is used to get the list of super admins email ids
+	 * 
+	 * @author Pradyumn
+	 * @return userSuperAdminList, List of super admins email ids 
+	 */
 	@Override
 	public List<String> getSuperAdminList() {
 		logger.info("UsersDAOImpl - getSuperAdminList() - Starts");
@@ -341,6 +375,13 @@ public class UsersDAOImpl implements UsersDAO{
 		return userSuperAdminList;
 	}
 	
+	/**
+	 * This method is used to get the user by email id
+	 * 
+	 * @author Pradyumn
+	 * @param emailId, email id of the user
+	 * @return {@link UserBO}
+	 */
 	@Override
 	public UserBO getSuperAdminNameByEmailId(String emailId) {
 		logger.info("UsersDAOImpl - getSuperAdminNameByEmailId() - Starts");
@@ -382,7 +423,13 @@ public class UsersDAOImpl implements UsersDAO{
 			logger.info("UsersDAOImpl - getUserPermissionByUserId() - Ends");
 			return userId;
 		}
-		
+	
+	/**
+	 * This method is to get the list of active user email ids
+	 * 
+	 *  @author Pradyumn
+	 *  @return emails, List of email ids of the active users
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getActiveUserEmailIds() {
@@ -407,6 +454,12 @@ public class UsersDAOImpl implements UsersDAO{
 		return emails;
 	}
 
+	/**
+	 * This method is used to enforce the user to change the password
+	 * @param userId, id of the user
+	 * @param email, email id of the user
+	 * @return message, Success/Failure message
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String enforcePasswordChange(Integer userId, String email) {
