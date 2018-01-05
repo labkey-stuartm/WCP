@@ -31,6 +31,13 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		this.studyDAO = studyDAO;
 	}
 
+	/**
+	 * Common service method for study and global notification listing 
+	 * @author Kanchana
+	 * @param studyId, studyId of study
+	 * @param type, global/study notification 
+	 * @return list of {@link NotificationBO}
+	 */
 	@Override
 	public List<NotificationBO> getNotificationList(int studyId, String type) {
 		logger.info("NotificationServiceImpl - getNotificationList() - Starts");
@@ -44,6 +51,12 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		return notificationList;
 	}
 	
+	/**
+	 * Getting detail of notification by Id
+	 * @author Kanchana
+	 * @param notificationId
+	 * @return Object of {@link NotificationBO}
+	 */
 	@Override
 	public NotificationBO getNotification(int notificationId){
 		logger.info("NotificationServiceImpl - getNotification - Starts");
@@ -51,8 +64,12 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		try {
 			notificationBO = notificationDAO.getNotification(notificationId);
 			if(null != notificationBO){
-				notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf( FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE)):"");
-				notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf( FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleTime(), FdahpStudyDesignerConstants.DB_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME)):"");
+				notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?
+						String.valueOf( FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleDate(), 
+								FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE)):"");
+				notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?
+						String.valueOf( FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleTime(), 
+								FdahpStudyDesignerConstants.DB_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME)):"");
 			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - getNotification - ERROR", e);
@@ -61,6 +78,9 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		return notificationBO;
 	}
 	
+	/**
+	 * 
+	 */
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId){
 		logger.info("NotificationServiceImpl - getNotificationHistoryList() - Starts");
 		List<NotificationHistoryBO> notificationHistoryList = null;
