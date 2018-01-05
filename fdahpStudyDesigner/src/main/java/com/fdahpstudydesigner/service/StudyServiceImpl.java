@@ -251,17 +251,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : resourceInfoId
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE} Description : This method is to delete
-	 *         Resource
+	 * This method is used to delete the resource
+	 * 
+	 * @author Pradyumn
+	 * @param resourceInfoId
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param customStudyId
+	 * @param studyId
 	 */
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,
@@ -339,6 +336,15 @@ public class StudyServiceImpl implements StudyService {
 		return delFlag;
 	}
 
+	/**
+	 * This method is used to get the active user list whom are not yet added to
+	 * the particular study
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @param userId
+	 * @return List of {@link UserBO}
+	 */
 	@Override
 	public List<UserBO> getActiveNonAddedUserList(Integer studyId,
 			Integer userId) {
@@ -354,6 +360,15 @@ public class StudyServiceImpl implements StudyService {
 		return userList;
 	}
 
+	/**
+	 * This method is used to get the users whom are already added to the
+	 * particular study
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @param userId
+	 * @return List of {@link StudyPermissionBO}
+	 */
 	@Override
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,
 			Integer userId) {
@@ -371,12 +386,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return active and live study List
+	 * This method is used to get the active and live study List
 	 *
-	 * @author BTC
-	 *
-	 * @return the Study list
-	 * @exception Exception
+	 * @author Pradyumn
+	 * @return List of {@link StudyBo}
 	 */
 	@Override
 	public List<StudyBo> getAllStudyList() {
@@ -392,11 +405,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : studyId
-	 * @return Object : {@link Checklist} Description : This method is to get
-	 *         Checklist
+	 * This method is used to get the checklist info
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return {@link Checklist}
 	 */
 	@Override
 	public Checklist getchecklistInfo(Integer studyId) {
@@ -686,14 +699,12 @@ public class StudyServiceImpl implements StudyService {
 		return referenceMap;
 	}
 
-	/*------------------------------------Added By Vivek End---------------------------------------------------*/
-
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : resourceInfoId
-	 * @return Object : {@link ResourceBO} Description : This method is to get
-	 *         Resource Info details
+	 * This method is used to get the resource information
+	 * 
+	 * @author Pradyumn
+	 * @param resourceInfoId
+	 * @return {@link ResourceBO}
 	 */
 	@Override
 	public ResourceBO getResourceInfo(Integer resourceInfoId) {
@@ -723,11 +734,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return List Object : {@link List<ResourceBO>} Description : This method
-	 *         is to get list of Resource
+	 * This method is used to get the list of resources
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
 	 */
 	@Override
 	public List<ResourceBO> getResourceList(Integer studyId) {
@@ -880,11 +891,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return Object : {@link ResourceBO} Description : This method is to get
-	 *         StudyProtocol
+	 * This method is used to get the a special resource called study protocol
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return {@link ResourceBO}
 	 */
 	@Override
 	public ResourceBO getStudyProtocol(Integer studyId) {
@@ -1041,6 +1052,16 @@ public class StudyServiceImpl implements StudyService {
 		return message;
 	}
 
+	/**
+	 * This method is used to reorder the resource list page
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @param oldOrderNumber
+	 * @param newOrderNumber
+	 * @return message, Success/Failure Message
+	 * 
+	 */
 	@Override
 	public String reOrderResourceList(Integer studyId, int oldOrderNumber,
 			int newOrderNumber) {
@@ -1082,6 +1103,13 @@ public class StudyServiceImpl implements StudyService {
 		return flag;
 	}
 
+	/**
+	 * This method is used to get the sequence number to set to the resource
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return sequence number
+	 */
 	@Override
 	public int resourceOrder(Integer studyId) {
 		int count = 1;
@@ -1096,11 +1124,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return list Object : {@link List<ResourceBO>} Description : This method
-	 *         is to save Resource
+	 * This method is used to get the saved resource list
+	 * 
+	 * @author Pradyumn 
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
 	 */
 	@Override
 	public List<ResourceBO> resourcesSaved(Integer studyId) {
@@ -1116,11 +1144,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : studyId
-	 * @return list of Object :{@link List<ResourceBO>} Description : This
-	 *         method is get all resource without anchordate
+	 * This method is used to get the list of resources having anchor date
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
 	 */
 	@Override
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
@@ -1288,15 +1316,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Object
-	 *            : {@link Checklist}
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @param string
-	 *            : customStudyId
-	 * @return Integer : checklistId Description : This method is to save or
-	 *         update Checklist
+	 * This method is used to Save or Done Checklist
+	 * 
+	 * @author Pradyumn
+	 * @param checklist, {@link Checklist}
+	 * @param actionBut
+	 * @param sesObj, {@link SessionObject}
+	 * @param customStudyId
+	 * @return checklist Id
 	 */
 	@Override
 	public Integer saveOrDoneChecklist(Checklist checklist, String actionBut,
@@ -1625,13 +1652,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Object
-	 *            : {@link ResourceBO}
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @return Integer : resourceId from {@link ResourceBO} Description : This
-	 *         method is to save or update Resource
+	 * This method is used to save or update the Study Resource
+	 *
+	 * @author Pradyumn
+	 * @param resourceBO
+	 *            , {@link ResourceBO}
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return resource Id
 	 */
 	@Override
 	public Integer saveOrUpdateResource(ResourceBO resourceBO,

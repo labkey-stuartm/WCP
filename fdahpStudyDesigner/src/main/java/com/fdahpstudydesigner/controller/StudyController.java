@@ -80,7 +80,6 @@ public class StudyController {
 	@Autowired
 	private UsersService usersService;
 
-	/* Study checkList ends */
 	/**
 	 * @author BTC
 	 * @param request
@@ -174,9 +173,9 @@ public class StudyController {
 	}
 
 	/**
-	 * add or edit Study Resource
+	 * This method is used add or edit Study Resource
 	 *
-	 * @author BTC
+	 * @author Pradyumn
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -763,11 +762,13 @@ public class StudyController {
 	}
 
 	/**
-	 * @author BTC
+	 * This method is used to delete the resource
+	 * 
+	 * @author Pradyumn
 	 * @param request
 	 *            , {@link HttpServletResponse}
 	 * @param response
-	 * @return void Description : delete Resource based resource id
+	 *            , {@link HttpServletResponse}
 	 */
 	@RequestMapping(value = "/adminStudies/deleteResourceInfo", method = RequestMethod.POST)
 	public void deleteResourceInfo(HttpServletRequest request,
@@ -988,11 +989,13 @@ public class StudyController {
 		return mav;
 	}
 
-	/* Study CheckList Starts */
 	/**
-	 * @author BTC
+	 * This method is used to get checklist data
+	 * 
+	 * @author Pradyumn
 	 * @param request
-	 * @return {@link ModelAndView} Description : get checklist
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/getChecklist.do")
 	public ModelAndView getChecklist(HttpServletRequest request) {
@@ -1788,10 +1791,12 @@ public class StudyController {
 	}
 
 	/**
-	 * @author BTC
+	 * This method is used to get the list of resources
+	 * 
+	 * @author Pradyumn
 	 * @param request
-	 * @return {@link ModelAndView} Description : get resource list based on
-	 *         study
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/getResourceList.do")
 	public ModelAndView getResourceList(HttpServletRequest request) {
@@ -2505,14 +2510,13 @@ public class StudyController {
 
 	}
 
-	/*----------------------------------------added by MOHAN T starts----------------------------------------*/
 	/**
-	 * reload the resource list page
+	 * This method is used to reload the resource list
 	 *
-	 * @author BTC
+	 * @author Pradyumn
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
+	 * @param response, {@link HttpServletResponse}
 	 */
 	@RequestMapping("/adminStudies/reloadResourceListPage.do")
 	public void reloadResourceListPage(HttpServletRequest request,
@@ -2752,13 +2756,13 @@ public class StudyController {
 	}
 
 	/**
-	 * reorder the resource list page
+	 * This method is used to reorder the resource list page
 	 *
-	 * @author BTC
-	 *
+	 * @author Pradyumn
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
+	 * @param response
+	 *            , {@link HttpServletResponse}
 	 */
 	@RequestMapping(value = "/adminStudies/reOrderResourceList.do", method = RequestMethod.POST)
 	public void reOrderResourceList(HttpServletRequest request,
@@ -2935,9 +2939,9 @@ public class StudyController {
 	/* Study notification starts */
 
 	/**
-	 * Set resource to Mark as completed
+	 * This method is user to set resources to Mark as completed
 	 *
-	 * @author BTC
+	 * @author Pradyumn
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -3266,10 +3270,9 @@ public class StudyController {
 	}
 
 	/**
-	 * Save or Done Checklist
+	 * This method is used to Save or Done Checklist
 	 *
-	 * @author BTC
-	 *
+	 * @author Pradyumn
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param checklist
@@ -3640,10 +3643,9 @@ public class StudyController {
 	}
 
 	/**
-	 * save or update Study Resource
+	 * This method is used to save or update the Study Resource
 	 *
-	 * @author BTC
-	 *
+	 * @author Pradyumn
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param resourceBO
@@ -5116,10 +5118,13 @@ public class StudyController {
 				if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
 					studyBo = studyService.getStudyById(studyId,
 							sesObj.getUserId());
+					/*Get the active user list whom are not yet added to the particular study*/
 					userList = studyService.getActiveNonAddedUserList(
 							Integer.parseInt(studyId), sesObj.getUserId());
+					/*This method is used to get the uses whom are already added to the particular study*/
 					studyPermissionList = studyService.getAddedUserListToStudy(
 							Integer.parseInt(studyId), sesObj.getUserId());
+					/*Get the permissions of the user*/
 					permissions = usersService.getPermissionsByUserId(sesObj
 							.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
@@ -5241,7 +5246,6 @@ public class StudyController {
 		return modelAndView;
 	}
 
-	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	/**
 	 * view Eligibility page
 	 *

@@ -19,6 +19,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -634,6 +635,15 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
+	/**
+	 * This method is used to delete the resource
+	 * 
+	 * @author Pradyumn
+	 * @param resourceInfoId
+	 * @param resourceVisibility
+	 * @param studyId
+	 * @return message, Success/Failure message
+	 */
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,
 			boolean resourceVisibility, int studyId) {
@@ -1192,8 +1202,16 @@ public class StudyDAOImpl implements StudyDAO {
 		return count;
 	}
 
-	/************************************ Added By Ronalin End *************************************************/
 
+	/**
+	 * This method is used to get the active user list whom are not yet added to
+	 * the particular study
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @param userId
+	 * @return List of {@link UserBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserBO> getActiveNonAddedUserList(Integer studyId,
@@ -1249,6 +1267,15 @@ public class StudyDAOImpl implements StudyDAO {
 		return userList;
 	}
 
+	/**
+	 * This method is used to get the users whom are already added to the
+	 * particular study
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @param userId
+	 * @return List of {@link StudyPermissionBO}
+	 */
 	@Override
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,
 			Integer userId) {
@@ -1329,6 +1356,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return studyBOList;
 	}
 
+	/**
+	 * This method is used to get the checklist info
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return {@link Checklist}
+	 */
 	@Override
 	public Checklist getchecklistInfo(Integer studyId) {
 		logger.info("StudyDAOImpl - getchecklistInfo() - Starts");
@@ -3880,6 +3914,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return flag;
 	}
 
+	/**
+	 * This method is used to get the sequence number to set to the resource
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return sequence number
+	 */
 	@Override
 	public int resourceOrder(Integer studyId) {
 		logger.info("StudyDAOImpl - resourceOrder() - Starts");
@@ -3908,6 +3949,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return count;
 	}
 
+	/**
+	 * This method is used to get the saved resource list
+	 * 
+	 * @author Pradyumn 
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ResourceBO> resourcesSaved(Integer studyId) {
@@ -3932,6 +3980,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return resourceBOList;
 	}
 
+	/**
+	 * This method is used to get the list of resources having anchor date
+	 * 
+	 * @author Pradyumn
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
@@ -4089,6 +4144,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return consentBo;
 	}
 
+	/**
+	 * This method is used to Save or Done Checklist
+	 * 
+	 * @author Pradyumn
+	 * @param checklist
+	 *            , {@link Checklist}
+	 * @return checklist Id
+	 */
 	@Override
 	public Integer saveOrDoneChecklist(Checklist checklist) {
 		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Starts");
@@ -4480,6 +4543,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
+	/**
+	 * This method is used to save or update the Study Resource
+	 *
+	 * @author Pradyumn
+	 * @param resourceBO
+	 *            , {@link ResourceBO}
+	 * @return resource Id
+	 */
 	@Override
 	public Integer saveOrUpdateResource(ResourceBO resourceBO) {
 		logger.info("StudyDAOImpl - saveOrUpdateResource() - Starts");
@@ -4741,10 +4812,13 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Save or update settings and admins of study
 	 *
-	 * @author Ronalin
-	 *
+	 * @author Ronalin(Settings)/Pradyumn(Admins)
 	 * @param studyBo
 	 *            , {@link studyBo}
+	 * @param sesObj, {@link SessionObject}
+	 * @param userIds
+	 * @param permissions
+	 * @param projectLead
 	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS
 	 *         or FdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
@@ -6680,7 +6754,7 @@ public class StudyDAOImpl implements StudyDAO {
 				message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 			}
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - resourcesWithAnchorDate() - ERROR ", e);
+			logger.error("StudyDAOImpl - validateActivityComplete() - ERROR ", e);
 		} finally {
 			if (null != session && session.isOpen()) {
 				session.close();
