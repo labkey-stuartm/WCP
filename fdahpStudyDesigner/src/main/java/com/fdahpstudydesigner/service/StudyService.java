@@ -25,9 +25,6 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyService {
 
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId,
-			String userIds);
-
 	public String checkActiveTaskTypeValidation(Integer studyId);
 
 	public int comprehensionTestQuestionOrder(Integer studyId);
@@ -52,8 +49,6 @@ public interface StudyService {
 			SessionObject sesObj, String customStudyId, int studyId);
 
 	public boolean deleteStudyByCustomStudyId(String customStudyId);
-
-	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 
 	public List<UserBO> getActiveNonAddedUserList(Integer studyId,
 			Integer userId);

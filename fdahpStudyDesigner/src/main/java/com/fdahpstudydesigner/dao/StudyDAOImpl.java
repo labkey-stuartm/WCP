@@ -86,71 +86,11 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * return false or true of deleting record of studyPermission based on
-	 * studyId and userId
-	 *
-	 * @author Ronalin
-	 *
-	 * @return boolean
-	 * @exception Exception
-	 */
-	@Override
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId,
-			String userIds) {
-		logger.info("StudyDAOImpl - addStudyPermissionByuserIds() - Starts");
-		boolean delFag = false;
-		Session session = null;
-		int count = 0;
-		String permUserIds[];
-		try {
-			session = hibernateTemplate.getSessionFactory().openSession();
-			permUserIds = userIds.split(",");
-			if (permUserIds != null && permUserIds.length > 0) {
-				for (String perUserId : permUserIds) {
-					StudyPermissionBO studyPermissionBO = (StudyPermissionBO) session
-							.createQuery(
-									"from StudyPermissionBO "
-											+ "where studyId="
-											+ studyId
-											+ " and userId = "
-											+ perUserId
-											+ " and delFlag="
-											+ FdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE)
-							.uniqueResult();
-					if (studyPermissionBO == null) {
-						studyPermissionBO = new StudyPermissionBO();
-						studyPermissionBO
-								.setDelFlag(FdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
-						studyPermissionBO.setStudyId(Integer.valueOf(studyId));
-						studyPermissionBO.setUserId(Integer.valueOf(perUserId));
-						session.save(studyPermissionBO);
-						count = 1;
-					}
-				}
-			}
-			if (count > 0) {
-				delFag = FdahpStudyDesignerConstants.STATUS_ACTIVE;
-			}
-		} catch (Exception e) {
-			logger.error(
-					"StudyDAOImpl - addStudyPermissionByuserIds() - ERROR", e);
-		} finally {
-			if (null != session && session.isOpen()) {
-				session.close();
-			}
-		}
-		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Starts");
-		return delFag;
-	}
-
-	/**
-	 * @author Ronalin
-	 * @param Integer
-	 *            : studyId
-	 * @return String SUCCESS or FAILURE
-	 *
-	 *         This method is used to validate the activetaskType for android
+	 *  This method is used to validate the activetaskType for android
 	 *         platform
+	 * @author BTC
+	 * @param Integer, studyId
+	 * @return String, SUCCESS or FAILURE
 	 */
 	@Override
 	public String checkActiveTaskTypeValidation(Integer studyId) {
@@ -1122,52 +1062,6 @@ public class StudyDAOImpl implements StudyDAO {
 		}
 		logger.info("StudyDAOImpl - deleteStudyByIdOrCustomstudyId() - Ends");
 		return message;
-	}
-
-	/**
-	 * return false or true of deleting record of studyPermission based on
-	 * studyId and userId
-	 *
-	 * @author Ronalin
-	 *
-	 * @return boolean
-	 * @exception Exception
-	 */
-	@Override
-	public boolean deleteStudyPermissionById(Integer userId, String studyId) {
-		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Starts");
-		boolean delFag = false;
-		Session session = null;
-		int count = 0;
-		try {
-			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
-
-			query = session
-					.createQuery(" UPDATE StudyPermissionBO SET delFlag = "
-							+ FdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_ACTIVE
-							+ " WHERE userId = "
-							+ userId
-							+ " and studyId="
-							+ studyId
-							+ " and delFlag="
-							+ FdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
-			count = query.executeUpdate();
-			transaction.commit();
-			if (count > 0) {
-				delFag = FdahpStudyDesignerConstants.STATUS_ACTIVE;
-			}
-		} catch (Exception e) {
-			transaction.rollback();
-			logger.error("StudyDAOImpl - deleteStudyPermissionById() - ERROR",
-					e);
-		} finally {
-			if (null != session && session.isOpen()) {
-				session.close();
-			}
-		}
-		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Ends");
-		return delFag;
 	}
 
 	/**
@@ -2886,7 +2780,14 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - reOrderResourceList() - Ends");
 		return message;
 	}
-
+	
+	
+	/**
+	 * reset study by customStudyId
+	 * @author BTC
+	 * @param String, customStudyId
+	 * @return boolean
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean resetDraftStudyByCustomStudyId(String customStudyId,
@@ -3019,7 +2920,6 @@ public class StudyDAOImpl implements StudyDAO {
 							newEligibilityTestBo.setUsed(false);
 							if (action
 									.equalsIgnoreCase(FdahpStudyDesignerConstants.COPY_STUDY)) {
-								// newEligibilityTestBo.setShortTitle(null);
 								newEligibilityTestBo.setStatus(false);
 							}
 							session.save(newEligibilityTestBo);

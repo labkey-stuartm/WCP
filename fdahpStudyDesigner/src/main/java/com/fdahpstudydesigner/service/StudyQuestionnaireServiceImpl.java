@@ -75,16 +75,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 
 	/**
+	 * This method is used to validate the questionnaire have response
+	 *         type text scale while changing the platform in study settings
+	 *         page
 	 * @author BTC
 	 * @param Integer
 	 *            : studyId {@link StudyBo}
 	 * @param String
 	 *            : customStudyId {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
-	 *
-	 *         This method is used to validate the questionnaire have response
-	 *         type text scale while changing the platform in study settings
-	 *         page
+	 *         
 	 */
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId,

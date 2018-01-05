@@ -156,16 +156,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
-	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return String SUCCESS or FAILURE
-	 *
-	 *         This method is used to validate the questionnaire have response
+	 * This method is used to validate the questionnaire have response
 	 *         type text scale while changing the platform in study settings
 	 *         page
+	 * @author BTC
+	 * @param Integer,studyId in {@link StudyBo}
+	 * @param String, customStudyId in {@link StudyBo}
+	 * @return String SUCCESS or FAILURE
 	 */
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId,

@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
@@ -50,39 +53,12 @@ public class StudyServiceImpl implements StudyService {
 	private AuditLogDAO auditLogDAO;
 
 	/**
-	 * return false or true of adding record of studyPermission based on studyId
-	 * and userId
-	 *
-	 * @author BTC
-	 *
-	 * @return boolean
-	 * @exception Exception
-	 */
-	@Override
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId,
-			String userIds) {
-		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
-		boolean delFlag = false;
-		try {
-			delFlag = studyDAO.addStudyPermissionByuserIds(userId, studyId,
-					userIds);
-		} catch (Exception e) {
-			logger.error(
-					"StudyServiceImpl - addStudyPermissionByuserIds() - ERROR ",
-					e);
-		}
-		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Ends");
-		return delFlag;
-	}
-
-	/**
-	 * @author Ronalin
-	 * @param Integer
-	 *            : studyId
-	 * @return String SUCCESS or FAILURE
-	 *
-	 *         This method is used to validate the activetaskType for android
+	 * This method is used to validate the activetaskType for android
 	 *         platform
+	 * @author BTC
+	 * @param Integer, studyId
+	 * @return String, SUCCESS or FAILURE
+	 *
 	 */
 	@Override
 	public String checkActiveTaskTypeValidation(Integer studyId) {
@@ -134,6 +110,14 @@ public class StudyServiceImpl implements StudyService {
 		return count;
 	}
 
+	/**
+	 * used to create copy of live study as new study
+	 * 
+	 * @author Ronalin
+	 * @param String, customStudyId
+	 * @param object, {@link SessionObject}
+	 * @return boolean
+	 */
 	@Override
 	public boolean copyliveStudyByCustomStudyId(String customStudyId,
 			SessionObject object) {
@@ -291,11 +275,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param String
-	 *            : customStudyId
-	 * @return boolean :{true/false} Description : This method is to delete
-	 *         Study
+	 * This method is used to delete Study
+	 * @author Ronalin
+	 * @param String, customStudyId
+	 * @return boolean,{true/false}
 	 */
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
@@ -310,30 +293,6 @@ public class StudyServiceImpl implements StudyService {
 		}
 		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Ends");
 		return flag;
-	}
-
-	/**
-	 * return false or true of deleting record of studyPermission based on
-	 * studyId and userId
-	 *
-	 * @author BTC
-	 *
-	 * @return boolean
-	 * @exception Exception
-	 */
-	@Override
-	public boolean deleteStudyPermissionById(Integer userId, String studyId) {
-		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Starts");
-		boolean delFlag = false;
-		try {
-			delFlag = studyDAO.deleteStudyPermissionById(userId, studyId);
-		} catch (Exception e) {
-			logger.error(
-					"StudyServiceImpl - deleteStudyPermissionById() - ERROR ",
-					e);
-		}
-		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Ends");
-		return delFlag;
 	}
 
 	/**
@@ -612,11 +571,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return Study vesion on customStudyid
+	 * return Study version on customStudyid
 	 *
 	 * @author BTC
-	 *
-	 * @return StudyIdBean
+	 * @param String, customStudyId
+	 * @return {@link StudyIdBean}
 	 * @exception Exception
 	 */
 	@Override
@@ -683,7 +642,7 @@ public class StudyServiceImpl implements StudyService {
 	 *
 	 * @author BTC
 	 *
-	 * @return the reference table List
+	 * @return {@link Map<String, List<ReferenceTablesBo>>}
 	 * @exception Exception
 	 */
 	@Override
@@ -774,11 +733,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return Study based on studyId, userId
+	 * return Study details
 	 *
 	 * @author BTC
-	 *
-	 * @return StudyBo
+	 * @param String, studyId
+	 * @param Integer, userId
+	 * @return {@link StudyBo}
 	 * @exception Exception
 	 */
 	@Override
@@ -823,10 +783,8 @@ public class StudyServiceImpl implements StudyService {
 	 * return study List based on user
 	 *
 	 * @author BTC
-	 *
-	 * @param userId
-	 *            of the user
-	 * @return the Study list
+	 * @param String,userId
+	 * @return {@link List<StudyListBean>}
 	 * @exception Exception
 	 */
 	@Override
@@ -1078,11 +1036,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * reset study by customStudyId
 	 * @author BTC
-	 * @param String
-	 *            : customStudyId
-	 * @return boolean :{true/false} Description : This method is to delete
-	 *         Study
+	 * @param String, customStudyId
+	 * @return boolean
 	 */
 	@Override
 	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
@@ -1598,12 +1555,13 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param studyPageBean
-	 *            {@link StudyPageBean}
-	 * @return {@link String} save or update content(title,description,image)
+	 * save or update content(title,description,image)
 	 *         for the Overview pages of the Study those pages will reflect on
 	 *         mobile overview screen
+	 * @author BTC
+	 * @param studyPageBean, {@link StudyPageBean}
+	 * @param sesObj, {@link SessionObject}
+	 * @return {@link String} 
 	 */
 	@Override
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean,
@@ -1835,15 +1793,16 @@ public class StudyServiceImpl implements StudyService {
 		return resourseId;
 	}
 
-	/**
-	 * @author BTC
-	 * @param StudyBo
-	 *            , {@link StudyBo}
-	 * @return {@link String} This method captures basic information about the
+	/** This method captures basic information about the
 	 *         study basic info like Study ID, Study name, Study full name,
 	 *         Study Category, Research Sponsor,Data Partner, Estimated Duration
 	 *         in weeks/months/years, Study Tagline, Study Description, Study
 	 *         website, Study Type
+	 * @author BTC
+	 * @param StudyBo, {@link StudyBo}
+	 * @param String, userId
+	 * @param sessionObject, {@link SessionObject}
+	 * @return {@link String}
 	 */
 	@Override
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId,
@@ -1887,18 +1846,16 @@ public class StudyServiceImpl implements StudyService {
 		return result;
 	}
 
-	/**
-	 * @author BTC
-	 * @param studyBo
-	 *            , {@link studyBo}
-	 * @return {@link String} , the status SUCCESS or FAILURE
-	 * @exception Exception
-	 *                save or update study setting and admins for the particular
+	/** save or update study setting and admins for the particular
 	 *                study study settings like Platforms supported, Is the
 	 *                Study currently enrolling participants, Allow user to
 	 *                rejoin s the Study once they leave it?, Retain participant
 	 *                data when they leave a study? managing admins for the
 	 *                particular study
+	 * @author BTC
+	 * @param studyBo, {@link studyBo}
+	 * @return {@link String} , the status SUCCESS or FAILURE
+	 * @exception Exception
 	 */
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo,
@@ -1929,17 +1886,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is to upadte status of Study
 	 * @author BTC
-	 * @param string
-	 *            : studyId
-	 * @param string
-	 *            : buttonText can be
-	 *            lunchId/updatesId/publishId/unpublishId/resumeId
-	 *            /pauseId/deactivateId
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @return String : success/failure Description : This method is to upadte
-	 *         status of Study
+	 * @param string, studyId
+	 * @param string, buttonText 
+	 * @param sesObj, {@link SessionObject}
+	 * @return String,  SUCCESS/FAILURE
 	 */
 	@Override
 	public String updateStudyActionOnAction(String studyId, String buttonText,
@@ -1997,13 +1949,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param string
-	 *            : studyId
-	 * @param string
-	 *            : buttonText can be lunchId/updatesId/publishId
-	 * @return String : success/failure Description : This method is to validate
+	 * This method is to validate
 	 *         Study eligible for launch/publish based on some condition
+	 * @author BTC
+	 * @param string, studyId
+	 * @param string, buttonText
+	 * @return String, SUCCESS/FAILURE
 	 */
 	@Override
 	public String validateStudyAction(String studyId, String buttonText) {
