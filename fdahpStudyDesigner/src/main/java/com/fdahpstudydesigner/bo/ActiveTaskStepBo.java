@@ -13,7 +13,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the active_task_steps database table.
  *
- * @author Vivek
+ * @author BTC
  */
 @Entity
 @Table(name = "active_task_steps")

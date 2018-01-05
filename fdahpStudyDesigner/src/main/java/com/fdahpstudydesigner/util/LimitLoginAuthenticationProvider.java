@@ -31,7 +31,7 @@ import com.fdahpstudydesigner.dao.LoginDAOImpl;
  * An {@link AuthenticationProvider} implementation that retrieves user details
  * from a {@link UserDetailsService} and count the user fail login.
  * 
- * @author Vivek
+ * @author BTC
  *
  *
  */

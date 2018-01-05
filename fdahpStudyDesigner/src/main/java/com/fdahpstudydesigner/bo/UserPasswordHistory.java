@@ -15,7 +15,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the users_password_history database table.
  * 
- * @author Vivek
+ * @author BTC
  *
  */
 @Entity

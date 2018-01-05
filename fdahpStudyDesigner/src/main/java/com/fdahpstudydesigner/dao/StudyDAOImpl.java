@@ -85,10 +85,11 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 *  This method is used to validate the activetaskType for android
-	 *         platform
+	 * This method is used to validate the activetaskType for android platform
+	 * 
 	 * @author BTC
-	 * @param Integer, studyId
+	 * @param Integer
+	 *            , studyId
 	 * @return String, SUCCESS or FAILURE
 	 */
 	@Override
@@ -381,7 +382,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Delete eligibility test question answer by id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityTestId
 	 *            , Id of {@link EligibilityTestBo}
@@ -1052,7 +1053,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * The last order count of questions of a {@link EligibilityBo}
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 * @param eligibilityId
 	 * @return count , the last order count of the {@link EligibilityTestBo}
 	 */
@@ -1080,7 +1081,6 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - eligibilityTestOrderCount - Ends");
 		return count;
 	}
-
 
 	/**
 	 * This method is used to get the active user list whom are not yet added to
@@ -1702,7 +1702,6 @@ public class StudyDAOImpl implements StudyDAO {
 		return notificationBO;
 	}
 
-
 	/**
 	 * @author Ronalin
 	 * @param studyId
@@ -1988,7 +1987,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * return eligibility based on user's Study Id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param studyId
 	 *            , studyId of the {@link StudyBo}
@@ -2241,7 +2240,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * This method is used to get the super admins user Ids
 	 * 
 	 * @author BTC
-	 * @return 
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Integer> getSuperAdminUserIds() {
@@ -2267,11 +2266,16 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * mark as completed of study
+	 * 
 	 * @author BTC
-	 * @param Integer, studyId
-	 * @param String, markCompleted
-	 * @param sesObj, {@link SessionObject}
-	 * @param String, customStudyId {@link StudyBo}
+	 * @param Integer
+	 *            , studyId
+	 * @param String
+	 *            , markCompleted
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param String
+	 *            , customStudyId {@link StudyBo}
 	 * @return String, SUCCES/FAILURE
 	 */
 	@Override
@@ -2286,10 +2290,12 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			/** match the markCompleted flag and complete 
-			    the  resource/notification/consent/consent review
-			    /checkList/activeTaskList/questionnaire/comprehenstionTest 
-			    section of study before launch **/
+			/**
+			 * match the markCompleted flag and complete the
+			 * resource/notification/consent/consent review
+			 * /checkList/activeTaskList/questionnaire/comprehenstionTest
+			 * section of study before launch
+			 **/
 			if (markCompleted.equals(FdahpStudyDesignerConstants.NOTIFICATION)) {
 				query = session
 						.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "
@@ -2613,7 +2619,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Reorder the eligibility test questions
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityId
 	 *            , Eligibility Id of the study
@@ -2796,12 +2802,13 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - reOrderResourceList() - Ends");
 		return message;
 	}
-	
-	
+
 	/**
 	 * reset study by customStudyId
+	 * 
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return boolean
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -3868,7 +3875,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to get the saved resource list
 	 * 
-	 * @author BTC 
+	 * @author BTC
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -4635,7 +4642,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Save or update eligibility of study
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityBo
 	 *            , {@link EligibilityBo}
@@ -4731,7 +4738,8 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @author BTC
 	 * @param studyBo
 	 *            , {@link studyBo}
-	 * @param sesObj, {@link SessionObject}
+	 * @param sesObj
+	 *            , {@link SessionObject}
 	 * @param userIds
 	 * @param permissions
 	 * @param projectLead
@@ -4739,7 +4747,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 *         or FdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
-	@SuppressWarnings({ "unchecked"})
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo,
 			SessionObject sesObj, String userIds, String permissions,
@@ -6598,11 +6606,15 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * This method is validate the activity(Active task/Questionnaire) done or not
+	 * This method is validate the activity(Active task/Questionnaire) done or
+	 * not
+	 * 
 	 * @author Ronalin
-	 * @param String, studyId
-	 * @param String, action
-	 * @return String, {SUCCESS/FAILURE} 
+	 * @param String
+	 *            , studyId
+	 * @param String
+	 *            , action
+	 * @return String, {SUCCESS/FAILURE}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -7230,7 +7242,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * View eligibility test question answer by eligibility id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityId
 	 *            , Id of {@link EligibilityBo}
@@ -7265,7 +7277,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * View eligibility test question answer by id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityTestId
 	 *            , Id of {@link EligibilityTestBo}

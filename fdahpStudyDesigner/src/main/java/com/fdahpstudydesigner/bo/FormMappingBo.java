@@ -15,7 +15,7 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * The persistent class for the form_mapping database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity

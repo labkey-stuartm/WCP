@@ -4,7 +4,7 @@
 package com.fdahpstudydesigner.bean;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public class StudySessionBean {

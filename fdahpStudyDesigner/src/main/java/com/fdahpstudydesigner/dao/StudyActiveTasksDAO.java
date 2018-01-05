@@ -14,7 +14,7 @@ import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public interface StudyActiveTasksDAO {

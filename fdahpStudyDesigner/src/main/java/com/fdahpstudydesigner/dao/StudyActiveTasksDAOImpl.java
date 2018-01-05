@@ -20,9 +20,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.servlet.ModelAndView;
-
-import sun.awt.image.ImageWatched.Link;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -44,7 +41,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 @Repository
@@ -442,7 +439,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * return active tasks based on user's Study Id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param studyId
 	 *            , studyId of the {@link StudyBo}
@@ -505,6 +502,17 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		return activeTasks;
 	}
 
+	/**
+	 * Save or update schedule of active task
+	 * 
+	 * @author BTC
+	 * 
+	 * @param activeTaskBo
+	 *            , {@link ActiveTaskBo}
+	 * @param customStudyId
+	 *            , the custom id of study
+	 * @return {@link ActiveTaskBo}
+	 */
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,
 			String customStudyId) {
