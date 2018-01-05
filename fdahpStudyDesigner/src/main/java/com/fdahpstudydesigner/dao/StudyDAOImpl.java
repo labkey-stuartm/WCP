@@ -549,9 +549,12 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * delete the Study Overview Page By Page Id
-	 * @author BTC 
-	 * @param String, studyId
-	 *  @param String, pageId
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId
+	 * @param String
+	 *            , pageId
 	 * @return {@link String}
 	 */
 	@Override
@@ -690,8 +693,10 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * This method is used to delete Study
+	 * 
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return boolean,{true/false}
 	 */
 	@SuppressWarnings("unchecked")

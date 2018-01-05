@@ -112,8 +112,10 @@ public class StudyServiceImpl implements StudyService {
 	 * used to create copy of live study as new study
 	 * 
 	 * @author BTC
-	 * @param String, customStudyId
-	 * @param object, {@link SessionObject}
+	 * @param String
+	 *            , customStudyId
+	 * @param object
+	 *            , {@link SessionObject}
 	 * @return boolean
 	 */
 	@Override
@@ -274,8 +276,10 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * This method is used to delete Study
+	 * 
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return boolean,{true/false}
 	 */
 	@Override
@@ -1933,11 +1937,15 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * This method is validate the activity(Active task/Questionnaire) done or not
+	 * This method is validate the activity(Active task/Questionnaire) done or
+	 * not
+	 * 
 	 * @author BTC
-	 * @param String, studyId
-	 * @param String, action
-	 * @return String, {SUCCESS/FAILURE} 
+	 * @param String
+	 *            , studyId
+	 * @param String
+	 *            , action
+	 * @return String, {SUCCESS/FAILURE}
 	 */
 	@Override
 	public String validateActivityComplete(String studyId, String action) {
