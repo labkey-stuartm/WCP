@@ -11,12 +11,14 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,8 +28,11 @@ import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.LoginDAOImpl;
 
 /**
- * @author Vivek
- * @see {@link DaoAuthenticationProvider}
+ * An {@link AuthenticationProvider} implementation that retrieves user details
+ * from a {@link UserDetailsService} and count the user fail login.
+ * 
+ * @author BTC
+ *
  *
  */
 
@@ -36,19 +41,19 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
 	private static Logger logger = Logger
 			.getLogger(LimitLoginAuthenticationProvider.class.getName());
 
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+
 	private LoginDAOImpl loginDAO;
 
 	Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 
-	@Autowired
-	private AuditLogDAO auditLogDAO;
-
-	/*
-	 * (non-Javadoc)
+	/**
+	 * 
 	 *
 	 * @see org.springframework.security.authentication.dao.
-	 * AbstractUserDetailsAuthenticationProvider
-	 * #authenticate(org.springframework.security.core.Authentication)
+	 *      AbstractUserDetailsAuthenticationProvider
+	 *      #authenticate(org.springframework.security.core.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {

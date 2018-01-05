@@ -17,7 +17,7 @@ import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public interface StudyQuestionnaireService {

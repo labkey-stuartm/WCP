@@ -14,9 +14,6 @@ public interface NotificationDAO {
 
 	public NotificationBO getNotification(int notificationId);
 
-	public List<NotificationHistoryBO> getNotificationHistoryList(
-			Integer notificationId);
-
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(
 			int notificationId);
 

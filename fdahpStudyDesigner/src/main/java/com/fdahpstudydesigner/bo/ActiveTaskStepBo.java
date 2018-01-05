@@ -13,7 +13,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the active_task_steps database table.
  *
- * @author Vivek
+ * @author BTC
  */
 @Entity
 @Table(name = "active_task_steps")
@@ -21,10 +21,8 @@ import javax.persistence.Table;
 public class ActiveTaskStepBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "step_id")
-	private Integer stepId;
+	@Column(name = "active_task_id")
+	private Integer activetaskId;
 
 	@Column(name = "active_task_stepscol")
 	private String activeTaskStepscol;
@@ -35,8 +33,10 @@ public class ActiveTaskStepBo implements Serializable {
 	@Column(name = "sequence_no")
 	private int sequenceNo;
 
-	@Column(name = "active_task_id")
-	private Integer activetaskId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "step_id")
+	private Integer stepId;
 
 	public ActiveTaskStepBo() {
 		// Do nothing

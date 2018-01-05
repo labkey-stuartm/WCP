@@ -20,8 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fdahpstudydesigner.bean.StudyListBean;
 
 /**
- *
- * @author Ronalin
+ * The persistent class for the studies database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -36,40 +37,29 @@ public class StudyBo implements Serializable {
 
 	private static final long serialVersionUID = 2147840266295837728L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
+	@Column(name = "allow_rejoin")
+	private String allowRejoin;
 
-	@Column(name = "custom_study_id")
-	private String customStudyId;
+	@Column(name = "allow_rejoin_text")
+	private String allowRejoinText;
 
-	@Column(name = "name")
-	private String name;
-
-	@Column(name = "full_name")
-	private String fullName;
-
-	@Column(name = "type")
-	private String type;
-
-	@Column(name = "platform")
-	private String platform;
+	@Transient
+	private String buttonText;
 
 	@Column(name = "category")
 	private String category;
 
-	@Column(name = "research_sponsor")
-	private String researchSponsor;
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
+	@Column(name = "custom_study_id")
+	private String customStudyId;
 
 	@Column(name = "data_partner")
 	private String dataPartner;
-
-	@Column(name = "tentative_duration")
-	private Integer tentativeDuration;
-
-	@Column(name = "tentative_duration_weekmonth")
-	private String tentativeDurationWeekmonth;
 
 	@Column(name = "description")
 	private String description;
@@ -77,66 +67,14 @@ public class StudyBo implements Serializable {
 	@Column(name = "enrolling_participants")
 	private String enrollingParticipants;
 
-	@Column(name = "retain_participant")
-	private String retainParticipant;
+	@Transient
+	private MultipartFile file;
 
-	@Column(name = "allow_rejoin")
-	private String allowRejoin;
+	@Column(name = "full_name")
+	private String fullName;
 
-	@Column(name = "allow_rejoin_text")
-	private String allowRejoinText;
-
-	@Column(name = "irb_review")
-	private String irbReview;
-
-	@Column(name = "inbox_email_address")
-	private String inboxEmailAddress;
-
-	@Column(name = "created_on")
-	private String createdOn;
-
-	@Column(name = "modified_on")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-
-	@Column(name = "status")
-	private String status;
-
-	@Column(name = "sequence_number")
-	private Integer sequenceNumber;
-
-	@Column(name = "thumbnail_image")
-	private String thumbnailImage;
-
-	@Column(name = "media_link")
-	private String mediaLink;
-
-	@Column(name = "study_website")
-	private String studyWebsite;
-
-	@Column(name = "study_tagline")
-	private String studyTagLine;
-
-	@Column(name = "version")
-	private Float version = 0f;
-
-	@Column(name = "study_lunched_date")
-	private String studylunchDate;
-
-	@Column(name = "study_pre_active_flag")
-	@Type(type = "yes_no")
-	private boolean studyPreActiveFlag = false;
-
-	@Column(name = "is_live")
-	private Integer live = 0;
-
-	@Column(name = "has_study_draft")
-	private Integer hasStudyDraft = 0;
+	@Column(name = "has_activitetask_draft")
+	private Integer hasActivetaskDraft = 0;
 
 	@Column(name = "has_activity_draft")
 	private Integer hasActivityDraft = 0;
@@ -147,32 +85,95 @@ public class StudyBo implements Serializable {
 	@Column(name = "has_questionnaire_draft")
 	private Integer hasQuestionnaireDraft = 0;
 
-	@Column(name = "has_activitetask_draft")
-	private Integer hasActivetaskDraft = 0;
+	@Column(name = "has_study_draft")
+	private Integer hasStudyDraft = 0;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+
+	@Column(name = "inbox_email_address")
+	private String inboxEmailAddress;
+
+	@Column(name = "irb_review")
+	private String irbReview;
+
+	@Column(name = "is_live")
+	private Integer live = 0;
+
+	@Transient
+	private StudyBo liveStudyBo = null;
+
+	@Column(name = "media_link")
+	private String mediaLink;
+
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+
+	@Column(name = "modified_on")
+	private String modifiedOn;
+
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "platform")
+	private String platform;
+
+	@Column(name = "research_sponsor")
+	private String researchSponsor;
+
+	@Column(name = "retain_participant")
+	private String retainParticipant;
+
+	@Column(name = "sequence_number")
+	private Integer sequenceNumber;
+
+	@Column(name = "status")
+	private String status;
+
+	@Column(name = "study_lunched_date")
+	private String studylunchDate;
 
 	@Transient
 	private List<StudyListBean> studyPermissions = new ArrayList<>();
 
-	@Transient
-	private MultipartFile file;
-
-	@Transient
-	private Integer userId;
+	@Column(name = "study_pre_active_flag")
+	@Type(type = "yes_no")
+	private boolean studyPreActiveFlag = false;
 
 	@Transient
 	StudySequenceBo studySequenceBo = new StudySequenceBo();
 
-	@Transient
-	private boolean viewPermission = true;
-
-	@Transient
-	private String buttonText;
+	@Column(name = "study_tagline")
+	private String studyTagLine;
 
 	@Transient
 	private StudyVersionBo studyVersionBo = null;
 
+	@Column(name = "study_website")
+	private String studyWebsite;
+
+	@Column(name = "tentative_duration")
+	private Integer tentativeDuration;
+
+	@Column(name = "tentative_duration_weekmonth")
+	private String tentativeDurationWeekmonth;
+
+	@Column(name = "thumbnail_image")
+	private String thumbnailImage;
+
+	@Column(name = "type")
+	private String type;
+
 	@Transient
-	private StudyBo liveStudyBo = null;
+	private Integer userId;
+
+	@Column(name = "version")
+	private Float version = 0f;
+
+	@Transient
+	private boolean viewPermission = true;
 
 	public String getAllowRejoin() {
 		return allowRejoin;

@@ -11,6 +11,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
+ * The persistent class for the master_data database table.
+ * 
  * @author Pradyumn
  *
  */
@@ -25,14 +27,14 @@ public class MasterDataBO {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "type")
-	private String type;
+	@Column(name = "privacy_policy_text")
+	private String privacyPolicyText;
 
 	@Column(name = "terms_text")
 	private String termsText;
 
-	@Column(name = "privacy_policy_text")
-	private String privacyPolicyText;
+	@Column(name = "type")
+	private String type;
 
 	public Integer getId() {
 		return id;

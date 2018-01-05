@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.fdahpstudydesigner.bo.UserBO;
-import com.fdahpstudydesigner.service.LoginServiceImpl;
 import com.fdahpstudydesigner.service.UsersService;
 
 /**
@@ -24,8 +23,6 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends
 
 	private static final Logger logger = Logger
 			.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
-
-	private LoginServiceImpl loginService;
 
 	@Autowired
 	private UsersService usersService;
@@ -69,11 +66,6 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends
 					flag = true;
 				}
 			}
-			/*
-			 * if (!flag) { if (null == session){
-			 *
-			 * } }
-			 */
 
 			int customSessionExpiredErrorCode = 901;
 			boolean ajax = "XMLHttpRequest".equals(request
@@ -87,12 +79,6 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends
 			}
 			if (!flag) {
 				if (null == session) {
-					// if(ajax){
-					// response.sendError(customSessionExpiredErrorCode);
-					// logger.info("FdahpStudyDesignerPreHandlerInterceptor - Ajax preHandle(): "+uri
-					// + "");
-					// return false;
-					// }
 					if (uri.contains(actionLoginbackUrl)) {
 						request.getSession(false).setAttribute("loginBackUrl",
 								request.getScheme() + "://" + // "http" + "://
@@ -129,8 +115,6 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends
 						logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
 					}
 					// Checking for force logout for current user
-					// Boolean forceLogout =
-					// loginService.isFrocelyLogOutUser(session);
 					UserBO user = usersService.getUserDetails(session
 							.getUserId());
 					if (null != user) {
@@ -160,12 +144,6 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends
 				+ " uri"
 				+ uri);
 		return true;
-	}
-
-	/* Setter Injection */
-	@Autowired
-	public void setLoginService(LoginServiceImpl loginService) {
-		this.loginService = loginService;
 	}
 
 }

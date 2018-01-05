@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.log4j.Logger;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
@@ -19,6 +19,13 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		super(servletRequest);
 	}
 
+	/**
+	 * Clean the XSS from request parameters
+	 * 
+	 * @param value
+	 *            , request parameters
+	 * @return {@link String}
+	 */
 	private String cleanXSS(String value) {
 		// You'll need to remove the spaces from the html entities below
 		logger.info("InnXSS RequestWrapper ..............." + value);

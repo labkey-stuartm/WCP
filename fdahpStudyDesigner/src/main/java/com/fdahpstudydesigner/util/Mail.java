@@ -1,10 +1,5 @@
 package com.fdahpstudydesigner.util;
 
-/**
- * @author
- *
- */
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,43 +20,38 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * Mail POJO class
+ * 
+ * @author BTC
+ *
+ */
 public class Mail {
-
-	public static String getSmtpHostName() {
-		return SMTP_HOST_NAME;
-	}
-
-	public static String getSmtpPort() {
-		return SMTP_PORT;
-	}
-
-	public static String getSSL_FACTORY() {
-		return SSL_FACTORY;
-	}
 
 	/**
 	 *
 	 */
 	private static Logger logger = Logger.getLogger(Mail.class.getName());
-	private Map<?, ?> configMap = FdahpStudyDesignerUtil.getAppProperties();
-	private String toemail;
-	private String subject;
-	private String messageBody;
+
 	private static final String SMTP_HOST_NAME = "smtp.gmail.com";
 	private static final String SMTP_PORT = "465";
+	private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+	private String attachmentPath;
+	private String bccEmail;
+	private String ccEmail;
+	private Map<?, ?> configMap = FdahpStudyDesignerUtil.getAppProperties();
+	private String fromEmailAddress = "";
+	private String fromEmailName = "";
+	private String fromEmailPassword;
+	private String messageBody;
 	private String smtpHostname = "";
 	private String smtpPortvalue = "";
-	static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+
 	private String sslFactory = "";
-	private String fromEmailAddress = "";
-	private String fromEmailPassword;
-	private String fromEmailName = "";
 
-	private String ccEmail;
+	private String subject;
 
-	private String bccEmail;
-
-	private String attachmentPath;
+	private String toemail;
 
 	public String getAttachmentPath() {
 		return attachmentPath;
@@ -92,8 +82,8 @@ public class Mail {
 	}
 
 	public String getSmtpHostname() {
-		String hostname = "";
-		if (this.smtpHostname.equals("")) {
+		String hostname;
+		if ("".equals(this.smtpHostname)) {
 			hostname = Mail.SMTP_HOST_NAME;
 		} else {
 			hostname = this.smtpHostname;
@@ -167,7 +157,7 @@ public class Mail {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			if (StringUtils.isNotBlank(this.getToemail())) {
-				if (this.getToemail().indexOf(",") != -1) {
+				if (this.getToemail().indexOf(',') != -1) {
 					message.setRecipients(Message.RecipientType.BCC,
 							InternetAddress.parse(this.getToemail()));
 				} else {
@@ -231,7 +221,7 @@ public class Mail {
 
 			Message message = new MimeMessage(session);
 			if (StringUtils.isNotBlank(this.getToemail())) {
-				if (this.getToemail().indexOf(",") != -1) {
+				if (this.getToemail().indexOf(',') != -1) {
 					message.setRecipients(Message.RecipientType.BCC,
 							InternetAddress.parse(this.getToemail()));
 				} else {

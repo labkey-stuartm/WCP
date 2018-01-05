@@ -19,7 +19,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -66,7 +65,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Repository
@@ -74,22 +73,23 @@ public class StudyDAOImpl implements StudyDAO {
 
 	private static Logger logger = Logger.getLogger(StudyDAOImpl.class
 			.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-	String queryString = "";
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+	String queryString = "";
+	private Transaction transaction = null;
 
 	public StudyDAOImpl() {
 		// Unused
 	}
 
 	/**
-	 *  This method is used to validate the activetaskType for android
-	 *         platform
+	 * This method is used to validate the activetaskType for android platform
+	 * 
 	 * @author BTC
-	 * @param Integer, studyId
+	 * @param Integer
+	 *            , studyId
 	 * @return String, SUCCESS or FAILURE
 	 */
 	@Override
@@ -382,7 +382,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Delete eligibility test question answer by id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityTestId
 	 *            , Id of {@link EligibilityTestBo}
@@ -476,6 +476,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return result;
 	}
 
+	/**
+	 * delete live study by customStudyId
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @return boolean
+	 */
 	@Override
 	public boolean deleteLiveStudy(String customStudyId) {
 		logger.info("StudyDAOImpl - deleteLiveStudy() - Starts");
@@ -493,8 +501,11 @@ public class StudyDAOImpl implements StudyDAO {
 					.setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID,
 							customStudyId).uniqueResult();
 			if (liveStudyBo != null) {
+				// deleting the live study
 				message = deleteStudyByIdOrCustomstudyId(session, transaction,
 						liveStudyBo.getId().toString(), "");
+
+				// once live study deleted successfully, reseting the new study
 				if (message
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 					session.createSQLQuery(
@@ -537,9 +548,13 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * @author Ronalin delete the Study Overview Page By Page Id
-	 * @param studyId
-	 *            ,pageId
+	 * delete the Study Overview Page By Page Id
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId
+	 * @param String
+	 *            , pageId
 	 * @return {@link String}
 	 */
 	@Override
@@ -584,6 +599,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param studyId
 	 * @return message, Success/Failure message
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,
 			boolean resourceVisibility, int studyId) {
@@ -609,23 +625,9 @@ public class StudyDAOImpl implements StudyDAO {
 					if (isValue && !resourceBO.getId().equals(resourceInfoId)) {
 						resourceBO
 								.setSequenceNo(resourceBO.getSequenceNo() - 1);
-						// resourceBO.setModifiedBy(resourceBO.getUserId());
-						// resourceBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(resourceBO);
 					}
 				}
-				// StudySequenceBo studySequence = (StudySequenceBo)
-				// session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID,
-				// studyId).uniqueResult();
-				// if(studySequence != null){
-				// if(resourceBOList.size() == 1){
-				// studySequence.setConsentEduInfo(false);
-				// }
-				// if(studySequence.iseConsent()){
-				// studySequence.seteConsent(false);
-				// }
-				// session.saveOrUpdate(studySequence);
-				// }
 			}
 
 			String deleteQuery = " UPDATE ResourceBO RBO SET status = " + false
@@ -654,8 +656,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
+	/**
+	 * This method is used to delete Study
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @return boolean,{true/false}
+	 */
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
 		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Starts");
 		Session session = null;
@@ -683,6 +691,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return falg;
 	}
 
+	/**
+	 * This method is used to delete Study
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @return boolean,{true/false}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteStudyByIdOrCustomstudyId(Session session,
@@ -1067,7 +1083,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * The last order count of questions of a {@link EligibilityBo}
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 * @param eligibilityId
 	 * @return count , the last order count of the {@link EligibilityTestBo}
 	 */
@@ -1095,7 +1111,6 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - eligibilityTestOrderCount - Ends");
 		return count;
 	}
-
 
 	/**
 	 * This method is used to get the active user list whom are not yet added to
@@ -1170,6 +1185,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param userId
 	 * @return List of {@link StudyPermissionBO}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,
 			Integer userId) {
@@ -1571,6 +1587,17 @@ public class StudyDAOImpl implements StudyDAO {
 		return consentMasterInfoList;
 	}
 
+	/**
+	 * validate all study section completed or not before do Publish (as
+	 * Upcoming Study)/Launch/publish update of the study
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId
+	 * @param String
+	 *            , buttonText
+	 * @return {@link String}
+	 */
 	public String getErrorBasedonAction(StudySequenceBo studySequenceBo) {
 		String message = FdahpStudyDesignerConstants.SUCCESS;
 		if (studySequenceBo != null) {
@@ -1615,12 +1642,12 @@ public class StudyDAOImpl implements StudyDAO {
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 
 	/**
-	 * return Study vesion on customStudyid
-	 *
-	 * @author Ronalin
-	 *
-	 * @return StudyVesionBo
-	 * @exception Exception
+	 * return Study version on customStudyid
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link StudyIdBean}
 	 */
 	@Override
 	public StudyIdBean getLiveVersion(String customStudyId) {
@@ -1716,16 +1743,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return notificationBO;
 	}
 
-
 	/**
-	 * @author Ronalin
-	 * @param studyId
-	 *            of the StudyBo, Integer userId
-	 * @return the Study page list
-	 * @exception Exception
-	 *                This method return content(A title,Description,Image) of
-	 *                Overview pages of the Study
-	 *
+	 * This method return content(A title,Description,Image) of Overview pages
+	 * of the Study
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId in {@link StudyBo}
+	 * @return {@link List<StudyPageBo>}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1755,11 +1780,9 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * return reference List based on category
-	 *
-	 * @author Ronalin
-	 *
-	 * @return the reference List
-	 * @exception Exception
+	 * 
+	 * @author BTC
+	 * @return {@link HashMap<String, List<ReferenceTablesBo>>}
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Override
@@ -1922,12 +1945,14 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * return get study by Id
-	 *
-	 * @author Ronalin
-	 *
-	 * @return the StudyBo
-	 * @exception Exception
+	 * get study details
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId
+	 * @param Integer
+	 *            , userId
+	 * @return studyBo, {@link StudyBo}
 	 */
 	@Override
 	public StudyBo getStudyById(String studyId, Integer userId) {
@@ -2002,7 +2027,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * return eligibility based on user's Study Id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param studyId
 	 *            , studyId of the {@link StudyBo}
@@ -2038,12 +2063,10 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * return study List based on user
 	 *
-	 * @author Ronalin
-	 *
-	 * @param userId
-	 *            of the user
-	 * @return the Study list
-	 * @exception Exception
+	 * @author BTc
+	 * @param Integer
+	 *            , userId in {@link UserBO}
+	 * @return {@link List<StudyListBean>}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2150,8 +2173,9 @@ public class StudyDAOImpl implements StudyDAO {
 	 * This method is used to return study List based on user
 	 *
 	 * @author BTC
-	 * @param userId
-	 * @return List of {@link StudyListBean}
+	 * @param Integer
+	 *            , userId
+	 * @return {@link StudyListBean}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2182,6 +2206,14 @@ public class StudyDAOImpl implements StudyDAO {
 		return studyListBeans;
 	}
 
+	/**
+	 * This method is to get live Study details
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link StudyBo}
+	 */
 	@Override
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
 		logger.info("StudyDAOImpl - getStudyLiveStatusByCustomId() - Starts");
@@ -2213,7 +2245,6 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param studyId
 	 * @return {@link ResourceBO}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public ResourceBO getStudyProtocol(Integer studyId) {
 		logger.info("StudyDAOImpl - getStudyProtocol() - Starts");
@@ -2236,28 +2267,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return studyprotocol;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<StudyVersionBo> getStudyVersionInfo(String customStudyId,
-			Session session) {
-		logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
-		List<StudyVersionBo> studyVersionBos = null;
-		try {
-			query = session.getNamedQuery("getStudyVersionsByCustomStudyId")
-					.setString("customStudyId", customStudyId);
-			studyVersionBos = query.list();
-		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getStudyVersionInfo() - ERROR ", e);
-		}
-		logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
-		return studyVersionBos;
-	}
-
 	/**
 	 * This method is used to get the super admins user Ids
 	 * 
 	 * @author BTC
-	 * @return 
+	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Integer> getSuperAdminUserIds() {
 		logger.info("StudyDAOImpl - getSuperAdminUserIds() - Starts");
 		Session session = null;
@@ -2281,11 +2297,16 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * mark as completed of study
+	 * 
 	 * @author BTC
-	 * @param Integer, studyId
-	 * @param String, markCompleted
-	 * @param sesObj, {@link SessionObject}
-	 * @param String, customStudyId {@link StudyBo}
+	 * @param Integer
+	 *            , studyId
+	 * @param String
+	 *            , markCompleted
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param String
+	 *            , customStudyId {@link StudyBo}
 	 * @return String, SUCCES/FAILURE
 	 */
 	@Override
@@ -2300,10 +2321,12 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			/** match the markCompleted flag and complete 
-			    the  resource/notification/consent/consent review
-			    /checkList/activeTaskList/questionnaire/comprehenstionTest 
-			    section of study before launch **/
+			/**
+			 * match the markCompleted flag and complete the
+			 * resource/notification/consent/consent review
+			 * /checkList/activeTaskList/questionnaire/comprehenstionTest
+			 * section of study before launch
+			 **/
 			if (markCompleted.equals(FdahpStudyDesignerConstants.NOTIFICATION)) {
 				query = session
 						.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "
@@ -2627,7 +2650,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Reorder the eligibility test questions
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityId
 	 *            , Eligibility Id of the study
@@ -2810,12 +2833,13 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - reOrderResourceList() - Ends");
 		return message;
 	}
-	
-	
+
 	/**
 	 * reset study by customStudyId
+	 * 
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return boolean
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -3882,7 +3906,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * This method is used to get the saved resource list
 	 * 
-	 * @author BTC 
+	 * @author BTC
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -4316,12 +4340,13 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * @author Ronalin
+	 * save or update content(title,description,image) for the Overview pages of
+	 * the Study those pages will reflect on mobile overview screen
+	 * 
+	 * @author BTC
 	 * @param studyPageBean
-	 *            {@link StudyPageBean}
-	 * @return {@link String} save or update content(title,description,image)
-	 *         for the Overview pages of the Study those pages will reflect on
-	 *         mobile overview screen
+	 *            , {@link StudyPageBean}
+	 * @return {@link String}
 	 */
 	@Override
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean,
@@ -4509,11 +4534,13 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * @author Ronalin This method captures basic information about the study
-	 *         basic info like Study ID, Study name, Study full name, Study
-	 *         Category, Research Sponsor,Data Partner, Estimated Duration in
-	 *         weeks/months/years, Study Tagline, Study Description, Study
-	 *         website, Study Type, giving permissions to all super admin
+	 * This method captures basic information about the study basic info like
+	 * Study ID, Study name, Study full name, Study Category, Research
+	 * Sponsor,Data Partner, Estimated Duration in weeks/months/years, Study
+	 * Tagline, Study Description, Study website, Study Type, giving permissions
+	 * to all super admin
+	 * 
+	 * @author BTC
 	 * @param StudyBo
 	 *            , {@link StudyBo}
 	 * @return {@link String}
@@ -4649,7 +4676,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * Save or update eligibility of study
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityBo
 	 *            , {@link EligibilityBo}
@@ -4745,14 +4772,15 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @author BTC
 	 * @param studyBo
 	 *            , {@link studyBo}
-	 * @param sesObj, {@link SessionObject}
+	 * @param sesObj
+	 *            , {@link SessionObject}
 	 * @param userIds
 	 * @param permissions
 	 * @param projectLead
-	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS
-	 *         or FdahpStudyDesignerConstants.FAILURE
+	 * @return {@link String} , SUCCESS or FAILURE
 	 * @exception Exception
 	 */
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo,
 			SessionObject sesObj, String userIds, String permissions,
@@ -5034,8 +5062,11 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * @author Ronalin save the Study Overview Page By PageId
-	 * @param studyId
+	 * save the Study Overview Page By PageId
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId
 	 * @return {@link Integer}
 	 */
 	public Integer saveOverviewStudyPageById(String studyId) {
@@ -5108,9 +5139,14 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * Study Draft related data created
-	 *
+	 * create live study from existing study
+	 * 
+	 * @author BTC
 	 * @param studyBo
+	 *            , {@link StudyBo}
+	 * @param session
+	 *            , {@link Session}
+	 * @return {@link String}
 	 */
 	@SuppressWarnings("unchecked")
 	public String studyDraftCreation(StudyBo studyBo, Session session) {
@@ -5130,9 +5166,6 @@ public class StudyDAOImpl implements StudyDAO {
 		List<String> objectList = null;
 		List<String> questionnarieShorttitleList = null;
 		try {
-			/*
-			 * if(session!= null) { transaction = session.beginTransaction(); }
-			 */
 			if (studyBo != null) {
 				logger.info("StudyDAOImpl - studyDraftCreation() getStudyByCustomStudyId- Starts");
 				// if already lunch if study hasStudyDraft()==1 , then update
@@ -5355,7 +5388,6 @@ public class StudyDAOImpl implements StudyDAO {
 									newQuestionnaireBo.setId(null);
 									newQuestionnaireBo.setStudyId(studyDreaftBo
 											.getId());
-									// newQuestionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDate());
 									newQuestionnaireBo.setCreatedBy(0);
 									newQuestionnaireBo.setModifiedBy(0);
 									newQuestionnaireBo
@@ -5739,7 +5771,6 @@ public class StudyDAOImpl implements StudyDAO {
 																	if (questionResponseSubTypeList != null
 																			&& !questionResponseSubTypeList
 																					.isEmpty()) {
-																		// existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
 																		for (QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeList) {
 																			QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils
 																					.clone(questionResponseSubTypeBo);
@@ -5749,7 +5780,6 @@ public class StudyDAOImpl implements StudyDAO {
 																					.setResponseTypeId(newQuestionsBo
 																							.getId());
 																			session.save(newQuestionResponseSubTypeBo);
-																			// newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
 																		}
 																	}
 
@@ -5878,7 +5908,6 @@ public class StudyDAOImpl implements StudyDAO {
 								logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Ends");
 							}
 							// Executing draft version to 0
-							// session.createQuery("UPDATE QuestionnaireBo set live=0, isChange = 0 where studyId="+studyBo.getId()).executeUpdate();
 						}// If Questionarries updated flag -1 then update End
 
 					}// In Questionnarie change or not
@@ -6071,12 +6100,6 @@ public class StudyDAOImpl implements StudyDAO {
 						query.executeUpdate();
 
 						// If Consent updated flag -1 then update
-						/*
-						 * query = session.createQuery(
-						 * "from ConsentBo CBO where CBO.studyId="
-						 * +studyBo.getId()+""); ConsentBo consentBo =
-						 * (ConsentBo) query.uniqueResult();
-						 */
 						if (consentBo != null) {
 							ConsentBo newConsentBo = SerializationUtils
 									.clone(consentBo);
@@ -6199,24 +6222,12 @@ public class StudyDAOImpl implements StudyDAO {
 										+ studyBo.getCustomStudyId()
 										+ "' where studyId=" + studyBo.getId())
 								.executeUpdate();
-
-						// delete inactive Activity during lunch Start
-						/*
-						 * if(studyVersionBo==null){
-						 * query=session.createSQLQuery
-						 * ("CALL deleteInActiveActivity(:studyId)"
-						 * ).setInteger("studyId", studyBo.getId());
-						 * query.executeUpdate(); }
-						 */
-						// delete inactive Activity during lunch End
 					}
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
 
 			}
-			// transaction.commit();
 		} catch (Exception e) {
-			// transaction.rollback();
 			logger.error("StudyDAOImpl - studyDraftCreation() - ERROR ", e);
 		}
 		logger.info("StudyDAOImpl - studyDraftCreation() - Ends");
@@ -6224,6 +6235,18 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
+	/**
+	 * This method is to update status of Study
+	 * 
+	 * @author BTC
+	 * @param string
+	 *            , studyId
+	 * @param string
+	 *            , buttonText
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return String, SUCCESS/FAILURE
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String updateStudyActionOnAction(String studyId, String buttonText,
@@ -6611,11 +6634,15 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * This method is validate the activity(Active task/Questionnaire) done or not
-	 * @author Ronalin
-	 * @param String, studyId
-	 * @param String, action
-	 * @return String, {SUCCESS/FAILURE} 
+	 * This method is validate the activity(Active task/Questionnaire) done or
+	 * not
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , studyId
+	 * @param String
+	 *            , action
+	 * @return String, {SUCCESS/FAILURE}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -6692,7 +6719,8 @@ public class StudyDAOImpl implements StudyDAO {
 				message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 			}
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - validateActivityComplete() - ERROR ", e);
+			logger.error("StudyDAOImpl - validateActivityComplete() - ERROR ",
+					e);
 		} finally {
 			if (null != session && session.isOpen()) {
 				session.close();
@@ -6703,14 +6731,15 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
+	 * validate the date related to Activity and notification before do Publish
+	 * (as Upcoming Study)/Launch/publish update of the study
+	 * 
 	 * @author BTC
-	 * @param Object
-	 *            , StudyBo
+	 * @param studyBo
+	 *            , {@link StudyBo}
 	 * @param String
-	 *            , buttonText (Publish (as Upcoming Study)/Launch/publish
-	 *            update of the study) validate the date related to Activity and
-	 *            notification before do Publish (as Upcoming
-	 *            Study)/Launch/publish update of the study
+	 *            , buttonText
+	 * @return {@link String}
 	 */
 	@SuppressWarnings("unchecked")
 	public String validateDateForStudyAction(StudyBo studyBo, String buttonText) {
@@ -6802,7 +6831,7 @@ public class StudyDAOImpl implements StudyDAO {
 					resourceAnchorFlag = false;
 
 			}
-			// Ancordate Checking
+			// Anchor date Checking
 			if (!resourceAnchorFlag) {
 				message = FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG;
 				return message;
@@ -6827,7 +6856,7 @@ public class StudyDAOImpl implements StudyDAO {
 						studyBo.getId());
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
-					// checking activetask which have scheduled for One time
+					// checking active task which have scheduled for One time
 					// expired or not
 					for (DynamicBean obj : dynamicList) {
 						if (obj.getDateTime() != null
@@ -6862,7 +6891,7 @@ public class StudyDAOImpl implements StudyDAO {
 						studyBo.getId());
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
-					// checking activetask which have scheduled not in One
+					// checking active task which have scheduled not in One
 					// time,Manually Schedule expired or not
 					for (DynamicBean obj : dynamicList) {
 						if (obj.getDateTime() != null
@@ -6896,7 +6925,7 @@ public class StudyDAOImpl implements StudyDAO {
 				if (dynamicFrequencyList != null
 						&& !dynamicFrequencyList.isEmpty()) {
 					for (DynamicFrequencyBean obj : dynamicFrequencyList) {
-						// checking activetask which have scheduled for
+						// checking active task which have scheduled for
 						// "Manually Schedule" expired or not
 						if (obj.getStartDate() != null && obj.getTime() != null) {
 							String dateTime = obj.getStartDate() + " "
@@ -6915,7 +6944,7 @@ public class StudyDAOImpl implements StudyDAO {
 				message = FdahpStudyDesignerConstants.ACTIVETASK_DATE_ERROR_MSG;
 				return message;
 			} else {
-				// getting Questionnaries based on StudyId
+				// getting Questionnaires based on StudyId
 				query = session
 						.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 								+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
@@ -6934,7 +6963,7 @@ public class StudyDAOImpl implements StudyDAO {
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
 					for (DynamicBean obj : dynamicList) {
-						// checking Questionnaries which have scheduled for one
+						// checking Questionnaires which have scheduled for one
 						// time expired or not
 						if (obj.getDateTime() != null
 								&& !FdahpStudyDesignerUtil
@@ -6967,7 +6996,7 @@ public class StudyDAOImpl implements StudyDAO {
 						studyBo.getId());
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
-					// checking Questionnaries which have scheduled not in one
+					// checking Questionnaires which have scheduled not in one
 					// time,manually schedule expired or not
 					for (DynamicBean obj : dynamicList) {
 						if (obj.getDateTime() != null
@@ -6999,7 +7028,7 @@ public class StudyDAOImpl implements StudyDAO {
 				dynamicFrequencyList = query.list();
 				if (dynamicFrequencyList != null
 						&& !dynamicFrequencyList.isEmpty()) {
-					// checking Questionnaries which have scheduled
+					// checking Questionnaires which have scheduled
 					// "manually schedule" expired or not
 					for (DynamicFrequencyBean obj : dynamicFrequencyList) {
 						if (obj.getStartDate() != null && obj.getTime() != null) {
@@ -7087,13 +7116,15 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
+	 * validate the below items before do Publish (as Upcoming
+	 * Study)/Launch/publish update of the study
+	 * 
 	 * @author BTC
 	 * @param String
 	 *            , studyId
 	 * @param String
-	 *            , buttonText (Publish (as Upcoming Study)/Launch/publish
-	 *            update of the study) validate the below items before do
-	 *            Publish (as Upcoming Study)/Launch/publish update of the study
+	 *            , buttonText
+	 * @return {@link String}
 	 */
 	@Override
 	public String validateStudyAction(String studyId, String buttonText) {
@@ -7206,9 +7237,9 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	/**
-	 * return false or true of validating study Custom id
+	 * validating study Custom id
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @return boolean
 	 * @exception Exception
@@ -7242,7 +7273,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * View eligibility test question answer by eligibility id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityId
 	 *            , Id of {@link EligibilityBo}
@@ -7277,7 +7308,7 @@ public class StudyDAOImpl implements StudyDAO {
 	/**
 	 * View eligibility test question answer by id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param eligibilityTestId
 	 *            , Id of {@link EligibilityTestBo}

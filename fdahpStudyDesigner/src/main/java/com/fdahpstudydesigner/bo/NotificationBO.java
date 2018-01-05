@@ -11,7 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Kanchana
+ * The persistent class for the notification database table.
+ * 
+ * @author Kanchana
  *
  */
 @Entity
@@ -20,55 +22,17 @@ public class NotificationBO implements Serializable {
 
 	private static final long serialVersionUID = 3634540541782531200L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "notification_id")
-	private Integer notificationId;
+	@Transient
+	private String actionPage;
 
-	@Column(name = "study_id")
-	private Integer studyId;
-
-	@Column(name = "notification_text")
-	private String notificationText;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
-
-	@Column(name = "schedule_date")
-	private String scheduleDate;
-
-	@Column(name = "schedule_time")
-	private String scheduleTime;
-
-	@Column(name = "notification_action", length = 1)
-	private boolean notificationAction;
-
-	@Column(name = "notification_sent", length = 1)
-	private boolean notificationSent = false;
-
-	@Column(name = "notification_type")
-	private String notificationType;
-
-	@Column(name = "notification_subType")
-	private String notificationSubType;
-
-	@Column(name = "notification_schedule_type")
-	private String notificationScheduleType;
-
-	@Column(name = "notification_done", length = 1)
-	private boolean notificationDone = true;
-
-	@Column(name = "notification_status", length = 1)
-	private boolean notificationStatus = false;
-
-	@Column(name = "resource_id")
-	private Integer resourceId;
+	@Column(name = "active_task_id")
+	private Integer activeTaskId;
 
 	@Column(name = "is_anchor_date", length = 1)
 	private boolean anchorDate = false;
 
-	@Column(name = "x_days")
-	private Integer xDays;
+	@Transient
+	private String checkNotificationSendingStatus;
 
 	@Column(name = "created_by")
 	private Integer createdBy;
@@ -76,23 +40,61 @@ public class NotificationBO implements Serializable {
 	@Column(name = "created_on")
 	private String createdOn;
 
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
 	@Column(name = "modified_on")
 	private String modifiedOn;
 
-	@Column(name = "active_task_id")
-	private Integer activeTaskId;
+	@Column(name = "notification_action", length = 1)
+	private boolean notificationAction;
+
+	@Column(name = "notification_done", length = 1)
+	private boolean notificationDone = true;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "notification_id")
+	private Integer notificationId;
+
+	@Column(name = "notification_schedule_type")
+	private String notificationScheduleType;
+
+	@Column(name = "notification_sent", length = 1)
+	private boolean notificationSent = false;
+
+	@Column(name = "notification_status", length = 1)
+	private boolean notificationStatus = false;
+
+	@Column(name = "notification_subType")
+	private String notificationSubType;
+
+	@Column(name = "notification_text")
+	private String notificationText;
+
+	@Column(name = "notification_type")
+	private String notificationType;
 
 	@Column(name = "questionnarie_id")
 	private Integer questionnarieId;
 
-	@Transient
-	private String actionPage;
+	@Column(name = "resource_id")
+	private Integer resourceId;
 
-	@Transient
-	private String checkNotificationSendingStatus;
+	@Column(name = "schedule_date")
+	private String scheduleDate;
+
+	@Column(name = "schedule_time")
+	private String scheduleTime;
+
+	@Column(name = "study_id")
+	private Integer studyId;
+
+	@Column(name = "x_days")
+	private Integer xDays;
 
 	public String getActionPage() {
 		return actionPage;

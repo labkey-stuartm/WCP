@@ -18,7 +18,7 @@ import org.hibernate.annotations.Type;
  * Eligibility test question and answer of a {@link EligibilityBo} object of
  * type "Eligibility Test"
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity
@@ -32,22 +32,22 @@ import org.hibernate.annotations.Type;
 		@NamedQuery(name = "EligibilityTestBo.validateShortTitle", query = "SELECT ETB FROM EligibilityTestBo ETB WHERE ETB.shortTitle =:shortTitle AND ETB.id !=:eligibilityTestId AND ETB.eligibilityId =:eligibilityId ") })
 public class EligibilityTestBo implements Serializable {
 
+	private static final long serialVersionUID = -6517033483482921515L;
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	private static final long serialVersionUID = -6517033483482921515L;
+	@Column(name = "active")
+	private Boolean active = true;
+
+	@Column(name = "eligibility_id")
+	private Integer eligibilityId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-
-	@Column(name = "eligibility_id")
-	private Integer eligibilityId;
-
-	@Column(name = "short_title")
-	private String shortTitle;
 
 	@Column(name = "question")
 	private String question;
@@ -55,20 +55,20 @@ public class EligibilityTestBo implements Serializable {
 	@Column(name = "response_format")
 	private String responseFormat;
 
-	@Column(name = "sequence_no")
-	private Integer sequenceNo;
-
-	@Column(name = "status")
-	private Boolean status = false;
-
-	@Column(name = "active")
-	private Boolean active = true;
+	@Column(name = "response_no_option")
+	private Boolean responseNoOption;
 
 	@Column(name = "response_yes_option")
 	private Boolean responseYesOption;
 
-	@Column(name = "response_no_option")
-	private Boolean responseNoOption;
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
+
+	@Column(name = "short_title")
+	private String shortTitle;
+
+	@Column(name = "status")
+	private Boolean status = false;
 
 	@Transient
 	private String type;

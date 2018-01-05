@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the questionnaires_frequencies database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity

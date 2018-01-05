@@ -15,7 +15,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 
 /**
  *
- * @author Kanchana
+ * @author BTC
  *
  */
 @Repository
@@ -51,7 +51,10 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
 	}
 
 	/**
-	 * Kanchana Validating UserEmail
+	 * Validating whether userEmail already existing in DB
+	 * @author BTC
+	 * @param email
+	 * @return message, Success/Failure
 	 */
 	@Override
 	public String isEmailValid(String email) {
@@ -81,16 +84,16 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
 		return message;
 	}
 
-	/* MyAccount Starts */
-
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	/* MyAccount Starts */
 	/**
-	 * Kanchana Updating User Details
+	 * Updating User Details
+	 * @author BTC
+	 * @param userId
+	 * @param userBO , {@link UserBO}
 	 */
 	@Override
 	public String updateProfileDetails(UserBO userBO, int userId) {

@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
+ * The persistent class for the study_permission database table.
+ * 
  * @author Pradyumn
  *
  */
@@ -27,28 +29,28 @@ public class StudyPermissionBO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "delFlag")
+	private Integer delFlag;
+
+	@Column(name = "project_lead")
+	private Integer projectLead;
+
+	@Column(name = "study_id")
+	private Integer studyId;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer studyPermissionId;
 
+	@Transient
+	private String userFullName;
+
 	@Column(name = "user_id")
 	private Integer userId;
 
-	@Column(name = "study_id")
-	private Integer studyId;
-
 	@Column(name = "view_permission", length = 1)
 	private boolean viewPermission;
-
-	@Column(name = "project_lead")
-	private Integer projectLead;
-
-	@Column(name = "delFlag")
-	private Integer delFlag;
-
-	@Transient
-	private String userFullName;
 
 	public Integer getDelFlag() {
 		return delFlag;

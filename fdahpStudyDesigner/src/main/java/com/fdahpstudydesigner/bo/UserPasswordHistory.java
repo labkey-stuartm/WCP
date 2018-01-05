@@ -13,13 +13,18 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * @author Vivek
+ * The persistent class for the users_password_history database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
 @Table(name = "users_password_history")
 @NamedQueries({ @NamedQuery(name = "getPaswordHistoryByUserId", query = "From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate") })
 public class UserPasswordHistory {
+	@Column(name = "created_date")
+	private String createdDate;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "password_history_id")
@@ -30,9 +35,6 @@ public class UserPasswordHistory {
 
 	@Column(name = "password")
 	private String userPassword;
-
-	@Column(name = "created_date")
-	private String createdDate;
 
 	public String getCreatedDate() {
 		return createdDate;

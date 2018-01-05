@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the consent_info database table.
  * 
- * @author BTC 
+ * @author BTC
  */
 @Entity
 @Table(name = "consent_info")
@@ -25,25 +25,32 @@ import javax.persistence.Transient;
 public class ConsentInfoBo implements Serializable {
 	private static final long serialVersionUID = 7994683067825219315L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
+	@Column(name = "active")
+	private Boolean active = true;
 
-	@Column(name = "study_id")
-	private Integer studyId;
+	@Column(name = "brief_summary")
+	private String briefSummary;
+
+	@Column(name = "consent_item_title_id")
+	private Integer consentItemTitleId;
 
 	@Column(name = "consent_item_type")
 	private String consentItemType;
 
-	@Column(name = "display_title")
-	private String displayTitle;
-
 	@Column(name = "content_type")
 	private String contentType;
 
-	@Column(name = "brief_summary")
-	private String briefSummary;
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
+	@Column(name = "display_title")
+	private String displayTitle;
 
 	@Column(name = "elaborated")
 	private String elaborated;
@@ -51,47 +58,40 @@ public class ConsentInfoBo implements Serializable {
 	@Column(name = "html_content")
 	private String htmlContent;
 
-	@Column(name = "url")
-	private String url;
-
-	@Column(name = "visual_step")
-	private String visualStep;
-
-	@Column(name = "sequence_no")
-	private Integer sequenceNo;
-
-	@Column(name = "created_on")
-	private String createdOn;
-
-	@Column(name = "modified_on")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-
-	@Column(name = "status")
-	private Boolean status;
-
-	@Column(name = "consent_item_title_id")
-	private Integer consentItemTitleId;
-
-	@Column(name = "active")
-	private Boolean active = true;
-
-	@Column(name = "version")
-	private Float version = 0f;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
 	@Column(name = "is_live")
 	private Integer live = 0;
 
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+
+	@Column(name = "modified_on")
+	private String modifiedOn;
+
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
+
+	@Column(name = "status")
+	private Boolean status;
+
+	@Column(name = "study_id")
+	private Integer studyId;
+
 	@Transient
 	private String type;
+
+	@Column(name = "url")
+	private String url;
+
+	@Column(name = "version")
+	private Float version = 0f;
+
+	@Column(name = "visual_step")
+	private String visualStep;
 
 	public Boolean getActive() {
 		return active;

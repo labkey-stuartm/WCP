@@ -32,7 +32,7 @@ public class NotificationController {
 	/**
 	 * Soft delete of notification in the application
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -82,7 +82,7 @@ public class NotificationController {
 	/**
 	 * Individual detail for edit/resend/addOrCopy of notification
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -163,7 +163,7 @@ public class NotificationController {
 	/**
 	 * Individual detail view of notification
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -223,7 +223,7 @@ public class NotificationController {
 	/**
 	 * Save/Update notification
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param notificationBO
@@ -338,7 +338,7 @@ public class NotificationController {
 	 * Global notification triggering to registered user of the app outside
 	 * study
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}

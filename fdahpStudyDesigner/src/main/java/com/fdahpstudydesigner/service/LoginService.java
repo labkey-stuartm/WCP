@@ -6,7 +6,7 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public interface LoginService {

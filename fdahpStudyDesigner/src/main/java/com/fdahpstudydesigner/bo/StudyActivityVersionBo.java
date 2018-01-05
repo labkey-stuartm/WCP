@@ -1,5 +1,7 @@
 package com.fdahpstudydesigner.bo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,38 +10,42 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @author Ronalin
+ * The persistent class for the study_activity_version database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
 @Table(name = "study_activity_version")
-public class StudyActivityVersionBo {
+public class StudyActivityVersionBo implements Serializable {
+
 	/**
-	 *
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8912773395341094340L;
+
+	@Column(name = "activity_id")
+	private Integer activityId;
+
+	@Column(name = "activity_type")
+	private String activityType;
+
+	@Column(name = "activity_version")
+	private Float activityVersion;
+
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
+	@Column(name = "short_title")
+	private String shortTitle;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "study_activity_id")
 	private Integer studyActivityId;
 
-	@Column(name = "custom_study_id")
-	private String customStudyId;
-
 	@Column(name = "study_version")
 	private Float studyVersion;
-
-	@Column(name = "activity_type")
-	private String activityType;
-
-	@Column(name = "short_title")
-	private String shortTitle;
-
-	@Column(name = "activity_id")
-	private Integer activityId;
-
-	@Column(name = "activity_version")
-	private Float activityVersion;
 
 	public Integer getActivityId() {
 		return activityId;

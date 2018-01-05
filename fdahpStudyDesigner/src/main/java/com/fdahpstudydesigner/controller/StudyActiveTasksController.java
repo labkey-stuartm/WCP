@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import sun.awt.image.ImageWatched.Link;
-
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
@@ -43,7 +41,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 @Controller
@@ -61,7 +59,7 @@ public class StudyActiveTasksController {
 	/**
 	 * to mark complete of study active task
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -126,7 +124,7 @@ public class StudyActiveTasksController {
 	/**
 	 * deleting of Active task in Study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -246,7 +244,7 @@ public class StudyActiveTasksController {
 	 * navigate to particular type of Active Task(Fetal Kick Counter/Tower of
 	 * Hanoi /Spatial Span Memory)
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -373,7 +371,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Save action to the active task schedule
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -462,7 +460,7 @@ public class StudyActiveTasksController {
 	 * Add or update all type of active task content (The Fetal Kick Counter
 	 * task/Tower of Hanoi/Spatial Memory Task)
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param activeTaskBo
@@ -576,7 +574,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Mark as complete action to the active task schedule
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -624,7 +622,7 @@ public class StudyActiveTasksController {
 	/**
 	 * validating ShortTitle and chart short title in study activity
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -703,7 +701,7 @@ public class StudyActiveTasksController {
 	/**
 	 * validating list of active task chart short title in study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -790,7 +788,7 @@ public class StudyActiveTasksController {
 	 * activities.
 	 * </p>
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -926,7 +924,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Navigate to the scheduled active task page
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -1034,7 +1032,7 @@ public class StudyActiveTasksController {
 	/**
 	 * view active tasks page
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}

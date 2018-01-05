@@ -3,7 +3,7 @@ package com.fdahpstudydesigner.dao;
 import java.util.HashMap;
 /**
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 import java.util.List;

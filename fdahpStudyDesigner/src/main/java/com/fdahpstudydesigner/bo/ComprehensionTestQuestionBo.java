@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the comprehension_test_question database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity
@@ -26,43 +26,43 @@ public class ComprehensionTestQuestionBo implements Serializable {
 	 */
 	private static final long serialVersionUID = -4092393873968937668L;
 
+	@Column(name = "active")
+	private Boolean active = true;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "question_text")
-	private String questionText;
-
-	@Column(name = "study_id")
-	private Integer studyId;
-
-	@Column(name = "sequence_no")
-	private Integer sequenceNo;
-
-	@Column(name = "structure_of_correct_ans")
-	private Boolean structureOfCorrectAns = true;
-
-	@Column(name = "created_on")
-	private String createdOn;
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
 
 	@Column(name = "modified_on")
 	private String modifiedOn;
 
-	@Column(name = "created_by")
-	private Integer createdBy;
+	@Column(name = "question_text")
+	private String questionText;
 
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
+	@Transient
+	private List<ComprehensionTestResponseBo> responseList;
+
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
 
 	@Column(name = "status")
 	private Boolean status;
 
-	@Column(name = "active")
-	private Boolean active = true;
+	@Column(name = "structure_of_correct_ans")
+	private Boolean structureOfCorrectAns = true;
 
-	@Transient
-	private List<ComprehensionTestResponseBo> responseList;
+	@Column(name = "study_id")
+	private Integer studyId;
 
 	public Boolean getActive() {
 		return active;

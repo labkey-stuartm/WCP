@@ -10,8 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author Ronalin
+ * The persistent class for the activetask_formula database table.
+ * 
+ * @author BTC
  *
  */
 @Entity

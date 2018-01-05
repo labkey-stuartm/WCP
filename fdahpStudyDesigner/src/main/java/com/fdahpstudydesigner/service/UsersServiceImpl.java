@@ -31,13 +31,13 @@ public class UsersServiceImpl implements UsersService {
 	private static Logger logger = Logger.getLogger(UsersServiceImpl.class);
 
 	@Autowired
-	private UsersDAO usersDAO;
+	private AuditLogDAO auditLogDAO;
 
 	@Autowired
 	LoginService loginService;
 
 	@Autowired
-	private AuditLogDAO auditLogDAO;
+	private UsersDAO usersDAO;
 
 	/**
 	 * This method is used to activate or deactivate the user

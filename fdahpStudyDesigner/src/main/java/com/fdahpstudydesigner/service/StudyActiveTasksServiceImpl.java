@@ -14,9 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
-
-import sun.awt.image.ImageWatched.Link;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
@@ -33,7 +30,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 @Service
@@ -48,7 +45,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * deleting of Active task in Study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param Integer
 	 *            , activeTaskInfoId
 	 * @param Integer
@@ -78,7 +75,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * get active task details in Study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param Integer
 	 *            , aciveTaskId
 	 * @param String
@@ -205,7 +202,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * to get all static formulas in acive task
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @return {@link List<ActivetaskFormulaBo>}
 	 */
 	@Override
@@ -226,7 +223,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * get all the field names of active task based on of activeTaskType
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @return {@link List<ActiveTaskMasterAttributeBo>}
 	 */
 	@Override
@@ -249,7 +246,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * get all type of activeTask in Study
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String
 	 *            , platformType
 	 * @return {@link List<ActiveTaskListBo>}
@@ -273,7 +270,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * to get all static statistic images
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @return {@link List<StatisticImageListBo>}
 	 */
 	@Override
@@ -294,7 +291,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * return active tasks based on user's Study Id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param studyId
 	 *            , studyId of the {@link StudyBo}
@@ -322,7 +319,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	 * Add or update all type of active task content (The Fetal Kick Counter
 	 * task/Tower of Hanoi/Spatial Memory Task)
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param activeTaskBo
 	 *            , {@link ActiveTaskBo}
 	 * @param sessionObject
@@ -404,6 +401,17 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 		return updateActiveTaskBo;
 	}
 
+	/**
+	 * Save or update schedule of active task
+	 * 
+	 * @author BTC
+	 * 
+	 * @param activeTaskBo
+	 *            , {@link ActiveTaskBo}
+	 * @param customStudyId
+	 *            , the custom id of study
+	 * @return {@link ActiveTaskBo}
+	 */
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,
 			String customStudyId) {
@@ -579,7 +587,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * validating ShortTitle and chart short title in study activity
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -614,7 +622,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * validating list of active task chart short title in study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String
 	 *            , customStudyId
 	 * @param activeStatisticsBeans

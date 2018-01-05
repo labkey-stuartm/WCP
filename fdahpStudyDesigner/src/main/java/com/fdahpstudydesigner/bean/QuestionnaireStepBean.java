@@ -4,22 +4,22 @@ import java.util.Map;
 
 public class QuestionnaireStepBean {
 
-	private Integer stepId;
-	private String stepType;
-	private String title;
-	private Integer sequenceNo;
-	private Integer questionInstructionId;
-	private Integer responseType;
-	private String lineChart;
-	private String statData;
-	private Boolean status;
 	private Integer destinationStep;
 	private String destinationText;
-	private Boolean useAnchorDate;
-
-	private String responseTypeText;
-
 	Map<Integer, QuestionnaireStepBean> fromMap;
+	private String lineChart;
+	private Integer questionInstructionId;
+	private Integer responseType;
+	private String responseTypeText;
+	private Integer sequenceNo;
+	private String statData;
+	private Boolean status;
+	private Integer stepId;
+	private String stepType;
+
+	private String title;
+
+	private Boolean useAnchorDate;
 
 	public Integer getDestinationStep() {
 		return destinationStep;

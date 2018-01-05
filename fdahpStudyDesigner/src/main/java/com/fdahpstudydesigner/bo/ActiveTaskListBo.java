@@ -12,8 +12,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- *
- * @author Ronalin
+ * The persistent class for the active_task_list database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
