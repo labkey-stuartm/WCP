@@ -15,7 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * @author BTC The persistent class for the questionnaires database table.
+ * The persistent class for the questionnaires database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -30,13 +32,73 @@ import javax.persistence.Transient;
 public class QuestionnaireBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "active")
+	private Boolean active;
+
+	@Column(name = "branching")
+	private Boolean branching = false;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_date")
+	private String createdDate;
+
+	@Transient
+	private String currentFrequency;
+
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
+	@Column(name = "day_of_the_week")
+	private String dayOfTheWeek;
+
+	@Column(name = "frequency")
+	private String frequency;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "frequency")
-	private String frequency;
+	@Column(name = "is_Change")
+	private Integer isChange = 0;
+
+	@Column(name = "is_live")
+	private Integer live = 0;
+
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+
+	@Column(name = "modified_date")
+	private String modifiedDate;
+
+	@Transient
+	private String previousFrequency;
+
+	@Transient
+	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<>();
+
+	@Transient
+	private QuestionnairesFrequenciesBo questionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
+
+	@Transient
+	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<>();
+
+	@Transient
+	private String questionnarieVersion = "";
+
+	@Column(name = "repeat_questionnaire")
+	private Integer repeatQuestionnaire;
+
+	@Column(name = "short_title")
+	private String shortTitle;
+
+	@Transient
+	private Integer shortTitleDuplicate = 0;
+
+	@Column(name = "status")
+	private Boolean status;
 
 	@Column(name = "study_id")
 	private Integer studyId;
@@ -50,71 +112,11 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name = "title")
 	private String title;
 
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "created_date")
-	private String createdDate;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-
-	@Column(name = "modified_date")
-	private String modifiedDate;
-
-	@Column(name = "repeat_questionnaire")
-	private Integer repeatQuestionnaire;
-
-	@Column(name = "day_of_the_week")
-	private String dayOfTheWeek;
-
-	@Column(name = "short_title")
-	private String shortTitle;
-
-	@Column(name = "branching")
-	private Boolean branching = false;
-
-	@Column(name = "version")
-	private Float version = 0f;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
-
-	@Column(name = "is_live")
-	private Integer live = 0;
-
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "status")
-	private Boolean status;
-
-	@Column(name = "is_Change")
-	private Integer isChange = 0;
-
-	@Transient
-	private String previousFrequency;
-
 	@Transient
 	private String type;
 
-	@Transient
-	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<>();
-
-	@Transient
-	private QuestionnairesFrequenciesBo questionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
-
-	@Transient
-	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<>();
-
-	@Transient
-	private String questionnarieVersion = "";
-
-	@Transient
-	private Integer shortTitleDuplicate = 0;
-
-	@Transient
-	private String currentFrequency;
+	@Column(name = "version")
+	private Float version = 0f;
 
 	public Boolean getActive() {
 		return active;

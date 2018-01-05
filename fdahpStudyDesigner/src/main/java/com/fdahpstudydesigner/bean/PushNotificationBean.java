@@ -1,22 +1,22 @@
 package com.fdahpstudydesigner.bean;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public class PushNotificationBean {
 
-	private Integer notificationId = 0;
-
-	private String notificationText = "";
-
 	private String customStudyId = "";
 
-	private String notificationType = "ST";
+	private Integer notificationId = 0;
 
 	private String notificationSubType = "Announcement";
 
+	private String notificationText = "";
+
 	private String notificationTitle = "";
+
+	private String notificationType = "ST";
 
 	// private String notificationTitle =
 	// FdahpStudyDesignerUtil.getAppProperties().get("push.notification.title");

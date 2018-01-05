@@ -4,23 +4,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class StudyPageBean {
 
-	private String pageId[];
+	private String actionType = "";
 
-	private String studyId;
-
-	private String title[];
+	private String description[];
 
 	private String imagePath[];
 
-	private String description[];
+	private String mediaLink = "";
 
 	private MultipartFile multipartFiles[];
 
 	private String originalFileName[];
 
-	private String actionType = "";
+	private String pageId[];
 
-	private String mediaLink = "";
+	private String studyId;
+
+	private String title[];
 
 	private Integer userId;
 

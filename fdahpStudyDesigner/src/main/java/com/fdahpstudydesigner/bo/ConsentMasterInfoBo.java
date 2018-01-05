@@ -10,8 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author BTC The persistent class for the consent_master_info database table.
+ * The persistent class for the consent_master_info database table.
+ * 
+ * @author BTC
  *
  */
 @Entity

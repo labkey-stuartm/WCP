@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 /**
  * Eligibility of Study, specify the eligibility mechanism by Admin
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity
@@ -27,37 +27,37 @@ public class EligibilityBo implements Serializable {
 
 	private static final long serialVersionUID = -8985485973006714523L;
 
+	@Transient
+	private String actionType;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
+	@Column(name = "eligibility_mechanism")
+	private Integer eligibilityMechanism = 1;
+
+	@Column(name = "failure_outcome_text")
+	private String failureOutcomeText;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "study_id")
-	private Integer studyId;
-
-	@Column(name = "eligibility_mechanism")
-	private Integer eligibilityMechanism = 1;
-
 	@Column(name = "instructional_text")
 	private String instructionalText;
-
-	@Column(name = "failure_outcome_text")
-	private String failureOutcomeText;
-
-	@Column(name = "created_on")
-	private String createdOn;
-
-	@Column(name = "modified_on")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
 
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
-	@Transient
-	private String actionType;
+	@Column(name = "modified_on")
+	private String modifiedOn;
+
+	@Column(name = "study_id")
+	private Integer studyId;
 
 	public String getActionType() {
 		return actionType;

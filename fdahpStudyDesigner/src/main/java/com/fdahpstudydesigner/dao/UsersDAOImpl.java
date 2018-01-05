@@ -25,26 +25,33 @@ import com.fdahpstudydesigner.bo.UserPermissions;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.SessionObject;
 
+/**
+ * 
+ * @author BTC
+ *
+ */
 @Repository
 public class UsersDAOImpl implements UsersDAO {
 
 	private static Logger logger = Logger.getLogger(UsersDAOImpl.class);
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	HibernateTemplate hibernateTemplate;
+
 	private Transaction transaction = null;
 
 	@Autowired
-	private AuditLogDAO auditLogDAO;
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
+	}
 
 	/**
 	 * This method is used to activate or deactivate the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
-	 *            , id of the user
 	 * @param userStatus
-	 *            , current status of the user
 	 * @param loginUser
-	 *            , id of the user who is logged in
 	 * @param userSession
 	 *            , {@link SessionObject}
 	 * @param request
@@ -115,15 +122,12 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to add or update the user details
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userBO
 	 *            , {@link UserBO}
 	 * @param permissions
-	 *            , permissions for the user
 	 * @param selectedStudies
-	 *            , selected studies to the user
 	 * @param permissionValues
-	 *            , values containing 0/1 i.e., view/edit permissions
 	 * @return {@link ModelAndView}
 	 */
 	@SuppressWarnings("unchecked")
@@ -228,10 +232,9 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to enforce the user to change the password
 	 *
+	 * @author BTC
 	 * @param userId
-	 *            , id of the user
 	 * @param email
-	 *            , email id of the user
 	 * @return message, Success/Failure message
 	 */
 	@SuppressWarnings("unchecked")
@@ -285,8 +288,8 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is to get the list of active user email ids
 	 *
-	 * @author Pradyumn
-	 * @return emails, List of email ids of the active users
+	 * @author BTC
+	 * @return email ids
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -317,9 +320,8 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to get the permissions of the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
-	 *            , id of the user
 	 * @return permissions, permissions of the user
 	 */
 	@SuppressWarnings("unchecked")
@@ -349,8 +351,8 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to get the list of super admins email ids
 	 *
-	 * @author Pradyumn
-	 * @return userSuperAdminList, List of super admins email ids
+	 * @author BTC
+	 * @return List of super admins email ids
 	 */
 	@Override
 	public List<String> getSuperAdminList() {
@@ -377,9 +379,8 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to get the user by email id
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param emailId
-	 *            , email id of the user
 	 * @return {@link UserBO}
 	 */
 	@Override
@@ -408,7 +409,7 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to get the user details
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
 	 * @return {@link UserBO}
 	 */
@@ -437,7 +438,7 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to get the list of users
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @return List of {@link UserBO}
 	 */
 	@SuppressWarnings("unchecked")
@@ -491,7 +492,14 @@ public class UsersDAOImpl implements UsersDAO {
 		return userList;
 	}
 
-	// by kanchana
+	/**
+	 * This method is used to get the user id of the super admin
+	 * 
+	 * @author Kanchana
+	 * @param sessionUserId
+	 * @return user id
+	 * 
+	 */
 	@Override
 	public Integer getUserPermissionByUserId(Integer sessionUserId) {
 		logger.info("UsersDAOImpl - getUserPermissionByUserId() - Starts");
@@ -518,9 +526,8 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is to get the role of the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param roleId
-	 *            , roleId of the user
 	 * @return {@link RoleBO}
 	 */
 	@Override
@@ -548,7 +555,7 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is to get the list of user roles
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @return List of {@link RoleBO}
 	 */
 	@SuppressWarnings("unchecked")
@@ -571,10 +578,5 @@ public class UsersDAOImpl implements UsersDAO {
 		}
 		logger.info("UsersDAOImpl - getUserRoleList() - Ends");
 		return roleBOList;
-	}
-
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 }

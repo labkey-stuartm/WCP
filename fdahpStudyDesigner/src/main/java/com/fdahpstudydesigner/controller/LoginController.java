@@ -30,7 +30,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 @Controller
@@ -39,15 +39,15 @@ public class LoginController {
 	private static Logger logger = Logger.getLogger(LoginController.class
 			.getName());
 
-	private LoginServiceImpl loginService;
-
 	@Autowired
 	private DashBoardAndProfileService dashBoardAndProfileService;
+
+	private LoginServiceImpl loginService;
 
 	/**
 	 * Validate access code and add new password
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -61,7 +61,6 @@ public class LoginController {
 		String password = null;
 		String errorMsg = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		SessionObject sesObj = null;
 		HttpSession session = null;
@@ -103,6 +102,12 @@ public class LoginController {
 		return mv;
 	}
 
+	/**
+	 * Navigate the app details page
+	 * 
+	 * @author BTC
+	 * @return {@link ModelAndView} , appDetails page view
+	 */
 	@RequestMapping("/appDetails.do")
 	public ModelAndView appDetails() {
 		logger.info("LoginController - appDetails() - Starts");
@@ -114,7 +119,7 @@ public class LoginController {
 	/**
 	 * Navigate to the force change password view
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -153,7 +158,7 @@ public class LoginController {
 	/**
 	 * Initiate the change password process
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -207,7 +212,7 @@ public class LoginController {
 	/**
 	 * Navigate to login page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param error
 	 *            , the error message from Spring security
@@ -254,7 +259,7 @@ public class LoginController {
 	/**
 	 * Initiate the forget password process
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -288,7 +293,7 @@ public class LoginController {
 	/**
 	 * Navigate to login page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param error
 	 *            , the error message from Spring security
@@ -321,7 +326,7 @@ public class LoginController {
 	/**
 	 * Navigate to privacy policy Page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -374,7 +379,7 @@ public class LoginController {
 	/**
 	 * Remove User from the Session
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -418,7 +423,7 @@ public class LoginController {
 	/**
 	 * Navigate to terms and condition Page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -435,7 +440,7 @@ public class LoginController {
 	/**
 	 * Prevent the user to view unauthorized view
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -448,10 +453,12 @@ public class LoginController {
 	}
 
 	/**
-	 * @author Pradyumn
+	 * This method is used to validate access code
+	 * 
+	 * @author BTC
 	 * @param request
-	 * @param userBO
-	 * @return mv
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/validateAccessCode.do")
 	public ModelAndView validateAccessCode(HttpServletRequest request) {
@@ -484,9 +491,10 @@ public class LoginController {
 	}
 
 	/**
-	 * Validate the Security Token and navigate to change password page
+	 * Validate the Security Token and navigate to sign up or change password
+	 * page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}

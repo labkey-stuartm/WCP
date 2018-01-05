@@ -37,52 +37,26 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Service
 public class StudyServiceImpl implements StudyService {
 
 	private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
-	private StudyDAO studyDAO;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 
-	/**
-	 * return false or true of adding record of studyPermission based on studyId
-	 * and userId
-	 *
-	 * @author BTC
-	 *
-	 * @return boolean
-	 * @exception Exception
-	 */
-	@Override
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId,
-			String userIds) {
-		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
-		boolean delFlag = false;
-		try {
-			delFlag = studyDAO.addStudyPermissionByuserIds(userId, studyId,
-					userIds);
-		} catch (Exception e) {
-			logger.error(
-					"StudyServiceImpl - addStudyPermissionByuserIds() - ERROR ",
-					e);
-		}
-		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Ends");
-		return delFlag;
-	}
+	private StudyDAO studyDAO;
 
 	/**
-	 * @author Ronalin
+	 * This method is used to validate the activetaskType for android platform
+	 * 
+	 * @author BTC
 	 * @param Integer
-	 *            : studyId
-	 * @return String SUCCESS or FAILURE
+	 *            , studyId
+	 * @return String, SUCCESS or FAILURE
 	 *
-	 *         This method is used to validate the activetaskType for android
-	 *         platform
 	 */
 	@Override
 	public String checkActiveTaskTypeValidation(Integer studyId) {
@@ -134,6 +108,16 @@ public class StudyServiceImpl implements StudyService {
 		return count;
 	}
 
+	/**
+	 * used to create copy of live study as new study
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @param object
+	 *            , {@link SessionObject}
+	 * @return boolean
+	 */
 	@Override
 	public boolean copyliveStudyByCustomStudyId(String customStudyId,
 			SessionObject object) {
@@ -251,17 +235,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to delete the resource
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : resourceInfoId
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE} Description : This method is to delete
-	 *         Resource
+	 * @param resourceInfoId
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param customStudyId
+	 * @param studyId
 	 */
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,
@@ -294,11 +275,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to delete Study
+	 * 
 	 * @author BTC
 	 * @param String
-	 *            : customStudyId
-	 * @return boolean :{true/false} Description : This method is to delete
-	 *         Study
+	 *            , customStudyId
+	 * @return boolean,{true/false}
 	 */
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
@@ -316,29 +298,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return false or true of deleting record of studyPermission based on
-	 * studyId and userId
-	 *
+	 * This method is used to get the active user list whom are not yet added to
+	 * the particular study
+	 * 
 	 * @author BTC
-	 *
-	 * @return boolean
-	 * @exception Exception
+	 * @param studyId
+	 * @param userId
+	 * @return List of {@link UserBO}
 	 */
-	@Override
-	public boolean deleteStudyPermissionById(Integer userId, String studyId) {
-		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Starts");
-		boolean delFlag = false;
-		try {
-			delFlag = studyDAO.deleteStudyPermissionById(userId, studyId);
-		} catch (Exception e) {
-			logger.error(
-					"StudyServiceImpl - deleteStudyPermissionById() - ERROR ",
-					e);
-		}
-		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Ends");
-		return delFlag;
-	}
-
 	@Override
 	public List<UserBO> getActiveNonAddedUserList(Integer studyId,
 			Integer userId) {
@@ -354,6 +321,15 @@ public class StudyServiceImpl implements StudyService {
 		return userList;
 	}
 
+	/**
+	 * This method is used to get the users whom are already added to the
+	 * particular study
+	 * 
+	 * @author BTC
+	 * @param studyId
+	 * @param userId
+	 * @return List of {@link StudyPermissionBO}
+	 */
 	@Override
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,
 			Integer userId) {
@@ -371,12 +347,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return active and live study List
+	 * This method is used to get the active and live study List
 	 *
 	 * @author BTC
-	 *
-	 * @return the Study list
-	 * @exception Exception
+	 * @return List of {@link StudyBo}
 	 */
 	@Override
 	public List<StudyBo> getAllStudyList() {
@@ -392,11 +366,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to get the checklist info
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : studyId
-	 * @return Object : {@link Checklist} Description : This method is to get
-	 *         Checklist
+	 * @param studyId
+	 * @return {@link Checklist}
 	 */
 	@Override
 	public Checklist getchecklistInfo(Integer studyId) {
@@ -599,11 +573,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return Study vesion on customStudyid
+	 * return Study version on customStudyid
 	 *
 	 * @author BTC
-	 *
-	 * @return StudyIdBean
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link StudyIdBean}
 	 * @exception Exception
 	 */
 	@Override
@@ -670,7 +645,7 @@ public class StudyServiceImpl implements StudyService {
 	 *
 	 * @author BTC
 	 *
-	 * @return the reference table List
+	 * @return {@link Map<String, List<ReferenceTablesBo>>}
 	 * @exception Exception
 	 */
 	@Override
@@ -686,14 +661,12 @@ public class StudyServiceImpl implements StudyService {
 		return referenceMap;
 	}
 
-	/*------------------------------------Added By Vivek End---------------------------------------------------*/
-
 	/**
+	 * This method is used to get the resource information
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : resourceInfoId
-	 * @return Object : {@link ResourceBO} Description : This method is to get
-	 *         Resource Info details
+	 * @param resourceInfoId
+	 * @return {@link ResourceBO}
 	 */
 	@Override
 	public ResourceBO getResourceInfo(Integer resourceInfoId) {
@@ -723,11 +696,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to get the list of resources
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return List Object : {@link List<ResourceBO>} Description : This method
-	 *         is to get list of Resource
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
 	 */
 	@Override
 	public List<ResourceBO> getResourceList(Integer studyId) {
@@ -763,11 +736,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return Study based on studyId, userId
+	 * return Study details
 	 *
 	 * @author BTC
-	 *
-	 * @return StudyBo
+	 * @param String
+	 *            , studyId
+	 * @param Integer
+	 *            , userId
+	 * @return {@link StudyBo}
 	 * @exception Exception
 	 */
 	@Override
@@ -812,10 +788,9 @@ public class StudyServiceImpl implements StudyService {
 	 * return study List based on user
 	 *
 	 * @author BTC
-	 *
-	 * @param userId
-	 *            of the user
-	 * @return the Study list
+	 * @param String
+	 *            ,userId
+	 * @return {@link List<StudyListBean>}
 	 * @exception Exception
 	 */
 	@Override
@@ -834,14 +809,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * return active and live study List based on user
+	 * This method is used to return study List based on user
 	 *
 	 * @author BTC
-	 *
 	 * @param userId
-	 *            of the user
-	 * @return the Study list
-	 * @exception Exception
+	 * @return List of {@link StudyListBean}
 	 */
 	@Override
 	public List<StudyListBean> getStudyListByUserId(Integer userId) {
@@ -858,11 +830,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is to get live Study details
+	 * 
 	 * @author BTC
 	 * @param String
-	 *            : customStudyId
-	 * @return Object : {@link StudyBo} Description : This method is to get live
-	 *         Study
+	 *            , customStudyId
+	 * @return {@link StudyBo}
 	 */
 	@Override
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
@@ -880,11 +853,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to get the a special resource called study protocol
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return Object : {@link ResourceBO} Description : This method is to get
-	 *         StudyProtocol
+	 * @param studyId
+	 * @return {@link ResourceBO}
 	 */
 	@Override
 	public ResourceBO getStudyProtocol(Integer studyId) {
@@ -931,19 +904,18 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * mark as completed of study
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId
+	 *            , studyId
 	 * @param String
-	 *            : markCompleted can be
-	 *            resource/notification/consent/consentreview
-	 *            /checkList/activeTaskList/questionnaire/comprehenstionTest
-	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , markCompleted
+	 * @param sesObj
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE} Description : This method is to make
-	 *         mark as completed of study
+	 *            , customStudyId {@link StudyBo}
+	 * @return String, SUCCES/FAILURE
 	 */
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted,
@@ -1047,6 +1019,16 @@ public class StudyServiceImpl implements StudyService {
 		return message;
 	}
 
+	/**
+	 * This method is used to reorder the resource list page
+	 * 
+	 * @author BTC
+	 * @param studyId
+	 * @param oldOrderNumber
+	 * @param newOrderNumber
+	 * @return message, Success/Failure Message
+	 * 
+	 */
 	@Override
 	public String reOrderResourceList(Integer studyId, int oldOrderNumber,
 			int newOrderNumber) {
@@ -1063,11 +1045,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * reset study by customStudyId
+	 * 
 	 * @author BTC
 	 * @param String
-	 *            : customStudyId
-	 * @return boolean :{true/false} Description : This method is to delete
-	 *         Study
+	 *            , customStudyId
+	 * @return boolean
 	 */
 	@Override
 	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
@@ -1088,6 +1071,13 @@ public class StudyServiceImpl implements StudyService {
 		return flag;
 	}
 
+	/**
+	 * This method is used to get the sequence number to set to the resource
+	 * 
+	 * @author BTC
+	 * @param studyId
+	 * @return sequence number
+	 */
 	@Override
 	public int resourceOrder(Integer studyId) {
 		int count = 1;
@@ -1102,11 +1092,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to get the saved resource list
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : studyId in {@link StudyBo}
-	 * @return list Object : {@link List<ResourceBO>} Description : This method
-	 *         is to save Resource
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
 	 */
 	@Override
 	public List<ResourceBO> resourcesSaved(Integer studyId) {
@@ -1122,11 +1112,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to get the list of resources having anchor date
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : studyId
-	 * @return list of Object :{@link List<ResourceBO>} Description : This
-	 *         method is get all resource without anchordate
+	 * @param studyId
+	 * @return List of {@link ResourceBO}
 	 */
 	@Override
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
@@ -1294,15 +1284,16 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to Save or Done Checklist
+	 * 
 	 * @author BTC
-	 * @param Object
-	 *            : {@link Checklist}
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @param string
-	 *            : customStudyId
-	 * @return Integer : checklistId Description : This method is to save or
-	 *         update Checklist
+	 * @param checklist
+	 *            , {@link Checklist}
+	 * @param actionBut
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param customStudyId
+	 * @return checklist Id
 	 */
 	@Override
 	public Integer saveOrDoneChecklist(Checklist checklist, String actionBut,
@@ -1577,12 +1568,15 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * save or update content(title,description,image) for the Overview pages of
+	 * the Study those pages will reflect on mobile overview screen
+	 * 
 	 * @author BTC
 	 * @param studyPageBean
-	 *            {@link StudyPageBean}
-	 * @return {@link String} save or update content(title,description,image)
-	 *         for the Overview pages of the Study those pages will reflect on
-	 *         mobile overview screen
+	 *            , {@link StudyPageBean}
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return {@link String}
 	 */
 	@Override
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean,
@@ -1631,13 +1625,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is used to save or update the Study Resource
+	 *
 	 * @author BTC
-	 * @param Object
-	 *            : {@link ResourceBO}
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @return Integer : resourceId from {@link ResourceBO} Description : This
-	 *         method is to save or update Resource
+	 * @param resourceBO
+	 *            , {@link ResourceBO}
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return resource Id
 	 */
 	@Override
 	public Integer saveOrUpdateResource(ResourceBO resourceBO,
@@ -1814,14 +1809,19 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method captures basic information about the study basic info like
+	 * Study ID, Study name, Study full name, Study Category, Research
+	 * Sponsor,Data Partner, Estimated Duration in weeks/months/years, Study
+	 * Tagline, Study Description, Study website, Study Type
+	 * 
 	 * @author BTC
 	 * @param StudyBo
 	 *            , {@link StudyBo}
-	 * @return {@link String} This method captures basic information about the
-	 *         study basic info like Study ID, Study name, Study full name,
-	 *         Study Category, Research Sponsor,Data Partner, Estimated Duration
-	 *         in weeks/months/years, Study Tagline, Study Description, Study
-	 *         website, Study Type
+	 * @param String
+	 *            , userId
+	 * @param sessionObject
+	 *            , {@link SessionObject}
+	 * @return {@link String}
 	 */
 	@Override
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId,
@@ -1866,17 +1866,17 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * save or update study setting and admins for the particular study study
+	 * settings like Platforms supported, Is the Study currently enrolling
+	 * participants, Allow user to rejoin s the Study once they leave it?,
+	 * Retain participant data when they leave a study? managing admins for the
+	 * particular study
+	 * 
 	 * @author BTC
 	 * @param studyBo
 	 *            , {@link studyBo}
 	 * @return {@link String} , the status SUCCESS or FAILURE
 	 * @exception Exception
-	 *                save or update study setting and admins for the particular
-	 *                study study settings like Platforms supported, Is the
-	 *                Study currently enrolling participants, Allow user to
-	 *                rejoin s the Study once they leave it?, Retain participant
-	 *                data when they leave a study? managing admins for the
-	 *                particular study
 	 */
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo,
@@ -1907,17 +1907,16 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is to update status of Study
+	 * 
 	 * @author BTC
 	 * @param string
-	 *            : studyId
+	 *            , studyId
 	 * @param string
-	 *            : buttonText can be
-	 *            lunchId/updatesId/publishId/unpublishId/resumeId
-	 *            /pauseId/deactivateId
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @return String : success/failure Description : This method is to upadte
-	 *         status of Study
+	 *            , buttonText
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return String, SUCCESS/FAILURE
 	 */
 	@Override
 	public String updateStudyActionOnAction(String studyId, String buttonText,
@@ -1938,13 +1937,15 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is validate the activity(Active task/Questionnaire) done or
+	 * not
+	 * 
 	 * @author BTC
 	 * @param String
-	 *            : studyId
+	 *            , studyId
 	 * @param String
-	 *            : action cane be Activetask/Questionnaire
-	 * @return String :{success/failure} Description : This method is validate
-	 *         the activity(Activetask/Questionnarie) done or not
+	 *            , action
+	 * @return String, {SUCCESS/FAILURE}
 	 */
 	@Override
 	public String validateActivityComplete(String studyId, String action) {
@@ -1977,13 +1978,15 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is to validate Study eligible for launch/publish based on
+	 * some condition
+	 * 
 	 * @author BTC
 	 * @param string
-	 *            : studyId
+	 *            , studyId
 	 * @param string
-	 *            : buttonText can be lunchId/updatesId/publishId
-	 * @return String : success/failure Description : This method is to validate
-	 *         Study eligible for launch/publish based on some condition
+	 *            , buttonText
+	 * @return String, SUCCESS/FAILURE
 	 */
 	@Override
 	public String validateStudyAction(String studyId, String buttonText) {

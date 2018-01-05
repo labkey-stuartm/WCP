@@ -4,10 +4,26 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 public class EscapeUtils {
+	private static Logger logger = Logger
+			.getLogger(EscapeUtils.class.getName());
+
+	protected static final Map<Integer, String> m = new HashMap<>();
+
+	static {
+		m.put(34, "&quot;"); // < - less-than
+		m.put(60, "&lt;"); // < - less-than
+		m.put(62, "&gt;"); // > - greater-than
+		// User needs to map all html entities with their corresponding decimal
+		// values.
+		// Please refer to below table for mapping of entities and integer value
+		// of a char
+	}
+
 	public static void escape(Writer writer, String str) throws IOException {
 		int len = str.length();
 		for (int i = 0; i < len; i++) {
@@ -47,21 +63,6 @@ public class EscapeUtils {
 
 	public static void main(String[] args) {
 		escapeHtml();
-	}
-
-	private static Logger logger = Logger
-			.getLogger(EscapeUtils.class.getName());
-
-	protected static final HashMap m = new HashMap();
-
-	static {
-		m.put(34, "&quot;"); // < - less-than
-		m.put(60, "&lt;"); // < - less-than
-		m.put(62, "&gt;"); // > - greater-than
-		// User needs to map all html entities with their corresponding decimal
-		// values.
-		// Please refer to below table for mapping of entities and integer value
-		// of a char
 	}
 
 	EscapeUtils() {

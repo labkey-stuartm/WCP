@@ -41,7 +41,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 @Controller
@@ -56,6 +56,14 @@ public class StudyActiveTasksController {
 	@Autowired
 	private StudyService studyService;
 
+	/**
+	 * to mark complete of study active task
+	 * 
+	 * @author BTC
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminStudies/activeTAskMarkAsCompleted.do")
 	public ModelAndView activeTAskMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyActiveTasksController - activeTAskMarkAsCompleted() - Starts");
@@ -114,9 +122,14 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * @author Ronalin
+	 * deleting of Active task in Study
+	 * 
+	 * @author BTC
 	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @param response
+	 *            , {@link HttpServletResponse}
+	 * @return
 	 */
 	@RequestMapping(value = "/adminStudies/deleteActiveTask.do", method = RequestMethod.POST)
 	public void deleteActiveTask(HttpServletRequest request,
@@ -228,12 +241,13 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 *
-	 * @author Ronalin
+	 * navigate to particular type of Active Task(Fetal Kick Counter/Tower of
+	 * Hanoi /Spatial Span Memory)
+	 * 
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} navigate to particular type of Active
-	 *         Task(Fetal Kick Counter/Tower of Hanoi /Spatial Span Memory)
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/navigateContentActiveTask.do")
 	public ModelAndView navigateContentActiveTask(HttpServletRequest request) {
@@ -357,7 +371,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Save action to the active task schedule
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -446,7 +460,7 @@ public class StudyActiveTasksController {
 	 * Add or update all type of active task content (The Fetal Kick Counter
 	 * task/Tower of Hanoi/Spatial Memory Task)
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param activeTaskBo
@@ -560,7 +574,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Mark as complete action to the active task schedule
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -606,14 +620,15 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * @author Ronalin validating particular StudyTask ShortTitle and Stat Task
-	 *         Id
+	 * validating ShortTitle and chart short title in study activity
+	 * 
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
 	 *            , {@link HttpServletResponse}
 	 * @throws IOException
-	 * @return void
+	 * @return
 	 */
 	@RequestMapping(value = "/adminStudies/validateActiveTaskShortTitleId.do", method = RequestMethod.POST)
 	public void validateActiveTaskShortTitleId(HttpServletRequest request,
@@ -684,14 +699,15 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * @author Ronalin validating array of StudyTask ShortStatTitle and Stat
-	 *         Task Id
+	 * validating list of active task chart short title in study
+	 * 
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
 	 *            , {@link HttpServletResponse}
 	 * @throws IOException
-	 * @return void
+	 * @return
 	 */
 	@RequestMapping(value = "/adminStudies/validateActiveTaskStatShortTitleIds.do", method = RequestMethod.POST)
 	public void validateActiveTaskStatShortTitleId(HttpServletRequest request,
@@ -772,7 +788,7 @@ public class StudyActiveTasksController {
 	 * activities.
 	 * </p>
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -908,7 +924,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Navigate to the scheduled active task page
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -1016,7 +1032,7 @@ public class StudyActiveTasksController {
 	/**
 	 * view active tasks page
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}

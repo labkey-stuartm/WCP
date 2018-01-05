@@ -22,7 +22,9 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 /**
- * @author Pradyumn
+ * The persistent class for the users database table.
+ * 
+ * @author BTC
  *
  */
 
@@ -36,19 +38,53 @@ public class UserBO implements Serializable {
 
 	private static final long serialVersionUID = 135353554543L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private Integer userId;
+	@Column(name = "access_code")
+	private String accessCode;
+
+	@Column(name = "accountNonExpired", length = 1)
+	private boolean accountNonExpired;
+
+	@Column(name = "accountNonLocked", length = 1)
+	private boolean accountNonLocked;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_date")
+	private String createdOn;
+
+	@Column(name = "credentialsNonExpired", length = 1)
+	private boolean credentialsNonExpired;
+
+	@Column(name = "email_changed", columnDefinition = "TINYINT(1)")
+	private Boolean emailChanged = false;
+
+	@Column(name = "status", length = 1)
+	private boolean enabled;
 
 	@Column(name = "first_name")
 	private String firstName;
 
+	@Column(name = "force_logout")
+	@Type(type = "yes_no")
+	private boolean forceLogout = false;
+
 	@Column(name = "last_name")
 	private String lastName;
 
-	@Column(name = "email")
-	private String userEmail;
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+
+	@Column(name = "modified_date")
+	private String modifiedOn;
+
+	@Column(name = "password_expairded_datetime")
+	private String passwordExpairdedDateTime;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
+	@JoinTable(name = "user_permission_mapping", joinColumns = { @JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "permission_id", nullable = false) })
+	private Set<UserPermissions> permissionList = new HashSet<>(0);
 
 	@Column(name = "phone_number")
 	private String phoneNumber;
@@ -56,68 +92,34 @@ public class UserBO implements Serializable {
 	@Column(name = "role_id")
 	private Integer roleId;
 
-	@Column(name = "password")
-	private String userPassword;
-
-	@Column(name = "status", length = 1)
-	private boolean enabled;
-
-	@Column(name = "created_date")
-	private String createdOn;
-
-	@Column(name = "modified_date")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-
-	@Column(name = "accountNonExpired", length = 1)
-	private boolean accountNonExpired;
-
-	@Column(name = "credentialsNonExpired", length = 1)
-	private boolean credentialsNonExpired;
-
-	@Column(name = "accountNonLocked", length = 1)
-	private boolean accountNonLocked;
-
-	@Column(name = "access_code")
-	private String accessCode;
+	@Transient
+	private String roleName;
 
 	@Column(name = "security_token")
 	private String securityToken;
 
-	@Column(name = "token_used")
-	private Boolean tokenUsed;
-
 	@Column(name = "token_expiry_date")
 	private String tokenExpiryDate;
 
-	@Column(name = "password_expairded_datetime")
-	private String passwordExpairdedDateTime;
+	@Column(name = "token_used")
+	private Boolean tokenUsed;
+
+	@Column(name = "email")
+	private String userEmail;
+
+	@Transient
+	private String userFullName;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Integer userId;
 
 	@Column(name = "user_login_datetime")
 	private String userLastLoginDateTime;
 
-	@Transient
-	private String roleName;
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
-			CascadeType.MERGE })
-	@JoinTable(name = "user_permission_mapping", joinColumns = { @JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "permission_id", nullable = false) })
-	private Set<UserPermissions> permissionList = new HashSet<>(0);
-
-	@Column(name = "force_logout")
-	@Type(type = "yes_no")
-	private boolean forceLogout = false;
-
-	@Column(name = "email_changed", columnDefinition = "TINYINT(1)")
-	private Boolean emailChanged = false;
-
-	@Transient
-	private String userFullName;
+	@Column(name = "password")
+	private String userPassword;
 
 	/**
 	 * @return the accessCode

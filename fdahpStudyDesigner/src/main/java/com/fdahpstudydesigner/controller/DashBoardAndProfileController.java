@@ -41,13 +41,13 @@ public class DashBoardAndProfileController {
 	private DashBoardAndProfileService dashBoardAndProfileService;
 
 	@Autowired
-	private UsersService usersService;
+	private LoginService loginService;
 
 	@Autowired
 	private StudyService studyService;
 
 	@Autowired
-	private LoginService loginService;
+	private UsersService usersService;
 
 	/* DashBoard Start */
 
@@ -295,7 +295,7 @@ public class DashBoardAndProfileController {
 		logger.info("DashBoardAndProfileController - viewUserDetails - Ends");
 		return mav;
 	}
-	
+
 	/*
 	 * @RequestMapping("/adminDashboard/getMasterData.do") public void
 	 * getMasterData(HttpServletResponse response, String type){

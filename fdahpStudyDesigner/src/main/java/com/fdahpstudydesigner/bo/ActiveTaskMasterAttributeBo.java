@@ -12,8 +12,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 /**
- *
- * @author Ronalin
+ * The persistent class for the active_task_master_attribute database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -21,32 +22,32 @@ import org.hibernate.annotations.Type;
 public class ActiveTaskMasterAttributeBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "add_to_dashboard")
+	@Type(type = "yes_no")
+	private boolean addToDashboard = false;
+
+	@Column(name = "attribute_data_type")
+	private String attributeDataType;
+
+	@Column(name = "attribute_name")
+	private String attributeName;
+
+	@Column(name = "attribute_type")
+	private String attributeType;
+
+	@Column(name = "display_name")
+	private String displayName;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "active_task_master_attr_id")
 	private Integer masterId;
 
-	@Column(name = "task_type_id")
-	private Integer taskTypeId;
-
 	@Column(name = "order_by")
 	private Integer orderByTaskType;
 
-	@Column(name = "attribute_type")
-	private String attributeType;
-
-	@Column(name = "attribute_name")
-	private String attributeName;
-
-	@Column(name = "display_name")
-	private String displayName;
-
-	@Column(name = "attribute_data_type")
-	private String attributeDataType;
-
-	@Column(name = "add_to_dashboard")
-	@Type(type = "yes_no")
-	private boolean addToDashboard = false;
+	@Column(name = "task_type_id")
+	private Integer taskTypeId;
 
 	public String getAttributeDataType() {
 		return attributeDataType;

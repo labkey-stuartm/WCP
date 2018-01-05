@@ -24,10 +24,10 @@ public class DashBoardAndProfileServiceImpl implements
 			.getLogger(DashBoardAndProfileServiceImpl.class);
 
 	@Autowired
-	private DashBoardAndProfileDAO dashBoardAndProfiledao;
+	private AuditLogDAO auditLogDAO;
 
 	@Autowired
-	private AuditLogDAO auditLogDAO;
+	private DashBoardAndProfileDAO dashBoardAndProfiledao;
 
 	@Override
 	public MasterDataBO getMasterData(String type) {

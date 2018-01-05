@@ -56,29 +56,29 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	private static Logger logger = Logger
 			.getLogger(StudyQuestionnaireDAOImpl.class.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-	String queryString = "";
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+	String queryString = "";
+	private Transaction transaction = null;
 
 	/**
+	 * From step have a one or more question.Each question have the short title
+	 * field this will be created the as column in response server so its should
+	 * be unique across all the steps.Validating the Unique of question short
+	 * title inside form step
+	 * 
 	 * @author BTC
 	 * @param String
-	 *            : shortTitle in {@link QuestionsBo}
+	 *            , shortTitle in {@link QuestionsBo}
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnairesStepsBo}
+	 *            , questionnaireId in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : questionnaireShortTitle in {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle in {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILUE
-	 *
-	 *         From step have a one or more question.Each question have the
-	 *         short title field this will be created the as column in response
-	 *         server so its should be unique across all the steps.Validateing
-	 *         the Unique of question short title inside form step
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -156,16 +156,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * This method is used to validate the questionnaire have response type text
+	 * scale while changing the platform in study settings page
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId in {@link StudyBo}
+	 *            , studyId in {@link StudyBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return String SUCCESS or FAILURE
-	 *
-	 *         This method is used to validate the questionnaire have response
-	 *         type text scale while changing the platform in study settings
-	 *         page
+	 *            , customStudyId in {@link StudyBo}
+	 * @return String, SUCCESS or FAILURE
 	 */
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId,
@@ -215,20 +214,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Questionnaire contains the content,schedule as two tabs.Each
+	 * questionnaire contains the short title on the content tab this will be
+	 * created as the column for the questionnaire response in response server
+	 * for this we are doing the unique title validation for each questionnaire
+	 * in study level
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            :studyId in {@link StudyBo}
+	 *            , studyId in {@link StudyBo}
 	 * @param String
-	 *            : shortTitle in {@link QuestionnairesStepsBo}
+	 *            , shortTitle in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return String : SUCCESS or FAILURE
-	 *
-	 *         Questionnaire contains the content,schedule as two tabs.Each
-	 *         questionnaire contains the short title on the content tab this
-	 *         will be created as the column for the questionnaire response in
-	 *         response server for this we are doing the unique title validation
-	 *         for each questionnaire in study level
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -295,23 +294,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * A questionnaire is an ordered set of one or more steps.Each step contains
+	 * the step short title field. Which will be response column for the step in
+	 * response server.so it should be the unique.Here validating the unique for
+	 * step short title
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnairesStepsBo}
+	 *            , questionnaireId in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : stepType in {@link QuestionnairesStepsBo}
+	 *            , stepType in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : shortTitle in {@link QuestionnairesStepsBo}
+	 *            , shortTitle in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : questionnaireShortTitle in {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle in {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return String : Success/Failure
-	 *
-	 *         A questionnaire is an ordered set of one or more steps.Each step
-	 *         contains the step short title field. Which will be response
-	 *         column for the step in response server.so it should be the
-	 *         unique.Here validating the unique for step short title
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -388,20 +387,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * The admin can choose to add a response data element to the study
+	 * dashboard in the form of line charts or statistics.Adding a statistic to
+	 * the dashboard needs the admin to specify the short name should be unique
+	 * across all the state in the study So validating the unique validation for
+	 * short name in states.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : StudyId in {@link StudyBo}
+	 *            , StudyId in {@link StudyBo}
 	 * @param String
-	 *            : shortTitle in {@link QuestionsBo}
+	 *            , shortTitle in {@link QuestionsBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILUE
-	 *
-	 *         The admin can choose to add a response data element to the study
-	 *         dashboard in the form of line charts or statistics.Adding a
-	 *         statistic to the dashboard needs the admin to specify the short
-	 *         name should be unique across all the state in the study So
-	 *         validating the unique validation for short name in states.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -501,20 +500,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Admin want copy the already existed question into the same study admin
+	 * has to click the copy icon in the questionnaire list.It will copy the
+	 * existed questionnaire into the study with out questionnaire short title
+	 * because the short title will be unique across the study
+	 * 
 	 * @author BTC
 	 * @param questionnaireId
-	 *            in {@link QuestionnaireBo}
+	 *            , {@link QuestionnaireBo}
 	 * @param customStudyId
-	 *            in {@link StudyBo}
+	 *            , {@link StudyBo}
 	 * @param sessionObject
 	 *            {@link SessionObject}
 	 * @return {@link QuestionnaireBo}
-	 *
-	 *         Admin want copy the already existed question into the same study
-	 *         admin has to click the copy icon in the questionnaire list.It
-	 *         will copy the existed questionnaire into the study with out
-	 *         questionnaire short title because the short title will be unique
-	 *         across the study
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1025,18 +1023,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * This method is used to delete the question inside the form step of an
+	 * questionnaire
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            :formId in {@link FormMappingBo}
+	 *            , formId in {@link FormMappingBo}
 	 * @param Integer
-	 *            :questionId in {@link QuestionsBo}
+	 *            , questionId in {@link QuestionsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 *
-	 *            This method is used to delete the question inside the form
-	 *            step of an questionnaire
+	 *            , customStudyId in {@link StudyBo}
+	 * @return String Success/Failure
 	 */
 	@Override
 	public String deleteFromStepQuestion(Integer formId, Integer questionId,
@@ -1131,22 +1130,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Delete of an questionnaire step(Instruction,Question,Form) which are
+	 * listed in questionnaire.
+	 * 
 	 * @author BTC
+	 * 
 	 * @param Integer
-	 *            : stepId in {@link QuestionnairesStepsBo}
+	 *            , stepId in {@link QuestionnairesStepsBo}
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnaireBo}
+	 *            , questionnaireId in {@link QuestionnaireBo}
 	 * @param String
-	 *            : stepType in {@link QuestionnairesStepsBo}
+	 *            , stepType in {@link QuestionnairesStepsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
-	 *
-	 *         Delete of an questionnaire step(Instruction,Question,Form) which
-	 *         are listed in questionnaire.
-	 *
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1294,25 +1293,24 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Delete questionnaire step inside questionnaire of an study before publish
+	 * 
 	 * @author BTC
 	 * @param stepId
-	 *            in {@link QuestionnairesStepsBo}
+	 *            , {@link QuestionnairesStepsBo}
 	 * @param questionnaireId
-	 *            in {@link QuestionnaireBo}
+	 *            , {@link QuestionnaireBo}
 	 * @param stepType
-	 *            in {@link QuestionnairesStepsBo}
+	 *            , {@link QuestionnairesStepsBo}
 	 * @param customStudyId
-	 *            in {@link StudyBo}
+	 *            , {@link StudyBo}
 	 * @param sessionObject
-	 *            in {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param session
-	 *            {@link Session}
+	 *            , {@link Session}
 	 * @param transaction
-	 *            {@link Transaction}
+	 *            , {@link Transaction}
 	 * @return String Success/Failure
-	 *
-	 *         Delete questionnaire step inside questionnaire of an study before
-	 *         publish
 	 */
 	public String deleteQuestionnaireStep(Integer stepId,
 			Integer questionnaireId, String stepType, String customStudyId,
@@ -1439,19 +1437,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Delete the Questionnaire in Study
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId in {@link StudyBo}
+	 *            , studyId in {@link StudyBo}
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnaireBo}
+	 *            , questionnaireId in {@link QuestionnaireBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 *
 	 * @return String : SUCCESS or FAILURE
-	 *
-	 *         Delete the Questionnaire in Study
 	 */
 	@Override
 	public String deleteQuestuionnaireInfo(Integer studyId,
@@ -1516,7 +1514,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Delete the Questionnaire in study before publish
+	 * 
 	 * @author BTC
+	 * 
 	 * @param studyId
 	 *            in {@link StudyBo}
 	 * @param questionnaireId
@@ -1527,7 +1528,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	 * @param {@link Transaction}
 	 * @return String Success/Failure
 	 *
-	 *         Delete the Questionnaire in study before publish
+	 * 
 	 */
 	public String deleteQuestuionnaireInfo(Integer studyId,
 			Integer questionnaireId, String customStudyId, Session session,
@@ -1636,13 +1637,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * For QA of response type that results in the data type 'double',the admin
+	 * can also choose to give the user a provision to allow the app to read the
+	 * response from HealthKit this method is used to get the pre-defined list
+	 * of HealthKit quantity data types
+	 * 
 	 * @author BTC
 	 * @return List of HealthKityKeyInfo
-	 *
-	 *         For QA of response type that results in the data type 'double',
-	 *         the admin can also choose to give the user a provision to allow
-	 *         the app to read the response from HealthKit this method is used
-	 *         to get the pre-defined list of HealthKit quantity data types
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1668,20 +1669,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Instruction step page in questionnaire.Lays down instructions for the
+	 * user in mobile app.Which contains the short title instruction title and
+	 * text
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : instructionId in {@link InstructionsBo}
+	 *            , instructionId in {@link InstructionsBo}
 	 * @param String
-	 *            : questionnaireShortTitle in {@link QuestionnairesStepsBo}
+	 *            , questionnaireShortTitle in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnaireBo}
-	 * @return Object : {@link InstructionsBo}
-	 *
-	 *         Instruction step page in questionnaire.Lays down instructions for
-	 *         the user in mobile app.Which contains the short title instruction
-	 *         title and text
+	 *            , questionnaireId in {@link QuestionnaireBo}
+	 * @return {@link InstructionsBo}
 	 */
 	@Override
 	public InstructionsBo getInstructionsBo(Integer instructionId,
@@ -1758,16 +1759,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Get the condition(formula) of question which are created in the response
+	 * level attributes of question in formula based destination enabled section
+	 * 
 	 * @author BTC
 	 * @param session
 	 *            {@link Session}
 	 * @param questionId
 	 *            in {@link QuestionsBo}
 	 * @return List of {@link QuestionConditionBranchBo}
-	 *
-	 *         Get the condition(formula) of question which are created in the
-	 *         response level attributes of question in formula based
-	 *         destination enabled section
 	 */
 	@Override
 	@SuppressWarnings({ "unchecked" })
@@ -1832,18 +1832,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Load the questionnaire of study with all the
+	 * steps(instruction,question,form) with schedule information. Each step
+	 * corresponds to one screen on the mobile app.There can be multiple types
+	 * of QA in a questionnaire depending on the type of response format
+	 * selected per QA.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            :questionnaireId in {@link QuestionnaireBo}
+	 *            , questionnaireId in {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : QuestionnaireBo {@link QuestionnaireBo}
+	 *            , customStudyId in {@link StudyBo}
+	 * @return QuestionnaireBo {@link QuestionnaireBo}
 	 *
-	 *         Load the questionnaire of study with all the
-	 *         steps(instruction,question,form) with schedule information. Each
-	 *         step corresponds to one screen on the mobile app.There can be
-	 *         multiple types of QA in a questionnaire depending on the type of
-	 *         response format selected per QA.
 	 */
 
 	@SuppressWarnings("unchecked")
@@ -1935,18 +1936,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * This method is used to get the forward question step of an questionnaire
+	 * based on sequence no.Thease questions are populated in the destination
+	 * step drop down in the step level attributes of question step,from step
+	 * and instruction step to select the destination step if branching is
+	 * enabled for that questionnaire
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnaireBo}
+	 *            , questionnaireId in {@link QuestionnaireBo}
 	 * @param Integer
-	 *            : sequenceNo in {@link QuestionnairesStepsBo}
+	 *            , sequenceNo in {@link QuestionnairesStepsBo}
 	 * @return List : {@link QuestionnairesStepsBo}
-	 *
-	 *         This method is used to get the forward question step of an
-	 *         questionnaire based on sequence no.Thease questions are populated
-	 *         in the destination step drop down in the step level attributes of
-	 *         question step,from step and instruction step to select the
-	 *         destination step if branching is enabled for that questionnaire
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1974,22 +1975,21 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Load the Question step page in questionnaire which contains the question
+	 * and answer. Which Carries one QA per screen in Mobile app
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : stepId in {@link QuestionnairesStepsBo}
+	 *            , stepId in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : stepType in {@link QuestionnairesStepsBo}
+	 *            , stepType in {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : questionnaireShortTitle in {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle in {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnaireBo}
-	 * @return Object : questionnaireStepBo {@link QuestionnairesStepsBo}
-	 *
-	 *         Load the Question step page in questionnaire which contains the
-	 *         question and answer. Which Carries one QA per screen in Mobile
-	 *         app
+	 *            , questionnaireId in {@link QuestionnaireBo}
+	 * @return {@link QuestionnairesStepsBo}
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -2287,16 +2287,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Load the questionnaires of study with all the
+	 * steps(instruction,question,form) with schedule information. Each step
+	 * corresponds to one screen on the mobile app.There can be multiple types
+	 * of QA in a questionnaire depending on the type of response format
+	 * selected per QA.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            questionnaireId uin {@link QuestionnaireBo}
+	 *            , questionnaireId uin {@link QuestionnaireBo}
 	 * @return Map : SortedMap<Integer, QuestionnaireStepBean>
-	 *
-	 *         Load the questionnaires of study with all the
-	 *         steps(instruction,question,form) with schedule information. Each
-	 *         step corresponds to one screen on the mobile app.There can be
-	 *         multiple types of QA in a questionnaire depending on the type of
-	 *         response format selected per QA.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2530,11 +2530,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * This method is used to get the Response Type Master information which
+	 * research kit and research stack supports
+	 * 
 	 * @author BTC
 	 * @return List Object {@link QuestionResponseTypeMasterInfoBo}
-	 *
-	 *         This method is used to get the Response Type Master information
-	 *         which research kit and research stack supports
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2560,19 +2560,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Load the question of form step inside questionnaire.Question contains the
+	 * question level attributes and response level attributes
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionId in {@link QuestionnaireBo}
+	 *            , questionId in {@link QuestionnaireBo}
 	 * @param String
-	 *            : questionnaireShortTitle in {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle in {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : {@link QuestionsBo}
-	 *
-	 *         Load the question of form step inside questionnaire.Question
-	 *         contains the question level attributes and response level
-	 *         attributes
-	 *
+	 *            , customStudyId in {@link StudyBo}
+	 * @return {@link QuestionsBo}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -2773,16 +2771,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Return the QuestionReponsetype based on the response type id which
+	 * already exists for question.These values are listed in response level
+	 * attributes
+	 * 
 	 * @author BTC
 	 * @param Object
 	 *            : {@link QuestionReponseTypeBo}
 	 * @param session
 	 *            : {@link Session}
 	 * @return Object : {@link QuestionReponseTypeBo}
-	 *
-	 *         Return the QuestionReponsetype based on the response type id
-	 *         which already exists for question.These values are listed in
-	 *         response level attributes
 	 */
 	public QuestionReponseTypeBo getQuestionsResponseTypeBo(
 			QuestionReponseTypeBo questionsResponseTypeBo, Session session) {
@@ -3128,7 +3126,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	 *            , studyId of the {@link StudyBo}
 	 * @param boolean : isLive
 	 * @return List of {@link QuestionnaireBo}
-	 * @exception Exception
+	 *
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -3165,19 +3163,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * In Questionnaire for question step and question in form step for date
+	 * response type we can chose those question as anchor date. The anchor date
+	 * question is unique across the study so here we are validating for anchor
+	 * date is checked or not for any other question while create or updating
+	 * the new question in a study
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId in {@link StudyBo}
+	 *            , studyId in {@link StudyBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return Boolean : true/false
-	 *
-	 *         In Questionnaire for question step and question in form step for
-	 *         date response type we can chose those question as anchor date.
-	 *         The anchor date question is unique across the study so here we
-	 *         are validating for anchor date is checked or not for any other
-	 *         question while create or updating the new question in a study
-	 *
 	 */
 	@Override
 	public Boolean isAnchorDateExistsForStudy(Integer studyId,
@@ -3248,12 +3245,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Checking the Questionnaire creation is completed or not
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId in {@link StudyBo}
+	 *            , studyId in {@link StudyBo}
 	 * @return Boolean true r false
-	 *
-	 *         Checking the Questionnaire creation is completed or not
 	 */
 	@Override
 	public Boolean isQuestionnairesCompleted(Integer studyId) {
@@ -3283,19 +3280,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * From step contains the list of questions with default admin created
+	 * master order.Admin can manage these orders by reordering the question on
+	 * drag and drop of a questions in the list
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : formId in {@link FormBo}
+	 *            , formId in {@link FormBo}
 	 * @param Integer
-	 *            : oldOrderNumber
+	 *            , oldOrderNumber
 	 * @param Integer
-	 *            : newOrderNumber
+	 *            , newOrderNumber
 	 * @return String : Success/Failure
-	 *
-	 *         From step contains the list of questions with default admin
-	 *         created master order.Admin can manage these orders by reordering
-	 *         the question on drag and drop of a questions in the list
-	 *
 	 */
 	@Override
 	public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber,
@@ -3366,19 +3362,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * A questionnaire is an ordered set of one or more steps (screens on the
+	 * mobile app).The questionnaire by default follows the master order of
+	 * steps admin can manage the order of an step.Here we can do the reordering
+	 * of an questionnaire steps(Instruction,Question,Form) which are listed on
+	 * questionnaire content page.
+	 * 
 	 * @author BTC
 	 * @param Integer
 	 *            questionnaireId in {@link QuestionnairesStepsBo}
 	 * @param int oldOrderNumber
 	 * @param int newOrderNumber
 	 * @return String SUCCESS or FAILURE
-	 *
-	 *         A questionnaire is an ordered set of one or more steps (screens
-	 *         on the mobile app).The questionnaire by default follows the
-	 *         master order of steps admin can manage the order of an step.Here
-	 *         we can do the reordering of an questionnaire
-	 *         steps(Instruction,Question,Form) which are listed on
-	 *         questionnaire content page.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -3513,19 +3508,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Here admin will add the from step to the questionnaire which contains the
+	 * two sets of attributes. which are step level attribute,form level
+	 * attribute.Admin has fill the required fields and click on done it save
+	 * the info here.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnairesStepsBo}
+	 *            , questionnaireStepsBo {@link QuestionnairesStepsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sesObj {@link SessionObject}
 	 * @param String
 	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : {@link QuestionnairesStepsBo}
-	 *
-	 *         Here admin will add the from step to the questionnaire which
-	 *         contains the two sets of attributes. which are step level
-	 *         attribute,form level attribute.Admin has fill the required fields
-	 *         and click on done it save the info here.
+	 * @return {@link QuestionnairesStepsBo}
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(
@@ -3701,18 +3696,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Create the instruction step in Questionnaire which lays the instruction
+	 * to user in mobile app.Admin would needs to fill the short title
+	 * instruction title and instruction text.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            :InstructionBo {@link InstructionsBo}
+	 *            , instructionBo {@link InstructionsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
 	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : InstructioBo {@link InstructionsBo}
-	 *
-	 *         Create the instruction step in Questionnaire which lays the
-	 *         instruction to user in mobile app.Admin would needs to fill the
-	 *         short title instruction title and instruction text.
+	 * @return {@link InstructionsBo}
 	 */
 	@Override
 	public InstructionsBo saveOrUpdateInstructionsBo(
@@ -3865,16 +3860,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Question of a form step contains the two attributes .Question-level
+	 * attributes – these are the same set of attributes as that for question
+	 * step with the exception of the skippable property and branching logic
+	 * based on participant choice of response or the conditional logic based
+	 * branching Response-level attributes (same as that for Question Step).Here
+	 * we can save or update the form questions.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionsBo}
-	 * @return Object : {@link QuestionsBo} Question of a form step contains the
-	 *         two attributes .Question-level attributes – these are the same
-	 *         set of attributes as that for question step with the exception of
-	 *         the skippable property and branching logic based on participant
-	 *         choice of response or the conditional logic based branching
-	 *         Response-level attributes (same as that for Question Step).Here
-	 *         we can save or update the form questions.
+	 *            , questionBo{@link QuestionsBo}
+	 * @return {@link QuestionsBo}
 	 */
 	@Override
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
@@ -4067,20 +4063,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Create or update of questionnaire in study which contains content and
+	 * scheduling which can be managed by the admin.The questionnaire schedule
+	 * frequency can be One time,Daily,Weekly,Monthly,Custom and admin has to
+	 * select any one frequency.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnaireBo}
+	 *            , questionnaireBo {@link QuestionnaireBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : {@link QuestionnaireBo}
-	 *
-	 *         Create or update of questionnaire in study which contains content
-	 *         and scheduling which can be managed by the admin.The
-	 *         questionnaire schedule frequency can be One time,
-	 *         Daily,Weekly,Monthly,Custom and admin has to select any one
-	 *         frequency.
+	 *            , customStudyId in {@link StudyBo}
+	 * @return {@link QuestionnaireBo}
 	 */
 
 	@Override
@@ -4378,22 +4373,21 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Admin can add the question step to questionnaire here which contains the
+	 * 3 subsections admin has to fill the sub section such as step level
+	 * attribute,question level attribute,response level attributes.Questions
+	 * can be various types as defined by the response format. Depending on the
+	 * response format, the attributes of the QA would vary Here we can create
+	 * or update the question step in questionnaire
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnairesStepsBo}
+	 *            , questionnaireStepsBo {@link QuestionnairesStepsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : {@link QuestionnairesStepsBo}
-	 *
-	 *         Admin can add the question step to questionnaire here which
-	 *         contains the 3 subsections admin has to fill the sub section such
-	 *         as step level attribute,question level attribute,response level
-	 *         attributes.Questions can be various types as defined by the
-	 *         response format. Depending on the response format, the attributes
-	 *         of the QA would vary Here we can create or update the question
-	 *         step in questionnaire
+	 *            , customStudyId in {@link StudyBo}
+	 * @return {@link QuestionnairesStepsBo}
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(
@@ -4754,24 +4748,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * Update the questions status to draft when changing the frequency of
+	 * questionnaire if the line chart is enabled for that question in user for
+	 * statistics section
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnaireBo}
+	 *            , questionnaireId in {@link QuestionnaireBo}
 	 * @param String
-	 *            : frequency in {@link QuestionnaireBo}
+	 *            , frequency in {@link QuestionnaireBo}
 	 * @param Object
-	 *            : {@link SessionObject}
-	 * @param Object
-	 *            : {@link Session}
-	 * @param Object
-	 *            : {@link Transaction}
+	 *            , {@link SessionObject}
+	 * @param {@link Session}
+	 * @param {@link Transaction}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @return Success/Failure
-	 *
-	 *         Update the questions status to draft when changing the frequency
-	 *         of questionnaire if the line chart is enabled for that question
-	 *         in user for statistics section
 	 */
 	public String updateLineChartSchedule(Integer questionnaireId,
 			String frequency, SessionObject sessionObject, Session session,
@@ -4866,21 +4858,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * The admin can choose to add a response data element to the study
+	 * dashboard in the form of line charts or statistics.Adding a line chart to
+	 * the dashboard needs the admin to specify The options time range for the
+	 * chart which depend on the scheduling frequency set for the activity.when
+	 * admin change the frequency in questionnaire schedule its validate the
+	 * options in the time range for chart options.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId
+	 *            , questionnaireId
 	 * @param String
-	 *            : frequency
+	 *            , frequency
 	 * @param String
 	 *            Success or failure
-	 *
-	 *            The admin can choose to add a response data element to the
-	 *            study dashboard in the form of line charts or
-	 *            statistics.Adding a line chart to the dashboard needs the
-	 *            admin to specify The options time range for the chart which
-	 *            depend on the scheduling frequency set for the activity.when
-	 *            admin change the frequency in questionnaire schedule its
-	 *            validate the options in the time range for chart options.
 	 */
 	@Override
 	public String validateLineChartSchedule(Integer questionnaireId,
@@ -4931,19 +4922,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	}
 
 	/**
+	 * In Questionnaire form step carries the multiple question and Answers .In
+	 * form level attributes we can make form form as repeatable if the form is
+	 * repeatable we can not add the line chart and states data to the
+	 * dashbord.here we are validating the added line chart and statistics data
+	 * before updating the form as repeatable.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : formId
+	 *            , formId
 	 * @param String
-	 *            : Success or failure
-	 *
-	 *            In Questionnaire form step carries the multiple question and
-	 *            Answers .In form level attributes we can make form form as
-	 *            repeatable if the form is repeatable we can not add the line
-	 *            chart and states data to the dashbord.here we are validating
-	 *            the added line chart and statistics data before updating the
-	 *            form as repeatable.
-	 *
+	 *            , Success or failure
 	 */
 	@Override
 	public String validateRepetableFormQuestionStats(Integer formId) {

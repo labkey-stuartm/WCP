@@ -3,8 +3,12 @@
  */
 package com.fdahpstudydesigner.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -26,7 +30,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 @Service
@@ -39,13 +43,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	private StudyActiveTasksDAO studyActiveTasksDAO;
 
 	/**
-	 * @author Ronalin
+	 * deleting of Active task in Study
+	 * 
+	 * @author BTC
 	 * @param Integer
-	 *            : activeTaskInfoId
+	 *            , activeTaskInfoId
 	 * @param Integer
-	 *            : studyId
-	 * @return String :SUCCESS or FAILURE TThis method used to get the delete
-	 *         the consent information
+	 *            , studyId
+	 * @return String, SUCCESS or FAILURE
 	 */
 	@Override
 	public String deleteActiveTask(Integer activeTaskInfoId, Integer studyId,
@@ -68,13 +73,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * @author Ronalin
+	 * get active task details in Study
+	 * 
+	 * @author BTC
 	 * @param Integer
-	 *            :aciveTaskId
-	 * @return Object :ActiveTaskBo
-	 *
-	 *         This method is used to get the ativeTask info object based on
-	 *         consent info id
+	 *            , aciveTaskId
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link ActiveTaskBo}
 	 */
 	@Override
 	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId,
@@ -194,9 +200,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * @author Ronalin
-	 * @return List :ActivetaskFormulaBo This method used to get all static
-	 *         formulas
+	 * to get all static formulas in acive task
+	 * 
+	 * @author BTC
+	 * @return {@link List<ActivetaskFormulaBo>}
 	 */
 	@Override
 	public List<ActivetaskFormulaBo> getActivetaskFormulas() {
@@ -214,9 +221,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * @author Ronalin
-	 * @return List :ActiveTaskMasterAttributeBo This method used to get all the
-	 *         field names based on of activeTaskType
+	 * get all the field names of active task based on of activeTaskType
+	 * 
+	 * @author BTC
+	 * @return {@link List<ActiveTaskMasterAttributeBo>}
 	 */
 	@Override
 	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(
@@ -236,9 +244,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * @author Ronalin
-	 * @return List :ActiveTaskListBos This method used to get all type of
-	 *         activeTask
+	 * get all type of activeTask in Study
+	 *
+	 * @author BTC
+	 * @param String
+	 *            , platformType
+	 * @return {@link List<ActiveTaskListBo>}
 	 */
 	@Override
 	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType) {
@@ -257,9 +268,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * @author Ronalin
-	 * @return List :StatisticImageListBo This method used to get all statistic
-	 *         images
+	 * to get all static statistic images
+	 * 
+	 * @author BTC
+	 * @return {@link List<StatisticImageListBo>}
 	 */
 	@Override
 	public List<StatisticImageListBo> getStatisticImages() {
@@ -279,7 +291,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	/**
 	 * return active tasks based on user's Study Id
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param studyId
 	 *            , studyId of the {@link StudyBo}
@@ -304,11 +316,18 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * @author Ronalin
-	 * @param ActiveTaskBo
-	 * @return ActiveTaskBo
+	 * Add or update all type of active task content (The Fetal Kick Counter
+	 * task/Tower of Hanoi/Spatial Memory Task)
 	 *
-	 *         This method is used to save the activeTask
+	 * @author BTC
+	 * @param activeTaskBo
+	 *            , {@link ActiveTaskBo}
+	 * @param sessionObject
+	 *            , {@link SessionObject}
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link ActiveTaskBo}
+	 *
 	 */
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,
@@ -382,6 +401,17 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 		return updateActiveTaskBo;
 	}
 
+	/**
+	 * Save or update schedule of active task
+	 * 
+	 * @author BTC
+	 * 
+	 * @param activeTaskBo
+	 *            , {@link ActiveTaskBo}
+	 * @param customStudyId
+	 *            , the custom id of study
+	 * @return {@link ActiveTaskBo}
+	 */
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,
 			String customStudyId) {
@@ -554,6 +584,17 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 		return addActiveTaskeBo;
 	}
 
+	/**
+	 * validating ShortTitle and chart short title in study activity
+	 * 
+	 * @author BTC
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @param response
+	 *            , {@link HttpServletResponse}
+	 * @throws IOException
+	 * @return boolean
+	 */
 	@Override
 	public boolean validateActiveTaskAttrById(Integer studyId,
 			String activeTaskAttName, String activeTaskAttIdVal,
@@ -579,14 +620,15 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 	}
 
 	/**
-	 * return ActiveStatisticsBean type
-	 *
-	 * @author Ronalin
-	 *
-	 * @param customStudyId
-	 *            , list of ActiveStatisTicsBean
-	 * @return List of {@link ActiveStatisticsBean}
-	 * @exception Exception
+	 * validating list of active task chart short title in study
+	 * 
+	 * @author BTC
+	 * @param String
+	 *            , customStudyId
+	 * @param activeStatisticsBeans
+	 *            , {@link List<ActiveStatisticsBean>}
+	 * @throws IOException
+	 * @return {@link List<ActiveStatisticsBean>}
 	 */
 	@Override
 	public List<ActiveStatisticsBean> validateActiveTaskStatIds(

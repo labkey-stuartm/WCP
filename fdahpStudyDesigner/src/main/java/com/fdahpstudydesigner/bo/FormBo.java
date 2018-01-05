@@ -12,8 +12,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- *
- * @author BTC The persistent class for the form database table.
+ * The persistent class for the form database table.
+ * 
+ * @author BTC
  */
 @Entity
 @Table(name = "form")
@@ -25,25 +26,25 @@ public class FormBo implements Serializable {
 	 */
 	private static final long serialVersionUID = -902464262274352743L;
 
+	@Column(name = "active")
+	private Boolean active;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "form_id")
 	private Integer formId;
 
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "created_on")
-	private String createdOn;
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
 
 	@Column(name = "modified_on")
 	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
 
 	public Boolean getActive() {
 		return active;

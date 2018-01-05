@@ -29,12 +29,12 @@ public class LoginDAOImpl implements LoginDAO {
 
 	private static Logger logger = Logger.getLogger(LoginDAOImpl.class
 			.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+
+	private Transaction transaction = null;
 
 	public LoginDAOImpl() {
 	}
@@ -42,7 +42,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * This method change the user Password
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The database user ID of the user
@@ -67,7 +67,7 @@ public class LoginDAOImpl implements LoginDAO {
 					userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if (null != adminUserBO
-					&& FdahpStudyDesignerUtil.compairEncryptedPassword(
+					&& FdahpStudyDesignerUtil.compareEncryptedPassword(
 							adminUserBO.getUserPassword(), oldPassword)) {
 				encrNewPass = FdahpStudyDesignerUtil
 						.getEncryptedPassword(newPassword);
@@ -102,7 +102,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * get the password history
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -136,7 +136,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Get the fail login attempts of the user
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -149,12 +149,6 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			// Query query =
-			// session.getNamedQuery("getUserAttempts").setString("userEmailId",
-			// userEmailId);
-			// String searchQuery =
-			// "select * from user_attempts where email_id='"+userEmailId+"'";
-			// Query query = session.createSQLQuery(searchQuery);
 			SQLQuery query = session
 					.createSQLQuery("select * from user_attempts where BINARY email_id='"
 							+ userEmailId + "'");
@@ -174,7 +168,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * This method get the user by security token
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param securityToken
 	 *            , The security token of user
@@ -208,7 +202,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Get valid user by email
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param email
 	 *            , the email id of the user
@@ -222,9 +216,6 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			// query =
-			// session.getNamedQuery("getUserByEmail").setString("email",
-			// email.trim());
 			SQLQuery query = session
 					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
 							+ email + "'");
@@ -250,7 +241,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check the user is forcefully logout by Admin
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -286,7 +277,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check User status
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -322,7 +313,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check is User Exists in the db
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -347,7 +338,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check the user is not logged in from long time logout by Admin
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param sessionObject
 	 * @return {@link Boolean}
@@ -370,15 +361,6 @@ public class LoginDAOImpl implements LoginDAO {
 					FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
 					.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(),
 							lastLoginExpirationInDay + 1));
-			/*
-			 * userBOList = session.createSQLQuery(
-			 * "SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
-			 * +
-			 * "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime < '"
-			 * +lastLoginDateTime+
-			 * "' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'"
-			 * ).list();
-			 */
 			sb = new StringBuilder();
 			sb.append(
 					"SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in ")
@@ -410,7 +392,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Reset the fail attempts of user when user successfully logged in
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -450,7 +432,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Update the fail attempts of user
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -484,12 +466,6 @@ public class LoginDAOImpl implements LoginDAO {
 			} else {
 				if (attemptsBo.getAttempts() + 1 >= MAX_ATTEMPTS) {
 					// locked user
-					/*
-					 * queryString = "UPDATE UserBO set accountNonLocked = " + 0
-					 * + " where userEmail ='" + userEmailId+"'";
-					 * session.createQuery(queryString).executeUpdate();
-					 */
-					// throw exception
 					isAcountLocked = true;
 				}
 				if (this.isUserExists(userEmailId)) {
@@ -518,9 +494,6 @@ public class LoginDAOImpl implements LoginDAO {
 					}
 				}
 			}
-			// userBO = (UserBO)
-			// session.getNamedQuery("getUserByEmail").setString("email",
-			// userEmailId).uniqueResult();
 			SQLQuery query = session
 					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
 							+ userEmailId + "'");
@@ -573,7 +546,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Update the new password in password history
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -629,7 +602,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * This method save or update the user
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userBO
 	 *            , the user Object of {@link UserBO}

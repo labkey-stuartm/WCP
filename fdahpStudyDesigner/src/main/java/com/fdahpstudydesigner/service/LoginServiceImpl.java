@@ -102,7 +102,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								&& !passwordHistories.isEmpty()) {
 							for (UserPasswordHistory userPasswordHistory : passwordHistories) {
 								if (FdahpStudyDesignerUtil
-										.compairEncryptedPassword(
+										.compareEncryptedPassword(
 												userPasswordHistory
 														.getUserPassword(),
 												password)) {
@@ -249,7 +249,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							&& !passwordHistories.isEmpty()) {
 						for (UserPasswordHistory userPasswordHistory : passwordHistories) {
 							if (FdahpStudyDesignerUtil
-									.compairEncryptedPassword(
+									.compareEncryptedPassword(
 											userPasswordHistory
 													.getUserPassword(),
 											newPassword)) {
@@ -292,7 +292,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	/**
 	 * Validate the security token for forgot password link before check
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param securityToken
 	 *            , the security token of the forgot password link
@@ -402,7 +402,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	/**
 	 * Get the spring security user details by user email
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmail
 	 *            , the user email id
@@ -675,12 +675,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	}
 
 	/**
-	 * @author Pradyumn
+	 * This method is used to validate access code
+	 * 
+	 * @author BTC
 	 * @param securityToken
 	 * @param accessCode
-	 * @return result
+	 * @return result, Success/Failure message
 	 */
-	// @Override
 	public String validateAccessCode(String securityToken, String accessCode) {
 		UserBO userBO = null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");

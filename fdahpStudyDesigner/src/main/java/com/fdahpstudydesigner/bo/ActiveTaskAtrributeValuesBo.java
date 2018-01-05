@@ -15,8 +15,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 
 /**
+ * The persistent class for the active_task_attrtibutes_values database table.
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity
@@ -25,10 +26,8 @@ import org.hibernate.annotations.Type;
 public class ActiveTaskAtrributeValuesBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "active_task_attribute_id")
-	private Integer attributeValueId;
+	@Column(name = "active")
+	private Integer active = 0;
 
 	@Column(name = "active_task_id")
 	private Integer activeTaskId;
@@ -36,28 +35,20 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
 	@Column(name = "active_task_master_attr_id")
 	private Integer activeTaskMasterAttrId;
 
-	@Column(name = "attribute_val")
-	private String attributeVal;
+	@Transient
+	private boolean addToDashboard = false;
 
 	@Column(name = "add_to_line_chart")
 	@Type(type = "yes_no")
 	private boolean addToLineChart = false;
 
-	@Column(name = "time_range_chart")
-	private String timeRangeChart;
+	@Column(name = "attribute_val")
+	private String attributeVal;
 
-	@Column(name = "rollback_chat")
-	private String rollbackChat;
-
-	@Column(name = "title_chat")
-	private String titleChat;
-
-	@Column(name = "use_for_statistic")
-	@Type(type = "yes_no")
-	private boolean useForStatistic = false;
-
-	@Column(name = "identifier_name_stat")
-	private String identifierNameStat;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "active_task_attribute_id")
+	private Integer attributeValueId;
 
 	@Column(name = "display_name_stat")
 	private String displayNameStat;
@@ -65,23 +56,33 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
 	@Column(name = "display_units_stat")
 	private String displayUnitStat;
 
-	@Column(name = "upload_type_stat")
-	private String uploadTypeStat;
-
 	@Column(name = "formula_applied_stat")
 	private String formulaAppliedStat;
+
+	@Column(name = "identifier_name_stat")
+	private String identifierNameStat;
+
+	@Transient
+	private Integer isIdentifierNameStatDuplicate = 0;
+
+	@Column(name = "rollback_chat")
+	private String rollbackChat;
+
+	@Column(name = "time_range_chart")
+	private String timeRangeChart;
 
 	@Column(name = "time_range_stat")
 	private String timeRangeStat;
 
-	@Column(name = "active")
-	private Integer active = 0;
+	@Column(name = "title_chat")
+	private String titleChat;
 
-	@Transient
-	private boolean addToDashboard = false;
+	@Column(name = "upload_type_stat")
+	private String uploadTypeStat;
 
-	@Transient
-	private Integer isIdentifierNameStatDuplicate = 0;
+	@Column(name = "use_for_statistic")
+	@Type(type = "yes_no")
+	private boolean useForStatistic = false;
 
 	public Integer getActive() {
 		return active;

@@ -14,8 +14,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 /**
- *
- * @author Ronalin
+ * The persistent class for the study_sequence database table.
+ * 
+ * @author BTC
  *
  */
 
@@ -31,61 +32,33 @@ public class StudySequenceBo implements Serializable {
 	 */
 	private static final long serialVersionUID = 3573683893623838475L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "study_sequence_id")
-	private Integer studySequenceId;
-
-	@Column(name = "study_id")
-	private Integer studyId;
+	@Column(name = "actions")
+	@Type(type = "yes_no")
+	private boolean actions = false;
 
 	@Column(name = "basic_info")
 	@Type(type = "yes_no")
 	private boolean basicInfo = false;
 
-	@Column(name = "setting_admins")
+	@Column(name = "check_list")
 	@Type(type = "yes_no")
-	private boolean settingAdmins = false;
-
-	@Column(name = "over_view")
-	@Type(type = "yes_no")
-	private boolean overView = false;
-
-	@Column(name = "eligibility")
-	@Type(type = "yes_no")
-	private boolean eligibility = false;
-
-	@Column(name = "consent_edu_info")
-	@Type(type = "yes_no")
-	private boolean consentEduInfo = false;
+	private boolean checkList = false;
 
 	@Column(name = "comprehension_test")
 	@Type(type = "yes_no")
 	private boolean comprehensionTest = false;
 
+	@Column(name = "consent_edu_info")
+	@Type(type = "yes_no")
+	private boolean consentEduInfo = false;
+
 	@Column(name = "e_consent")
 	@Type(type = "yes_no")
 	private boolean eConsent = false;
 
-	@Column(name = "study_exc_questionnaries")
+	@Column(name = "eligibility")
 	@Type(type = "yes_no")
-	private boolean studyExcQuestionnaries = false;
-
-	@Column(name = "study_exc_active_task")
-	@Type(type = "yes_no")
-	private boolean studyExcActiveTask = false;
-
-	@Column(name = "study_dashboard_chart")
-	@Type(type = "yes_no")
-	private boolean studyDashboardChart = false;
-
-	@Column(name = "study_dashboard_stats")
-	@Type(type = "yes_no")
-	private boolean studyDashboardStats = false;
-
-	@Column(name = "miscellaneous_resources")
-	@Type(type = "yes_no")
-	private boolean miscellaneousResources = false;
+	private boolean eligibility = false;
 
 	@Column(name = "miscellaneous_branding")
 	@Type(type = "yes_no")
@@ -95,13 +68,41 @@ public class StudySequenceBo implements Serializable {
 	@Type(type = "yes_no")
 	private boolean miscellaneousNotification = false;
 
-	@Column(name = "check_list")
+	@Column(name = "miscellaneous_resources")
 	@Type(type = "yes_no")
-	private boolean checkList = false;
+	private boolean miscellaneousResources = false;
 
-	@Column(name = "actions")
+	@Column(name = "over_view")
 	@Type(type = "yes_no")
-	private boolean actions = false;
+	private boolean overView = false;
+
+	@Column(name = "setting_admins")
+	@Type(type = "yes_no")
+	private boolean settingAdmins = false;
+
+	@Column(name = "study_dashboard_chart")
+	@Type(type = "yes_no")
+	private boolean studyDashboardChart = false;
+
+	@Column(name = "study_dashboard_stats")
+	@Type(type = "yes_no")
+	private boolean studyDashboardStats = false;
+
+	@Column(name = "study_exc_active_task")
+	@Type(type = "yes_no")
+	private boolean studyExcActiveTask = false;
+
+	@Column(name = "study_exc_questionnaries")
+	@Type(type = "yes_no")
+	private boolean studyExcQuestionnaries = false;
+
+	@Column(name = "study_id")
+	private Integer studyId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "study_sequence_id")
+	private Integer studySequenceId;
 
 	public Integer getStudyId() {
 		return studyId;

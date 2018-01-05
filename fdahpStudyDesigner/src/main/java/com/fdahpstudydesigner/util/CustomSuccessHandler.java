@@ -11,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import com.fdahpstudydesigner.bo.MasterDataBO;
@@ -22,23 +20,22 @@ import com.fdahpstudydesigner.dao.LoginDAOImpl;
 import com.fdahpstudydesigner.service.DashBoardAndProfileService;
 
 /**
- * @author Vivek
+ * @author BTC
  * @see {@link SimpleUrlAuthenticationSuccessHandler}
  */
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	private LoginDAOImpl loginDAO;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 
 	@Autowired
 	private DashBoardAndProfileService dashBoardAndProfileService;
 
+	private LoginDAOImpl loginDAO;
+
 	/**
 	 * Provide landing page URI as per User Role
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param authentication
 	 *            , {@link Authentication}
@@ -63,7 +60,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.springframework.security.web.authentication.
 	 * AbstractAuthenticationTargetUrlRequestHandler
 	 * #handle(javax.servlet.http.HttpServletRequest,
@@ -97,8 +94,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		sesObj.setLoginStatus(true);
 		sesObj.setCurrentHomeUrl("/" + projectName + targetUrl);
 		sesObj.setEmail(userdetails.getUserEmail());
-		sesObj.setUserPermissions(FdahpStudyDesignerUtil
-				.getSessionUserRole(request));
+		sesObj.setUserPermissions(FdahpStudyDesignerUtil.getSessionUserRole());
 		sesObj.setPasswordExpairdedDateTime(userdetails
 				.getPasswordExpairdedDateTime());
 		sesObj.setCreatedDate(userdetails.getCreatedOn());

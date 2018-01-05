@@ -25,11 +25,11 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class NotificationDAOImpl implements NotificationDAO {
 
 	private static Logger logger = Logger.getLogger(NotificationDAOImpl.class);
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
 	private Transaction transaction = null;
-	@Autowired
-	private AuditLogDAO auditLogDAO;
 
 	/**
 	 * Soft Deleting of notification by Id.

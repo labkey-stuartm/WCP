@@ -16,16 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 public class CrossScriptingFilter implements Filter {
 	private static Logger logger = Logger.getLogger(CrossScriptingFilter.class);
-	private FilterConfig filterConfig;
 
 	@Override
 	public void destroy() {
-		this.filterConfig = null;
+		// Unused
 	}
 
 	@Override
@@ -39,6 +38,6 @@ public class CrossScriptingFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		this.filterConfig = filterConfig;
+		// Unused
 	}
 }

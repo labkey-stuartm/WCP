@@ -15,7 +15,9 @@ import org.hibernate.annotations.NamedQuery;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * @author Pradyumn
+ * The persistent class for the resources database table.
+ * 
+ * @author BTC
  *
  */
 
@@ -29,67 +31,22 @@ public class ResourceBO implements Serializable {
 	 */
 	private static final long serialVersionUID = -4548349227102496191L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
-
-	@Column(name = "study_id")
-	private Integer studyId;
-
-	@Column(name = "title")
-	private String title;
-
-	@Column(name = "sequence_no")
-	private Integer sequenceNo = 0;
-
-	@Column(name = "text_or_pdf", length = 1)
-	private boolean textOrPdf;
-
-	@Column(name = "rich_text")
-	private String richText;
-
-	@Column(name = "pdf_url")
-	private String pdfUrl;
-
-	@Column(name = "pdf_name")
-	private String pdfName;
-
-	@Column(name = "resource_visibility", length = 1)
-	private boolean resourceVisibility;
-
-	@Column(name = "resource_type", length = 1)
-	private boolean resourceType;
-
-	@Column(name = "time_period_from_days")
-	private Integer timePeriodFromDays;
-
-	@Column(name = "time_period_to_days")
-	private Integer timePeriodToDays;
-
-	@Column(name = "start_date")
-	private String startDate;
-
-	@Column(name = "end_date")
-	private String endDate;
-
-	@Column(name = "resource_text")
-	private String resourceText;
-
 	@Column(name = "action", length = 1)
 	private boolean action;
-
-	@Column(name = "study_protocol", length = 1)
-	private boolean studyProtocol;
-
-	@Column(name = "status", length = 1)
-	private boolean status;
 
 	@Column(name = "created_by")
 	private Integer createdBy;
 
 	@Column(name = "created_on")
 	private String createdOn;
+
+	@Column(name = "end_date")
+	private String endDate;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
@@ -99,6 +56,51 @@ public class ResourceBO implements Serializable {
 
 	@Transient
 	private MultipartFile pdfFile;
+
+	@Column(name = "pdf_name")
+	private String pdfName;
+
+	@Column(name = "pdf_url")
+	private String pdfUrl;
+
+	@Column(name = "resource_text")
+	private String resourceText;
+
+	@Column(name = "resource_type", length = 1)
+	private boolean resourceType;
+
+	@Column(name = "resource_visibility", length = 1)
+	private boolean resourceVisibility;
+
+	@Column(name = "rich_text")
+	private String richText;
+
+	@Column(name = "sequence_no")
+	private Integer sequenceNo = 0;
+
+	@Column(name = "start_date")
+	private String startDate;
+
+	@Column(name = "status", length = 1)
+	private boolean status;
+
+	@Column(name = "study_id")
+	private Integer studyId;
+
+	@Column(name = "study_protocol", length = 1)
+	private boolean studyProtocol;
+
+	@Column(name = "text_or_pdf", length = 1)
+	private boolean textOrPdf;
+
+	@Column(name = "time_period_from_days")
+	private Integer timePeriodFromDays;
+
+	@Column(name = "time_period_to_days")
+	private Integer timePeriodToDays;
+
+	@Column(name = "title")
+	private String title;
 
 	@Column(name = "x_days_sign", length = 1)
 	private boolean xDaysSign = false;

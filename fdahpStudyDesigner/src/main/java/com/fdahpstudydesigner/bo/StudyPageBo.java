@@ -10,8 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author Ronalin
+ * The persistent class for the study_page database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -19,6 +20,24 @@ import javax.persistence.Table;
 public class StudyPageBo implements Serializable {
 
 	private static final long serialVersionUID = 3736160119532905474L;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "image_path")
+	private String imagePath;
+
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+
+	@Column(name = "modified_on")
+	private String modifiedOn;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,24 +49,6 @@ public class StudyPageBo implements Serializable {
 
 	@Column(name = "title")
 	private String title;
-
-	@Column(name = "image_path")
-	private String imagePath;
-
-	@Column(name = "description")
-	private String description;
-
-	@Column(name = "created_on")
-	private String createdOn;
-
-	@Column(name = "modified_on")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
 
 	public Integer getCreatedBy() {
 		return createdBy;
