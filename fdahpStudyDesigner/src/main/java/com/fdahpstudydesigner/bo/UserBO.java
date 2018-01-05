@@ -24,7 +24,7 @@ import org.hibernate.annotations.Type;
 /**
  * The persistent class for the users database table.
  * 
- * @author Pradyumn
+ * @author BTC
  *
  */
 

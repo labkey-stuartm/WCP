@@ -15,7 +15,7 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * The persistent class for the study_checklist database table.
  * 
- * @author Pradyumn
+ * @author BTC
  *
  */
 

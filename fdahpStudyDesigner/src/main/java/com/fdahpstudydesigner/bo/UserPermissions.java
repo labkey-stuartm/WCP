@@ -14,7 +14,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the user_permissions database table.
  * 
- * @author Pradyumn
+ * @author BTC
  *
  */
 

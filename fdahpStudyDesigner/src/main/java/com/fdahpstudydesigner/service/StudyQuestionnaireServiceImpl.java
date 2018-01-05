@@ -45,22 +45,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	private StudyQuestionnaireDAO studyQuestionnaireDAO;
 
 	/**
+	 * From step have a one or more question.Each question have the short title field this will be created the as column in response
+	 * server so its should be unique across all the steps.Validateing the Unique of question short title inside form step
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId {@link QuestionnairesStepsBo}
+	 *            , questionnaireId {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : shortTitle {@link QuestionsBo}
+	 *            , shortTitle {@link QuestionsBo}
 	 * @param String
-	 *            : questionnaireShortTitle {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 *
 	 * @return String Success/Failure
-	 *
-	 *         From step have a one or more question.Each question have the
-	 *         short title field this will be created the as column in response
-	 *         server so its should be unique across all the steps.Validateing
-	 *         the Unique of question short title inside form step
 	 */
 	@Override
 	public String checkFromQuestionShortTitle(Integer questionnaireId,
@@ -75,16 +73,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 
 	/**
+	 * This method is used to validate the questionnaire have response type text scale while 
+	 * changing the platform in study settings page
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId {@link StudyBo}
+	 *            , studyId {@link StudyBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
-	 *
-	 *         This method is used to validate the questionnaire have response
-	 *         type text scale while changing the platform in study settings
-	 *         page
 	 */
 	@Override
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId,
@@ -95,20 +92,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Questionnaire contains the content,schedule as two tabs.Each questionnaire contains the short title on the content tab this
+	 * will be created as the column for the questionnaire response in response server for this we are doing the unique title validation
+	 * for each questionnaire in study level
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            :studyId {@link StudyBo}
+	 *            , studyId {@link StudyBo}
 	 * @param String
-	 *            : shortTitle {@link StudyBo}
+	 *            , shortTitle {@link StudyBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 * @return String : SUCCESS or FAILURE
-	 *
-	 *         Questionnaire contains the content,schedule as two tabs.Each
-	 *         questionnaire contains the short title on the content tab this
-	 *         will be created as the column for the questionnaire response in
-	 *         response server for this we are doing the unique title validation
-	 *         for each questionnaire in study level
 	 *
 	 */
 	@Override
@@ -129,24 +124,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * A questionnaire is an ordered set of one or more steps.Each step contains the step short title field. Which will be
+	 * response column for the step in response server.so it should be the unique.Here validating the unique for step short title
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : QuestionnaireId {@link QuestionnairesStepsBo}
+	 *            , QuestionnaireId {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : stepType {@link QuestionnairesStepsBo}
+	 *            , stepType {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : shortTitle {@link QuestionnairesStepsBo}
+	 *            , shortTitle {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : questionnaireShortTitle {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 *
-	 *
-	 *            A questionnaire is an ordered set of one or more steps.Each
-	 *            step contains the step short title field. Which will be
-	 *            response column for the step in response server.so it should
-	 *            be the unique.Here validating the unique for step short title
-	 *
+	 *            , customStudyId {@link StudyBo}
+	 * @return String, Success or Failure            
 	 */
 	@Override
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,
@@ -168,20 +160,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding a
+	 * statistic to the dashboard needs the admin to specify the short name should be unique across all the state in the study So
+	 * validating the unique validation for short name in states.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : StudyId {@link StudyBo}
+	 *            , StudyId {@link StudyBo}
 	 * @param String
-	 *            : shortTitle {@link QuestionsBo}
+	 *            , shortTitle {@link QuestionsBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return String SUCCESS or FAILUE
-	 *
-	 *         The admin can choose to add a response data element to the study
-	 *         dashboard in the form of line charts or statistics.Adding a
-	 *         statistic to the dashboard needs the admin to specify the short
-	 *         name should be unique across all the state in the study So
-	 *         validating the unique validation for short name in states.
+	 *            , customStudyId {@link StudyBo}
+	 * @return String , SUCCESS or FAILUE
 	 */
 	@Override
 	public String checkStatShortTitle(Integer studyId, String shortTitle,
@@ -192,20 +182,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Admin want copy the already existed question into the same study admin has to click the copy icon in the questionnaire list.It
+	 * will copy the existed questionnaire into the study with out questionnaire short title because the short title will be unique
+	 * across the study
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            : questionnaireId {@link QuestionnaireBo}
-	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @return QuestionnaireBo
-	 *
-	 *         Admin want copy the already existed question into the same study
-	 *         admin has to click the copy icon in the questionnaire list.It
-	 *         will copy the existed questionnaire into the study with out
-	 *         questionnaire short title because the short title will be unique
-	 *         across the study
+	 * @param Integer, questionnaireId
+	 * @param String, customStudyId {@link StudyBo}
+	 * @param sessionObject, {@link SessionObject}
+	 * @return {@link QuestionnaireBo}
 	 */
 	@Override
 	public QuestionnaireBo copyStudyQuestionnaireBo(Integer questionnaireId,
@@ -216,19 +201,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * This method is used to delete the question inside the form step of an questionnaire
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            formId {@link FormBo}
-	 * @param Integer
-	 *            questionId {@link QuestionsBo}
-	 * @param Object
-	 *            {@link SessionObject}
-	 * @param String
-	 *            customStudyId {@link StudyBo}
+	 * @param Integer, formId {@link FormBo}
+	 * @param Integer, questionId {@link QuestionsBo}
+	 * @param sessionObject, {@link SessionObject}
+	 * @param String, customStudyId {@link StudyBo}
 	 * @return String SUCESS or FAILURE
-	 *
-	 *         This method is used to delete the question inside the form step
-	 *         of an questionnaire
 	 */
 	@Override
 	public String deleteFromStepQuestion(Integer formId, Integer questionId,
@@ -248,22 +228,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Delete of an questionnaire step(Instruction,Question,Form) which are listed in questionnaire.
+	 *  
 	 * @author BTC
 	 * @param Integer
-	 *            : stepId {@link QuestionnairesStepsBo}
+	 *            , stepId {@link QuestionnairesStepsBo}
 	 * @param Integer
-	 *            : questionnaireId {@link QuestionnairesStepsBo}
+	 *            , questionnaireId {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            :stepType {@link QuestionnairesStepsBo}
-	 * @param Object
-	 *            : {@link SessionObject}
+	 *            ,stepType {@link QuestionnairesStepsBo}
+	 * @param sessionObject
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 * @return String SUCCESS or FAILURE
-	 *
-	 *         Delete of an questionnaire step(Instruction,Question,Form) which
-	 *         are listed in questionnaire.
-	 *
 	 */
 	@Override
 	public String deleteQuestionnaireStep(Integer stepId,
@@ -284,19 +262,19 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Deleting of an Questionnaire in Study
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId {@link StudyBo}
+	 *            , studyId {@link StudyBo}
 	 * @param Integer
-	 *            : questionnaireId {@link QuestionnaireBo}
+	 *            , questionnaireId {@link QuestionnaireBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , sessionObject {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 *
 	 * @return String : SUCCESS or FAILURE
-	 *
-	 *         Deleting of an Questionnaire in Study
 	 */
 	@Override
 	public String deletQuestionnaire(Integer studyId, Integer questionnaireId,
@@ -307,13 +285,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * For QA of response type that results in the data type 'double',the admin can also choose to give the user a provision to allow
+	 * the app to read the response from HealthKit this method is used to get the pre-defined list of HealthKit quantity data types
+	 * 
 	 * @author BTC
 	 * @return List of {@link HealthKitKeysInfo}
-	 *
-	 *         For QA of response type that results in the data type 'double',
-	 *         the admin can also choose to give the user a provision to allow
-	 *         the app to read the response from HealthKit this method is used
-	 *         to get the pre-defined list of HealthKit quantity data types
 	 */
 	@Override
 	public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList() {
@@ -329,14 +305,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	 * @author BTC
 	 *
 	 * @param Integer
-	 *            : instructionId in {@link InstructionsBo}
+	 *            , instructionId in {@link InstructionsBo}
 	 * @param String
-	 *            : questionnaireShortTitle in {@link QuestionnairesBo}
+	 *            , questionnaireShortTitle in {@link QuestionnairesBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
+	 *            , customStudyId in {@link StudyBo}
 	 * @param Integer
-	 *            : questionnaireId in {@link QuestionnairesStepsBo}
-	 * @return Object : {@link InstructionsBo}
+	 *            , questionnaireId in {@link QuestionnairesStepsBo}
+	 * @return {@link InstructionsBo}
 	 *
 	 */
 	@Override
@@ -359,18 +335,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Load the questionnaire of study with all the steps(instruction,question,form) with schedule information. Each
+	 * step corresponds to one screen on the mobile app.There can be multiple types of QA in a questionnaire depending on the type of
+	 * response format selected per QA.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            :questionnaireId in {@link QuestionnaireBo}
+	 *            , questionnaireId in {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : {@link QuestionnaireBo}
-	 *
-	 *         Load the questionnaire of study with all the
-	 *         steps(instruction,question,form) with schedule information. Each
-	 *         step corresponds to one screen on the mobile app.There can be
-	 *         multiple types of QA in a questionnaire depending on the type of
-	 *         response format selected per QA.
+	 *            , customStudyId in {@link StudyBo}
+	 * @return {@link QuestionnaireBo}
 	 */
 	@Override
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId,
@@ -496,18 +470,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * This method is used to get the forward question step of an questionnaire based on sequence no.Thease questions are populated
+	 * in the destination step drop down in the step level attributes of question step,from step and instruction step to select the
+	 * destination step if branching is enabled for that questionnaire
+	 *  
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId
+	 *            , questionnaireId
 	 * @param Integer
-	 *            : sequenceNo
-	 * @return List : QuestionnaireStepList
-	 *
-	 *         This method is used to get the forward question step of an
-	 *         questionnaire based on sequence no.Thease questions are populated
-	 *         in the destination step drop down in the step level attributes of
-	 *         question step,from step and instruction step to select the
-	 *         destination step if branching is enabled for that questionnaire
+	 *            , sequenceNo
+	 * @return List {@link QuestionnairesStepsBo}
 	 */
 	@Override
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
@@ -527,22 +499,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Load the Question step page in questionnaire which contains the question and answer. Which Carries one QA per screen in Mobile app
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : stepId {@link QuestionnairesStepsBo}
+	 *            , stepId {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : stepType {@link QuestionnairesStepsBo}
+	 *            , stepType {@link QuestionnairesStepsBo}
 	 * @param String
-	 *            : questionnaireShortTitle {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 * @param Integer
-	 *            : questionnaireId {@link QuestionnaireBo}
-	 * @return Object : {@link QuestionnairesStepsBo}
-	 *
-	 *         Load the Question step page in questionnaire which contains the
-	 *         question and answer. Which Carries one QA per screen in Mobile
-	 *         app
+	 *            , questionnaireId {@link QuestionnaireBo}
+	 * @return {@link QuestionnairesStepsBo}
 	 */
 	@Override
 	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,
@@ -599,16 +569,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Load the questionnaires of study with all the steps(instruction,question,form) with schedule information. Each
+	 * step corresponds to one screen on the mobile app.There can be multiple types of QA in a questionnaire depending on the type of
+	 * response format selected per QA.
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            questionnaireId {@link QuestionnaireBo}
+	 * @param Integer , questionnaireId {@link QuestionnaireBo}
 	 * @return Map : TreeMap<Integer, QuestionnaireStepBean>
-	 *
-	 *         Load the questionnaires of study with all the
-	 *         steps(instruction,question,form) with schedule information. Each
-	 *         step corresponds to one screen on the mobile app.There can be
-	 *         multiple types of QA in a questionnaire depending on the type of
-	 *         response format selected per QA.
 	 */
 	@Override
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
@@ -679,10 +646,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * This method is used to get the Response Type Master information which research kit and research stack supports
 	 * @author BTC
-	 * @return List Object : {@link List<QuestionResponseTypeMasterInfoBo>} This
-	 *         method is used to get the Response Type Master information which
-	 *         research kit and research stack supports
+	 * 
+	 * @return List : {@link QuestionResponseTypeMasterInfoBo} 
 	 */
 	@Override
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList() {
@@ -701,20 +668,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Load the question of form step inside questionnaire.Question contains the question level attributes and response level attributes
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionId {@link QuestionsBo}
+	 *            , questionId {@link QuestionsBo}
 	 * @param String
-	 *            : questionnaireShortTitle {@link QuestionnaireBo}
+	 *            , questionnaireShortTitle {@link QuestionnaireBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return Object : {@link QuestionsBo}
-	 *
-	 *
-	 *         Load the question of form step inside questionnaire.Question
-	 *         contains the question level attributes and response level
-	 *         attributes
-	 *
+	 *            , customStudyId {@link StudyBo}
+	 * @return {@link QuestionsBo}
 	 */
 	@Override
 	public QuestionsBo getQuestionsById(Integer questionId,
@@ -744,7 +707,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	 * @param studyId
 	 *            , studyId of the {@link StudyBo}
 	 * @return List of {@link QuestionnaireBo}
-	 * @exception Exception
+	 *
 	 */
 	@Override
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(
@@ -764,18 +727,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * In Questionnaire for question step and question in form step for date response type we can chose those question as anchor date.
+	 * The anchor date question is unique across the study so here we are validating for anchor date is checked or not for any other
+	 * question while create or updating the new question in a study
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : studyId {@link StudyBo}
+	 *            , studyId {@link StudyBo}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
+	 *            , customStudyId {@link StudyBo}
 	 * @return Boolean true or false
-	 *
-	 *         In Questionnaire for question step and question in form step for
-	 *         date response type we can chose those question as anchor date.
-	 *         The anchor date question is unique across the study so here we
-	 *         are validating for anchor date is checked or not for any other
-	 *         question while create or updating the new question in a study
 	 *
 	 */
 	@Override
@@ -787,12 +748,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Checking for questionnaire creation is completed or not
+	 * 
 	 * @author BTC
 	 * @param Integer
 	 *            : studyId {@link StudyBo}
 	 * @return Boolean true r false
-	 *
-	 *         Checking for questionnaire creation is completed or not
 	 */
 	@Override
 	public Boolean isQuestionnairesCompleted(Integer studyId) {
@@ -801,16 +762,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * From step contains the list of questions with default admin created master order.Admin can manage these orders by reordering
+	 * the question on drag and drop of a questions in the list
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : fromId {@link FormBo}
-	 * @param int : oldOrderNumber
-	 * @param int : newOrderNumber
+	 *            , fromId {@link FormBo}
+	 * @param int , oldOrderNumber
+	 * @param int ,: newOrderNumber
 	 * @return String : SUCCESS or FAILURE
-	 *
-	 *         From step contains the list of questions with default admin
-	 *         created master order.Admin can manage these orders by reordering
-	 *         the question on drag and drop of a questions in the list
 	 */
 	@Override
 	public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber,
@@ -830,19 +790,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * A questionnaire is an ordered set of one or more steps (screens on the mobile app).The questionnaire by default follows the
+	 * master order of steps admin can manage the order of an step.Here we can do the reordering of an questionnaire
+	 * steps(Instruction,Question,Form) which are listed on questionnaire content page.
+	 * 
 	 * @author BTC
-	 * @param Integer
-	 *            questionnaireId {@link QuestionnairesStepsBo}
-	 * @param int oldOrderNumber
-	 * @param int newOrderNumber
+	 * @param Integer, questionnaireId {@link QuestionnairesStepsBo}
+	 * @param int, oldOrderNumber
+	 * @param int, newOrderNumber
 	 * @return String SUCCESS or FAILURE
-	 *
-	 *         A questionnaire is an ordered set of one or more steps (screens
-	 *         on the mobile app).The questionnaire by default follows the
-	 *         master order of steps admin can manage the order of an step.Here
-	 *         we can do the reordering of an questionnaire
-	 *         steps(Instruction,Question,Form) which are listed on
-	 *         questionnaire content page.
 	 */
 	@Override
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,
@@ -862,19 +818,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes. which are step level
+	 * attribute,form level attribute.Admin has fill the required fields and click on done it save the info here.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnairesStepsBo}
+	 *            , {@link QuestionnairesStepsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return Object : {@link QuestionnairesStepsBo}
-	 *
-	 *         Here admin will add the from step to the questionnaire which
-	 *         contains the two sets of attributes. which are step level
-	 *         attribute,form level attribute.Admin has fill the required fields
-	 *         and click on done it save the info here.
+	 *            , customStudyId {@link StudyBo}
+	 * @return {@link QuestionnairesStepsBo}
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(
@@ -896,18 +850,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the
+	 * short title instruction title and instruction text.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link InstructionsBo}
+	 *            , {@link InstructionsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return Object : {@link InstructionsBo}
-	 *
-	 *         Create the instruction step in Questionnaire which lays the
-	 *         instruction to user in mobile app.Admin would needs to fill the
-	 *         short title instruction title and instruction text.
+	 *            , customStudyId in {@link StudyBo}
+	 * @return Object , {@link InstructionsBo}
 	 */
 	@Override
 	public InstructionsBo saveOrUpdateInstructionsBo(
@@ -989,22 +942,19 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Question of a form step contains the two attributes.Question-level attributes – these are the same set of attributes
+	 * as that for question step with the exception of the skippable property and branching logic based on participant choice of
+	 * response or the conditional logic based branching Response-level attributes (same as that for Question Step).Here we can save or
+	 * update the form questions.
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionsBo}
+	 *            , {@link QuestionsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return Object : {@link QuestionsBo}
-	 *
-	 *         Question of a form step contains the two attributes
-	 *         .Question-level attributes – these are the same set of attributes
-	 *         as that for question step with the exception of the skippable
-	 *         property and branching logic based on participant choice of
-	 *         response or the conditional logic based branching Response-level
-	 *         attributes (same as that for Question Step).Here we can save or
-	 *         update the form questions.
+	 *            , customStudyId {@link StudyBo}
+	 * @return Object , {@link QuestionsBo}
 	 */
 	@Override
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo,
@@ -1155,20 +1105,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 *  Create or update of questionnaire in study which contains content and scheduling which can be managed by the admin.The
+	 *  questionnaire schedule frequency can be One time,Daily,Weekly,Monthly,Custom and admin has to select any one frequency.
+	 *  
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnaireBo}
+	 *            , {@link QuestionnaireBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return Object : {@link QuestionnaireBo}
-	 *
-	 *         Create or update of questionnaire in study which contains content
-	 *         and scheduling which can be managed by the admin.The
-	 *         questionnaire schedule frequency can be One time,
-	 *         Daily,Weekly,Monthly,Custom and admin has to select any one
-	 *         frequency.
+	 *            , customStudyId {@link StudyBo}
+	 * @return {@link QuestionnaireBo}
 	 */
 	@Override
 	public QuestionnaireBo saveOrUpdateQuestionnaire(
@@ -1414,17 +1361,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * This method is used to save the questionnaire schedule information of an study
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnaireBo}
+	 *            , {@link QuestionnaireBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return object : {@link QuestionnaireBo}
-	 *
-	 *         This method is used to save the questionnaire schedule
-	 *         information of an study
+	 *            , customStudyId {@link StudyBo}
+	 * @return {@link QuestionnaireBo}
 	 */
 	@Override
 	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(
@@ -1446,22 +1392,19 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections admin has to fill the sub section such
+	 * as step level attribute,question level attribute,response level attributes.Questions can be various types as defined by the
+	 * response format. Depending on the response format, the attributes of the QA would vary Here we can create or update the question
+	 * step in questionnaire
+	 * 
 	 * @author BTC
 	 * @param Object
-	 *            : {@link QuestionnairesStepsBo}
+	 *            , {@link QuestionnairesStepsBo}
 	 * @param Object
-	 *            : {@link SessionObject}
+	 *            , {@link SessionObject}
 	 * @param String
-	 *            : customStudyId {@link StudyBo}
-	 * @return Object : {@link QuestionnairesStepsBo}
-	 *
-	 *         Admin can add the question step to questionnaire here which
-	 *         contains the 3 subsections admin has to fill the sub section such
-	 *         as step level attribute,question level attribute,response level
-	 *         attributes.Questions can be various types as defined by the
-	 *         response format. Depending on the response format, the attributes
-	 *         of the QA would vary Here we can create or update the question
-	 *         step in questionnaire
+	 *            , customStudyId {@link StudyBo}
+	 * @return {@link QuestionnairesStepsBo}
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(
@@ -1595,22 +1538,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or
+	 * statistics.Adding a line chart to the dashboard needs the admin to specify The options time range for the chart which
+	 * depend on the scheduling frequency set for the activity.when admin change the frequency in questionnaire schedule its
+	 * validate the options in the time range for chart options.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : questionnaireId {@link QuestionnaireBo}
+	 *            , questionnaireId {@link QuestionnaireBo}
 	 * @param String
-	 *            : frequency {@link QuestionnaireBo}
-	 * @param String
-	 *            Success or failre
-	 *
-	 *            The admin can choose to add a response data element to the
-	 *            study dashboard in the form of line charts or
-	 *            statistics.Adding a line chart to the dashboard needs the
-	 *            admin to specify The options time range for the chart which
-	 *            depend on the scheduling frequency set for the activity.when
-	 *            admin change the frequency in questionnaire schedule its
-	 *            validate the options in the time range for chart options.
-	 *
+	 *            , frequency {@link QuestionnaireBo}
+	 * @return String , Success or Failure
 	 */
 	@Override
 	public String validateLineChartSchedule(Integer questionnaireId,
@@ -1621,23 +1559,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * For QA of response type that results in the data type 'double',the admin can define conditional logic (formula-based) to
+	 * evaluate with user response as the input. A condition or formula is to be defined along with a destination step to navigate to if
+	 * the result of evaluation is TRUE and an alternative destination step if FALSE.Admin can check the condition is valid or not here.
+	 * 
 	 * @author BTC
 	 * @param String
-	 *            :lhs
+	 *            , lhs
 	 * @param String
-	 *            : rhs
+	 *            , rhs
 	 * @param String
-	 *            : operator
+	 *            , operator
 	 * @param String
-	 *            : input
+	 *            , input
 	 * @return List of {@link QuestionConditionBranchBo}
-	 *
-	 *         For QA of response type that results in the data type 'double',
-	 *         the admin can define conditional logic (formula-based) to
-	 *         evaluate with user response as the input. A condition or formula
-	 *         is to be defined along with a destination step to navigate to if
-	 *         the result of evaluation is TRUE and an alternative destination
-	 *         step if FALSE.Admin can check the condition is valid or not here.
 	 */
 	@Override
 	public FormulaInfoBean validateQuestionConditionalBranchingLogic(
@@ -1654,18 +1589,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	/**
+	 * In Questionnaire form step carries the multiple question and Answers .In form level attributes we can make form form as
+	 * repeatable if the form is repeatable we can not add the line chart and states data to the dashbord.here we are validating
+	 * the added line chart and statistics data before updating the form as repeatable.
+	 * 
 	 * @author BTC
 	 * @param Integer
-	 *            : formId {@link FormBo}
+	 *            , formId {@link FormBo}
 	 * @param String
-	 *            : Success or failure
-	 *
-	 *            In Questionnaire form step carries the multiple question and
-	 *            Answers .In form level attributes we can make form form as
-	 *            repeatable if the form is repeatable we can not add the line
-	 *            chart and states data to the dashbord.here we are validating
-	 *            the added line chart and statistics data before updating the
-	 *            form as repeatable.
+	 *            , Success or failure
 	 */
 	@Override
 	public String validateRepetableFormQuestionStats(Integer formId) {

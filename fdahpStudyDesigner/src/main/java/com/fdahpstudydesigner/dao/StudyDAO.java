@@ -33,9 +33,6 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyDAO {
 
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId,
-			String userIds);
-
 	public String checkActiveTaskTypeValidation(Integer studyId);
 
 	public int comprehensionTestQuestionOrder(Integer studyId);
@@ -62,8 +59,6 @@ public interface StudyDAO {
 
 	public String deleteStudyByIdOrCustomstudyId(Session session,
 			Transaction transaction, String studyId, String customStudyId);
-
-	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 
 	public int eligibilityTestOrderCount(Integer eligibilityId);
 

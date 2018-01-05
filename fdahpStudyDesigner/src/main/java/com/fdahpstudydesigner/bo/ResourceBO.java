@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * The persistent class for the resources database table.
  * 
- * @author Pradyumn
+ * @author BTC
  *
  */
 

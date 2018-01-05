@@ -3,9 +3,13 @@
  */
 package com.fdahpstudydesigner.dao;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -16,6 +20,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
+
+import sun.awt.image.ImageWatched.Link;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -57,11 +64,16 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
+	 * deleting of Active task in Study
+	 * 
 	 * @author Ronalin
-	 * @param Integer
-	 *            : activeTaskInfoId
-	 * @return String :SUCCESS or FAILURE This method used to get the delete the
-	 *         activeTask information
+	 * @param activeTaskBo
+	 *            , {@link ActiveTaskBo}
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param String
+	 *            , customStudyId
+	 * @return String, SUCCESS or FAILURE
 	 */
 	@Override
 	public String deleteActiveTask(ActiveTaskBo activeTaskBo,
@@ -84,37 +96,18 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 				queryString = "DELETE From NotificationBO where activeTaskId="
 						+ activeTaskBo.getId() + "AND notificationSent=false";
 				session.createQuery(queryString).executeUpdate();
-				/*
-				 * queryString =
-				 * "select count(*) from questionnaires where study_id in(select id from studies where custom_study_id='"
-				 * +
-				 * customStudyId+"' and is_live=0) and active=1 and version =0";
-				 * BigInteger qsubCount = (BigInteger)
-				 * session.createSQLQuery(queryString
-				 * ).setMaxResults(1).uniqueResult();
-				 * 
-				 * queryString =
-				 * "select count(*) from active_task where study_id in(select id from studies where custom_study_id='"
-				 * +
-				 * customStudyId+"' and is_live=0) and active=1 and version =0";
-				 * BigInteger asubCount = (BigInteger)
-				 * session.createSQLQuery(queryString
-				 * ).setMaxResults(1).uniqueResult(); if((qsubCount != null &&
-				 * qsubCount.intValue() > 0) || (asubCount != null &&
-				 * asubCount.intValue() > 0)){ queryString =
-				 * "DELETE From NotificationBO where"
-				 * +" notificationSubType='"+FdahpStudyDesignerConstants
-				 * .NOTIFICATION_SUBTYPE_ACTIVITY+"'"
-				 * +" and customStudyId='"+customStudyId
-				 * +"' and notificationSent=false"; query =
-				 * session.createQuery(queryString); query.executeUpdate(); }
-				 */
-
 				query = session.getNamedQuery("getStudyByCustomStudyId")
 						.setString("customStudyId", customStudyId);
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo) query.uniqueResult();
+				// get the study version table to check whether study launch or
+				// not ,
+				// if record exist in version table, then study already launch ,
+				// so do soft delete active task
+				// if record does not exist , then study has not launched , so
+				// do hard delete active task
 				if (studyVersionBo != null) {
+					// soft delete active task after study launch
 					activity = "Active Task was deactivated.";
 					activityDetails = "Active Task was deactivated. (Active Task Key = "
 							+ activeTaskBo.getShortTitle()
@@ -130,6 +123,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							+ customStudyId
 							+ "' where id=" + activeTaskBo.getId();
 				} else {
+					// hard delete active task before study launch
 					session.createSQLQuery(
 							"DELETE FROM active_task_frequencies WHERE active_task_id="
 									+ activeTaskBo.getId()).executeUpdate();
@@ -180,13 +174,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
+	 * get active task details in Study
+	 * 
 	 * @author Ronalin
 	 * @param Integer
-	 *            :aciveTaskId
-	 * @return Object :ActiveTaskBo
-	 *
-	 *         This method is used to get the ativeTask info object based on
-	 *         consent info id
+	 *            , aciveTaskId
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link ActiveTaskBo}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -206,7 +201,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								+ activeTaskBo.getId());
 				activeTaskAtrributeValuesBos = query.list();
 				if (StringUtils.isNotEmpty(customStudyId)) {
-					// Duplicate ShortTitle per activeTask
+					// to check duplicate short title of active task
 					BigInteger shortTitleCount = (BigInteger) session
 							.createSQLQuery(
 									"select count(*) from active_task a "
@@ -229,6 +224,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 						&& !activeTaskAtrributeValuesBos.isEmpty()) {
 					for (ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo : activeTaskAtrributeValuesBos) {
 						if (StringUtils.isNotEmpty(customStudyId)) {
+							// to check duplicate short title in dashboard of
+							// active task
 							BigInteger statTitleCount = (BigInteger) session
 									.createSQLQuery(
 											"select count(*) from active_task_attrtibutes_values at "
@@ -310,9 +307,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
+	 * to get all static formulas in acive task
+	 * 
 	 * @author Ronalin
-	 * @return List :ActivetaskFormulaBo This method used to get all static
-	 *         formulas
+	 * @return {@link List<ActivetaskFormulaBo>}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -338,9 +336,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
+	 * get all the field names of active task based on of activeTaskType
+	 * 
 	 * @author Ronalin
-	 * @return List :ActiveTaskMasterAttributeBo This method used to get all the
-	 *         field names based on of activeTaskType
+	 * @return {@link List<ActiveTaskMasterAttributeBo>}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -369,9 +368,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
+	 * get all type of activeTask in Study
+	 *
 	 * @author Ronalin
-	 * @return List :ActiveTaskListBos This method used to get all type of
-	 *         activeTask
+	 * @param String
+	 *            , platformType
+	 * @return {@link List<ActiveTaskListBo>}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -381,6 +383,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
+
+			// to get only "Fetal Kick Counter" type of active task based on
+			// Android platform
 			if (StringUtils.isNotEmpty(platformType)
 					&& platformType.contains("A"))
 				queryString = "from ActiveTaskListBo a where a.taskName not in('"
@@ -406,9 +411,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
+	 * to get all static statistic images
+	 * 
 	 * @author Ronalin
-	 * @return List :StatisticImageListBo This method used to get all statistic
-	 *         images
+	 * @return {@link List<StatisticImageListBo>}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -663,10 +669,18 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	}
 
 	/**
-	 * @author Ronalin Add/Update the ActiveTaskBo
-	 * @param StudyBo
+	 * Add or update all type of active task content (The Fetal Kick Counter
+	 * task/Tower of Hanoi/Spatial Memory Task)
+	 *
+	 * @author Ronalin
+	 * @param activeTaskBo
 	 *            , {@link ActiveTaskBo}
-	 * @return {@link String}
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param String
+	 *            , customStudyId
+	 * @return {@link ActiveTaskBo}
+	 *
 	 */
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo,
@@ -790,38 +804,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 											draftStudyBo.getName()));
 					if (!notificationBO.isNotificationSent())
 						session.saveOrUpdate(notificationBO);
-					/*
-					 * queryString = "From NotificationBO where " +
-					 * "notificationSubType='"
-					 * +FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
-					 * +"' " +
-					 * "and customStudyId='"+draftStudyBo.getCustomStudyId
-					 * ()+"' and notificationSent=false"; notificationBO =
-					 * (NotificationBO
-					 * )session.createQuery(queryString).setMaxResults
-					 * (1).uniqueResult(); if(notificationBO == null){
-					 * notificationBO = new NotificationBO();
-					 * notificationBO.setStudyId(activeTaskBo.getStudyId());
-					 * notificationBO
-					 * .setCustomStudyId(studyBo.getCustomStudyId());
-					 * notificationBO
-					 * .setNotificationType(FdahpStudyDesignerConstants
-					 * .NOTIFICATION_ST); notificationBO.setNotificationSubType(
-					 * FdahpStudyDesignerConstants
-					 * .NOTIFICATION_SUBTYPE_ACTIVITY);
-					 * notificationBO.setNotificationScheduleType
-					 * (FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
-					 * notificationBO.setNotificationStatus(false);
-					 * notificationBO.setCreatedBy(sesObj.getUserId());
-					 * notificationBO
-					 * .setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime
-					 * ()); notificationBO.setNotificationSent(false);
-					 * notificationBO
-					 * .setNotificationText(FdahpStudyDesignerConstants
-					 * .NOTIFICATION_ACTIVETASK_TEXT_PUBLISH
-					 * .replace("$customId", draftStudyBo.getName()));
-					 * session.save(notificationBO); }
-					 */
 				}
 				// Notification Purpose needed End
 			}
@@ -849,7 +831,18 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	@SuppressWarnings({ "unchecked"})
+	/**
+	 * validating ShortTitle and chart short title in study activity
+	 * 
+	 * @author Ronalin
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @param response
+	 *            , {@link HttpServletResponse}
+	 * @throws IOException
+	 * @return boolean
+	 */
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public boolean validateActiveTaskAttrById(Integer studyId,
 			String activeTaskAttName, String activeTaskAttIdVal,
@@ -857,7 +850,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		logger.info("StudyActiveTasksDAOImpl - validateActiveTaskAttrById() - Starts");
 		boolean flag = false;
 		Session session = null;
-		String queryString = ""; 
+		String queryString = "";
 		String subString = "";
 		List<ActiveTaskBo> taskBos = null;
 		new ArrayList<>();
@@ -868,6 +861,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (studyId != null && StringUtils.isNotEmpty(activeTaskAttName)
 					&& StringUtils.isNotEmpty(activeTaskAttIdVal)) {
+
+				// to check uniqueness of chart short title in activity(active
+				// task and questionnaire) of study
 				if (activeTaskAttName
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)) {
 					if (customStudyId != null && !customStudyId.isEmpty()) {
@@ -888,7 +884,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							subString = " and attributeValueId NOT IN("
 									+ activeTaskAttIdName + ")";
 						}
-
+						// to check chart short title exist in active task or
+						// not
 						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
 								+ "(select id From StudyBo SBO WHERE customStudyId='"
 								+ customStudyId
@@ -900,7 +897,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								&& !activeTaskAtrributeValuesBos.isEmpty()) {
 							flag = true;
 						} else {
-							// check in questionnaries as well
+							// to check chart short title exist in question of
+							// questionnaire
 							queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId in(select id From StudyBo SBO WHERE customStudyId='"
 									+ customStudyId
 									+ "')) and QSBO.stepType='"
@@ -913,6 +911,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 									&& !questionnairesStepsBo.isEmpty()) {
 								flag = true;
 							} else {
+								// to check chart short title exist in form
+								// question of questionnaire
 								queryString = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
 										+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id IN(select id From studies SBO WHERE custom_study_id='"
 										+ customStudyId
@@ -945,6 +945,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							subString = " and attributeValueId NOT IN("
 									+ activeTaskAttIdName + ")";
 						}
+						// to check chart short title exist in active task or
+						// not
 						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="
 								+ studyId
 								+ ") "
@@ -956,7 +958,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								&& !activeTaskAtrributeValuesBos.isEmpty()) {
 							flag = true;
 						} else {
-							// check in questionnaries as well
+							// to check chart short title exist in question of
+							// questionnaire
 							queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="
 									+ studyId
 									+ ") and QSBO.stepType='"
@@ -969,8 +972,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 									&& !questionnairesStepsBo.isEmpty()) {
 								flag = true;
 							} else {
-								// queryString =
-								// "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+activeTaskAttIdVal+"'";
+								// to check chart short title exist in form
+								// question of questionnaire
 								queryString = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
 										+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id="
 										+ studyId
@@ -988,7 +991,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					}
 				} else if (activeTaskAttName
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)) {
+					// to check uniqueness of short title in activity(active
+					// task and questionnaire) of study
 					if (customStudyId != null && !customStudyId.isEmpty()) {
+						// to check short title exist in active task or not
 						queryString = "from ActiveTaskBo where studyId IN (select id From StudyBo SBO WHERE customStudyId='"
 								+ customStudyId
 								+ "') and shortTitle='"
@@ -997,6 +1003,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 						if (taskBos != null && !taskBos.isEmpty()) {
 							flag = true;
 						} else {
+							// to check short title exist in questionnaire or
+							// not
 							queryString = "From QuestionnaireBo QBO where QBO.studyId IN(select id From StudyBo SBO WHERE customStudyId='"
 									+ customStudyId
 									+ "') and QBO.shortTitle='"
@@ -1011,6 +1019,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							}
 						}
 					} else {
+						// to check short title exist in active task or not
 						queryString = "from ActiveTaskBo where studyId="
 								+ studyId + " and shortTitle='"
 								+ activeTaskAttIdVal + "'";
@@ -1018,6 +1027,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 						if (taskBos != null && !taskBos.isEmpty()) {
 							flag = true;
 						} else {
+							// to check short title exist in questionnaire or
+							// not
 							questionnaireBo = session
 									.getNamedQuery(
 											"checkQuestionnaireShortTitle")
@@ -1047,6 +1058,17 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		return flag;
 	}
 
+	/**
+	 * validating list of active task chart short title in study
+	 * 
+	 * @author Ronalin
+	 * @param String
+	 *            , customStudyId
+	 * @param activeStatisticsBeans
+	 *            , {@link List<ActiveStatisticsBean>}
+	 * @throws IOException
+	 * @return {@link List<ActiveStatisticsBean>}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ActiveStatisticsBean> validateActiveTaskStatIds(

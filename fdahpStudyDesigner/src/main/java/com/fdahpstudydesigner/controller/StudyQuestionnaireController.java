@@ -66,6 +66,10 @@ public class StudyQuestionnaireController {
 	private StudyService studyService;
 
 	/**
+	 * Admin want copy the already existed question into the same study admin has to click the copy icon in the questionnaire list.It
+	 * will copy the existed questionnaire into the study with out questionnaire short title because the short title will be unique
+	 * across the study
+	 *         
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -73,11 +77,6 @@ public class StudyQuestionnaireController {
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 *
-	 *         Admin want copy the already existed question into the same study
-	 *         admin has to click the copy icon in the questionnaire list.It
-	 *         will copy the existed questionnaire into the study with out
-	 *         questionnaire short title because the short title will be unique
-	 *         across the study
 	 */
 	@RequestMapping("/adminStudies/copyQuestionnaire.do")
 	public ModelAndView copyStudyQuestionnaire(HttpServletRequest request,
@@ -152,16 +151,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Form step contains group of questions.Admin can delete the questions using this method and we will return the list of
+	 * remaining question to refresh the list
+	 *         
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String : Success/Failure
-	 *
-	 *         Form step contains group of questions.Admin can delete the
-	 *         questions using this method and we will return the list of
-	 *         remaining question to refresh the list
 	 */
 	@RequestMapping(value = "/adminStudies/deleteFormQuestion.do", method = RequestMethod.POST)
 	public void deleteFormQuestionInfo(HttpServletRequest request,
@@ -260,6 +258,8 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Deleting of an Questionnaire in Study
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -267,7 +267,6 @@ public class StudyQuestionnaireController {
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 *
-	 *         Deleting of an Questionnaire in Study
 	 */
 	@RequestMapping(value = "/adminStudies/deleteQuestionnaire.do", method = RequestMethod.POST)
 	public void deleteQuestionnaireInfo(HttpServletRequest request,
@@ -345,15 +344,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 *  Delete of an questionnaire step(Instruction,Question,Form) which
+	 *  are listed in questionnaire.
+	 *  
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         Delete of an questionnaire step(Instruction,Question,Form) which
-	 *         are listed in questionnaire.
 	 */
 	@RequestMapping(value = "/adminStudies/deleteQuestionnaireStep.do", method = RequestMethod.POST)
 	public void deleteQuestionnaireStepInfo(HttpServletRequest request,
@@ -473,6 +472,9 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 *  A questionnaire contains the form step.form step carries multiple
+	 *  questions.Here we described to load the form step of an questionnaire
+	 *         
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -480,9 +482,6 @@ public class StudyQuestionnaireController {
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 *
-	 *         A questionnaire contains the form step.form step carries multiple
-	 *         questions.Here we described to load the form step of an
-	 *         questionnaire
 	 */
 	@RequestMapping("/adminStudies/formStep.do")
 	public ModelAndView getFormStepPage(HttpServletRequest request,
@@ -701,6 +700,10 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 *  Load the Question page of form step inside questionnaire.Question
+	 *  contains the question level attributes and response level
+	 *  attributes
+	 *  
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -708,9 +711,6 @@ public class StudyQuestionnaireController {
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 *
-	 *         Load the Question page of form step inside questionnaire.Question
-	 *         contains the question level attributes and response level
-	 *         attributes
 	 */
 	@RequestMapping("/adminStudies/formQuestion.do")
 	public ModelAndView getFormStepQuestionPage(HttpServletRequest request,
@@ -1187,18 +1187,19 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 
+	 * Load the Questionnaire page of study with all the
+	 * steps(instruction,question,form) with schedule information. Each
+	 * step corresponds to one screen on the mobile app.There can be
+	 * multiple types of QA in a questionnaire depending on the type of
+	 * response format selected per QA.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Load the Questionnaire page of study with all the
-	 *         steps(instruction,question,form) with schedule information. Each
-	 *         step corresponds to one screen on the mobile app.There can be
-	 *         multiple types of QA in a questionnaire depending on the type of
-	 *         response format selected per QA.
 	 *
 	 */
 	@RequestMapping(value = "/adminStudies/viewQuestionnaire.do")
@@ -1390,16 +1391,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Load the Question step page in questionnaire which contains the
+	 * question and answer. Which Carries one QA per screen in Mobile app
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Load the Question step page in questionnaire which contains the
-	 *         question and answer. Which Carries one QA per screen in Mobile
-	 *         app
 	 */
 	@RequestMapping("/adminStudies/questionStep.do")
 	public ModelAndView getQuestionStepPage(HttpServletRequest request,
@@ -1648,6 +1648,10 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * From step contains the list of questions with default admin
+	 * created master order.Admin can manage these orders by reordering
+	 * the question on drag and drop of a questions in the list
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -1655,9 +1659,6 @@ public class StudyQuestionnaireController {
 	 *            {@link HttpServletResponse}
 	 * @return String : Success/Failure
 	 *
-	 *         From step contains the list of questions with default admin
-	 *         created master order.Admin can manage these orders by reordering
-	 *         the question on drag and drop of a questions in the list
 	 */
 	@RequestMapping(value = "/adminStudies/reOrderFormQuestions.do", method = RequestMethod.POST)
 	public void reOrderFromStepQuestionsInfo(HttpServletRequest request,
@@ -1725,6 +1726,13 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * A questionnaire is an ordered set of one or more steps (screens on the mobile app).
+	 * The questionnaire by default follows the
+	 * master order of steps admin can manage the order of an step.Here
+	 * we can do the reordering of an questionnaire
+	 * steps(Instruction,Question,Form) which are listed on
+	 * questionnaire content page.
+	 *         
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -1732,12 +1740,6 @@ public class StudyQuestionnaireController {
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
 	 *
-	 *         A questionnaire is an ordered set of one or more steps (screens
-	 *         on the mobile app).The questionnaire by default follows the
-	 *         master order of steps admin can manage the order of an step.Here
-	 *         we can do the reordering of an questionnaire
-	 *         steps(Instruction,Question,Form) which are listed on
-	 *         questionnaire content page.
 	 */
 	@RequestMapping(value = "/adminStudies/reOrderQuestionnaireStepInfo.do", method = RequestMethod.POST)
 	public void reOrderQuestionnaireStepInfo(HttpServletRequest request,
@@ -1849,17 +1851,16 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Here admin will add the from step to the questionnaire which
+	 * contains the two sets of attributes. which are step level attribute,form level attribute.
+	 * Admin has fill the required fields and click on save request come here
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String : Success or Failure
-	 *
-	 *         Here admin will add the from step to the questionnaire which
-	 *         contains the two sets of attributes. which are step level
-	 *         attribute,form level attribute.Admin has fill the required fields
-	 *         and click on save request come here
 	 */
 	@RequestMapping(value = "/adminStudies/saveFromStep.do")
 	public void saveFormStep(HttpServletRequest request,
@@ -1938,16 +1939,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Create the instruction step in Questionnaire which lays the instruction to user in 
+	 * mobile app.Admin would needs to fill the short title instruction title and instruction text.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         Create the instruction step in Questionnaire which lays the
-	 *         instruction to user in mobile app.Admin would needs to fill the
-	 *         short title instruction title and instruction text.
 	 */
 	@RequestMapping(value = "/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,
@@ -2040,20 +2040,17 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Question of a form step contains the two attributes.Question-level attributes – these are the same set of attributes
+	 * as that for question step with the exception of the skippable property and branching logic based on participant choice of
+	 * response or the conditional logic based branching Response-level	attributes (same as that for Question Step).
+	 * Here we can save or update the form questions.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Question of a form step contains the two attributes
-	 *         .Question-level attributes – these are the same set of attributes
-	 *         as that for question step with the exception of the skippable
-	 *         property and branching logic based on participant choice of
-	 *         response or the conditional logic based branching Response-level
-	 *         attributes (same as that for Question Step).Here we can save or
-	 *         update the form questions.
 	 *
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromQuestion.do")
@@ -2134,17 +2131,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Here admin will add the from step to the questionnaire which contains the two sets of attributes. which are step level
+	 * attribute,form level attribute.Admin has fill the required fields and click on done it save the info here.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Here admin will add the from step to the questionnaire which
-	 *         contains the two sets of attributes. which are step level
-	 *         attribute,form level attribute.Admin has fill the required fields
-	 *         and click on done it save the info here.
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateFromStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateFormStepQuestionnaire(
@@ -2228,6 +2223,9 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Create the instruction step in Questionnaire which lays the instruction to user in mobile app.Admin would needs to fill the
+	 * short title instruction title and instruction text.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -2236,10 +2234,6 @@ public class StudyQuestionnaireController {
 	 * @param instructionsBo
 	 *            {@link InstructionsBo}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Create the instruction step in Questionnaire which lays the
-	 *         instruction to user in mobile app.Admin would needs to fill the
-	 *         short title instruction title and instruction text.
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateInstructionStep.do")
 	public ModelAndView saveOrUpdateInstructionStep(HttpServletRequest request,
@@ -2339,6 +2333,9 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Create or update of questionnaire in study which contains content and scheduling which can be managed by the admin.The
+	 * questionnaire schedule frequency can be One time,Daily,Weekly,Monthly,Custom and admin has to select any one frequency.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
@@ -2347,13 +2344,6 @@ public class StudyQuestionnaireController {
 	 * @param questionnaireBo
 	 *            {@link QuestionnaireBo}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Create or update of questionnaire in study which contains content
-	 *         and scheduling which can be managed by the admin.The
-	 *         questionnaire schedule frequency can be One time,
-	 *         Daily,Weekly,Monthly,Custom and admin has to select any one
-	 *         frequency.
-	 *
 	 */
 	@RequestMapping(value = "/adminStudies/saveorUpdateQuestionnaireSchedule.do", method = RequestMethod.POST)
 	public ModelAndView saveorUpdateQuestionnaireSchedule(
@@ -2443,20 +2433,17 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections admin has to fill the sub section such
+	 * as step level attribute,question level attribute,response level attributes.Questions can be various types as defined by the
+	 * response format. Depending on the response format, the attributes of the QA would vary 
+	 * Here we can create or update the question step in questionnaire
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
-	 *
-	 *         Admin can add the question step to questionnaire here which
-	 *         contains the 3 subsections admin has to fill the sub section such
-	 *         as step level attribute,question level attribute,response level
-	 *         attributes.Questions can be various types as defined by the
-	 *         response format. Depending on the response format, the attributes
-	 *         of the QA would vary Here we can create or update the question
-	 *         step in questionnaire
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do")
 	public ModelAndView saveOrUpdateQuestionStepQuestionnaire(
@@ -2539,19 +2526,17 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 *  Question of a form step contains the two attributes .Question-level attributes – these are the same set of
+	 *  attributes as that for question step with the exception of the skippable property and branching logic based on participant
+	 *  choice of response or the conditional logic based branching Response-level attributes (same as that for Question Step).Here
+	 *  we can save or update the form questions.
+	 *  
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
-	 *
-	 * @return String : Success/Failure Question of a form step contains the two
-	 *         attributes .Question-level attributes – these are the same set of
-	 *         attributes as that for question step with the exception of the
-	 *         skippable property and branching logic based on participant
-	 *         choice of response or the conditional logic based branching
-	 *         Response-level attributes (same as that for Question Step).Here
-	 *         we can save or update the form questions.
+	 * @return String : Success/Failure           
 	 */
 	@RequestMapping(value = "/adminStudies/saveQuestion.do")
 	public void saveQuestion(HttpServletRequest request,
@@ -2680,17 +2665,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Create or update of Questionnaire in study which contains content and scheduling which can be managed.The Questionnaire schedule
+	 * can be One time, Daily,Weekly,Monthly,Custom.The schedule decides how often the user needs to take it
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         Create or update of Questionnaire in study which contains content
-	 *         and scheduling which can be managed.The Questionnaire schedule
-	 *         can be One time, Daily,Weekly,Monthly,Custom.The schedule decides
-	 *         how often the user needs to take it
 	 */
 	@RequestMapping(value = "/adminStudies/saveQuestionnaireSchedule.do", method = RequestMethod.POST)
 	public void saveQuestionnaireSchedule(HttpServletRequest request,
@@ -2792,19 +2775,16 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Admin can add the question step to questionnaire here which contains the 3 subsections admin has to fill the sub section such
+	 * as step level attribute,question level attribute,response level attributes.Questions can be various types as defined by the
+	 * response format. Depending on the response format, the attributes of the QA would vary
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         Admin can add the question step to questionnaire here which
-	 *         contains the 3 subsections admin has to fill the sub section such
-	 *         as step level attribute,question level attribute,response level
-	 *         attributes.Questions can be various types as defined by the
-	 *         response format. Depending on the response format, the attributes
-	 *         of the QA would vary
 	 */
 	@RequestMapping(value = "/adminStudies/saveQuestionStep.do", method = RequestMethod.POST)
 	public void saveQuestionStep(HttpServletResponse response,
@@ -2953,20 +2933,16 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * For QA of response type that results in the data type 'double',the admin can define conditional logic (formula-based) to
+	 * evaluate with user response as the input. A condition or formula is to be defined along with a destination step to navigate to if
+	 * the result of evaluation is TRUE and an alternative destination step if FALSE.Admin can check the condition is valid or not here.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         For QA of response type that results in the data type 'double',
-	 *         the admin can define conditional logic (formula-based) to
-	 *         evaluate with user response as the input. A condition or formula
-	 *         is to be defined along with a destination step to navigate to if
-	 *         the result of evaluation is TRUE and an alternative destination
-	 *         step if FALSE.Admin can check the condition is valid or not here.
-	 *
 	 */
 	@RequestMapping(value = "/adminStudies/validateconditionalFormula.do", method = RequestMethod.POST)
 	public void validateconditionalFormula(HttpServletRequest request,
@@ -3024,21 +3000,17 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding a line
+	 * chart to the dashboard needs the admin to specify The options time range for the chart which depend on the scheduling frequency
+	 * set for the activity.when admin change the frequency in questionnaire schedule its validate the options in the 
+	 * time range for chart options.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         The admin can choose to add a response data element to the study
-	 *         dashboard in the form of line charts or statistics.Adding a line
-	 *         chart to the dashboard needs the admin to specify The options
-	 *         time range for the chart which depend on the scheduling frequency
-	 *         set for the activity.when admin change the frequency in
-	 *         questionnaire schedule its validate the options in the time range
-	 *         for chart options.
-	 *
 	 */
 	@RequestMapping(value = "/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
 	public void validateQuestionnaireLineChartSchedule(
@@ -3089,18 +3061,16 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * Questionnaire contains the content,schedule as two tabs.Each questionnaire contains the short title in content tab this will
+	 * be created as the column for the questionnaire response in response server for this we are doing the unique title validation
+	 * for each questionnaire in study level
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}\
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         Questionnaire contains the content,schedule as two tabs.Each
-	 *         questionnaire contains the short title in content tab this will
-	 *         be created as the column for the questionnaire response in
-	 *         response server for this we are doing the unique title validation
-	 *         for each questionnaire in study level
 	 */
 	@RequestMapping(value = "/adminStudies/validateQuestionnaireKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireShortTitle(HttpServletRequest request,
@@ -3163,18 +3133,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * A questionnaire is an ordered set of one or more steps.Each step contains the step short title field. Which will be response
+	 * column for the step in response server.so it should be the unique.Here validating the unique for step short title
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         A questionnaire is an ordered set of one or more steps.Each step
-	 *         contains the step short title field. Which will be response
-	 *         column for the step in response server.so it should be the
-	 *         unique.Here validating the unique for step short title
-	 *
 	 */
 	@RequestMapping(value = "/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireStepShortTitle(HttpServletRequest request,
@@ -3238,17 +3205,15 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * From step have a one or more question.Each question have the short title field this will be created the as column in response
+	 * server so its should be unique across all the steps.Validateing the Unique of question short title inside form step
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         From step have a one or more question.Each question have the
-	 *         short title field this will be created the as column in response
-	 *         server so its should be unique across all the steps.Validateing
-	 *         the Unique of question short title inside form step
 	 */
 	@RequestMapping(value = "/adminStudies/validateQuestionKey.do", method = RequestMethod.POST)
 	public void validateQuestionShortTitle(HttpServletRequest request,
@@ -3308,18 +3273,16 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * The admin can choose to add a response data element to the study dashboard in the form of line charts or statistics.Adding a
+	 * statistic to the dashboard needs the admin to specify the short name should be unique across all the state in the study So
+	 * validating the unique validation for short name in states.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         The admin can choose to add a response data element to the study
-	 *         dashboard in the form of line charts or statistics.Adding a
-	 *         statistic to the dashboard needs the admin to specify the short
-	 *         name should be unique across all the state in the study So
-	 *         validating the unique validation for short name in states.
 	 */
 	@RequestMapping(value = "/adminStudies/validateStatsShortName.do", method = RequestMethod.POST)
 	public void validateQuestionStatsShortTitle(HttpServletRequest request,
@@ -3366,21 +3329,16 @@ public class StudyQuestionnaireController {
 	}
 
 	/**
+	 * In Questionnaire form step carries the multiple question and Answers .In form level attributes we can make form form as
+	 * repeatable if the form is repeatable we can not add the line chart and states data to the dashbord.here we are validating the
+	 * added line chart and statistics data before updating the form as repeatable.
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            {@link HttpServletRequest}
 	 * @param response
 	 *            {@link HttpServletResponse}
 	 * @return String Success/Failure
-	 *
-	 *         In Questionnaire form step carries the multiple question and
-	 *         Answers .In form level attributes we can make form form as
-	 *         repeatable if the form is repeatable we can not add the line
-	 *         chart and states data to the dashbord.here we are validating the
-	 *         added line chart and statistics data before updating the form as
-	 *         repeatable.
-	 *
-	 *
 	 */
 	@RequestMapping(value = "/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
 	public void validateRepeatableQuestion(HttpServletRequest request,
