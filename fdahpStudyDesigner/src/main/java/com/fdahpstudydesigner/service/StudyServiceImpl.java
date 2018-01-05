@@ -519,7 +519,7 @@ public class StudyServiceImpl implements StudyService {
 	 * 
 	 * @author BTC
 	 * @param studyId {@link StudyBo}
-	 * @return List<ConsentInfoBo>
+	 * @return List {@link ConsentInfoBo}
 	 * 
 	 */
 	@Override
