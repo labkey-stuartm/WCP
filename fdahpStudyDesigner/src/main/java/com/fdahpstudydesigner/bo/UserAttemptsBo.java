@@ -16,6 +16,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
+ * The persistent class for the user_attempts database table.
+ * 
  * @author Vivek
  *
  */
@@ -31,19 +33,19 @@ public class UserAttemptsBo implements Serializable {
 	 */
 	private static final long serialVersionUID = -3166967048106586712L;
 
+	@Column(name = "attempts")
+	private int attempts;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "email_id")
-	private String userEmailId;
-
-	@Column(name = "attempts")
-	private int attempts;
-
 	@Column(name = "last_modified")
 	private String lastModified;
+
+	@Column(name = "email_id")
+	private String userEmailId;
 
 	/**
 	 * @return the attempts

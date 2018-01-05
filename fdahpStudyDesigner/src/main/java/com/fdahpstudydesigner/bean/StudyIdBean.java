@@ -1,10 +1,10 @@
 package com.fdahpstudydesigner.bean;
 
 public class StudyIdBean {
-	Integer activityStudyId = null;
 	Integer activetaskStudyId = null;
-	Integer questionnarieStudyId = null;
+	Integer activityStudyId = null;
 	Integer consentStudyId = null;
+	Integer questionnarieStudyId = null;
 
 	public Integer getActivetaskStudyId() {
 		return activetaskStudyId;

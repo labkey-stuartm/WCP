@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * The persistent class for the response_type_value database table.
  * 
- * @author BTC 
+ * @author BTC
  */
 @Entity
 @Table(name = "response_type_value")
@@ -26,31 +26,56 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	private static final long serialVersionUID = 2659206312696342901L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "response_type_id")
-	private Integer responseTypeId;
+	@Column(name = "active")
+	private Boolean active;
 
-	@Column(name = "questions_response_type_id")
-	private Integer questionsResponseTypeId;
+	@Column(name = "condition_formula")
+	private String conditionFormula;
 
-	@Column(name = "max_value")
-	private String maxValue;
+	@Column(name = "default_date")
+	private String defaultDate;
 
-	@Column(name = "min_value")
-	private String minValue;
+	@Column(name = "defalut_time")
+	private String defaultTime;
 
 	@Column(name = "default_value")
 	private String defaultValue;
 
-	@Column(name = "step")
-	private Integer step;
+	@Column(name = "formula_based_logic")
+	private String formulaBasedLogic = "No";
 
-	@Column(name = "vertical")
-	private Boolean vertical;
+	@Column(name = "image_size")
+	private String imageSize;
+
+	@Column(name = "invalid_message")
+	private String invalidMessage;
+
+	@Column(name = "max_date")
+	private String maxDate;
 
 	@Column(name = "max_desc")
 	private String maxDescription;
+
+	@Column(name = "max_fraction_digits")
+	private Integer maxFractionDigits;
+
+	@Column(name = "max_image")
+	private String maxImage;
+
+	@Transient
+	private MultipartFile maxImageFile;
+
+	@Column(name = "max_length")
+	private Integer maxLength;
+
+	@Column(name = "max_value")
+	private String maxValue;
+
+	@Column(name = "measurement_system")
+	private String measurementSystem;
+
+	@Column(name = "min_date")
+	private String minDate;
 
 	@Column(name = "min_desc")
 	private String minDescription;
@@ -58,83 +83,58 @@ public class QuestionReponseTypeBo implements Serializable {
 	@Column(name = "min_image")
 	private String minImage;
 
-	@Column(name = "max_image")
-	private String maxImage;
+	@Transient
+	private MultipartFile minImageFile;
 
-	@Column(name = "max_fraction_digits")
-	private Integer maxFractionDigits;
-
-	@Column(name = "text_choices")
-	private String textChoices;
-
-	@Column(name = "selection_style")
-	private String selectionStyle;
-
-	@Column(name = "image_size")
-	private String imageSize;
-
-	@Column(name = "style")
-	private String style;
-
-	@Column(name = "unit")
-	private String unit;
-
-	@Column(name = "placeholder")
-	private String placeholder;
-
-	@Column(name = "min_date")
-	private String minDate;
-
-	@Column(name = "max_date")
-	private String maxDate;
-
-	@Column(name = "default_date")
-	private String defaultDate;
-
-	@Column(name = "max_length")
-	private Integer maxLength;
-
-	@Column(name = "validation_regex")
-	private String validationRegex;
-
-	@Column(name = "invalid_message")
-	private String invalidMessage;
+	@Column(name = "min_value")
+	private String minValue;
 
 	@Column(name = "multiple_lines")
 	private Boolean multipleLines;
 
-	@Column(name = "measurement_system")
-	private String measurementSystem;
+	@Column(name = "placeholder")
+	private String placeholder;
+
+	@Column(name = "questions_response_type_id")
+	private Integer questionsResponseTypeId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "response_type_id")
+	private Integer responseTypeId;
+
+	@Column(name = "selection_style")
+	private String selectionStyle;
+
+	@Column(name = "step")
+	private Integer step;
+
+	@Column(name = "style")
+	private String style;
+
+	@Column(name = "text_choices")
+	private String textChoices;
+
+	@Column(name = "unit")
+	private String unit;
 
 	@Column(name = "use_current_location")
 	private Boolean useCurrentLocation;
 
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "defalut_time")
-	private String defaultTime;
+	@Column(name = "validation_characters")
+	private String validationCharacters;
 
 	@Column(name = "validation_condition")
 	private String validationCondition;
 
-	@Column(name = "validation_characters")
-	private String validationCharacters;
-
 	@Column(name = "validation_except_text")
 	private String validationExceptText;
 
-	@Column(name = "formula_based_logic")
-	private String formulaBasedLogic = "No";
+	@Column(name = "validation_regex")
+	private String validationRegex;
 
-	@Column(name = "condition_formula")
-	private String conditionFormula;
-
-	@Transient
-	private MultipartFile minImageFile;
-
-	@Transient
-	private MultipartFile maxImageFile;
+	@Column(name = "vertical")
+	private Boolean vertical;
 
 	public Boolean getActive() {
 		return active;

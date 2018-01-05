@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the questionnaires database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity
@@ -26,13 +26,13 @@ public class QuestionConditionBranchBo implements Serializable {
 
 	private static final long serialVersionUID = 8189512029031610252L;
 
+	@Column(name = "active")
+	private Boolean active;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "condition_id")
 	private Integer conditionId;
-
-	@Column(name = "question_id")
-	private Integer questionId;
 
 	@Column(name = "input_type")
 	private String inputType;
@@ -40,17 +40,17 @@ public class QuestionConditionBranchBo implements Serializable {
 	@Column(name = "input_type_value")
 	private String inputTypeValue;
 
-	@Column(name = "sequence_no")
-	private Integer sequenceNo;
-
 	@Column(name = "parent_sequence_no")
 	private Integer parentSequenceNo;
 
-	@Column(name = "active")
-	private Boolean active;
-
 	@Transient
 	private List<QuestionConditionBranchBo> questionConditionBranchBos;
+
+	@Column(name = "question_id")
+	private Integer questionId;
+
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
 
 	public Boolean getActive() {
 		return active;

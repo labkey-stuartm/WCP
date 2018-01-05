@@ -47,10 +47,10 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class StudyServiceImpl implements StudyService {
 
 	private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
-	private StudyDAO studyDAO;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+
+	private StudyDAO studyDAO;
 
 	/**
 	 * This method is used to validate the activetaskType for android

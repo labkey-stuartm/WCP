@@ -20,7 +20,7 @@ import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 /**
  * The persistent class for the questionnaires_steps database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity
@@ -36,31 +36,47 @@ public class QuestionnairesStepsBo implements Serializable {
 
 	private static final long serialVersionUID = -7908951701723989954L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "step_id")
-	private Integer stepId;
+	@Column(name = "active")
+	private Boolean active;
 
-	@Column(name = "questionnaires_id")
-	private Integer questionnairesId;
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
+	@Column(name = "destination_step")
+	private Integer destinationStep;
+
+	@Transient
+	private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 
 	@Column(name = "instruction_form_id")
 	private Integer instructionFormId;
 
-	@Column(name = "step_type")
-	private String stepType;
+	@Transient
+	private Integer isShorTitleDuplicate = 0;
 
-	@Column(name = "sequence_no")
-	private Integer sequenceNo;
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
 
-	@Column(name = "step_short_title")
-	private String stepShortTitle;
+	@Column(name = "modified_on")
+	private String modifiedOn;
 
-	@Column(name = "skiappable")
-	private String skiappable;
+	@Transient
+	private List<QuestionConditionBranchBo> questionConditionBranchBoList;
 
-	@Column(name = "destination_step")
-	private Integer destinationStep;
+	@Column(name = "questionnaires_id")
+	private Integer questionnairesId;
+
+	@Transient
+	private QuestionReponseTypeBo questionReponseTypeBo;
+
+	@Transient
+	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
+
+	@Transient
+	private QuestionsBo questionsBo;
 
 	@Column(name = "repeatable")
 	private String repeatable = "No";
@@ -68,44 +84,28 @@ public class QuestionnairesStepsBo implements Serializable {
 	@Column(name = "repeatable_text")
 	private String repeatableText;
 
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
+
+	@Column(name = "skiappable")
+	private String skiappable;
+
 	@Column(name = "status")
 	private Boolean status;
 
-	@Column(name = "created_on")
-	private String createdOn;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "step_id")
+	private Integer stepId;
 
-	@Column(name = "modified_on")
-	private String modifiedOn;
+	@Column(name = "step_short_title")
+	private String stepShortTitle;
 
-	@Column(name = "created_by")
-	private Integer createdBy;
-
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-
-	@Column(name = "active")
-	private Boolean active;
+	@Column(name = "step_type")
+	private String stepType;
 
 	@Transient
 	private String type;
-
-	@Transient
-	private QuestionsBo questionsBo;
-
-	@Transient
-	private QuestionReponseTypeBo questionReponseTypeBo;
-
-	@Transient
-	private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
-
-	@Transient
-	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
-
-	@Transient
-	private List<QuestionConditionBranchBo> questionConditionBranchBoList;
-
-	@Transient
-	private Integer isShorTitleDuplicate = 0;
 
 	public Boolean getActive() {
 		return active;

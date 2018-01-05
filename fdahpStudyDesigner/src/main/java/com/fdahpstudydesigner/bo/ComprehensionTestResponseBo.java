@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the comprehension_test_response database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity
@@ -24,19 +24,19 @@ public class ComprehensionTestResponseBo implements Serializable {
 	 */
 	private static final long serialVersionUID = 7739882770594873383L;
 
+	@Column(name = "comprehension_test_question_id")
+	private Integer comprehensionTestQuestionId;
+
+	@Column(name = "correct_answer")
+	private Boolean correctAnswer;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "comprehension_test_question_id")
-	private Integer comprehensionTestQuestionId;
-
 	@Column(name = "response_option")
 	private String responseOption;
-
-	@Column(name = "correct_answer")
-	private Boolean correctAnswer;
 
 	public Integer getComprehensionTestQuestionId() {
 		return comprehensionTestQuestionId;

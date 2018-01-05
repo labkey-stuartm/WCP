@@ -57,13 +57,13 @@ public class StudyQuestionnaireController {
 			.getLogger(StudyQuestionnaireController.class.getName());
 
 	@Autowired
-	private StudyService studyService;
+	private StudyActiveTasksService studyActiveTasksService;
 
 	@Autowired
 	private StudyQuestionnaireService studyQuestionnaireService;
 
 	@Autowired
-	private StudyActiveTasksService studyActiveTasksService;
+	private StudyService studyService;
 
 	/**
 	 * Admin want copy the already existed question into the same study admin has to click the copy icon in the questionnaire list.It

@@ -19,7 +19,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.servlet.ModelAndView;
 
 import sun.awt.image.ImageWatched.Link;
 
@@ -76,12 +75,12 @@ public class StudyDAOImpl implements StudyDAO {
 
 	private static Logger logger = Logger.getLogger(StudyDAOImpl.class
 			.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-	String queryString = "";
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+	String queryString = "";
+	private Transaction transaction = null;
 
 	public StudyDAOImpl() {
 		// Unused
@@ -596,6 +595,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param studyId
 	 * @return message, Success/Failure message
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,
 			boolean resourceVisibility, int studyId) {
@@ -621,23 +621,9 @@ public class StudyDAOImpl implements StudyDAO {
 					if (isValue && !resourceBO.getId().equals(resourceInfoId)) {
 						resourceBO
 								.setSequenceNo(resourceBO.getSequenceNo() - 1);
-						// resourceBO.setModifiedBy(resourceBO.getUserId());
-						// resourceBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(resourceBO);
 					}
 				}
-				// StudySequenceBo studySequence = (StudySequenceBo)
-				// session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID,
-				// studyId).uniqueResult();
-				// if(studySequence != null){
-				// if(resourceBOList.size() == 1){
-				// studySequence.setConsentEduInfo(false);
-				// }
-				// if(studySequence.iseConsent()){
-				// studySequence.seteConsent(false);
-				// }
-				// session.saveOrUpdate(studySequence);
-				// }
 			}
 
 			String deleteQuery = " UPDATE ResourceBO RBO SET status = " + false
@@ -672,7 +658,6 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param String, customStudyId
 	 * @return boolean,{true/false}
 	 */
-	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
 		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Starts");
 		Session session = null;
@@ -1193,6 +1178,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param userId
 	 * @return List of {@link StudyPermissionBO}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,
 			Integer userId) {
@@ -2238,7 +2224,6 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @param studyId
 	 * @return {@link ResourceBO}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public ResourceBO getStudyProtocol(Integer studyId) {
 		logger.info("StudyDAOImpl - getStudyProtocol() - Starts");
@@ -2267,6 +2252,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @author BTC
 	 * @return 
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Integer> getSuperAdminUserIds() {
 		logger.info("StudyDAOImpl - getSuperAdminUserIds() - Starts");
 		Session session = null;
@@ -4764,6 +4750,7 @@ public class StudyDAOImpl implements StudyDAO {
 	 * @return {@link String} , SUCCESS or FAILURE
 	 * @exception Exception
 	 */
+	@SuppressWarnings({ "unchecked"})
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo,
 			SessionObject sesObj, String userIds, String permissions,
@@ -6690,7 +6677,8 @@ public class StudyDAOImpl implements StudyDAO {
 				message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 			}
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - validateActivityComplete() - ERROR ", e);
+			logger.error("StudyDAOImpl - validateActivityComplete() - ERROR ",
+					e);
 		} finally {
 			if (null != session && session.isOpen()) {
 				session.close();
@@ -6799,7 +6787,7 @@ public class StudyDAOImpl implements StudyDAO {
 					resourceAnchorFlag = false;
 
 			}
-			// Ancordate Checking
+			// Anchor date Checking
 			if (!resourceAnchorFlag) {
 				message = FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG;
 				return message;
@@ -6824,7 +6812,7 @@ public class StudyDAOImpl implements StudyDAO {
 						studyBo.getId());
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
-					// checking activetask which have scheduled for One time
+					// checking active task which have scheduled for One time
 					// expired or not
 					for (DynamicBean obj : dynamicList) {
 						if (obj.getDateTime() != null
@@ -6859,7 +6847,7 @@ public class StudyDAOImpl implements StudyDAO {
 						studyBo.getId());
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
-					// checking activetask which have scheduled not in One
+					// checking active task which have scheduled not in One
 					// time,Manually Schedule expired or not
 					for (DynamicBean obj : dynamicList) {
 						if (obj.getDateTime() != null
@@ -6893,7 +6881,7 @@ public class StudyDAOImpl implements StudyDAO {
 				if (dynamicFrequencyList != null
 						&& !dynamicFrequencyList.isEmpty()) {
 					for (DynamicFrequencyBean obj : dynamicFrequencyList) {
-						// checking activetask which have scheduled for
+						// checking active task which have scheduled for
 						// "Manually Schedule" expired or not
 						if (obj.getStartDate() != null && obj.getTime() != null) {
 							String dateTime = obj.getStartDate() + " "
@@ -6912,7 +6900,7 @@ public class StudyDAOImpl implements StudyDAO {
 				message = FdahpStudyDesignerConstants.ACTIVETASK_DATE_ERROR_MSG;
 				return message;
 			} else {
-				// getting Questionnaries based on StudyId
+				// getting Questionnaires based on StudyId
 				query = session
 						.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 								+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
@@ -6931,7 +6919,7 @@ public class StudyDAOImpl implements StudyDAO {
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
 					for (DynamicBean obj : dynamicList) {
-						// checking Questionnaries which have scheduled for one
+						// checking Questionnaires which have scheduled for one
 						// time expired or not
 						if (obj.getDateTime() != null
 								&& !FdahpStudyDesignerUtil
@@ -6964,7 +6952,7 @@ public class StudyDAOImpl implements StudyDAO {
 						studyBo.getId());
 				dynamicList = query.list();
 				if (dynamicList != null && !dynamicList.isEmpty()) {
-					// checking Questionnaries which have scheduled not in one
+					// checking Questionnaires which have scheduled not in one
 					// time,manually schedule expired or not
 					for (DynamicBean obj : dynamicList) {
 						if (obj.getDateTime() != null
@@ -6996,7 +6984,7 @@ public class StudyDAOImpl implements StudyDAO {
 				dynamicFrequencyList = query.list();
 				if (dynamicFrequencyList != null
 						&& !dynamicFrequencyList.isEmpty()) {
-					// checking Questionnaries which have scheduled
+					// checking Questionnaires which have scheduled
 					// "manually schedule" expired or not
 					for (DynamicFrequencyBean obj : dynamicFrequencyList) {
 						if (obj.getStartDate() != null && obj.getTime() != null) {

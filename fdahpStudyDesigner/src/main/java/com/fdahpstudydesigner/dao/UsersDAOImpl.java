@@ -34,11 +34,11 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class UsersDAOImpl implements UsersDAO {
 
 	private static Logger logger = Logger.getLogger(UsersDAOImpl.class);
-	HibernateTemplate hibernateTemplate;
-	private Transaction transaction = null;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+
+	private Transaction transaction = null;
 
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {

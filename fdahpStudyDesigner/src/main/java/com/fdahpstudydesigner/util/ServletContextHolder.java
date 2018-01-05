@@ -10,6 +10,8 @@ import javax.servlet.ServletContextListener;
 
 public class ServletContextHolder implements ServletContextListener {
 
+	private static ServletContext servletContext;
+
 	/**
 	 * @return the servletContext
 	 */
@@ -25,8 +27,6 @@ public class ServletContextHolder implements ServletContextListener {
 		ServletContextHolder.servletContext = servletContext;
 	}
 
-	private static ServletContext servletContext;
-
 	/**
 	 * @author Vivek
 	 *
@@ -34,17 +34,6 @@ public class ServletContextHolder implements ServletContextListener {
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// Logger logger = Logger.getLogger(FDASchedulerService.class
-		// .getName());
-		// logger.info("ServletContextHolder - contextDestroyed - Ends");
-		// List<String> emailAddresses = Arrays.asList(FdahpStudyDesignerUtil
-		// .getAppProperties().get("email.address.audit.failure")
-		// .split("\\s*,\\s*"));
-		// EmailNotification.sendEmailNotificationToMany(
-		// "mail.server.shutdown.subject",
-		// (String) FdahpStudyDesignerUtil.getAppProperties().get(
-		// "mail.server.shutdown.content"), emailAddresses, null,
-		// null);
 	}
 
 	/**
@@ -55,7 +44,6 @@ public class ServletContextHolder implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContextHolder.setServletContext(sce.getServletContext());
-		// TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 	}
 
 }

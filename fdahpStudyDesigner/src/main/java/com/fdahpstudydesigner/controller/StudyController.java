@@ -71,13 +71,13 @@ public class StudyController {
 			.getName());
 
 	@Autowired
-	private StudyService studyService;
-
-	@Autowired
 	private NotificationService notificationService;
 
 	@Autowired
 	private StudyQuestionnaireService studyQuestionnaireService;
+
+	@Autowired
+	private StudyService studyService;
 
 	@Autowired
 	private UsersService usersService;

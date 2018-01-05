@@ -42,24 +42,30 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
  *
  */
 public class FDASchedulerService {
-	private static Logger logger = Logger.getLogger(FDASchedulerService.class
-			.getName());
-
 	private static final Map<?, ?> configMap = FdahpStudyDesignerUtil
 			.getAppProperties();
+
+	private static Logger logger = Logger.getLogger(FDASchedulerService.class
+			.getName());
 
 	@Autowired
 	AuditLogDAO auditLogDAO;
 
 	@Autowired
-	private NotificationDAO notificationDAO;
+	private LoginDAO loginDAO;
 
 	@Autowired
-	private LoginDAO loginDAO;
+	private NotificationDAO notificationDAO;
 
 	@Autowired
 	private UsersDAO usersDAO;
 
+	/**
+	 * This method create a audit log file in every mid night.
+	 * 
+	 * @author Vivek
+	 * 
+	 */
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void createAuditLogs() {
 		logger.info("FDASchedulerService - createAuditLogs - Starts");
@@ -133,6 +139,13 @@ public class FDASchedulerService {
 		}
 		logger.info("FDASchedulerService - createAuditLogs - Ends");
 	}
+
+	/**
+	 * This method sends all notification to registration server.
+	 * 
+	 * @author Vivek
+	 * 
+	 */
 
 	@Scheduled(cron = "0 0/1 * * * ?")
 	public void sendPushNotification() {

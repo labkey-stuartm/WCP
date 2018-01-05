@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
+ * The persistent class for the user_permissions database table.
+ * 
  * @author BTC
  *
  */
@@ -20,9 +22,9 @@ import javax.persistence.Table;
 @Table(name = "user_permissions")
 public class UserPermissions {
 
-	private Integer userRoleId;
-
 	private String permissions;
+
+	private Integer userRoleId;
 
 	private Set<UserBO> users;
 
