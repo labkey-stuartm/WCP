@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the activetask_formula database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

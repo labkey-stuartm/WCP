@@ -61,7 +61,7 @@ public class StudyActiveTasksController {
 	/**
 	 * to mark complete of study active task
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -126,7 +126,7 @@ public class StudyActiveTasksController {
 	/**
 	 * deleting of Active task in Study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -246,7 +246,7 @@ public class StudyActiveTasksController {
 	 * navigate to particular type of Active Task(Fetal Kick Counter/Tower of
 	 * Hanoi /Spatial Span Memory)
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -462,7 +462,7 @@ public class StudyActiveTasksController {
 	 * Add or update all type of active task content (The Fetal Kick Counter
 	 * task/Tower of Hanoi/Spatial Memory Task)
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param activeTaskBo
@@ -624,7 +624,7 @@ public class StudyActiveTasksController {
 	/**
 	 * validating ShortTitle and chart short title in study activity
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -703,7 +703,7 @@ public class StudyActiveTasksController {
 	/**
 	 * validating list of active task chart short title in study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -790,7 +790,7 @@ public class StudyActiveTasksController {
 	 * activities.
 	 * </p>
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}

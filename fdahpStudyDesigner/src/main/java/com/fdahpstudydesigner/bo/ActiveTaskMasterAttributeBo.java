@@ -14,7 +14,7 @@ import org.hibernate.annotations.Type;
 /**
  * The persistent class for the active_task_master_attribute database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

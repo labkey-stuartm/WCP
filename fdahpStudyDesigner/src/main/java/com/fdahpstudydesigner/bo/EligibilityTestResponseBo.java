@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the eligibility_test_response database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

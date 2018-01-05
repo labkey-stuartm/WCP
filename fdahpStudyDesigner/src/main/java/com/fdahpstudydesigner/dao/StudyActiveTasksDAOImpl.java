@@ -66,7 +66,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * deleting of Active task in Study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param activeTaskBo
 	 *            , {@link ActiveTaskBo}
 	 * @param sesObj
@@ -176,7 +176,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * get active task details in Study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param Integer
 	 *            , aciveTaskId
 	 * @param String
@@ -309,7 +309,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * to get all static formulas in acive task
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @return {@link List<ActivetaskFormulaBo>}
 	 */
 	@SuppressWarnings("unchecked")
@@ -338,7 +338,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * get all the field names of active task based on of activeTaskType
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @return {@link List<ActiveTaskMasterAttributeBo>}
 	 */
 	@SuppressWarnings("unchecked")
@@ -370,7 +370,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * get all type of activeTask in Study
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String
 	 *            , platformType
 	 * @return {@link List<ActiveTaskListBo>}
@@ -413,7 +413,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * to get all static statistic images
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @return {@link List<StatisticImageListBo>}
 	 */
 	@SuppressWarnings("unchecked")
@@ -672,7 +672,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	 * Add or update all type of active task content (The Fetal Kick Counter
 	 * task/Tower of Hanoi/Spatial Memory Task)
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 * @param activeTaskBo
 	 *            , {@link ActiveTaskBo}
 	 * @param sesObj
@@ -834,7 +834,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * validating ShortTitle and chart short title in study activity
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -1061,7 +1061,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 	/**
 	 * validating list of active task chart short title in study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String
 	 *            , customStudyId
 	 * @param activeStatisticsBeans

@@ -85,7 +85,7 @@ public class StudyController {
 	/**
 	 * This method shows the following actions(Publish (as Upcoming Study) Start / Launch or Publish Updates Pause or Resume Deactivate)
 	 * of a study
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView} 
 	 */
@@ -518,7 +518,7 @@ public class StudyController {
 
 	/**
 	 * used to create copy of live study as new study
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
@@ -785,7 +785,7 @@ public class StudyController {
 
 	/**
 	 * delete study by customStudyId
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
@@ -1849,7 +1849,7 @@ public class StudyController {
 	 * <p>This method shows the
 	 *  user present with a list of studies</p>
 	 *  
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest}
 	 * @return {@link ModelAndView} 
 	 */
@@ -2190,7 +2190,7 @@ public class StudyController {
 	 *         swipe-able screens that carry information about the study, with
 	 *         each screen having A title Description Image Link to Video (on
 	 *         first screen only) Link to Study Website
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} 
@@ -2822,7 +2822,7 @@ public class StudyController {
 
 	/**
 	 * reset study by customStudyId
-	 * @author Ronalin
+	 * @author BTC
 	 * @param request, {@link HttpServletRequest} 
 	 * @return {@link ModelAndView}
 	 */

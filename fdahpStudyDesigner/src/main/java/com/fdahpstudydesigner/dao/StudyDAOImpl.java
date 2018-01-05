@@ -67,7 +67,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Repository
@@ -548,7 +548,7 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * delete the Study Overview Page By Page Id
-	 * @author Ronalin 
+	 * @author BTC 
 	 * @param String, studyId
 	 *  @param String, pageId
 	 * @return {@link String}
@@ -687,7 +687,7 @@ public class StudyDAOImpl implements StudyDAO {
 
 	/**
 	 * This method is used to delete Study
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String, customStudyId
 	 * @return boolean,{true/false}
 	 */

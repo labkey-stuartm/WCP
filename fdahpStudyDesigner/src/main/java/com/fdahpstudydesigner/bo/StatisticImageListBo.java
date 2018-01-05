@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the statistic_master_images database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

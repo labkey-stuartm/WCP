@@ -18,7 +18,7 @@ import org.hibernate.annotations.Type;
  * Eligibility test question and answer of a {@link EligibilityBo} object of
  * type "Eligibility Test"
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

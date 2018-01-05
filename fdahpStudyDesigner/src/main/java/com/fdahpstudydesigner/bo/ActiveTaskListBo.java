@@ -14,7 +14,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the active_task_list database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

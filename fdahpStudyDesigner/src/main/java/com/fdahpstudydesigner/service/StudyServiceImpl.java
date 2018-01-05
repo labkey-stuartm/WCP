@@ -40,7 +40,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Service
@@ -113,7 +113,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * used to create copy of live study as new study
 	 * 
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String, customStudyId
 	 * @param object, {@link SessionObject}
 	 * @return boolean
@@ -276,7 +276,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * This method is used to delete Study
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String, customStudyId
 	 * @return boolean,{true/false}
 	 */
@@ -1909,7 +1909,7 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * This method is validate the activity(Active task/Questionnaire) done or not
-	 * @author Ronalin
+	 * @author BTC
 	 * @param String, studyId
 	 * @param String, action
 	 * @return String, {SUCCESS/FAILURE} 

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.log4j.Logger;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 public class RequestWrapper extends HttpServletRequestWrapper {

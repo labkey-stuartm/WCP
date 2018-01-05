@@ -30,7 +30,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 @Controller
@@ -47,7 +47,7 @@ public class LoginController {
 	/**
 	 * Validate access code and add new password
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -113,7 +113,7 @@ public class LoginController {
 	/**
 	 * Navigate to the force change password view
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -152,7 +152,7 @@ public class LoginController {
 	/**
 	 * Initiate the change password process
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -206,7 +206,7 @@ public class LoginController {
 	/**
 	 * Navigate to login page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param error
 	 *            , the error message from Spring security
@@ -253,7 +253,7 @@ public class LoginController {
 	/**
 	 * Initiate the forget password process
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -287,7 +287,7 @@ public class LoginController {
 	/**
 	 * Navigate to login page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param error
 	 *            , the error message from Spring security
@@ -320,7 +320,7 @@ public class LoginController {
 	/**
 	 * Navigate to privacy policy Page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -373,7 +373,7 @@ public class LoginController {
 	/**
 	 * Remove User from the Session
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -417,7 +417,7 @@ public class LoginController {
 	/**
 	 * Navigate to terms and condition Page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -434,7 +434,7 @@ public class LoginController {
 	/**
 	 * Prevent the user to view unauthorized view
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -486,7 +486,7 @@ public class LoginController {
 	/**
 	 * Validate the Security Token and navigate to sign up or change password page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}

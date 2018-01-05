@@ -347,7 +347,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check the user is not logged in from long time logout by Admin
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @param sessionObject
 	 * @return {@link Boolean}

@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 /**
  * Eligibility of Study, specify the eligibility mechanism by Admin
  *
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

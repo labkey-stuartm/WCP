@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the study_activity_version database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

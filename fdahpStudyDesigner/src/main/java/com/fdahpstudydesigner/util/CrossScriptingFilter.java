@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 public class CrossScriptingFilter implements Filter {

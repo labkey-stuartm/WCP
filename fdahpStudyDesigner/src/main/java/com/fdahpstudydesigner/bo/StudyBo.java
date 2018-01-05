@@ -22,7 +22,7 @@ import com.fdahpstudydesigner.bean.StudyListBean;
 /**
  * The persistent class for the studies database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 @Entity

@@ -29,7 +29,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 @Controller
@@ -101,7 +101,7 @@ public class DashBoardAndProfileController {
 	/**
 	 * Navigate to FDA admin dash board page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @return {@link ModelAndView} , dashBoardPage page
 	 */

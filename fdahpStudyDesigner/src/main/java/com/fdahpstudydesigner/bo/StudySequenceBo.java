@@ -16,7 +16,7 @@ import org.hibernate.annotations.Type;
 /**
  * The persistent class for the study_sequence database table.
  * 
- * @author Ronalin
+ * @author BTC
  *
  */
 
