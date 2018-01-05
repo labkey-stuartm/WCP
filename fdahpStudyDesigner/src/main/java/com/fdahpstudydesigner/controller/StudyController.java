@@ -315,16 +315,17 @@ public class StudyController {
 	}
 
 	/**
+	 * Making the comprehension test question creating completed in comprehension list page
+	 *   
 	 * @author BTC
-	 * @param request
-	 * @param response
-	 *            Description : save ComprehensionTest Question as mark as
-	 *            completed
+	 * 
+	 * @param request {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/comprehensionTestMarkAsCompleted.do")
 	public ModelAndView comprehensionTestMarkAsCompleted(
 			HttpServletRequest request) {
-		logger.info("StudyController - consentReviewMarkAsCompleted() - Starts");
+		logger.info("StudyController - comprehensionTestMarkAsCompleted() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:studyList.do");
 		ModelMap map = new ModelMap();
 		String message = FdahpStudyDesignerConstants.FAILURE;
@@ -375,19 +376,19 @@ public class StudyController {
 			}
 		} catch (Exception e) {
 			logger.error(
-					"StudyController - consentReviewMarkAsCompleted() - ERROR",
+					"StudyController - comprehensionTestMarkAsCompleted() - ERROR",
 					e);
 		}
-		logger.info("StudyController - consentReviewMarkAsCompleted() - Ends");
+		logger.info("StudyController - comprehensionTestMarkAsCompleted() - Ends");
 		return mav;
 	}
 
 	/**
+	 * This allow the admin make as the consent creation completed those will appear in mobile screen by screen before start of an study.
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} update consent flag as partially done or
-	 *         completely done
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/consentMarkAsCompleted.do")
 	public ModelAndView consentMarkAsCompleted(HttpServletRequest request) {
@@ -450,11 +451,13 @@ public class StudyController {
 	}
 
 	/**
+	 * This allow the admin to make as complete the consent review screen which contains the shara data permission
+	 * consent document for review and e-consent form
+	 *  
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} update consentReview flag as partially done
-	 *         or completely done
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/consentReviewMarkAsCompleted.do")
 	public ModelAndView consentReviewMarkAsCompleted(HttpServletRequest request) {
@@ -555,11 +558,13 @@ public class StudyController {
 	}
 
 	/**
+	 * Deleting the comprehension test question from the list of comprehension questions
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param consentInfoBo
-	 * @return {@link ModelAndView} delete comprehensionQuestion details Page
+	 * @param response, {@link HttpServletResponse}
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/deleteComprehensionQuestion.do")
 	public void deleteComprehensionTestQuestion(HttpServletRequest request,
@@ -601,11 +606,13 @@ public class StudyController {
 	}
 
 	/**
+	 * Deleting the consent info from the list consent of an study
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param response
-	 * @return void deleting consent based on consent Info id
+	 * @param response, {@link HttpServletResponse}
+	 * @return void 
 	 */
 	@RequestMapping(value = "/adminStudies/deleteConsentInfo.do", method = RequestMethod.POST)
 	public void deleteConsentInfo(HttpServletRequest request,
@@ -1031,11 +1038,13 @@ public class StudyController {
 	}
 
 	/**
+	 * Study consent have the 0 or more comprehension test question to check the understanding of the consent to a participant
+	 * here will show the list comprehension test question of consent of a study
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param consentInfoBo
-	 * @return {@link ModelAndView} get comprehension Question List Page
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/comprehensionQuestionList.do")
 	public ModelAndView getComprehensionQuestionList(HttpServletRequest request) {
@@ -1169,11 +1178,13 @@ public class StudyController {
 	}
 
 	/**
+	 *  Study Consent have the 0 or more comprehension test question.Each question contains the question text and 
+	 *  answers and make correct response to the question as being ANY or ALL of the 'correct' answer options.
+	 *   
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param consentInfoBo
-	 * @return {@link ModelAndView} get comprehensionQuestion details Page
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/comprehensionQuestionPage.do")
 	public ModelAndView getComprehensionQuestionPage(HttpServletRequest request) {
@@ -1287,10 +1298,13 @@ public class StudyController {
 	}
 
 	/**
+	 * Study can have the 1 or more consent items which are appeared as consent items in mobile app.Before joining the study 
+	 * participant has to go through these consent items
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} get all consent list based on study
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/consentListPage.do")
 	public ModelAndView getConsentListPage(HttpServletRequest request) {
@@ -1429,11 +1443,14 @@ public class StudyController {
 	}
 
 	/**
+	 *  Each consent item can be one of the two types research kit provided or custom defined consent item.ResearchKit already provides a few Consent 
+	 *  Items screens by default.These Consent Items allow the title and text to be modified as needed.Custom-defined Consent item are to be used in cases
+	 *   where the available ResearchKit list of Consent Items do not sufficient
+	 *  
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param consentInfoBo
-	 * @return {@link ModelAndView} get consent Info Page
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/consentInfo.do")
 	public ModelAndView getConsentPage(HttpServletRequest request) {
@@ -1582,12 +1599,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Study Consent admin can review the consent and can add the share data permission where participant needs to be
+	 * asked to provide permission further and admin can confirm the content seen by users in the Review Terms (Consent Document) screen on the mobile app
+	 * 
 	 * @author BTC
 	 * @param request
 	 * @return ModelAndView
-	 *
-	 *         Description : This method is used to get the details of consent
-	 *         review and e-consent by studyId
 	 */
 	@RequestMapping("/adminStudies/consentReview.do")
 	public ModelAndView getConsentReviewAndEConsentPage(
@@ -2285,10 +2302,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Describes the make the questionnaire mark as completed once creation of questionnaire completed
+	 * 
 	 * @author BTC
-	 * @param request
-	 * @param response
-	 *            Description : save Questionnaire as mark as completed
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 *            
 	 */
 	@RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
 	public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
@@ -2353,10 +2372,14 @@ public class StudyController {
 	}
 
 	/**
+	 * Describes the reloading of comprehension question once admin delete the question from list of questions
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return void reload Comprehension Question List
+	 * @param response,
+	 * 				{@link HttpServletResponse}            
+	 * @return void 
 	 */
 	@RequestMapping("/adminStudies/reloadComprehensionQuestionListPage.do")
 	public void reloadComprehensionQuestionListPage(HttpServletRequest request,
@@ -2407,10 +2430,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Describes the reloading of consent items once admin delete the any consent from list of consents
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return void reloading the consent info list
+	 * @return void 
 	 */
 	@RequestMapping("/adminStudies/reloadConsentListPage.do")
 	public void reloadConsentListPage(HttpServletRequest request,
@@ -2535,10 +2560,14 @@ public class StudyController {
 	/*----------------------------------------added by MOHAN T ends----------------------------------------*/
 
 	/**
+	 * Comprehension question will be created by default in the master order.Admin can manage the order by drag and drop questions
+	 * in the list
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} re order ComprehensionTestQuestion Page
+	 * @param response, {@link HttpServletResponse}           
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/reOrderComprehensionTestQuestion.do")
 	public void reOrderComprehensionTestQuestion(HttpServletRequest request,
@@ -2594,10 +2623,15 @@ public class StudyController {
 	}
 
 	/**
+	 * Consent items will be created by default in master order.Admin can manage the order by reordering the consents with in a list
+	 * to make reorder admin can drag and drop the consent with in a list 
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return void reordering the consent info list
+	 * @param response
+	 * 			  , {@link HttpServletResponse}
+	 * @return void 
 	 */
 	@RequestMapping(value = "/adminStudies/reOrderConsentInfo.do", method = RequestMethod.POST)
 	public void reOrderConsentInfo(HttpServletRequest request,
@@ -2948,10 +2982,13 @@ public class StudyController {
 	}
 
 	/**
-	 * @author BTC
-	 * @param request
-	 * @param response
-	 *            Description : save ComprehensionTest Question
+	 * Study consent can have 0 or more comprehension test questions.Admin can mark whether or not this is required for the study
+	 * if required admin will need to add question text,answer options and correct option and minimum score
+	 * 
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @return
+	 *            
 	 */
 	@RequestMapping(value = "/adminStudies/saveComprehensionTestQuestion.do")
 	public void saveComprehensionTestQuestion(HttpServletRequest request,
@@ -3034,10 +3071,14 @@ public class StudyController {
 	}
 
 	/**
+	 * Study consent section is mandatory in mobile section admin can add one or more consent items here.The consent item are two types 
+	 * which are research kit provided consents and custom defined consent items admin can create the custom consent items which are not available in research kit
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} save or update saveConsentInfo Page
+	 * @param response {@link HttpServletResponse}
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping(value = "/adminStudies/saveConsentInfo.do")
 	public void saveConsentInfo(HttpServletRequest request,
@@ -3095,14 +3136,14 @@ public class StudyController {
 	}
 
 	/**
+	 * Study consent section have the consent review sub section which contain the share data permission allows the admin to specify
+	 * if as part of the Consent process, participants need to be asked to provide permission for their response data to be shared with 3rd parties
+	 * and consent document review section is section is meant for the admin to confirm the content seen by users in the Review Terms (Consent Document) screen on the mobile app
+	 * In e-consent section The admin sees the elements of the e-consent form as provided to the user in the mobile app
+	 * 
 	 * @author BTC
-	 * @param request
-	 * @param response
-	 * @param consentInfoBo
-	 * @return ModelAndView
-	 *
-	 *         Description : This method is used to save the consent eview and
-	 *         E-consent info for study
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
 	 */
 	@RequestMapping("/adminStudies/saveConsentReviewAndEConsentInfo.do")
 	public void saveConsentReviewAndEConsentInfo(HttpServletRequest request,
@@ -3400,12 +3441,15 @@ public class StudyController {
 	}
 
 	/**
+	 *  Study consent can have 0 or more comprehension test questions.Admin can mark whether or not this is required for the study
+	 *  if required admin will need to add question text,answer options and correct option and minimum score
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param comprehensionTestQuestionBo
-	 * @return {@link ModelAndView} save or update ComprehensionTestQuestion
-	 *         Page
+	 * @param comprehensionTestQuestionBo {@link ComprehensionTestQuestionBo}
+	 * @return {@link ModelAndView} 
+	 * 
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateComprehensionTestQuestion.do")
 	public ModelAndView saveOrUpdateComprehensionTestQuestionPage(
@@ -3487,12 +3531,14 @@ public class StudyController {
 	}
 
 	/**
-	 *
+	 * Study consent section is mandatory in mobile section admin can add one or more consent items here.The consent item are two types 
+	 * which are research kit provided consents and custom defined consent items admin can create the custom consent items which are not available in research kit
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param consentInfoBo
-	 * @return {@link ModelAndView} save or update consent info
+	 * @param consentInfoBo {@link ConsentInfoBo}
+	 * @return {@link ModelAndView} 
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateConsentInfo.do")
 	public ModelAndView saveOrUpdateConsentInfo(HttpServletRequest request,
