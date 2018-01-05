@@ -883,10 +883,13 @@ public class StudyController {
 	}
 
 	/**
-	 * to download the pdf 
+	 * to download the pdf
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @param response, {@link HttpServletResponse}
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @param response
+	 *            , {@link HttpServletResponse}
 	 * @return {@link ModelAndView}
 	 * @throws IOException
 	 */
@@ -938,8 +941,7 @@ public class StudyController {
 				mav = new ModelAndView("redirect:studyList.do");
 			}
 		} catch (Exception e) {
-			logger.error("StudyController - downloadPdf() - ERROR",
-					e);
+			logger.error("StudyController - downloadPdf() - ERROR", e);
 		} finally {
 			if (null != is)
 				is.close();
@@ -4586,8 +4588,8 @@ public class StudyController {
 			out = response.getWriter();
 			out.print(jsonobject);
 		} catch (Exception e) {
-			logger.error("StudyController - validateEligibilityTestKey() - ERROR",
-					e);
+			logger.error(
+					"StudyController - validateEligibilityTestKey() - ERROR", e);
 		}
 		logger.info("StudyController - validateEligibilityTestKey() - Ends");
 	}
