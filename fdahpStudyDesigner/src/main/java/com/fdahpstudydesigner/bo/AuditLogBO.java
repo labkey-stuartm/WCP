@@ -11,7 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Kanchana
+ * The persistent class for the audit_log database table.
+ * 
+ * @author Kanchana
  *
  */
 @Entity
@@ -20,28 +22,28 @@ public class AuditLogBO implements Serializable {
 
 	private static final long serialVersionUID = -1122573644412620653L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "audit_log_id")
-	private Integer auditLogId;
-
-	@Column(name = "user_id")
-	private Integer userId;
-
 	@Column(name = "activity")
 	private String activity;
 
 	@Column(name = "activity_details")
 	private String activityDetails;
 
-	@Column(name = "created_date_time")
-	private String createdDateTime;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "audit_log_id")
+	private Integer auditLogId;
 
 	@Column(name = "class_method_name")
 	private String classMethodName;
 
+	@Column(name = "created_date_time")
+	private String createdDateTime;
+
 	@Transient
 	private UserBO userBO;
+
+	@Column(name = "user_id")
+	private Integer userId;
 
 	public String getActivity() {
 		return activity;

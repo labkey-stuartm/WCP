@@ -41,13 +41,13 @@ public class DashBoardAndProfileController {
 	private DashBoardAndProfileService dashBoardAndProfileService;
 
 	@Autowired
-	private UsersService usersService;
+	private LoginService loginService;
 
 	@Autowired
 	private StudyService studyService;
 
 	@Autowired
-	private LoginService loginService;
+	private UsersService usersService;
 
 	/* DashBoard Start */
 

@@ -45,12 +45,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 
 	private static Logger logger = Logger
 			.getLogger(StudyActiveTasksDAOImpl.class.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-	String queryString = "";
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+	String queryString = "";
+	private Transaction transaction = null;
 
 	public StudyActiveTasksDAOImpl() {
 		// Do nothing

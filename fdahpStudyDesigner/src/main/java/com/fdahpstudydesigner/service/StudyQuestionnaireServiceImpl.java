@@ -39,10 +39,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 			.getLogger(StudyQuestionnaireServiceImpl.class);
 
 	@Autowired
-	private StudyQuestionnaireDAO studyQuestionnaireDAO;
+	private AuditLogDAO auditLogDAO;
 
 	@Autowired
-	private AuditLogDAO auditLogDAO;
+	private StudyQuestionnaireDAO studyQuestionnaireDAO;
 
 	/**
 	 * @author BTC

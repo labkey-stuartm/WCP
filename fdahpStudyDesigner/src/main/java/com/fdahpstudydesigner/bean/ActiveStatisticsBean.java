@@ -2,10 +2,10 @@ package com.fdahpstudydesigner.bean;
 
 public class ActiveStatisticsBean {
 
-	String id = "";
-	String idVal = "";
 	String dbVal = "";
+	String id = "";
 	String idname = "";
+	String idVal = "";
 	boolean type = false;
 
 	public String getDbVal() {

@@ -73,12 +73,12 @@ public class StudyDAOImpl implements StudyDAO {
 
 	private static Logger logger = Logger.getLogger(StudyDAOImpl.class
 			.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-	String queryString = "";
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+	String queryString = "";
+	private Transaction transaction = null;
 
 	public StudyDAOImpl() {
 		// Unused
@@ -634,6 +634,7 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,
 			boolean resourceVisibility, int studyId) {
@@ -659,23 +660,9 @@ public class StudyDAOImpl implements StudyDAO {
 					if (isValue && !resourceBO.getId().equals(resourceInfoId)) {
 						resourceBO
 								.setSequenceNo(resourceBO.getSequenceNo() - 1);
-						// resourceBO.setModifiedBy(resourceBO.getUserId());
-						// resourceBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(resourceBO);
 					}
 				}
-				// StudySequenceBo studySequence = (StudySequenceBo)
-				// session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID,
-				// studyId).uniqueResult();
-				// if(studySequence != null){
-				// if(resourceBOList.size() == 1){
-				// studySequence.setConsentEduInfo(false);
-				// }
-				// if(studySequence.iseConsent()){
-				// studySequence.seteConsent(false);
-				// }
-				// session.saveOrUpdate(studySequence);
-				// }
 			}
 
 			String deleteQuery = " UPDATE ResourceBO RBO SET status = " + false
@@ -704,7 +691,6 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean deleteStudyByCustomStudyId(String customStudyId) {
 		logger.info("StudyDAOImpl - deleteStudyByCustomStudyId() - Starts");

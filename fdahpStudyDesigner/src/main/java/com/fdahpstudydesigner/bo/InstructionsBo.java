@@ -13,8 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- *
- * @author BTC The persistent class for the instructions database table.
+ * The persistent class for the instructions database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -24,43 +25,43 @@ public class InstructionsBo implements Serializable {
 
 	private static final long serialVersionUID = 1389506581768527442L;
 
+	@Column(name = "active")
+	private Boolean active;
+
+	@Column(name = "created_by")
+	private Integer createdBy;
+
+	@Column(name = "created_on")
+	private String createdOn;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "instruction_title", length = 250)
-	private String instructionTitle;
-
 	@Column(name = "instruction_text", length = 2500)
 	private String instructionText;
 
-	@Column(name = "created_on")
-	private String createdOn;
-
-	@Column(name = "modified_on")
-	private String modifiedOn;
-
-	@Column(name = "created_by")
-	private Integer createdBy;
+	@Column(name = "instruction_title", length = 250)
+	private String instructionTitle;
 
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "status")
-	private Boolean status;
-
-	@Transient
-	private String type;
+	@Column(name = "modified_on")
+	private String modifiedOn;
 
 	@Transient
 	private Integer questionnaireId;
 
 	@Transient
 	private QuestionnairesStepsBo questionnairesStepsBo;
+
+	@Column(name = "status")
+	private Boolean status;
+
+	@Transient
+	private String type;
 
 	public Boolean getActive() {
 		return active;

@@ -215,7 +215,6 @@
     <!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
-    <script src="/fdahpStudyDesigner/js/custom.js"></script>
     <!--common js-->
     
    

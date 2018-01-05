@@ -12,9 +12,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 /**
- *
- * @author BTC The persistent class for the questionnaires_custom_frequencies
- *         database table.
+ * The persistent class for the questionnaires_custom_frequencies database
+ * table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -23,6 +24,15 @@ public class QuestionnaireCustomScheduleBo implements Serializable {
 
 	private static final long serialVersionUID = 1935609268959765482L;
 
+	@Column(name = "frequency_end_date")
+	private String frequencyEndDate;
+
+	@Column(name = "frequency_start_date")
+	private String frequencyStartDate;
+
+	@Column(name = "frequency_time")
+	private String frequencyTime;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -30,15 +40,6 @@ public class QuestionnaireCustomScheduleBo implements Serializable {
 
 	@Column(name = "questionnaires_id")
 	private Integer questionnairesId;
-
-	@Column(name = "frequency_start_date")
-	private String frequencyStartDate;
-
-	@Column(name = "frequency_end_date")
-	private String frequencyEndDate;
-
-	@Column(name = "frequency_time")
-	private String frequencyTime;
 
 	@Column(name = "is_used")
 	@Type(type = "yes_no")

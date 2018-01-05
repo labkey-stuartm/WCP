@@ -15,9 +15,9 @@ import javax.persistence.Transient;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
- * @author BTC The persistent class for the response_sub_type_value database
- *         table.
+ * The persistent class for the response_sub_type_value database table.
+ * 
+ * @author BTC
  */
 @Entity
 @Table(name = "response_sub_type_value")
@@ -26,19 +26,14 @@ public class QuestionResponseSubTypeBo implements Serializable {
 
 	private static final long serialVersionUID = -7853082585280415082L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "response_sub_type_value_id")
-	private Integer responseSubTypeValueId;
+	@Column(name = "active")
+	private Boolean active;
 
-	@Column(name = "response_type_id")
-	private Integer responseTypeId;
+	@Column(name = "description")
+	private String description;
 
-	@Column(name = "text")
-	private String text;
-
-	@Column(name = "value")
-	private String value;
+	@Column(name = "destination_step_id")
+	private Integer destinationStepId;
 
 	@Column(name = "detail")
 	private String detail;
@@ -49,29 +44,34 @@ public class QuestionResponseSubTypeBo implements Serializable {
 	@Column(name = "image")
 	private String image;
 
-	@Column(name = "selected_image")
-	private String selectedImage;
-
-	@Column(name = "study_version")
-	private Integer studyVersion = 1;
-
-	@Column(name = "destination_step_id")
-	private Integer destinationStepId;
-
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "description")
-	private String description;
-
 	@Transient
 	private MultipartFile imageFile;
 
 	@Transient
-	private MultipartFile selectImageFile;
+	private Integer imageId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "response_sub_type_value_id")
+	private Integer responseSubTypeValueId;
+
+	@Column(name = "response_type_id")
+	private Integer responseTypeId;
+
+	@Column(name = "selected_image")
+	private String selectedImage;
 
 	@Transient
-	private Integer imageId;
+	private MultipartFile selectImageFile;
+
+	@Column(name = "study_version")
+	private Integer studyVersion = 1;
+
+	@Column(name = "text")
+	private String text;
+
+	@Column(name = "value")
+	private String value;
 
 	public Boolean getActive() {
 		return active;

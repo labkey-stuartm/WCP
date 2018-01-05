@@ -12,6 +12,6 @@ function ajaxSessionTimeout() {
 		statusCode : {
 			901 : ajaxSessionTimeout
 		},
-		cache: false
+		cache : false
 	});
 }(window.jQuery);

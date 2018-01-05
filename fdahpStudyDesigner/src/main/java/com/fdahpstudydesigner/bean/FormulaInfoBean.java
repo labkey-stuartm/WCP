@@ -3,10 +3,10 @@ package com.fdahpstudydesigner.bean;
 public class FormulaInfoBean {
 
 	String lhsData = "";
-	String rhsData = "";
-	String outPutData = "";
-	String statusMessage = "";
 	String message = "failure";
+	String outPutData = "";
+	String rhsData = "";
+	String statusMessage = "";
 
 	public String getLhsData() {
 		return lhsData;

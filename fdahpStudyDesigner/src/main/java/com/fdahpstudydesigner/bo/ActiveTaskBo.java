@@ -30,9 +30,23 @@ import javax.persistence.Transient;
 public class ActiveTaskBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@Column(name = "action", length = 1)
+	private boolean action = false;
+
+	@Transient
+	private String actionPage;
+
+	@Column(name = "active")
+	private Integer active = 0;
+
+	@Transient
+	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<>();
+
+	@Transient
+	private ActiveTaskFrequencyBo activeTaskFrequenciesBo = new ActiveTaskFrequencyBo();
+
+	@Transient
+	private List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = new ArrayList<>();
 
 	@Column(name = "active_task_lifetime_end")
 	private String activeTaskLifetimeEnd;
@@ -40,17 +54,17 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name = "active_task_lifetime_start")
 	private String activeTaskLifetimeStart;
 
-	@Column(name = "frequency")
-	private String frequency;
+	@Transient
+	private String activeTaskVersion = "";
 
-	@Column(name = "duration")
-	private String duration;
+	@Transient
+	private boolean activityFinished = false;
 
-	@Column(name = "study_id")
-	private Integer studyId;
+	@Transient
+	private boolean activityStarted = false;
 
-	@Column(name = "task_title")
-	private String title;
+	@Transient
+	private String buttonText;
 
 	@Column(name = "created_by")
 	private Integer createdBy;
@@ -58,92 +72,78 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name = "created_date")
 	private String createdDate;
 
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+
+	@Column(name = "day_of_the_week")
+	private String dayOfTheWeek;
+
+	@Column(name = "display_name")
+	private String displayName;
+
+	@Column(name = "duration")
+	private String duration;
+
+	@Transient
+	private String fetalCickDuration = "";
+
+	@Column(name = "frequency")
+	private String frequency;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@Column(name = "instruction")
+	private String instruction;
+
+	@Column(name = "is_Change")
+	private Integer isChange = 0;
+
+	@Transient
+	private Integer isDuplicate = 0;
+
+	@Column(name = "is_live")
+	private Integer live = 0;
+
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
 	@Column(name = "modified_date")
 	private String modifiedDate;
 
-	@Column(name = "repeat_active_task")
-	private Integer repeatActiveTask;
-
-	@Column(name = "day_of_the_week")
-	private String dayOfTheWeek;
-
-	@Column(name = "version")
-	private Float version = 0f;
-
-	@Column(name = "custom_study_id")
-	private String customStudyId;
-
-	@Column(name = "is_live")
-	private Integer live = 0;
-
-	@Column(name = "is_Change")
-	private Integer isChange = 0;
-
 	@Transient
 	private String previousFrequency;
 
-	@Transient
-	private String type;
-
-	@Transient
-	private List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = new ArrayList<>();
-
-	@Transient
-	private ActiveTaskFrequencyBo activeTaskFrequenciesBo = new ActiveTaskFrequencyBo();
-
-	@Transient
-	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<>();
-
-	@Column(name = "task_type_id")
-	private Integer taskTypeId;
-
-	@Column(name = "display_name")
-	private String displayName;
+	@Column(name = "repeat_active_task")
+	private Integer repeatActiveTask;
 
 	@Column(name = "short_title")
 	private String shortTitle;
 
-	@Column(name = "instruction")
-	private String instruction;
-
-	@Column(name = "action", length = 1)
-	private boolean action = false;
-
-	@Column(name = "active")
-	private Integer active = 0;
-
-	@Transient
-	private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
+	@Column(name = "study_id")
+	private Integer studyId;
 
 	@Transient
 	private List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
 
 	@Transient
-	private String buttonText;
+	private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
+
+	@Column(name = "task_type_id")
+	private Integer taskTypeId;
+
+	@Column(name = "task_title")
+	private String title;
 
 	@Transient
-	private String actionPage;
+	private String type;
+
+	@Column(name = "version")
+	private Float version = 0f;
 
 	@Transient
 	private boolean versionFlag = false;
-
-	@Transient
-	private String activeTaskVersion = "";
-
-	@Transient
-	private Integer isDuplicate = 0;
-
-	@Transient
-	private String fetalCickDuration = "";
-
-	@Transient
-	private boolean activityStarted = false;
-
-	@Transient
-	private boolean activityFinished = false;
 
 	public ActiveTaskBo() {
 		// Do nothing

@@ -44,10 +44,10 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class StudyServiceImpl implements StudyService {
 
 	private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
-	private StudyDAO studyDAO;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+
+	private StudyDAO studyDAO;
 
 	/**
 	 * return false or true of adding record of studyPermission based on studyId

@@ -2,19 +2,19 @@ package com.fdahpstudydesigner.bean;
 
 public class StudyListBean {
 
-	private Integer id;
-	private String customStudyId;
-	private String name;
 	private String category;
-	private String researchSponsor;
 	private String createdFirstName;
 	private String createdLastName;
-	private boolean viewPermission;
-	private String projectLeadName;
-	private String status;
 	private String createdOn;
-	private Integer liveStudyId;
+	private String customStudyId;
 	private boolean flag = false;
+	private Integer id;
+	private Integer liveStudyId;
+	private String name;
+	private String projectLeadName;
+	private String researchSponsor;
+	private String status;
+	private boolean viewPermission;
 
 	public StudyListBean(Integer id, String customStudyId, String name,
 			boolean viewPermission) {

@@ -29,12 +29,12 @@ public class LoginDAOImpl implements LoginDAO {
 
 	private static Logger logger = Logger.getLogger(LoginDAOImpl.class
 			.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+
+	private Transaction transaction = null;
 
 	public LoginDAOImpl() {
 	}
@@ -67,7 +67,7 @@ public class LoginDAOImpl implements LoginDAO {
 					userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if (null != adminUserBO
-					&& FdahpStudyDesignerUtil.compairEncryptedPassword(
+					&& FdahpStudyDesignerUtil.compareEncryptedPassword(
 							adminUserBO.getUserPassword(), oldPassword)) {
 				encrNewPass = FdahpStudyDesignerUtil
 						.getEncryptedPassword(newPassword);

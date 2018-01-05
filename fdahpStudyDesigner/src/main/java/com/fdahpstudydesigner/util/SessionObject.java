@@ -16,27 +16,27 @@ public class SessionObject implements Serializable {
 	 */
 	private static final long serialVersionUID = 9080727824545069556L;
 
-	private Integer userId = 0;
-	private String userName = "";
-	private String firstName = "";
-	private String lastName = "";
-	private String email = "";
-	private String phoneNumber = "";
+	private Integer adminstratorId = 0;
+	private Integer auditLogUniqueId = 0;
+	private String createdDate = "";
 	private String currentHomeUrl = "";
-	private String userType = "";
-	private String userPermissions = "";
+	private String email = "";
+	private String firstName = "";
+	private Boolean isAdminstrating = false;
+	private boolean isSuperAdmin = false;
+	private String lastName = "";
 	private boolean loginStatus = false;
 	private String passwordExpairdedDateTime;
-	private boolean isSuperAdmin = false;
-	private Integer superAdminId = 0;
-	private Boolean isAdminstrating = false;
-	private Integer adminstratorId = 0;
-	private String createdDate = "";
-	private Integer auditLogUniqueId = 0;
-	private String termsText = "";
+	private String phoneNumber = "";
 	private String privacyPolicyText = "";
 	private List<Integer> studySession;
 	private List<StudySessionBean> studySessionBeans;
+	private Integer superAdminId = 0;
+	private String termsText = "";
+	private Integer userId = 0;
+	private String userName = "";
+	private String userPermissions = "";
+	private String userType = "";
 
 	public Integer getAdminstratorId() {
 		return adminstratorId;

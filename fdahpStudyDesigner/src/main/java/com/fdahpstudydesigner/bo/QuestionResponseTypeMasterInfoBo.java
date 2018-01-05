@@ -13,9 +13,10 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
- *
- * @author BTC The persistent class for the question_responsetype_master_info
- *         database table.
+ * The persistent class for the question_responsetype_master_info database
+ * table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -25,25 +26,20 @@ public class QuestionResponseTypeMasterInfoBo implements Serializable {
 
 	private static final long serialVersionUID = -2666359241071290949L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
+	@Column(name = "anchor_date")
+	private Boolean anchorDate;
 
-	@Column(name = "response_type")
-	private String responseType;
-
-	@Column(name = "description")
-	private String description;
-
-	@Column(name = "data_type")
-	private String dataType;
+	@Column(name = "choice_based_branching")
+	private Boolean choinceBasedBraching;
 
 	@Column(name = "dashboard_allowed")
 	private Boolean dashBoardAllowed;
 
-	@Column(name = "choice_based_branching")
-	private Boolean choinceBasedBraching;
+	@Column(name = "data_type")
+	private String dataType;
+
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "formula_based_logic")
 	private Boolean formulaBasedLogic;
@@ -51,8 +47,13 @@ public class QuestionResponseTypeMasterInfoBo implements Serializable {
 	@Column(name = "healthkit_alternative")
 	private Boolean healthkitAlternative;
 
-	@Column(name = "anchor_date")
-	private Boolean anchorDate;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+
+	@Column(name = "response_type")
+	private String responseType;
 
 	@Column(name = "response_type_code")
 	private String responseTypeCode;

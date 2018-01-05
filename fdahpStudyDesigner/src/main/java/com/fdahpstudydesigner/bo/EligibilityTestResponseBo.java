@@ -10,7 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
+ * The persistent class for the eligibility_test_response database table.
+ * 
  * @author Ronalin
  *
  */
@@ -20,22 +21,22 @@ public class EligibilityTestResponseBo implements Serializable {
 
 	private static final long serialVersionUID = -6967340852884815498L;
 
+	@Column(name = "destination_question")
+	private Integer destinationQuestion;
+
+	@Column(name = "eligibility_test_id")
+	private Integer eligibilityTestId;
+
+	@Column(name = "pass_fail")
+	private String passFail;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "response_id")
 	private Integer responseId;
 
-	@Column(name = "eligibility_test_id")
-	private Integer eligibilityTestId;
-
 	@Column(name = "response_option")
 	private String responseOption;
-
-	@Column(name = "pass_fail")
-	private String passFail;
-
-	@Column(name = "destination_question")
-	private Integer destinationQuestion;
 
 	public Integer getDestinationQuestion() {
 		return destinationQuestion;

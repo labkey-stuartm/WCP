@@ -38,13 +38,13 @@ public class UsersController {
 			.getName());
 
 	@Autowired
-	private UsersService usersService;
+	private LoginService loginService;
 
 	@Autowired
 	private StudyService studyService;
 
 	@Autowired
-	private LoginService loginService;
+	private UsersService usersService;
 
 	/**
 	 * This method is used to activate or deactivate the user

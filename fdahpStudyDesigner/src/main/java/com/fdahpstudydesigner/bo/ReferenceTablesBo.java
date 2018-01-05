@@ -10,7 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
+ * The persistent class for the reference_tables database table.
+ * 
  * @author Ronalin
  *
  */
@@ -23,19 +24,19 @@ public class ReferenceTablesBo implements Serializable {
 	 */
 	private static final long serialVersionUID = 5124001773679736751L;
 
+	@Column(name = "category")
+	private String category;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "str_value")
-	private String value;
-
-	@Column(name = "category")
-	private String category;
-
 	@Column(name = "type")
 	private String type;
+
+	@Column(name = "str_value")
+	private String value;
 
 	public String getCategory() {
 		return category;

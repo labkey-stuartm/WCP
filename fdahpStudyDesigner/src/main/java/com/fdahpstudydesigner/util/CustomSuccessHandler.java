@@ -11,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import com.fdahpstudydesigner.bo.MasterDataBO;
@@ -26,14 +24,13 @@ import com.fdahpstudydesigner.service.DashBoardAndProfileService;
  * @see {@link SimpleUrlAuthenticationSuccessHandler}
  */
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	private LoginDAOImpl loginDAO;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 
 	@Autowired
 	private DashBoardAndProfileService dashBoardAndProfileService;
+
+	private LoginDAOImpl loginDAO;
 
 	/**
 	 * Provide landing page URI as per User Role
@@ -98,7 +95,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		sesObj.setCurrentHomeUrl("/" + projectName + targetUrl);
 		sesObj.setEmail(userdetails.getUserEmail());
 		sesObj.setUserPermissions(FdahpStudyDesignerUtil
-				.getSessionUserRole(request));
+				.getSessionUserRole());
 		sesObj.setPasswordExpairdedDateTime(userdetails
 				.getPasswordExpairdedDateTime());
 		sesObj.setCreatedDate(userdetails.getCreatedOn());

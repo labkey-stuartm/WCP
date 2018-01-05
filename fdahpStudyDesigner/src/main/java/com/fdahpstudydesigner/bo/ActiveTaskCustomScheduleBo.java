@@ -22,10 +22,6 @@ import org.hibernate.annotations.Type;
 public class ActiveTaskCustomScheduleBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@Column(name = "active_task_id")
 	private Integer activeTaskId;
 
@@ -37,6 +33,10 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	@Column(name = "frequency_time")
 	private String frequencyTime;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
 	@Column(name = "is_used")
 	@Type(type = "yes_no")

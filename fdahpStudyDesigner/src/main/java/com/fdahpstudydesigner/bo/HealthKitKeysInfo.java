@@ -13,8 +13,9 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
- *
- * @author BTC The persistent class for the health_kit_keys_info database table.
+ * The persistent class for the health_kit_keys_info database table.
+ * 
+ * @author BTC
  *
  */
 @Entity
@@ -24,6 +25,12 @@ public class HealthKitKeysInfo implements Serializable {
 
 	private static final long serialVersionUID = -9161839022108816141L;
 
+	@Column(name = "category")
+	private String category;
+
+	@Column(name = "display_name")
+	private String displayName;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -31,12 +38,6 @@ public class HealthKitKeysInfo implements Serializable {
 
 	@Column(name = "key_text")
 	private String key;
-
-	@Column(name = "category")
-	private String category;
-
-	@Column(name = "display_name")
-	private String displayName;
 
 	@Column(name = "result_type")
 	private String resultType;

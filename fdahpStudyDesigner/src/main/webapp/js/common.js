@@ -136,15 +136,6 @@ $(document).ready(function(){
 	    checkboxValidate($(this).attr('name'));
 	});
 	$('.phoneMask').mask('000-000-0000');
-	/*$(".phoneMask").keyup(function(){
-    	if($(this).val() == "000-000-0000" ){
-    		$(this).val("");
-    		$(this).parent().addClass("has-danger").addClass("has-error");
-    		$(this).parent().find(".help-block").text("Invalid phone number");
-    	}else{
-    		$(this).parent().find(".help-block").text("");
-    	}
-    });*/
 	
 	$(".phoneMask").keypress(function(event){
     	if($(this).val() === "000-000-000" ){
@@ -298,8 +289,6 @@ $(document).ready(function(){
 				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
 				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
 				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-				/*$('#password').css('font','small-caption');
-				$('#password').css('font-size','16px');*/
 			    $('#signUpForm').submit();
 			}
 			
@@ -349,8 +338,6 @@ $(document).ready(function(){
 				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
 				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
 				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-				/*$('#password').css('font','small-caption');
-				$('#password').css('font-size','16px');*/
 			    $('#passwordResetForm').submit();
 			}
 			
@@ -381,56 +368,6 @@ $(document).ready(function(){
 			  }
 			});
 		
-//		$('#resetPasswordBut').click(function() {
-//			$("#passwordResetForm").validator('validate');
-//			if($("#passwordResetForm").find(".has-danger").length > 0 ){
-//				isValidLoginForm = false;
-//	        }else{
-//	        	isValidLoginForm = true;
-//	        }
-//			if(isValidLoginForm){
-//				$("#passwordResetForm").validator('destroy');
-//				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-//				$('#hidePass').val($('#password').val());
-//				$('#password').val('');
-//				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
-//				$('#password').attr("pattern", "");
-//				$('#password').attr("data-minlength", "");
-//				$('#password').val('********************************************************************');
-//				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-//				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
-//				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-//				/*$('#password').css('font','small-caption');
-//				$('#password').css('font-size','16px');*/
-//			    $('#passwordResetForm').submit();
-//			}
-//			
-//		});
-//		$('#passwordResetForm').keypress(function (e) {
-//		  if (e.which === 13) {
-//			  $("#passwordResetForm").validator('validate');
-//				if($("#passwordResetForm").find(".has-danger").length > 0 ){
-//					isValidLoginForm = false;
-//		        }else{
-//		        	isValidLoginForm = true;
-//		        }
-//			  if(isValidLoginForm){
-//				  	$("#passwordResetForm").validator('destroy');
-//					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-//					$('#hidePass').val($('#password').val());
-//					$('#password').val('');
-//					$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
-//					$('#password').attr("pattern", "");
-//					$('#password').attr("data-minlength", "");
-//					$('#password').val('********************************************************************');
-//					$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-//					$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
-//					$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-//					$('#passwordResetForm').submit();
-//				}
-//		  }
-//		});
-		
 		$('#loginBtnId').click(function() {
 			$("#loginForm").validator('validate');
 			if($("#loginForm").find(".has-danger").length > 0 ){
@@ -439,12 +376,6 @@ $(document).ready(function(){
 	        	isValidLoginForm = true;
 	        }
 			if(isValidLoginForm){
-//				$("#loginForm").validator('destroy');
-//				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-//				$('#hidePass').val($('#password').val());
-//					$('#password').attr("type", "text").css('-webkit-text-security','disc');
-//				$('#password').val('********************************************************************');
-//			    $('#loginForm').submit();
 				var username = $('#email').val();
 				$('#email').val('');
 				var password = $('#password').val();
@@ -481,77 +412,8 @@ $(document).ready(function(){
         			   	$("body").removeClass("loading");
                     }
                 },
-                error:function() {
-//                	 alert("Please check your network connection!");
-//                	 $('#password').attr("type", "password");
-//                	 $('#password').val(password);
-//                	 $('#email').val(username);
-//                	 $("body").removeClass("loading");
-                },
-                complete : function(){ },
                 global : false
             })
 			}
 		});
-		
-/*//		$('.askSignInCls').keypress(function (e) {
-//		  if (e.which == 13) {
-//				if(isFromValid($("#loginForm"))){
-//					isValidLoginForm = false;
-//		        }else{
-//		        	isValidLoginForm = true;
-//		        }
-//			  if(isValidLoginForm){
-////				  	$("#loginForm").validator('destroy');
-////					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-////					$('#hidePass').val($('#password').val());
-////					$('#password').attr("type", "text").css('-webkit-text-security','disc');
-////					$('#password').val('********************************************************************');
-////				    $('#loginForm').submit();
-//				  $("body").addClass("loading");
-//				  var username = $('#email').val();
-//				  var password = $('#password').val();
-//				  $('#password').val('********************************************************************');
-//				  var fdaLink = $('#fdaLink').val();
-//					$.ajax({
-//	                  url: fdaLink,
-//	                  type: "POST",
-//	                  datatype: "json",
-//	                  data: {
-//	                  	username : username,
-//	                  	password : password,
-//	                  },
-//	                  success: function emailValid(data, status) {
-//	                      var jsonobject = eval(data);
-//	                      var message = jsonobject.message;
-//	                      if (message == "SUCCESS") {
-//	                    	  $('#email').val('');
-//	                    	  $('#password').val('********************************************************************');
-//	                    	  $('#password').attr("type", "text").css('-webkit-text-security','disc');
-//	                    	  window.location.href = '/fdahpStudyDesigner/';
-//	                      } else {
-//	                    	  $('#password').val('');
-//	                    	  $(".askSignInCls").addClass('hide');
-//	                    	  $("#errMsg").html(message);
-//	                    	  $("#errMsg").show("fast");
-//	                    	  setTimeout(hideDisplayMessage, 4000);
-//	                    	  $("body").removeClass("loading");
-//	                      }
-//	                  },
-//	                  error:function status(data, status) {
-//	                	  alert("Please check your network connection!");
-//	                	  $('#password').attr("type", "password");
-//	                	  $('#password').val('');
-//	                	  $("body").removeClass("loading");
-//	                  },
-//	                  complete : function(){ },
-//	                  global : false
-//	              })
-//				}
-//		  }
-//		});
-*/	})
-
-
-
-
+	});

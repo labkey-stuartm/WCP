@@ -29,11 +29,11 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class UsersDAOImpl implements UsersDAO {
 
 	private static Logger logger = Logger.getLogger(UsersDAOImpl.class);
-	HibernateTemplate hibernateTemplate;
-	private Transaction transaction = null;
-
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+
+	private Transaction transaction = null;
 
 	/**
 	 * This method is used to activate or deactivate the user

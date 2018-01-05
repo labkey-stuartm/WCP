@@ -56,12 +56,12 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	private static Logger logger = Logger
 			.getLogger(StudyQuestionnaireDAOImpl.class.getName());
-	HibernateTemplate hibernateTemplate;
-	private Query query = null;
-	private Transaction transaction = null;
-	String queryString = "";
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	HibernateTemplate hibernateTemplate;
+	private Query query = null;
+	String queryString = "";
+	private Transaction transaction = null;
 
 	/**
 	 * @author BTC

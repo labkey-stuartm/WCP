@@ -39,10 +39,10 @@ public class LoginController {
 	private static Logger logger = Logger.getLogger(LoginController.class
 			.getName());
 
-	private LoginServiceImpl loginService;
-
 	@Autowired
 	private DashBoardAndProfileService dashBoardAndProfileService;
+
+	private LoginServiceImpl loginService;
 
 	/**
 	 * Validate access code and add new password
@@ -61,7 +61,6 @@ public class LoginController {
 		String password = null;
 		String errorMsg = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		SessionObject sesObj = null;
 		HttpSession session = null;
