@@ -29,7 +29,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Ronalin
+ * @author BTC
  *
  */
 @Controller
@@ -52,12 +52,14 @@ public class DashBoardAndProfileController {
 	/* DashBoard Start */
 
 	/**
-	 * Kanchana
-	 *
-	 * updating user password
+	 * Updating user password from my account page
+	 * 
+	 * @author BTC
 	 *
 	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @param response
+	 *            , {@link HttpServletResponse}
 	 */
 	@RequestMapping("/adminDashboard/changePassword.do")
 	public void changePassword(HttpServletRequest request,
@@ -96,12 +98,10 @@ public class DashBoardAndProfileController {
 		logger.info("DashBoardAndProfileController - changePassword() - Ends");
 	}
 
-	/* MyAccount Starts */
-
 	/**
 	 * Navigate to FDA admin dash board page
 	 *
-	 * @author Ronalin
+	 * @author BTC
 	 *
 	 * @return {@link ModelAndView} , dashBoardPage page
 	 */
@@ -121,10 +121,15 @@ public class DashBoardAndProfileController {
 	}
 
 	/**
-	 * Kanchana
+	 * Checking for existing email Ids existing in the DB while creating new
+	 * users for the application
+	 * 
+	 * @author BTC
 	 *
 	 * @param response
+	 *            , {@link HttpServletResponse}
 	 * @param email
+	 *            ,Email Id for registering into application
 	 */
 	@RequestMapping("/isEmailValid.do")
 	public void isEmailValid(HttpServletResponse response, String email) {
@@ -149,13 +154,16 @@ public class DashBoardAndProfileController {
 	}
 
 	/**
-	 * Kanchana
-	 *
 	 * Updating User Details
+	 * 
+	 * @author BTC
+	 *
 	 *
 	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @param userBO
-	 * @return
+	 *            , {@link UserBO}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminDashboard/updateUserDetails.do")
 	public ModelAndView updateProfileDetails(HttpServletRequest request,
@@ -207,15 +215,16 @@ public class DashBoardAndProfileController {
 		return mav;
 	}
 
-	/* MyAccount Ends */
-
 	/**
-	 * Kanchana
+	 * Method to view session user Details and respective permission allotted to
+	 * them
+	 * 
+	 * @author BTC
 	 *
-	 * Method to view user Details
 	 *
 	 * @param request
-	 * @return
+	 *            {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminDashboard/viewUserDetails.do")
 	public ModelAndView viewUserDetails(HttpServletRequest request) {
@@ -278,7 +287,6 @@ public class DashBoardAndProfileController {
 				map.addAttribute("accountManager", accountManager);
 				mav = new ModelAndView("myAccount", map);
 			}
-
 		} catch (Exception e) {
 			logger.error(
 					"DashBoardAndProfileController - viewUserDetails - ERROR",
@@ -287,7 +295,7 @@ public class DashBoardAndProfileController {
 		logger.info("DashBoardAndProfileController - viewUserDetails - Ends");
 		return mav;
 	}
-
+	
 	/*
 	 * @RequestMapping("/adminDashboard/getMasterData.do") public void
 	 * getMasterData(HttpServletResponse response, String type){

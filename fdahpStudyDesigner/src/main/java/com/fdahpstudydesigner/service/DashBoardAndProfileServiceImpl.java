@@ -45,7 +45,10 @@ public class DashBoardAndProfileServiceImpl implements
 	}
 
 	/**
-	 * Kanchana Validating UserEmail
+	 * Validating whether userEmail already existing in DB 
+	 * @author BTC
+	 * @param email
+	 * @return message, Success/Failure
 	 */
 	@Override
 	public String isEmailValid(String email) {
@@ -53,7 +56,15 @@ public class DashBoardAndProfileServiceImpl implements
 	}
 
 	/**
-	 * Kanchana Updating User Details
+	 * Updating User Details
+	 * 
+	 * @author BTC
+	 * @param userId
+	 * @param userBO
+	 *            ,Object of {@link UserBO}
+	 * @param userSession
+	 *            ,Object of {@link SessionObject}
+	 * @return message, Success/Failure
 	 */
 	@Override
 	public String updateProfileDetails(UserBO userBO, int userId,
@@ -73,6 +84,7 @@ public class DashBoardAndProfileServiceImpl implements
 						+ userBO.getLastName()
 						+ " ,Email = "
 						+ userBO.getUserEmail() + ")";
+				//Audit log capturing the action performed
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity,
 						activityDetail,
 						"DashBoardAndProfileDAOImpl - updateProfileDetails()");
