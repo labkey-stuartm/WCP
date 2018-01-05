@@ -369,7 +369,7 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * Save action to the active task schedule
+	 * Save or update as draft of schedule active task
 	 *
 	 * @author BTC
 	 *
@@ -572,7 +572,7 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * Mark as complete action to the active task schedule
+	 * Save or update as completed for schedule active task
 	 *
 	 * @author BTC
 	 *
