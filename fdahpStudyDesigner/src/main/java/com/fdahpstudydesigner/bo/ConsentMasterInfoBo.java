@@ -12,7 +12,7 @@ import javax.persistence.Table;
 /**
  * The persistent class for the consent_master_info database table.
  * 
- * @author BTC 
+ * @author BTC
  *
  */
 @Entity

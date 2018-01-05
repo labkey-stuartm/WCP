@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import sun.awt.image.ImageWatched.Link;
-
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
@@ -43,7 +41,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 @Controller
@@ -373,7 +371,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Save action to the active task schedule
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -576,7 +574,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Mark as complete action to the active task schedule
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -926,7 +924,7 @@ public class StudyActiveTasksController {
 	/**
 	 * Navigate to the scheduled active task page
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param request
 	 *            , {@link HttpServletRequest}
@@ -1034,7 +1032,7 @@ public class StudyActiveTasksController {
 	/**
 	 * view active tasks page
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}

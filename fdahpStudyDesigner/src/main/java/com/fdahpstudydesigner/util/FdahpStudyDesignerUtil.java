@@ -55,7 +55,7 @@ import com.fdahpstudydesigner.bo.UserPermissions;
 /**
  * An helper class with static utility methods
  * 
- * @author Vivek
+ * @author BTC
  *
  */
 public class FdahpStudyDesignerUtil {
@@ -1209,9 +1209,12 @@ public class FdahpStudyDesignerUtil {
 	/**
 	 * Upload the file from {@link MultipartFile}
 	 * 
-	 * @param file , {@link MultipartFile}
-	 * @param fileName , file name
-	 * @param folderName , folder name where to store file
+	 * @param file
+	 *            , {@link MultipartFile}
+	 * @param fileName
+	 *            , file name
+	 * @param folderName
+	 *            , folder name where to store file
 	 * @return {@link String} , file name
 	 * @throws IOException
 	 */

@@ -450,7 +450,8 @@ public class LoginController {
 	 * This method is used to validate access code
 	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
+	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/validateAccessCode.do")
@@ -484,7 +485,8 @@ public class LoginController {
 	}
 
 	/**
-	 * Validate the Security Token and navigate to sign up or change password page
+	 * Validate the Security Token and navigate to sign up or change password
+	 * page
 	 *
 	 * @author BTC
 	 *

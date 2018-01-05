@@ -7,7 +7,7 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public interface LoginDAO {

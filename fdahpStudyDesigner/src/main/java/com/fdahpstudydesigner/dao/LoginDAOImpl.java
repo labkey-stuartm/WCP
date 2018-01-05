@@ -42,7 +42,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * This method change the user Password
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The database user ID of the user
@@ -102,7 +102,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * get the password history
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -136,7 +136,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Get the fail login attempts of the user
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -174,7 +174,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * This method get the user by security token
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param securityToken
 	 *            , The security token of user
@@ -208,7 +208,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Get valid user by email
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param email
 	 *            , the email id of the user
@@ -250,7 +250,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check the user is forcefully logout by Admin
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -286,7 +286,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check User status
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -322,7 +322,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Check is User Exists in the db
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -410,7 +410,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Reset the fail attempts of user when user successfully logged in
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -450,7 +450,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Update the fail attempts of user
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmailId
 	 *            , The email id of user
@@ -573,7 +573,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * Update the new password in password history
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userId
 	 *            , The user id of user
@@ -629,7 +629,7 @@ public class LoginDAOImpl implements LoginDAO {
 	/**
 	 * This method save or update the user
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userBO
 	 *            , the user Object of {@link UserBO}

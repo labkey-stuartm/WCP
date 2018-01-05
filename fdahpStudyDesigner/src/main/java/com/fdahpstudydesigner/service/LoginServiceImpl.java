@@ -292,7 +292,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	/**
 	 * Validate the security token for forgot password link before check
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param securityToken
 	 *            , the security token of the forgot password link
@@ -402,7 +402,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	/**
 	 * Get the spring security user details by user email
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param userEmail
 	 *            , the user email id

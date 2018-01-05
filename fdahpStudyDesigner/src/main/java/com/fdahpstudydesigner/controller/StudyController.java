@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import sun.awt.image.ImageWatched.Link;
-
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
@@ -83,11 +81,13 @@ public class StudyController {
 	private UsersService usersService;
 
 	/**
-	 * This method shows the following actions(Publish (as Upcoming Study) Start / Launch or Publish Updates Pause or Resume Deactivate)
-	 * of a study
+	 * This method shows the following actions(Publish (as Upcoming Study) Start
+	 * / Launch or Publish Updates Pause or Resume Deactivate) of a study
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/actionList.do")
 	public ModelAndView actionList(HttpServletRequest request) {
@@ -518,9 +518,10 @@ public class StudyController {
 
 	/**
 	 * used to create copy of live study as new study
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
+	 * @param request
+	 *            , {@link HttpServletRequest}
 	 */
 	@RequestMapping("/adminStudies/crateNewStudy.do")
 	public ModelAndView crateNewStudy(HttpServletRequest request) {
@@ -785,9 +786,10 @@ public class StudyController {
 
 	/**
 	 * delete study by customStudyId
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
+	 * @param request
+	 *            , {@link HttpServletRequest}
 	 */
 	@RequestMapping("/deleteStudy.do")
 	public ModelAndView deleteStudy(HttpServletRequest request) {
@@ -1844,14 +1846,20 @@ public class StudyController {
 	}
 
 	/**
-	 * Getting Study list 
+	 * Getting Study list
 	 * 
-	 * <p>This method shows the
-	 *  user present with a list of studies</p>
-	 *  
+	 * <p>
+	 * This method shows the user present with a list of studies
+	 * </p>
+	 * 
+	 * <p>
+	 * This method shows the user present with a list of studies
+	 * </p>
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/studyList.do")
 	public ModelAndView getStudies(HttpServletRequest request) {
@@ -2185,15 +2193,15 @@ public class StudyController {
 	}
 
 	/**
-	 * This method shows content for the Overview
-	 *         pages of the Study those pages shows in mobile side as a set of
-	 *         swipe-able screens that carry information about the study, with
-	 *         each screen having A title Description Image Link to Video (on
-	 *         first screen only) Link to Study Website
+	 * This method shows content for the Overview pages of the Study those pages
+	 * shows in mobile side as a set of swipe-able screens that carry
+	 * information about the study, with each screen having A title Description
+	 * Image Link to Video (on first screen only) Link to Study Website
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/overviewStudyPages.do")
 	public ModelAndView overviewStudyPages(HttpServletRequest request) {
@@ -2475,7 +2483,8 @@ public class StudyController {
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @param response, {@link HttpServletResponse}
+	 * @param response
+	 *            , {@link HttpServletResponse}
 	 */
 	@RequestMapping("/adminStudies/reloadResourceListPage.do")
 	public void reloadResourceListPage(HttpServletRequest request,
@@ -2822,8 +2831,10 @@ public class StudyController {
 
 	/**
 	 * reset study by customStudyId
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest} 
+	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/resetStudy.do")
@@ -3289,15 +3300,15 @@ public class StudyController {
 	/* Study notification ends */
 
 	/**
-	 * This method captures basic information about
-	 *         the study basic info like Study ID, Study name, Study full name,
-	 *         Study Category, Research Sponsor,Data Partner, Estimated Duration
-	 *         in weeks/months/years, Study Tagline, Study Description, Study
-	 *         website, Study Type
-	 *         
+	 * This method captures basic information about the study basic info like
+	 * Study ID, Study name, Study full name, Study Category, Research
+	 * Sponsor,Data Partner, Estimated Duration in weeks/months/years, Study
+	 * Tagline, Study Description, Study website, Study Type
+	 * 
 	 * @author BTC
-	 * @param studyBo, {@link StudyBo}
-	 * @return {@link ModelAndView} 
+	 * @param studyBo
+	 *            , {@link StudyBo}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateBasicInfo.do")
 	public ModelAndView saveOrUpdateBasicInfo(
@@ -3722,14 +3733,17 @@ public class StudyController {
 		return mav;
 	}
 
-	/**save or update study setting and admins for
-	 *         the particular study study settings like Platforms supported, Is
-	 *         the Study currently enrolling participants, Allow user to rejoin
-	 *         s the Study once they leave it?, Retain participant data when
-	 *         they leave a study? managing admins for the particular study
+	/**
+	 * save or update study setting and admins for the particular study study
+	 * settings like Platforms supported, Is the Study currently enrolling
+	 * participants, Allow user to rejoin s the Study once they leave it?,
+	 * Retain participant data when they leave a study? managing admins for the
+	 * particular study
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateSettingAndAdmins.do")
 	public ModelAndView saveOrUpdateSettingAndAdmins(
@@ -4241,13 +4255,14 @@ public class StudyController {
 		return mav;
 	}
 
-	/**save or update
-	 *         content(title,description,image) for the Overview pages of the
-	 *         Study those pages will reflect on mobile overview screen
+	/**
+	 * save or update content(title,description,image) for the Overview pages of
+	 * the Study those pages will reflect on mobile overview screen
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateStudyOverviewPage.do")
 	public ModelAndView saveOrUpdateStudyOverviewPage(
@@ -4309,8 +4324,9 @@ public class StudyController {
 	}
 
 	/**
-	 *  This method is used to validate the questionnaire have
-	 *            response type scale for android platform
+	 * This method is used to validate the questionnaire have response type
+	 * scale for android platform
+	 * 
 	 * @author BTC
 	 * @param request
 	 * @param response
@@ -4372,13 +4388,15 @@ public class StudyController {
 	}
 
 	/**
-	 * This method is used to validate the activetaskType for android
-	 *            platform
+	 * This method is used to validate the activetaskType for android platform
+	 * 
 	 * @author BTC
-	 * @param request, {@link HttpServletRequest}
-	 * @param response, {@link HttpServletResponse}
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @param response
+	 *            , {@link HttpServletResponse}
 	 * @return
-	 *            
+	 * 
 	 */
 	@RequestMapping(value = "/adminStudies/studyPlatformValidationforActiveTask", method = RequestMethod.POST)
 	public void studyPlatformValidationforActiveTask(
@@ -4425,13 +4443,13 @@ public class StudyController {
 	}
 
 	/**
-	 *update the study status to
-	 *         Publish (as Upcoming Study)/Launch/Publish Updates/Pause or
-	 *         Resume/Deactivate 
+	 * update the study status to Publish (as Upcoming Study)/Launch/Publish
+	 * Updates/Pause or Resume/Deactivate
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping(value = "/adminStudies/updateStudyAction", method = RequestMethod.POST)
 	public ModelAndView updateStudyActionOnAction(HttpServletRequest request,
@@ -4575,23 +4593,22 @@ public class StudyController {
 	/**
 	 *
 	 * validate the below items before do Publish (as Upcoming
-	 *         Study)/Launch/publish update of the study
+	 * Study)/Launch/publish update of the study
 	 *
-	 *         Publish (as Upcoming Study), following validations are done in
-	 *         this method. These are: Not allowed, if the dates for study
-	 *         activities or resource availability are already crossed Not
-	 *         allowed, if the Participant Enrollment status information is set
-	 *         to Yes in the Basic Information section A warning is shown if the
-	 *         checklist items are not all marked as complete OR if individual
-	 *         sections of study creation are not all marked as completed.
+	 * Publish (as Upcoming Study), following validations are done in this
+	 * method. These are: Not allowed, if the dates for study activities or
+	 * resource availability are already crossed Not allowed, if the Participant
+	 * Enrollment status information is set to Yes in the Basic Information
+	 * section A warning is shown if the checklist items are not all marked as
+	 * complete OR if individual sections of study creation are not all marked
+	 * as completed.
 	 *
-	 *         Launch/publish update , following validations are done in this
-	 *         method. These are: Not allowed if individual sections of study
-	 *         creation are not all marked as completed. Not allowed, if the
-	 *         dates for study activities or resource availability are already
-	 *         crossed A warning is shown if the checklist items are not all
-	 *         marked as complete A warning is shown as Participant Enrollment
-	 *         Status information
+	 * Launch/publish update , following validations are done in this method.
+	 * These are: Not allowed if individual sections of study creation are not
+	 * all marked as completed. Not allowed, if the dates for study activities
+	 * or resource availability are already crossed A warning is shown if the
+	 * checklist items are not all marked as complete A warning is shown as
+	 * Participant Enrollment Status information
 	 * 
 	 * @author BTC
 	 * @param request
@@ -4721,15 +4738,16 @@ public class StudyController {
 	}
 
 	/**
-	 * validated for uniqueness of customStudyId of study
-	 *         throughout the application
+	 * validated for uniqueness of customStudyId of study throughout the
+	 * application
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
 	 *            , {@link HttpServletResponse}
 	 * @throws IOException
-	 * @return void 
+	 * @return void
 	 */
 	@RequestMapping(value = "/adminStudies/validateStudyId.do", method = RequestMethod.POST)
 	public void validateStudyId(HttpServletRequest request,
@@ -4762,15 +4780,15 @@ public class StudyController {
 	}
 
 	/**
-	 * This method shows the basic information
-	 *         about the study basic info like Study ID, Study name, Study full
-	 *         name, Study Category, Research Sponsor,Data Partner, Estimated
-	 *         Duration in weeks/months/years, Study Tagline, Study Description,
-	 *         Study website, Study Type
+	 * This method shows the basic information about the study basic info like
+	 * Study ID, Study name, Study full name, Study Category, Research
+	 * Sponsor,Data Partner, Estimated Duration in weeks/months/years, Study
+	 * Tagline, Study Description, Study website, Study Type
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/viewBasicInfo.do")
 	public ModelAndView viewBasicInfo(HttpServletRequest request) {
@@ -4961,15 +4979,15 @@ public class StudyController {
 	}
 
 	/**
-	 * This method shows configuration of study
-	 *         settings and admin list of the study study settings like
-	 *         Platforms supported, Is the Study currently enrolling
-	 *         participants, Allow user to rejoin s the Study once they leave
-	 *         it?, Retain participant data when they leave a study?
+	 * This method shows configuration of study settings and admin list of the
+	 * study study settings like Platforms supported, Is the Study currently
+	 * enrolling participants, Allow user to rejoin s the Study once they leave
+	 * it?, Retain participant data when they leave a study?
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} 
+	 * @return {@link ModelAndView}
 	 *
 	 */
 	@RequestMapping("/adminStudies/viewSettingAndAdmins.do")
@@ -5040,13 +5058,19 @@ public class StudyController {
 				if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
 					studyBo = studyService.getStudyById(studyId,
 							sesObj.getUserId());
-					/*Get the active user list whom are not yet added to the particular study*/
+					/*
+					 * Get the active user list whom are not yet added to the
+					 * particular study
+					 */
 					userList = studyService.getActiveNonAddedUserList(
 							Integer.parseInt(studyId), sesObj.getUserId());
-					/*This method is used to get the uses whom are already added to the particular study*/
+					/*
+					 * This method is used to get the uses whom are already
+					 * added to the particular study
+					 */
 					studyPermissionList = studyService.getAddedUserListToStudy(
 							Integer.parseInt(studyId), sesObj.getUserId());
-					/*Get the permissions of the user*/
+					/* Get the permissions of the user */
 					permissions = usersService.getPermissionsByUserId(sesObj
 							.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
@@ -5076,10 +5100,11 @@ public class StudyController {
 	}
 
 	/**
-	 *  Setting Request Sessions (setting of study
-	 *         session count for each request is study live or not, study
-	 *         permission for view/edit, setting studyId to the Request session,
-	 *         ) of particular study and redirecting study basic page
+	 * Setting Request Sessions (setting of study session count for each request
+	 * is study live or not, study permission for view/edit, setting studyId to
+	 * the Request session, ) of particular study and redirecting study basic
+	 * page
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}

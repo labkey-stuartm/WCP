@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the active_task database table.
  *
- * @author Vivek
+ * @author BTC
  */
 @Entity
 @Table(name = "active_task")

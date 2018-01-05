@@ -5,7 +5,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * @author Vivek
+ * @author BTC
  */
 
 public class ServletContextHolder implements ServletContextListener {
@@ -28,7 +28,7 @@ public class ServletContextHolder implements ServletContextListener {
 	}
 
 	/**
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
 	 */
@@ -37,7 +37,7 @@ public class ServletContextHolder implements ServletContextListener {
 	}
 
 	/**
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
 	 */

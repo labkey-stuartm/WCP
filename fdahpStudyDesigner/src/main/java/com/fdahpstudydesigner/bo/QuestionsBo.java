@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the questions database table.
  * 
- * @author BTC 
+ * @author BTC
  */
 @Entity
 @Table(name = "questions")

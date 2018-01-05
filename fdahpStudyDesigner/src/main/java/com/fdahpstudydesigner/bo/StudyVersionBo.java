@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the study_version database table.
  *
- * @author Vivek
+ * @author BTC
  *
  */
 @Entity

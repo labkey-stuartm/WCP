@@ -20,7 +20,7 @@ import com.fdahpstudydesigner.dao.LoginDAOImpl;
 import com.fdahpstudydesigner.service.DashBoardAndProfileService;
 
 /**
- * @author Vivek
+ * @author BTC
  * @see {@link SimpleUrlAuthenticationSuccessHandler}
  */
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -35,7 +35,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	/**
 	 * Provide landing page URI as per User Role
 	 *
-	 * @author Vivek
+	 * @author BTC
 	 *
 	 * @param authentication
 	 *            , {@link Authentication}
@@ -60,7 +60,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.springframework.security.web.authentication.
 	 * AbstractAuthenticationTargetUrlRequestHandler
 	 * #handle(javax.servlet.http.HttpServletRequest,
@@ -94,8 +94,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		sesObj.setLoginStatus(true);
 		sesObj.setCurrentHomeUrl("/" + projectName + targetUrl);
 		sesObj.setEmail(userdetails.getUserEmail());
-		sesObj.setUserPermissions(FdahpStudyDesignerUtil
-				.getSessionUserRole());
+		sesObj.setUserPermissions(FdahpStudyDesignerUtil.getSessionUserRole());
 		sesObj.setPasswordExpairdedDateTime(userdetails
 				.getPasswordExpairdedDateTime());
 		sesObj.setCreatedDate(userdetails.getCreatedOn());

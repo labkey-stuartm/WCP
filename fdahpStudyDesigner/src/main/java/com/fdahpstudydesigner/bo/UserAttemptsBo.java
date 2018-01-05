@@ -18,7 +18,7 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * The persistent class for the user_attempts database table.
  * 
- * @author Vivek
+ * @author BTC
  *
  */
 @Entity

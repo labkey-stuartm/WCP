@@ -22,7 +22,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	/**
 	 * Clean the XSS from request parameters
 	 * 
-	 * @param value , request parameters
+	 * @param value
+	 *            , request parameters
 	 * @return {@link String}
 	 */
 	private String cleanXSS(String value) {

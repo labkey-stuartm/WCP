@@ -38,7 +38,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 
 /**
- * @author Vivek
+ * @author BTC
  *
  */
 public class FDASchedulerService {
@@ -63,7 +63,7 @@ public class FDASchedulerService {
 	/**
 	 * This method create a audit log file in every mid night.
 	 * 
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 */
 	@Scheduled(cron = "0 0 0 * * ?")
@@ -143,7 +143,7 @@ public class FDASchedulerService {
 	/**
 	 * This method sends all notification to registration server.
 	 * 
-	 * @author Vivek
+	 * @author BTC
 	 * 
 	 */
 

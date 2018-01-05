@@ -77,7 +77,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String CONESENT_REVIEW = "consentreview";
 	public static final String CONSENT_ID = "consentId";
 	public static final String CONSENT_INFO_ID = "consentInfoId";
-																public static final String CONSENT_INFO_LIST = "consentInfoList";
+	public static final String CONSENT_INFO_LIST = "consentInfoList";
 
 	public static final String CONSENT_INFO_LIST_PAGE = "consentInfoListPage";
 	public static final String CONSENT_INFO_PAGE = "consentInfoPage";

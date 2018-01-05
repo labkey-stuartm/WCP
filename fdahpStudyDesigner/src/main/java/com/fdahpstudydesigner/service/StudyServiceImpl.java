@@ -5,14 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
@@ -53,10 +50,11 @@ public class StudyServiceImpl implements StudyService {
 	private StudyDAO studyDAO;
 
 	/**
-	 * This method is used to validate the activetaskType for android
-	 *         platform
+	 * This method is used to validate the activetaskType for android platform
+	 * 
 	 * @author BTC
-	 * @param Integer, studyId
+	 * @param Integer
+	 *            , studyId
 	 * @return String, SUCCESS or FAILURE
 	 *
 	 */
@@ -574,7 +572,8 @@ public class StudyServiceImpl implements StudyService {
 	 * return Study version on customStudyid
 	 *
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return {@link StudyIdBean}
 	 * @exception Exception
 	 */
@@ -736,8 +735,10 @@ public class StudyServiceImpl implements StudyService {
 	 * return Study details
 	 *
 	 * @author BTC
-	 * @param String, studyId
-	 * @param Integer, userId
+	 * @param String
+	 *            , studyId
+	 * @param Integer
+	 *            , userId
 	 * @return {@link StudyBo}
 	 * @exception Exception
 	 */
@@ -783,7 +784,8 @@ public class StudyServiceImpl implements StudyService {
 	 * return study List based on user
 	 *
 	 * @author BTC
-	 * @param String,userId
+	 * @param String
+	 *            ,userId
 	 * @return {@link List<StudyListBean>}
 	 * @exception Exception
 	 */
@@ -825,8 +827,10 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * This method is to get live Study details
+	 * 
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return {@link StudyBo}
 	 */
 	@Override
@@ -897,11 +901,16 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * mark as completed of study
+	 * 
 	 * @author BTC
-	 * @param Integer, studyId
-	 * @param String, markCompleted
-	 * @param sesObj, {@link SessionObject}
-	 * @param String, customStudyId {@link StudyBo}
+	 * @param Integer
+	 *            , studyId
+	 * @param String
+	 *            , markCompleted
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @param String
+	 *            , customStudyId {@link StudyBo}
 	 * @return String, SUCCES/FAILURE
 	 */
 	@Override
@@ -1033,8 +1042,10 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * reset study by customStudyId
+	 * 
 	 * @author BTC
-	 * @param String, customStudyId
+	 * @param String
+	 *            , customStudyId
 	 * @return boolean
 	 */
 	@Override
@@ -1079,7 +1090,7 @@ public class StudyServiceImpl implements StudyService {
 	/**
 	 * This method is used to get the saved resource list
 	 * 
-	 * @author BTC 
+	 * @author BTC
 	 * @param studyId
 	 * @return List of {@link ResourceBO}
 	 */
@@ -1272,9 +1283,11 @@ public class StudyServiceImpl implements StudyService {
 	 * This method is used to Save or Done Checklist
 	 * 
 	 * @author BTC
-	 * @param checklist, {@link Checklist}
+	 * @param checklist
+	 *            , {@link Checklist}
 	 * @param actionBut
-	 * @param sesObj, {@link SessionObject}
+	 * @param sesObj
+	 *            , {@link SessionObject}
 	 * @param customStudyId
 	 * @return checklist Id
 	 */
@@ -1551,13 +1564,15 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * save or update content(title,description,image)
-	 *         for the Overview pages of the Study those pages will reflect on
-	 *         mobile overview screen
+	 * save or update content(title,description,image) for the Overview pages of
+	 * the Study those pages will reflect on mobile overview screen
+	 * 
 	 * @author BTC
-	 * @param studyPageBean, {@link StudyPageBean}
-	 * @param sesObj, {@link SessionObject}
-	 * @return {@link String} 
+	 * @param studyPageBean
+	 *            , {@link StudyPageBean}
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return {@link String}
 	 */
 	@Override
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean,
@@ -1789,15 +1804,19 @@ public class StudyServiceImpl implements StudyService {
 		return resourseId;
 	}
 
-	/** This method captures basic information about the
-	 *         study basic info like Study ID, Study name, Study full name,
-	 *         Study Category, Research Sponsor,Data Partner, Estimated Duration
-	 *         in weeks/months/years, Study Tagline, Study Description, Study
-	 *         website, Study Type
+	/**
+	 * This method captures basic information about the study basic info like
+	 * Study ID, Study name, Study full name, Study Category, Research
+	 * Sponsor,Data Partner, Estimated Duration in weeks/months/years, Study
+	 * Tagline, Study Description, Study website, Study Type
+	 * 
 	 * @author BTC
-	 * @param StudyBo, {@link StudyBo}
-	 * @param String, userId
-	 * @param sessionObject, {@link SessionObject}
+	 * @param StudyBo
+	 *            , {@link StudyBo}
+	 * @param String
+	 *            , userId
+	 * @param sessionObject
+	 *            , {@link SessionObject}
 	 * @return {@link String}
 	 */
 	@Override
@@ -1842,14 +1861,16 @@ public class StudyServiceImpl implements StudyService {
 		return result;
 	}
 
-	/** save or update study setting and admins for the particular
-	 *                study study settings like Platforms supported, Is the
-	 *                Study currently enrolling participants, Allow user to
-	 *                rejoin s the Study once they leave it?, Retain participant
-	 *                data when they leave a study? managing admins for the
-	 *                particular study
+	/**
+	 * save or update study setting and admins for the particular study study
+	 * settings like Platforms supported, Is the Study currently enrolling
+	 * participants, Allow user to rejoin s the Study once they leave it?,
+	 * Retain participant data when they leave a study? managing admins for the
+	 * particular study
+	 * 
 	 * @author BTC
-	 * @param studyBo, {@link studyBo}
+	 * @param studyBo
+	 *            , {@link studyBo}
 	 * @return {@link String} , the status SUCCESS or FAILURE
 	 * @exception Exception
 	 */
@@ -1883,11 +1904,15 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * This method is to update status of Study
+	 * 
 	 * @author BTC
-	 * @param string, studyId
-	 * @param string, buttonText 
-	 * @param sesObj, {@link SessionObject}
-	 * @return String,  SUCCESS/FAILURE
+	 * @param string
+	 *            , studyId
+	 * @param string
+	 *            , buttonText
+	 * @param sesObj
+	 *            , {@link SessionObject}
+	 * @return String, SUCCESS/FAILURE
 	 */
 	@Override
 	public String updateStudyActionOnAction(String studyId, String buttonText,
@@ -1945,11 +1970,14 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * This method is to validate
-	 *         Study eligible for launch/publish based on some condition
+	 * This method is to validate Study eligible for launch/publish based on
+	 * some condition
+	 * 
 	 * @author BTC
-	 * @param string, studyId
-	 * @param string, buttonText
+	 * @param string
+	 *            , studyId
+	 * @param string
+	 *            , buttonText
 	 * @return String, SUCCESS/FAILURE
 	 */
 	@Override
