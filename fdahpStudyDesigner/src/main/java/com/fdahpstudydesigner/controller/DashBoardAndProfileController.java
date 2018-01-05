@@ -287,23 +287,4 @@ public class DashBoardAndProfileController {
 		logger.info("DashBoardAndProfileController - viewUserDetails - Ends");
 		return mav;
 	}
-
-	/*
-	 * @RequestMapping("/adminDashboard/getMasterData.do") public void
-	 * getMasterData(HttpServletResponse response, String type){
-	 * logger.info("DashBoardAndProfileController - getMasterData() - Starts ");
-	 * JSONObject jsonobject = new JSONObject(); PrintWriter out = null; String
-	 * message = FdahpStudyDesignerConstants.FAILURE; MasterDataBO masterDataBO
-	 * = null; try{ if(FdahpStudyDesignerUtil.isNotEmpty(type)){ masterDataBO =
-	 * dashBoardAndProfileService.getMasterData(type); if(masterDataBO != null){
-	 * message = FdahpStudyDesignerConstants.SUCCESS;
-	 * jsonobject.put("masterDataBO", masterDataBO); } }
-	 * jsonobject.put("message", message);
-	 * response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
-	 * out = response.getWriter(); out.print(jsonobject); }catch (Exception e) {
-	 * response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
-	 * logger.error("DashBoardAndProfileController - getMasterData() - ERROR " +
-	 * e); }
-	 * logger.info("DashBoardAndProfileController - getMasterData() - Ends "); }
-	 */
 }
