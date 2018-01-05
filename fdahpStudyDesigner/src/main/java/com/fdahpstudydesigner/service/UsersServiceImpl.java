@@ -20,6 +20,11 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
+/**
+ * 
+ * @author BTC
+ *
+ */
 @Service
 public class UsersServiceImpl implements UsersService {
 
@@ -37,7 +42,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to activate or deactivate the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
 	 * @param userStatus
 	 * @param loginUser
@@ -137,7 +142,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to add or update the user details
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param userBO
@@ -318,7 +323,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to enforce the user to change the password
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
 	 * @param email
 	 * @return message, Success/Failure message
@@ -340,7 +345,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is to get the list of active user email ids
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @return emails
 	 */
 	@Override
@@ -360,7 +365,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to get the permissions of the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
 	 * @return permissions
 	 */
@@ -380,7 +385,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to get the user details
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param userId
 	 * @return {@link UserBO}
 	 */
@@ -400,7 +405,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to get the list of users
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @return List of {@link UserBO}
 	 */
 	@Override
@@ -419,7 +424,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to get user permissions
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param sessionUserId
 	 * @return userId
 	 */
@@ -461,7 +466,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is to get the list of user roles
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @return List of {@link RoleBO}
 	 */
 	@Override

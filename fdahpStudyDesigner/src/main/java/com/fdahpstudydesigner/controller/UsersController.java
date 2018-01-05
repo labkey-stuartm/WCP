@@ -31,6 +31,11 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
+/**
+ * 
+ * @author BTC
+ *
+ */
 @Controller
 public class UsersController {
 
@@ -49,7 +54,7 @@ public class UsersController {
 	/**
 	 * This method is used to activate or deactivate the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
@@ -89,7 +94,7 @@ public class UsersController {
 	/**
 	 * This method is used to get data for add or edit the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -152,7 +157,7 @@ public class UsersController {
 	/**
 	 * This method is used to add or update the user details
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param userBO
@@ -301,7 +306,7 @@ public class UsersController {
 	/**
 	 * This method is used to enforce the user to change the password
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -371,7 +376,7 @@ public class UsersController {
 	/**
 	 * This method is used to get the list of users
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -424,7 +429,7 @@ public class UsersController {
 	/**
 	 * This method is used to resend the activation link to the user
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
@@ -474,7 +479,7 @@ public class UsersController {
 	/**
 	 * This method is used to view the user details
 	 *
-	 * @author Pradyumn
+	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
