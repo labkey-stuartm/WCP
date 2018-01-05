@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author BTC The persistent class for the comprehension_test_response database
- *         table.
+ * The persistent class for the comprehension_test_response database table.
+ * 
+ * @author BTC 
  *
  */
 @Entity
