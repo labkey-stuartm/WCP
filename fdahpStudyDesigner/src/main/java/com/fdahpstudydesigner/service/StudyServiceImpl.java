@@ -824,11 +824,10 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * This method is to get live Study details
 	 * @author BTC
-	 * @param String
-	 *            : customStudyId
-	 * @return Object : {@link StudyBo} Description : This method is to get live
-	 *         Study
+	 * @param String, customStudyId
+	 * @return {@link StudyBo}
 	 */
 	@Override
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
@@ -1883,7 +1882,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * This method is to upadte status of Study
+	 * This method is to update status of Study
 	 * @author BTC
 	 * @param string, studyId
 	 * @param string, buttonText 
