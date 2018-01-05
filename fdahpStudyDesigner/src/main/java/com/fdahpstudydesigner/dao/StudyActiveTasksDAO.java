@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fdahpstudydesigner.dao;
 
@@ -15,20 +15,39 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Vivek
- * 
+ *
  */
 public interface StudyActiveTasksDAO {
 
-	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,Boolean isLive);
-	public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId);
-	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
-	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
-	
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo, String customStudyId);
-	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType);
-	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
-	public List<StatisticImageListBo> getStatisticImages();
+	public String deleteActiveTask(ActiveTaskBo activeTaskBo,
+			SessionObject sesObj, String customStudyId);
+
+	public ActiveTaskBo getActiveTaskById(Integer activeTaskId,
+			String customStudyId);
+
 	public List<ActivetaskFormulaBo> getActivetaskFormulas();
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId);
-	public List<ActiveStatisticsBean> validateActiveTaskStatIds(String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans);
+
+	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(
+			String activeTaskType);
+
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType);
+
+	public List<StatisticImageListBo> getStatisticImages();
+
+	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,
+			Boolean isLive);
+
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo,
+			String customStudyId);
+
+	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo,
+			SessionObject sesObj, String customStudyId);
+
+	public boolean validateActiveTaskAttrById(Integer studyId,
+			String activeTaskName, String activeTaskAttIdVal,
+			String activeTaskAttIdName, String customStudyId);
+
+	public List<ActiveStatisticsBean> validateActiveTaskStatIds(
+			String customStudyId,
+			List<ActiveStatisticsBean> activeStatisticsBeans);
 }

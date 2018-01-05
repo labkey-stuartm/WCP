@@ -6,10 +6,11 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 public interface DashBoardAndProfileService {
 
-	public String updateProfileDetails(UserBO userBO, int userId,SessionObject userSession);
-	
-	public String isEmailValid(String email);
-	
 	public MasterDataBO getMasterData(String type);
+
+	public String isEmailValid(String email);
+
+	public String updateProfileDetails(UserBO userBO, int userId,
+			SessionObject userSession);
 
 }

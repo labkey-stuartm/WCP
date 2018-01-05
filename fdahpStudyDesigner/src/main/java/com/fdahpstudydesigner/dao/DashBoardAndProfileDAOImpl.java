@@ -14,71 +14,46 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 
 /**
- * 
+ *
  * @author Kanchana
  *
  */
 @Repository
-public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
-	
-	private static Logger logger = Logger.getLogger(DashBoardAndProfileDAOImpl.class);
+public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
+
+	private static Logger logger = Logger
+			.getLogger(DashBoardAndProfileDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
 
 	private Transaction transaction = null;
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
-	}
-	
-	/*MyAccount Starts*/
-	/**
-	 * Kanchana
-	 * Updating User Details
-	 */
+
 	@Override
-	public String updateProfileDetails(UserBO userBO ,int userId) {
-		logger.info("DashBoardAndProfileDAOImpl - updateProfileDetails() - Starts");
+	public MasterDataBO getMasterData(String type) {
+		logger.info("DashBoardAndProfileDAOImpl - getMasterData() - Starts");
 		Session session = null;
-	    Query query = null;
-	    String queryString = "";
-	    String message = FdahpStudyDesignerConstants.FAILURE;
-	    UserBO updatedUserBo = null;
-		try{
-				session = hibernateTemplate.getSessionFactory().openSession();
-				transaction = session.beginTransaction();
-				/*-------------------------Update FDA Admin-----------------------*/
-				queryString = "from UserBO UBO where UBO.userId = "+userId;
-				query = session.createQuery(queryString);
-				updatedUserBo = (UserBO) query.uniqueResult();
-				if(updatedUserBo != null){
-					updatedUserBo.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");
-					updatedUserBo.setLastName(null != userBO.getLastName().trim() ? userBO.getLastName().trim() : "");
-					updatedUserBo.setUserEmail(null != userBO.getUserEmail().trim() ? userBO.getUserEmail().trim() : "");
-					updatedUserBo.setPhoneNumber(null != userBO.getPhoneNumber().trim() ? userBO.getPhoneNumber().trim() : "");
-					updatedUserBo.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : 0);
-					updatedUserBo.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
-					session.update(updatedUserBo);
-				}
-				transaction.commit();
-				message = FdahpStudyDesignerConstants.SUCCESS;
-		}catch(Exception e){
-			transaction.rollback();
-			logger.error("DashBoardAndProfileDAOImpl - updateProfileDetails - ERROR",e);
-		}finally{
-			if(null != session){
+		MasterDataBO masterDataBO = null;
+		Query query = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getMasterDataByType").setString(
+					"type", type);
+			masterDataBO = (MasterDataBO) query.uniqueResult();
+		} catch (Exception e) {
+			logger.error(
+					"DashBoardAndProfileDAOImpl - getMasterData() - ERROR", e);
+		} finally {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
-		logger.info("DashBoardAndProfileDAOImpl - updateProfileDetails - Ends");
-		return message;
+		logger.info("DashBoardAndProfileDAOImpl - getMasterData() - Ends");
+		return masterDataBO;
 	}
-	
-	/*MyAccount Starts*/
 
 	/**
-	 * Kanchana
-	 * Validating UserEmail
+	 * Kanchana Validating UserEmail
 	 */
+	@Override
 	public String isEmailValid(String email) {
 		logger.info("DashBoardAndProfileDAOImpl - isEmailValid() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
@@ -88,41 +63,83 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		UserBO user = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			queryString = "FROM UserBO where userEmail = '" + email + "'" ;
+			queryString = "FROM UserBO where userEmail = '" + email + "'";
 			query = session.createQuery(queryString);
 			user = (UserBO) query.uniqueResult();
-			if(null != user){
+			if (null != user) {
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		} catch (Exception e) {
-			logger.error("DashBoardAndProfileDAOImpl - isEmailValid() - ERROR " + e);
+			logger.error("DashBoardAndProfileDAOImpl - isEmailValid() - ERROR "
+					+ e);
 		} finally {
-			if(null != session){
+			if (null != session) {
 				session.close();
 			}
 		}
 		logger.info("DashBoardAndProfileDAOImpl - isEmailValid() - Ends");
 		return message;
 	}
-	
+
+	/* MyAccount Starts */
+
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
+	}
+
+	/* MyAccount Starts */
+	/**
+	 * Kanchana Updating User Details
+	 */
 	@Override
-	public MasterDataBO getMasterData(String type) {
-		logger.info("DashBoardAndProfileDAOImpl - getMasterData() - Starts");
+	public String updateProfileDetails(UserBO userBO, int userId) {
+		logger.info("DashBoardAndProfileDAOImpl - updateProfileDetails() - Starts");
 		Session session = null;
-		MasterDataBO masterDataBO = null;
 		Query query = null;
-		try{
+		String queryString = "";
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		UserBO updatedUserBo = null;
+		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getMasterDataByType").setString("type", type);
-			masterDataBO = (MasterDataBO) query.uniqueResult();
-		}catch(Exception e){
-			logger.error("DashBoardAndProfileDAOImpl - getMasterData() - ERROR",e);
-		}finally{
-			if(null != session && session.isOpen()){
+			transaction = session.beginTransaction();
+			/*-------------------------Update FDA Admin-----------------------*/
+			queryString = "from UserBO UBO where UBO.userId = " + userId;
+			query = session.createQuery(queryString);
+			updatedUserBo = (UserBO) query.uniqueResult();
+			if (updatedUserBo != null) {
+				updatedUserBo
+						.setFirstName(null != userBO.getFirstName().trim() ? userBO
+								.getFirstName().trim() : "");
+				updatedUserBo
+						.setLastName(null != userBO.getLastName().trim() ? userBO
+								.getLastName().trim() : "");
+				updatedUserBo
+						.setUserEmail(null != userBO.getUserEmail().trim() ? userBO
+								.getUserEmail().trim() : "");
+				updatedUserBo.setPhoneNumber(null != userBO.getPhoneNumber()
+						.trim() ? userBO.getPhoneNumber().trim() : "");
+				updatedUserBo
+						.setModifiedBy(null != userBO.getModifiedBy() ? userBO
+								.getModifiedBy() : 0);
+				updatedUserBo
+						.setModifiedOn(null != userBO.getModifiedOn() ? userBO
+								.getModifiedOn() : "");
+				session.update(updatedUserBo);
+			}
+			transaction.commit();
+			message = FdahpStudyDesignerConstants.SUCCESS;
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error(
+					"DashBoardAndProfileDAOImpl - updateProfileDetails - ERROR",
+					e);
+		} finally {
+			if (null != session) {
 				session.close();
 			}
 		}
-		logger.info("DashBoardAndProfileDAOImpl - getMasterData() - Ends");
-		return masterDataBO;
+		logger.info("DashBoardAndProfileDAOImpl - updateProfileDetails - Ends");
+		return message;
 	}
 }

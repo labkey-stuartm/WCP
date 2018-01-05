@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fdahpstudydesigner.util;
 
@@ -23,19 +23,22 @@ public class CrossScriptingFilter implements Filter {
 	private static Logger logger = Logger.getLogger(CrossScriptingFilter.class);
 	private FilterConfig filterConfig;
 
-	public void init(FilterConfig filterConfig) throws ServletException {
-		this.filterConfig = filterConfig;
-	}
-
+	@Override
 	public void destroy() {
 		this.filterConfig = null;
 	}
 
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		logger.info("Inlter CrossScriptingFilter  ...............");
 		chain.doFilter(new RequestWrapper((HttpServletRequest) request),
 				response);
 		logger.info("Outlter CrossScriptingFilter ...............");
+	}
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		this.filterConfig = filterConfig;
 	}
 }

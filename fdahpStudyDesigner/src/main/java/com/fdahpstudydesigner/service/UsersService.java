@@ -9,15 +9,28 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
 
 public interface UsersService {
-	
-	public List<UserBO> getUserList();
-	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession,HttpServletRequest request);
-	public UserBO getUserDetails(Integer userId);
-	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues,SessionObject userSession);
-	public List<RoleBO> getUserRoleList();
-	public RoleBO getUserRole(int roleId);
-	public List<Integer> getPermissionsByUserId(Integer userId);
-	public Integer getUserPermissionByUserId(Integer sessionUserId);
-	public List<String> getActiveUserEmailIds();
+
+	public String activateOrDeactivateUser(int userId, int userStatus,
+			int loginUser, SessionObject userSession, HttpServletRequest request);
+
+	public String addOrUpdateUserDetails(HttpServletRequest request,
+			UserBO userBO, String permissions, List<Integer> permissionList,
+			String selectedStudies, String permissionValues,
+			SessionObject userSession);
+
 	public String enforcePasswordChange(Integer userId, String email);
+
+	public List<String> getActiveUserEmailIds();
+
+	public List<Integer> getPermissionsByUserId(Integer userId);
+
+	public UserBO getUserDetails(Integer userId);
+
+	public List<UserBO> getUserList();
+
+	public Integer getUserPermissionByUserId(Integer sessionUserId);
+
+	public RoleBO getUserRole(int roleId);
+
+	public List<RoleBO> getUserRoleList();
 }

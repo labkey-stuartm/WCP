@@ -8,85 +8,85 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 /**
- * 
- * @author BTC
- * The persistent class for the questionnaires_frequencies database table.
+ *
+ * @author BTC The persistent class for the questionnaires_frequencies database
+ *         table.
  *
  */
 @Entity
-@Table(name="questionnaires_frequencies")
+@Table(name = "questionnaires_frequencies")
 public class QuestionnairesFrequenciesBo implements Serializable {
 
 	private static final long serialVersionUID = -1673441133422366930L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="questionnaires_id")
+
+	@Column(name = "questionnaires_id")
 	private Integer questionnairesId;
-	
-	@Column(name="frequency_date")
+
+	@Column(name = "frequency_date")
 	private String frequencyDate;
-	
-	@Column(name="frequency_time")
+
+	@Column(name = "frequency_time")
 	private String frequencyTime;
-	
-	@Column(name="is_launch_study")
+
+	@Column(name = "is_launch_study")
 	private Boolean isLaunchStudy = false;
-	
-	@Column(name="is_study_life_time")
-	private Boolean isStudyLifeTime=false;
-	
-	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getQuestionnairesId() {
-		return questionnairesId;
-	}
-
-	public void setQuestionnairesId(Integer questionnairesId) {
-		this.questionnairesId = questionnairesId;
-	}
+	@Column(name = "is_study_life_time")
+	private Boolean isStudyLifeTime = false;
 
 	public String getFrequencyDate() {
 		return frequencyDate;
-	}
-
-	public void setFrequencyDate(String frequencyDate) {
-		this.frequencyDate = frequencyDate;
 	}
 
 	public String getFrequencyTime() {
 		return frequencyTime;
 	}
 
-	public void setFrequencyTime(String frequencyTime) {
-		this.frequencyTime = frequencyTime;
+	public Integer getId() {
+		return id;
 	}
 
 	public Boolean getIsLaunchStudy() {
 		return isLaunchStudy;
 	}
 
-	public void setIsLaunchStudy(Boolean isLaunchStudy) {
-		this.isLaunchStudy = isLaunchStudy;
-	}
-
 	public Boolean getIsStudyLifeTime() {
 		return isStudyLifeTime;
 	}
 
+	public Integer getQuestionnairesId() {
+		return questionnairesId;
+	}
+
+	public void setFrequencyDate(String frequencyDate) {
+		this.frequencyDate = frequencyDate;
+	}
+
+	public void setFrequencyTime(String frequencyTime) {
+		this.frequencyTime = frequencyTime;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setIsLaunchStudy(Boolean isLaunchStudy) {
+		this.isLaunchStudy = isLaunchStudy;
+	}
+
 	public void setIsStudyLifeTime(Boolean isStudyLifeTime) {
 		this.isStudyLifeTime = isStudyLifeTime;
+	}
+
+	public void setQuestionnairesId(Integer questionnairesId) {
+		this.questionnairesId = questionnairesId;
 	}
 
 }

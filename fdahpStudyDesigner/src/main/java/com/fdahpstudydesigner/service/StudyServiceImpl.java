@@ -1,6 +1,5 @@
 package com.fdahpstudydesigner.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,12 +8,8 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import sun.awt.image.ImageWatched.Link;
 
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
@@ -41,7 +36,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 /**
- * 
+ *
  * @author Ronalin
  *
  */
@@ -50,157 +45,282 @@ public class StudyServiceImpl implements StudyService {
 
 	private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
 	private StudyDAO studyDAO;
-	
+
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 
 	/**
-	 * Setting DI
-	 * @param studyDAO
-	 */
-    @Autowired
-	public void setStudyDAO(StudyDAO studyDAO) {
-		this.studyDAO = studyDAO;
-	}
-    
-    /**
-	 * return study List based on user 
+	 * return false or true of adding record of studyPermission based on studyId
+	 * and userId
+	 *
 	 * @author BTC
-	 * 
-	 * @param userId of the user
-	 * @return the Study list
+	 *
+	 * @return boolean
 	 * @exception Exception
 	 */
 	@Override
-	public List<StudyListBean> getStudyList(Integer userId) {
-		logger.info("StudyServiceImpl - getStudyList() - Starts");
-		List<StudyListBean> studyBos = null;
+	public boolean addStudyPermissionByuserIds(Integer userId, String studyId,
+			String userIds) {
+		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
+		boolean delFlag = false;
 		try {
-			if(userId!=null && userId!=0){
-				studyBos  = studyDAO.getStudyList(userId);
-			} 
+			delFlag = studyDAO.addStudyPermissionByuserIds(userId, studyId,
+					userIds);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudyList() - ERROR " , e);
+			logger.error(
+					"StudyServiceImpl - addStudyPermissionByuserIds() - ERROR ",
+					e);
 		}
-		logger.info("StudyServiceImpl - getStudyList() - Ends");
-		return studyBos;
+		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Ends");
+		return delFlag;
 	}
-	
+
 	/**
-	 * return active and live study List based on user 
+	 * @author Ronalin
+	 * @param Integer
+	 *            : studyId
+	 * @return String SUCCESS or FAILURE
+	 *
+	 *         This method is used to validate the activetaskType for android
+	 *         platform
+	 */
+	@Override
+	public String checkActiveTaskTypeValidation(Integer studyId) {
+		logger.info("StudyServiceImpl - checkActiveTaskTypeValidation - Starts");
+		return studyDAO.checkActiveTaskTypeValidation(studyId);
+	}
+
+	/**
 	 * @author BTC
-	 * 
-	 * @param userId of the user
-	 * @return the Study list
-	 * @exception Exception
+	 * @param studyId
+	 * @return int count
+	 *
+	 *         This method is used to get the last order of an comprehension
+	 *         Test Question of an study
 	 */
 	@Override
-	public List<StudyListBean> getStudyListByUserId(Integer userId) {
-		logger.info("StudyServiceImpl - getStudyListByUserId() - Starts");
-		List<StudyListBean> studyListBeans = null;
-		try{
-			studyListBeans = studyDAO.getStudyListByUserId(userId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudyListByUserId() - ERROR " , e);
-		} 
-		logger.info("StudyServiceImpl - getStudyListByUserId() - Ends");
-		return studyListBeans;
-	}
-	
-	/**
-	 * return active and live study List
-	 * @author BTC
-	 * 
-	 * @return the Study list
-	 * @exception Exception
-	 */
-	@Override
-	public List<StudyBo> getAllStudyList() {
-		logger.info("StudyServiceImpl - getAllStudyList() - Starts");
-		List<StudyBo> studyBOList = null;
-		try{
-			studyBOList = studyDAO.getAllStudyList();
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getAllStudyList() - ERROR " , e);
-		} 
-		logger.info("StudyServiceImpl - getAllStudyList() - Ends");
-		return studyBOList;
-	}
-
-
-
-	/**
-	 * return reference List based on category
-	 * @author BTC 
-	 * 
-	 * @return the reference table List
-	 * @exception Exception
-	 */
-	@Override
-	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory() {
-		logger.info("StudyServiceImpl - getreferenceListByCategory() - Starts");
-		HashMap<String, List<ReferenceTablesBo>> referenceMap = null;
+	public int comprehensionTestQuestionOrder(Integer studyId) {
+		int count = 1;
+		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
 		try {
-			referenceMap  = studyDAO.getreferenceListByCategory();
+			count = studyDAO.comprehensionTestQuestionOrder(studyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudyList() - ERROR " , e);
+			logger.error(
+					"StudyServiceImpl - comprehensionTestQuestionOrder() - Error",
+					e);
 		}
-		logger.info("StudyServiceImpl - getreferenceListByCategory() - Ends");
-		return referenceMap;
-	}
-
-
-
-
-	/**
-	 * return Study based on studyId, userId
-	 * @author BTC
-	 * 
-	 * @return StudyBo
-	 * @exception Exception
-	 */
-	@Override
-	public StudyBo getStudyById(String studyId, Integer userId) {
-		logger.info("StudyServiceImpl - getStudyById() - Starts");
-		StudyBo studyBo = null;
-		try {
-			studyBo  = studyDAO.getStudyById(studyId, userId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudyById() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - getStudyById() - Ends");
-		return studyBo;
+		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Ends");
+		return count;
 	}
 
 	/**
 	 * @author BTC
-	 * @param StudyBo , {@link StudyBo}
-	 * @return {@link String}
-	 * This method captures basic information about the study
-	 * basic info like Study ID, Study name, Study full name, Study Category,
-	 * Research Sponsor,Data Partner, Estimated Duration in weeks/months/years,
-	 * Study Tagline, Study Description, Study website, Study Type
+	 * @param studyId
+	 * @return int count
+	 *
+	 *         This method is used to get the last order of an consent info of
+	 *         an study
 	 */
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject) {
-		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
+	public int consentInfoOrder(Integer studyId) {
+		int count = 1;
+		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
 		try {
-			message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
+			count = studyDAO.consentInfoOrder(studyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
+			logger.error("StudyServiceImpl - consentInfoOrder() - Error", e);
 		}
-		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Ends");
+		logger.info("StudyServiceImpl - consentInfoOrder() - Ends");
+		return count;
+	}
+
+	@Override
+	public boolean copyliveStudyByCustomStudyId(String customStudyId,
+			SessionObject object) {
+		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Starts");
+		boolean flag = false;
+		try {
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId,
+					FdahpStudyDesignerConstants.COPY_STUDY, object);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - copyliveStudyByCustomStudyId() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Ends");
+		return flag;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            :questionId
+	 * @return String : SUCCESS or FAILURE
+	 *
+	 *         This method is used to delete the Comprehension Test Question in
+	 *         a study
+	 *
+	 */
+	@Override
+	public String deleteComprehensionTestQuestion(Integer questionId,
+			Integer studyId, SessionObject sessionObject) {
+		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
+		String message = null;
+		try {
+			message = studyDAO.deleteComprehensionTestQuestion(questionId,
+					studyId, sessionObject);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - deleteComprehensionTestQuestion() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Ends");
 		return message;
 	}
 
-
-
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : consentInfoId
+	 * @return String :SUCCESS or FAILURE TThis method used to get the delete
+	 *         the consent information
+	 */
+	@Override
+	public String deleteConsentInfo(Integer consentInfoId, Integer studyId,
+			SessionObject sessionObject, String customStudyId) {
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
+		String message = null;
+		try {
+			message = studyDAO.deleteConsentInfo(consentInfoId, studyId,
+					sessionObject, customStudyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - deleteConsentInfo() - Error", e);
+		}
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
 
 	/**
-	 * return false or true of deleting record of studyPermission based on studyId and userId
 	 * @author BTC
-	 * 
+	 * @param Integer
+	 *            : eligibilityTestId
+	 * @param Integer
+	 *            : studyId
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param String
+	 *            : customStudyId
+	 * @return String :{success/failure} Description : This method is delete
+	 *         eligibility test
+	 */
+	@Override
+	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId,
+			Integer studyId, SessionObject sessionObject, String customStudyId) {
+		logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.deleteEligibilityTestQusAnsById(
+					eligibilityTestId, studyId, sessionObject, customStudyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - deleteEligibilityTestQusAnsById - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC delete the Study Overview Page By Page Id
+	 * @param studyId
+	 *            ,pageId
+	 * @return {@link String}
+	 */
+	@Override
+	public String deleteOverviewStudyPageById(String studyId, String pageId) {
+		logger.info("StudyServiceImpl - deleteOverviewStudyPageById() - Starts");
+		String message = "";
+		try {
+			message = studyDAO.deleteOverviewStudyPageById(studyId, pageId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - deleteOverviewStudyPageById() - ERROR ",
+					e);
+		}
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : resourceInfoId
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param String
+	 *            : customStudyId in {@link StudyBo}
+	 * @param Integer
+	 *            : studyId in {@link StudyBo}
+	 * @return String : {SUCCES/FAILURE} Description : This method is to delete
+	 *         Resource
+	 */
+	@Override
+	public String deleteResourceInfo(Integer resourceInfoId,
+			SessionObject sesObj, String customStudyId, int studyId) {
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		String activity = "";
+		String activityDetail = "";
+		ResourceBO resourceBO = null;
+		try {
+			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
+			if (null != resourceBO) {
+				message = studyDAO.deleteResourceInfo(resourceInfoId,
+						resourceBO.isResourceVisibility(), studyId);
+			}
+			if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
+				activity = "Resource has been soft-deleted.";
+				activityDetail = "Resource has been soft-deleted from the Study. (Study ID = "
+						+ customStudyId
+						+ ", Resource Display Title = "
+						+ resourceBO.getTitle() + ").";
+				auditLogDAO.saveToAuditLog(null, null, sesObj, activity,
+						activityDetail, "StudyDAOImpl - deleteResourceInfo()");
+			}
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - deleteConsentInfo() - Error", e);
+		}
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param String
+	 *            : customStudyId
+	 * @return boolean :{true/false} Description : This method is to delete
+	 *         Study
+	 */
+	@Override
+	public boolean deleteStudyByCustomStudyId(String customStudyId) {
+		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Starts");
+		boolean flag = false;
+		try {
+			flag = studyDAO.deleteStudyByCustomStudyId(customStudyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - deleteStudyByCustomStudyId() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Ends");
+		return flag;
+	}
+
+	/**
+	 * return false or true of deleting record of studyPermission based on
+	 * studyId and userId
+	 *
+	 * @author BTC
+	 *
 	 * @return boolean
 	 * @exception Exception
 	 */
@@ -211,605 +331,212 @@ public class StudyServiceImpl implements StudyService {
 		try {
 			delFlag = studyDAO.deleteStudyPermissionById(userId, studyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - deleteStudyPermissionById() - ERROR " , e);
+			logger.error(
+					"StudyServiceImpl - deleteStudyPermissionById() - ERROR ",
+					e);
 		}
 		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Ends");
 		return delFlag;
 	}
 
+	@Override
+	public List<UserBO> getActiveNonAddedUserList(Integer studyId,
+			Integer userId) {
+		logger.info("StudyServiceImpl - getActiveNonAddedUserList() - Starts");
+		List<UserBO> userList = null;
+		try {
+			userList = studyDAO.getActiveNonAddedUserList(studyId, userId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getActiveNonAddedUserList() - ERROR", e);
+		}
+		logger.info("StudyServiceImpl - getActiveNonAddedUserList() - Ends");
+		return userList;
+	}
 
-
+	@Override
+	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,
+			Integer userId) {
+		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Starts");
+		List<StudyPermissionBO> studyPermissionList = null;
+		try {
+			studyPermissionList = studyDAO.getAddedUserListToStudy(studyId,
+					userId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getAddedUserListToStudy() - ERROR", e);
+		}
+		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Ends");
+		return studyPermissionList;
+	}
 
 	/**
-	 * return false or true of adding record of studyPermission based on studyId and userId
+	 * return active and live study List
+	 *
 	 * @author BTC
-	 * 
-	 * @return boolean
+	 *
+	 * @return the Study list
 	 * @exception Exception
 	 */
 	@Override
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) {
-		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
-		boolean delFlag = false;
+	public List<StudyBo> getAllStudyList() {
+		logger.info("StudyServiceImpl - getAllStudyList() - Starts");
+		List<StudyBo> studyBOList = null;
 		try {
-			delFlag = studyDAO.addStudyPermissionByuserIds(userId, studyId, userIds);
+			studyBOList = studyDAO.getAllStudyList();
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - addStudyPermissionByuserIds() - ERROR " , e);
+			logger.error("StudyServiceImpl - getAllStudyList() - ERROR ", e);
 		}
-		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Ends");
-		return delFlag;
+		logger.info("StudyServiceImpl - getAllStudyList() - Ends");
+		return studyBOList;
 	}
 
-	 /**
-		 * @author BTC
-		 * @param studyId of the StudyBo, Integer userId
-		 * @return the Study list
-		 * @exception Exception
-		 * 
-		 * This method return  content of Overview pages of the Study
-		 * those pages shows in mobile side as 
-		 * a set of swipe-able screens that carry information about the study, with each screen having
-					A title
-				    Description
-				    Image
-		 * 
-	*/
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId
+	 * @return Object : {@link Checklist} Description : This method is to get
+	 *         Checklist
+	 */
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) {
-		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
-		List<StudyPageBo> studyPageBos = null;
+	public Checklist getchecklistInfo(Integer studyId) {
+		logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
+		Checklist checklist = null;
 		try {
-			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
-			 if(null != studyPageBos && !studyPageBos.isEmpty()){
-				 for(StudyPageBo s : studyPageBos){
-					 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImagePath())){
-						 //to make unique image 
-						 if(s.getImagePath().contains("?v=")){
-							 String imagePathArr[] = s.getImagePath().split("\\?");
-							 s.setImagePath(imagePathArr[0]+ "?v=" + new Date().getTime());
-						 }else{
-							 s.setImagePath(s.getImagePath() + "?v=" + new Date().getTime()); 
-						 }
-					 }
-				 }
-			 }
+			checklist = studyDAO.getchecklistInfo(studyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
+			logger.error("StudyServiceImpl - getchecklistInfo() - ERROR ", e);
 		}
-		return studyPageBos;
+		logger.info("StudyServiceImpl - getchecklistInfo() - Ends");
+		return checklist;
 	}
 
 	/**
 	 * @author BTC
-	 * delete the Study Overview Page By Page Id
-	 * @param studyId ,pageId
-	 * @return {@link String}
+	 * @param Integer
+	 *            :QuestionId
+	 * @return Object : ComprehensionTestQuestionBo
+	 *
+	 *         This method is used to get the ComprehensionTestQuestion of an
+	 *         study
 	 */
 	@Override
-	public String deleteOverviewStudyPageById(String studyId, String pageId) {
-		logger.info("StudyServiceImpl - deleteOverviewStudyPageById() - Starts");
-		String message = "";
+	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(
+			Integer questionId) {
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Starts");
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		try {
-			message = studyDAO.deleteOverviewStudyPageById(studyId, pageId);
+			comprehensionTestQuestionBo = studyDAO
+					.getComprehensionTestQuestionById(questionId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - deleteOverviewStudyPageById() - ERROR " , e);
+			logger.error(
+					"StudyServiceImpl - getComprehensionTestQuestionById() - Error",
+					e);
 		}
-		return message;
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Ends");
+		return comprehensionTestQuestionBo;
 	}
 
 	/**
 	 * @author BTC
-	 * @param studyPageBean {@link StudyPageBean}
-	 * @return {@link String}
-	 * save or update content(title,description,image) for the Overview pages of the Study
-	 *  those pages will reflect on mobile overview screen 
+	 * @param Integer
+	 *            : studyId
+	 * @return List : ComprehensionTestQuestions
+	 *
+	 *         This method is used to get the ComprehensionTest Questions
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean ,SessionObject sesObj) {
-		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
-		String message = "";
+	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(
+			Integer studyId) {
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionList() - Starts");
+		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
 		try {
-			if(studyPageBean.getMultipartFiles()!=null && studyPageBean.getMultipartFiles().length>0){
-				String imagePath[]= new String[studyPageBean.getImagePath().length];
-				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
-					String file;
-					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
-						if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
-							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
-						} else {
-							file = FdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE_"+i, studyPageBean.getUserId()+"", studyPageBean.getStudyId());
-						}
-						imagePath[i] = FdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, FdahpStudyDesignerConstants.STUDTYPAGES);
-					} else {
-						imagePath[i] = studyPageBean.getImagePath()[i];
-					}
-				}
-				studyPageBean.setImagePath(imagePath);
-			}
-			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
+			comprehensionTestQuestionList = studyDAO
+					.getComprehensionTestQuestionList(studyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
+			logger.error(
+					"StudyServiceImpl - getComprehensionTestQuestionList() - Error",
+					e);
 		}
-		return message;
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionList() - Starts");
+		return comprehensionTestQuestionList;
 	}
 
 	/**
 	 * @author BTC
-	 * @param Integer : studyId
-	 * @return List :ConsentInfoList
-	 *  This method used to get the consent info list of an study
+	 * @param Integer
+	 *            : comprehensionQuestionId
+	 * @param List
+	 *            : ComprehensionTestResponseBo List
+	 *
+	 *            This method is used to get the ComprehensionTestQuestion
+	 *            response of an study
 	 */
 	@Override
-	public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
-		logger.info("StudyServiceImpl - getConsentInfoList() - Starts");
-		List<ConsentInfoBo> consentInfoList = null;
-		try{
-			consentInfoList = studyDAO.getConsentInfoList(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getConsentInfoList() - Error",e);
+	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
+			Integer comprehensionQuestionId) {
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		List<ComprehensionTestResponseBo> comprehensionTestResponseLsit = null;
+		try {
+			comprehensionTestResponseLsit = studyDAO
+					.getComprehensionTestResponseList(comprehensionQuestionId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getComprehensionTestResponseList() - ERROR",
+					e);
 		}
-		logger.info("StudyServiceImpl - getConsentInfoList() - Ends");
-		return consentInfoList;
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		return comprehensionTestResponseLsit;
 	}
-
-
-
 
 	/**
 	 * @author BTC
-	 * @param Integer : consentInfoId
-	 * @return String :SUCCESS or FAILURE
-	 *  TThis method used to get the delete the consent information
+	 * @param String
+	 *            : studyId in {@link StudyBo}
+	 * @return {@link ConsentBo} Description : This method is to get
+	 *         ConsentDetails
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject,String customStudyId) {
-		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
-		String message = null;
-		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId,studyId,sessionObject,customStudyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
+		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
+		ConsentBo consentBo = null;
+		try {
+			consentBo = studyDAO.getConsentDetailsByStudyId(studyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getConsentDetailsByStudyId() :: ERROR",
+					e);
 		}
-		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
-		return message;
-	}
-
-
-
-
-	/**
-	 * @author BTC
-	 * @param Integer studyId
-	 * @param int oldOrderNumber
-	 * @param int newOrderNumber
-	 * @return String SUCCESS or FAILURE
-	 * 
-	 * This method is used to update the order of an consent info
-	 */
-	@Override
-	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
-		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
-		try{
-			message = studyDAO.reOrderConsentInfoList(studyId, oldOrderNumber, newOrderNumber);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - reOrderConsentInfoList() - Error",e);
-		}
-		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Ends");
-		return message;
+		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Ends");
+		return consentBo;
 	}
 
 	/**
 	 * @author BTC
-	 * @param Object : {@link ConsentInfoBo}
-	 * @param Object : {@link SessionObject}
-	 * @param String : customStudyId in {@link StudyBo}
-	 * @return {@link ConsentInfoBo}
-	 * Description : This method is to save or update consent
-	 */
-	@Override
-	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject,String customStudyId) {
-		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Starts");
-		ConsentInfoBo updateConsentInfoBo = null;
-		try{
-			if(consentInfoBo != null){
-				if(consentInfoBo.getId() != null){
-					updateConsentInfoBo = studyDAO.getConsentInfoById(consentInfoBo.getId());
-					updateConsentInfoBo.setModifiedBy(sessionObject.getUserId());
-					updateConsentInfoBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-				}else{
-					updateConsentInfoBo = new ConsentInfoBo();
-					updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
-					updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-					updateConsentInfoBo.setActive(true);
-				}
-				if(consentInfoBo.getConsentItemType() != null){
-					updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
-				}
-				if(consentInfoBo.getContentType() != null){
-					updateConsentInfoBo.setContentType(consentInfoBo.getContentType());
-				}
-				if(consentInfoBo.getBriefSummary() != null){
-					updateConsentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary().replaceAll("\"", "&#34;").replaceAll("\'", "&#39;"));
-				}
-				if(consentInfoBo.getElaborated() != null){
-					updateConsentInfoBo.setElaborated(consentInfoBo.getElaborated());
-				}
-				if(consentInfoBo.getHtmlContent() != null){
-					updateConsentInfoBo.setHtmlContent(consentInfoBo.getHtmlContent());
-				}
-				if(consentInfoBo.getUrl()!= null){
-					updateConsentInfoBo.setUrl(consentInfoBo.getUrl());
-				}
-				if(consentInfoBo.getVisualStep()!=null){
-					updateConsentInfoBo.setVisualStep(consentInfoBo.getVisualStep());
-				}
-				if(consentInfoBo.getSequenceNo() != null){
-					updateConsentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo());
-				}
-				if(consentInfoBo.getStudyId() != null){
-					updateConsentInfoBo.setStudyId(consentInfoBo.getStudyId());
-				}
-				if(consentInfoBo.getDisplayTitle() != null){
-					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
-				}
-				if(consentInfoBo.getType() != null){
-					updateConsentInfoBo.setType(consentInfoBo.getType());
-				}
-				if(consentInfoBo.getConsentItemTitleId() != null){
-					updateConsentInfoBo.setConsentItemTitleId(consentInfoBo.getConsentItemTitleId());
-				}
-				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo, sessionObject,customStudyId);
-			}
-			
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - saveOrUpdateConsentInfo() - Error",e);
-		}
-		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Ends");
-		return updateConsentInfoBo;
-	}
-
-
-
-
-	/**
-	 * @author BTC
-	 * @param Integer :ConsentInfoId
+	 * @param Integer
+	 *            :ConsentInfoId
 	 * @return Object :ConsentInfoBo
-	 * 
-	 * This method is used to get the consent info object based on consent info id 
+	 *
+	 *         This method is used to get the consent info object based on
+	 *         consent info id
 	 */
 	@Override
 	public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
 		logger.info("StudyServiceImpl - getConsentInfoById() - Starts");
 		ConsentInfoBo consentInfoBo = null;
-		try{
+		try {
 			consentInfoBo = studyDAO.getConsentInfoById(consentInfoId);
-			if(consentInfoBo != null){
-				consentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary().replaceAll("(\\r|\\n|\\r\\n)+", "&#13;&#10;"));
+			if (consentInfoBo != null) {
+				consentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary()
+						.replaceAll("(\\r|\\n|\\r\\n)+", "&#13;&#10;"));
 			}
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getConsentInfoById() - Error",e);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getConsentInfoById() - Error", e);
 		}
 		logger.info("StudyServiceImpl - getConsentInfoById() - Ends");
 		return consentInfoBo;
 	}
 
-	/**
-	 * @author BTC
-	 * @param studyId
-	 * @return int count
-	 * 
-	 * This method is used to get the last order of an consent info of an study
-	 */
-	@Override
-	public int consentInfoOrder(Integer studyId) {
-		int count = 1;
-		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
-		try{
-			count = studyDAO.consentInfoOrder(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - consentInfoOrder() - Error",e);
-		}
-		logger.info("StudyServiceImpl - consentInfoOrder() - Ends");
-		return count;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : studyId
-	 * @return List : ComprehensionTestQuestions
-	 * 
-	 * This method is used to get the ComprehensionTest Questions
-	 */
-	@Override
-	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId) {
-		logger.info("StudyServiceImpl - getComprehensionTestQuestionList() - Starts");
-		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
-		try{
-			comprehensionTestQuestionList = studyDAO.getComprehensionTestQuestionList(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getComprehensionTestQuestionList() - Error",e);
-		}
-		logger.info("StudyServiceImpl - getComprehensionTestQuestionList() - Starts");
-		return comprehensionTestQuestionList;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer :QuestionId
-	 * @return Object : ComprehensionTestQuestionBo
-	 * 
-	 * This method is used to get the ComprehensionTestQuestion of an study
-	 */
-	@Override
-	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
-		logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Starts");
-		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
-		try{
-			comprehensionTestQuestionBo = studyDAO.getComprehensionTestQuestionById(questionId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getComprehensionTestQuestionById() - Error",e);
-		}
-		logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Ends");
-		return comprehensionTestQuestionBo;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer  :questionId
-	 * @return String : SUCCESS or FAILURE
-	 * 
-	 * This method is used to delete the Comprehension Test Question in a study
-	 * 
-	 */
-	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId,SessionObject sessionObject) {
-		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
-		String message = null;
-		try{
-			message = studyDAO.deleteComprehensionTestQuestion(questionId,studyId,sessionObject);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - deleteComprehensionTestQuestion() - Error",e);
-		}
-		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Ends");
-		return message;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : comprehensionQuestionId
-	 * @param List : ComprehensionTestResponseBo List
-	 * 
-	 * This method is used to get the ComprehensionTestQuestion response of an study
-	 */
-	@Override
-	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(Integer comprehensionQuestionId) {
-		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
-		List<ComprehensionTestResponseBo> comprehensionTestResponseLsit = null;
-		try{
-			comprehensionTestResponseLsit = studyDAO.getComprehensionTestResponseList(comprehensionQuestionId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getComprehensionTestResponseList() - ERROR", e);
-		}
-		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
-		return comprehensionTestResponseLsit;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Object : ComprehensionTestQuestionBo
-	 * @return Object  :ComprehensionTestQuestionBo
-	 * 
-	 * This method is used to add the ComprehensionTestQuestion to the study
-	 */
-	@Override
-	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
-		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
-		ComprehensionTestQuestionBo updateComprehensionTestQuestionBo = null;
-		try{
-			if(comprehensionTestQuestionBo != null){
-				if(comprehensionTestQuestionBo.getId() != null){
-					updateComprehensionTestQuestionBo = studyDAO.getComprehensionTestQuestionById(comprehensionTestQuestionBo.getId());
-				}else{
-					updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
-					updateComprehensionTestQuestionBo.setActive(true);
-				}
-				if(comprehensionTestQuestionBo.getStatus() != null){
-					updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
-				}
-				if(comprehensionTestQuestionBo.getQuestionText() != null){
-					updateComprehensionTestQuestionBo.setQuestionText(comprehensionTestQuestionBo.getQuestionText());
-				}
-				if(comprehensionTestQuestionBo.getStudyId() != null){
-					updateComprehensionTestQuestionBo.setStudyId(comprehensionTestQuestionBo.getStudyId());
-				}
-				if(comprehensionTestQuestionBo.getSequenceNo() != null){
-					updateComprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
-				}
-				if(comprehensionTestQuestionBo.getStructureOfCorrectAns() != null){
-					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.getStructureOfCorrectAns());
-				}
-				if(comprehensionTestQuestionBo.getCreatedOn() != null){
-					updateComprehensionTestQuestionBo.setCreatedOn(comprehensionTestQuestionBo.getCreatedOn());
-				}
-				if(comprehensionTestQuestionBo.getCreatedBy() != null){
-					updateComprehensionTestQuestionBo.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
-				}
-				if(comprehensionTestQuestionBo.getModifiedOn() != null){
-					updateComprehensionTestQuestionBo.setModifiedOn(comprehensionTestQuestionBo.getModifiedOn());
-				}
-				if(comprehensionTestQuestionBo.getModifiedBy() != null){
-					updateComprehensionTestQuestionBo.setModifiedBy(comprehensionTestQuestionBo.getModifiedBy());
-				}
-				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
-					updateComprehensionTestQuestionBo.setResponseList(comprehensionTestQuestionBo.getResponseList());
-				}
-				updateComprehensionTestQuestionBo = studyDAO.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
-			}
-			
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getComprehensionTestResponseList() - Error",e);
-		}
-		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Ends");
-		return updateComprehensionTestQuestionBo;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param studyId
-	 * @return int count
-	 * 
-	 * This method is used to get the last order of an comprehension Test Question of an study
-	 */
-	@Override
-	public int comprehensionTestQuestionOrder(Integer studyId) {
-		int count = 1;
-		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
-		try{
-			count = studyDAO.comprehensionTestQuestionOrder(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - comprehensionTestQuestionOrder() - Error",e);
-		}
-		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Ends");
-		return count;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer studyId
-	 * @param int oldOrderNumber
-	 * @param int newOrderNumber
-	 * @return String SUCCESS or FAILURE
-	 * 
-	 * This method is used to update the order of an Comprehension Test Question
-	 */
-	@Override
-	public String reOrderComprehensionTestQuestion(Integer studyId,	int oldOrderNumber, int newOrderNumber) {
-		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion() - Starts");
-		String message = FdahpStudyDesignerConstants.SUCCESS;
-		try{
-			message = studyDAO.reOrderComprehensionTestQuestion(studyId, oldOrderNumber, newOrderNumber);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - reOrderComprehensionTestQuestion() - Error",e);
-		}
-		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion - Ends");
-		return message;
-	}
-
-	
-	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
-	
-	/**
-	 * return  eligibility based on user's Study Id
-	 * @author BTC
-	 * 
-	 * @param studyId, studyId of the {@link StudyBo}
-	 * @return {@link EligibilityBo}
-	 * @exception Exception
-	 */
-	@Override
-	public EligibilityBo getStudyEligibiltyByStudyId(String studyId) {
-		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
-		EligibilityBo eligibilityBo = null;
-		try {
-			eligibilityBo = studyDAO.getStudyEligibiltyByStudyId(studyId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
-		}
-		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
-		return eligibilityBo;
-	}
-	
-	/**
-	 * Save or update eligibility of study
-	 * @author BTC
-	 * 
-	 * @param eligibilityBo , {@link EligibilityBo}
-	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
-	 * @exception Exception
-	 */
-	@Override
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj,String customStudyId) {
-		logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Starts");
-		String  result = FdahpStudyDesignerConstants.FAILURE;
-		try {
-			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,sesObj,customStudyId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
-		}
-		logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Ends");
-		return result;
-	}
-	
-	/*------------------------------------Added By Vivek End---------------------------------------------------*/
-
-	/**
-	 * validated for uniqueness of customStudyId of study throughout the application
-	 * @author BTC
-	 * 
-	 * @return boolean
-	 * @exception Exception
-	 */
-	@Override
-	public boolean validateStudyId(String studyId) {
-		logger.info("StudyServiceImpl - validateStudyId() - Starts");
-		boolean flag = false;
-		try {
-			flag = studyDAO.validateStudyId(studyId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - validateStudyId() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - validateStudyId() - Ends");
-		return flag;
-   }
-
-
-	/**
-	 * @author BTC
-	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status SUCCESS or FAILURE
-	 * @exception Exception
-	 * save or update study setting and admins for the particular study
-	 * study settings like Platforms supported, Is the Study currently enrolling participants,
-     * Allow user to rejoin s the Study once they leave it?,
-     * Retain participant data when they leave a study?
-     * managing admins for the particular study
-	 */
-	@Override
-	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj,String userIds,String permissions,String projectLead) {
-		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
-		String  result = FdahpStudyDesignerConstants.FAILURE;
-		try {
-			result = studyDAO.saveOrUpdateStudySettings(studyBo, sesObj, userIds, permissions, projectLead);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
-		}
-		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Ends");
-		return result;
-	}
-
-
-
-
-	/**
-	 * @author BTC
-	 * @return List : ConsentMasterInfoBo List
-	 * This method is used get consent master data
-	 */
-	@Override
-	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
-		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Starts");
-		List<ConsentMasterInfoBo> consentMasterInfoList = null;
-		try{
-			consentMasterInfoList = studyDAO.getConsentMasterInfoList();
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getConsentMasterInfoList() - ERROR ", e);
-		}
-		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Ends");
-		return consentMasterInfoList;
-	}
-	
 	/**
 	 * @author BTC
 	 * @param studyId
@@ -820,10 +547,13 @@ public class StudyServiceImpl implements StudyService {
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) {
 		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Starts");
 		List<ConsentInfoBo> consentInfoBoList = null;
-		try{
-			consentInfoBoList = studyDAO.getConsentInfoDetailsListByStudyId(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
+		try {
+			consentInfoBoList = studyDAO
+					.getConsentInfoDetailsListByStudyId(studyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getConsentInfoDetailsListByStudyId() - ERROR",
+					e);
 		}
 		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Ends");
 		return consentInfoBoList;
@@ -831,625 +561,582 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * @author BTC
-	 * @param Object : {@link ConsentBo}
-	 * @param Object : {@link SessionObject}
-	 * @param String : customStudyId in {@link StudyBo}
-	 * @return {@link ConsentBo}
-	 * Description : This method is to save or update ConsentReview
+	 * @param Integer
+	 *            : studyId
+	 * @return List :ConsentInfoList This method used to get the consent info
+	 *         list of an study
 	 */
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,String customStudyId) {
-		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
-		ConsentBo updateConsentBo = null;
-		try{
-			if(consentBo.getId() != null){
-				updateConsentBo = studyDAO.getConsentDetailsByStudyId(consentBo.getStudyId().toString());
-			}else{
-				updateConsentBo = new ConsentBo();
-			}
-			
-			if(consentBo.getId() != null){
-				updateConsentBo.setId(consentBo.getId());
-			}
-			
-			if(consentBo.getStudyId() != null){
-				updateConsentBo.setStudyId(consentBo.getStudyId());
-			}
-			
-			
-			if(consentBo.getNeedComprehensionTest() != null){
-				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
-			}
-			if(consentBo.getShareDataPermissions() != null){
-				updateConsentBo.setShareDataPermissions(consentBo.getShareDataPermissions());
-			}
-			
-			if(consentBo.getTitle() != null){
-				updateConsentBo.setTitle(consentBo.getTitle());
-			}
-					
-			if(consentBo.getTaglineDescription() != null){
-				updateConsentBo.setTaglineDescription(consentBo.getTaglineDescription());
-			}
-			
-			if(consentBo.getShortDescription() != null){
-				updateConsentBo.setShortDescription(consentBo.getShortDescription());
-			}
-			
-			if(consentBo.getTitle() != null){
-				updateConsentBo.setTitle(consentBo.getTitle());
-			}
-			
-			if(consentBo.getLongDescription() != null){
-				updateConsentBo.setLongDescription(consentBo.getLongDescription());
-			}
-			
-			if(consentBo.getLearnMoreText() != null){
-				updateConsentBo.setLearnMoreText(consentBo.getLearnMoreText());
-			}
-			
-			if(consentBo.getConsentDocType() != null){
-				updateConsentBo.setConsentDocType(consentBo.getConsentDocType());
-			}
-			
-			if(consentBo.getConsentDocContent() != null){
-				updateConsentBo.setConsentDocContent(consentBo.getConsentDocContent());
-			}
-			
-			if(consentBo.getAllowWithoutPermission() != null){
-				updateConsentBo.setAllowWithoutPermission(consentBo.getAllowWithoutPermission());
-			}
-			
-			if(consentBo.geteConsentFirstName() != null){
-				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());
-			}
-			
-			if(consentBo.geteConsentLastName() != null){
-				updateConsentBo.seteConsentLastName(consentBo.geteConsentLastName());
-			}
-			
-			if(consentBo.geteConsentSignature() != null){
-				updateConsentBo.seteConsentSignature(consentBo.geteConsentSignature());
-			}
-			
-			if(consentBo.geteConsentAgree() != null){
-				updateConsentBo.seteConsentAgree(consentBo.geteConsentAgree());
-			}
-			
-			if(consentBo.geteConsentDatetime() != null){
-				updateConsentBo.seteConsentDatetime(consentBo.geteConsentDatetime());
-			}
-			
-			
-			if(consentBo.getCreatedBy() != null){
-				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
-			}
-			
-			if(consentBo.getCreatedOn() != null){
-				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
-			}
-			
-			if(consentBo.getModifiedBy() != null){
-				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
-			}
-			
-			if(consentBo.getModifiedOn() != null){
-				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
-			}
-			
-			if(consentBo.getVersion() != null){
-				updateConsentBo.setVersion(consentBo.getVersion());
-			}
-			
-			if(consentBo.getType() != null){
-				updateConsentBo.setType(consentBo.getType());
-			}
-			if(consentBo.getComprehensionTest() != null){
-				updateConsentBo.setComprehensionTest(consentBo.getComprehensionTest());
-				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
-			}
-			if(consentBo.getAggrementOfTheConsent() != null){
-				updateConsentBo.setAggrementOfTheConsent(consentBo.getAggrementOfTheConsent());
-			}
-			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj,customStudyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+	public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
+		logger.info("StudyServiceImpl - getConsentInfoList() - Starts");
+		List<ConsentInfoBo> consentInfoList = null;
+		try {
+			consentInfoList = studyDAO.getConsentInfoList(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getConsentInfoList() - Error", e);
 		}
-		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Ends");
-		return updateConsentBo;
+		logger.info("StudyServiceImpl - getConsentInfoList() - Ends");
+		return consentInfoList;
 	}
 
 	/**
 	 * @author BTC
-	 * @param String : studyId in {@link StudyBo}
-	 * @return {@link ConsentBo}
-	 * Description : This method is to get ConsentDetails
+	 * @return List : ConsentMasterInfoBo List This method is used get consent
+	 *         master data
 	 */
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId) {
-		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
-		ConsentBo consentBo = null;
-		try{
-			consentBo = studyDAO.getConsentDetailsByStudyId(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getConsentDetailsByStudyId() :: ERROR", e);
+	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
+		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Starts");
+		List<ConsentMasterInfoBo> consentMasterInfoList = null;
+		try {
+			consentMasterInfoList = studyDAO.getConsentMasterInfoList();
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getConsentMasterInfoList() - ERROR ", e);
 		}
-		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Ends");
-		return consentBo;
+		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Ends");
+		return consentMasterInfoList;
 	}
 
-	/**
-	 * @author BTC
-	 * @param Integer : studyId in {@link StudyBo}
-	 * @return List Object  : {@link List<ResourceBO>}
-	 * Description : This method is to get list of Resource
-	 */
-	@Override
-	public List<ResourceBO> getResourceList(Integer studyId) {
-		logger.info("StudyServiceImpl - getResourceList() - Starts");
-		List<ResourceBO> resourceBOList = null;
-		try{
-			resourceBOList = studyDAO.getResourceList(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getResourceList() - Error",e);
-		}
-		logger.info("StudyServiceImpl - getResourceList() - Ends");
-		return resourceBOList;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : studyId in {@link StudyBo}
-	 * @return Object  : {@link ResourceBO}
-	 * Description : This method is to get StudyProtocol
-	 */
-	public ResourceBO getStudyProtocol(Integer studyId) {
-		logger.info("StudyServiceImpl - getStudyProtocol() - Starts");
-		ResourceBO studyprotocol = null;
-		try{
-			studyprotocol = studyDAO.getStudyProtocol(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getStudyProtocol() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - getStudyProtocol() - Ends");
-		return studyprotocol;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : studyId in {@link StudyBo}
-	 * @return list Object  : {@link List<ResourceBO>}
-	 * Description : This method is to save Resource
-	 */
-	@Override
-	public List<ResourceBO> resourcesSaved(Integer studyId) {
-		logger.info("StudyServiceImpl - resourcesSaved() - Starts");
-		List<ResourceBO> resourceBOList = null;
-		try{
-			resourceBOList = studyDAO.resourcesSaved(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - resourcesSaved() - Error",e);
-		}
-		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
-		return resourceBOList;
-	}
-
-	/**
-	 * @author BTC
-	 * @param Integer : resourceInfoId
-	 * @param Object : {@link SessionObject}
-	 * @param String : customStudyId in {@link StudyBo}
-	 * @param Integer : studyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE}
-	 * Description : This method is to delete Resource
-	 */
-	@Override
-	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId,int studyId) {
-		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
-		String activity = "";
-		String activityDetail = ""; 
-		ResourceBO resourceBO = null;
-		try{
-			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
-			if(null != resourceBO){
-				message = studyDAO.deleteResourceInfo(resourceInfoId,resourceBO.isResourceVisibility(),studyId);
-			}
-			if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
-				activity = "Resource has been soft-deleted.";
-				activityDetail = "Resource has been soft-deleted from the Study. (Study ID = "+customStudyId+", Resource Display Title = "+resourceBO.getTitle()+").";
-				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
-			}
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
-		}
-		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
-		return message;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : resourceInfoId
-	 * @return Object : {@link ResourceBO}
-	 * Description : This method is to get Resource Info details
-	 */
-	@Override
-	public ResourceBO getResourceInfo(Integer resourceInfoId) {
-		logger.info("StudyServiceImpl - getResourceInfo() - Starts");
-		ResourceBO resourceBO = null;
-		try{
-			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
-			if(null != resourceBO){
-				resourceBO.setStartDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getStartDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE)):"");
-				resourceBO.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getEndDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE)):"");
-			}
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getResourceInfo() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - getResourceInfo() - Ends");
-		return resourceBO;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Object : {@link ResourceBO}
-	 * @param Object : {@link SessionObject}
-	 * @return Integer : resourceId from {@link ResourceBO}
-	 * Description : This method is to save or update Resource
-	 */
-	@Override
-	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
-		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
-		Integer resourseId = 0;
-		ResourceBO resourceBO2 = null;
-		String fileName = "";
-		String file="";
-		NotificationBO notificationBO = null;
-		StudyBo studyBo = null;
-		String activity = "";
-		String activityDetails = "";
-		Boolean saveNotiFlag = false; 
-		Boolean updateResource = false;
-		try{
-			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
-			if(null == resourceBO.getId()){
-				resourceBO2 = new ResourceBO();
-				resourceBO2.setSequenceNo(resourceBO.getSequenceNo());
-				resourceBO2.setStudyId(resourceBO.getStudyId());
-				resourceBO2.setCreatedBy(sesObj.getUserId());
-				resourceBO2.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-				resourceBO2.setStatus(true);
-			}else{ 
-				resourceBO2 = getResourceInfo(resourceBO.getId());
-				resourceBO2.setModifiedBy(sesObj.getUserId());
-				resourceBO2.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-				updateResource = true;
-			}
-			if(!resourceBO.isAction()){
-				activity = "Resource content saved.";
-				activityDetails = "Resource content saved. (Study ID = "+studyBo.getCustomStudyId()+", Resource Display Title = "+resourceBO.getTitle()+").";
-			}else{
-				activity = "Resource successfully checked for minimum content  completeness.";
-				activityDetails = "Resource successfully checked for minimum content completeness and marked 'Done'. (Study ID = "+studyBo.getCustomStudyId()+", Resource Display Title = "+resourceBO.getTitle()+").";
-			}
-			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
-			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
-				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
-					file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName()).replaceAll("\\W+", "_");
-					fileName = FdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
-					resourceBO2.setPdfUrl(fileName);
-					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
-				} else{
-					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
-					resourceBO2.setPdfName(resourceBO.getPdfName());
-				}
-			resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
-			resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
-			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
-			resourceBO2.setResourceType(resourceBO.isResourceType());
-			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
-			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
-			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-			resourceBO2.setStartDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getStartDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):null);
-			resourceBO2.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getEndDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):null);
-			resourceBO2.setAction(resourceBO.isAction());
-			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
-			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
-			
-			if(!resourseId.equals(0)){
-				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetails ,"AuditLogDAOImpl - saveOrUpdateResource()");
-				if(!resourceBO2.isStudyProtocol()){
-					studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj, studyBo.getCustomStudyId());
-				}
-					if(resourceBO.isAction()){
-                        	 notificationBO = studyDAO.getNotificationByResourceId(resourseId);
-                        	 String notificationText = "";
-     						boolean notiFlag = false;
-     						if(null == notificationBO){
-     							notificationBO = new NotificationBO();
-     							notificationBO.setStudyId(resourceBO2.getStudyId());
-     							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-     							notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-     							notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
-     							notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
-     							notificationBO.setResourceId(resourceBO2.getId());
-     							notificationBO.setNotificationStatus(false);
-     							notificationBO.setCreatedBy(sesObj.getUserId());
-     							notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-     						}else{
-     							notiFlag = true;
-     							notificationBO.setModifiedBy(sesObj.getUserId());
-     							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-     						}
-     						if(!resourceBO2.isStudyProtocol()){
-     							saveNotiFlag = true;
-     							notificationText = resourceBO2.getResourceText();
-     						}else{
-     							if(studyBo.getLiveStudyBo() != null){
-     								String studyName = studyBo.getName();
-     								String innerText;
-	     							if(notiFlag || (!notiFlag && updateResource)){
-	     								innerText = "updated";
-	     							}else{
-	     								innerText = "added";
-	     							}
-	     							saveNotiFlag = true;
-     								notificationText = "Study Protocol information has been "+innerText+" for the study "+studyName+". Visit the app to read it now.";
-     							}
-     						}
-     						notificationBO.setNotificationText(notificationText);
-     						if(resourceBO2.isResourceType()){
-     							notificationBO.setAnchorDate(true);
-     							notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
-     						}else{
-     							notificationBO.setAnchorDate(false);
-     							notificationBO.setxDays(null);
-     						}
-     						notificationBO.setScheduleDate(null);
-     						notificationBO.setScheduleTime(null);
-     						if(saveNotiFlag){
-     							studyDAO.saveResourceNotification(notificationBO,notiFlag);
-     						}
-					}
-			}
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
-		}
-		logger.info("StudyServiceImpl - saveOrUpdateResource() - Ends");
-		return resourseId;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : studyId
-	 * @param String : markCompleted can be resource/notification/consent/consentreview/checkList/activeTaskList/questionnaire/comprehenstionTest
-	 * @param Object : {@link SessionObject}
-	 * @param String : customStudyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE}
-	 * Description : This method is to make mark as completed of study
-	 */
-	@Override
-	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj,String customStudyId) {
-		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
-		try{
-			message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj,customStudyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
-		}
-		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
-		return message;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : studyId
-	 * @return list of Object : {@link List<NotificationBO>}
-	 * Description : This method is to get list of notification 
-	 */
-	@Override
-	public List<NotificationBO> getSavedNotification(Integer studyId) {
-		logger.info("StudyServiceImpl - notificationSaved() - Starts");
-		List<NotificationBO> notificationSavedList = null;
-		try{
-			notificationSavedList = studyDAO.getSavedNotification(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - notificationSaved() - Error",e);
-		}
-		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
-		return notificationSavedList;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param String : customStudyId
-	 * @return Object : {@link StudyBo}
-	 * Description : This method is to get live Study
-	 */
-	@Override
-	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
-		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Starts");
-		StudyBo studyLive = null;
-		try{
-			studyLive = studyDAO.getStudyLiveStatusByCustomId(customStudyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getStudyLiveStatusByCustomId() - Error",e);
-		}
-		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Ends");
-		return studyLive;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Integer : studyId
-	 * @return Object : {@link Checklist}
-	 * Description : This method is to get Checklist
-	 */
-	@Override
-	public Checklist getchecklistInfo(Integer studyId) {
-		logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
-		Checklist checklist = null;
-		try{
-			checklist = studyDAO.getchecklistInfo(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getchecklistInfo() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - getchecklistInfo() - Ends");
-		return checklist;
-	}
-	
-	/**
-	 * @author BTC
-	 * @param Object : {@link Checklist}
-	 * @param Object : {@link SessionObject}
-	 * @param string : customStudyId
-	 * @return Integer : checklistId
-	 * Description : This method is to save or update Checklist
-	 */
-	@Override
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj,String customStudyId) {
-		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
-		Integer checklistId = 0;
-		Checklist checklistBO = null;
-		String activity = "";
-		String activityDetail = ""; 
-		StudyBo studyBo = null;
-		try{
-			if(checklist.getChecklistId() == null){
-				studyBo = studyDAO.getStudyById(checklist.getStudyId().toString(), sesObj.getUserId());
-				checklist.setCustomStudyId(studyBo.getCustomStudyId());
-				checklist.setCreatedBy(sesObj.getUserId());
-				checklist.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-				activity = "Checklist created";
-			}else{
-				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
-				checklist.setCustomStudyId(checklistBO.getCustomStudyId());
-				checklist.setCreatedBy(checklistBO.getCreatedBy());
-				checklist.setCreatedOn(checklistBO.getCreatedOn());
-				checklist.setModifiedBy(sesObj.getUserId());
-				checklist.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-				activity = "Checklist updated";
-			}
-			checklistId = studyDAO.saveOrDoneChecklist(checklist);
-			if(!checklistId.equals(0)){
-				if("save".equalsIgnoreCase(actionBut)){
-					activityDetail = "Content saved for Checklist. (Study ID = "+customStudyId+").";
-					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, false, sesObj,customStudyId);
-				}else if("done".equalsIgnoreCase(actionBut)){
-					activityDetail = "Checklist succesfully checked for minimum content completeness and marked 'Done'. (Study ID = "+customStudyId+").";
-					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, true, sesObj,customStudyId);
-				}
-					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
-			}
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Ends");
-		return checklistId;
-	}
-
-	/**
-	 * @author BTC
-	 * @param string : studyId
-	 * @param string : buttonText can be lunchId/updatesId/publishId
-	 * @return String : success/failure
-	 * Description : This method is to validate Study eligible for launch/publish based on some condition 
-	 */
-	@Override
-	public String validateStudyAction(String studyId, String buttonText) {
-		logger.info("StudyServiceImpl - validateStudyAction() - Starts");
-		String message = "";
-		try{
-			message = studyDAO.validateStudyAction(studyId, buttonText);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
-		return message;
-	}
-
-	/**
-	 * @author BTC
-	 * @param string : studyId
-	 * @param string : buttonText can be lunchId/updatesId/publishId/unpublishId/resumeId/pauseId/deactivateId
-	 * @param Object : {@link SessionObject}
-	 * @return String : success/failure
-	 * Description : This method is to upadte status of Study 
-	 */
-	@Override
-	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj) {
-		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
-		String message = "";
-		try{
-            if(StringUtils.isNotEmpty(studyId) &&  StringUtils.isNotEmpty(buttonText)){
-            	message = studyDAO.updateStudyActionOnAction(studyId, buttonText, sesObj);
-            }
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
-		return message;
-	}
-
-
-	/**
-	 * @author BTC
-	 * @param Integer : studyId
-	 * @param String : markCompleted can be consent/consentreview/questionnaire/comprehenstionTest
-	 * @param Boolean : flag(true/false)
-	 * @param Object : {@link SessionObject}
-	 * @param String : customStudyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE}
-	 * Description : This method is to make mark as completed of study
-	 */
-	@Override
-	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj,String customStudyId) {
-		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
-		try{
-			message = studyDAO.markAsCompleted(studyId, markCompleted, flag, sesObj,customStudyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
-		}
-		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
-		return message;
-	}
-	
 	/**
 	 * return Study vesion on customStudyid
+	 *
 	 * @author BTC
-	 * 
+	 *
 	 * @return StudyIdBean
 	 * @exception Exception
 	 */
 	@Override
-	public StudyIdBean getLiveVersion(String customStudyId){
+	public StudyIdBean getLiveVersion(String customStudyId) {
 		logger.info("StudyServiceImpl - getLiveVersion() - Starts");
 		StudyIdBean studyIdBean = new StudyIdBean();
 		try {
-			studyIdBean  = studyDAO.getLiveVersion(customStudyId);
+			studyIdBean = studyDAO.getLiveVersion(customStudyId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getLiveVersion() - ERROR " , e);
+			logger.error("StudyServiceImpl - getLiveVersion() - ERROR ", e);
 		}
 		logger.info("StudyServiceImpl - getLiveVersion() - Ends");
 		return studyIdBean;
 	}
 
+	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
+
 	/**
 	 * @author BTC
-	 * @param Integer : studyId
-	 * @return list of Object :{@link List<ResourceBO>}
-	 * Description : This method is get all resource without anchordate
+	 * @param studyId
+	 *            of the StudyBo, Integer userId
+	 * @return the Study list
+	 * @exception Exception
+	 *
+	 *                This method return content of Overview pages of the Study
+	 *                those pages shows in mobile side as a set of swipe-able
+	 *                screens that carry information about the study, with each
+	 *                screen having A title Description Image
+	 *
+	 */
+	@Override
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId,
+			Integer userId) {
+		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
+		List<StudyPageBo> studyPageBos = null;
+		try {
+			studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
+			if (null != studyPageBos && !studyPageBos.isEmpty()) {
+				for (StudyPageBo s : studyPageBos) {
+					if (FdahpStudyDesignerUtil.isNotEmpty(s.getImagePath())) {
+						// to make unique image
+						if (s.getImagePath().contains("?v=")) {
+							String imagePathArr[] = s.getImagePath().split(
+									"\\?");
+							s.setImagePath(imagePathArr[0] + "?v="
+									+ new Date().getTime());
+						} else {
+							s.setImagePath(s.getImagePath() + "?v="
+									+ new Date().getTime());
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getOverviewStudyPagesById() - ERROR ",
+					e);
+		}
+		return studyPageBos;
+	}
+
+	/**
+	 * return reference List based on category
+	 *
+	 * @author BTC
+	 *
+	 * @return the reference table List
+	 * @exception Exception
+	 */
+	@Override
+	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory() {
+		logger.info("StudyServiceImpl - getreferenceListByCategory() - Starts");
+		HashMap<String, List<ReferenceTablesBo>> referenceMap = null;
+		try {
+			referenceMap = studyDAO.getreferenceListByCategory();
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyList() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getreferenceListByCategory() - Ends");
+		return referenceMap;
+	}
+
+	/*------------------------------------Added By Vivek End---------------------------------------------------*/
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : resourceInfoId
+	 * @return Object : {@link ResourceBO} Description : This method is to get
+	 *         Resource Info details
+	 */
+	@Override
+	public ResourceBO getResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyServiceImpl - getResourceInfo() - Starts");
+		ResourceBO resourceBO = null;
+		try {
+			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
+			if (null != resourceBO) {
+				resourceBO.setStartDate(FdahpStudyDesignerUtil
+						.isNotEmpty(resourceBO.getStartDate()) ? String
+						.valueOf(FdahpStudyDesignerUtil.getFormattedDate(
+								resourceBO.getStartDate(),
+								FdahpStudyDesignerConstants.DB_SDF_DATE,
+								FdahpStudyDesignerConstants.UI_SDF_DATE)) : "");
+				resourceBO.setEndDate(FdahpStudyDesignerUtil
+						.isNotEmpty(resourceBO.getEndDate()) ? String
+						.valueOf(FdahpStudyDesignerUtil.getFormattedDate(
+								resourceBO.getEndDate(),
+								FdahpStudyDesignerConstants.DB_SDF_DATE,
+								FdahpStudyDesignerConstants.UI_SDF_DATE)) : "");
+			}
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getResourceInfo() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getResourceInfo() - Ends");
+		return resourceBO;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId in {@link StudyBo}
+	 * @return List Object : {@link List<ResourceBO>} Description : This method
+	 *         is to get list of Resource
+	 */
+	@Override
+	public List<ResourceBO> getResourceList(Integer studyId) {
+		logger.info("StudyServiceImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try {
+			resourceBOList = studyDAO.getResourceList(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getResourceList() - Error", e);
+		}
+		logger.info("StudyServiceImpl - getResourceList() - Ends");
+		return resourceBOList;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId
+	 * @return list of Object : {@link List<NotificationBO>} Description : This
+	 *         method is to get list of notification
+	 */
+	@Override
+	public List<NotificationBO> getSavedNotification(Integer studyId) {
+		logger.info("StudyServiceImpl - notificationSaved() - Starts");
+		List<NotificationBO> notificationSavedList = null;
+		try {
+			notificationSavedList = studyDAO.getSavedNotification(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - notificationSaved() - Error", e);
+		}
+		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
+		return notificationSavedList;
+	}
+
+	/**
+	 * return Study based on studyId, userId
+	 *
+	 * @author BTC
+	 *
+	 * @return StudyBo
+	 * @exception Exception
+	 */
+	@Override
+	public StudyBo getStudyById(String studyId, Integer userId) {
+		logger.info("StudyServiceImpl - getStudyById() - Starts");
+		StudyBo studyBo = null;
+		try {
+			studyBo = studyDAO.getStudyById(studyId, userId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyById() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getStudyById() - Ends");
+		return studyBo;
+	}
+
+	/**
+	 * return eligibility based on user's Study Id
+	 *
+	 * @author BTC
+	 *
+	 * @param studyId
+	 *            , studyId of the {@link StudyBo}
+	 * @return {@link EligibilityBo}
+	 * @exception Exception
+	 */
+	@Override
+	public EligibilityBo getStudyEligibiltyByStudyId(String studyId) {
+		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
+		EligibilityBo eligibilityBo = null;
+		try {
+			eligibilityBo = studyDAO.getStudyEligibiltyByStudyId(studyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ",
+					e);
+		}
+		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
+		return eligibilityBo;
+	}
+
+	/**
+	 * return study List based on user
+	 *
+	 * @author BTC
+	 *
+	 * @param userId
+	 *            of the user
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@Override
+	public List<StudyListBean> getStudyList(Integer userId) {
+		logger.info("StudyServiceImpl - getStudyList() - Starts");
+		List<StudyListBean> studyBos = null;
+		try {
+			if (userId != null && userId != 0) {
+				studyBos = studyDAO.getStudyList(userId);
+			}
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyList() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getStudyList() - Ends");
+		return studyBos;
+	}
+
+	/**
+	 * return active and live study List based on user
+	 *
+	 * @author BTC
+	 *
+	 * @param userId
+	 *            of the user
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@Override
+	public List<StudyListBean> getStudyListByUserId(Integer userId) {
+		logger.info("StudyServiceImpl - getStudyListByUserId() - Starts");
+		List<StudyListBean> studyListBeans = null;
+		try {
+			studyListBeans = studyDAO.getStudyListByUserId(userId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyListByUserId() - ERROR ",
+					e);
+		}
+		logger.info("StudyServiceImpl - getStudyListByUserId() - Ends");
+		return studyListBeans;
+	}
+
+	/**
+	 * @author BTC
+	 * @param String
+	 *            : customStudyId
+	 * @return Object : {@link StudyBo} Description : This method is to get live
+	 *         Study
+	 */
+	@Override
+	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
+		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Starts");
+		StudyBo studyLive = null;
+		try {
+			studyLive = studyDAO.getStudyLiveStatusByCustomId(customStudyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getStudyLiveStatusByCustomId() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Ends");
+		return studyLive;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId in {@link StudyBo}
+	 * @return Object : {@link ResourceBO} Description : This method is to get
+	 *         StudyProtocol
+	 */
+	@Override
+	public ResourceBO getStudyProtocol(Integer studyId) {
+		logger.info("StudyServiceImpl - getStudyProtocol() - Starts");
+		ResourceBO studyprotocol = null;
+		try {
+			studyprotocol = studyDAO.getStudyProtocol(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyProtocol() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getStudyProtocol() - Ends");
+		return studyprotocol;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId
+	 * @param String
+	 *            : markCompleted can be
+	 *            consent/consentreview/questionnaire/comprehenstionTest
+	 * @param Boolean
+	 *            : flag(true/false)
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param String
+	 *            : customStudyId in {@link StudyBo}
+	 * @return String : {SUCCES/FAILURE} Description : This method is to make
+	 *         mark as completed of study
+	 */
+	@Override
+	public String markAsCompleted(int studyId, String markCompleted,
+			Boolean flag, SessionObject sesObj, String customStudyId) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			message = studyDAO.markAsCompleted(studyId, markCompleted, flag,
+					sesObj, customStudyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - markAsCompleted() - Error", e);
+		}
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId
+	 * @param String
+	 *            : markCompleted can be
+	 *            resource/notification/consent/consentreview
+	 *            /checkList/activeTaskList/questionnaire/comprehenstionTest
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param String
+	 *            : customStudyId in {@link StudyBo}
+	 * @return String : {SUCCES/FAILURE} Description : This method is to make
+	 *         mark as completed of study
+	 */
+	@Override
+	public String markAsCompleted(int studyId, String markCompleted,
+			SessionObject sesObj, String customStudyId) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true,
+					sesObj, customStudyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - markAsCompleted() - Error", e);
+		}
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 *
+	 *         This method is used to update the order of an Comprehension Test
+	 *         Question
+	 */
+	@Override
+	public String reOrderComprehensionTestQuestion(Integer studyId,
+			int oldOrderNumber, int newOrderNumber) {
+		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion() - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.reOrderComprehensionTestQuestion(studyId,
+					oldOrderNumber, newOrderNumber);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - reOrderComprehensionTestQuestion() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 *
+	 *         This method is used to update the order of an consent info
+	 */
+	@Override
+	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,
+			int newOrderNumber) {
+		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			message = studyDAO.reOrderConsentInfoList(studyId, oldOrderNumber,
+					newOrderNumber);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - reOrderConsentInfoList() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Ends");
+		return message;
+	}
+
+	/**
+	 * Reorder the eligibility test questions
+	 *
+	 * @author BTC
+	 *
+	 * @param eligibilityId
+	 *            , Eligibility Id of the study
+	 * @param oldOrderNumber
+	 *            , Old order
+	 * @param newOrderNumber
+	 *            , New order
+	 * @param studyId
+	 *            , Id of the study
+	 * @return {@link FdahpStudyDesignerConstants.SUCCESS} or
+	 *         {@link FdahpStudyDesignerConstants.FAILURE} , reorder status
+	 */
+	@Override
+	public String reorderEligibilityTestQusAns(Integer eligibilityId,
+			int oldOrderNumber, int newOrderNumber, Integer studyId) {
+		logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.reorderEligibilityTestQusAns(eligibilityId,
+					oldOrderNumber, newOrderNumber, studyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - reorderEligibilityTestQusAns - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Ends");
+		return message;
+	}
+
+	@Override
+	public String reOrderResourceList(Integer studyId, int oldOrderNumber,
+			int newOrderNumber) {
+		logger.info("StudyServiceImpl - reOrderResourceList() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			message = studyDAO.reOrderResourceList(studyId, oldOrderNumber,
+					newOrderNumber);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - reOrderResourceList() - Error", e);
+		}
+		logger.info("StudyServiceImpl - reOrderResourceList() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param String
+	 *            : customStudyId
+	 * @return boolean :{true/false} Description : This method is to delete
+	 *         Study
+	 */
+	@Override
+	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
+		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Starts");
+		boolean flag = false;
+		try {
+			SessionObject object = null;
+			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudy,
+					FdahpStudyDesignerConstants.RESET_STUDY, object);
+			if (flag)
+				flag = studyDAO.deleteLiveStudy(customStudy);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - resetDraftStudyByCustomStudyId() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Ends");
+		return flag;
+	}
+
+	@Override
+	public int resourceOrder(Integer studyId) {
+		int count = 1;
+		logger.info("StudyServiceImpl - resourceOrder() - Starts");
+		try {
+			count = studyDAO.resourceOrder(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - resourceOrder() - Error", e);
+		}
+		logger.info("StudyServiceImpl - resourceOrder() - Ends");
+		return count;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId in {@link StudyBo}
+	 * @return list Object : {@link List<ResourceBO>} Description : This method
+	 *         is to save Resource
+	 */
+	@Override
+	public List<ResourceBO> resourcesSaved(Integer studyId) {
+		logger.info("StudyServiceImpl - resourcesSaved() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try {
+			resourceBOList = studyDAO.resourcesSaved(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - resourcesSaved() - Error", e);
+		}
+		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
+		return resourceBOList;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Integer
+	 *            : studyId
+	 * @return list of Object :{@link List<ResourceBO>} Description : This
+	 *         method is get all resource without anchordate
 	 */
 	@Override
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
 		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Starts");
 		List<ResourceBO> resourceList = null;
-		try{
+		try {
 			resourceList = studyDAO.resourcesWithAnchorDate(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - resourcesWithAnchorDate() - ERROR " , e);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - resourcesWithAnchorDate() - ERROR ", e);
 		}
 		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Ends");
 		return resourceList;
@@ -1457,28 +1144,400 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * @author BTC
-	 * @param String : studyId
-	 * @param String : action cane be Activetask/Questionnaire
-	 * @return String :{success/failure}
-	 * Description : This method is validate the activity(Activetask/Questionnarie) done or not
+	 * @param Object
+	 *            : {@link ConsentBo}
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param String
+	 *            : customStudyId in {@link StudyBo}
+	 * @return {@link ConsentBo} Description : This method is to save or update
+	 *         ConsentReview
 	 */
 	@Override
-	public String validateActivityComplete(String studyId, String action) {
-		logger.info("StudyServiceImpl - validateActivityComplete() - Starts");
-		String message = FdahpStudyDesignerConstants.SUCCESS;
-		try{
-			message = studyDAO.validateActivityComplete(studyId, action);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - validateActivityComplete() - Error",e);
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo,
+			SessionObject sesObj, String customStudyId) {
+		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
+		ConsentBo updateConsentBo = null;
+		try {
+			if (consentBo.getId() != null) {
+				updateConsentBo = studyDAO.getConsentDetailsByStudyId(consentBo
+						.getStudyId().toString());
+			} else {
+				updateConsentBo = new ConsentBo();
+			}
+
+			if (consentBo.getId() != null) {
+				updateConsentBo.setId(consentBo.getId());
+			}
+
+			if (consentBo.getStudyId() != null) {
+				updateConsentBo.setStudyId(consentBo.getStudyId());
+			}
+
+			if (consentBo.getNeedComprehensionTest() != null) {
+				updateConsentBo.setNeedComprehensionTest(consentBo
+						.getNeedComprehensionTest());
+			}
+			if (consentBo.getShareDataPermissions() != null) {
+				updateConsentBo.setShareDataPermissions(consentBo
+						.getShareDataPermissions());
+			}
+
+			if (consentBo.getTitle() != null) {
+				updateConsentBo.setTitle(consentBo.getTitle());
+			}
+
+			if (consentBo.getTaglineDescription() != null) {
+				updateConsentBo.setTaglineDescription(consentBo
+						.getTaglineDescription());
+			}
+
+			if (consentBo.getShortDescription() != null) {
+				updateConsentBo.setShortDescription(consentBo
+						.getShortDescription());
+			}
+
+			if (consentBo.getTitle() != null) {
+				updateConsentBo.setTitle(consentBo.getTitle());
+			}
+
+			if (consentBo.getLongDescription() != null) {
+				updateConsentBo.setLongDescription(consentBo
+						.getLongDescription());
+			}
+
+			if (consentBo.getLearnMoreText() != null) {
+				updateConsentBo.setLearnMoreText(consentBo.getLearnMoreText());
+			}
+
+			if (consentBo.getConsentDocType() != null) {
+				updateConsentBo
+						.setConsentDocType(consentBo.getConsentDocType());
+			}
+
+			if (consentBo.getConsentDocContent() != null) {
+				updateConsentBo.setConsentDocContent(consentBo
+						.getConsentDocContent());
+			}
+
+			if (consentBo.getAllowWithoutPermission() != null) {
+				updateConsentBo.setAllowWithoutPermission(consentBo
+						.getAllowWithoutPermission());
+			}
+
+			if (consentBo.geteConsentFirstName() != null) {
+				updateConsentBo.seteConsentFirstName(consentBo
+						.geteConsentFirstName());
+			}
+
+			if (consentBo.geteConsentLastName() != null) {
+				updateConsentBo.seteConsentLastName(consentBo
+						.geteConsentLastName());
+			}
+
+			if (consentBo.geteConsentSignature() != null) {
+				updateConsentBo.seteConsentSignature(consentBo
+						.geteConsentSignature());
+			}
+
+			if (consentBo.geteConsentAgree() != null) {
+				updateConsentBo.seteConsentAgree(consentBo.geteConsentAgree());
+			}
+
+			if (consentBo.geteConsentDatetime() != null) {
+				updateConsentBo.seteConsentDatetime(consentBo
+						.geteConsentDatetime());
+			}
+
+			if (consentBo.getCreatedBy() != null) {
+				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
+			}
+
+			if (consentBo.getCreatedOn() != null) {
+				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
+			}
+
+			if (consentBo.getModifiedBy() != null) {
+				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
+			}
+
+			if (consentBo.getModifiedOn() != null) {
+				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
+			}
+
+			if (consentBo.getVersion() != null) {
+				updateConsentBo.setVersion(consentBo.getVersion());
+			}
+
+			if (consentBo.getType() != null) {
+				updateConsentBo.setType(consentBo.getType());
+			}
+			if (consentBo.getComprehensionTest() != null) {
+				updateConsentBo.setComprehensionTest(consentBo
+						.getComprehensionTest());
+				updateConsentBo.setComprehensionTestMinimumScore(consentBo
+						.getComprehensionTestMinimumScore());
+			}
+			if (consentBo.getAggrementOfTheConsent() != null) {
+				updateConsentBo.setAggrementOfTheConsent(consentBo
+						.getAggrementOfTheConsent());
+			}
+			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(
+					updateConsentBo, sesObj, customStudyId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR",
+					e);
 		}
-		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
-		return message;
+		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Ends");
+		return updateConsentBo;
 	}
-	
-	
-	/**@author BTC
-	 * Save or update eligibility test question and answer
-	 * 
+
+	/**
+	 * @author BTC
+	 * @param Object
+	 *            : {@link Checklist}
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param string
+	 *            : customStudyId
+	 * @return Integer : checklistId Description : This method is to save or
+	 *         update Checklist
+	 */
+	@Override
+	public Integer saveOrDoneChecklist(Checklist checklist, String actionBut,
+			SessionObject sesObj, String customStudyId) {
+		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
+		Integer checklistId = 0;
+		Checklist checklistBO = null;
+		String activity = "";
+		String activityDetail = "";
+		StudyBo studyBo = null;
+		try {
+			if (checklist.getChecklistId() == null) {
+				studyBo = studyDAO.getStudyById(checklist.getStudyId()
+						.toString(), sesObj.getUserId());
+				checklist.setCustomStudyId(studyBo.getCustomStudyId());
+				checklist.setCreatedBy(sesObj.getUserId());
+				checklist.setCreatedOn(FdahpStudyDesignerUtil
+						.getCurrentDateTime());
+				activity = "Checklist created";
+			} else {
+				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
+				checklist.setCustomStudyId(checklistBO.getCustomStudyId());
+				checklist.setCreatedBy(checklistBO.getCreatedBy());
+				checklist.setCreatedOn(checklistBO.getCreatedOn());
+				checklist.setModifiedBy(sesObj.getUserId());
+				checklist.setModifiedOn(FdahpStudyDesignerUtil
+						.getCurrentDateTime());
+				activity = "Checklist updated";
+			}
+			checklistId = studyDAO.saveOrDoneChecklist(checklist);
+			if (!checklistId.equals(0)) {
+				if ("save".equalsIgnoreCase(actionBut)) {
+					activityDetail = "Content saved for Checklist. (Study ID = "
+							+ customStudyId + ").";
+					studyDAO.markAsCompleted(checklist.getStudyId(),
+							FdahpStudyDesignerConstants.CHECK_LIST, false,
+							sesObj, customStudyId);
+				} else if ("done".equalsIgnoreCase(actionBut)) {
+					activityDetail = "Checklist succesfully checked for minimum content completeness and marked 'Done'. (Study ID = "
+							+ customStudyId + ").";
+					studyDAO.markAsCompleted(checklist.getStudyId(),
+							FdahpStudyDesignerConstants.CHECK_LIST, true,
+							sesObj, customStudyId);
+				}
+				auditLogDAO.saveToAuditLog(null, null, sesObj, activity,
+						activityDetail, "StudyDAOImpl - saveOrDoneChecklist()");
+			}
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Ends");
+		return checklistId;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Object
+	 *            : ComprehensionTestQuestionBo
+	 * @return Object :ComprehensionTestQuestionBo
+	 *
+	 *         This method is used to add the ComprehensionTestQuestion to the
+	 *         study
+	 */
+	@Override
+	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
+			ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		ComprehensionTestQuestionBo updateComprehensionTestQuestionBo = null;
+		try {
+			if (comprehensionTestQuestionBo != null) {
+				if (comprehensionTestQuestionBo.getId() != null) {
+					updateComprehensionTestQuestionBo = studyDAO
+							.getComprehensionTestQuestionById(comprehensionTestQuestionBo
+									.getId());
+				} else {
+					updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
+					updateComprehensionTestQuestionBo.setActive(true);
+				}
+				if (comprehensionTestQuestionBo.getStatus() != null) {
+					updateComprehensionTestQuestionBo
+							.setStatus(comprehensionTestQuestionBo.getStatus());
+				}
+				if (comprehensionTestQuestionBo.getQuestionText() != null) {
+					updateComprehensionTestQuestionBo
+							.setQuestionText(comprehensionTestQuestionBo
+									.getQuestionText());
+				}
+				if (comprehensionTestQuestionBo.getStudyId() != null) {
+					updateComprehensionTestQuestionBo
+							.setStudyId(comprehensionTestQuestionBo
+									.getStudyId());
+				}
+				if (comprehensionTestQuestionBo.getSequenceNo() != null) {
+					updateComprehensionTestQuestionBo
+							.setSequenceNo(comprehensionTestQuestionBo
+									.getSequenceNo());
+				}
+				if (comprehensionTestQuestionBo.getStructureOfCorrectAns() != null) {
+					updateComprehensionTestQuestionBo
+							.setStructureOfCorrectAns(comprehensionTestQuestionBo
+									.getStructureOfCorrectAns());
+				}
+				if (comprehensionTestQuestionBo.getCreatedOn() != null) {
+					updateComprehensionTestQuestionBo
+							.setCreatedOn(comprehensionTestQuestionBo
+									.getCreatedOn());
+				}
+				if (comprehensionTestQuestionBo.getCreatedBy() != null) {
+					updateComprehensionTestQuestionBo
+							.setCreatedBy(comprehensionTestQuestionBo
+									.getCreatedBy());
+				}
+				if (comprehensionTestQuestionBo.getModifiedOn() != null) {
+					updateComprehensionTestQuestionBo
+							.setModifiedOn(comprehensionTestQuestionBo
+									.getModifiedOn());
+				}
+				if (comprehensionTestQuestionBo.getModifiedBy() != null) {
+					updateComprehensionTestQuestionBo
+							.setModifiedBy(comprehensionTestQuestionBo
+									.getModifiedBy());
+				}
+				if (comprehensionTestQuestionBo.getResponseList() != null
+						&& !comprehensionTestQuestionBo.getResponseList()
+								.isEmpty()) {
+					updateComprehensionTestQuestionBo
+							.setResponseList(comprehensionTestQuestionBo
+									.getResponseList());
+				}
+				updateComprehensionTestQuestionBo = studyDAO
+						.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
+			}
+
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - getComprehensionTestResponseList() - Error",
+					e);
+		}
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Ends");
+		return updateComprehensionTestQuestionBo;
+	}
+
+	/**
+	 * @author BTC
+	 * @param Object
+	 *            : {@link ConsentInfoBo}
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @param String
+	 *            : customStudyId in {@link StudyBo}
+	 * @return {@link ConsentInfoBo} Description : This method is to save or
+	 *         update consent
+	 */
+	@Override
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,
+			SessionObject sessionObject, String customStudyId) {
+		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Starts");
+		ConsentInfoBo updateConsentInfoBo = null;
+		try {
+			if (consentInfoBo != null) {
+				if (consentInfoBo.getId() != null) {
+					updateConsentInfoBo = studyDAO
+							.getConsentInfoById(consentInfoBo.getId());
+					updateConsentInfoBo
+							.setModifiedBy(sessionObject.getUserId());
+					updateConsentInfoBo.setModifiedOn(FdahpStudyDesignerUtil
+							.getCurrentDateTime());
+				} else {
+					updateConsentInfoBo = new ConsentInfoBo();
+					updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
+					updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil
+							.getCurrentDateTime());
+					updateConsentInfoBo.setActive(true);
+				}
+				if (consentInfoBo.getConsentItemType() != null) {
+					updateConsentInfoBo.setConsentItemType(consentInfoBo
+							.getConsentItemType());
+				}
+				if (consentInfoBo.getContentType() != null) {
+					updateConsentInfoBo.setContentType(consentInfoBo
+							.getContentType());
+				}
+				if (consentInfoBo.getBriefSummary() != null) {
+					updateConsentInfoBo.setBriefSummary(consentInfoBo
+							.getBriefSummary().replaceAll("\"", "&#34;")
+							.replaceAll("\'", "&#39;"));
+				}
+				if (consentInfoBo.getElaborated() != null) {
+					updateConsentInfoBo.setElaborated(consentInfoBo
+							.getElaborated());
+				}
+				if (consentInfoBo.getHtmlContent() != null) {
+					updateConsentInfoBo.setHtmlContent(consentInfoBo
+							.getHtmlContent());
+				}
+				if (consentInfoBo.getUrl() != null) {
+					updateConsentInfoBo.setUrl(consentInfoBo.getUrl());
+				}
+				if (consentInfoBo.getVisualStep() != null) {
+					updateConsentInfoBo.setVisualStep(consentInfoBo
+							.getVisualStep());
+				}
+				if (consentInfoBo.getSequenceNo() != null) {
+					updateConsentInfoBo.setSequenceNo(consentInfoBo
+							.getSequenceNo());
+				}
+				if (consentInfoBo.getStudyId() != null) {
+					updateConsentInfoBo.setStudyId(consentInfoBo.getStudyId());
+				}
+				if (consentInfoBo.getDisplayTitle() != null) {
+					updateConsentInfoBo.setDisplayTitle(consentInfoBo
+							.getDisplayTitle());
+				}
+				if (consentInfoBo.getType() != null) {
+					updateConsentInfoBo.setType(consentInfoBo.getType());
+				}
+				if (consentInfoBo.getConsentItemTitleId() != null) {
+					updateConsentInfoBo.setConsentItemTitleId(consentInfoBo
+							.getConsentItemTitleId());
+				}
+				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(
+						updateConsentInfoBo, sessionObject, customStudyId);
+			}
+
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - saveOrUpdateConsentInfo() - Error", e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Ends");
+		return updateConsentInfoBo;
+	}
+
+	/**
+	 * @author BTC Save or update eligibility test question and answer
+	 *
 	 * @param eligibilityTestBo
 	 *            , object of {@link EligibilityTestBo}
 	 * @param studyId
@@ -1519,61 +1578,453 @@ public class StudyServiceImpl implements StudyService {
 
 	/**
 	 * @author BTC
-	 * @param Integer : eligibilityTestId
-	 * @param Integer : studyId
-	 * @param Object : {@link SessionObject}
-	 * @param String : customStudyId
-	 * @return String :{success/failure}
-	 * Description : This method is delete eligibility test 
+	 * @param studyPageBean
+	 *            {@link StudyPageBean}
+	 * @return {@link String} save or update content(title,description,image)
+	 *         for the Overview pages of the Study those pages will reflect on
+	 *         mobile overview screen
 	 */
 	@Override
-	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId,
-			Integer studyId, SessionObject sessionObject, String customStudyId) {
-		logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Starts");
-		String message = FdahpStudyDesignerConstants.SUCCESS;
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean,
+			SessionObject sesObj) {
+		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
+		String message = "";
 		try {
-			message = studyDAO.deleteEligibilityTestQusAnsById(
-					eligibilityTestId, studyId, sessionObject, customStudyId);
+			if (studyPageBean.getMultipartFiles() != null
+					&& studyPageBean.getMultipartFiles().length > 0) {
+				String imagePath[] = new String[studyPageBean.getImagePath().length];
+				for (int i = 0; i < studyPageBean.getMultipartFiles().length; i++) {
+					String file;
+					if (!studyPageBean.getMultipartFiles()[i].isEmpty()) {
+						if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean
+								.getImagePath()[i])) {
+							file = studyPageBean.getImagePath()[i].replace(
+									"."
+											+ studyPageBean.getImagePath()[i]
+													.split("\\.")[studyPageBean
+													.getImagePath()[i]
+													.split("\\.").length - 1],
+									"");
+						} else {
+							file = FdahpStudyDesignerUtil.getStandardFileName(
+									"STUDY_PAGE_" + i,
+									studyPageBean.getUserId() + "",
+									studyPageBean.getStudyId());
+						}
+						imagePath[i] = FdahpStudyDesignerUtil.uploadImageFile(
+								studyPageBean.getMultipartFiles()[i], file,
+								FdahpStudyDesignerConstants.STUDTYPAGES);
+					} else {
+						imagePath[i] = studyPageBean.getImagePath()[i];
+					}
+				}
+				studyPageBean.setImagePath(imagePath);
+			}
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean,
+					sesObj);
 		} catch (Exception e) {
 			logger.error(
-					"StudyServiceImpl - deleteEligibilityTestQusAnsById - Error",
+					"StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR ",
 					e);
 		}
-		logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Ends");
 		return message;
 	}
 
 	/**
-	 * View eligibility test question answer by id
-	 * 
 	 * @author BTC
-	 * 
-	 * @param eligibilityTestId
-	 *            , Id of {@link EligibilityTestBo}
-	 * @return eligibilityTestBo , Object of {@link EligibilityTestBo}
+	 * @param Object
+	 *            : {@link ResourceBO}
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @return Integer : resourceId from {@link ResourceBO} Description : This
+	 *         method is to save or update Resource
 	 */
 	@Override
-	public EligibilityTestBo viewEligibilityTestQusAnsById(
-			Integer eligibilityTestId) {
-		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Starts");
-		EligibilityTestBo eligibilityTestBo = null;
+	public Integer saveOrUpdateResource(ResourceBO resourceBO,
+			SessionObject sesObj) {
+		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
+		Integer resourseId = 0;
+		ResourceBO resourceBO2 = null;
+		String fileName = "";
+		String file = "";
+		NotificationBO notificationBO = null;
+		StudyBo studyBo = null;
+		String activity = "";
+		String activityDetails = "";
+		Boolean saveNotiFlag = false;
+		Boolean updateResource = false;
 		try {
-			eligibilityTestBo = studyDAO
-					.viewEligibilityTestQusAnsById(eligibilityTestId);
+			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),
+					sesObj.getUserId());
+			if (null == resourceBO.getId()) {
+				resourceBO2 = new ResourceBO();
+				resourceBO2.setSequenceNo(resourceBO.getSequenceNo());
+				resourceBO2.setStudyId(resourceBO.getStudyId());
+				resourceBO2.setCreatedBy(sesObj.getUserId());
+				resourceBO2.setCreatedOn(FdahpStudyDesignerUtil
+						.getCurrentDateTime());
+				resourceBO2.setStatus(true);
+			} else {
+				resourceBO2 = getResourceInfo(resourceBO.getId());
+				resourceBO2.setModifiedBy(sesObj.getUserId());
+				resourceBO2.setModifiedOn(FdahpStudyDesignerUtil
+						.getCurrentDateTime());
+				updateResource = true;
+			}
+			if (!resourceBO.isAction()) {
+				activity = "Resource content saved.";
+				activityDetails = "Resource content saved. (Study ID = "
+						+ studyBo.getCustomStudyId()
+						+ ", Resource Display Title = " + resourceBO.getTitle()
+						+ ").";
+			} else {
+				activity = "Resource successfully checked for minimum content  completeness.";
+				activityDetails = "Resource successfully checked for minimum content completeness and marked 'Done'. (Study ID = "
+						+ studyBo.getCustomStudyId()
+						+ ", Resource Display Title = "
+						+ resourceBO.getTitle()
+						+ ").";
+			}
+			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO
+					.getTitle().trim() : "");
+			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
+			resourceBO2
+					.setRichText(null != resourceBO.getRichText() ? resourceBO
+							.getRichText().trim() : "");
+			if (resourceBO.getPdfFile() != null
+					&& !resourceBO.getPdfFile().isEmpty()) {
+				file = FdahpStudyDesignerUtil.getStandardFileName(
+						FilenameUtils.removeExtension(resourceBO.getPdfFile()
+								.getOriginalFilename()), sesObj.getFirstName(),
+						sesObj.getLastName()).replaceAll("\\W+", "_");
+				fileName = FdahpStudyDesignerUtil.uploadImageFile(
+						resourceBO.getPdfFile(), file,
+						FdahpStudyDesignerConstants.RESOURCEPDFFILES);
+				resourceBO2.setPdfUrl(fileName);
+				resourceBO2.setPdfName(resourceBO.getPdfFile()
+						.getOriginalFilename());
+			} else {
+				resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+				resourceBO2.setPdfName(resourceBO.getPdfName());
+			}
+			resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
+			resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
+			resourceBO2
+					.setResourceVisibility(resourceBO.isResourceVisibility());
+			resourceBO2.setResourceType(resourceBO.isResourceType());
+			resourceBO2
+					.setResourceText(null != resourceBO.getResourceText() ? resourceBO
+							.getResourceText().trim() : "");
+			resourceBO2.setTimePeriodFromDays(resourceBO
+					.getTimePeriodFromDays());
+			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+			resourceBO2.setStartDate(FdahpStudyDesignerUtil
+					.isNotEmpty(resourceBO.getStartDate()) ? String
+					.valueOf(FdahpStudyDesignerUtil.getFormattedDate(
+							resourceBO.getStartDate(),
+							FdahpStudyDesignerConstants.UI_SDF_DATE,
+							FdahpStudyDesignerConstants.DB_SDF_DATE)) : null);
+			resourceBO2.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO
+					.getEndDate()) ? String.valueOf(FdahpStudyDesignerUtil
+					.getFormattedDate(resourceBO.getEndDate(),
+							FdahpStudyDesignerConstants.UI_SDF_DATE,
+							FdahpStudyDesignerConstants.DB_SDF_DATE)) : null);
+			resourceBO2.setAction(resourceBO.isAction());
+			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
+			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
+
+			if (!resourseId.equals(0)) {
+				auditLogDAO.saveToAuditLog(null, null, sesObj, activity,
+						activityDetails,
+						"AuditLogDAOImpl - saveOrUpdateResource()");
+				if (!resourceBO2.isStudyProtocol()) {
+					studyDAO.markAsCompleted(resourceBO2.getStudyId(),
+							FdahpStudyDesignerConstants.RESOURCE, false,
+							sesObj, studyBo.getCustomStudyId());
+				}
+				if (resourceBO.isAction()) {
+					notificationBO = studyDAO
+							.getNotificationByResourceId(resourseId);
+					String notificationText = "";
+					boolean notiFlag = false;
+					if (null == notificationBO) {
+						notificationBO = new NotificationBO();
+						notificationBO.setStudyId(resourceBO2.getStudyId());
+						notificationBO.setCustomStudyId(studyBo
+								.getCustomStudyId());
+						notificationBO
+								.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+						notificationBO
+								.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
+						notificationBO
+								.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+						notificationBO.setResourceId(resourceBO2.getId());
+						notificationBO.setNotificationStatus(false);
+						notificationBO.setCreatedBy(sesObj.getUserId());
+						notificationBO.setCreatedOn(FdahpStudyDesignerUtil
+								.getCurrentDateTime());
+					} else {
+						notiFlag = true;
+						notificationBO.setModifiedBy(sesObj.getUserId());
+						notificationBO.setModifiedOn(FdahpStudyDesignerUtil
+								.getCurrentDateTime());
+					}
+					if (!resourceBO2.isStudyProtocol()) {
+						saveNotiFlag = true;
+						notificationText = resourceBO2.getResourceText();
+					} else {
+						if (studyBo.getLiveStudyBo() != null) {
+							String studyName = studyBo.getName();
+							String innerText;
+							if (notiFlag || (!notiFlag && updateResource)) {
+								innerText = "updated";
+							} else {
+								innerText = "added";
+							}
+							saveNotiFlag = true;
+							notificationText = "Study Protocol information has been "
+									+ innerText
+									+ " for the study "
+									+ studyName
+									+ ". Visit the app to read it now.";
+						}
+					}
+					notificationBO.setNotificationText(notificationText);
+					if (resourceBO2.isResourceType()) {
+						notificationBO.setAnchorDate(true);
+						notificationBO.setxDays(resourceBO2
+								.getTimePeriodFromDays());
+					} else {
+						notificationBO.setAnchorDate(false);
+						notificationBO.setxDays(null);
+					}
+					notificationBO.setScheduleDate(null);
+					notificationBO.setScheduleTime(null);
+					if (saveNotiFlag) {
+						studyDAO.saveResourceNotification(notificationBO,
+								notiFlag);
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error", e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateResource() - Ends");
+		return resourseId;
+	}
+
+	/**
+	 * @author BTC
+	 * @param StudyBo
+	 *            , {@link StudyBo}
+	 * @return {@link String} This method captures basic information about the
+	 *         study basic info like Study ID, Study name, Study full name,
+	 *         Study Category, Research Sponsor,Data Partner, Estimated Duration
+	 *         in weeks/months/years, Study Tagline, Study Description, Study
+	 *         website, Study Type
+	 */
+	@Override
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId,
+			SessionObject sessionObject) {
+		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Ends");
+		return message;
+	}
+
+	/**
+	 * Save or update eligibility of study
+	 *
+	 * @author BTC
+	 *
+	 * @param eligibilityBo
+	 *            , {@link EligibilityBo}
+	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS
+	 *         or FdahpStudyDesignerConstants.FAILURE
+	 * @exception Exception
+	 */
+	@Override
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo,
+			SessionObject sesObj, String customStudyId) {
+		logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Starts");
+		String result = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,
+					sesObj, customStudyId);
 		} catch (Exception e) {
 			logger.error(
-					"StudyServiceImpl - viewEligibilityTestQusAnsById - Error",
+					"StudyServiceImpl - saveOrUpdateStudyEligibilty() - ERROR ",
 					e);
 		}
-		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Ends");
-		return eligibilityTestBo;
+		logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Ends");
+		return result;
+	}
+
+	/**
+	 * @author BTC
+	 * @param studyBo
+	 *            , {@link studyBo}
+	 * @return {@link String} , the status SUCCESS or FAILURE
+	 * @exception Exception
+	 *                save or update study setting and admins for the particular
+	 *                study study settings like Platforms supported, Is the
+	 *                Study currently enrolling participants, Allow user to
+	 *                rejoin s the Study once they leave it?, Retain participant
+	 *                data when they leave a study? managing admins for the
+	 *                particular study
+	 */
+	@Override
+	public String saveOrUpdateStudySettings(StudyBo studyBo,
+			SessionObject sesObj, String userIds, String permissions,
+			String projectLead) {
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
+		String result = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			result = studyDAO.saveOrUpdateStudySettings(studyBo, sesObj,
+					userIds, permissions, projectLead);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ",
+					e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Ends");
+		return result;
+	}
+
+	/**
+	 * Setting DI
+	 *
+	 * @param studyDAO
+	 */
+	@Autowired
+	public void setStudyDAO(StudyDAO studyDAO) {
+		this.studyDAO = studyDAO;
+	}
+
+	/**
+	 * @author BTC
+	 * @param string
+	 *            : studyId
+	 * @param string
+	 *            : buttonText can be
+	 *            lunchId/updatesId/publishId/unpublishId/resumeId
+	 *            /pauseId/deactivateId
+	 * @param Object
+	 *            : {@link SessionObject}
+	 * @return String : success/failure Description : This method is to upadte
+	 *         status of Study
+	 */
+	@Override
+	public String updateStudyActionOnAction(String studyId, String buttonText,
+			SessionObject sesObj) {
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
+		String message = "";
+		try {
+			if (StringUtils.isNotEmpty(studyId)
+					&& StringUtils.isNotEmpty(buttonText)) {
+				message = studyDAO.updateStudyActionOnAction(studyId,
+						buttonText, sesObj);
+			}
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param String
+	 *            : studyId
+	 * @param String
+	 *            : action cane be Activetask/Questionnaire
+	 * @return String :{success/failure} Description : This method is validate
+	 *         the activity(Activetask/Questionnarie) done or not
+	 */
+	@Override
+	public String validateActivityComplete(String studyId, String action) {
+		logger.info("StudyServiceImpl - validateActivityComplete() - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.validateActivityComplete(studyId, action);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - validateActivityComplete() - Error", e);
+		}
+		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
+		return message;
+	}
+
+	@Override
+	public String validateEligibilityTestKey(Integer eligibilityTestId,
+			String shortTitle, Integer eligibilityId) {
+		logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.validateEligibilityTestKey(eligibilityTestId,
+					shortTitle, eligibilityId);
+		} catch (Exception e) {
+			logger.error(
+					"StudyServiceImpl - validateEligibilityTestKey - Error", e);
+		}
+		logger.info("StudyServiceImpl - validateEligibilityTestKey - Ends");
+		return message;
+	}
+
+	/**
+	 * @author BTC
+	 * @param string
+	 *            : studyId
+	 * @param string
+	 *            : buttonText can be lunchId/updatesId/publishId
+	 * @return String : success/failure Description : This method is to validate
+	 *         Study eligible for launch/publish based on some condition
+	 */
+	@Override
+	public String validateStudyAction(String studyId, String buttonText) {
+		logger.info("StudyServiceImpl - validateStudyAction() - Starts");
+		String message = "";
+		try {
+			message = studyDAO.validateStudyAction(studyId, buttonText);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
+		return message;
+	}
+
+	/**
+	 * validated for uniqueness of customStudyId of study throughout the
+	 * application
+	 *
+	 * @author BTC
+	 *
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean validateStudyId(String studyId) {
+		logger.info("StudyServiceImpl - validateStudyId() - Starts");
+		boolean flag = false;
+		try {
+			flag = studyDAO.validateStudyId(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - validateStudyId() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - validateStudyId() - Ends");
+		return flag;
 	}
 
 	/**
 	 * View eligibility test question answer by eligibility id
-	 * 
+	 *
 	 * @author BTC
-	 * 
+	 *
 	 * @param eligibilityId
 	 *            , Id of {@link EligibilityBo}
 	 * @return eligibilityTestBos , {@link List} of {@link EligibilityTestBo}
@@ -1597,166 +2048,28 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * Reorder the eligibility test questions
+	 * View eligibility test question answer by id
+	 *
 	 * @author BTC
-	 * 
-	 * @param eligibilityId
-	 *            , Eligibility Id of the study
-	 * @param oldOrderNumber
-	 *            , Old order
-	 * @param newOrderNumber
-	 *            , New order
-	 * @param studyId
-	 *            , Id of the study
-	 * @return {@link FdahpStudyDesignerConstants.SUCCESS} or {@link
-	 *         FdahpStudyDesignerConstants.FAILURE} , reorder status
+	 *
+	 * @param eligibilityTestId
+	 *            , Id of {@link EligibilityTestBo}
+	 * @return eligibilityTestBo , Object of {@link EligibilityTestBo}
 	 */
 	@Override
-	public String reorderEligibilityTestQusAns(Integer eligibilityId,
-			int oldOrderNumber, int newOrderNumber, Integer studyId) {
-		logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Starts");
-		String message = FdahpStudyDesignerConstants.SUCCESS;
+	public EligibilityTestBo viewEligibilityTestQusAnsById(
+			Integer eligibilityTestId) {
+		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Starts");
+		EligibilityTestBo eligibilityTestBo = null;
 		try {
-			message = studyDAO.reorderEligibilityTestQusAns(eligibilityId,
-					oldOrderNumber, newOrderNumber, studyId);
+			eligibilityTestBo = studyDAO
+					.viewEligibilityTestQusAnsById(eligibilityTestId);
 		} catch (Exception e) {
 			logger.error(
-					"StudyServiceImpl - reorderEligibilityTestQusAns - Error",
+					"StudyServiceImpl - viewEligibilityTestQusAnsById - Error",
 					e);
 		}
-		logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Ends");
-		return message;
-	}
-
-	/**
-	 * @author BTC
-	 * @param String : customStudyId
-	 * @return boolean :{true/false}
-	 * Description : This method is to delete Study 
-	 */
-	@Override
-	public boolean deleteStudyByCustomStudyId(String customStudyId) {
-		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Starts");
-		boolean flag = false; 
-		try{
-			flag = studyDAO.deleteStudyByCustomStudyId(customStudyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - deleteStudyByCustomStudyId() - Error",e);
-		}
-		logger.info("StudyServiceImpl - deleteStudyByCustomStudyId() - Ends");
-		return flag;
-	}
-
-	/**
-	 * @author BTC
-	 * @param String : customStudyId
-	 * @return boolean :{true/false}
-	 * Description : This method is to delete Study 
-	 */
-	@Override
-	public boolean resetDraftStudyByCustomStudyId(String customStudy) {
-		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Starts");
-		boolean flag = false; 
-		try{
-			SessionObject object = null;
-			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudy, FdahpStudyDesignerConstants.RESET_STUDY, object);
-			if(flag)
-            flag = studyDAO.deleteLiveStudy(customStudy);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Error",e);
-		}
-		logger.info("StudyServiceImpl - resetDraftStudyByCustomStudyId() - Ends");
-		return flag;
-	}
-	
-    @Override
-    public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId) {
-        logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
-        String message = FdahpStudyDesignerConstants.SUCCESS;
-        try {
-            message = studyDAO.validateEligibilityTestKey(eligibilityTestId, shortTitle, eligibilityId);
-        } catch (Exception e) {
-            logger.error(
-                    "StudyServiceImpl - validateEligibilityTestKey - Error", e);
-        }
-        logger.info("StudyServiceImpl - validateEligibilityTestKey - Ends");
-        return message;
-    }
-    
-    @Override
-    public List<UserBO> getActiveNonAddedUserList(Integer studyId,Integer userId) {
-  		logger.info("StudyServiceImpl - getActiveNonAddedUserList() - Starts");
-  		List<UserBO> userList = null;
-  		try{
-  			userList = studyDAO.getActiveNonAddedUserList(studyId, userId);
-  		}catch(Exception e){
-  			logger.error("StudyServiceImpl - getActiveNonAddedUserList() - ERROR",e);
-  		}
-  		logger.info("StudyServiceImpl - getActiveNonAddedUserList() - Ends");
-  		return userList;
-  	}
-    
-    public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId,Integer userId) {
-  		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Starts");
-  		List<StudyPermissionBO> studyPermissionList = null;
-  		try{
-  			studyPermissionList = studyDAO.getAddedUserListToStudy(studyId, userId);
-  		}catch(Exception e){
-  			logger.error("StudyServiceImpl - getAddedUserListToStudy() - ERROR",e);
-  		}
-  		logger.info("StudyServiceImpl - getAddedUserListToStudy() - Ends");
-  		return studyPermissionList;
-  	}
-	
-	/**
-	 * @author Ronalin
-	 * @param Integer : studyId
-	 * @return String SUCCESS or FAILURE
-	 * 
-	 * This method is used to validate the activetaskType for android platform 
-	 */
-	@Override
-	public String checkActiveTaskTypeValidation(Integer studyId) {
-		logger.info("StudyServiceImpl - checkActiveTaskTypeValidation - Starts");
-		return studyDAO.checkActiveTaskTypeValidation(studyId);
-	}
-
-	@Override
-	public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject object) {
-		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Starts");
-		boolean flag = false; 
-		try{
-			flag = studyDAO.resetDraftStudyByCustomStudyId(customStudyId, FdahpStudyDesignerConstants.COPY_STUDY, object);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - copyliveStudyByCustomStudyId() - Error",e);
-		}
-		logger.info("StudyServiceImpl - copyliveStudyByCustomStudyId() - Ends");
-		return flag;
-	}
-	
-	@Override
-	public String reOrderResourceList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
-		logger.info("StudyServiceImpl - reOrderResourceList() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
-		try{
-			message = studyDAO.reOrderResourceList(studyId, oldOrderNumber, newOrderNumber);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - reOrderResourceList() - Error",e);
-		}
-		logger.info("StudyServiceImpl - reOrderResourceList() - Ends");
-		return message;
-	}
-	
-	@Override
-	public int resourceOrder(Integer studyId) {
-		int count = 1;
-		logger.info("StudyServiceImpl - resourceOrder() - Starts");
-		try{
-			count = studyDAO.resourceOrder(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - resourceOrder() - Error",e);
-		}
-		logger.info("StudyServiceImpl - resourceOrder() - Ends");
-		return count;
+		logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Ends");
+		return eligibilityTestBo;
 	}
 }

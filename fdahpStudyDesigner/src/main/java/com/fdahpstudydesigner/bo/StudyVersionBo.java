@@ -14,108 +14,105 @@ import javax.persistence.Transient;
 
 /**
  * The persistent class for the study_version database table.
- * 
+ *
  */
 @Entity
-@Table(name="study_version")
+@Table(name = "study_version")
 @NamedQueries({
-	@NamedQuery(name="StudyVersionBo.findAll", query="SELECT s FROM StudyVersionBo s"),
-	@NamedQuery(name = "getStudyByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC LIMIT 1"),
-	@NamedQuery(name = "getStudyVersionsByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId")
-})
-public class StudyVersionBo implements Serializable{
+		@NamedQuery(name = "StudyVersionBo.findAll", query = "SELECT s FROM StudyVersionBo s"),
+		@NamedQuery(name = "getStudyByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC LIMIT 1"),
+		@NamedQuery(name = "getStudyVersionsByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId") })
+public class StudyVersionBo implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="version_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "version_id")
 	private Integer versionId;
-	
+
 	@Column(name = "custom_study_id")
 	private String customStudyId;
-	
+
 	@Column(name = "study_version")
 	private Float studyVersion = 0f;
-	
+
 	@Column(name = "activity_version")
 	private Float activityVersion = 0f;
-	
+
 	@Column(name = "consent_version")
 	private Float consentVersion = 0f;
-	
-	
+
 	@Transient
 	private String studyLVersion = "";
-	
+
 	@Transient
 	private String activityLVersion = "";
-	
+
 	@Transient
 	private String consentLVersion = "";
 
-	public Integer getVersionId() {
-		return versionId;
-	}
-
-	public void setVersionId(Integer versionId) {
-		this.versionId = versionId;
-	}
-
-	public String getCustomStudyId() {
-		return customStudyId;
-	}
-
-	public void setCustomStudyId(String customStudyId) {
-		this.customStudyId = customStudyId;
-	}
-
-	public Float getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Float studyVersion) {
-		this.studyVersion = studyVersion;
+	public String getActivityLVersion() {
+		return activityLVersion;
 	}
 
 	public Float getActivityVersion() {
 		return activityVersion;
 	}
 
-	public void setActivityVersion(Float activityVersion) {
-		this.activityVersion = activityVersion;
+	public String getConsentLVersion() {
+		return consentLVersion;
 	}
 
 	public Float getConsentVersion() {
 		return consentVersion;
 	}
 
-	public void setConsentVersion(Float consentVersion) {
-		this.consentVersion = consentVersion;
+	public String getCustomStudyId() {
+		return customStudyId;
 	}
 
 	public String getStudyLVersion() {
 		return studyLVersion;
 	}
 
-	public void setStudyLVersion(String studyLVersion) {
-		this.studyLVersion = studyLVersion;
+	public Float getStudyVersion() {
+		return studyVersion;
 	}
 
-	public String getActivityLVersion() {
-		return activityLVersion;
+	public Integer getVersionId() {
+		return versionId;
 	}
 
 	public void setActivityLVersion(String activityLVersion) {
 		this.activityLVersion = activityLVersion;
 	}
 
-	public String getConsentLVersion() {
-		return consentLVersion;
+	public void setActivityVersion(Float activityVersion) {
+		this.activityVersion = activityVersion;
 	}
 
 	public void setConsentLVersion(String consentLVersion) {
 		this.consentLVersion = consentLVersion;
 	}
-	
+
+	public void setConsentVersion(Float consentVersion) {
+		this.consentVersion = consentVersion;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
+
+	public void setStudyLVersion(String studyLVersion) {
+		this.studyLVersion = studyLVersion;
+	}
+
+	public void setStudyVersion(Float studyVersion) {
+		this.studyVersion = studyVersion;
+	}
+
+	public void setVersionId(Integer versionId) {
+		this.versionId = versionId;
+	}
+
 }

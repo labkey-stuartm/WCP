@@ -8,16 +8,21 @@ import com.fdahpstudydesigner.util.SessionObject;
 
 public interface NotificationService {
 
-	public List<NotificationBO> getNotificationList(int studyId, String type);
-	
+	public String deleteNotification(int notificationIdForDelete,
+			SessionObject sessionObject, String notificationType);
+
 	public NotificationBO getNotification(int notificationId);
-	
-	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject,String customStudyId);
-	
-	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType);
-	
-	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
-	
-	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId);
-	
+
+	public List<NotificationHistoryBO> getNotificationHistoryList(
+			Integer notificationId);
+
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(
+			int notificationId);
+
+	public List<NotificationBO> getNotificationList(int studyId, String type);
+
+	public Integer saveOrUpdateOrResendNotification(
+			NotificationBO notificationBO, String notificationType,
+			String buttonType, SessionObject sessionObject, String customStudyId);
+
 }

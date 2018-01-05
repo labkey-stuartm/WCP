@@ -12,97 +12,68 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 /**
- * 
+ *
  * @author Ronalin
  *
  */
 @Entity
-@Table(name="active_task_master_attribute")
-public class ActiveTaskMasterAttributeBo implements Serializable{
+@Table(name = "active_task_master_attribute")
+public class ActiveTaskMasterAttributeBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="active_task_master_attr_id")
+	@Column(name = "active_task_master_attr_id")
 	private Integer masterId;
-	
+
 	@Column(name = "task_type_id")
 	private Integer taskTypeId;
-	
+
 	@Column(name = "order_by")
 	private Integer orderByTaskType;
 
 	@Column(name = "attribute_type")
 	private String attributeType;
-	
+
 	@Column(name = "attribute_name")
 	private String attributeName;
-	
+
 	@Column(name = "display_name")
 	private String displayName;
-	
+
 	@Column(name = "attribute_data_type")
 	private String attributeDataType;
-	
+
 	@Column(name = "add_to_dashboard")
-	@Type(type="yes_no")
+	@Type(type = "yes_no")
 	private boolean addToDashboard = false;
-	
 
-	public Integer getMasterId() {
-		return masterId;
-	}
-
-	public void setMasterId(Integer masterId) {
-		this.masterId = masterId;
-	}
-
-	public Integer getTaskTypeId() {
-		return taskTypeId;
-	}
-
-	public void setTaskTypeId(Integer taskTypeId) {
-		this.taskTypeId = taskTypeId;
-	}
-
-	public Integer getOrderByTaskType() {
-		return orderByTaskType;
-	}
-
-	public void setOrderByTaskType(Integer orderByTaskType) {
-		this.orderByTaskType = orderByTaskType;
-	}
-
-	public String getAttributeType() {
-		return attributeType;
-	}
-
-	public void setAttributeType(String attributeType) {
-		this.attributeType = attributeType;
+	public String getAttributeDataType() {
+		return attributeDataType;
 	}
 
 	public String getAttributeName() {
 		return attributeName;
 	}
 
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
+	public String getAttributeType() {
+		return attributeType;
 	}
 
 	public String getDisplayName() {
 		return displayName;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public Integer getMasterId() {
+		return masterId;
 	}
 
-	public String getAttributeDataType() {
-		return attributeDataType;
+	public Integer getOrderByTaskType() {
+		return orderByTaskType;
 	}
 
-	public void setAttributeDataType(String attributeDataType) {
-		this.attributeDataType = attributeDataType;
+	public Integer getTaskTypeId() {
+		return taskTypeId;
 	}
 
 	public boolean isAddToDashboard() {
@@ -111,5 +82,33 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 
 	public void setAddToDashboard(boolean addToDashboard) {
 		this.addToDashboard = addToDashboard;
+	}
+
+	public void setAttributeDataType(String attributeDataType) {
+		this.attributeDataType = attributeDataType;
+	}
+
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
+	}
+
+	public void setAttributeType(String attributeType) {
+		this.attributeType = attributeType;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public void setMasterId(Integer masterId) {
+		this.masterId = masterId;
+	}
+
+	public void setOrderByTaskType(Integer orderByTaskType) {
+		this.orderByTaskType = orderByTaskType;
+	}
+
+	public void setTaskTypeId(Integer taskTypeId) {
+		this.taskTypeId = taskTypeId;
 	}
 }

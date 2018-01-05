@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fdahpstudydesigner.service;
 
@@ -30,299 +30,206 @@ import com.fdahpstudydesigner.util.SessionObject;
  *
  */
 @Service
-public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
+public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 
-	private static Logger logger = Logger.getLogger(StudyActiveTasksServiceImpl.class);
-	
+	private static Logger logger = Logger
+			.getLogger(StudyActiveTasksServiceImpl.class);
+
 	@Autowired
 	private StudyActiveTasksDAO studyActiveTasksDAO;
 
 	/**
-	 * return active tasks based on user's Study Id
-	 * @author Vivek
-	 * 
-	 * @param studyId , studyId of the {@link StudyBo}
-	 * @return List of {@link ActiveTaskBo}
-	 * @exception Exception
-	 */
-	@Override
-	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,Boolean isLive) {
-		logger.info("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - Starts");
-		List<ActiveTaskBo> activeTasks = null;
-		try {
-			activeTasks = studyActiveTasksDAO.getStudyActiveTasksByStudyId(studyId,isLive);
-		} catch (Exception e) {
-			logger.error("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - ERROR ", e);
-		}
-		logger.info("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - Ends");
-		return activeTasks;
-	}
-	
-	@Override
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo, String customStudyId) {
-		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
-		ActiveTaskBo addActiveTaskeBo = null;
-		try{
-			if(null != activeTaskBo){
-				if(activeTaskBo.getId() != null){
-					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
-				}else{
-					addActiveTaskeBo = new ActiveTaskBo();
-				}
-				if(activeTaskBo.getStudyId() != null){
-					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
-				}
-				if(activeTaskBo.getFrequency() != null){
-					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
-				}
-				if(activeTaskBo.getFrequency() != null && !activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-					if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeStart()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeStart())){
-						addActiveTaskeBo.setActiveTaskLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
-					}else{
-						addActiveTaskeBo.setActiveTaskLifetimeStart(null);
-					}
-					if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())){
-						addActiveTaskeBo.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
-					}else{
-						addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
-					}
-				}
-				if(activeTaskBo.getTitle() != null){
-					addActiveTaskeBo.setTitle(activeTaskBo.getTitle());
-				}
-				if(activeTaskBo.getCreatedDate() != null){
-					addActiveTaskeBo.setCreatedDate(activeTaskBo.getCreatedDate());
-				}
-				if(activeTaskBo.getCreatedBy() != null){
-					addActiveTaskeBo.setCreatedBy(activeTaskBo.getCreatedBy());
-				}
-				if(activeTaskBo.getModifiedDate() != null){
-					addActiveTaskeBo.setModifiedDate(activeTaskBo.getModifiedDate());
-				}
-				if(activeTaskBo.getModifiedBy() != null){
-					addActiveTaskeBo.setModifiedBy(activeTaskBo.getModifiedBy());
-				}
-				if(activeTaskBo.getRepeatActiveTask() != null){
-					addActiveTaskeBo.setRepeatActiveTask(activeTaskBo.getRepeatActiveTask());
-				}
-				if(activeTaskBo.getDayOfTheWeek() != null){
-					addActiveTaskeBo.setDayOfTheWeek(activeTaskBo.getDayOfTheWeek());
-				}
-				if(activeTaskBo.getType() != null){
-					addActiveTaskeBo.setType(activeTaskBo.getType());
-				}
-				if (activeTaskBo.getFrequency() != null) {
-					if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
-						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
-						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
-						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
-							if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME) && activeTaskBo.getActiveTaskFrequenciesBo() != null){
-								if(!activeTaskBo.getActiveTaskFrequenciesBo().getIsStudyLifeTime()){
-									if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())){
-										addActiveTaskeBo.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
-									}
-								}
-							}
-					} else {
-						if (activeTaskBo.getActiveTaskCustomScheduleBo() != null && !activeTaskBo.getActiveTaskCustomScheduleBo().isEmpty()) {
-							addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
-						}
-						if (activeTaskBo.getActiveTaskFrequenciesList() != null && !activeTaskBo.getActiveTaskFrequenciesList().isEmpty()){
-							addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
-						}
-						if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
-							if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-								if(!activeTaskBo.getActiveTaskFrequenciesBo().getIsStudyLifeTime()){
-									if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())){
-										addActiveTaskeBo.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
-									}
-								}
-							}
-							addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
-						}
-					}
-				}
-				if(activeTaskBo.getPreviousFrequency() != null){
-					addActiveTaskeBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
-				}
-				addActiveTaskeBo.setActive(1);
-				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo, customStudyId);
-			}
-		}catch(Exception e){
-			logger.error("StudyActiveTaskServiceImpl - saveORUpdateQuestionnaire - Error",e);
-		}
-		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
-		return addActiveTaskeBo;
-	}
-
-	/**
 	 * @author Ronalin
-	 * @param ActiveTaskBo
-	 * @return ActiveTaskBo
-	 * 
-	 * This method is used to save the activeTask
+	 * @param Integer
+	 *            : activeTaskInfoId
+	 * @param Integer
+	 *            : studyId
+	 * @return String :SUCCESS or FAILURE TThis method used to get the delete
+	 *         the consent information
 	 */
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,SessionObject sessionObject,String customStudyId) {
-		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Starts");
-		ActiveTaskBo updateActiveTaskBo = null;
-		try{
-			if(activeTaskBo != null){
-				if(activeTaskBo.getId() != null){
-					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
-					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
-					updateActiveTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-					if(updateActiveTaskBo.getIsDuplicate()!=null){
-						updateActiveTaskBo.setIsDuplicate(updateActiveTaskBo.getIsDuplicate());
-					}
-				}else{
-					updateActiveTaskBo = new ActiveTaskBo();
-					updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
-					updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
-					updateActiveTaskBo.setCreatedBy(sessionObject.getUserId());
-					updateActiveTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
-					updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
-					updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
-					updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
-					updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
-				}
-				updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
-				updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
-				updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
-				updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
-				updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
-				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
-				updateActiveTaskBo.setAction(activeTaskBo.isAction());
-				updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
-				if(activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-					updateActiveTaskBo.setIsChange(1);
-				}else{
-					updateActiveTaskBo.setIsChange(0);
-				}
-				updateActiveTaskBo.setActive(1);
-				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo, sessionObject,customStudyId);
-			}
-		}catch(Exception e){
-			logger.error("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Error",e);
-		}
-		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Ends");
-		return updateActiveTaskBo;
-	}
-	
-	/**
-	 * @author Ronalin
-	 * @param Integer :aciveTaskId
-	 * @return Object :ActiveTaskBo
-	 * 
-	 * This method is used to get the ativeTask info object based on consent info id 
-	 */
-	@Override
-	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId, String customStudyId) {
-		logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Starts");
-		ActiveTaskBo activeTask = null;
-		try {
-			activeTask = studyActiveTasksDAO.getActiveTaskById(ativeTaskId, customStudyId);
-			if(activeTask != null) {
-				if(activeTask.getActiveTaskCustomScheduleBo() != null && !activeTask.getActiveTaskCustomScheduleBo().isEmpty()) {
-					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTask.getActiveTaskCustomScheduleBo()) {
-						
-						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyStartDate())) {
-							activeTaskCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
-						}
-						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyEndDate())) {
-							activeTaskCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
-						}
-						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyTime())) {
-							activeTaskCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
-						}
-					}
-				}
-				if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
-					for ( ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTask.getActiveTaskFrequenciesList()) {
-						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate())) {
-							activeTaskFrequencyBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
-						}
-						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
-							activeTaskFrequencyBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
-						}
-					}
-				}
-				if(activeTask.getActiveTaskFrequenciesBo() != null && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate())) {
-					activeTask.getActiveTaskFrequenciesBo().setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
-				}
-				if(activeTask.getActiveTaskFrequenciesBo() != null && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime())) {
-					activeTask.getActiveTaskFrequenciesBo().setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
-				}
-				if(StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeEnd())) {
-					activeTask.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
-				}
-				if(StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeStart())) {
-					activeTask.setActiveTaskLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeStart(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
-				}
-				
-			}
-		} catch (Exception e) {
-			logger.error("StudyActiveTasksServiceImpl - getActiveTaskById() - ERROR ", e);
-		}
-		logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Ends");
-		return activeTask;
-	}
-	
-	/**
-	 * @author Ronalin
-	 * @param Integer : activeTaskInfoId
-	 *  @param Integer : studyId
-	 * @return String :SUCCESS or FAILURE
-	 *  TThis method used to get the delete the consent information
-	 */
-	@Override
-	public String deleteActiveTask(Integer activeTaskInfoId,Integer studyId, SessionObject sesObj,String customStudyId) {
+	public String deleteActiveTask(Integer activeTaskInfoId, Integer studyId,
+			SessionObject sesObj, String customStudyId) {
 		logger.info("StudyServiceImpl - deleteActiveTask() - Starts");
 		String message = null;
 		ActiveTaskBo activeTaskBo = null;
 		try {
-			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId, customStudyId);
-			if(activeTaskBo != null){
-				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo, sesObj,customStudyId);
-			}	
+			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(
+					activeTaskInfoId, customStudyId);
+			if (activeTaskBo != null) {
+				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo,
+						sesObj, customStudyId);
+			}
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - deleteActiveTask() - Error", e);
 		}
 		logger.info("StudyServiceImpl - deleteActiveTask() - Ends");
 		return message;
 	}
-	
+
 	/**
 	 * @author Ronalin
-	 * @return List :ActiveTaskListBos
-	 *  This method used to get all type of activeTask
+	 * @param Integer
+	 *            :aciveTaskId
+	 * @return Object :ActiveTaskBo
+	 *
+	 *         This method is used to get the ativeTask info object based on
+	 *         consent info id
 	 */
 	@Override
-	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType){
-		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Starts");
-		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
+	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId,
+			String customStudyId) {
+		logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Starts");
+		ActiveTaskBo activeTask = null;
 		try {
-			activeTaskListBos = studyActiveTasksDAO.getAllActiveTaskTypes(platformType);
+			activeTask = studyActiveTasksDAO.getActiveTaskById(ativeTaskId,
+					customStudyId);
+			if (activeTask != null) {
+				if (activeTask.getActiveTaskCustomScheduleBo() != null
+						&& !activeTask.getActiveTaskCustomScheduleBo()
+								.isEmpty()) {
+					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTask
+							.getActiveTaskCustomScheduleBo()) {
+
+						if (StringUtils.isNotBlank(activeTaskCustomScheduleBo
+								.getFrequencyStartDate())) {
+							activeTaskCustomScheduleBo
+									.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(
+											activeTaskCustomScheduleBo
+													.getFrequencyStartDate(),
+											FdahpStudyDesignerConstants.DB_SDF_DATE,
+											FdahpStudyDesignerConstants.UI_SDF_DATE));
+						}
+						if (StringUtils.isNotBlank(activeTaskCustomScheduleBo
+								.getFrequencyEndDate())) {
+							activeTaskCustomScheduleBo
+									.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(
+											activeTaskCustomScheduleBo
+													.getFrequencyEndDate(),
+											FdahpStudyDesignerConstants.DB_SDF_DATE,
+											FdahpStudyDesignerConstants.UI_SDF_DATE));
+						}
+						if (StringUtils.isNotBlank(activeTaskCustomScheduleBo
+								.getFrequencyTime())) {
+							activeTaskCustomScheduleBo
+									.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(
+											activeTaskCustomScheduleBo
+													.getFrequencyTime(),
+											FdahpStudyDesignerConstants.UI_SDF_TIME,
+											FdahpStudyDesignerConstants.SDF_TIME));
+						}
+					}
+				}
+				if (activeTask.getActiveTaskFrequenciesList() != null
+						&& !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
+					for (ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTask
+							.getActiveTaskFrequenciesList()) {
+						if (StringUtils.isNotBlank(activeTaskFrequencyBo
+								.getFrequencyDate())) {
+							activeTaskFrequencyBo
+									.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(
+											activeTaskFrequencyBo
+													.getFrequencyDate(),
+											FdahpStudyDesignerConstants.DB_SDF_DATE,
+											FdahpStudyDesignerConstants.UI_SDF_DATE));
+						}
+						if (StringUtils.isNotBlank(activeTaskFrequencyBo
+								.getFrequencyTime())) {
+							activeTaskFrequencyBo
+									.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(
+											activeTaskFrequencyBo
+													.getFrequencyTime(),
+											FdahpStudyDesignerConstants.UI_SDF_TIME,
+											FdahpStudyDesignerConstants.SDF_TIME));
+						}
+					}
+				}
+				if (activeTask.getActiveTaskFrequenciesBo() != null
+						&& StringUtils.isNotBlank(activeTask
+								.getActiveTaskFrequenciesBo()
+								.getFrequencyDate())) {
+					activeTask.getActiveTaskFrequenciesBo().setFrequencyDate(
+							FdahpStudyDesignerUtil.getFormattedDate(activeTask
+									.getActiveTaskFrequenciesBo()
+									.getFrequencyDate(),
+									FdahpStudyDesignerConstants.DB_SDF_DATE,
+									FdahpStudyDesignerConstants.UI_SDF_DATE));
+				}
+				if (activeTask.getActiveTaskFrequenciesBo() != null
+						&& StringUtils.isNotBlank(activeTask
+								.getActiveTaskFrequenciesBo()
+								.getFrequencyTime())) {
+					activeTask.getActiveTaskFrequenciesBo().setFrequencyTime(
+							FdahpStudyDesignerUtil.getFormattedDate(activeTask
+									.getActiveTaskFrequenciesBo()
+									.getFrequencyTime(),
+									FdahpStudyDesignerConstants.UI_SDF_TIME,
+									FdahpStudyDesignerConstants.SDF_TIME));
+				}
+				if (StringUtils.isNotBlank(activeTask
+						.getActiveTaskLifetimeEnd())) {
+					activeTask.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil
+							.getFormattedDate(
+									activeTask.getActiveTaskLifetimeEnd(),
+									FdahpStudyDesignerConstants.DB_SDF_DATE,
+									FdahpStudyDesignerConstants.UI_SDF_DATE));
+				}
+				if (StringUtils.isNotBlank(activeTask
+						.getActiveTaskLifetimeStart())) {
+					activeTask
+							.setActiveTaskLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(
+									activeTask.getActiveTaskLifetimeStart(),
+									FdahpStudyDesignerConstants.DB_SDF_DATE,
+									FdahpStudyDesignerConstants.UI_SDF_DATE));
+				}
+
+			}
 		} catch (Exception e) {
-			logger.error("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - ERROR ", e);
+			logger.error(
+					"StudyActiveTasksServiceImpl - getActiveTaskById() - ERROR ",
+					e);
 		}
-		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Ends");
-		return activeTaskListBos;
+		logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Ends");
+		return activeTask;
 	}
-	
+
 	/**
 	 * @author Ronalin
-	 * @return List :ActiveTaskMasterAttributeBo
-	 *  This method used to get  all the field names based on of activeTaskType
+	 * @return List :ActivetaskFormulaBo This method used to get all static
+	 *         formulas
 	 */
 	@Override
-	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType) {
+	public List<ActivetaskFormulaBo> getActivetaskFormulas() {
+		logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Starts");
+		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
+		try {
+			activetaskFormulaList = studyActiveTasksDAO.getActivetaskFormulas();
+		} catch (Exception e) {
+			logger.error(
+					"StudyActiveTasksServiceImpl - getActivetaskFormulas() - ERROR ",
+					e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Ends");
+		return activetaskFormulaList;
+	}
+
+	/**
+	 * @author Ronalin
+	 * @return List :ActiveTaskMasterAttributeBo This method used to get all the
+	 *         field names based on of activeTaskType
+	 */
+	@Override
+	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(
+			String activeTaskType) {
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Starts");
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		try {
-			taskMasterAttributeBos = studyActiveTasksDAO.getActiveTaskMasterAttributesByType(activeTaskType);
+			taskMasterAttributeBos = studyActiveTasksDAO
+					.getActiveTaskMasterAttributesByType(activeTaskType);
 		} catch (Exception e) {
-			logger.error("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - ERROR ", e);
+			logger.error(
+					"StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - ERROR ",
+					e);
 		}
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Ends");
 		return taskMasterAttributeBos;
@@ -330,8 +237,29 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 
 	/**
 	 * @author Ronalin
-	 * @return List :StatisticImageListBo
-	 *  This method used to get  all  statistic images
+	 * @return List :ActiveTaskListBos This method used to get all type of
+	 *         activeTask
+	 */
+	@Override
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(String platformType) {
+		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Starts");
+		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
+		try {
+			activeTaskListBos = studyActiveTasksDAO
+					.getAllActiveTaskTypes(platformType);
+		} catch (Exception e) {
+			logger.error(
+					"StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - ERROR ",
+					e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Ends");
+		return activeTaskListBos;
+	}
+
+	/**
+	 * @author Ronalin
+	 * @return List :StatisticImageListBo This method used to get all statistic
+	 *         images
 	 */
 	@Override
 	public List<StatisticImageListBo> getStatisticImages() {
@@ -340,62 +268,339 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		try {
 			statisticImageListBos = studyActiveTasksDAO.getStatisticImages();
 		} catch (Exception e) {
-			logger.error("StudyActiveTasksServiceImpl - getStatisticImages() - ERROR ", e);
+			logger.error(
+					"StudyActiveTasksServiceImpl - getStatisticImages() - ERROR ",
+					e);
 		}
 		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Ends");
 		return statisticImageListBos;
 	}
 
 	/**
-	 * @author Ronalin
-	 * @return List :ActivetaskFormulaBo
-	 *  This method used to get  all  static formulas
+	 * return active tasks based on user's Study Id
+	 *
+	 * @author Vivek
+	 *
+	 * @param studyId
+	 *            , studyId of the {@link StudyBo}
+	 * @return List of {@link ActiveTaskBo}
+	 * @exception Exception
 	 */
 	@Override
-	public List<ActivetaskFormulaBo> getActivetaskFormulas() {
-			logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Starts");
-			List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
-			try {
-				activetaskFormulaList = studyActiveTasksDAO.getActivetaskFormulas();
-			} catch (Exception e) {
-				logger.error("StudyActiveTasksServiceImpl - getActivetaskFormulas() - ERROR ", e);
-			}
-			logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Ends");
-			return activetaskFormulaList;
+	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId,
+			Boolean isLive) {
+		logger.info("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - Starts");
+		List<ActiveTaskBo> activeTasks = null;
+		try {
+			activeTasks = studyActiveTasksDAO.getStudyActiveTasksByStudyId(
+					studyId, isLive);
+		} catch (Exception e) {
+			logger.error(
+					"StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - ERROR ",
+					e);
 		}
+		logger.info("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - Ends");
+		return activeTasks;
+	}
+
+	/**
+	 * @author Ronalin
+	 * @param ActiveTaskBo
+	 * @return ActiveTaskBo
+	 *
+	 *         This method is used to save the activeTask
+	 */
+	@Override
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,
+			SessionObject sessionObject, String customStudyId) {
+		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Starts");
+		ActiveTaskBo updateActiveTaskBo = null;
+		try {
+			if (activeTaskBo != null) {
+				if (activeTaskBo.getId() != null) {
+					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(
+							activeTaskBo.getId(), customStudyId);
+					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
+					updateActiveTaskBo.setModifiedDate(FdahpStudyDesignerUtil
+							.getCurrentDateTime());
+					if (updateActiveTaskBo.getIsDuplicate() != null) {
+						updateActiveTaskBo.setIsDuplicate(updateActiveTaskBo
+								.getIsDuplicate());
+					}
+				} else {
+					updateActiveTaskBo = new ActiveTaskBo();
+					updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+					updateActiveTaskBo.setTaskTypeId(activeTaskBo
+							.getTaskTypeId());
+					updateActiveTaskBo.setCreatedBy(sessionObject.getUserId());
+					updateActiveTaskBo.setCreatedDate(FdahpStudyDesignerUtil
+							.getCurrentDateTime());
+					updateActiveTaskBo.setDisplayName(StringUtils
+							.isEmpty(activeTaskBo.getDisplayName()) ? ""
+							: activeTaskBo.getDisplayName());
+					updateActiveTaskBo.setShortTitle(StringUtils
+							.isEmpty(activeTaskBo.getShortTitle()) ? ""
+							: activeTaskBo.getShortTitle());
+					updateActiveTaskBo.setInstruction(StringUtils
+							.isEmpty(activeTaskBo.getInstruction()) ? ""
+							: activeTaskBo.getInstruction());
+					updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo
+							.getTaskAttributeValueBos());
+				}
+				updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+				updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
+				updateActiveTaskBo.setDisplayName(StringUtils
+						.isEmpty(activeTaskBo.getDisplayName()) ? ""
+						: activeTaskBo.getDisplayName());
+				updateActiveTaskBo.setShortTitle(StringUtils
+						.isEmpty(activeTaskBo.getShortTitle()) ? ""
+						: activeTaskBo.getShortTitle());
+				updateActiveTaskBo.setInstruction(StringUtils
+						.isEmpty(activeTaskBo.getInstruction()) ? ""
+						: activeTaskBo.getInstruction());
+				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo
+						.getTaskAttributeValueBos());
+				updateActiveTaskBo.setAction(activeTaskBo.isAction());
+				updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
+				if (activeTaskBo.getButtonText().equalsIgnoreCase(
+						FdahpStudyDesignerConstants.COMPLETED_BUTTON)) {
+					updateActiveTaskBo.setIsChange(1);
+				} else {
+					updateActiveTaskBo.setIsChange(0);
+				}
+				updateActiveTaskBo.setActive(1);
+				updateActiveTaskBo = studyActiveTasksDAO
+						.saveOrUpdateActiveTaskInfo(updateActiveTaskBo,
+								sessionObject, customStudyId);
+			}
+		} catch (Exception e) {
+			logger.error(
+					"StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Error",
+					e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Ends");
+		return updateActiveTaskBo;
+	}
 
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId) {
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,
+			String customStudyId) {
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
+		ActiveTaskBo addActiveTaskeBo = null;
+		try {
+			if (null != activeTaskBo) {
+				if (activeTaskBo.getId() != null) {
+					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(
+							activeTaskBo.getId(), customStudyId);
+				} else {
+					addActiveTaskeBo = new ActiveTaskBo();
+				}
+				if (activeTaskBo.getStudyId() != null) {
+					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
+				}
+				if (activeTaskBo.getFrequency() != null) {
+					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
+				}
+				if (activeTaskBo.getFrequency() != null
+						&& !activeTaskBo
+								.getFrequency()
+								.equalsIgnoreCase(
+										FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
+					if (StringUtils.isNotBlank(activeTaskBo
+							.getActiveTaskLifetimeStart())
+							&& !("NA").equalsIgnoreCase(activeTaskBo
+									.getActiveTaskLifetimeStart())) {
+						addActiveTaskeBo
+								.setActiveTaskLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(
+										activeTaskBo
+												.getActiveTaskLifetimeStart(),
+										FdahpStudyDesignerConstants.UI_SDF_DATE,
+										FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+					} else {
+						addActiveTaskeBo.setActiveTaskLifetimeStart(null);
+					}
+					if (StringUtils.isNotBlank(activeTaskBo
+							.getActiveTaskLifetimeEnd())
+							&& !("NA").equalsIgnoreCase(activeTaskBo
+									.getActiveTaskLifetimeEnd())) {
+						addActiveTaskeBo
+								.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(
+										activeTaskBo.getActiveTaskLifetimeEnd(),
+										FdahpStudyDesignerConstants.UI_SDF_DATE,
+										FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+					} else {
+						addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
+					}
+				}
+				if (activeTaskBo.getTitle() != null) {
+					addActiveTaskeBo.setTitle(activeTaskBo.getTitle());
+				}
+				if (activeTaskBo.getCreatedDate() != null) {
+					addActiveTaskeBo.setCreatedDate(activeTaskBo
+							.getCreatedDate());
+				}
+				if (activeTaskBo.getCreatedBy() != null) {
+					addActiveTaskeBo.setCreatedBy(activeTaskBo.getCreatedBy());
+				}
+				if (activeTaskBo.getModifiedDate() != null) {
+					addActiveTaskeBo.setModifiedDate(activeTaskBo
+							.getModifiedDate());
+				}
+				if (activeTaskBo.getModifiedBy() != null) {
+					addActiveTaskeBo
+							.setModifiedBy(activeTaskBo.getModifiedBy());
+				}
+				if (activeTaskBo.getRepeatActiveTask() != null) {
+					addActiveTaskeBo.setRepeatActiveTask(activeTaskBo
+							.getRepeatActiveTask());
+				}
+				if (activeTaskBo.getDayOfTheWeek() != null) {
+					addActiveTaskeBo.setDayOfTheWeek(activeTaskBo
+							.getDayOfTheWeek());
+				}
+				if (activeTaskBo.getType() != null) {
+					addActiveTaskeBo.setType(activeTaskBo.getType());
+				}
+				if (activeTaskBo.getFrequency() != null) {
+					if (!activeTaskBo.getFrequency().equalsIgnoreCase(
+							activeTaskBo.getPreviousFrequency())) {
+						addActiveTaskeBo
+								.setActiveTaskCustomScheduleBo(activeTaskBo
+										.getActiveTaskCustomScheduleBo());
+						addActiveTaskeBo
+								.setActiveTaskFrequenciesList(activeTaskBo
+										.getActiveTaskFrequenciesList());
+						addActiveTaskeBo
+								.setActiveTaskFrequenciesBo(activeTaskBo
+										.getActiveTaskFrequenciesBo());
+						if (activeTaskBo
+								.getFrequency()
+								.equalsIgnoreCase(
+										FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
+								&& activeTaskBo.getActiveTaskFrequenciesBo() != null) {
+							if (!activeTaskBo.getActiveTaskFrequenciesBo()
+									.getIsStudyLifeTime()) {
+								if (StringUtils.isNotBlank(activeTaskBo
+										.getActiveTaskLifetimeEnd())
+										&& !("NA")
+												.equalsIgnoreCase(activeTaskBo
+														.getActiveTaskLifetimeEnd())) {
+									addActiveTaskeBo
+											.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(
+													activeTaskBo
+															.getActiveTaskLifetimeEnd(),
+													FdahpStudyDesignerConstants.UI_SDF_DATE,
+													FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+								}
+							}
+						}
+					} else {
+						if (activeTaskBo.getActiveTaskCustomScheduleBo() != null
+								&& !activeTaskBo
+										.getActiveTaskCustomScheduleBo()
+										.isEmpty()) {
+							addActiveTaskeBo
+									.setActiveTaskCustomScheduleBo(activeTaskBo
+											.getActiveTaskCustomScheduleBo());
+						}
+						if (activeTaskBo.getActiveTaskFrequenciesList() != null
+								&& !activeTaskBo.getActiveTaskFrequenciesList()
+										.isEmpty()) {
+							addActiveTaskeBo
+									.setActiveTaskFrequenciesList(activeTaskBo
+											.getActiveTaskFrequenciesList());
+						}
+						if (activeTaskBo.getActiveTaskFrequenciesBo() != null) {
+							if (activeTaskBo
+									.getFrequency()
+									.equalsIgnoreCase(
+											FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
+								if (!activeTaskBo.getActiveTaskFrequenciesBo()
+										.getIsStudyLifeTime()) {
+									if (StringUtils.isNotBlank(activeTaskBo
+											.getActiveTaskLifetimeEnd())
+											&& !("NA")
+													.equalsIgnoreCase(activeTaskBo
+															.getActiveTaskLifetimeEnd())) {
+										addActiveTaskeBo
+												.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(
+														activeTaskBo
+																.getActiveTaskLifetimeEnd(),
+														FdahpStudyDesignerConstants.UI_SDF_DATE,
+														FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+									}
+								}
+							}
+							addActiveTaskeBo
+									.setActiveTaskFrequenciesBo(activeTaskBo
+											.getActiveTaskFrequenciesBo());
+						}
+					}
+				}
+				if (activeTaskBo.getPreviousFrequency() != null) {
+					addActiveTaskeBo.setPreviousFrequency(activeTaskBo
+							.getPreviousFrequency());
+				}
+				addActiveTaskeBo.setActive(1);
+				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(
+						addActiveTaskeBo, customStudyId);
+			}
+		} catch (Exception e) {
+			logger.error(
+					"StudyActiveTaskServiceImpl - saveORUpdateQuestionnaire - Error",
+					e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
+		return addActiveTaskeBo;
+	}
+
+	@Override
+	public boolean validateActiveTaskAttrById(Integer studyId,
+			String activeTaskAttName, String activeTaskAttIdVal,
+			String activeTaskAttIdName, String customStudyId) {
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
 		boolean valid = false;
-		try{
-			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal) && StringUtils.isNotEmpty(activeTaskAttIdName)){
-				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId, activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName, customStudyId);
+		try {
+			if (studyId != null && StringUtils.isNotEmpty(activeTaskAttName)
+					&& StringUtils.isNotEmpty(activeTaskAttIdVal)
+					&& StringUtils.isNotEmpty(activeTaskAttIdName)) {
+				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId,
+						activeTaskAttName, activeTaskAttIdVal,
+						activeTaskAttIdName, customStudyId);
 			}
-		}catch(Exception e){
-			logger.error("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - ERROR ", e);
+		} catch (Exception e) {
+			logger.error(
+					"StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - ERROR ",
+					e);
 		}
-		
+
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
 		return valid;
 	}
 
 	/**
-	 * return ActiveStatisticsBean type 
+	 * return ActiveStatisticsBean type
+	 *
 	 * @author Ronalin
-	 * 
-	 * @param customStudyId , list of ActiveStatisTicsBean
+	 *
+	 * @param customStudyId
+	 *            , list of ActiveStatisTicsBean
 	 * @return List of {@link ActiveStatisticsBean}
 	 * @exception Exception
 	 */
 	@Override
-	public List<ActiveStatisticsBean> validateActiveTaskStatIds(String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans) {
+	public List<ActiveStatisticsBean> validateActiveTaskStatIds(
+			String customStudyId,
+			List<ActiveStatisticsBean> activeStatisticsBeans) {
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - Starts");
 		List<ActiveStatisticsBean> statisticsBeans = null;
 		try {
-			statisticsBeans = studyActiveTasksDAO.validateActiveTaskStatIds(customStudyId, activeStatisticsBeans);
+			statisticsBeans = studyActiveTasksDAO.validateActiveTaskStatIds(
+					customStudyId, activeStatisticsBeans);
 		} catch (Exception e) {
-			logger.error("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - ERROR ", e);
+			logger.error(
+					"StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - ERROR ",
+					e);
 		}
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - Ends");
 		return statisticsBeans;

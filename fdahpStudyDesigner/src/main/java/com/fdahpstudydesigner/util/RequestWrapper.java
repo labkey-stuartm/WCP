@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fdahpstudydesigner.util;
 
@@ -19,18 +19,34 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		super(servletRequest);
 	}
 
-	public String[] getParameterValues(String parameter) {
-		logger.info("InarameterValues .. parameter .......");
-		String[] values = super.getParameterValues(parameter);
-		if (values == null) {
-			return values;
+	private String cleanXSS(String value) {
+		// You'll need to remove the spaces from the html entities below
+		logger.info("InnXSS RequestWrapper ..............." + value);
+		String filteredValue = null;
+		try {
+			filteredValue = value
+					.replaceAll("eval\\((.*)\\)", "")
+					.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']",
+							"\"\"")
+					.replaceAll("(?i)<script.*?>.*?<script.*?>", "")
+					.replaceAll("(?i)<script.*?>.*?</script.*?>", "")
+					.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
+		} catch (Exception e) {
+			logger.error("RequestWrapper - cleanXSS - ERROR", e);
 		}
-		int count = values.length;
-		String[] encodedValues = new String[count];
-		for (int i = 0; i < count; i++) {
-			encodedValues[i] = this.cleanXSS(values[i]);
-		}
-		return encodedValues;
+		/* to skip the coverted html content from truncating */
+		logger.info("OutnXSS RequestWrapper ........ value ......." + value);
+		return filteredValue;
+	}
+
+	@Override
+	public String getHeader(String name) {
+		logger.info("Ineader .. parameter .......");
+		String value = super.getHeader(name);
+		if (value == null)
+			return value;
+		logger.info("Ineader RequestWrapper ........... value ....");
+		return this.cleanXSS(value);
 	}
 
 	@Override
@@ -45,32 +61,18 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	@Override
-	public String getHeader(String name) {
-		logger.info("Ineader .. parameter .......");
-		String value = super.getHeader(name);
-		if (value == null)
-			return value;
-		logger.info("Ineader RequestWrapper ........... value ....");
-		return this.cleanXSS(value);
+	public String[] getParameterValues(String parameter) {
+		logger.info("InarameterValues .. parameter .......");
+		String[] values = super.getParameterValues(parameter);
+		if (values == null) {
+			return values;
+		}
+		int count = values.length;
+		String[] encodedValues = new String[count];
+		for (int i = 0; i < count; i++) {
+			encodedValues[i] = this.cleanXSS(values[i]);
+		}
+		return encodedValues;
 	}
 
-	private String cleanXSS(String value) {
-		// You'll need to remove the spaces from the html entities below
-		logger.info("InnXSS RequestWrapper ..............." + value);
-		String filteredValue = null;
-		try {
-			filteredValue = value
-					.replaceAll("eval\\((.*)\\)", "")
-					.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"")
-					.replaceAll("(?i)<script.*?>.*?<script.*?>", "")
-					.replaceAll("(?i)<script.*?>.*?</script.*?>", "")
-					.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
-		} catch (Exception e) {
-			logger.error("RequestWrapper - cleanXSS - ERROR", e);
-		}
-		/*to skip the coverted html content from truncating*/
-		logger.info("OutnXSS RequestWrapper ........ value ......." + value);
-		return filteredValue;
-	}
-	
 }

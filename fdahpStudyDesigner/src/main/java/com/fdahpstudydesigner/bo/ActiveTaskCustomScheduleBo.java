@@ -9,84 +9,61 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
-
 /**
  * The persistent class for the active_task_custom_frequencies database table.
- * 
+ *
  */
 @Entity
-@Table(name="active_task_custom_frequencies")
-@NamedQuery(name="ActiveTaskCustomScheduleBo.findAll", query="SELECT a FROM ActiveTaskCustomScheduleBo a")
+@Table(name = "active_task_custom_frequencies")
+@NamedQuery(name = "ActiveTaskCustomScheduleBo.findAll", query = "SELECT a FROM ActiveTaskCustomScheduleBo a")
 public class ActiveTaskCustomScheduleBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name="active_task_id")
+	@Column(name = "active_task_id")
 	private Integer activeTaskId;
 
-	@Column(name="frequency_end_date")
+	@Column(name = "frequency_end_date")
 	private String frequencyEndDate;
 
-	@Column(name="frequency_start_date")
+	@Column(name = "frequency_start_date")
 	private String frequencyStartDate;
 
-	@Column(name="frequency_time")
+	@Column(name = "frequency_time")
 	private String frequencyTime;
-	
-	@Column(name = "is_used")
-	@Type(type="yes_no")
-	private boolean used = false;
 
+	@Column(name = "is_used")
+	@Type(type = "yes_no")
+	private boolean used = false;
 
 	public ActiveTaskCustomScheduleBo() {
 		// Do nothing
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getActiveTaskId() {
 		return this.activeTaskId;
 	}
 
-	public void setActiveTaskId(Integer activeTaskId) {
-		this.activeTaskId = activeTaskId;
-	}
-
 	public String getFrequencyEndDate() {
 		return this.frequencyEndDate;
-	}
-
-	public void setFrequencyEndDate(String frequencyEndDate) {
-		this.frequencyEndDate = frequencyEndDate;
 	}
 
 	public String getFrequencyStartDate() {
 		return this.frequencyStartDate;
 	}
 
-	public void setFrequencyStartDate(String frequencyStartDate) {
-		this.frequencyStartDate = frequencyStartDate;
-	}
-
 	public String getFrequencyTime() {
 		return this.frequencyTime;
 	}
 
-	public void setFrequencyTime(String frequencyTime) {
-		this.frequencyTime = frequencyTime;
+	public Integer getId() {
+		return this.id;
 	}
 
 	/**
@@ -96,12 +73,32 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 		return used;
 	}
 
+	public void setActiveTaskId(Integer activeTaskId) {
+		this.activeTaskId = activeTaskId;
+	}
+
+	public void setFrequencyEndDate(String frequencyEndDate) {
+		this.frequencyEndDate = frequencyEndDate;
+	}
+
+	public void setFrequencyStartDate(String frequencyStartDate) {
+		this.frequencyStartDate = frequencyStartDate;
+	}
+
+	public void setFrequencyTime(String frequencyTime) {
+		this.frequencyTime = frequencyTime;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	/**
-	 * @param used the used to set
+	 * @param used
+	 *            the used to set
 	 */
 	public void setUsed(boolean used) {
 		this.used = used;
 	}
-
 
 }

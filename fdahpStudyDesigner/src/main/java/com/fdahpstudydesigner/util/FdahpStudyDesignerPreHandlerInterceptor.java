@@ -16,26 +16,20 @@ import com.fdahpstudydesigner.service.LoginServiceImpl;
 import com.fdahpstudydesigner.service.UsersService;
 
 /**
- * @author 
+ * @author
  *
  */
-public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorAdapter {
+public class FdahpStudyDesignerPreHandlerInterceptor extends
+		HandlerInterceptorAdapter {
 
-	private static final Logger logger = Logger.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
-	
+	private static final Logger logger = Logger
+			.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
+
 	private LoginServiceImpl loginService;
-	
+
 	@Autowired
 	private UsersService usersService;
-	
-	
-	
-	/* Setter Injection */
-	@Autowired
-	public void setLoginService(LoginServiceImpl loginService) {
-		this.loginService = loginService;
-	}
-	
+
 	/**
 	 * @param request
 	 * @param response
@@ -43,69 +37,81 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+	@Override
+	public boolean preHandle(HttpServletRequest request,
+			HttpServletResponse response, Object handler) {
 		logger.info("FdahpStudyDesignerPreHandlerInterceptor - preHandle() - Starts");
 		SessionObject session = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-		String defaultURL = (String)propMap.get("action.default.redirect.url");
+		String defaultURL = propMap.get("action.default.redirect.url");
 		final String excludeActions = propMap.get("interceptor.urls");
 		String uri = request.getRequestURI();
 		boolean flag = false;
 		String passwordExpiredDateTime = null;
-		int passwordExpirationInDay =  Integer.parseInt(propMap.get("password.expiration.in.day"));
-		String forceChangePasswordurl = (String)propMap.get("action.force.changepassword.url");
-		String updatePassword = (String)propMap.get("action.force.updatepassword.url");
-		boolean isUserEanbled = true;
-		String sessionOutUrl = (String)propMap.get("action.logout.url");
-		String inavtiveMsg = (String)propMap.get("user.inactive.msg");
+		int passwordExpirationInDay = Integer.parseInt(propMap
+				.get("password.expiration.in.day"));
+		String forceChangePasswordurl = propMap
+				.get("action.force.changepassword.url");
+		String updatePassword = propMap.get("action.force.updatepassword.url");
+		String sessionOutUrl = propMap.get("action.logout.url");
+		propMap.get("user.inactive.msg");
 		String actionLoginbackUrl = propMap.get("action.loginback.url");
 		String timeoutMsg = propMap.get("user.session.timeout");
 		try {
-			if(null != request.getSession()) {
-				session = (SessionObject)request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if (null != request.getSession()) {
+				session = (SessionObject) request.getSession().getAttribute(
+						FdahpStudyDesignerConstants.SESSION_OBJECT);
 			}
-			// Allow some of the URL 
+			// Allow some of the URL
 			String list[] = excludeActions.split(",");
 			for (int i = 0; i < list.length; i++) {
 				if (uri.endsWith(list[i].trim())) {
-					flag =  true;
+					flag = true;
 				}
 			}
-			/*if (!flag) {
-				if (null == session){
-					
-				} 
-			}*/
-			
+			/*
+			 * if (!flag) { if (null == session){
+			 *
+			 * } }
+			 */
+
 			int customSessionExpiredErrorCode = 901;
-			boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-			if (null == session && request.getParameter("error") != null && request.getParameter("error").equals("timeout") && ajax) {
-					response.sendError(customSessionExpiredErrorCode);
-					logger.info("FdahpStudyDesignerPreHandlerInterceptor - Ajax preHandle(): "+uri + "");
-					return false;
+			boolean ajax = "XMLHttpRequest".equals(request
+					.getHeader("X-Requested-With"));
+			if (null == session && request.getParameter("error") != null
+					&& request.getParameter("error").equals("timeout") && ajax) {
+				response.sendError(customSessionExpiredErrorCode);
+				logger.info("FdahpStudyDesignerPreHandlerInterceptor - Ajax preHandle(): "
+						+ uri + "");
+				return false;
 			}
 			if (!flag) {
-				if (null == session){
-//					if(ajax){
-//						response.sendError(customSessionExpiredErrorCode);
-//						logger.info("FdahpStudyDesignerPreHandlerInterceptor - Ajax preHandle(): "+uri + "");
-//						return false;
-//					}
-					if(uri.contains(actionLoginbackUrl)){
-						request.getSession(false).setAttribute("loginBackUrl", request.getScheme() + "://" +   // "http" + "://
-					             request.getServerName() +       // "myhost"
-					             ":" +                           // ":"
-					             request.getServerPort() +       // "8080"
-					             request.getRequestURI() +       // "/people"
-					             "?" +                           // "?"
-					             request.getQueryString());
+				if (null == session) {
+					// if(ajax){
+					// response.sendError(customSessionExpiredErrorCode);
+					// logger.info("FdahpStudyDesignerPreHandlerInterceptor - Ajax preHandle(): "+uri
+					// + "");
+					// return false;
+					// }
+					if (uri.contains(actionLoginbackUrl)) {
+						request.getSession(false).setAttribute("loginBackUrl",
+								request.getScheme() + "://" + // "http" + "://
+										request.getServerName() + // "myhost"
+										":" + // ":"
+										request.getServerPort() + // "8080"
+										request.getRequestURI() + // "/people"
+										"?" + // "?"
+										request.getQueryString());
 					}
 					response.sendRedirect(defaultURL);
-					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): " + uri);
+					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): "
+							+ uri);
 					return false;
-				} else if(!ajax && !uri.contains(sessionOutUrl)){
-					//Checking for password Expired Date Time from current Session
-					passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
+				} else if (!ajax && !uri.contains(sessionOutUrl)) {
+					// Checking for password Expired Date Time from current
+					// Session
+					passwordExpiredDateTime = session
+							.getPasswordExpairdedDateTime();
 					if (StringUtils.isNotBlank(passwordExpiredDateTime)
 							&& FdahpStudyDesignerUtil
 									.addDaysToDate(
@@ -122,16 +128,20 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 						response.sendRedirect(forceChangePasswordurl);
 						logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
 					}
-					//Checking for force logout for current user
-					//Boolean forceLogout = loginService.isFrocelyLogOutUser(session);
-					UserBO user = usersService.getUserDetails(session.getUserId());
-					if(null != user){
-						if(user.isForceLogout()){
-							response.sendRedirect(sessionOutUrl+"?msg="+timeoutMsg);
+					// Checking for force logout for current user
+					// Boolean forceLogout =
+					// loginService.isFrocelyLogOutUser(session);
+					UserBO user = usersService.getUserDetails(session
+							.getUserId());
+					if (null != user) {
+						if (user.isForceLogout()) {
+							response.sendRedirect(sessionOutUrl + "?msg="
+									+ timeoutMsg);
 							logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force logout");
 							return false;
-						}else if(user.getEmailChanged()){
-							response.sendRedirect(sessionOutUrl+"?msg="+propMap.get("email.not.varified.error"));
+						} else if (user.getEmailChanged()) {
+							response.sendRedirect(sessionOutUrl + "?msg="
+									+ propMap.get("email.not.varified.error"));
 							logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): email change");
 							return false;
 						}
@@ -141,10 +151,21 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 				response.sendRedirect(session.getCurrentHomeUrl());
 			}
 		} catch (Exception e) {
-			logger.error("FdahpStudyDesignerPreHandlerInterceptor - preHandle()", e);
+			logger.error(
+					"FdahpStudyDesignerPreHandlerInterceptor - preHandle()", e);
 		}
-		logger.info("FdahpStudyDesignerPreHandlerInterceptor - End Point: preHandle() - "+" : "+FdahpStudyDesignerUtil.getCurrentDateTime()+ " uri"+uri);
+		logger.info("FdahpStudyDesignerPreHandlerInterceptor - End Point: preHandle() - "
+				+ " : "
+				+ FdahpStudyDesignerUtil.getCurrentDateTime()
+				+ " uri"
+				+ uri);
 		return true;
-}
+	}
+
+	/* Setter Injection */
+	@Autowired
+	public void setLoginService(LoginServiceImpl loginService) {
+		this.loginService = loginService;
+	}
 
 }

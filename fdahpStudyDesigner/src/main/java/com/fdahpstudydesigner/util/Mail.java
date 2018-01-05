@@ -1,10 +1,9 @@
 package com.fdahpstudydesigner.util;
 
 /**
- * @author 
- * 
+ * @author
+ *
  */
-
 
 import java.util.Map;
 import java.util.Properties;
@@ -26,31 +25,114 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+public class Mail {
 
+	public static String getSmtpHostName() {
+		return SMTP_HOST_NAME;
+	}
 
-public class Mail  {
-	
+	public static String getSmtpPort() {
+		return SMTP_PORT;
+	}
+
+	public static String getSSL_FACTORY() {
+		return SSL_FACTORY;
+	}
+
 	/**
-	 * 
+	 *
 	 */
-    private static Logger logger = Logger.getLogger(Mail.class.getName());
-    private Map<?,?> configMap = FdahpStudyDesignerUtil.getAppProperties();
-    
+	private static Logger logger = Logger.getLogger(Mail.class.getName());
+	private Map<?, ?> configMap = FdahpStudyDesignerUtil.getAppProperties();
 	private String toemail;
 	private String subject;
 	private String messageBody;
 	private static final String SMTP_HOST_NAME = "smtp.gmail.com";
 	private static final String SMTP_PORT = "465";
-	private String smtpHostname="";
-	private String smtpPortvalue="";
+	private String smtpHostname = "";
+	private String smtpPortvalue = "";
 	static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 	private String sslFactory = "";
-	private String fromEmailAddress="";
+	private String fromEmailAddress = "";
 	private String fromEmailPassword;
 	private String fromEmailName = "";
+
 	private String ccEmail;
+
 	private String bccEmail;
+
 	private String attachmentPath;
+
+	public String getAttachmentPath() {
+		return attachmentPath;
+	}
+
+	public String getBccEmail() {
+		return bccEmail;
+	}
+
+	public String getCcEmail() {
+		return ccEmail;
+	}
+
+	public String getFromEmailAddress() {
+		return fromEmailAddress;
+	}
+
+	public String getFromEmailName() {
+		return fromEmailName;
+	}
+
+	public String getFromEmailPassword() {
+		return fromEmailPassword;
+	}
+
+	public String getMessageBody() {
+		return messageBody;
+	}
+
+	public String getSmtpHostname() {
+		String hostname = "";
+		if (this.smtpHostname.equals("")) {
+			hostname = Mail.SMTP_HOST_NAME;
+		} else {
+			hostname = this.smtpHostname;
+		}
+		return hostname;
+	}
+
+	public String getSmtpPortvalue() {
+		String portvalue;
+		if (("").equals(this.smtpPortvalue)) {
+			portvalue = Mail.SMTP_PORT;
+		} else {
+			portvalue = this.smtpPortvalue;
+		}
+
+		return portvalue;
+	}
+
+	public String getSslFactory() {
+
+		String sslfactoryvalue;
+		if (("").equals(this.sslFactory)) {
+			sslfactoryvalue = Mail.SSL_FACTORY;
+		} else {
+			sslfactoryvalue = this.sslFactory;
+		}
+
+		return sslfactoryvalue;
+
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public String getToemail() {
+		return toemail;
+	}
+
 	public boolean sendemail() {
 		logger.warn("sendemail()====start");
 		boolean sentMail = false;
@@ -60,12 +142,15 @@ public class Mail  {
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
 			props.put("mail.smtp.host", this.getSmtpHostname());
-		    props.put("mail.smtp.port", this.getSmtpPortvalue());
-		    
-		    if(configMap.get("fda.env") != null && FdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(configMap.get("fda.env"))) {
-		    	props.put("mail.smtp.auth", "true");
-		    	props.put("mail.smtp.socketFactory.port", this.getSmtpPortvalue());
-			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
+			props.put("mail.smtp.port", this.getSmtpPortvalue());
+
+			if (configMap.get("fda.env") != null
+					&& FdahpStudyDesignerConstants.FDA_ENV_LOCAL
+							.equals(configMap.get("fda.env"))) {
+				props.put("mail.smtp.auth", "true");
+				props.put("mail.smtp.socketFactory.port",
+						this.getSmtpPortvalue());
+				props.put("mail.smtp.socketFactory.class", this.getSslFactory());
 				session = Session.getInstance(props,
 						new javax.mail.Authenticator() {
 							@Override
@@ -74,25 +159,29 @@ public class Mail  {
 										password);
 							}
 						});
-		    } else {
-		    	props.put("mail.smtp.auth", "false");
-		    	session = Session.getInstance(props);
-		    }
-		    
+			} else {
+				props.put("mail.smtp.auth", "false");
+				session = Session.getInstance(props);
+			}
+
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
-			if(StringUtils.isNotBlank(this.getToemail())){
-				if(this.getToemail().indexOf(",") != -1){
-					message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getToemail()));
-				}else{
-					message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.getToemail()));
+			if (StringUtils.isNotBlank(this.getToemail())) {
+				if (this.getToemail().indexOf(",") != -1) {
+					message.setRecipients(Message.RecipientType.BCC,
+							InternetAddress.parse(this.getToemail()));
+				} else {
+					message.setRecipients(Message.RecipientType.TO,
+							InternetAddress.parse(this.getToemail()));
 				}
 			}
-			if(StringUtils.isNotBlank(this.getCcEmail())){
-				message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(this.getCcEmail()));
+			if (StringUtils.isNotBlank(this.getCcEmail())) {
+				message.setRecipients(Message.RecipientType.CC,
+						InternetAddress.parse(this.getCcEmail()));
 			}
-			if(StringUtils.isNotBlank(this.getBccEmail())){
-				message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getBccEmail()));
+			if (StringUtils.isNotBlank(this.getBccEmail())) {
+				message.setRecipients(Message.RecipientType.BCC,
+						InternetAddress.parse(this.getBccEmail()));
 			}
 			message.setSubject(this.subject);
 			message.setContent(this.getMessageBody(), "text/html");
@@ -106,24 +195,28 @@ public class Mail  {
 		logger.info("Mail.sendemail() :: Ends");
 		return sentMail;
 	}
+
 	public boolean sendMailWithAttachment() {
 		logger.debug("sendemail()====start");
 		boolean sentMail = false;
 		Session session = null;
-        BodyPart messageBodyPart = null;
-    	Multipart multipart = null;
-    	
+		BodyPart messageBodyPart = null;
+		Multipart multipart = null;
+
 		try {
 			final String username = this.getFromEmailAddress();
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.host", this.getSmtpHostname());
-		    props.put("mail.smtp.port", this.getSmtpPortvalue());
-		    
-		    if(configMap.get("fda.env") != null && FdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(configMap.get("fda.env"))) {
-		    	props.put("mail.smtp.socketFactory.port", this.getSmtpPortvalue());
-			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
+			props.put("mail.smtp.port", this.getSmtpPortvalue());
+
+			if (configMap.get("fda.env") != null
+					&& FdahpStudyDesignerConstants.FDA_ENV_LOCAL
+							.equals(configMap.get("fda.env"))) {
+				props.put("mail.smtp.socketFactory.port",
+						this.getSmtpPortvalue());
+				props.put("mail.smtp.socketFactory.class", this.getSslFactory());
 				session = Session.getInstance(props,
 						new javax.mail.Authenticator() {
 							@Override
@@ -132,48 +225,53 @@ public class Mail  {
 										password);
 							}
 						});
-		    } else {
-		    	session = Session.getInstance(props);
-		    }
-		    
+			} else {
+				session = Session.getInstance(props);
+			}
+
 			Message message = new MimeMessage(session);
-			if(StringUtils.isNotBlank(this.getToemail())){
-				if(this.getToemail().indexOf(",") != -1){
-					message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getToemail()));
-				}else{
-					message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.getToemail()));
+			if (StringUtils.isNotBlank(this.getToemail())) {
+				if (this.getToemail().indexOf(",") != -1) {
+					message.setRecipients(Message.RecipientType.BCC,
+							InternetAddress.parse(this.getToemail()));
+				} else {
+					message.setRecipients(Message.RecipientType.TO,
+							InternetAddress.parse(this.getToemail()));
 				}
 			}
-			if(StringUtils.isNotBlank(this.getCcEmail())){
-				message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(this.getCcEmail()));
+			if (StringUtils.isNotBlank(this.getCcEmail())) {
+				message.setRecipients(Message.RecipientType.CC,
+						InternetAddress.parse(this.getCcEmail()));
 			}
-			if(StringUtils.isNotBlank(this.getBccEmail())){
-				message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getBccEmail()));
+			if (StringUtils.isNotBlank(this.getBccEmail())) {
+				message.setRecipients(Message.RecipientType.BCC,
+						InternetAddress.parse(this.getBccEmail()));
 			}
 			message.setSubject(this.subject);
 			message.setFrom(new InternetAddress(username));
-			
+
 			// Create the message part
-	        messageBodyPart = new MimeBodyPart();
-	    	// Create a multipart message
-	    	multipart = new MimeMultipart();
-	    	
-	    	//String filename = "D:\\temp\\TestLinks.pdf"; // D:\temp\noteb.txt
-	    	DataSource source = new FileDataSource(this.getAttachmentPath());
-	    	messageBodyPart.setDataHandler(new DataHandler(source));
-	    	messageBodyPart.setFileName(source.getName());
-	    	messageBodyPart.setHeader("Content-Transfer-Encoding", "base64");
-	    	messageBodyPart.setHeader("Content-Type", source.getContentType());
-	    	// Send the complete message parts
-	    	multipart.addBodyPart(messageBodyPart);
-	    	
-	    	messageBodyPart = new MimeBodyPart();
-	    	messageBodyPart.setText(messageBody);
-	    	messageBodyPart.setHeader("MIME-Version" , "1.0");
-	    	messageBodyPart.setHeader("Content-Type" , messageBodyPart.getContentType());
-	    	multipart.addBodyPart(messageBodyPart);
-	    	
-	    	message.setContent(multipart);
+			messageBodyPart = new MimeBodyPart();
+			// Create a multipart message
+			multipart = new MimeMultipart();
+
+			// String filename = "D:\\temp\\TestLinks.pdf"; // D:\temp\noteb.txt
+			DataSource source = new FileDataSource(this.getAttachmentPath());
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName(source.getName());
+			messageBodyPart.setHeader("Content-Transfer-Encoding", "base64");
+			messageBodyPart.setHeader("Content-Type", source.getContentType());
+			// Send the complete message parts
+			multipart.addBodyPart(messageBodyPart);
+
+			messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(messageBody);
+			messageBodyPart.setHeader("MIME-Version", "1.0");
+			messageBodyPart.setHeader("Content-Type",
+					messageBodyPart.getContentType());
+			multipart.addBodyPart(messageBodyPart);
+
+			message.setContent(multipart);
 			Transport.send(message);
 			sentMail = true;
 		} catch (Exception e) {
@@ -183,134 +281,52 @@ public class Mail  {
 		return sentMail;
 	}
 
-	public String getToemail() {
-		return toemail;
+	public void setAttachmentPath(String attachmentPath) {
+		this.attachmentPath = attachmentPath;
 	}
 
-	public void setToemail(String toemail) {
-		this.toemail = toemail;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	
-
-	public String getMessageBody() {
-		return messageBody;
-	}
-
-	public void setMessageBody(String messageBody) {
-		this.messageBody = messageBody;
-	}
-	
-	public String getSmtpHostname() {
-		String hostname = "";
-		if(this.smtpHostname.equals("")){
-			hostname = Mail.SMTP_HOST_NAME;
-		}else{
-			hostname = this.smtpHostname;
-		}
-		return hostname;
-	}
-
-	public void setSmtpHostname(String smtpHostname) {
-		this.smtpHostname = smtpHostname;
-	}
-
-	public String getSmtpPortvalue() {
-		String portvalue;
-		if(("").equals(this.smtpPortvalue)){
-			portvalue = Mail.SMTP_PORT;
-		}else{
-			portvalue = this.smtpPortvalue;
-		}
-		
-		return portvalue;
-	}
-
-	public void setSmtpPortvalue(String smtpPortvalue) {
-		this.smtpPortvalue = smtpPortvalue;
-	}
-
-	public static String getSSL_FACTORY() {
-		return SSL_FACTORY;
-	}
-	public String getSslFactory() {
-
-		String sslfactoryvalue;
-		if(("").equals(this.sslFactory)){
-			sslfactoryvalue = Mail.SSL_FACTORY;
-		}else{
-			sslfactoryvalue = this.sslFactory;
-		}
-		
-		
-		return sslfactoryvalue;
-		
-	}
-
-	public void setSslFactory(String sslFactory) {
-		this.sslFactory = sslFactory;
-	}
-
-	public String getFromEmailAddress() {
-		return fromEmailAddress;
-	}
-
-	public void setFromEmailAddress(String fromEmailAddress) {
-		this.fromEmailAddress = fromEmailAddress;
-	}
-
-	public String getFromEmailPassword() {
-		return fromEmailPassword;
-	}
-
-	public void setFromEmailPassword(String fromEmailPassword) {
-		this.fromEmailPassword = fromEmailPassword;
-	}
-
-	public static String getSmtpHostName() {
-		return SMTP_HOST_NAME;
-	}
-
-	public static String getSmtpPort() {
-		return SMTP_PORT;
-	}
-	
-	public String getFromEmailName() {
-		return fromEmailName;
-	}
-
-	public void setFromEmailName(String fromEmailName) {
-		this.fromEmailName = fromEmailName;
-	}
-
-	public String getCcEmail() {
-		return ccEmail;
+	public void setBccEmail(String bccEmail) {
+		this.bccEmail = bccEmail;
 	}
 
 	public void setCcEmail(String ccEmail) {
 		this.ccEmail = ccEmail;
 	}
 
-	public String getBccEmail() {
-		return bccEmail;
+	public void setFromEmailAddress(String fromEmailAddress) {
+		this.fromEmailAddress = fromEmailAddress;
 	}
 
-	public void setBccEmail(String bccEmail) {
-		this.bccEmail = bccEmail;
+	public void setFromEmailName(String fromEmailName) {
+		this.fromEmailName = fromEmailName;
 	}
-	public String getAttachmentPath() {
-		return attachmentPath;
+
+	public void setFromEmailPassword(String fromEmailPassword) {
+		this.fromEmailPassword = fromEmailPassword;
 	}
-	public void setAttachmentPath(String attachmentPath) {
-		this.attachmentPath = attachmentPath;
+
+	public void setMessageBody(String messageBody) {
+		this.messageBody = messageBody;
 	}
-	
+
+	public void setSmtpHostname(String smtpHostname) {
+		this.smtpHostname = smtpHostname;
+	}
+
+	public void setSmtpPortvalue(String smtpPortvalue) {
+		this.smtpPortvalue = smtpPortvalue;
+	}
+
+	public void setSslFactory(String sslFactory) {
+		this.sslFactory = sslFactory;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public void setToemail(String toemail) {
+		this.toemail = toemail;
+	}
+
 }

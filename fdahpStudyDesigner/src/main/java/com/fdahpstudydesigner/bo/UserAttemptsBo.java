@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fdahpstudydesigner.bo;
 
@@ -21,72 +21,81 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(name = "user_attempts")
-
-@NamedQueries({
-@NamedQuery(name = "getUserAttempts",query = "from UserAttemptsBo UABO Where UABO.userEmailId=:userEmailId"),
+@NamedQueries({ @NamedQuery(name = "getUserAttempts", query = "from UserAttemptsBo UABO Where UABO.userEmailId=:userEmailId"),
 
 })
-public class UserAttemptsBo implements Serializable{
-	
+public class UserAttemptsBo implements Serializable {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3166967048106586712L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
+
 	@Column(name = "email_id")
 	private String userEmailId;
-	
+
 	@Column(name = "attempts")
 	private int attempts;
-	
+
 	@Column(name = "last_modified")
 	private String lastModified;
-	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
+
 	/**
 	 * @return the attempts
 	 */
 	public int getAttempts() {
 		return attempts;
 	}
+
 	/**
-	 * @param attempts the attempts to set
+	 * @return the id
 	 */
-	public void setAttempts(int attempts) {
-		this.attempts = attempts;
+	public Integer getId() {
+		return id;
 	}
+
 	/**
 	 * @return the lastModified
 	 */
 	public String getLastModified() {
 		return lastModified;
 	}
+
+	public String getUserEmail() {
+		return userEmailId;
+	}
+
 	/**
-	 * @param lastModified the lastModified to set
+	 * @param attempts
+	 *            the attempts to set
+	 */
+	public void setAttempts(int attempts) {
+		this.attempts = attempts;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param lastModified
+	 *            the lastModified to set
 	 */
 	public void setLastModified(String lastModified) {
 		this.lastModified = lastModified;
 	}
-	public String getUserEmail() {
-		return userEmailId;
-	}
+
 	public void setUserEmail(String userEmailId) {
 		this.userEmailId = userEmailId;
 	}
-	
+
 }

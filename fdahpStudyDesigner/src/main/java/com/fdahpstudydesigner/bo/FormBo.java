@@ -10,89 +10,87 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
 /**
- * 
- * @author BTC
- * The persistent class for the form database table.
+ *
+ * @author BTC The persistent class for the form database table.
  */
 @Entity
-@Table(name="form")
-@NamedQueries({
-	@NamedQuery(name="getFormBoStep", query="from FormBo FBO where FBO.formId=:stepId and FBO.active=1"),
-})
-public class FormBo implements Serializable{
+@Table(name = "form")
+@NamedQueries({ @NamedQuery(name = "getFormBoStep", query = "from FormBo FBO where FBO.formId=:stepId and FBO.active=1"), })
+public class FormBo implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -902464262274352743L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="form_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "form_id")
 	private Integer formId;
-	
-	@Column(name="active")
+
+	@Column(name = "active")
 	private Boolean active;
-	
+
 	@Column(name = "created_on")
 	private String createdOn;
-	
+
 	@Column(name = "modified_on")
 	private String modifiedOn;
-	
+
 	@Column(name = "created_by")
 	private Integer createdBy;
-	
+
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
-	
-	public Integer getFormId() {
-		return formId;
-	}
-
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
 
 	public Boolean getActive() {
 		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public String getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(String createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public String getModifiedOn() {
-		return modifiedOn;
-	}
-
-	public void setModifiedOn(String modifiedOn) {
-		this.modifiedOn = modifiedOn;
 	}
 
 	public Integer getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public Integer getFormId() {
+		return formId;
 	}
 
 	public Integer getModifiedBy() {
 		return modifiedBy;
 	}
 
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public void setFormId(Integer formId) {
+		this.formId = formId;
+	}
+
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
 }

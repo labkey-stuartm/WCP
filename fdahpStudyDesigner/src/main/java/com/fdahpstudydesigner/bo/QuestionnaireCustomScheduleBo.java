@@ -10,85 +10,86 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+
 /**
- * 
- * @author BTC
- * The persistent class for the questionnaires_custom_frequencies database table.
+ *
+ * @author BTC The persistent class for the questionnaires_custom_frequencies
+ *         database table.
  *
  */
 @Entity
-@Table(name="questionnaires_custom_frequencies")
-public class QuestionnaireCustomScheduleBo implements Serializable{
+@Table(name = "questionnaires_custom_frequencies")
+public class QuestionnaireCustomScheduleBo implements Serializable {
 
 	private static final long serialVersionUID = 1935609268959765482L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="questionnaires_id")
+
+	@Column(name = "questionnaires_id")
 	private Integer questionnairesId;
-	
-	@Column(name="frequency_start_date")
+
+	@Column(name = "frequency_start_date")
 	private String frequencyStartDate;
 
-	@Column(name="frequency_end_date")
+	@Column(name = "frequency_end_date")
 	private String frequencyEndDate;
-	
-	@Column(name="frequency_time")
+
+	@Column(name = "frequency_time")
 	private String frequencyTime;
-	
+
 	@Column(name = "is_used")
-	@Type(type="yes_no")
+	@Type(type = "yes_no")
 	private boolean used = false;
-	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getQuestionnairesId() {
-		return questionnairesId;
-	}
-
-	public void setQuestionnairesId(Integer questionnairesId) {
-		this.questionnairesId = questionnairesId;
+	public String getFrequencyEndDate() {
+		return frequencyEndDate;
 	}
 
 	public String getFrequencyStartDate() {
 		return frequencyStartDate;
 	}
 
-	public void setFrequencyStartDate(String frequencyStartDate) {
-		this.frequencyStartDate = frequencyStartDate;
-	}
-
-	public String getFrequencyEndDate() {
-		return frequencyEndDate;
-	}
-
-	public void setFrequencyEndDate(String frequencyEndDate) {
-		this.frequencyEndDate = frequencyEndDate;
-	}
-
 	public String getFrequencyTime() {
 		return frequencyTime;
 	}
 
-	public void setFrequencyTime(String frequencyTime) {
-		this.frequencyTime = frequencyTime;
+	public Integer getId() {
+		return id;
+	}
+
+	public Integer getQuestionnairesId() {
+		return questionnairesId;
 	}
 
 	public boolean isUsed() {
 		return used;
 	}
 
+	public void setFrequencyEndDate(String frequencyEndDate) {
+		this.frequencyEndDate = frequencyEndDate;
+	}
+
+	public void setFrequencyStartDate(String frequencyStartDate) {
+		this.frequencyStartDate = frequencyStartDate;
+	}
+
+	public void setFrequencyTime(String frequencyTime) {
+		this.frequencyTime = frequencyTime;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setQuestionnairesId(Integer questionnairesId) {
+		this.questionnairesId = questionnairesId;
+	}
+
 	public void setUsed(boolean used) {
 		this.used = used;
 	}
-	
+
 }

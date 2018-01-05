@@ -16,260 +16,237 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+
 /**
- * 
- * @author BTC
- * The persistent class for the questionnaires_steps database table.
+ *
+ * @author BTC The persistent class for the questionnaires_steps database table.
  *
  */
 @Entity
-@Table(name="questionnaires_steps")
+@Table(name = "questionnaires_steps")
 @NamedQueries({
-	@NamedQuery(name="getQuestionnaireStepSequenceNo", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.active=1 order by QSBO.sequenceNo DESC"),
-	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
-	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.active=1 order by QSBO.sequenceNo"),
-	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepShortTitle=:shortTitle"),
-	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo and QSBO.active=1 order by QSBO.sequenceNo ASC"),
-	@NamedQuery(name="getQuestionnaireStepsByType", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.stepType=:stepType and QSBO.active=1"),
-})
-public class QuestionnairesStepsBo implements Serializable{
+		@NamedQuery(name = "getQuestionnaireStepSequenceNo", query = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.active=1 order by QSBO.sequenceNo DESC"),
+		@NamedQuery(name = "getQuestionnaireStep", query = "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
+		@NamedQuery(name = "getQuestionnaireStepList", query = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.active=1 order by QSBO.sequenceNo"),
+		@NamedQuery(name = "checkQuestionnaireStepShortTitle", query = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepShortTitle=:shortTitle"),
+		@NamedQuery(name = "getForwardQuestionnaireSteps", query = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo and QSBO.active=1 order by QSBO.sequenceNo ASC"),
+		@NamedQuery(name = "getQuestionnaireStepsByType", query = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.stepType=:stepType and QSBO.active=1"), })
+public class QuestionnairesStepsBo implements Serializable {
 
 	private static final long serialVersionUID = -7908951701723989954L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="step_id")
+	@Column(name = "step_id")
 	private Integer stepId;
-	
-	@Column(name="questionnaires_id")
+
+	@Column(name = "questionnaires_id")
 	private Integer questionnairesId;
-	
-	@Column(name="instruction_form_id")
+
+	@Column(name = "instruction_form_id")
 	private Integer instructionFormId;
-	
-	@Column(name="step_type")
+
+	@Column(name = "step_type")
 	private String stepType;
-	
-	@Column(name="sequence_no")
+
+	@Column(name = "sequence_no")
 	private Integer sequenceNo;
-	
-	@Column(name="step_short_title")
+
+	@Column(name = "step_short_title")
 	private String stepShortTitle;
-	
-	@Column(name="skiappable")
+
+	@Column(name = "skiappable")
 	private String skiappable;
-	
-	@Column(name="destination_step")
+
+	@Column(name = "destination_step")
 	private Integer destinationStep;
-	
-	@Column(name="repeatable")
-	private String repeatable="No";
-	
-	@Column(name="repeatable_text")
+
+	@Column(name = "repeatable")
+	private String repeatable = "No";
+
+	@Column(name = "repeatable_text")
 	private String repeatableText;
-	
-	@Column(name="status")
+
+	@Column(name = "status")
 	private Boolean status;
-	
+
 	@Column(name = "created_on")
 	private String createdOn;
-	
+
 	@Column(name = "modified_on")
 	private String modifiedOn;
-	
+
 	@Column(name = "created_by")
 	private Integer createdBy;
-	
+
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
-	
-	@Column(name="active")
+
+	@Column(name = "active")
 	private Boolean active;
-	
+
 	@Transient
 	private String type;
-	
+
 	@Transient
 	private QuestionsBo questionsBo;
-	
+
 	@Transient
 	private QuestionReponseTypeBo questionReponseTypeBo;
-	
+
 	@Transient
 	private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
-	
+
 	@Transient
 	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
-	
+
 	@Transient
-	private List<QuestionConditionBranchBo> questionConditionBranchBoList ;
-	
+	private List<QuestionConditionBranchBo> questionConditionBranchBoList;
+
 	@Transient
 	private Integer isShorTitleDuplicate = 0;
 
-	public Integer getStepId() {
-		return stepId;
-	}
-
-	public void setStepId(Integer stepId) {
-		this.stepId = stepId;
-	}
-
-	public Integer getQuestionnairesId() {
-		return questionnairesId;
-	}
-
-	public void setQuestionnairesId(Integer questionnairesId) {
-		this.questionnairesId = questionnairesId;
-	}
-
-	public Integer getInstructionFormId() {
-		return instructionFormId;
-	}
-
-	public void setInstructionFormId(Integer instructionFormId) {
-		this.instructionFormId = instructionFormId;
-	}
-
-	public String getStepType() {
-		return stepType;
-	}
-
-	public void setStepType(String stepType) {
-		this.stepType = stepType;
-	}
-
-	public Integer getSequenceNo() {
-		return sequenceNo;
-	}
-
-	public void setSequenceNo(Integer sequenceNo) {
-		this.sequenceNo = sequenceNo;
-	}
-
-	public String getStepShortTitle() {
-		return stepShortTitle;
-	}
-
-	public void setStepShortTitle(String stepShortTitle) {
-		this.stepShortTitle = stepShortTitle;
-	}
-
-	public String getSkiappable() {
-		return skiappable;
-	}
-
-	public void setSkiappable(String skiappable) {
-		this.skiappable = skiappable;
-	}
-
-	public Integer getDestinationStep() {
-		return destinationStep;
-	}
-
-	public void setDestinationStep(Integer destinationStep) {
-		this.destinationStep = destinationStep;
-	}
-
-	public String getRepeatable() {
-		return repeatable;
-	}
-
-	public void setRepeatable(String repeatable) {
-		this.repeatable = repeatable;
-	}
-
-	public String getRepeatableText() {
-		return repeatableText;
-	}
-
-	public void setRepeatableText(String repeatableText) {
-		this.repeatableText = repeatableText;
-	}
-
-	public QuestionsBo getQuestionsBo() {
-		return questionsBo;
-	}
-
-	public void setQuestionsBo(QuestionsBo questionsBo) {
-		this.questionsBo = questionsBo;
-	}
-
-	public SortedMap<Integer, QuestionnaireStepBean> getFormQuestionMap() {
-		return formQuestionMap;
-	}
-
-	public void setFormQuestionMap(
-		SortedMap<Integer, QuestionnaireStepBean> formQuestionMap) {
-		this.formQuestionMap = formQuestionMap;
-	}
-
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(String createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public String getModifiedOn() {
-		return modifiedOn;
-	}
-
-	public void setModifiedOn(String modifiedOn) {
-		this.modifiedOn = modifiedOn;
+	public Boolean getActive() {
+		return active;
 	}
 
 	public Integer getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public Integer getDestinationStep() {
+		return destinationStep;
+	}
+
+	public SortedMap<Integer, QuestionnaireStepBean> getFormQuestionMap() {
+		return formQuestionMap;
+	}
+
+	public Integer getInstructionFormId() {
+		return instructionFormId;
+	}
+
+	public Integer getIsShorTitleDuplicate() {
+		return isShorTitleDuplicate;
 	}
 
 	public Integer getModifiedBy() {
 		return modifiedBy;
 	}
 
-	public void setModifiedBy(Integer modifiedBy) {
-		this.modifiedBy = modifiedBy;
+	public String getModifiedOn() {
+		return modifiedOn;
 	}
 
-	public Boolean getActive() {
-		return active;
+	public List<QuestionConditionBranchBo> getQuestionConditionBranchBoList() {
+		return questionConditionBranchBoList;
 	}
 
-	public void setActive(Boolean active) {
-		this.active = active;
+	public Integer getQuestionnairesId() {
+		return questionnairesId;
 	}
 
 	public QuestionReponseTypeBo getQuestionReponseTypeBo() {
 		return questionReponseTypeBo;
 	}
 
-	public void setQuestionReponseTypeBo(QuestionReponseTypeBo questionReponseTypeBo) {
-		this.questionReponseTypeBo = questionReponseTypeBo;
-	}
-
 	public List<QuestionResponseSubTypeBo> getQuestionResponseSubTypeList() {
 		return questionResponseSubTypeList;
+	}
+
+	public QuestionsBo getQuestionsBo() {
+		return questionsBo;
+	}
+
+	public String getRepeatable() {
+		return repeatable;
+	}
+
+	public String getRepeatableText() {
+		return repeatableText;
+	}
+
+	public Integer getSequenceNo() {
+		return sequenceNo;
+	}
+
+	public String getSkiappable() {
+		return skiappable;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public Integer getStepId() {
+		return stepId;
+	}
+
+	public String getStepShortTitle() {
+		return stepShortTitle;
+	}
+
+	public String getStepType() {
+		return stepType;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public void setDestinationStep(Integer destinationStep) {
+		this.destinationStep = destinationStep;
+	}
+
+	public void setFormQuestionMap(
+			SortedMap<Integer, QuestionnaireStepBean> formQuestionMap) {
+		this.formQuestionMap = formQuestionMap;
+	}
+
+	public void setInstructionFormId(Integer instructionFormId) {
+		this.instructionFormId = instructionFormId;
+	}
+
+	public void setIsShorTitleDuplicate(Integer isShorTitleDuplicate) {
+		this.isShorTitleDuplicate = isShorTitleDuplicate;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public void setQuestionConditionBranchBoList(
+			List<QuestionConditionBranchBo> questionConditionBranchBoList) {
+		this.questionConditionBranchBoList = questionConditionBranchBoList;
+	}
+
+	public void setQuestionnairesId(Integer questionnairesId) {
+		this.questionnairesId = questionnairesId;
+	}
+
+	public void setQuestionReponseTypeBo(
+			QuestionReponseTypeBo questionReponseTypeBo) {
+		this.questionReponseTypeBo = questionReponseTypeBo;
 	}
 
 	public void setQuestionResponseSubTypeList(
@@ -277,21 +254,44 @@ public class QuestionnairesStepsBo implements Serializable{
 		this.questionResponseSubTypeList = questionResponseSubTypeList;
 	}
 
-	public Integer getIsShorTitleDuplicate() {
-		return isShorTitleDuplicate;
+	public void setQuestionsBo(QuestionsBo questionsBo) {
+		this.questionsBo = questionsBo;
 	}
 
-	public void setIsShorTitleDuplicate(Integer isShorTitleDuplicate) {
-		this.isShorTitleDuplicate = isShorTitleDuplicate;
+	public void setRepeatable(String repeatable) {
+		this.repeatable = repeatable;
 	}
 
-	public List<QuestionConditionBranchBo> getQuestionConditionBranchBoList() {
-		return questionConditionBranchBoList;
+	public void setRepeatableText(String repeatableText) {
+		this.repeatableText = repeatableText;
 	}
 
-	public void setQuestionConditionBranchBoList(
-			List<QuestionConditionBranchBo> questionConditionBranchBoList) {
-		this.questionConditionBranchBoList = questionConditionBranchBoList;
+	public void setSequenceNo(Integer sequenceNo) {
+		this.sequenceNo = sequenceNo;
 	}
-	
+
+	public void setSkiappable(String skiappable) {
+		this.skiappable = skiappable;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public void setStepId(Integer stepId) {
+		this.stepId = stepId;
+	}
+
+	public void setStepShortTitle(String stepShortTitle) {
+		this.stepShortTitle = stepShortTitle;
+	}
+
+	public void setStepType(String stepType) {
+		this.stepType = stepType;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

@@ -10,53 +10,52 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 
- * @author BTC	
- * The persistent class for the consent_master_info database table.
+ *
+ * @author BTC The persistent class for the consent_master_info database table.
  *
  */
 @Entity
-@Table(name="consent_master_info")
-public class ConsentMasterInfoBo implements Serializable{
+@Table(name = "consent_master_info")
+public class ConsentMasterInfoBo implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -6253318527840616692L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="title")
+
+	@Column(name = "title")
 	private String title;
-	
-	@Column(name="type")
+
+	@Column(name = "type")
 	private String type;
-	
+
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getType() {
 		return type;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 }

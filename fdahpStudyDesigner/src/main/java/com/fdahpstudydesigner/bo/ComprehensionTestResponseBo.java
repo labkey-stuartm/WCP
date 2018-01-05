@@ -8,65 +8,67 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 /**
- * 
- * @author BTC
- * The persistent class for the comprehension_test_response database table.
+ *
+ * @author BTC The persistent class for the comprehension_test_response database
+ *         table.
  *
  */
 @Entity
-@Table(name="comprehension_test_response")
+@Table(name = "comprehension_test_response")
 public class ComprehensionTestResponseBo implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7739882770594873383L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="comprehension_test_question_id")
+
+	@Column(name = "comprehension_test_question_id")
 	private Integer comprehensionTestQuestionId;
-	
-	@Column(name="response_option")
+
+	@Column(name = "response_option")
 	private String responseOption;
-	
+
 	@Column(name = "correct_answer")
 	private Boolean correctAnswer;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Integer getComprehensionTestQuestionId() {
 		return comprehensionTestQuestionId;
-	}
-
-	public void setComprehensionTestQuestionId(Integer comprehensionTestQuestionId) {
-		this.comprehensionTestQuestionId = comprehensionTestQuestionId;
-	}
-
-	public String getResponseOption() {
-		return responseOption;
-	}
-
-	public void setResponseOption(String responseOption) {
-		this.responseOption = responseOption;
 	}
 
 	public Boolean getCorrectAnswer() {
 		return correctAnswer;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public String getResponseOption() {
+		return responseOption;
+	}
+
+	public void setComprehensionTestQuestionId(
+			Integer comprehensionTestQuestionId) {
+		this.comprehensionTestQuestionId = comprehensionTestQuestionId;
+	}
+
 	public void setCorrectAnswer(Boolean correctAnswer) {
 		this.correctAnswer = correctAnswer;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setResponseOption(String responseOption) {
+		this.responseOption = responseOption;
 	}
 
 }

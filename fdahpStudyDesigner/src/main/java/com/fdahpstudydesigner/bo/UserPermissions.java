@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-
-
 /**
  * @author Pradyumn
  *
@@ -20,16 +18,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_permissions")
-public class UserPermissions{
-
+public class UserPermissions {
 
 	private Integer userRoleId;
-	
+
 	private String permissions;
 
-	
 	private Set<UserBO> users;
-	
+
 	public UserPermissions() {
 		// Do nothing
 	}
@@ -39,16 +35,16 @@ public class UserPermissions{
 		this.setPermissions(permissions);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "permission_id",
-		unique = true, nullable = false)
-	public Integer getUserRoleId() {
-		return this.userRoleId;
+	@Column(name = "permissions", nullable = false, length = 45)
+	public String getPermissions() {
+		return permissions;
 	}
 
-	public void setUserRoleId(Integer userRoleId) {
-		this.userRoleId = userRoleId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "permission_id", unique = true, nullable = false)
+	public Integer getUserRoleId() {
+		return this.userRoleId;
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -56,17 +52,16 @@ public class UserPermissions{
 		return users;
 	}
 
-	public void setUsers(Set<UserBO> users) {
-		this.users = users;
-	}
-	
-	@Column(name = "permissions", nullable = false, length = 45)
-	public String getPermissions() {
-		return permissions;
-	}
-
 	public void setPermissions(String permissions) {
 		this.permissions = permissions;
+	}
+
+	public void setUserRoleId(Integer userRoleId) {
+		this.userRoleId = userRoleId;
+	}
+
+	public void setUsers(Set<UserBO> users) {
+		this.users = users;
 	}
 
 }

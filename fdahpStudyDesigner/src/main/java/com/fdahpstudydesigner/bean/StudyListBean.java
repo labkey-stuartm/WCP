@@ -1,12 +1,11 @@
 package com.fdahpstudydesigner.bean;
 
-
 public class StudyListBean {
 
 	private Integer id;
 	private String customStudyId;
 	private String name;
-    private String category;
+	private String category;
 	private String researchSponsor;
 	private String createdFirstName;
 	private String createdLastName;
@@ -16,9 +15,20 @@ public class StudyListBean {
 	private String createdOn;
 	private Integer liveStudyId;
 	private boolean flag = false;
-	
-	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
-			String createdFirstName, String createdLastName, boolean viewPermission, String status, String createdOn) {
+
+	public StudyListBean(Integer id, String customStudyId, String name,
+			boolean viewPermission) {
+		super();
+		this.id = id;
+		this.customStudyId = customStudyId;
+		this.name = name;
+		this.viewPermission = viewPermission;
+	}
+
+	public StudyListBean(Integer id, String customStudyId, String name,
+			String category, String researchSponsor, String createdFirstName,
+			String createdLastName, boolean viewPermission, String status,
+			String createdOn) {
 		super();
 		this.id = id;
 		this.customStudyId = customStudyId;
@@ -31,136 +41,109 @@ public class StudyListBean {
 		this.status = status;
 		this.createdOn = createdOn;
 	}
-	
-	public StudyListBean(Integer id, String customStudyId, String name, boolean viewPermission) {
-		super();
-		this.id = id;
-		this.customStudyId = customStudyId;
-		this.name = name;
-		this.viewPermission = viewPermission;
-	}
-
-
-	public Integer getId() {
-		return id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-
-	public String getCustomStudyId() {
-		return customStudyId;
-	}
-
-
-	public void setCustomStudyId(String customStudyId) {
-		this.customStudyId = customStudyId;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 
 	public String getCategory() {
 		return category;
 	}
 
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-
-	public String getResearchSponsor() {
-		return researchSponsor;
-	}
-
-
-	public void setResearchSponsor(String researchSponsor) {
-		this.researchSponsor = researchSponsor;
-	}
 	public String getCreatedFirstName() {
 		return createdFirstName;
-	}
-
-	public void setCreatedFirstName(String createdFirstName) {
-		this.createdFirstName = createdFirstName;
 	}
 
 	public String getCreatedLastName() {
 		return createdLastName;
 	}
 
-	public void setCreatedLastName(String createdLastName) {
-		this.createdLastName = createdLastName;
-	}
-
-	public boolean isViewPermission() {
-		return viewPermission;
-	}
-
-
-	public void setViewPermission(boolean viewPermission) {
-		this.viewPermission = viewPermission;
-	}
-
-
-	public String getProjectLeadName() {
-		return projectLeadName;
-	}
-
-
-	public void setProjectLeadName(String projectLeadName) {
-		this.projectLeadName = projectLeadName;
-	}
-
-
-	public String getStatus() {
-		return status;
-	}
-
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-
 	public String getCreatedOn() {
 		return createdOn;
 	}
 
-
-	public void setCreatedOn(String createdOn) {
-		this.createdOn = createdOn;
+	public String getCustomStudyId() {
+		return customStudyId;
 	}
 
+	public Integer getId() {
+		return id;
+	}
 
 	public Integer getLiveStudyId() {
 		return liveStudyId;
 	}
 
+	public String getName() {
+		return name;
+	}
 
-	public void setLiveStudyId(Integer liveStudyId) {
-		this.liveStudyId = liveStudyId;
+	public String getProjectLeadName() {
+		return projectLeadName;
+	}
+
+	public String getResearchSponsor() {
+		return researchSponsor;
+	}
+
+	public String getStatus() {
+		return status;
 	}
 
 	public boolean isFlag() {
 		return flag;
 	}
 
+	public boolean isViewPermission() {
+		return viewPermission;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public void setCreatedFirstName(String createdFirstName) {
+		this.createdFirstName = createdFirstName;
+	}
+
+	public void setCreatedLastName(String createdLastName) {
+		this.createdLastName = createdLastName;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
+
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
-	
-}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setLiveStudyId(Integer liveStudyId) {
+		this.liveStudyId = liveStudyId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setProjectLeadName(String projectLeadName) {
+		this.projectLeadName = projectLeadName;
+	}
+
+	public void setResearchSponsor(String researchSponsor) {
+		this.researchSponsor = researchSponsor;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setViewPermission(boolean viewPermission) {
+		this.viewPermission = viewPermission;
+	}
+
+}

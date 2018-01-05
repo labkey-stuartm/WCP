@@ -7,34 +7,44 @@ public class FormulaInfoBean {
 	String outPutData = "";
 	String statusMessage = "";
 	String message = "failure";
+
 	public String getLhsData() {
 		return lhsData;
 	}
-	public void setLhsData(String lhsData) {
-		this.lhsData = lhsData;
-	}
-	public String getRhsData() {
-		return rhsData;
-	}
-	public void setRhsData(String rhsData) {
-		this.rhsData = rhsData;
-	}
-	public String getOutPutData() {
-		return outPutData;
-	}
-	public void setOutPutData(String outPutData) {
-		this.outPutData = outPutData;
-	}
-	public String getStatusMessage() {
-		return statusMessage;
-	}
-	public void setStatusMessage(String statusMessage) {
-		this.statusMessage = statusMessage;
-	}
+
 	public String getMessage() {
 		return message;
 	}
+
+	public String getOutPutData() {
+		return outPutData;
+	}
+
+	public String getRhsData() {
+		return rhsData;
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setLhsData(String lhsData) {
+		this.lhsData = lhsData;
+	}
+
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public void setOutPutData(String outPutData) {
+		this.outPutData = outPutData;
+	}
+
+	public void setRhsData(String rhsData) {
+		this.rhsData = rhsData;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
 	}
 }

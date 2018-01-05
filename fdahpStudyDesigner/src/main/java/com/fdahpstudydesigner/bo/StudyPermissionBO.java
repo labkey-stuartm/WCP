@@ -12,7 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 /**
  * @author Pradyumn
  *
@@ -20,92 +19,90 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "study_permission")
-@NamedQueries({
-	@NamedQuery(name = "getStudyPermissionById", query = " from StudyPermissionBO where studyId=:studyId and userId=:userId"),
-})
-public class StudyPermissionBO implements Serializable{
-	
+@NamedQueries({ @NamedQuery(name = "getStudyPermissionById", query = " from StudyPermissionBO where studyId=:studyId and userId=:userId"), })
+public class StudyPermissionBO implements Serializable {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer studyPermissionId;
-	
-	@Column(name="user_id")
+
+	@Column(name = "user_id")
 	private Integer userId;
-	
-	@Column(name="study_id")
+
+	@Column(name = "study_id")
 	private Integer studyId;
-	
+
 	@Column(name = "view_permission", length = 1)
 	private boolean viewPermission;
-	
+
 	@Column(name = "project_lead")
 	private Integer projectLead;
-	
-	@Column(name="delFlag")
+
+	@Column(name = "delFlag")
 	private Integer delFlag;
-	
+
 	@Transient
 	private String userFullName;
-	
-	public Integer getStudyPermissionId() {
-		return studyPermissionId;
-	}
 
-	public void setStudyPermissionId(Integer studyPermissionId) {
-		this.studyPermissionId = studyPermissionId;
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public Integer getStudyId() {
-		return studyId;
-	}
-
-	public void setStudyId(Integer studyId) {
-		this.studyId = studyId;
-	}
-
-	public boolean isViewPermission() {
-		return viewPermission;
-	}
-
-	public void setViewPermission(boolean viewPermission) {
-		this.viewPermission = viewPermission;
+	public Integer getDelFlag() {
+		return delFlag;
 	}
 
 	public Integer getProjectLead() {
 		return projectLead;
 	}
 
-	public void setProjectLead(Integer projectLead) {
-		this.projectLead = projectLead;
+	public Integer getStudyId() {
+		return studyId;
 	}
 
-	public Integer getDelFlag() {
-		return delFlag;
-	}
-
-	public void setDelFlag(Integer delFlag) {
-		this.delFlag = delFlag;
+	public Integer getStudyPermissionId() {
+		return studyPermissionId;
 	}
 
 	public String getUserFullName() {
 		return userFullName;
 	}
 
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public boolean isViewPermission() {
+		return viewPermission;
+	}
+
+	public void setDelFlag(Integer delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public void setProjectLead(Integer projectLead) {
+		this.projectLead = projectLead;
+	}
+
+	public void setStudyId(Integer studyId) {
+		this.studyId = studyId;
+	}
+
+	public void setStudyPermissionId(Integer studyPermissionId) {
+		this.studyPermissionId = studyPermissionId;
+	}
+
 	public void setUserFullName(String userFullName) {
 		this.userFullName = userFullName;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public void setViewPermission(boolean viewPermission) {
+		this.viewPermission = viewPermission;
 	}
 }

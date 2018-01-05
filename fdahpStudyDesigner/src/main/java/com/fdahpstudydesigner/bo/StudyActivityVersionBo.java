@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 /**
  * @author Ronalin
  *
@@ -14,85 +15,85 @@ import javax.persistence.Table;
 @Table(name = "study_activity_version")
 public class StudyActivityVersionBo {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="study_activity_id")
+	@Column(name = "study_activity_id")
 	private Integer studyActivityId;
-	
-	@Column(name="custom_study_id")
+
+	@Column(name = "custom_study_id")
 	private String customStudyId;
-	
+
 	@Column(name = "study_version")
 	private Float studyVersion;
-	
-	@Column(name="activity_type")
+
+	@Column(name = "activity_type")
 	private String activityType;
-	
-	@Column(name="short_title")
+
+	@Column(name = "short_title")
 	private String shortTitle;
-	
+
 	@Column(name = "activity_id")
 	private Integer activityId;
-	
+
 	@Column(name = "activity_version")
 	private Float activityVersion;
 
-	public Integer getStudyActivityId() {
-		return studyActivityId;
-	}
-
-	public void setStudyActivityId(Integer studyActivityId) {
-		this.studyActivityId = studyActivityId;
-	}
-
-	public String getCustomStudyId() {
-		return customStudyId;
-	}
-
-	public void setCustomStudyId(String customStudyId) {
-		this.customStudyId = customStudyId;
-	}
-
-	public Float getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Float studyVersion) {
-		this.studyVersion = studyVersion;
+	public Integer getActivityId() {
+		return activityId;
 	}
 
 	public String getActivityType() {
 		return activityType;
 	}
 
-	public void setActivityType(String activityType) {
-		this.activityType = activityType;
+	public Float getActivityVersion() {
+		return activityVersion;
+	}
+
+	public String getCustomStudyId() {
+		return customStudyId;
 	}
 
 	public String getShortTitle() {
 		return shortTitle;
 	}
 
-	public void setShortTitle(String shortTitle) {
-		this.shortTitle = shortTitle;
+	public Integer getStudyActivityId() {
+		return studyActivityId;
 	}
 
-	public Integer getActivityId() {
-		return activityId;
+	public Float getStudyVersion() {
+		return studyVersion;
 	}
 
 	public void setActivityId(Integer activityId) {
 		this.activityId = activityId;
 	}
 
-	public Float getActivityVersion() {
-		return activityVersion;
+	public void setActivityType(String activityType) {
+		this.activityType = activityType;
 	}
 
 	public void setActivityVersion(Float activityVersion) {
 		this.activityVersion = activityVersion;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+	public void setStudyActivityId(Integer studyActivityId) {
+		this.studyActivityId = studyActivityId;
+	}
+
+	public void setStudyVersion(Float studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 }

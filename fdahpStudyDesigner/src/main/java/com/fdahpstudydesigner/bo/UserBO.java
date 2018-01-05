@@ -21,7 +21,6 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
-
 /**
  * @author Pradyumn
  *
@@ -30,256 +29,95 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-@NamedQuery(name = "getUserByEmail",query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
-@NamedQuery(name = "getUserById",query = "SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId"),
-@NamedQuery(name = "getUserBySecurityToken",query = "select UBO from UserBO UBO where UBO.securityToken =:securityToken"),
-})
-public class UserBO implements Serializable{
+		@NamedQuery(name = "getUserByEmail", query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
+		@NamedQuery(name = "getUserById", query = "SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId"),
+		@NamedQuery(name = "getUserBySecurityToken", query = "select UBO from UserBO UBO where UBO.securityToken =:securityToken"), })
+public class UserBO implements Serializable {
 
 	private static final long serialVersionUID = 135353554543L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="user_id")
+	@Column(name = "user_id")
 	private Integer userId;
-	
+
 	@Column(name = "first_name")
 	private String firstName;
-	
+
 	@Column(name = "last_name")
 	private String lastName;
-	
+
 	@Column(name = "email")
 	private String userEmail;
-	
+
 	@Column(name = "phone_number")
 	private String phoneNumber;
-	
-	@Column(name="role_id")
+
+	@Column(name = "role_id")
 	private Integer roleId;
 
 	@Column(name = "password")
 	private String userPassword;
-	
+
 	@Column(name = "status", length = 1)
 	private boolean enabled;
-	
+
 	@Column(name = "created_date")
 	private String createdOn;
-	
+
 	@Column(name = "modified_date")
 	private String modifiedOn;
-	
+
 	@Column(name = "created_by")
 	private Integer createdBy;
-	
+
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
-	
+
 	@Column(name = "accountNonExpired", length = 1)
 	private boolean accountNonExpired;
-	
+
 	@Column(name = "credentialsNonExpired", length = 1)
 	private boolean credentialsNonExpired;
-	
+
 	@Column(name = "accountNonLocked", length = 1)
 	private boolean accountNonLocked;
 
 	@Column(name = "access_code")
 	private String accessCode;
-	
+
 	@Column(name = "security_token")
 	private String securityToken;
-	
+
 	@Column(name = "token_used")
 	private Boolean tokenUsed;
-	
+
 	@Column(name = "token_expiry_date")
 	private String tokenExpiryDate;
-	
+
 	@Column(name = "password_expairded_datetime")
 	private String passwordExpairdedDateTime;
-	
+
 	@Column(name = "user_login_datetime")
 	private String userLastLoginDateTime;
-	
+
 	@Transient
 	private String roleName;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	 @JoinTable(name = "user_permission_mapping", joinColumns = {
-	   @JoinColumn(name = "user_id", nullable = false) },
-	   inverseJoinColumns = { @JoinColumn(name = "permission_id",
-	     nullable = false) })
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
+	@JoinTable(name = "user_permission_mapping", joinColumns = { @JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "permission_id", nullable = false) })
 	private Set<UserPermissions> permissionList = new HashSet<>(0);
-	
+
 	@Column(name = "force_logout")
-	@Type(type="yes_no")
+	@Type(type = "yes_no")
 	private boolean forceLogout = false;
-	
+
 	@Column(name = "email_changed", columnDefinition = "TINYINT(1)")
 	private Boolean emailChanged = false;
-	
+
 	@Transient
 	private String userFullName;
-	
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getUserEmail() {
-		return userEmail;
-	}
-
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
-	public String getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(String createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public String getModifiedOn() {
-		return modifiedOn;
-	}
-
-	public void setModifiedOn(String modifiedOn) {
-		this.modifiedOn = modifiedOn;
-	}
-
-	public Integer getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Integer getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(Integer modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	/**
-	 * @return the accountNonExpired
-	 */
-	public boolean isAccountNonExpired() {
-		return accountNonExpired;
-	}
-
-	/**
-	 * @param accountNonExpired the accountNonExpired to set
-	 */
-	public void setAccountNonExpired(boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
-
-	/**
-	 * @return the credentialsNonExpired
-	 */
-	public boolean isCredentialsNonExpired() {
-		return credentialsNonExpired;
-	}
-
-	/**
-	 * @param credentialsNonExpired the credentialsNonExpired to set
-	 */
-	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
-	}
-
-	/**
-	 * @return the accountNonLocked
-	 */
-	public boolean isAccountNonLocked() {
-		return accountNonLocked;
-	}
-
-	/**
-	 * @param accountNonLocked the accountNonLocked to set
-	 */
-	public void setAccountNonLocked(boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
-	}
-
-	/**
-	 * @return the permissions
-	 */
-	public Set<UserPermissions> getPermissions() {
-		return permissionList;
-	}
-
-	/**
-	 * @param permissions the permissions to set
-	 */
-	public void setPermissions(Set<UserPermissions> permissionList) {
-		this.permissionList = permissionList;
-	}
-
-	/**
-	 * @return the phoneNumber
-	 */
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	/**
-	 * @param phoneNumber the phoneNumber to set
-	 */
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-	
-	public Integer getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
-	}
 
 	/**
 	 * @return the accessCode
@@ -288,39 +126,36 @@ public class UserBO implements Serializable{
 		return accessCode;
 	}
 
-	/**
-	 * @param accessCode the accessCode to set
-	 */
-	public void setAccessCode(String accessCode) {
-		this.accessCode = accessCode;
+	public Integer getCreatedBy() {
+		return createdBy;
 	}
 
-	/**
-	 * @return the securityToken
-	 */
-	public String getSecurityToken() {
-		return securityToken;
+	public String getCreatedOn() {
+		return createdOn;
 	}
 
-	/**
-	 * @param securityToken the securityToken to set
-	 */
-	public void setSecurityToken(String securityToken) {
-		this.securityToken = securityToken;
+	public Boolean getEmailChanged() {
+		return emailChanged;
 	}
 
-	/**
-	 * @return the tokenExpiryDate
-	 */
-	public String getTokenExpiryDate() {
-		return tokenExpiryDate;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	/**
-	 * @param tokenExpiryDate the tokenExpiryDate to set
-	 */
-	public void setTokenExpiryDate(String tokenExpiryDate) {
-		this.tokenExpiryDate = tokenExpiryDate;
+	public String getLastName() {
+		return lastName;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public String getPasswordExpairdedDateTime() {
+		return passwordExpairdedDateTime;
 	}
 
 	/**
@@ -331,10 +166,39 @@ public class UserBO implements Serializable{
 	}
 
 	/**
-	 * @param permissionList the permissionList to set
+	 * @return the permissions
 	 */
-	public void setPermissionList(Set<UserPermissions> permissionList) {
-		this.permissionList = permissionList;
+	public Set<UserPermissions> getPermissions() {
+		return permissionList;
+	}
+
+	/**
+	 * @return the phoneNumber
+	 */
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public Integer getRoleId() {
+		return roleId;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	/**
+	 * @return the securityToken
+	 */
+	public String getSecurityToken() {
+		return securityToken;
+	}
+
+	/**
+	 * @return the tokenExpiryDate
+	 */
+	public String getTokenExpiryDate() {
+		return tokenExpiryDate;
 	}
 
 	/**
@@ -344,59 +208,200 @@ public class UserBO implements Serializable{
 		return tokenUsed;
 	}
 
-	/**
-	 * @param tokenUsed the tokenUsed to set
-	 */
-	public void setTokenUsed(Boolean tokenUsed) {
-		this.tokenUsed = tokenUsed;
-	}
-
-	public String getPasswordExpairdedDateTime() {
-		return passwordExpairdedDateTime;
-	}
-
-	public void setPasswordExpairdedDateTime(String passwordExpairdedDateTime) {
-		this.passwordExpairdedDateTime = passwordExpairdedDateTime;
-	}
-	
-	public String getUserLastLoginDateTime() {
-		return userLastLoginDateTime;
-	}
-
-	public void setUserLastLoginDateTime(String userLastLoginDateTime) {
-		this.userLastLoginDateTime = userLastLoginDateTime;
-	}
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
-	public boolean isForceLogout() {
-		return forceLogout;
-	}
-
-	public void setForceLogout(boolean forceLogout) {
-		this.forceLogout = forceLogout;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
 	public String getUserFullName() {
 		return userFullName;
 	}
 
-	public void setUserFullName(String userFullName) {
-		this.userFullName = userFullName;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public Boolean getEmailChanged() {
-		return emailChanged;
+	public String getUserLastLoginDateTime() {
+		return userLastLoginDateTime;
+	}
+
+	public String getUserPassword() {
+		return userPassword;
+	}
+
+	/**
+	 * @return the accountNonExpired
+	 */
+	public boolean isAccountNonExpired() {
+		return accountNonExpired;
+	}
+
+	/**
+	 * @return the accountNonLocked
+	 */
+	public boolean isAccountNonLocked() {
+		return accountNonLocked;
+	}
+
+	/**
+	 * @return the credentialsNonExpired
+	 */
+	public boolean isCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public boolean isForceLogout() {
+		return forceLogout;
+	}
+
+	/**
+	 * @param accessCode
+	 *            the accessCode to set
+	 */
+	public void setAccessCode(String accessCode) {
+		this.accessCode = accessCode;
+	}
+
+	/**
+	 * @param accountNonExpired
+	 *            the accountNonExpired to set
+	 */
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+
+	/**
+	 * @param accountNonLocked
+	 *            the accountNonLocked to set
+	 */
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	/**
+	 * @param credentialsNonExpired
+	 *            the credentialsNonExpired to set
+	 */
+	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
 	public void setEmailChanged(Boolean emailChanged) {
 		this.emailChanged = emailChanged;
 	}
-}
 
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setForceLogout(boolean forceLogout) {
+		this.forceLogout = forceLogout;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public void setPasswordExpairdedDateTime(String passwordExpairdedDateTime) {
+		this.passwordExpairdedDateTime = passwordExpairdedDateTime;
+	}
+
+	/**
+	 * @param permissionList
+	 *            the permissionList to set
+	 */
+	public void setPermissionList(Set<UserPermissions> permissionList) {
+		this.permissionList = permissionList;
+	}
+
+	/**
+	 * @param permissions
+	 *            the permissions to set
+	 */
+	public void setPermissions(Set<UserPermissions> permissionList) {
+		this.permissionList = permissionList;
+	}
+
+	/**
+	 * @param phoneNumber
+	 *            the phoneNumber to set
+	 */
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	/**
+	 * @param securityToken
+	 *            the securityToken to set
+	 */
+	public void setSecurityToken(String securityToken) {
+		this.securityToken = securityToken;
+	}
+
+	/**
+	 * @param tokenExpiryDate
+	 *            the tokenExpiryDate to set
+	 */
+	public void setTokenExpiryDate(String tokenExpiryDate) {
+		this.tokenExpiryDate = tokenExpiryDate;
+	}
+
+	/**
+	 * @param tokenUsed
+	 *            the tokenUsed to set
+	 */
+	public void setTokenUsed(Boolean tokenUsed) {
+		this.tokenUsed = tokenUsed;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	public void setUserFullName(String userFullName) {
+		this.userFullName = userFullName;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public void setUserLastLoginDateTime(String userLastLoginDateTime) {
+		this.userLastLoginDateTime = userLastLoginDateTime;
+	}
+
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+}
