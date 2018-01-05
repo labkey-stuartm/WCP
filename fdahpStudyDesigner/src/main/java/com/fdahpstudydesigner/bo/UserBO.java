@@ -22,7 +22,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 /**
- * @author Pradyumn
+ * @author BTC
  *
  */
 
