@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import sun.awt.image.ImageWatched.Link;
+
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
@@ -184,6 +186,13 @@ public class StudyActiveTasksController {
 		logger.info("StudyActiveTasksController - deleteActiveTask - Ends");
 	}
 
+	/**
+	 * to get time range list based on active task frequency(One time/Daily/Weekly/Monthly/Manually Schedule)
+	 * 
+	 * @author BTC
+	 * @param activeTaskBo, {@link ActiveTaskBo}
+	 * @return {@link List<String>}
+	 */
 	public List<String> getTimeRangeList(ActiveTaskBo activeTaskBo) {
 		List<String> timeRangeList = new ArrayList<>();
 		if (activeTaskBo != null
@@ -225,6 +234,13 @@ public class StudyActiveTasksController {
 		return timeRangeList;
 	}
 
+	/**
+	 * to get time range list based on active task daily 
+	 * 
+	 * @author BTC
+	 * @param activeTaskBo, {@link ActiveTaskBo}
+	 * @return {@link List<String>}
+	 */
 	private List<String> getTimeRangeListForFrequencyTypeDaily(
 			ActiveTaskBo activeTaskBo) {
 		List<String> timeRangeList = new ArrayList<>();
@@ -369,7 +385,7 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * Save action to the active task schedule
+	 * Save or update as draft of schedule active task
 	 *
 	 * @author BTC
 	 *
@@ -572,7 +588,7 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * Mark as complete action to the active task schedule
+	 * Save or update as completed for schedule active task
 	 *
 	 * @author BTC
 	 *

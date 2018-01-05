@@ -74,7 +74,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 				activitydetails = "Notification for Study successfully deleted. (Notification ID = "
 						+ notificationIdForDelete + ")";
 			}
-			//Audit logging of action performed
+			// Audit logging of action performed
 			message = auditLogDAO.saveToAuditLog(session, transaction,
 					sessionObject, notificationType, activitydetails,
 					"NotificationDAOImpl - deleteNotification");
@@ -90,7 +90,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 		logger.info("NotificationDAOImpl - deleteNotification - Ends");
 		return message;
 	}
-	
+
 	/**
 	 * Getting detail of notification by Id.
 	 *
@@ -228,11 +228,15 @@ public class NotificationDAOImpl implements NotificationDAO {
 		logger.info("NotificationDAOImpl - getNotificationList() - Ends");
 		return notificationList;
 	}
+
 	/**
 	 * Get list of notification schedule for given date time.
+	 * 
 	 * @author BTC
-	 * @param date , date string
-	 * @param time , time string
+	 * @param date
+	 *            , date string
+	 * @param time
+	 *            , time string
 	 * @return list of {@link PushNotificationBean}
 	 */
 	@SuppressWarnings("unchecked")
@@ -312,7 +316,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 		logger.info("NotificationDAOImpl - getPushNotificationList - Ends");
 		return pushNotificationBeans;
 	}
-	
+
 	/**
 	 * This method is used to save/update/resend of study/global notification
 	 *
