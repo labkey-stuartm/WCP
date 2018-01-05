@@ -31,6 +31,18 @@ public class NotificationDAOImpl implements NotificationDAO {
 	private Query query = null;
 	private Transaction transaction = null;
 
+	/**
+	 * Soft Deleting of notification by Id.
+	 * 
+	 * @author BTC
+	 * @param notificationIdForDelete
+	 *            , requested notificationId to delete
+	 * @param sessionObject
+	 *            , Object of {@link SessionObject}
+	 * @param notificationType
+	 *            , global/study notification
+	 * @return Object of {@link String}
+	 */
 	@Override
 	public String deleteNotification(int notificationIdForDelete,
 			SessionObject sessionObject, String notificationType) {
@@ -62,6 +74,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 				activitydetails = "Notification for Study successfully deleted. (Notification ID = "
 						+ notificationIdForDelete + ")";
 			}
+			//Audit logging of action performed
 			message = auditLogDAO.saveToAuditLog(session, transaction,
 					sessionObject, notificationType, activitydetails,
 					"NotificationDAOImpl - deleteNotification");
@@ -77,7 +90,14 @@ public class NotificationDAOImpl implements NotificationDAO {
 		logger.info("NotificationDAOImpl - deleteNotification - Ends");
 		return message;
 	}
-
+	
+	/**
+	 * Getting detail of notification by Id.
+	 *
+	 * @author BTC
+	 * @param notificationId
+	 * @return Object of {@link NotificationBO}
+	 */
 	@Override
 	public NotificationBO getNotification(int notificationId) {
 		logger.info("NotificationDAOImpl - getNotification() - Starts");
@@ -127,33 +147,15 @@ public class NotificationDAOImpl implements NotificationDAO {
 		return notificationBO;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<NotificationHistoryBO> getNotificationHistoryList(
-			Integer notificationId) {
-		logger.info("NotificationDAOImpl - getNotificationHistoryList() - Starts");
-		Session session = null;
-		String queryString = null;
-		List<NotificationHistoryBO> notificationHistoryList = null;
-		try {
-			session = hibernateTemplate.getSessionFactory().openSession();
-			queryString = "from NotificationHistoryBO NHBO where NHBO.notificationId = "
-					+ notificationId;
-			query = session.createQuery(queryString);
-			notificationHistoryList = query.list();
-		} catch (Exception e) {
-			logger.error(
-					"NotificationDAOImpl - getNotificationHistoryList - ERROR",
-					e);
-		} finally {
-			if (null != session) {
-				session.close();
-			}
-		}
-		logger.info("NotificationDAOImpl - getNotificationHistoryList - Ends");
-		return notificationHistoryList;
-	}
-
+	/**
+	 * Getting detail of NotificationHistorylist that has been triggered to
+	 * users which has dateTime.
+	 * 
+	 * @author BTC
+	 * @param notificationId
+	 * @return List of {@link NotificationHistoryBO}
+	 *
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(
@@ -182,6 +184,15 @@ public class NotificationDAOImpl implements NotificationDAO {
 		return notificationHistoryListNoDateTime;
 	}
 
+	/**
+	 * This method is used to list study and global notification
+	 *
+	 * @author BTC
+	 * @param studyId
+	 * @param type
+	 *            , global/study notification
+	 * @return list of {@link NotificationBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationBO> getNotificationList(int studyId, String type) {
@@ -195,7 +206,8 @@ public class NotificationDAOImpl implements NotificationDAO {
 					&& studyId != 0) {
 				queryString = "from NotificationBO NBO where NBO.studyId = "
 						+ studyId
-						+ " and NBO.notificationSubType = 'Announcement' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
+						+ " and NBO.notificationSubType = 'Announcement' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 "
+						+ "order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			} else {
@@ -216,7 +228,13 @@ public class NotificationDAOImpl implements NotificationDAO {
 		logger.info("NotificationDAOImpl - getNotificationList() - Ends");
 		return notificationList;
 	}
-
+	/**
+	 * Get list of notification schedule for given date time.
+	 * @author BTC
+	 * @param date , date string
+	 * @param time , time string
+	 * @return list of {@link PushNotificationBean}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PushNotificationBean> getPushNotificationList(String date,
@@ -294,7 +312,22 @@ public class NotificationDAOImpl implements NotificationDAO {
 		logger.info("NotificationDAOImpl - getPushNotificationList - Ends");
 		return pushNotificationBeans;
 	}
-
+	
+	/**
+	 * This method is used to save/update/resend of study/global notification
+	 *
+	 * @author BTC
+	 * @param notificationBO
+	 *            , {@link NotificationBO}
+	 * @param notificationType
+	 *            , to define global/study notification
+	 * @param buttonType
+	 *            , action like add/edit/resend/done to update in audit log for
+	 *            both global/study notification
+	 * @param sessionObject
+	 *            , object of {@link SessionObject}
+	 * @return Object of {@link Integer}
+	 */
 	@Override
 	public Integer saveOrUpdateOrResendNotification(
 			NotificationBO notificationBO, String notificationType,
@@ -417,6 +450,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 				notificationId = notificationBOUpdate.getNotificationId();
 				session.flush();
 			}
+			// Audit log capturing for specified request
 			if (notificationId != null) {
 				String activitydetails = "";
 				if ("add".equals(buttonType)) {

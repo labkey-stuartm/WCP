@@ -26,6 +26,17 @@ public class NotificationServiceImpl implements NotificationService {
 	@Autowired
 	private StudyDAO studyDAO;
 
+	/**
+	 * Deleting detail of notification by Id.
+	 *
+	 * @author BTC
+	 * @param notificationIdForDelete
+	 * @param sessionObject
+	 *            , Object of {@link SessionObject}
+	 * @param notificationType
+	 *            , global/study notification
+	 * @return Object of {@link String}
+	 */
 	@Override
 	public String deleteNotification(int notificationIdForDelete,
 			SessionObject sessionObject, String notificationType) {
@@ -43,9 +54,9 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	/**
-	 * Getting detail of notification by Id
+	 * Getting detail of notification by Id.
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param notificationId
 	 * @return Object of {@link NotificationBO}
 	 */
@@ -77,47 +88,14 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	/**
+	 * Getting detail of NotificationHistorylist that has been triggered to
+	 * users which has dateTime.
+	 * 
+	 * @author BTC
+	 * @param notificationId
+	 * @return List of {@link NotificationHistoryBO}
 	 *
 	 */
-	@Override
-	public List<NotificationHistoryBO> getNotificationHistoryList(
-			Integer notificationId) {
-		logger.info("NotificationServiceImpl - getNotificationHistoryList() - Starts");
-		List<NotificationHistoryBO> notificationHistoryList = null;
-		try {
-			notificationHistoryList = notificationDAO
-					.getNotificationHistoryList(notificationId);
-			if (notificationHistoryList != null
-					&& !notificationHistoryList.isEmpty()) {
-				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
-					if (notificationHistoryBO.getNotificationSentDateTime() != null) {
-						String date = FdahpStudyDesignerUtil.getFormattedDate(
-								notificationHistoryBO
-										.getNotificationSentDateTime(),
-								FdahpStudyDesignerConstants.DB_SDF_DATE_TIME,
-								FdahpStudyDesignerConstants.UI_SDF_DATE); // 8/29/2011
-						String time = FdahpStudyDesignerUtil.getFormattedDate(
-								notificationHistoryBO
-										.getNotificationSentDateTime(),
-								FdahpStudyDesignerConstants.DB_SDF_DATE_TIME,
-								FdahpStudyDesignerConstants.SDF_TIME); // 11:16:12
-																		// AM
-						notificationHistoryBO
-								.setNotificationSentdtTime("Last Sent on "
-										+ date + " at " + time);
-					}
-				}
-			}
-		} catch (Exception e) {
-			logger.error(
-					"NotificationServiceImpl - getNotificationHistoryList - ERROR",
-					e);
-
-		}
-		logger.info("NotificationServiceImpl - getNotificationHistoryList - Ends");
-		return notificationHistoryList;
-	}
-
 	@Override
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(
 			int notificationId) {
@@ -158,11 +136,10 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	/**
-	 * Common service method for study and global notification listing
+	 * This method is used to list study and global notification
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param studyId
-	 *            , studyId of study
 	 * @param type
 	 *            , global/study notification
 	 * @return list of {@link NotificationBO}
@@ -183,6 +160,23 @@ public class NotificationServiceImpl implements NotificationService {
 		return notificationList;
 	}
 
+	/**
+	 * This method is used to save/update/resend of study/global notification
+	 *
+	 * @author BTC
+	 * @param notificationBO
+	 *            , {@link NotificationBO}
+	 * @param notificationType
+	 *            , to define global/study notification
+	 * @param buttonType
+	 *            , action like add/edit/resend/done to update in audit log for
+	 *            both global/study notification
+	 * @param sessionObject
+	 *            , object of {@link SessionObject}
+	 * @param customStudyId
+	 *            , unique Id of study for audit log reference
+	 * @return Object of {@link Integer}
+	 */
 	@Override
 	public Integer saveOrUpdateOrResendNotification(
 			NotificationBO notificationBO, String notificationType,
