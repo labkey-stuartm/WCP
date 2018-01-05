@@ -11,7 +11,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the consent_info database table.
+ */
 @Entity
 @Table(name="consent_info")
 @NamedQueries({

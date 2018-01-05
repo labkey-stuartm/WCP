@@ -14,7 +14,11 @@ import javax.persistence.Transient;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the response_sub_type_value database table.
+ */
 @Entity
 @Table(name="response_sub_type_value")
 @NamedQueries({

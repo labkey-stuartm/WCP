@@ -11,6 +11,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+/**
+ * 
+ * @author BTC
+ * The persistent class for the question_responsetype_master_info database table.
+ *
+ */
 @Entity
 @Table(name="question_responsetype_master_info")
 @NamedQueries({

@@ -115,7 +115,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @param String : questionnaireShortTitle in {@link QuestionnairesStepsBo}
 	 * @param String : customStudyId in {@link StudyBo}
 	 * @param Integer : questionnaireId in {@link QuestionnaireBo}
-	 * @return Object : InstructutionBo {@link InstructionsBo}
+	 * @return Object : {@link InstructionsBo}
 	 * 
 	 * Instruction step page in questionnaire.Lays down instructions for the user in mobile app.Which contains the short title
 	 * instruction title and text

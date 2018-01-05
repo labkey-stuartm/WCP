@@ -10,7 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the comprehension_test_question database table.
+ *
+ */
 @Entity
 @Table(name="comprehension_test_question")
 public class ComprehensionTestQuestionBo implements Serializable{

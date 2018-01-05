@@ -12,7 +12,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the questionnaires database table.
+ *
+ */
 @Entity
 @Table(name="question_condtion_branching")
 @NamedQueries({

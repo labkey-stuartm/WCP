@@ -8,7 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+/**
+ * 
+ * @author BTC
+ * The persistent class for the questionnaires_frequencies database table.
+ *
+ */
 @Entity
 @Table(name="questionnaires_frequencies")
 public class QuestionnairesFrequenciesBo implements Serializable {

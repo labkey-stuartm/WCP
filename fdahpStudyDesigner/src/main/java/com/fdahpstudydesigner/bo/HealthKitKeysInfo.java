@@ -12,6 +12,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+/**
+ * 
+ * @author BTC
+ * The persistent class for the health_kit_keys_info database table.
+ *
+ */
 @Entity
 @Table(name="health_kit_keys_info")
 @NamedQueries({

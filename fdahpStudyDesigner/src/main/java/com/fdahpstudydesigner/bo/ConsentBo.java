@@ -14,7 +14,8 @@ import javax.persistence.Transient;
 
 /**
  * 
- * @author Ronalin
+ * @author BTC
+ * The persistent class for the consent database table.
  *
  */
 @Entity
