@@ -883,16 +883,17 @@ public class StudyController {
 	}
 
 	/**
+	 * to download the pdf 
 	 * @author BTC
-	 * @param request
-	 * @param response
-	 *            This method is used to validate the questionnaire have
-	 *            response type scale for android platform
+	 * @param request, {@link HttpServletRequest}
+	 * @param response, {@link HttpServletResponse}
+	 * @return {@link ModelAndView}
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/downloadPdf.do")
 	public ModelAndView downloadPdf(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+		logger.info("StudyController - downloadPdf - Starts");
 		Map<String, String> configMap = FdahpStudyDesignerUtil
 				.getAppProperties();
 		InputStream is = null;
@@ -937,12 +938,13 @@ public class StudyController {
 				mav = new ModelAndView("redirect:studyList.do");
 			}
 		} catch (Exception e) {
-			logger.error("StudyController - studyPlatformValidation() - ERROR",
+			logger.error("StudyController - downloadPdf() - ERROR",
 					e);
 		} finally {
 			if (null != is)
 				is.close();
 		}
+		logger.info("StudyController - downloadPdf() - Starts");
 		return mav;
 	}
 
@@ -4552,7 +4554,7 @@ public class StudyController {
 	@RequestMapping(value = "/adminStudies/validateEligibilityTestKey.do", method = RequestMethod.POST)
 	public void validateEligibilityTestKey(HttpServletRequest request,
 			HttpServletResponse response) {
-		logger.info("StudyController - studyPlatformValidation() - Starts");
+		logger.info("StudyController - validateEligibilityTestKey() - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
@@ -4584,10 +4586,10 @@ public class StudyController {
 			out = response.getWriter();
 			out.print(jsonobject);
 		} catch (Exception e) {
-			logger.error("StudyController - studyPlatformValidation() - ERROR",
+			logger.error("StudyController - validateEligibilityTestKey() - ERROR",
 					e);
 		}
-		logger.info("StudyController - studyPlatformValidation() - Ends");
+		logger.info("StudyController - validateEligibilityTestKey() - Ends");
 	}
 
 	/**
