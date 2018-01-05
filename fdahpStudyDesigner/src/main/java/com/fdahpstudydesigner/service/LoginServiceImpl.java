@@ -675,12 +675,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	}
 
 	/**
-	 * @author Pradyumn
+	 * This method is used to validate access code
+	 * 
+	 * @author BTC
 	 * @param securityToken
 	 * @param accessCode
-	 * @return result
+	 * @return result, Success/Failure message
 	 */
-	// @Override
 	public String validateAccessCode(String securityToken, String accessCode) {
 		UserBO userBO = null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");

@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
- * @author Pradyumn
+ * @author BTC
  *
  */
 
