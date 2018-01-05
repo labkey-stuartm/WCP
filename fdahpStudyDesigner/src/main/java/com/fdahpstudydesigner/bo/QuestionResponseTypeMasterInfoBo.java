@@ -14,8 +14,8 @@ import org.hibernate.annotations.NamedQuery;
 
 /**
  *
- * @author BTC The persistent class for the question_responsetype_master_info
- *         database table.
+ * The persistent class for the question_responsetype_master_info database table.
+ * @author BTC 
  *
  */
 @Entity

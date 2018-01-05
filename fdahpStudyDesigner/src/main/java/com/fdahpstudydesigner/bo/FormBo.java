@@ -12,8 +12,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- *
- * @author BTC The persistent class for the form database table.
+ * The persistent class for the form database table.
+ * 
+ * @author BTC 
  */
 @Entity
 @Table(name = "form")

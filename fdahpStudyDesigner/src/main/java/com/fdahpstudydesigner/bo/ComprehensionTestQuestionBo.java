@@ -12,9 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- *
- * @author BTC The persistent class for the comprehension_test_question database
- *         table.
+ * The persistent class for the comprehension_test_question database table.
+ * 
+ * @author BTC 
  *
  */
 @Entity
