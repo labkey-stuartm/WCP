@@ -931,19 +931,13 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
+	 * mark as completed of study
 	 * @author BTC
-	 * @param Integer
-	 *            : studyId
-	 * @param String
-	 *            : markCompleted can be
-	 *            resource/notification/consent/consentreview
-	 *            /checkList/activeTaskList/questionnaire/comprehenstionTest
-	 * @param Object
-	 *            : {@link SessionObject}
-	 * @param String
-	 *            : customStudyId in {@link StudyBo}
-	 * @return String : {SUCCES/FAILURE} Description : This method is to make
-	 *         mark as completed of study
+	 * @param Integer, studyId
+	 * @param String, markCompleted
+	 * @param sesObj, {@link SessionObject}
+	 * @param String, customStudyId {@link StudyBo}
+	 * @return String, SUCCES/FAILURE
 	 */
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted,
@@ -1938,13 +1932,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	/**
-	 * @author BTC
-	 * @param String
-	 *            : studyId
-	 * @param String
-	 *            : action cane be Activetask/Questionnaire
-	 * @return String :{success/failure} Description : This method is validate
-	 *         the activity(Activetask/Questionnarie) done or not
+	 * This method is validate the activity(Active task/Questionnaire) done or not
+	 * @author Ronalin
+	 * @param String, studyId
+	 * @param String, action
+	 * @return String, {SUCCESS/FAILURE} 
 	 */
 	@Override
 	public String validateActivityComplete(String studyId, String action) {

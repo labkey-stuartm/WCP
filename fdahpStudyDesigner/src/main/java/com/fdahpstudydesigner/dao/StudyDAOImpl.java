@@ -2321,6 +2321,15 @@ public class StudyDAOImpl implements StudyDAO {
 		return superAdminUserIds;
 	}
 
+	/**
+	 * mark as completed of study
+	 * @author BTC
+	 * @param Integer, studyId
+	 * @param String, markCompleted
+	 * @param sesObj, {@link SessionObject}
+	 * @param String, customStudyId {@link StudyBo}
+	 * @return String, SUCCES/FAILURE
+	 */
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted,
 			boolean flag, SessionObject sesObj, String customStudyId) {
@@ -2333,6 +2342,10 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+			/** match the markCompleted flag and complete 
+			    the  resource/notification/consent/consent review
+			    /checkList/activeTaskList/questionnaire/comprehenstionTest 
+			    section of study before launch **/
 			if (markCompleted.equals(FdahpStudyDesignerConstants.NOTIFICATION)) {
 				query = session
 						.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "
@@ -6585,6 +6598,13 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
+	/**
+	 * This method is validate the activity(Active task/Questionnaire) done or not
+	 * @author Ronalin
+	 * @param String, studyId
+	 * @param String, action
+	 * @return String, {SUCCESS/FAILURE} 
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String validateActivityComplete(String studyId, String action) {
@@ -6601,7 +6621,7 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(action)) {
-				// For checking activetask or question done or not
+				// For checking active task or questionnaire done or not
 				query = session.getNamedQuery(
 						"ActiveTaskBo.getActiveTasksByByStudyIdDone")
 						.setInteger(FdahpStudyDesignerConstants.STUDY_ID,
