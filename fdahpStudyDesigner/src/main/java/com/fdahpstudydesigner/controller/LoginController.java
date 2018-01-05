@@ -102,6 +102,12 @@ public class LoginController {
 		return mv;
 	}
 
+	/**
+	 * Navigate the app details page
+	 * 
+	 * @author BTC
+	 * @return {@link ModelAndView} , appDetails page view
+	 */
 	@RequestMapping("/appDetails.do")
 	public ModelAndView appDetails() {
 		logger.info("LoginController - appDetails() - Starts");

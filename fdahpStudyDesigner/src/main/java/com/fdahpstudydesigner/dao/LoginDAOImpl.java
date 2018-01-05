@@ -149,12 +149,6 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			// Query query =
-			// session.getNamedQuery("getUserAttempts").setString("userEmailId",
-			// userEmailId);
-			// String searchQuery =
-			// "select * from user_attempts where email_id='"+userEmailId+"'";
-			// Query query = session.createSQLQuery(searchQuery);
 			SQLQuery query = session
 					.createSQLQuery("select * from user_attempts where BINARY email_id='"
 							+ userEmailId + "'");
@@ -222,9 +216,6 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			// query =
-			// session.getNamedQuery("getUserByEmail").setString("email",
-			// email.trim());
 			SQLQuery query = session
 					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
 							+ email + "'");
@@ -370,15 +361,6 @@ public class LoginDAOImpl implements LoginDAO {
 					FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
 					.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(),
 							lastLoginExpirationInDay + 1));
-			/*
-			 * userBOList = session.createSQLQuery(
-			 * "SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
-			 * +
-			 * "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime < '"
-			 * +lastLoginDateTime+
-			 * "' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'"
-			 * ).list();
-			 */
 			sb = new StringBuilder();
 			sb.append(
 					"SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in ")
@@ -484,12 +466,6 @@ public class LoginDAOImpl implements LoginDAO {
 			} else {
 				if (attemptsBo.getAttempts() + 1 >= MAX_ATTEMPTS) {
 					// locked user
-					/*
-					 * queryString = "UPDATE UserBO set accountNonLocked = " + 0
-					 * + " where userEmail ='" + userEmailId+"'";
-					 * session.createQuery(queryString).executeUpdate();
-					 */
-					// throw exception
 					isAcountLocked = true;
 				}
 				if (this.isUserExists(userEmailId)) {
@@ -518,9 +494,6 @@ public class LoginDAOImpl implements LoginDAO {
 					}
 				}
 			}
-			// userBO = (UserBO)
-			// session.getNamedQuery("getUserByEmail").setString("email",
-			// userEmailId).uniqueResult();
 			SQLQuery query = session
 					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
 							+ userEmailId + "'");
