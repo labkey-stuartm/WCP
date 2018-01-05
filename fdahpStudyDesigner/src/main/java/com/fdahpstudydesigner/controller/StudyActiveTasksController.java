@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import sun.awt.image.ImageWatched.Link;
+
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
@@ -56,6 +58,14 @@ public class StudyActiveTasksController {
 	@Autowired
 	private StudyService studyService;
 
+	/**
+	 * to mark complete of study active task
+	 * 
+	 * @author Ronalin
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminStudies/activeTAskMarkAsCompleted.do")
 	public ModelAndView activeTAskMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyActiveTasksController - activeTAskMarkAsCompleted() - Starts");
@@ -114,9 +124,14 @@ public class StudyActiveTasksController {
 	}
 
 	/**
+	 * deleting of Active task in Study
+	 * 
 	 * @author Ronalin
 	 * @param request
+	 *            , {@link HttpServletRequest}
 	 * @param response
+	 *            , {@link HttpServletResponse}
+	 * @return
 	 */
 	@RequestMapping(value = "/adminStudies/deleteActiveTask.do", method = RequestMethod.POST)
 	public void deleteActiveTask(HttpServletRequest request,
@@ -228,12 +243,13 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 *
+	 * navigate to particular type of Active Task(Fetal Kick Counter/Tower of
+	 * Hanoi /Spatial Span Memory)
+	 * 
 	 * @author Ronalin
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} navigate to particular type of Active
-	 *         Task(Fetal Kick Counter/Tower of Hanoi /Spatial Span Memory)
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/navigateContentActiveTask.do")
 	public ModelAndView navigateContentActiveTask(HttpServletRequest request) {
@@ -606,14 +622,15 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * @author Ronalin validating particular StudyTask ShortTitle and Stat Task
-	 *         Id
+	 * validating ShortTitle and chart short title in study activity
+	 * 
+	 * @author Ronalin
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
 	 *            , {@link HttpServletResponse}
 	 * @throws IOException
-	 * @return void
+	 * @return
 	 */
 	@RequestMapping(value = "/adminStudies/validateActiveTaskShortTitleId.do", method = RequestMethod.POST)
 	public void validateActiveTaskShortTitleId(HttpServletRequest request,
@@ -684,14 +701,15 @@ public class StudyActiveTasksController {
 	}
 
 	/**
-	 * @author Ronalin validating array of StudyTask ShortStatTitle and Stat
-	 *         Task Id
+	 * validating list of active task chart short title in study
+	 * 
+	 * @author Ronalin
 	 * @param request
 	 *            , {@link HttpServletRequest}
 	 * @param response
 	 *            , {@link HttpServletResponse}
 	 * @throws IOException
-	 * @return void
+	 * @return
 	 */
 	@RequestMapping(value = "/adminStudies/validateActiveTaskStatShortTitleIds.do", method = RequestMethod.POST)
 	public void validateActiveTaskStatShortTitleId(HttpServletRequest request,
