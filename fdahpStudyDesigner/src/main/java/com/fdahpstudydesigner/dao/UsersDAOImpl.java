@@ -495,7 +495,7 @@ public class UsersDAOImpl implements UsersDAO {
 	/**
 	 * This method is used to get the user id of the super admin
 	 * 
-	 * @author Kanchana
+	 * @author BTC
 	 * @param sessionUserId
 	 * @return user id
 	 * 
