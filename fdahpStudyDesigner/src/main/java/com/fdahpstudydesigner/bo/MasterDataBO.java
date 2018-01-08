@@ -13,7 +13,7 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * The persistent class for the master_data database table.
  * 
- * @author Pradyumn
+ * @author BTC
  *
  */
 

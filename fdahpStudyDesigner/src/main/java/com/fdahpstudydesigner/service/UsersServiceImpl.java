@@ -445,7 +445,7 @@ public class UsersServiceImpl implements UsersService {
 	/**
 	 * This method is used to get the role of the user
 	 *
-	 * @author Kanchana
+	 * @author BTC
 	 * @param roleId
 	 * @return {@link RoleBO}
 	 *

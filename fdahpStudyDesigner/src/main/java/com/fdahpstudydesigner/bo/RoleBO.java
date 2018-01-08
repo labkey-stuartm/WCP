@@ -15,7 +15,7 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * The persistent class for the roles database table.
  * 
- * @author Pradyumn
+ * @author BTC
  *
  */
 
