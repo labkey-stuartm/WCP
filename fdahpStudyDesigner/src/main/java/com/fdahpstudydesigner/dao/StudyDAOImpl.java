@@ -2067,7 +2067,7 @@ public class StudyDAOImpl implements StudyDAO {
 		return eligibilityBo;
 	}
 
-	/************************************ Added By Ronalin Start *************************************************/
+	/************************************ Added By BTC Start *************************************************/
 	/**
 	 * return study List based on user
 	 *

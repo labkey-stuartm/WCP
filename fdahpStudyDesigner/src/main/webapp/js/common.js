@@ -11,7 +11,7 @@ var isShift = false;
 /**
  * Check the given form is valid or not
  * 
- * @author Kanchana
+ * @author BTC
  * @param param , form id
  * @returns {Boolean}
  */

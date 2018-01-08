@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 /**
  * The persistent class for the notification_history database table.
  * 
- * @author Kanchana
+ * @author BTC
  *
  */
 @Entity
