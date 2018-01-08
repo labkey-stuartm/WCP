@@ -836,11 +836,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Description : Soft delete study notification details
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} Description : delete study notification
-	 *         details
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/deleteStudyNotification.do")
 	public ModelAndView deleteStudyNotification(HttpServletRequest request) {
@@ -1986,11 +1987,11 @@ public class StudyController {
 	}
 
 	/**
+	 * Description : Details to view/edit/resend/addOrCopy of notification page
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} Description : get study notification details
-	 *         page
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/getStudyNotification.do")
 	public ModelAndView getStudyNotification(HttpServletRequest request) {
@@ -2091,12 +2092,17 @@ public class StudyController {
 								: request
 										.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
+					// Getting study details by userId for notification
 					studyBo = studyService.getStudyById(studyId,
 							sessionObject.getUserId());
 					if (!"".equals(notificationId)) {
+						// Fetching notification detail from notification table by
+						// Id.
 						notificationBO = notificationService
 								.getNotification(Integer
 										.parseInt(notificationId));
+						// Fetching notification history of last sent detail from
+						// notification table by Id.
 						notificationHistoryNoDateTime = notificationService
 								.getNotificationHistoryListNoDateTime(Integer
 										.parseInt(notificationId));
@@ -2161,11 +2167,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Description : save notification as mark as completed
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} Description : save notification as mark as
-	 *         completed
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/notificationMarkAsCompleted.do")
 	public ModelAndView notificationMarkAsCompleted(HttpServletRequest request) {
@@ -2198,6 +2205,8 @@ public class StudyController {
 				customStudyId = (String) request.getSession().getAttribute(
 						sessionStudyCount
 								+ FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				// markCompleted in param specify that notification to update it
+				// as completed in table StudySequenceBo
 				message = studyService.markAsCompleted(
 						Integer.parseInt(studyId), markCompleted, sesObj,
 						customStudyId);
@@ -4105,11 +4114,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Description : save or update study notification details
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} Description : save or update study
-	 *         notification details
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateStudyNotification.do")
 	public ModelAndView saveOrUpdateStudyNotification(
@@ -5510,11 +5520,12 @@ public class StudyController {
 	}
 
 	/**
+	 * Description : Study notification list details
+	 * 
 	 * @author BTC
 	 * @param request
 	 *            , {@link HttpServletRequest}
-	 * @return {@link ModelAndView} Description : get all notification based on
-	 *         study
+	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
 	public ModelAndView viewStudyNotificationList(HttpServletRequest request) {
@@ -5580,6 +5591,10 @@ public class StudyController {
 									.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				}
 				if (StringUtils.isNotEmpty(studyId)) {
+					/*
+					 * Passing studyId in the param to fetch study related notification
+					 * list and type to define study notification in service level
+					 */
 					notificationList = notificationService.getNotificationList(
 							Integer.valueOf(studyId), type);
 					for (NotificationBO notification : notificationList) {

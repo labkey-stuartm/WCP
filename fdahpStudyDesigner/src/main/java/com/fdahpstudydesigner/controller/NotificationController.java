@@ -80,7 +80,7 @@ public class NotificationController {
 	}
 
 	/**
-	 * Individual detail for edit/resend/addOrCopy of notification
+	 * Details to edit/resend/addOrCopy of a notification
 	 *
 	 * @author BTC
 	 * @param request
@@ -161,7 +161,7 @@ public class NotificationController {
 	}
 
 	/**
-	 * Individual detail view of notification
+	 * Details to view of a notification
 	 *
 	 * @author BTC
 	 * @param request
@@ -335,8 +335,7 @@ public class NotificationController {
 	}
 
 	/**
-	 * Global notification triggering to registered user of the app outside
-	 * study
+	 * Global notification list details
 	 *
 	 * @author BTC
 	 * @param request
