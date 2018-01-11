@@ -10,14 +10,16 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### Softwares required
 1.1	Java8
-Tomcat requires Java to be installed on the server so that any Java web application code can be executed. Below URL covers basic installation of the Java Development Kit package.
-https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04#step-1-install-java
+    Tomcat requires Java to be installed on the server so that any Java web application code can be executed. Below URL covers basic installation of the Java Development Kit package.
+    [Java8 Install](https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04#step-1-install-java)
+
 1.2	Tomcat8
-Tomcat is an open source implementation of the Java Servlet and JavaServer Pages technologies, released by the Apache Software Foundation. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
-https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04#step-3-install-tomcat
+    Tomcat is an open source implementation of the Java Servlet and JavaServer Pages technologies, released by the Apache Software Foundation. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
+    [Tomcat8 Install](https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04#step-3-install-tomcat)
+
 1.3	MySQL 5.7
-Below URL covers basic installation of MySQL server and securing MySQL
-https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-2-install-mysql
+    Below URL covers basic installation of MySQL server and securing MySQL
+    [MySQL Install](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-2-install-mysql)
 
 
 ```
