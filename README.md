@@ -108,7 +108,7 @@ fda.registration.root.url = https://hphci-fdama-te-ur-01.labkey.com/fdahpUserReg
 #### Changes in Tomact configuration
 Context file path will be : <tomcat installed path>/tomcat/conf/context.xml. Add below parameters in context.xml file inside `<context>` tag.
 
-```xml.
+```xml
 <Parameter name="property_file_location_prop" value="C://fdahphc/" override="1"/>
 <Parameter name="property_file_name" value="application" override="1"/>
 <Parameter name="property_file_location_config" value="file:/c:/fdahphc/application.properties" override="1"/>
