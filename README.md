@@ -16,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 2. Tomcat 8
 
-    Tomcat is an open source implementation of the Java Servlet and JavaServer Pages technologies, released by the Apache Software Foundation. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
+    Tomcat is an open source implementation of the Java Servlet and Java Server Pages technologies, released by the Apache Software Foundation. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
     
     [Tomcat Install](https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04#step-3-install-tomcat)
 
@@ -27,38 +27,38 @@ These instructions will get you a copy of the project up and running on your loc
     [MySQL Install](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-2-install-mysql)
 4. Maven 
 
-    Maven is open source build life cycle management  tool by Apache Software Foundation. This tool is required to generate server deployable build (war) from the project. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
+    Maven is open source build life cycle management tool by Apache Software Foundation. This tool is required to generate server deployable build (war) from the project. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
     
     [Maven Install](https://maven.apache.org/index.html)
 
 ### Installing
 
 #### Project settings configuration
-The `messageResource.properties` file can be find at `fdahpStudyDesigner\fdahpStudyDesigner\src\main\resources\messageResource.properties` path where follwing configuration can be customized. 
+The `messageResource.properties` file can be find at `fdahpStudyDesigner\fdahpStudyDesigner\src\main\resources\messageResource.properties` path where following configuration can be customized. 
 
 ```properties
 max.login.attempts=3                        
-#Maxmimum continuous fail login attempts by a user.
+#Maximum continuous fail login attempts by a user.
 
 password.resetLink.expiration.in.hour=48    
 #Reset password link will get expired after the specified hours.
 
 password.expiration.in.day=90               
-#User generated password exparation in days.
+#User generated password expiration in days.
 
 lastlogin.expiration.in.day=90              
 #User will get locked if he has not logged in for specified days.
 
 password.history.count=10                   
-#User cannot reuse the last 10 generated password for change pasword.
+#User cannot reuse the last 10 generated passwords for change password.
 
 user.lock.duration.in.minutes=30            
-#User lock duartion in minutes after crossed maxmimum continuous fail login attempts limit.
+#User lock duration in minutes after crossed Maximum continuous fail login attempts limit.
 ```
 #### Externalizing common configuration 
 An `application.properties` file will be stored into some physical path with following properties settings.
 
-Eg. `c:/fdahphc/application.properties`
+E.g. `c:/fdahphc/application.properties`
 
 ```properties
 smtp.portvalue=25               
@@ -105,7 +105,7 @@ fda.registration.root.url = https://hphci-fdama-te-ur-01.labkey.com/fdahpUserReg
 #https://hphci-fdama-te-ur-01.labkey.com – Should be replaced with actual URL
 
 ```
-#### Changes in Tomact configuration
+#### Changes in Tomcat configuration
 Context file path will be : <tomcat installed path>/tomcat/conf/context.xml. Add below parameters in context.xml file inside `<context>` tag.
 
 ```xml
@@ -120,7 +120,7 @@ Context file path will be : <tomcat installed path>/tomcat/conf/context.xml. Add
 
 ### Build
 
-To build the application  the following command should run in project root folder.
+To build the application the following command should run in project root folder.
 ```
 mvn clean install
 ```
@@ -128,7 +128,7 @@ This command generate a deployable war file in `target` folder named as `fdahpSt
 
 ### Deployment
 War file deployment
-`fdahpStudyDesigner.war` files will deployed to tomcat.
+`fdahpStudyDesigner.war` file will deploy to tomcat.
 Restart the tomcat
 
 ### Test application
