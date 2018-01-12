@@ -25,19 +25,77 @@ These instructions will get you a copy of the project up and running on your loc
     Below URL covers basic installation of MySQL server and securing MySQL
     
     [MySQL Install](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-2-install-mysql)
+4. Maven 
 
+    Maven is open source build life cycle management  tool by Apache Software Foundation. This tool is required to generate server deployable build (war) from the project. Below URL covers the basic installation and some configuration of Tomcat 8 on your Ubuntu server.
+    
+    [Maven Install](https://maven.apache.org/index.html)
 
 ### Installing
 
-#### Externalizing the property configuration
+The `messageResource.properties` file can be find at `fdahpStudyDesigner\fdahpStudyDesigner\src\main\resources\messageResource.properties` path where follwing configuration can be customized. 
 
-`application.properties` file will be stored into some physical path
+```properties
+max.login.attempts=3                        #Maxmimum continuous fail login attempts by a user.
+password.resetLink.expiration.in.hour=48    #Reset password link will get expired after the specified hours.
+password.expiration.in.day=90               #User generated password exparation in days.
+lastlogin.expiration.in.day=90              #User will get locked if he has not logged in for specified days.
+password.history.count=10                   #User cannot reuse the last 10 generated password for change pasword.
+user.lock.duration.in.minutes=30            #User lock duartion in minutes after crossed maxmimum continuous fail login attempts limit.
 ```
-Give the example
+### Build
+
+To build the application  the following command should run in project root folder.
+```
+mvn clean install
+```
+This command generate a deployable war file in `target` folder named as `fdahpStudyDesigner.war`.
+
+### Deployment
+
+#### Externalizing the configuration 
+    An `application.properties` file will be stored into some physical path with following properties settings.
+    
+1.  SMTP Configuration
+2.  smtp.portvalue=25 – Should be changed to actual SMTP port
+    smtp.hostname=172.246.126.44 – Should be changed to actual SMTP IP
+
+2.  fda.imgUploadPath=<Tomcat installed path>/webapps/fdaResources/
+    <Tomcat installed path> will be changed to actual path
+
+3. acceptLinkMail =http://localhost:8080/fdahpStudyDesigner/createPassword.do?securityToken=
+4. login.url=http://localhost:8080/fdahpStudyDesigner/login.do
+5. signUp.url=http://localhost:8080/fdahpStudyDesigner/signUp.do?securityToken=
+    For all the above properties “localhost” will be changed to actual IP address or domain name.
+
+4.db.url=localhost/fda_hphc
+db.username=****
+db.password=****
+“localhost” will be changed to IP address or domain name, if database is installed on different server. If database is installed on same server, it’s not required to change “db.url”.
+“db.username” value will be changed to actual username of database.
+“db.password” value will be changed to actual password of database.
+
+5.hibernate.connection.url=jdbc:mysql://localhost/fda_hphc
+hibernate.connection.username=****
+hibernate.connection.password=****
+“localhost” will be changed to IP address or domain name, if database is installed on different server. If database is on same server, it’s not required to change “hibernate.connection.url”.
+“hibernate.connection.username” value will be changed to actual username of database.
+“hibernate.connection.password” value will be changed to actual password of database.
+
+6.fda.smd.study.thumbnailPath = http://localhost:8080/fdaResources/studylogo/
+fda.smd.study.pagePath = http://localhost:8080/fdaResources/studypages/
+fda.smd.resource.pdfPath = http://localhost:8080/fdaResources/studyResources/
+fda.smd.questionnaire.image=http://localhost/fdaResources/questionnaire/
+For all the properties “localhost” will be changed to actual IP address or domain name.
+Folder for Audit log files:
+Please create a folder "fdaAuditLogs" inside the server and replace the path "/usr/local/fdaAuditLogs/" with actual path for “fda.logFilePath” property.
+User registration server root URL:
+fda.registration.root.url = https://hphci-fdama-te-ur-01.labkey.com/fdahpUserRegWS
+https://hphci-fdama-te-ur-01.labkey.com – Should be replaced with actual URL
+
 ```
 
-## Deployment
-
+```
 Add additional notes about how to deploy this on a live system
 
 ## Built With
