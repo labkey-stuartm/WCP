@@ -1,6 +1,5 @@
-# Project Title
-FDA Health Study Web Configuration Portal
-One Paragraph of project description goes here
+# FDA Health Study Web Configuration Portal
+Project description goes here
 
 ## Getting Started
 
