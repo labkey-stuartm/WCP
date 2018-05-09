@@ -99,9 +99,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 				.getPasswordExpairdedDateTime());
 		sesObj.setCreatedDate(userdetails.getCreatedOn());
 
-		masterDataBO = dashBoardAndProfileService.getMasterData("terms");
-		sesObj.setTermsText(masterDataBO.getTermsText());
-		sesObj.setPrivacyPolicyText(masterDataBO.getPrivacyPolicyText());
+//		masterDataBO = dashBoardAndProfileService.getMasterData("terms");
+//		sesObj.setTermsText(masterDataBO.getTermsText());
+//		sesObj.setPrivacyPolicyText(masterDataBO.getPrivacyPolicyText());
 
 		if (response.isCommitted()) {
 			System.out.println("Can't redirect");

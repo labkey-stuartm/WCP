@@ -61,11 +61,10 @@ import com.fdahpstudydesigner.bo.UserPermissions;
 public class FdahpStudyDesignerUtil {
 
 	/* Read Properties file */
-	protected static final Map<String, String> configMap = FdahpStudyDesignerUtil
-			.getAppProperties();
-
 	private static Logger logger = Logger
 			.getLogger(FdahpStudyDesignerUtil.class.getName());
+	protected static final Map<String, String> configMap = FdahpStudyDesignerUtil
+			.getAppProperties();
 
 	public static Date addDaysToDate(Date date, int days) {
 		logger.info("fdahpStudyDesignerUtiltyLinkUtil: addDaysToDate :: Starts");
