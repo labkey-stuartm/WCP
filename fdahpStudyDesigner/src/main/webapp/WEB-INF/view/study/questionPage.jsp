@@ -3509,7 +3509,8 @@ function validateForUniqueValue(item,responsetype,callback){
 			var diaplay_value = $("#displayTextChoiceValue"+id).val();
 			$("#displayTextChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
             $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
-			if(diaplay_value != ''){
+			if(typeof diaplay_value != 'undefined' && diaplay_value != null && diaplay_value != ''){
+				console.log(valueArray.indexOf(diaplay_value.toLowerCase()));
 				if(valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
 					isValid=false;
 					$("#displayTextChoiceValue"+id).val('');
