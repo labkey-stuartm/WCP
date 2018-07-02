@@ -393,20 +393,20 @@ function isNumberKey(evt)
             <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-9 col-lg-9 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
+                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 50 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(
-	                  questionsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
+	                  questionsBo.questionReponseTypeBo.minDescription)}" maxlength="50"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
                   <div class="col-md-9 col-lg-9 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
+                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 50 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${fn:escapeXml(
-	                  questionsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
+	                  questionsBo.questionReponseTypeBo.maxDescription)}" maxlength="50" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -539,18 +539,18 @@ function isNumberKey(evt)
             <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-9 col-lg-9 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
+                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 50 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}"  maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}"  maxlength="50"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
                   <div class="col-md-9 col-lg-9 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
+                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 50 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxDescription)}"  maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxDescription)}"  maxlength="50" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>

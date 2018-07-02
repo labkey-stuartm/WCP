@@ -12,19 +12,23 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.AuditLogBO;
@@ -41,13 +45,16 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
  * @author BTC
  *
  */
-public class FDASchedulerService {
-	private static final Map<?, ?> configMap = FdahpStudyDesignerUtil
-			.getAppProperties();
 
+// @Configuration
+@EnableScheduling
+public class FDASchedulerService {
 	private static Logger logger = Logger.getLogger(FDASchedulerService.class
 			.getName());
-
+	
+	private static final Map<?, ?> configMap = FdahpStudyDesignerUtil
+			.getAppProperties();
+	
 	@Autowired
 	AuditLogDAO auditLogDAO;
 
@@ -66,6 +73,14 @@ public class FDASchedulerService {
 	 * @author BTC
 	 * 
 	 */
+	
+	@Bean()
+	public  ThreadPoolTaskScheduler  taskScheduler(){
+	    ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+	    taskScheduler.setPoolSize(2);
+	    return  taskScheduler;
+	}
+	
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void createAuditLogs() {
 		logger.info("FDASchedulerService - createAuditLogs - Starts");
@@ -147,7 +162,7 @@ public class FDASchedulerService {
 	 * 
 	 */
 
-	@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0 * * * * ?")
 	public void sendPushNotification() {
 		logger.info("FDASchedulerService - sendPushNotification - Starts");
 		List<PushNotificationBean> pushNotificationBeans;
@@ -172,35 +187,39 @@ public class FDASchedulerService {
 						+ arrayToJson);
 				JSONObject json = new JSONObject();
 				json.put("notifications", arrayToJson);
-
-				HttpClient client = new DefaultHttpClient();
-				HttpResponse response;
+				
+				HttpParams httpParams = new BasicHttpParams();
+				HttpConnectionParams.setConnectionTimeout(httpParams, 30000);
+				HttpConnectionParams.setSoTimeout(httpParams, 30000);
+				HttpClient client = new DefaultHttpClient(httpParams);
+//				HttpResponse response;
 				HttpPost post = new HttpPost(FdahpStudyDesignerUtil
 						.getAppProperties().get("fda.registration.root.url")
 						+ FdahpStudyDesignerUtil.getAppProperties().get(
 								"push.notification.uri"));
+				
 				post.setHeader("Content-type", "application/json");
 
 				StringEntity requestEntity = new StringEntity(json.toString(),
 						ContentType.APPLICATION_JSON);
 				post.setEntity(requestEntity);
-
-				response = client.execute(post);
-				responseString = EntityUtils.toString(response.getEntity());
-				JSONObject res = new JSONObject(responseString);
-				String result = (String) res.get("message");
-				if (result == null
-						|| !result
-								.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-					logger.error("FDASchedulerService - sendPushNotification - LABKEY DATA SEND ERROR: "
-							+ responseString);
-				} else {
-					logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA SEND SUCCESS");
-				}
+				client.execute(post);
+//				HttpResponse response = client.execute(post);
+//				responseString = EntityUtils.toString(response.getEntity());
+//				JSONObject res = new JSONObject(responseString);
+//				String result = (String) res.get("message");
+//				if (result == null
+//						|| !result
+//								.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+//					logger.error("FDASchedulerService - sendPushNotification - LABKEY DATA SEND ERROR: "
+//							+ responseString);
+//				} else {
+//					logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA SEND SUCCESS");
+//				}
 			}
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - sendPushNotification - ERROR",
-					e);
+					e.getCause());
 		}
 		logger.info("FDASchedulerService - sendPushNotification - Ends");
 	}
