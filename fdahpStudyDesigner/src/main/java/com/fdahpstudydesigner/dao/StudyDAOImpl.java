@@ -4900,6 +4900,7 @@ public class StudyDAOImpl implements StudyDAO {
 						if(studyBo.isEnrollmentdateAsAnchordate()){
 							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=1 where custom_study_id='"+study.getCustomStudyId()+"' and has_anchortype_draft=0 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
 						}else{
+							
 							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=0 where custom_study_id='"+study.getCustomStudyId()+"' and has_anchortype_draft=1 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
 						}
 						//Phase2a code end
