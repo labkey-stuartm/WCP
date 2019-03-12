@@ -40,6 +40,18 @@ public class QuestionnairesFrequenciesBo implements Serializable {
 
 	@Column(name = "is_study_life_time")
 	private Boolean isStudyLifeTime = false;
+	
+	@Column(name = "x_days_sign", length = 1)
+	private boolean xDaysSign = false;
+
+	@Column(name = "y_days_sign", length = 1)
+	private boolean yDaysSign = false;
+	
+	@Column(name = "time_period_from_days")
+	private Integer timePeriodFromDays;
+
+	@Column(name = "time_period_to_days")
+	private Integer timePeriodToDays;
 
 	public String getFrequencyDate() {
 		return frequencyDate;
@@ -89,4 +101,35 @@ public class QuestionnairesFrequenciesBo implements Serializable {
 		this.questionnairesId = questionnairesId;
 	}
 
+	public boolean isxDaysSign() {
+		return xDaysSign;
+	}
+
+	public void setxDaysSign(boolean xDaysSign) {
+		this.xDaysSign = xDaysSign;
+	}
+
+	public boolean isyDaysSign() {
+		return yDaysSign;
+	}
+
+	public void setyDaysSign(boolean yDaysSign) {
+		this.yDaysSign = yDaysSign;
+	}
+
+	public Integer getTimePeriodFromDays() {
+		return timePeriodFromDays;
+	}
+
+	public void setTimePeriodFromDays(Integer timePeriodFromDays) {
+		this.timePeriodFromDays = timePeriodFromDays;
+	}
+
+	public Integer getTimePeriodToDays() {
+		return timePeriodToDays;
+	}
+
+	public void setTimePeriodToDays(Integer timePeriodToDays) {
+		this.timePeriodToDays = timePeriodToDays;
+	}
 }

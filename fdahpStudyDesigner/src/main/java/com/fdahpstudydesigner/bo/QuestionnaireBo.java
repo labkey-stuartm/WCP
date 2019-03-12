@@ -14,6 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+
 /**
  * The persistent class for the questionnaires database table.
  * 
@@ -117,6 +119,10 @@ public class QuestionnaireBo implements Serializable {
 
 	@Column(name = "version")
 	private Float version = 0f;
+	
+	@Column(name = "schedule_type")
+	@Type(type = "yes_no")
+	private boolean scheduleType = false;
 
 	public Boolean getActive() {
 		return active;
@@ -345,4 +351,11 @@ public class QuestionnaireBo implements Serializable {
 		this.version = version;
 	}
 
+	public boolean isScheduleType() {
+		return scheduleType;
+	}
+
+	public void setScheduleType(boolean scheduleType) {
+		this.scheduleType = scheduleType;
+	}
 }

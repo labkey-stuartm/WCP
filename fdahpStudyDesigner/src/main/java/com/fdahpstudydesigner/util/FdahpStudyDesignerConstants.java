@@ -372,6 +372,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String WEEKS_OF_THE_CURRENT_MONTH = "Weeks of the current month";
 
 	public static final String YES = "Yes";
+	
+	public static final String ANCHOR_TYPE_ENROLLMENTDATE = "Enrollment Date";
 
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

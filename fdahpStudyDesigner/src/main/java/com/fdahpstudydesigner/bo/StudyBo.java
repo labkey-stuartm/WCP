@@ -174,6 +174,10 @@ public class StudyBo implements Serializable {
 
 	@Transient
 	private boolean viewPermission = true;
+	
+	@Column(name = "enrollmentdate_as_anchordate")
+	@Type(type = "yes_no")
+	private boolean enrollmentdateAsAnchordate = false;
 
 	public String getAllowRejoin() {
 		return allowRejoin;
@@ -533,5 +537,13 @@ public class StudyBo implements Serializable {
 
 	public void setViewPermission(boolean viewPermission) {
 		this.viewPermission = viewPermission;
+	}
+
+	public boolean isEnrollmentdateAsAnchordate() {
+		return enrollmentdateAsAnchordate;
+	}
+
+	public void setEnrollmentdateAsAnchordate(boolean enrollmentdateAsAnchordate) {
+		this.enrollmentdateAsAnchordate = enrollmentdateAsAnchordate;
 	}
 }

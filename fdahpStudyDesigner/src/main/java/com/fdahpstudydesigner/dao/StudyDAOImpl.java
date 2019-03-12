@@ -29,6 +29,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
@@ -4636,6 +4637,14 @@ public class StudyDAOImpl implements StudyDAO {
 				studySequenceBo = new StudySequenceBo();
 				studySequenceBo.setStudyId(studyId);
 				session.save(studySequenceBo);
+				
+				//Phase2a code Start
+				//create one record in anchordate_type table to give user to use enrollmentdate
+				AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
+				anchorDateTypeBo.setCustomStudyId(studyBo.getCustomStudyId());
+				anchorDateTypeBo.setName(FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE);
+				session.save(anchorDateTypeBo);
+				//Phase2a code End
 			} else {
 				dbStudyBo = (StudyBo) session
 						.getNamedQuery(
@@ -4861,6 +4870,9 @@ public class StudyDAOImpl implements StudyDAO {
 						study.setModifiedBy(studyBo.getUserId());
 						study.setModifiedOn(FdahpStudyDesignerUtil
 								.getCurrentDateTime());
+						//Phase2a code Start(adding enrollment date as anchor date(yes/no))
+						study.setEnrollmentdateAsAnchordate(studyBo.isEnrollmentdateAsAnchordate());
+						//Phase2a code end
 						session.saveOrUpdate(study);
 
 						// setting true to setting admins
@@ -4883,6 +4895,14 @@ public class StudyDAOImpl implements StudyDAO {
 							studySequence.setSettingAdmins(false);
 						}
 						session.update(studySequence);
+						
+						//Phase2a code Start(adding enrollment date as anchor date(yes/no))
+						if(studyBo.isEnrollmentdateAsAnchordate()){
+							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=1 where custom_study_id='"+study.getCustomStudyId()+"' and has_anchortype_draft=0 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
+						}else{
+							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=0 where custom_study_id='"+study.getCustomStudyId()+"' and has_anchortype_draft=1 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
+						}
+						//Phase2a code end
 					}
 				}
 

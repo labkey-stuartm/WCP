@@ -81,6 +81,24 @@ table.dataTable thead th:last-child{
                 <!-- End Section-->
                 
                  <!-- Start Section-->
+                <div class="col-md-12 p-none">
+                     <div class="gray-xs-f mb-sm">Use Enrollment Date as Anchor Date in study activity scheduling?<span class="requiredStar"> *</span></div>
+
+                     <div class="form-group">
+                      <span class="radio radio-info radio-inline p-45">
+                            <input type="radio" id="inlineRadio11" value="Yes" name="enrollmentdateAsAnchordate" <c:if test="${studyBo.enrollmentdateAsAnchordate}">checked</c:if> required>
+                            <label for="inlineRadio11">Yes</label>
+                        </span>
+                        <span class="radio radio-inline">
+                            <input type="radio" id="inlineRadio22" value="No" name="enrollmentdateAsAnchordate" <c:if test="${studyBo.enrollmentdateAsAnchordate eq false}">checked</c:if> required>
+                            <label for="inlineRadio22">No</label>
+                        </span>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                </div>
+                <!-- End Section-->
+                
+                 <!-- Start Section-->
                  <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-sm">Retain participant data when they leave a study? <span class="requiredStar">*</span></div>
 
