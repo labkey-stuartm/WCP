@@ -3547,4 +3547,52 @@ public class StudyQuestionnaireController {
 		logger.info("StudyQuestionnaireController - viewStudyQuestionnaires - Ends");
 		return mav;
 	}
+	
+	/**
+	 * A questionnaire is an ordered set of one or more steps.Each step contains
+	 * the step short title field. Which will be response column for the step in
+	 * response server.so it should be the unique.Here validating the unique for
+	 * step short title
+	 * 
+	 * @author BTC
+	 * @param request
+	 *            {@link HttpServletRequest}
+	 * @param response
+	 *            {@link HttpServletResponse}
+	 * @return String Success/Failure
+	 */
+	@RequestMapping(value = "/adminStudies/validateAnchorDateName.do", method = RequestMethod.POST)
+	public void validateAnchorDateName(HttpServletRequest request,HttpServletResponse response) {
+		logger.info("StudyQuestionnaireController - validateAnchorDateName - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0;
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				String anchordateText = FdahpStudyDesignerUtil.isEmpty(request
+						.getParameter("anchordateText")) ? "" : request
+						.getParameter("anchordateText");
+				String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+ FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				if (StringUtils.isEmpty(customStudyId)) {
+					customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "": request
+									.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				}
+				if (!anchordateText.isEmpty() && !customStudyId.isEmpty()) {
+					message = studyQuestionnaireService.checkUniqueAnchorDateName(anchordateText, customStudyId);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		} catch (Exception e) {
+			logger.error(
+					"StudyQuestionnaireController - validateAnchorDateName - ERROR",
+					e);
+		}
+		logger.info("StudyQuestionnaireController - validateAnchorDateName - Ends");
+	}
 }

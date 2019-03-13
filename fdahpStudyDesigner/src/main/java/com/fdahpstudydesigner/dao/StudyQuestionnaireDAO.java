@@ -110,4 +110,6 @@ public interface StudyQuestionnaireDAO {
 			String frequency);
 
 	public String validateRepetableFormQuestionStats(Integer formId);
+	
+	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId);
 }

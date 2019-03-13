@@ -121,8 +121,7 @@ public class QuestionnaireBo implements Serializable {
 	private Float version = 0f;
 	
 	@Column(name = "schedule_type")
-	@Type(type = "yes_no")
-	private boolean scheduleType = false;
+	private String scheduleType = "";
 
 	public Boolean getActive() {
 		return active;
@@ -351,11 +350,11 @@ public class QuestionnaireBo implements Serializable {
 		this.version = version;
 	}
 
-	public boolean isScheduleType() {
+	public String getScheduleType() {
 		return scheduleType;
 	}
 
-	public void setScheduleType(boolean scheduleType) {
+	public void setScheduleType(String scheduleType) {
 		this.scheduleType = scheduleType;
 	}
 }

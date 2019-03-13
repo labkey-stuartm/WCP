@@ -82,7 +82,7 @@ table.dataTable thead th:last-child{
                 
                  <!-- Start Section-->
                 <div class="col-md-12 p-none">
-                     <div class="gray-xs-f mb-sm">Use Enrollment Date as Anchor Date in study activity scheduling?<span class="requiredStar"> *</span></div>
+                     <div class="gray-xs-f mb-sm">Use Enrollment Date as Anchor Date in study activity scheduling?<span class="requiredStar"> *</span><span><span data-toggle="tooltip" data-placement="top" title="Select this option to distribute a questionnaire, active task or resource, N number of days after participant enrollment. N is configured in the schedule settings of that study activity or resource." class="filled-tooltip"></span></span></div>
 
                      <div class="form-group">
                       <span class="radio radio-info radio-inline p-45">

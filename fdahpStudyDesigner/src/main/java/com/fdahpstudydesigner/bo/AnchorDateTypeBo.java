@@ -28,6 +28,9 @@ public class AnchorDateTypeBo implements Serializable{
 	
 	@Column(name = "custom_study_id")
 	private String customStudyId;
+	
+	@Column(name = "study_id")
+	private Integer studyId;
 
 	@Column(name = "name")
 	private String name;
@@ -35,7 +38,10 @@ public class AnchorDateTypeBo implements Serializable{
 	//0-not used and 1- used
 	@Column(name = "has_anchortype_draft")
 	private Integer hasAnchortypeDraft = 0;
-
+	
+	@Column(name = "version")
+	private Float version = 0f;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -52,6 +58,14 @@ public class AnchorDateTypeBo implements Serializable{
 		this.customStudyId = customStudyId;
 	}
 
+	public Integer getStudyId() {
+		return studyId;
+	}
+
+	public void setStudyId(Integer studyId) {
+		this.studyId = studyId;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -66,5 +80,13 @@ public class AnchorDateTypeBo implements Serializable{
 
 	public void setHasAnchortypeDraft(Integer hasAnchortypeDraft) {
 		this.hasAnchortypeDraft = hasAnchortypeDraft;
+	}
+
+	public Float getVersion() {
+		return version;
+	}
+
+	public void setVersion(Float version) {
+		this.version = version;
 	}
 }

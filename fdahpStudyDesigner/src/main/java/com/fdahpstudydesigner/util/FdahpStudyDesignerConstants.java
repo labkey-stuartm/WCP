@@ -374,6 +374,10 @@ public class FdahpStudyDesignerConstants {
 	public static final String YES = "Yes";
 	
 	public static final String ANCHOR_TYPE_ENROLLMENTDATE = "Enrollment Date";
+	
+	public static final String SCHEDULETYPE_REGULAR = "Regular";
+	
+	public static final String SCHEDULETYPE_ANCHORDATE= "AnchorDate";
 
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

@@ -4961,4 +4961,45 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		logger.info("StudyQuestionnaireDAOImpl - validateRepetableFormQuestionStats() - Ends");
 		return message;
 	}
+	
+	/**
+	 * In Questionnaire form step carries the multiple question and Answers .In
+	 * form level attributes we can make form form as repeatable if the form is
+	 * repeatable we can not add the line chart and states data to the
+	 * dashbord.here we are validating the added line chart and statistics data
+	 * before updating the form as repeatable.
+	 * 
+	 * @author BTC
+	 * @param Integer
+	 *            , formId
+	 * @param String
+	 *            , Success or failure
+	 */
+	@Override
+	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId) {
+		logger.info("StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "select count(*) from anchordate_type a" 
+					            +" where lower(a.name) like '%"+anchordateText+"%'"
+                                +" and a.study_id =(select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.version=0)";
+			BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			if (questionCount != null && questionCount.intValue() > 0) {
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}
+			
+		} catch (Exception e) {
+			logger.error(
+					"StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - ERROR ",
+					e);
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - Ends");
+		return message;
+	}
 }

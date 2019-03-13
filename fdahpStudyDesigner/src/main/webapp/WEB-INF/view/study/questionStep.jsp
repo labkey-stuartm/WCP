@@ -188,18 +188,32 @@ function isNumberKey(evt)
             	<c:when test="${questionnairesStepsBo.questionsBo.useAnchorDate}">
             		<span class="checkbox checkbox-inline">
 			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} >
-			               <label for="useAnchorDateId"> Use Anchor Date </label>
-		               </span>
+			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
+		             </span>
             	</c:when>
             	<c:otherwise>
-            		<span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
+            		<%-- <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
 		               <span class="checkbox checkbox-inline">
 			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
-			               <label for="useAnchorDateId"> Use Anchor Date </label>
+			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
+		               </span>
+	               </span> --%>
+	               <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top"  title="The date supplied by a participant in response to this question can be used to dictate the schedule for other questionnaires or active tasks in the study, or to determine the Period of Visibility of study resources."  >
+		               <span class="checkbox checkbox-inline">
+			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
+			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
 		               </span>
 	               </span>
             	</c:otherwise>
             </c:choose>
+            <div class="clearfix"></div>
+            <div class="col-md-6 p-none">
+               <div class="gray-xs-f mb-xs">Define name for Anchor date<span class="requiredStar">*</span></div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="questionsBo.anchorDateName" id="anchorTextId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.anchorDateName)}" maxlength="50"/>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
             </div>
             <c:if test="${fn:contains(studyBo.platform, 'I')}">
             	<div class="clearfix"></div>
@@ -1867,6 +1881,21 @@ function isNumberKey(evt)
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	$('#useAnchorDateId').click(function() {	
+		if ($(this).is(':checked'))
+			$("#anchorTextId").attr('required',true);
+		else{
+			$("#anchorTextId").attr('required',false);
+			$("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
+ 	        $("#anchorTextId").parent().find(".help-block").html("");
+		}
+	});
+	
+	$("#anchorTextId").blur(function(){
+		validateAnchorDateText('',function(val){});
+    });
+	
 	<c:if test="${actionTypeForQuestionPage == 'view'}">
 		$('#questionStepId input,textarea ').prop('disabled', true);
 		$('#questionStepId select').addClass('linkDis');
@@ -4826,5 +4855,54 @@ function validateFunction(functionText){
 		functionText = "(" + functionText;
 	}
 	return functionText;
+}
+function validateAnchorDateText(item,callback){
+ 	var anchordateText = $("#anchorTextId").val();
+ 	var thisAttr= $("#anchorTextId");
+ 	if(anchordateText != null && anchordateText !='' && typeof anchordateText!= 'undefined'){
+ 		var staticText ="Enrollment Date";
+ 		if(anchordateText.toUpperCase() === staticText.toUpperCase()){
+ 			$(thisAttr).val('');
+            $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+            $(thisAttr).parent().find(".help-block").empty();
+            $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + anchordateText + "' has already been used in the past.</li></ul>");
+            callback(false);
+ 		}else{
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").empty();
+ 	 			$.ajax({
+ 	                 url: "/fdahpStudyDesigner/adminStudies/validateAnchorDateName.do?_S=${param._S}",
+ 	                 type: "POST",
+ 	                 datatype: "json",
+ 	                 data: {
+ 	                	 anchordateText : anchordateText
+ 	                 },
+ 	                 beforeSend: function(xhr, settings){
+ 	                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+ 	                 },
+ 	                 success:  function getResponse(data){
+ 	                     var message = data.message;
+ 	                     console.log(message);
+ 	                     if('SUCCESS' != message){
+ 	                         $(thisAttr).validator('validate');
+ 	                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	                         $(thisAttr).parent().find(".help-block").empty();
+ 	                         callback(true);
+ 	                     }else{
+ 	                         $(thisAttr).val('');
+ 	                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+ 	                         $(thisAttr).parent().find(".help-block").empty();
+ 	                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + anchordateText + "' has already been used in the past.</li></ul>");
+ 	                         callback(false);
+ 	                     }
+ 	                 },
+ 	                 global : false
+ 	           });
+ 		}
+ 	}else{
+ 			callback(true);
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").html("");
+ 	}
 }
 </script>

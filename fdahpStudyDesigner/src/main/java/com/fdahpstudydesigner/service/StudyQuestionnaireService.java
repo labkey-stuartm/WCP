@@ -119,4 +119,6 @@ public interface StudyQuestionnaireService {
 			String lhs, String rhs, String operator, String input);
 
 	public String validateRepetableFormQuestionStats(Integer formId);
+	
+	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId);
 }

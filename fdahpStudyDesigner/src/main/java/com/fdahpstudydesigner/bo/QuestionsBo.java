@@ -104,6 +104,9 @@ public class QuestionsBo implements Serializable {
 
 	@Column(name = "healthkit_datatype")
 	private String healthkitDatatype;
+	
+	@Column(name = "anchor_date_id")
+	private Integer anchorDateId;
 
 	@Transient
 	private String type;
@@ -131,6 +134,9 @@ public class QuestionsBo implements Serializable {
 
 	@Transient
 	private Integer isStatShortNameDuplicate = 0;
+	
+	@Transient
+	private String anchorDateName = "";
 
 	public Boolean getActive() {
 		return active;
@@ -407,4 +413,19 @@ public class QuestionsBo implements Serializable {
 		this.useStasticData = useStasticData;
 	}
 
+	public Integer getAnchorDateId() {
+		return anchorDateId;
+	}
+
+	public void setAnchorDateId(Integer anchorDateId) {
+		this.anchorDateId = anchorDateId;
+	}
+
+	public String getAnchorDateName() {
+		return anchorDateName;
+	}
+
+	public void setAnchorDateName(String anchorDateName) {
+		this.anchorDateName = anchorDateName;
+	}
 }

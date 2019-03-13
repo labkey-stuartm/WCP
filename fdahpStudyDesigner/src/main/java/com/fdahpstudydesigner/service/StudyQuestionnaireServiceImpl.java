@@ -1658,4 +1658,32 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 		logger.info("StudyQuestionnaireServiceImpl - validateRepetableFormQuestionStats - Starts");
 		return studyQuestionnaireDAO.validateRepetableFormQuestionStats(formId);
 	}
+	
+	/**
+	 * A questionnaire is an ordered set of one or more steps.Each step contains
+	 * the step short title field. Which will be response column for the step in
+	 * response server.so it should be the unique.Here validating the unique for
+	 * step short title
+	 * 
+	 * @author BTC
+	 * 
+	 * @param String
+	 *            , anchordateText {@link QuestionnairesStepsBo}
+	 * 
+	 * @param String
+	 *            , customStudyId {@link StudyBo}
+	 * @return String, Success or Failure
+	 */
+	@Override
+	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId) {
+		logger.info("StudyQuestionnaireServiceImpl - checkUniqueAnchorDateName - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			message = studyQuestionnaireDAO.checkUniqueAnchorDateName(anchordateText, customStudyId);
+		} catch (Exception e) {
+			logger.error("StudyQuestionnaireServiceImpl - checkUniqueAnchorDateName - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - checkUniqueAnchorDateName - Ends");
+		return message;
+	}
 }
