@@ -220,6 +220,17 @@ function isNumber(evt, thisAttr) {
             <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
             <div class="pb-lg b-bor">
                <span class="radio radio-info radio-inline p-40">
+               <input type="radio" id="schedule1" scheduletype="Regular" value="Regular" name="scheduleType" ${empty questionnaireBo.scheduleType  || questionnaireBo.scheduleType=='Regular' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+               <label for="schedule1">Regular</label>
+               </span>
+               <span class="radio radio-inline p-40">
+               <input type="radio" id="schedule2" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+               <label for="schedule2">Anchor-Date-based</label>
+               </span>
+            </div>
+            <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
+            <div class="pb-lg b-bor">
+               <span class="radio radio-info radio-inline p-40">
                <input type="radio" id="inlineRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty questionnaireBo.frequency  || questionnaireBo.frequency=='One time' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
                <label for="inlineRadio1">One Time</label>
                </span>
@@ -1416,6 +1427,7 @@ function saveQuestionnaire(item, callback){
 	var title_text = $("#titleId").val();
 	var short_title = $("#shortTitleId").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
+	var schedule_text = $('input[name="scheduleType"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
 	var isFormValid = true;
 	var statusText = $("#status").val();
@@ -1460,6 +1472,10 @@ function saveQuestionnaire(item, callback){
 	if(type_text != null && type_text != '' && typeof type_text != 'undefined'){
 		questionnaire.type=type_text;
 	}
+	if(schedule_text != null && schedule_text != '' && typeof schedule_text != 'undefined'){
+		questionnaire.scheduleType=schedule_text;
+	}
+	
 	var questionnaireFrequencey = new Object();
 	
 	if(frequency_text == 'One time'){

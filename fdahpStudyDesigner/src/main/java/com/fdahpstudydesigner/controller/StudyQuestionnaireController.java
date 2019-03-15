@@ -1526,11 +1526,11 @@ public class StudyQuestionnaireController {
 				if (StringUtils.isNotEmpty(studyId)) {
 					studyBo = studyService.getStudyById(studyId,
 							sesObj.getUserId());
-					boolean isExists = studyQuestionnaireService
+					/*boolean isExists = studyQuestionnaireService
 							.isAnchorDateExistsForStudy(
 									Integer.valueOf(studyId),
 									studyBo.getCustomStudyId());
-					map.addAttribute("isAnchorDate", isExists);
+					map.addAttribute("isAnchorDate", isExists);*/
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
 							studyBo);
 				}
@@ -3575,13 +3575,16 @@ public class StudyQuestionnaireController {
 				String anchordateText = FdahpStudyDesignerUtil.isEmpty(request
 						.getParameter("anchordateText")) ? "" : request
 						.getParameter("anchordateText");
+				String anchorDateId = FdahpStudyDesignerUtil.isEmpty(request
+						.getParameter("anchorDateId")) ? "" : request
+						.getParameter("anchorDateId");
 				String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+ FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 				if (StringUtils.isEmpty(customStudyId)) {
 					customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "": request
 									.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 				}
 				if (!anchordateText.isEmpty() && !customStudyId.isEmpty()) {
-					message = studyQuestionnaireService.checkUniqueAnchorDateName(anchordateText, customStudyId);
+					message = studyQuestionnaireService.checkUniqueAnchorDateName(anchordateText, customStudyId, anchorDateId);
 				}
 			}
 			jsonobject.put("message", message);

@@ -1184,6 +1184,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 					addQuestionnaireBo.setFrequency(questionnaireBo
 							.getFrequency());
 				}
+				if (questionnaireBo.getScheduleType() != null) {
+					addQuestionnaireBo.setScheduleType(questionnaireBo
+							.getScheduleType());
+				}
 				if (questionnaireBo.getFrequency() != null
 						&& !questionnaireBo
 								.getFrequency()
@@ -1547,6 +1551,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 				if (questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null) {
 					addQuestionsBo.setUseAnchorDate(questionnairesStepsBo
 							.getQuestionsBo().getUseAnchorDate());
+					addQuestionsBo.setAnchorDateName(questionnairesStepsBo
+							.getQuestionsBo().getAnchorDateName());
 				}
 				if (questionnairesStepsBo.getQuestionsBo().getAllowHealthKit() != null) {
 					addQuestionsBo.setAllowHealthKit(questionnairesStepsBo
@@ -1675,11 +1681,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	 * @return String, Success or Failure
 	 */
 	@Override
-	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId) {
+	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId, String anchorDateId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkUniqueAnchorDateName - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			message = studyQuestionnaireDAO.checkUniqueAnchorDateName(anchordateText, customStudyId);
+			message = studyQuestionnaireDAO.checkUniqueAnchorDateName(anchordateText, customStudyId, anchorDateId);
 		} catch (Exception e) {
 			logger.error("StudyQuestionnaireServiceImpl - checkUniqueAnchorDateName - Error",e);
 		}

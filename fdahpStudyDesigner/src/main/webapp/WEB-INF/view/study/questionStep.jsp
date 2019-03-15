@@ -190,6 +190,14 @@ function isNumberKey(evt)
 			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} >
 			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
 		             </span>
+		             <div class="clearfix"></div>
+	            	<div class="col-md-6 p-none useAnchorDateName" style="display: none">
+		                <div class="gray-xs-f mb-xs">Define name for Anchor date<span class="requiredStar">*</span></div>
+		                <div class="form-group">
+		                  <input type="text" class="form-control" name="questionsBo.anchorDateName" id="anchorTextId" value="${questionnairesStepsBo.questionsBo.anchorDateName}" maxlength="50"/>
+		                  <div class="help-block with-errors red-txt"></div>
+		                </div>
+                   </div>
             	</c:when>
             	<c:otherwise>
             		<%-- <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
@@ -200,20 +208,21 @@ function isNumberKey(evt)
 	               </span> --%>
 	               <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top"  title="The date supplied by a participant in response to this question can be used to dictate the schedule for other questionnaires or active tasks in the study, or to determine the Period of Visibility of study resources."  >
 		               <span class="checkbox checkbox-inline">
-			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
+			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency eq 'One time' && questionnaireBo.scheduleType ne 'Regular'}"> disabled </c:if> >
 			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
 		               </span>
 	               </span>
+	               <div class="clearfix"></div>
+	            	<div class="col-md-6 p-none useAnchorDateName" style="display: none">
+		                <div class="gray-xs-f mb-xs">Define name for Anchor date<span class="requiredStar">*</span></div>
+		                <div class="form-group">
+		                  <input type="text" class="form-control" name="questionsBo.anchorDateName" id="anchorTextId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.anchorDateName)}" maxlength="50"/>
+		                  <div class="help-block with-errors red-txt"></div>
+		                </div>
+                   </div>
             	</c:otherwise>
             </c:choose>
-            <div class="clearfix"></div>
-            <div class="col-md-6 p-none">
-               <div class="gray-xs-f mb-xs">Define name for Anchor date<span class="requiredStar">*</span></div>
-               <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.anchorDateName" id="anchorTextId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.anchorDateName)}" maxlength="50"/>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div>
+                 
             </div>
             <c:if test="${fn:contains(studyBo.platform, 'I')}">
             	<div class="clearfix"></div>
@@ -1881,11 +1890,13 @@ function isNumberKey(evt)
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	$('#useAnchorDateId').click(function() {	
-		if ($(this).is(':checked'))
+
+	  $('#useAnchorDateId').click(function() {	
+		if ($(this).is(':checked')){
+			$('.useAnchorDateName').show();
 			$("#anchorTextId").attr('required',true);
-		else{
+		}else{
+			$('.useAnchorDateName').hide();
 			$("#anchorTextId").attr('required',false);
 			$("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
  	        $("#anchorTextId").parent().find(".help-block").html("");
@@ -1931,6 +1942,7 @@ $(document).ready(function(){
     	 var isValid = true;
     	 var isImageValid = true;
     	 var resType = $("#rlaResonseType").val();
+    	 var anchorDateFlag = true;
     	 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
 		 }
@@ -2082,6 +2094,15 @@ $(document).ready(function(){
     			  }else{
     				  isValid = true;
     			  }
+    		  }else if(resType == 'Date'){
+    			  var skiappable=$('input[name="skiappable"]:checked').val();
+    			  var anchorText = $("#anchorTextId").val();
+    			  if(anchorText != '' && anchorText != null && typeof anchorText != 'undefined'){
+   				    validateAnchorDateText('',function(val){});
+    			  }else{
+    				  if(skiappable == 'Yes')
+    					  anchorDateFlag = false;
+    			  }
     		  }
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
@@ -2104,7 +2125,27 @@ $(document).ready(function(){
 				    				    		 $("#conditionalFormulaId").empty();
 				    				    	 }
 				    		    		 }
-				    					document.questionStepId.submit();
+				    					if(anchorDateFlag){
+							    			 document.questionStepId.submit();	
+					    				 }else{
+					    					 bootbox.confirm({
+					    							closeButton: false,
+					    							message : "This question provides an Anchor Date response element, but has been marked Skippable. Are you sure you wish to proceed?",	
+					    						    buttons: {
+					    						        'cancel': {
+					    						            label: 'Cancel',
+					    						        },
+					    						        'confirm': {
+					    						            label: 'OK',
+					    						        },
+					    						    },
+					    						    callback: function(result) {
+					    						        if (result) {
+					    						        	   document.questionStepId.submit();	
+					    						             }	
+					    						        }
+					    						    }) 
+					    				 }
 				    	    		 }else{
 				    	    			 $("#doneId").attr("disabled",false);
 				    	    			 $("body").removeClass("loading");
@@ -2123,7 +2164,30 @@ $(document).ready(function(){
 						    		 $("#conditionalFormulaId").empty();
 						    	 }
 				    		 }
-				    		 document.questionStepId.submit();
+				    		 if(anchorDateFlag){
+				    			 document.questionStepId.submit();	
+		    				 }else{
+		    					 $("body").removeClass("loading");
+		    					 $("#doneId").attr("disabled",false);
+		    					 bootbox.confirm({
+		    							closeButton: false,
+		    							message : "This question provides an Anchor Date response element, but has been marked Skippable. Are you sure you wish to proceed?",	
+		    						    buttons: {
+		    						        'cancel': {
+		    						            label: 'Cancel',
+		    						        },
+		    						        'confirm': {
+		    						            label: 'OK',
+		    						        },
+		    						    },
+		    						    callback: function(result) {
+		    						        if (result) {
+		    						        	   document.questionStepId.submit();	
+		    						             }	
+		    						        }
+		    						    })
+		    				 }
+		    					  
 				    	 } 
 		    		 }else{
 		    			 $("body").removeClass("loading");
@@ -3156,6 +3220,7 @@ function getResponseType(id){
    			 	var anchorDate = "${questionnairesStepsBo.questionsBo.useAnchorDate}";
    			 	if(anchorDate == "true"){
    			 		$("#useAnchorDateId").attr("checked",true);
+   			 	    $('.useAnchorDateName').show();
    			 	}
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
@@ -3233,6 +3298,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
+	var anchor_text = $('#anchorTextId').val();
 	
 	questionsBo.id=questionId;
 	questionsBo.question=questionText;
@@ -3249,6 +3315,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.statType=statType;
 	questionsBo.statFormula=statFormula;
 	questionsBo.useAnchorDate=anchor_date;
+	questionsBo.anchorDateName=anchor_text;
 	questionnaireStep.questionsBo=questionsBo;
 	
 	var questionReponseTypeBo = new  Object();
@@ -4859,6 +4926,7 @@ function validateFunction(functionText){
 function validateAnchorDateText(item,callback){
  	var anchordateText = $("#anchorTextId").val();
  	var thisAttr= $("#anchorTextId");
+ 	var anchorDateId = '${questionnairesStepsBo.questionsBo.anchorDateId}';
  	if(anchordateText != null && anchordateText !='' && typeof anchordateText!= 'undefined'){
  		var staticText ="Enrollment Date";
  		if(anchordateText.toUpperCase() === staticText.toUpperCase()){
@@ -4875,7 +4943,9 @@ function validateAnchorDateText(item,callback){
  	                 type: "POST",
  	                 datatype: "json",
  	                 data: {
- 	                	 anchordateText : anchordateText
+ 	                	 anchordateText : anchordateText,
+ 	                	 anchorDateId : anchorDateId
+ 	                	 
  	                 },
  	                 beforeSend: function(xhr, settings){
  	                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

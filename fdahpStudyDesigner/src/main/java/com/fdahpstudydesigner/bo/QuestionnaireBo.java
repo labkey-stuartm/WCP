@@ -122,6 +122,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Column(name = "schedule_type")
 	private String scheduleType = "";
+	
+	@Column(name = "anchor_date_id")
+	private Integer anchorDateId;
 
 	public Boolean getActive() {
 		return active;
@@ -356,5 +359,13 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setScheduleType(String scheduleType) {
 		this.scheduleType = scheduleType;
+	}
+
+	public Integer getAnchorDateId() {
+		return anchorDateId;
+	}
+
+	public void setAnchorDateId(Integer anchorDateId) {
+		this.anchorDateId = anchorDateId;
 	}
 }

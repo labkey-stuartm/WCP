@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
@@ -2226,6 +2227,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						}
 						questionnairesStepsBo
 								.setQuestionResponseSubTypeList(questionResponseSubTypeList);
+						
+						//Phase 2a ancordate start
+						if(questionsBo.getAnchorDateId()!=null){
+							String name = (String) session.createSQLQuery("select name from anchordate_type where id="+questionsBo.getAnchorDateId()).uniqueResult();
+						    questionsBo.setAnchorDateName(name);
+						}
+						//phase 2a anchordate end
 
 					}
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
@@ -4485,6 +4493,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 									.getQuestionnairesId());
 					QuestionsBo questionsBo = questionnairesStepsBo
 							.getQuestionsBo();
+					//Ancrodate text start
+					if (questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null && 
+							StringUtils.isNotEmpty(questionnairesStepsBo.getQuestionsBo().getAnchorDateName())) {
+						Integer studyId = this.getStudyIdByCustomStudy(session, customStudyId);
+						AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
+						anchorDateTypeBo.setCustomStudyId(customStudyId);
+						anchorDateTypeBo.setStudyId(studyId);
+						anchorDateTypeBo.setName(questionnairesStepsBo.getQuestionsBo().getAnchorDateName());
+						session.save(anchorDateTypeBo);
+						if(anchorDateTypeBo.getId()!=null){
+							questionsBo.setAnchorDateId(anchorDateTypeBo.getId());
+						}
+					 }
+					 //Anchordate Text save
 					session.saveOrUpdate(questionsBo);
 					addOrUpdateQuestionnairesStepsBo
 							.setQuestionsBo(questionsBo);
@@ -4976,20 +4998,28 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	 *            , Success or failure
 	 */
 	@Override
-	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId) {
+	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId, String anchorDateId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
+		Integer dbAnchorId = 0;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = "select count(*) from anchordate_type a" 
-					            +" where lower(a.name) like '%"+anchordateText+"%'"
-                                +" and a.study_id =(select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.version=0)";
-			BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
-			if (questionCount != null && questionCount.intValue() > 0) {
-				message = FdahpStudyDesignerConstants.SUCCESS;
-			}
 			
+			if(StringUtils.isNotEmpty(anchorDateId)){
+				dbAnchorId = (Integer) session.createSQLQuery("select q.id from anchordate_type q where q.id="+anchorDateId).uniqueResult();
+			    if(!dbAnchorId.equals(Integer.parseInt(anchorDateId)))
+			    	dbAnchorId = 0;
+			}
+			if(dbAnchorId == 0){
+				String searchQuery = "select count(*) from anchordate_type a" 
+			            +" where lower(a.name) like '%"+anchordateText+"%'"
+                        +" and a.study_id =(select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.version=0)";
+				BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+				if (questionCount != null && questionCount.intValue() > 0) {
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
 		} catch (Exception e) {
 			logger.error(
 					"StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - ERROR ",
@@ -5002,4 +5032,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		logger.info("StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - Ends");
 		return message;
 	}
+
+	@Override
+	public Integer getStudyIdByCustomStudy( Session session, String customStudyId) {
+		logger.info("INFO: ActivityMetaDataDao - getQuestionnaireFrequencyAncorDetailsForManuallySchedule() :: Starts");
+		Integer studyId = null;
+		try {
+		     String searchQuery = "select id from studies where custom_study_id='"+customStudyId+"'";
+		     studyId =(Integer) session.createSQLQuery(searchQuery).uniqueResult();
+		
+		}catch (Exception e) {
+			logger.error("StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - ERROR ",e);
+		} 
+		return studyId;
+	}
+	
+	
 }
