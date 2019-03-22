@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
@@ -1215,6 +1216,7 @@ public class StudyQuestionnaireController {
 		QuestionnaireBo questionnaireBo = null;
 		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		String customStudyId = "";
+		List<AnchorDateTypeBo> anchorTypeList = new ArrayList<>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1295,6 +1297,8 @@ public class StudyQuestionnaireController {
 							sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
 							studyBo);
+					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(Integer.parseInt(studyId));
+					map.addAttribute("anchorTypeList", anchorTypeList);
 				}
 				if (StringUtils.isEmpty(questionnaireId)) {
 					questionnaireId = (String) request
@@ -1373,6 +1377,9 @@ public class StudyQuestionnaireController {
 					request.getSession().setAttribute(
 							sessionStudyCount + "questionnaireId",
 							questionnaireId);
+					
+					boolean isAnchorQuestionnaire = studyQuestionnaireService.isAnchorDateExistByQuestionnaire(Integer.valueOf(questionnaireId));
+					map.addAttribute("isAnchorQuestionnaire", isAnchorQuestionnaire);
 				}
 				if ("add".equals(actionType)) {
 					map.addAttribute("actionType", "add");

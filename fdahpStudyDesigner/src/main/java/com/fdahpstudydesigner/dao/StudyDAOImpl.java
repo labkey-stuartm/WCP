@@ -4644,6 +4644,7 @@ public class StudyDAOImpl implements StudyDAO {
 				anchorDateTypeBo.setCustomStudyId(studyBo.getCustomStudyId());
 				anchorDateTypeBo.setStudyId(studyId);
 				anchorDateTypeBo.setName(FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE);
+				anchorDateTypeBo.setHasAnchortypeDraft(1);
 				session.save(anchorDateTypeBo);
 				//Phase2a code End
 			} else {

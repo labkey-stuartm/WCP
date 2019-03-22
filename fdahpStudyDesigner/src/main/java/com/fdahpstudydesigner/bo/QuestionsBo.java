@@ -137,6 +137,9 @@ public class QuestionsBo implements Serializable {
 	
 	@Transient
 	private String anchorDateName = "";
+	
+	@Transient
+	private String customStudyId = "";
 
 	public Boolean getActive() {
 		return active;
@@ -427,5 +430,13 @@ public class QuestionsBo implements Serializable {
 
 	public void setAnchorDateName(String anchorDateName) {
 		this.anchorDateName = anchorDateName;
+	}
+
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
 	}
 }

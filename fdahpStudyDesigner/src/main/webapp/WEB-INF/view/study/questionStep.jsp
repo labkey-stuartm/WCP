@@ -91,6 +91,7 @@ function isNumberKey(evt)
          <input type="hidden" name="stepType" id="stepType" value="Question">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
+         <input type="hidden" id="anchorDateId" name="anchorDateId" value="${questionnairesStepsBo.questionsBo.anchorDateId}" />
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
@@ -208,7 +209,8 @@ function isNumberKey(evt)
 	               </span> --%>
 	               <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top"  title="The date supplied by a participant in response to this question can be used to dictate the schedule for other questionnaires or active tasks in the study, or to determine the Period of Visibility of study resources."  >
 		               <span class="checkbox checkbox-inline">
-			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency eq 'One time' && questionnaireBo.scheduleType ne 'Regular'}"> disabled </c:if> >
+		               
+			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || questionnaireBo.scheduleType ne 'Regular'}"> disabled </c:if> >
 			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
 		               </span>
 	               </span>
@@ -3298,6 +3300,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
+	var anchor_date_id = $("#anchorDateId").val();
 	var anchor_text = $('#anchorTextId').val();
 	
 	questionsBo.id=questionId;
@@ -3316,6 +3319,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.statFormula=statFormula;
 	questionsBo.useAnchorDate=anchor_date;
 	questionsBo.anchorDateName=anchor_text;
+	questionsBo.anchorDateId=anchor_date_id;
 	questionnaireStep.questionsBo=questionsBo;
 	
 	var questionReponseTypeBo = new  Object();

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
@@ -1091,6 +1092,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 				if (questionsBo.getUseAnchorDate() != null) {
 					addQuestionsBo.setUseAnchorDate(questionsBo
 							.getUseAnchorDate());
+					addQuestionsBo.setAnchorDateName(questionsBo
+							.getAnchorDateName());
+					if(questionsBo.getAnchorDateId()!=null)
+						addQuestionsBo.setAnchorDateId(questionsBo.getAnchorDateId());
 				}
 				if (questionsBo.getQuestionnaireId() != null) {
 					addQuestionsBo.setQuestionnaireId(questionsBo
@@ -1113,6 +1118,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 						addQuestionsBo.setStatus(true);
 					}
 				}
+				addQuestionsBo.setCustomStudyId(customStudyId);
 				addQuestionsBo = studyQuestionnaireDAO
 						.saveOrUpdateQuestion(addQuestionsBo);
 				if (null != addQuestionsBo && questionsBo.getType() != null) {
@@ -1188,6 +1194,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 					addQuestionnaireBo.setScheduleType(questionnaireBo
 							.getScheduleType());
 				}
+				if (questionnaireBo.getAnchorDateId() != null) {
+					addQuestionnaireBo.setAnchorDateId(questionnaireBo
+							.getAnchorDateId());
+				}
 				if (questionnaireBo.getFrequency() != null
 						&& !questionnaireBo
 								.getFrequency()
@@ -1204,6 +1214,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 										questionnaireBo.getStudyLifetimeStart(),
 										FdahpStudyDesignerConstants.UI_SDF_DATE,
 										FdahpStudyDesignerConstants.DB_SDF_DATE));
+						if(questionnaireBo.getAnchorDateId() != null) {
+							addQuestionnaireBo.setAnchorDateId(questionnaireBo.getAnchorDateId());
+						}
 					} else {
 						addQuestionnaireBo.setStudyLifetimeStart(null);
 					}
@@ -1551,8 +1564,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 				if (questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null) {
 					addQuestionsBo.setUseAnchorDate(questionnairesStepsBo
 							.getQuestionsBo().getUseAnchorDate());
-					addQuestionsBo.setAnchorDateName(questionnairesStepsBo
+					if(StringUtils.isNotEmpty(questionnairesStepsBo
+							.getQuestionsBo().getAnchorDateName()))
+					   addQuestionsBo.setAnchorDateName(questionnairesStepsBo
 							.getQuestionsBo().getAnchorDateName());
+					if(questionnairesStepsBo
+							.getQuestionsBo().getAnchorDateId()!=null)
+						addQuestionsBo.setAnchorDateId(questionnairesStepsBo
+							.getQuestionsBo().getAnchorDateId());
 				}
 				if (questionnairesStepsBo.getQuestionsBo().getAllowHealthKit() != null) {
 					addQuestionsBo.setAllowHealthKit(questionnairesStepsBo
@@ -1691,5 +1710,24 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 		}
 		logger.info("StudyQuestionnaireServiceImpl - checkUniqueAnchorDateName - Ends");
 		return message;
+	}
+
+	@Override
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId) {
+		logger.info("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Starts");
+		List<AnchorDateTypeBo> anchorDateTypeBos = null;
+		try {
+			anchorDateTypeBos = studyQuestionnaireDAO.getAnchorTypesByStudyId(studyId);
+		} catch (Exception e) {
+			logger.error("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Ends");
+		return anchorDateTypeBos;
+	}
+
+	@Override
+	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistByQuestionnaire - Starts");
+		return studyQuestionnaireDAO.isAnchorDateExistByQuestionnaire(questionnaireId);
 	}
 }

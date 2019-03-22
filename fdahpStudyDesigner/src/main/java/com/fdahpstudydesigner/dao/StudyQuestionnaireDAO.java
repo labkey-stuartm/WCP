@@ -6,6 +6,7 @@ import java.util.SortedMap;
 import org.hibernate.Session;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
@@ -114,4 +115,8 @@ public interface StudyQuestionnaireDAO {
 	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId, String anchorDateId);
 	
 	public Integer getStudyIdByCustomStudy( Session session, String customStudyId);
+	
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId);
+	
+	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
 }

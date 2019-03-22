@@ -29,6 +29,7 @@ import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
+import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
@@ -2764,6 +2765,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				}
 				questionsBo
 						.setQuestionResponseSubTypeList(questionResponseSubTypeList);
+				
+				//Phase 2a ancordate start
+				if(questionsBo.getAnchorDateId()!=null){
+					String name = (String) session.createSQLQuery("select name from anchordate_type where id="+questionsBo.getAnchorDateId()).uniqueResult();
+				    questionsBo.setAnchorDateName(name);
+				}
+				//phase 2a anchordate end
 			}
 		} catch (Exception e) {
 			logger.error(
@@ -3887,6 +3895,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+			//Ancrodate text start
+			if (questionsBo.getUseAnchorDate() != null && 
+					StringUtils.isNotEmpty(questionsBo.getAnchorDateName())) {
+				Integer studyId = this.getStudyIdByCustomStudy(session, questionsBo.getCustomStudyId());
+				AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
+				anchorDateTypeBo.setId(questionsBo.getAnchorDateId());
+				anchorDateTypeBo.setCustomStudyId(questionsBo.getCustomStudyId());
+				anchorDateTypeBo.setStudyId(studyId);
+				anchorDateTypeBo.setName(questionsBo.getAnchorDateName());
+				anchorDateTypeBo.setHasAnchortypeDraft(1);
+				session.saveOrUpdate(anchorDateTypeBo);
+				if(anchorDateTypeBo.getId()!=null){
+					questionsBo.setAnchorDateId(anchorDateTypeBo.getId());
+				}
+			 }
+			 //Anchordate Text end
 			session.saveOrUpdate(questionsBo);
 			if (questionsBo != null && questionsBo.getId() != null
 					&& questionsBo.getFromId() != null) {
@@ -4498,15 +4522,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 							StringUtils.isNotEmpty(questionnairesStepsBo.getQuestionsBo().getAnchorDateName())) {
 						Integer studyId = this.getStudyIdByCustomStudy(session, customStudyId);
 						AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
+						anchorDateTypeBo.setId(questionnairesStepsBo.getQuestionsBo().getAnchorDateId());
 						anchorDateTypeBo.setCustomStudyId(customStudyId);
 						anchorDateTypeBo.setStudyId(studyId);
 						anchorDateTypeBo.setName(questionnairesStepsBo.getQuestionsBo().getAnchorDateName());
-						session.save(anchorDateTypeBo);
+						anchorDateTypeBo.setHasAnchortypeDraft(1);
+						session.saveOrUpdate(anchorDateTypeBo);
 						if(anchorDateTypeBo.getId()!=null){
 							questionsBo.setAnchorDateId(anchorDateTypeBo.getId());
 						}
 					 }
-					 //Anchordate Text save
+					 //Anchordate Text end
 					session.saveOrUpdate(questionsBo);
 					addOrUpdateQuestionnairesStepsBo
 							.setQuestionsBo(questionsBo);
@@ -5013,7 +5039,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			}
 			if(dbAnchorId == 0){
 				String searchQuery = "select count(*) from anchordate_type a" 
-			            +" where lower(a.name) like '%"+anchordateText+"%'"
+			            +" where a.name='"+anchordateText+"'"
                         +" and a.study_id =(select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.version=0)";
 				BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 				if (questionCount != null && questionCount.intValue() > 0) {
@@ -5045,6 +5071,75 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			logger.error("StudyQuestionnaireDAOImpl - checkUniqueAnchorDateName() - ERROR ",e);
 		} 
 		return studyId;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId) {
+		logger.info("StudyQuestionnaireDAOImpl - getAnchorTypesByStudyId - Starts");
+		Session session = null;
+		List<AnchorDateTypeBo> anchorDateTypeBos = null;
+		String queryString = "";
+		String subQuery = "";
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
+			if(studyBo!=null) {
+				if(!studyBo.isEnrollmentdateAsAnchordate()) {
+					subQuery = "and name != '"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'";
+				}
+			}
+			queryString = "From AnchorDateTypeBo where studyId="+studyId+" and hasAnchortypeDraft=1"+subQuery;
+			anchorDateTypeBos = session.createQuery(queryString).list();
+			
+			
+		} catch (Exception e) {
+			logger.error(
+					"StudyQuestionnaireDAOImpl - getAnchorTypesByStudyId - ERROR ", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getAnchorTypesByStudyId - Ends");
+		return anchorDateTypeBos;
+	}
+
+	@Override
+	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistByQuestionnaire - Starts");
+		Session session = null;
+		Boolean isExist = false;
+		try {
+			 session = hibernateTemplate.getSessionFactory().openSession();
+			// checking in the question step anchor date is selected or not
+				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
+						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="
+						+ questionnaireId
+						+ " and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
+				BigInteger count = (BigInteger) session.createSQLQuery(
+						searchQuery).uniqueResult();
+				if (count.intValue() > 0) {
+					isExist = true;
+				} else {
+					// checking in the form step question anchor date is
+					// selected or not
+					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
+							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
+							+ questionnaireId
+							+ " and q.use_anchor_date=1 and q.active=1";
+					BigInteger subCount = (BigInteger) session.createSQLQuery(
+							subQuery).uniqueResult();
+					if (subCount != null && subCount.intValue() > 0) {
+						isExist = true;
+					}
+				}
+			
+		}catch(Exception e) {
+			
+		}
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistByQuestionnaire - Ends");
+		return isExist;
 	}
 	
 	
