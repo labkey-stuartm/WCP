@@ -224,7 +224,7 @@ function isNumber(evt, thisAttr) {
                                                  <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
                <label for="schedule1">Regular</label>
                </span>
-               <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top"  
+               <span id="anchorspanId" class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top"  
                <c:if test="${isAnchorQuestionnaire}">
 	             title="This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it." 
 	           </c:if>>
@@ -2153,6 +2153,14 @@ function deletStep(stepId,stepType){
 		    					reloadQuestionnaireStepData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    					var isAnchorQuestionnaire = jsonobject.isAnchorQuestionnaire;
+		    					if(isAnchorQuestionnaire){
+		    						$('#anchorspanId').prop('title','This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it.');
+		    						$('#schedule2').attr('disabled',true);
+		    					}else{
+		    						$('#anchorspanId').prop('title','');
+		    						$('#schedule2').attr('disabled',false);
 		    					}
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");

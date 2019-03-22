@@ -1090,6 +1090,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					query = session.createQuery(deleteSubResponse);
 					query.executeUpdate();
 				} else {
+					//delete anchordate start
+					String searchQuery = "from QuestionsBo QBO where QBO.id="+questionId;
+					QuestionsBo questionsBo = (QuestionsBo) session.createQuery(searchQuery).uniqueResult();
+					if(questionsBo!=null) {
+						if(questionsBo.getAnchorDateId()!=null) {
+							String delQury = "delete AnchorDateTypeBo a where a.id="+questionsBo.getAnchorDateId();
+							query = session.createQuery(delQury);
+							query.executeUpdate();
+						}
+					}
+					//delete anchordate end
+					
 					// doing the hard delete before study launched
 					String deleteQuery = "delete QuestionsBo QBO where QBO.id="
 							+ questionId;
@@ -1362,6 +1374,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
 				} else if (stepType
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)) {
+					//delete anchordate start
+					searchQuery = "from QuestionsBo QBO where QBO.id="+stepId;
+					QuestionsBo questionsBo = (QuestionsBo) session.createQuery(searchQuery).uniqueResult();
+					if(questionsBo!=null) {
+						if(questionsBo.getAnchorDateId()!=null) {
+							String delQury = "delete AnchorDateTypeBo a where a.id="+questionsBo.getAnchorDateId();
+							query = session.createQuery(delQury);
+							query.executeUpdate();
+						}
+					}
+					//delete anchordate end
+					
 					String deleteQuery = "delete QuestionsBo QBO where QBO.id="
 							+ stepId;
 					query = session.createQuery(deleteQuery);
@@ -1391,6 +1415,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 							+ stepId;
 					query = session.createQuery(subQuery);
 					if (query.list() != null && !query.list().isEmpty()) {
+						//delete anchordate start
+						searchQuery = "from QuestionsBo QBO where QBO.id in ("+subQuery+")";
+						List<QuestionsBo> questionsBoList = session.createQuery(searchQuery).list();
+						if(!questionsBoList.isEmpty() && questionsBoList.size()>0) {
+							//List<Integer> qIds = new ArrayList<Integer>();
+							for(QuestionsBo questionsBo: questionsBoList) {
+								if(questionsBo.getAnchorDateId()!=null) {
+									query = session.createQuery("delete AnchorDateTypeBo a where a.id="+questionsBo.getAnchorDateId());
+									query.executeUpdate();
+								  //qIds.add(questionsBo.getId());
+								}
+							}
+							/*if(!qIds.isEmpty() && qIds.size()>0) {
+								session.createSQLQuery(
+										"DELETE FROM anchordate_type WHERE id in("
+												+ StringUtils.join(qIds, ",") + ")")
+										.executeUpdate();*/
+						}
+						//delete anchordate end
 						String deleteQuery = "delete QuestionsBo QBO where QBO.id IN ("
 								+ subQuery + ")";
 						query = session.createQuery(deleteQuery);

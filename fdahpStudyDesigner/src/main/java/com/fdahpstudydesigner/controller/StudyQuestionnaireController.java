@@ -369,6 +369,7 @@ public class StudyQuestionnaireController {
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject questionnaireJsonObject = null;
 		String customStudyId = "";
+		boolean isAnchorQuestionnaire = false;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -447,6 +448,8 @@ public class StudyQuestionnaireController {
 								}
 								jsonobject.put("isDone", isDone);
 							}
+							isAnchorQuestionnaire = studyQuestionnaireService.isAnchorDateExistByQuestionnaire(Integer.valueOf(questionnaireId));
+							jsonobject.put("isAnchorQuestionnaire", isAnchorQuestionnaire);
 						}
 						String studyId = (String) request
 								.getSession()
