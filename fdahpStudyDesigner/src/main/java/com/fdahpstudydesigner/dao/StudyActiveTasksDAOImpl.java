@@ -621,31 +621,28 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					query.executeUpdate();
 					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTaskBo
 							.getActiveTaskCustomScheduleBo()) {
-						if (activeTaskCustomScheduleBo.getFrequencyStartDate() != null
-								&& !activeTaskCustomScheduleBo
-										.getFrequencyStartDate().isEmpty()
-								&& activeTaskCustomScheduleBo
-										.getFrequencyEndDate() != null
-								&& !activeTaskCustomScheduleBo
-										.getFrequencyEndDate().isEmpty()
-								&& activeTaskCustomScheduleBo
+						if (activeTaskCustomScheduleBo
 										.getFrequencyTime() != null) {
 							if (activeTaskCustomScheduleBo.getActiveTaskId() == null) {
 								activeTaskCustomScheduleBo
 										.setActiveTaskId(activeTaskBo.getId());
 							}
-							activeTaskCustomScheduleBo
-									.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(
-											activeTaskCustomScheduleBo
-													.getFrequencyStartDate(),
-											FdahpStudyDesignerConstants.UI_SDF_DATE,
-											FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+							if(activeTaskCustomScheduleBo.getFrequencyStartDate() != null && !activeTaskCustomScheduleBo.getFrequencyStartDate().isEmpty()) {
+								activeTaskCustomScheduleBo
+								.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(
+										activeTaskCustomScheduleBo
+												.getFrequencyStartDate(),
+										FdahpStudyDesignerConstants.UI_SDF_DATE,
+										FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+							}
+							if(activeTaskCustomScheduleBo.getFrequencyEndDate() != null && !activeTaskCustomScheduleBo.getFrequencyEndDate().isEmpty()) {
 							activeTaskCustomScheduleBo
 									.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(
 											activeTaskCustomScheduleBo
 													.getFrequencyEndDate(),
 											FdahpStudyDesignerConstants.UI_SDF_DATE,
 											FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+							}
 							if (activeTaskCustomScheduleBo.getFrequencyTime() != null
 									&& !activeTaskCustomScheduleBo
 											.getFrequencyTime().isEmpty()) {
@@ -655,6 +652,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 														.getFrequencyTime(),
 												FdahpStudyDesignerConstants.SDF_TIME,
 												FdahpStudyDesignerConstants.UI_SDF_TIME));
+							}
+							activeTaskCustomScheduleBo.setxDaysSign(activeTaskCustomScheduleBo.isxDaysSign());
+							if(activeTaskCustomScheduleBo.getTimePeriodFromDays()!=null) {
+								activeTaskCustomScheduleBo.setTimePeriodFromDays(activeTaskCustomScheduleBo.getTimePeriodFromDays());
+							}
+							activeTaskCustomScheduleBo.setyDaysSign(activeTaskCustomScheduleBo.isyDaysSign());
+							if(activeTaskCustomScheduleBo.getTimePeriodToDays()!=null) {
+								activeTaskCustomScheduleBo.setTimePeriodToDays(activeTaskCustomScheduleBo.getTimePeriodToDays());
 							}
 							session.saveOrUpdate(activeTaskCustomScheduleBo);
 						}

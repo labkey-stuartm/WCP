@@ -141,6 +141,12 @@ public class ActiveTaskBo implements Serializable {
 
 	@Column(name = "version")
 	private Float version = 0f;
+	
+	@Column(name = "schedule_type")
+	private String scheduleType = "";
+	
+	@Column(name = "anchor_date_id")
+	private Integer anchorDateId;
 
 	@Transient
 	private boolean versionFlag = false;
@@ -549,4 +555,19 @@ public class ActiveTaskBo implements Serializable {
 		this.versionFlag = versionFlag;
 	}
 
+	public String getScheduleType() {
+		return scheduleType;
+	}
+
+	public void setScheduleType(String scheduleType) {
+		this.scheduleType = scheduleType;
+	}
+
+	public Integer getAnchorDateId() {
+		return anchorDateId;
+	}
+
+	public void setAnchorDateId(Integer anchorDateId) {
+		this.anchorDateId = anchorDateId;
+	}
 }

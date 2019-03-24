@@ -431,6 +431,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 				if (activeTaskBo.getFrequency() != null) {
 					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
 				}
+				if (activeTaskBo.getScheduleType() != null) {
+					addActiveTaskeBo.setScheduleType(activeTaskBo
+							.getScheduleType());
+				}
+				if (activeTaskBo.getAnchorDateId() != null) {
+					addActiveTaskeBo.setAnchorDateId(activeTaskBo
+							.getAnchorDateId());
+				}
 				if (activeTaskBo.getFrequency() != null
 						&& !activeTaskBo
 								.getFrequency()
@@ -490,6 +498,9 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 				}
 				if (activeTaskBo.getType() != null) {
 					addActiveTaskeBo.setType(activeTaskBo.getType());
+				}
+				if(activeTaskBo.getScheduleType()!=null && !activeTaskBo.getScheduleType().isEmpty()) {
+					addActiveTaskeBo.setScheduleType(activeTaskBo.getScheduleType());
 				}
 				if (activeTaskBo.getFrequency() != null) {
 					if (!activeTaskBo.getFrequency().equalsIgnoreCase(

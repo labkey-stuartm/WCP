@@ -115,10 +115,27 @@
                 <div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
-                    <label for="inlineRadio5">Anchor Date </label><br/>
-                    <!-- <span>&nbsp;</span> -->
+                    <label for="inlineRadio5">Anchor Date-based Period</label><br/>
                 </span>
-                
+                <c:if test="${fn:length(anchorTypeList) gt 0}">
+		            	  <div class="gray-xs-f mb-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
+		            	  <div class="clearfix"></div>
+		                  <div class="col-md-4 col-lg-3 p-none">
+			                  <div class="form-group">
+			                     <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
+			                      <option value='' >Select</option>
+			                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+			                      	<option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+			                      </c:forEach>
+			                     </select>
+			                     <div class="help-block with-errors red-txt"></div>
+			                  </div>
+		                  </div>
+		                  <div class="clearfix"></div>
+                </c:if>
+                <span class="mb-sm pr-md">
+                    <span class="light-txt opacity06">Anchor Date </span>                   
+                 </span>
                 <span>
 	                 <select class="signDropDown selectpicker sign-box" title="Select" name="xDaysSign" id="xSign">
 	                          <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>

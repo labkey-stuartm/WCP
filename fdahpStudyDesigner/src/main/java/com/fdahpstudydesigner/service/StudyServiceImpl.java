@@ -1748,6 +1748,7 @@ public class StudyServiceImpl implements StudyService {
 			}
 			resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
 			resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
+			resourceBO2.setAnchorDateId(resourceBO.getAnchorDateId());
 			resourceBO2
 					.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceType(resourceBO.isResourceType());

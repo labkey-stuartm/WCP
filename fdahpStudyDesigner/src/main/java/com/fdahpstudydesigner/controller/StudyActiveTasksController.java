@@ -34,9 +34,11 @@ import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
+import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
@@ -57,6 +59,9 @@ public class StudyActiveTasksController {
 
 	@Autowired
 	private StudyService studyService;
+	
+	@Autowired
+	private StudyQuestionnaireService studyQuestionnaireService;
 
 	/**
 	 * to mark complete of study active task
@@ -280,6 +285,7 @@ public class StudyActiveTasksController {
 		List<String> timeRangeList = new ArrayList<>();
 		List<StatisticImageListBo> statisticImageList = new ArrayList<>();
 		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
+		
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -309,9 +315,10 @@ public class StudyActiveTasksController {
 						.getParameter("actionType");
 				studyBo = studyService
 						.getStudyById(studyId, sesObj.getUserId());
-				if (studyBo != null)
+				if (studyBo != null) {
 					activeTaskListBos = studyActiveTasksService
 							.getAllActiveTaskTypes(studyBo.getPlatform());
+				}
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
 				if (StringUtils.isNotEmpty(activeTaskInfoId)) {
@@ -434,6 +441,7 @@ public class StudyActiveTasksController {
 							activeTaskBo.setCreatedBy(sesObj.getUserId());
 							activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil
 									.getCurrentDateTime());
+							activeTaskBo.setScheduleType(FdahpStudyDesignerConstants.SCHEDULETYPE_REGULAR);
 						}
 						request.getSession()
 								.getAttribute(
@@ -958,6 +966,7 @@ public class StudyActiveTasksController {
 		String errMsg = "";
 		StudyBo studyBo = null;
 		ActiveTaskBo activeTaskBo = null;
+		List<AnchorDateTypeBo> anchorTypeList = new ArrayList<>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1013,6 +1022,8 @@ public class StudyActiveTasksController {
 					studyBo = studyService.getStudyById(studyId,
 							sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
+					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(Integer.parseInt(studyId));
+					map.addAttribute("anchorTypeList", anchorTypeList);
 				}
 				if (StringUtils.isEmpty(activeTaskId)) {
 					activeTaskId = (String) request.getSession().getAttribute(

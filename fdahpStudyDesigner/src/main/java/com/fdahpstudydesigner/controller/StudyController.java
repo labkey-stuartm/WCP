@@ -34,6 +34,7 @@ import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bean.StudySessionBean;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -192,6 +193,7 @@ public class StudyController {
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		List<AnchorDateTypeBo> anchorTypeList = new ArrayList<>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -299,6 +301,8 @@ public class StudyController {
 					map.addAttribute("resourceBO", resourceBO);
 					map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON,
 							action);
+					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(Integer.parseInt(studyId));
+					map.addAttribute("anchorTypeList", anchorTypeList);
 					request.getSession().removeAttribute(
 							sessionStudyCount
 									+ FdahpStudyDesignerConstants.ACTION_ON);
