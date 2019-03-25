@@ -376,6 +376,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String ANCHOR_TYPE_ENROLLMENTDATE = "Enrollment Date";
 	public static final String SCHEDULETYPE_REGULAR = "Regular";
 	public static final String SCHEDULETYPE_ANCHORDATE= "AnchorDate";
+	public static final String ANCHOR_ERROR_MSG = "One or more activity or resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
+	
 
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

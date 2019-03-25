@@ -686,7 +686,7 @@ $(document).ready(function(){
 	</c:if>
 	
 	<c:if test="${actionOn eq 'view'}">
-	 	$('#resourceForm input,textarea').prop('disabled', true);
+	 	$('#resourceForm input,textarea,select').prop('disabled', true);
     	$('.viewAct').hide();
 	</c:if>
 	

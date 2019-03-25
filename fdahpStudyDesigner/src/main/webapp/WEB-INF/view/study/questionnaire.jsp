@@ -2951,7 +2951,7 @@ function chkDaysValid(clickDone){
 	return valid;
 }
 function addDateAnchor(){
-	customAnchorCount = customAnchorCount +1;
+	customAnchorCount = parseInt(customAnchorCount) +1;
 	var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 				                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
 				                  +"<span><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"

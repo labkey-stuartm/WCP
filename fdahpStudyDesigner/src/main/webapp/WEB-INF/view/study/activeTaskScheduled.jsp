@@ -44,7 +44,7 @@
     <div class="clearfix"></div>
     <div class="col-md-4 col-lg-3 p-none">
           <div class="form-group">
-             <select id="anchorDateId" class="selectpicker" required name="anchorDateId">
+             <select id="anchorDateId" class="selectpicker" required name="anchorDateId" ${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}>
               <option value='' >Select</option>
               <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
               	<option value="${anchorTypeInfo.id}" ${activeTaskBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
@@ -106,7 +106,7 @@
             <div>
               <span class="pr-md">Anchor Date</span>
               <span>
-                <select class="signDropDown selectpicker sign-box" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="onetimeXSign">
+                <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="onetimeXSign">
                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
                 </select>
@@ -115,13 +115,13 @@
                <span class="form-group m-none dis-inline vertical-align-middle">
               <c:choose>
                 	     <c:when test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}">
-                	       <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-                   placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+                	       <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
+                   placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
                    maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                 	     </c:when>
                 	     <c:otherwise>
-                	        <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-                   placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+                	        <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
+                   placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
                    maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                 	      </c:otherwise>
                         </c:choose>
@@ -152,7 +152,7 @@
 	    <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" class="" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}>
+	       <input type="checkbox" id="isStudyLifeTime" class="${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group regularClass">
@@ -173,7 +173,7 @@
 	               <div>
 		                <span class="pr-md">Anchor Date</span>
 		                <span>
-			                 <select class="signDropDown selectpicker sign-box" title="Select" name="activeTaskFrequenciesBo.yDaysSign" id="onetimeYSign">
+			                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.yDaysSign" id="onetimeYSign">
 			                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.yDaysSign ?'selected':''}>+</option>
 			                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.yDaysSign ?'selected':''}>-</option>
 			                 </select>
@@ -182,13 +182,13 @@
 		                 <span class="form-group m-none dis-inline vertical-align-middle">
 		                 <c:choose>
                     	     <c:when test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}">
-                    	       <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-		                     placeholder="Y" name="activeTaskFrequenciesBo.timePeriodToDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+                    	       <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
+		                     placeholder="Y" name="activeTaskFrequenciesBo.timePeriodToDays" value="" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
 		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                     	     </c:when>
                     	     <c:otherwise>
-                    	        <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-		                     placeholder="Y" name="activeTaskFrequenciesBo.timePeriodToDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodToDays}" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
+                    	        <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
+		                     placeholder="Y" name="activeTaskFrequenciesBo.timePeriodToDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodToDays}" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
 		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                     	      </c:otherwise>
                             </c:choose>
@@ -256,14 +256,14 @@
                               <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
 	                <span class="pr-md">Anchor Date</span>
 	                <span>
-		                 <select class="signDropDown selectpicker sign-box" title="Select" name="activeTaskFrequenciesList[0].xDaysSign" id="dailyXSign">
+		                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesList[0].xDaysSign" id="dailyXSign">
 		                          <option value="0" ${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0) && not activeTaskBo.activeTaskFrequenciesList[0].xDaysSign ?'selected':''}>+</option>
 		                          <option value="1" ${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0) && activeTaskBo.activeTaskFrequenciesList[0].xDaysSign ?'selected':''}>-</option>
 		                 </select>
 	                </span>
 	                 <span class="form-group m-none dis-inline vertical-align-middle">
-                   	        <input id="dailyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-	                     placeholder="X" name="activeTaskFrequenciesList[0].timePeriodFromDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0)?activeTaskBo.activeTaskFrequenciesList[0].timePeriodFromDays:''}"
+                   	        <input id="dailyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
+	                     placeholder="X" name="activeTaskFrequenciesList[0].timePeriodFromDays" value="${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0)?activeTaskBo.activeTaskFrequenciesList[0].timePeriodFromDays:''}"
 	                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 	                 	 <span class="help-block with-errors red-txt"></span>
 	                 </span>
@@ -344,14 +344,14 @@
                              <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
                 <span class="pr-md">Anchor Date</span>
                 <span>
-	                 <select class="signDropDown selectpicker sign-box" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="weeklyXSign">
+	                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="weeklyXSign">
 	                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 	                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 	                 </select>
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle">
-                  	        <input id="weeklyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
+                  	        <input id="weeklyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
+                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
                      maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
@@ -424,14 +424,14 @@
 		                             <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
 		                <span class="pr-md">Anchor Date</span>
 		                <span>
-			                 <select class="signDropDown selectpicker sign-box" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="monthlyXSign">
+			                 <select class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="monthlyXSign">
 			                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 			                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 			                 </select>
 		                </span>
 		                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                  	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-		                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
+		                  	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" 
+		                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
 		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 		                 	 <span class="help-block with-errors red-txt"></span>
 		                 </span>
@@ -599,7 +599,7 @@
 						</span> <span> <select class="signDropDown selectpicker sign-box"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].xDaysSign"
-							id="xSign${customVar.index}">
+							id="xSign${customVar.index}" ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}> 
 								<option value="0"
 									${not activeTaskCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
 								<option value="1"
@@ -607,12 +607,12 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="xdays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="X"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 							value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
 							maxlength="3" required pattern="[0-9]+"
-							data-pattern-error="Please enter valid number." /> <span
+							data-pattern-error="Please enter valid number."  data-type='xancorText'/> <span
 							class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> days <span
@@ -622,7 +622,7 @@
 						</span> <span> <select class="signDropDown selectpicker sign-box"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].yDaysSign"
-							id="ySign0">
+							id="ySign0" ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}>
 								<option value="0"
 									${not activeTaskCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 								<option value="1"
@@ -630,19 +630,19 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="ydays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="Y"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodToDays"
 							value="${activeTaskCustomScheduleBo.timePeriodToDays}"
 							maxlength="3" pattern="[0-9]+"
-							data-pattern-error="Please enter valid number." required /> <span
+							data-pattern-error="Please enter valid number." required data-type='yancorText'/> <span
 							class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> days </span>
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md"
 							style="margin-bottom: -13px"> <input
 							id="manualTime${customVar.index}" type="text"
-							class="form-control clock"
+							class="form-control clock ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"
 							value="${activeTaskCustomScheduleBo.frequencyTime}"
 							placeholder="Time" required /> <span
@@ -2399,24 +2399,24 @@ function validateCustTime(dateRef, timeRef) {
 		return valid;
 	}
 	function addDateAnchor(){
-		customAnchorCount = customAnchorCount +1;
+		customAnchorCount = parseInt(customAnchorCount) +1;
 		var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 					                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
 					                  +"<span><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='activeTaskCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate'" 
+					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate xancorText'" 
 						              +"count='"+customAnchorCount+"' placeholder='X' name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodFromDays'"
-						              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
+						              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='xancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
 						              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days <span style='padding-right:5px;padding-left:5px'>to </span>  Anchor Date </span></span>"
 					                  +"<span><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='activeTaskCustomScheduleBo["+customAnchorCount+"].yDaysSign' id='ySign"+customAnchorCount+"'>"
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate' count='"+customAnchorCount+"' placeholder='Y'" 
-						              +"name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
+					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
+						              +"name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='yancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
 						              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days </span></span>"
 						              +"<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: -13px'>"

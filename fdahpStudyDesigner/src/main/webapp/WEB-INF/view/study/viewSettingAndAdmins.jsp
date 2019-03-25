@@ -90,7 +90,7 @@ table.dataTable thead th:last-child{
                             <label for="inlineRadio11">Yes</label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" id="inlineRadio22" value="No" name="enrollmentdateAsAnchordate" <c:if test="${studyBo.enrollmentdateAsAnchordate eq false}">checked</c:if> required>
+                            <input type="radio" id="inlineRadio22" value="No" name="enrollmentdateAsAnchordate" ${isAnchorForEnrollment?'disabled':''} <c:if test="${studyBo.enrollmentdateAsAnchordate eq false}">checked</c:if> required>
                             <label for="inlineRadio22">No</label>
                         </span>
                         <div class="help-block with-errors red-txt"></div>

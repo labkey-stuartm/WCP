@@ -441,7 +441,8 @@ public class StudyActiveTasksController {
 							activeTaskBo.setCreatedBy(sesObj.getUserId());
 							activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil
 									.getCurrentDateTime());
-							activeTaskBo.setScheduleType(FdahpStudyDesignerConstants.SCHEDULETYPE_REGULAR);
+							if(activeTaskBo.getScheduleType()==null || activeTaskBo.getScheduleType().isEmpty())
+							   activeTaskBo.setScheduleType(FdahpStudyDesignerConstants.SCHEDULETYPE_REGULAR);
 						}
 						request.getSession()
 								.getAttribute(
