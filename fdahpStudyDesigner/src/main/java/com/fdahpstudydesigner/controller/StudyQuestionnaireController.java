@@ -1300,7 +1300,7 @@ public class StudyQuestionnaireController {
 							sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
 							studyBo);
-					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(Integer.parseInt(studyId));
+					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(studyBo.getCustomStudyId());
 					map.addAttribute("anchorTypeList", anchorTypeList);
 				}
 				if (StringUtils.isEmpty(questionnaireId)) {

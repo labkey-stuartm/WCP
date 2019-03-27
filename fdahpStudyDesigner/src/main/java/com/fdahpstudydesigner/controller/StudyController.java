@@ -301,7 +301,8 @@ public class StudyController {
 					map.addAttribute("resourceBO", resourceBO);
 					map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON,
 							action);
-					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(Integer.parseInt(studyId));
+					if(studyBo!=null && !studyBo.getCustomStudyId().isEmpty())
+					 anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(studyBo.getCustomStudyId());
 					map.addAttribute("anchorTypeList", anchorTypeList);
 					request.getSession().removeAttribute(
 							sessionStudyCount

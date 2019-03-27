@@ -116,7 +116,7 @@ public interface StudyQuestionnaireDAO {
 	
 	public Integer getStudyIdByCustomStudy( Session session, String customStudyId);
 	
-	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId);
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 	
 	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
 }

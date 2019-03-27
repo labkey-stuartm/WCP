@@ -5122,7 +5122,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId) {
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getAnchorTypesByStudyId - Starts");
 		Session session = null;
 		List<AnchorDateTypeBo> anchorDateTypeBos = null;
@@ -5130,13 +5130,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		String subQuery = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
+			StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
 			if(studyBo!=null) {
 				if(!studyBo.isEnrollmentdateAsAnchordate()) {
 					subQuery = "and name != '"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'";
 				}
 			}
-			queryString = "From AnchorDateTypeBo where studyId="+studyId+" and hasAnchortypeDraft=1"+subQuery;
+			queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+"' and hasAnchortypeDraft=1"+subQuery;
 			anchorDateTypeBos = session.createQuery(queryString).list();
 			
 			

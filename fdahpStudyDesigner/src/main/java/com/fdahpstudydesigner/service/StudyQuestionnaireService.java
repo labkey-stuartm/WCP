@@ -123,7 +123,7 @@ public interface StudyQuestionnaireService {
 	
 	public String checkUniqueAnchorDateName(String anchordateText, String customStudyId, String anchorDateId);
 	
-	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId);
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 	
 	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
 }

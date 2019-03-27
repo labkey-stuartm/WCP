@@ -5372,7 +5372,7 @@ public class StudyDAOImpl implements StudyDAO {
 					}
 					
 					//clone anchor date data
-					searchQuery = " FROM AnchorDateTypeBo RBO WHERE RBO.studyId="
+					/*searchQuery = " FROM AnchorDateTypeBo RBO WHERE RBO.studyId="
 							+ studyBo.getId()
 							+ " AND RBO.hasAnchortypeDraft = 1 ORDER BY RBO.id DESC";
 					query = session.createQuery(searchQuery);
@@ -5391,7 +5391,7 @@ public class StudyDAOImpl implements StudyDAO {
 							anchordateoldnewMapList.put(oldAnchorId, anchorDateTypeBo.getId());
 						}
 						logger.info("StudyDAOImpl - studyDraftCreation() AnchorDateTypeBo- Ends");
-					}
+					}*/
 
 					//clone of resources
 					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="
@@ -5407,9 +5407,9 @@ public class StudyDAOImpl implements StudyDAO {
 							resourceBO.setStudyId(studyDreaftBo.getId());
 							resourceBO.setId(null);
 							//If resource is a target anchor date or not,yes then update new anchordate Id
-							if(resourceBO.getAnchorDateId()!=null) {
-								resourceBO.setAnchorDateId(anchordateoldnewMapList.get(bo.getAnchorDateId()));
-						     }
+//							if(resourceBO.getAnchorDateId()!=null) {
+//								resourceBO.setAnchorDateId(anchordateoldnewMapList.get(bo.getAnchorDateId()));
+//						     }
 							//If resource is a target anchor date or not,yes then update anchordate Id
 							session.save(resourceBO);
 						}
@@ -5504,11 +5504,11 @@ public class StudyDAOImpl implements StudyDAO {
 									newQuestionnaireBo.setCustomStudyId(studyBo
 											.getCustomStudyId());
 									//If questionnaire is a target anchor date or not,yes then update new anchordate Id
-									if(questionnaireBo.getScheduleType()!=null && questionnaireBo.getScheduleType().equals(FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)) {
-										if(questionnaireBo.getAnchorDateId()!=null) {
-											newQuestionnaireBo.setAnchorDateId(anchordateoldnewMapList.get(questionnaireBo.getAnchorDateId()));
-										}
-									}
+//									if(questionnaireBo.getScheduleType()!=null && questionnaireBo.getScheduleType().equals(FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)) {
+//										if(questionnaireBo.getAnchorDateId()!=null) {
+//											newQuestionnaireBo.setAnchorDateId(anchordateoldnewMapList.get(questionnaireBo.getAnchorDateId()));
+//										}
+//									}
 									//If questionnaire is a target anchor date or not,yes then update anchordate Id
 									session.save(newQuestionnaireBo);
 									questionnaireBo.setIsChange(0);
@@ -5707,8 +5707,8 @@ public class StudyDAOImpl implements StudyDAO {
 														newQuestionsBo
 																.setId(null);
 														//update source anchordate id start
-														if(questionsBo.getUseAnchorDate() && questionsBo.getAnchorDateId()!=null)
-															newQuestionsBo.setAnchorDateId(anchordateoldnewMapList.get(questionsBo.getAnchorDateId()));
+														//if(questionsBo.getUseAnchorDate() && questionsBo.getAnchorDateId()!=null)
+															//newQuestionsBo.setAnchorDateId(anchordateoldnewMapList.get(questionsBo.getAnchorDateId()));
 														//update source anchor date id end
 														session.save(newQuestionsBo);
 
@@ -5852,8 +5852,8 @@ public class StudyDAOImpl implements StudyDAO {
 																	newQuestionsBo
 																			.setId(null);
 																	//update source anchordate id start
-																	if(questionsBo.getUseAnchorDate() && questionsBo.getAnchorDateId()!=null)
-																		newQuestionsBo.setAnchorDateId(anchordateoldnewMapList.get(questionsBo.getAnchorDateId()));
+																	//if(questionsBo.getUseAnchorDate() && questionsBo.getAnchorDateId()!=null)
+																		//newQuestionsBo.setAnchorDateId(anchordateoldnewMapList.get(questionsBo.getAnchorDateId()));
 																	//update source anchor date id end
 																	session.save(newQuestionsBo);
 
@@ -6095,11 +6095,11 @@ public class StudyDAOImpl implements StudyDAO {
 								newActiveTaskBo.setCustomStudyId(studyBo
 										.getCustomStudyId());
 								//If activeTask is a target anchor date or not,yes then update new anchordate Id
-								if(activeTaskBo.getScheduleType()!=null && activeTaskBo.getScheduleType().equals(FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)) {
-									if(activeTaskBo.getAnchorDateId()!=null) {
-										newActiveTaskBo.setAnchorDateId(anchordateoldnewMapList.get(activeTaskBo.getAnchorDateId()));
-									}
-								}
+//								if(activeTaskBo.getScheduleType()!=null && activeTaskBo.getScheduleType().equals(FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)) {
+//									if(activeTaskBo.getAnchorDateId()!=null) {
+//										newActiveTaskBo.setAnchorDateId(anchordateoldnewMapList.get(activeTaskBo.getAnchorDateId()));
+//									}
+//								}
 								//If activeTask is a target anchor date or not,yes then update anchordate Id
 								session.save(newActiveTaskBo);
 
@@ -7502,8 +7502,8 @@ public class StudyDAOImpl implements StudyDAO {
 			// checking in the questionnaire step anchor date is selected or not
 				searchQuery = "select count(*) from questionnaires qr" + 
 						" where qr.anchor_date_id IS NOT NULL "
-						+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.study_id="+studyId+") " 
-						+"and (qr.study_id="+studyId+" || qr.custom_study_id='+"+customStudyId+"') and qr.active=1";
+						+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') " 
+						+"and (qr.study_id="+studyId+" || qr.custom_study_id='"+customStudyId+"') and qr.active=1";
 				BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 				if (count.intValue() > 0) {
 					isExist = true;
@@ -7511,16 +7511,16 @@ public class StudyDAOImpl implements StudyDAO {
 					//activetask target anchordate
 					searchQuery = "select count(*) from active_task qr" + 
 							" where qr.anchor_date_id IS NOT NULL "
-							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.study_id="+studyId+") " 
-							+"and (qr.study_id="+studyId+" || qr.custom_study_id='+"+customStudyId+"') and qr.active=1";
+							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') " 
+							+"and (qr.study_id="+studyId+" || qr.custom_study_id='"+customStudyId+"') and qr.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 					if (subCount != null && subCount.intValue() > 0) {
 						isExist = true;
 					}else {
 					searchQuery = "select count(*) from resources qr" + 
 							" where qr.anchor_date_id IS NOT NULL "
-							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.study_id="+studyId+") "
-							+"and (qr.study_id="+studyId+" || qr.custom_study_id='+"+customStudyId+"') and qr.status=1";
+							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') "
+							+"and (qr.study_id="+studyId+" || qr.custom_study_id='"+customStudyId+"') and qr.status=1";
 					BigInteger sub1Count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 					if (sub1Count != null && sub1Count.intValue() > 0) {
 						isExist = true;

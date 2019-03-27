@@ -1713,11 +1713,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	}
 
 	@Override
-	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(Integer studyId) {
+	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Starts");
 		List<AnchorDateTypeBo> anchorDateTypeBos = null;
 		try {
-			anchorDateTypeBos = studyQuestionnaireDAO.getAnchorTypesByStudyId(studyId);
+			anchorDateTypeBos = studyQuestionnaireDAO.getAnchorTypesByStudyId(customStudyId);
 		} catch (Exception e) {
 			logger.error("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Error",e);
 		}

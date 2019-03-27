@@ -1023,7 +1023,8 @@ public class StudyActiveTasksController {
 					studyBo = studyService.getStudyById(studyId,
 							sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
-					anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(Integer.parseInt(studyId));
+					if(studyBo!=null && !studyBo.getCustomStudyId().isEmpty())
+					 anchorTypeList = studyQuestionnaireService.getAnchorTypesByStudyId(studyBo.getCustomStudyId());
 					map.addAttribute("anchorTypeList", anchorTypeList);
 				}
 				if (StringUtils.isEmpty(activeTaskId)) {

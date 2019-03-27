@@ -1269,18 +1269,31 @@ $(document).ready(function() {
 			$('.onetimeanchorClass').find('input:text').removeAttr('required');
 			$('.regularClass').show();
 			$('.regularClass').find('input:text').attr('required',true);
+			
+			$('.dailyStartCls').show();
+			$('.dailyStartCls').find('input:text').attr('required',true);
+			$(".dailyanchorDiv").hide();
+			$(".dailyanchorDiv").find('input:text').removeAttr('required',true);
+			
 			$('.weeklyStartCls').show();
-			$('.weeklyStartCls').find('input:text,select').removeAttr('required');
+			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$(".weeklyanchorDiv").hide();
+			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
+			
 			$('.monthlyStartCls').show();
-			$('.monthlyStartCls').find('input:text').removeAttr('required');
-    		$(".manuallyContainer").show();
-			$(".manuallyContainer").find('input:text').attr('required',true);
+			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$(".monthlyanchorDiv").hide();
+			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
+			
+			$('.manuallyContainer').show();
+			$('.manuallyContainer').find('input:text').attr('required',true);
+			$(".manuallyAnchorContainer").hide();
+			$(".manuallyAnchorContainer").find('input:text').removeAttr('required',true);
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
+			$("#anchorDateId").val("");
 		} 
 	//AnchorDate type end
-        
-        
     });
    
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
@@ -2091,8 +2104,8 @@ function saveQuestionnaire(item, callback){
 				questionnaireFrequencey.yDaysSign=true;
 			}
 			questionnaireFrequencey.frequencyDate=null;
-			questionnaire.studyLifetimeStart=null;
-			questionnaire.studyLifetimeEnd=null;
+			//questionnaire.studyLifetimeStart=null;
+			//questionnaire.studyLifetimeEnd=null;
 		}else{
 			questionnaire.anchorDateId=null;
 			questionnaireFrequencey.timePeriodFromDays=null;
@@ -2154,7 +2167,6 @@ function saveQuestionnaire(item, callback){
 				var startdate = $("#StartDate"+id).val();
 				var enddate = $("#EndDate"+id).val();
 				var time = $("#customTime"+id).val();
-				alert("time"+time);
 				var isUsed = $("#isUsed"+id).val();
 				if(startdate != null && startdate != '' && typeof startdate != 'undefined'){
 					questionnaireCustomFrequencey.frequencyStartDate=startdate;
@@ -2171,7 +2183,7 @@ function saveQuestionnaire(item, callback){
 				questionnaireFrequencey.xDaysSign=0;
 				questionnaireFrequencey.timePeriodFromDays=null;
 				questionnaireFrequencey.yDaysSign=0;
-				uestionnaireFrequencey.timePeriodToDays=null;
+				questionnaireFrequencey.timePeriodToDays=null;
 				customArray.push(questionnaireCustomFrequencey)
 			})  
 			questionnaire.questionnaireCustomScheduleBo=customArray;

@@ -927,14 +927,32 @@ $(document).ready(function() {
 			$('.onetimeanchorClass').find('input:text').removeAttr('required');
 			$('.regularClass').show();
 			$('.regularClass').find('input:text').attr('required',true);
+			
+			$('.dailyStartCls').show();
+			$('.dailyStartCls').find('input:text').attr('required',true);
+			$(".dailyanchorDiv").hide();
+			$(".dailyanchorDiv").find('input:text').removeAttr('required',true);
+			
 			$('.weeklyStartCls').show();
-			$('.weeklyStartCls').find('input:text,select').removeAttr('required');
+			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$(".weeklyanchorDiv").hide();
+			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
+			
 			$('.monthlyStartCls').show();
-			$('.monthlyStartCls').find('input:text').removeAttr('required');
-    		$(".manuallyContainer").show();
-			$(".manuallyContainer").find('input:text').attr('required',true);
+			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$(".monthlyanchorDiv").hide();
+			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
+			
+			$('.manuallyContainer').show();
+			$('.manuallyContainer').find('input:text').attr('required',true);
+			$(".manuallyAnchorContainer").hide();
+			$(".manuallyAnchorContainer").find('input:text').removeAttr('required',true);
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
+			$("#anchorDateId").val("");
+			
+			
+			
 		} 
 	//AnchorDate type end
         
@@ -1662,8 +1680,8 @@ function saveActiveTask(item, actType, callback){
 				activeTaskFrequencey.yDaysSign=true;
 			}
 			activeTaskFrequencey.frequencyDate=null;
-			activeTask.activeTaskLifetimeStart=null;
-			activeTask.activeTaskLifetimeEnd=null;
+			//activeTask.activeTaskLifetimeStart=null;
+			//activeTask.activeTaskLifetimeEnd=null;
 		}else{
 			activeTask.anchorDateId=null;
 			activeTaskFrequencey.timePeriodFromDays=null;
