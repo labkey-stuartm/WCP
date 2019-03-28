@@ -32,7 +32,7 @@
                </span>
                <span class="radio radio-inline p-40">
                <input type="radio" id="schedule2" class="typeofschedule" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${isAnchorQuestionnaire?'disabled':''} ${activeTaskBo.scheduleType=='AnchorDate' ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
-                                                      <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
+                                                      <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if> >
                <label for="schedule2">Anchor-Date-based</label>
                </span>
     </div>
@@ -44,7 +44,7 @@
     <div class="clearfix"></div>
     <div class="col-md-4 col-lg-3 p-none">
           <div class="form-group">
-             <select id="anchorDateId" class="selectpicker" required name="anchorDateId" ${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}>
+             <select id="anchorDateId" class="selectpicker ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required name="anchorDateId">
               <option value='' >Select</option>
               <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
               	<option value="${anchorTypeInfo.id}" ${activeTaskBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
@@ -107,7 +107,7 @@
               <span class="pr-md">Anchor Date</span>
               <span>
                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="onetimeXSign">
-                         <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+                         <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''} ${studyBo.enrollmentdateAsAnchordate?'selected':''}>+</option>
                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
                 </select>
               </span>
@@ -152,7 +152,7 @@
 	    <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" class="${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
+	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''} required="required">
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group regularClass">
@@ -424,13 +424,13 @@
 		                             <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
 		                <span class="pr-md">Anchor Date</span>
 		                <span>
-			                 <select class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="monthlyXSign">
+			                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="monthlyXSign">
 			                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 			                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 			                 </select>
 		                </span>
 		                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                  	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" 
+		                  	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
 		                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
 		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 		                 	 <span class="help-block with-errors red-txt"></span>
@@ -596,10 +596,10 @@
 	      	  	         <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId" id="activeTaskId" value="${activeTaskCustomScheduleBo.activeTaskId}">
 						<span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> Anchor Date </span>
-						</span> <span> <select class="signDropDown selectpicker sign-box"
+						</span> <span> <select class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].xDaysSign"
-							id="xSign${customVar.index}" ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}> 
+							id="xSign${customVar.index}"> 
 								<option value="0"
 									${not activeTaskCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
 								<option value="1"
@@ -619,10 +619,10 @@
 								style="padding-right: 5px; padding-left: 5px">to </span> Anchor
 								Date
 						</span>
-						</span> <span> <select class="signDropDown selectpicker sign-box"
+						</span> <span> <select class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].yDaysSign"
-							id="ySign0" ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}>
+							id="ySign0" >
 								<option value="0"
 									${not activeTaskCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 								<option value="1"
@@ -678,6 +678,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 }
 var customAnchorCount = 0;
 customAnchorCount = '${customCount}';
+
+<c:if test="${activeTaskBo.isDuplicate > 0}">
+$('span.addBtnDis').remove();
+$('span.remBtnDis').remove();
+</c:if>
+
 $(document).ready(function() {
 	$('.selectpicker').selectpicker('refresh');
 	$(".typeofschedule").change(function() {
@@ -1011,7 +1017,34 @@ $(document).ready(function() {
 			$(".manuallyContainer").find('input:text').removeAttr('required');
     	}
     	
-    }
+    }else{
+		$(".onetimeanchorClass").hide();
+		$('.onetimeanchorClass').find('input:text').removeAttr('required');
+		$('.regularClass').show();
+		$('.regularClass').find('input:text').attr('required',true);
+		
+		$('.dailyStartCls').show();
+		$('.dailyStartCls').find('input:text').attr('required',true);
+		$(".dailyanchorDiv").hide();
+		$(".dailyanchorDiv").find('input:text').removeAttr('required',true);
+		
+		$('.weeklyStartCls').show();
+		$('.weeklyStartCls').find('input:text,select').attr('required',true);
+		$(".weeklyanchorDiv").hide();
+		$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
+		
+		$('.monthlyStartCls').show();
+		$('.monthlyStartCls').find('input:text').attr('required',true);
+		$(".monthlyanchorDiv").hide();
+		$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
+		
+		$('.manuallyContainer').show();
+		$('.manuallyContainer').find('input:text').attr('required',true);
+		$(".manuallyAnchorContainer").hide();
+		$(".manuallyAnchorContainer").find('input:text,select').removeAttr('required',true);
+		$('.anchortypeclass').hide();
+		$('.anchortypeclass').removeAttr('required');
+	}
     
     $('#chooseDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -2156,6 +2189,7 @@ function doneActiveTask(item, actType, callback) {
     	var anchorForm = true;
     	var onetimeForm = true;
     	var valForm = false;
+    	$('.typeofschedule').prop('disabled', false);
     	if(actType !=='save'){
     		if(scheduletype == 'AnchorDate'){
        		 if(!isFromValid("#anchorFormId"))

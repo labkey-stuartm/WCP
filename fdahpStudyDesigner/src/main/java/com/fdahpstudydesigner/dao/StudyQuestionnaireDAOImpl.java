@@ -3940,7 +3940,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			transaction = session.beginTransaction();
 			//Ancrodate text start
 			if (questionsBo.getUseAnchorDate() != null && 
-					StringUtils.isNotEmpty(questionsBo.getAnchorDateName())) {
+					questionsBo.getUseAnchorDate()) {
+				if(StringUtils.isNotEmpty(questionsBo.getAnchorDateName())) {
 				Integer studyId = this.getStudyIdByCustomStudy(session, questionsBo.getCustomStudyId());
 				AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
 				anchorDateTypeBo.setId(questionsBo.getAnchorDateId());
@@ -3952,7 +3953,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				if(anchorDateTypeBo.getId()!=null){
 					questionsBo.setAnchorDateId(anchorDateTypeBo.getId());
 				}
-			 }
+				}
+			 }else {
+			     if(questionsBo.getAnchorDateId()!=null)
+				  session.createQuery("delete from AnchorDateTypeBo where id="+questionsBo.getAnchorDateId()).executeUpdate();
+				 questionsBo.setAnchorDateId(null);
+		     }
 			 //Anchordate Text end
 			session.saveOrUpdate(questionsBo);
 			if (questionsBo != null && questionsBo.getId() != null
@@ -4565,8 +4571,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					QuestionsBo questionsBo = questionnairesStepsBo
 							.getQuestionsBo();
 					//Ancrodate text start
-					if (questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null && 
-							StringUtils.isNotEmpty(questionnairesStepsBo.getQuestionsBo().getAnchorDateName())) {
+					if (questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null
+							&& questionnairesStepsBo.getQuestionsBo().getUseAnchorDate()) {
+						if(StringUtils.isNotEmpty(questionnairesStepsBo.getQuestionsBo().getAnchorDateName())) {
 						Integer studyId = this.getStudyIdByCustomStudy(session, customStudyId);
 						AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
 						anchorDateTypeBo.setId(questionnairesStepsBo.getQuestionsBo().getAnchorDateId());
@@ -4575,9 +4582,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						anchorDateTypeBo.setName(questionnairesStepsBo.getQuestionsBo().getAnchorDateName());
 						anchorDateTypeBo.setHasAnchortypeDraft(1);
 						session.saveOrUpdate(anchorDateTypeBo);
-						if(anchorDateTypeBo.getId()!=null){
+						 if(anchorDateTypeBo.getId()!=null){
 							questionsBo.setAnchorDateId(anchorDateTypeBo.getId());
+						 }
 						}
+					 }else {
+						     if(questionnairesStepsBo.getQuestionsBo().getAnchorDateId()!=null)
+							  session.createQuery("delete from AnchorDateTypeBo where id="+questionnairesStepsBo.getQuestionsBo().getAnchorDateId()).executeUpdate();
+							 questionsBo.setAnchorDateId(null);
 					 }
 					 //Anchordate Text end
 					session.saveOrUpdate(questionsBo);
@@ -5087,7 +5099,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			if(dbAnchorId == 0){
 				String searchQuery = "select count(*) from anchordate_type a" 
 			            +" where a.name='"+anchordateText+"'"
-                        +" and a.study_id =(select s.id from studies s where s.custom_study_id='"+customStudyId+"' and s.version=0)";
+                        +" and a.custom_study_id='"+customStudyId+"'";
 				BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 				if (questionCount != null && questionCount.intValue() > 0) {
 					message = FdahpStudyDesignerConstants.SUCCESS;

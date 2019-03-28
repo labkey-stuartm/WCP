@@ -243,7 +243,7 @@ function isNumber(evt, thisAttr) {
             <div class="clearfix"></div>
             <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
-                     <select id="anchorDateId" class="selectpicker" required name="anchorDateId">
+                     <select id="anchorDateId" class="selectpicker ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required name="anchorDateId" >
                       <option value='' >Select</option>
                       <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
                       	<option value="${anchorTypeInfo.id}" ${questionnaireBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
@@ -264,19 +264,19 @@ function isNumber(evt, thisAttr) {
                <label for="inlineRadio1">One Time</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${questionnaireBo.frequency=='Daily' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+               <input type="radio" id="inlineRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${questionnaireBo.frequency=='Daily' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} ${isAnchorQuestionnaire?'disabled':''}>
                <label for="inlineRadio2">Daily</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio3" class="schedule" frequencytype="week" value="Weekly" name="frequency" ${questionnaireBo.frequency=='Weekly' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+               <input type="radio" id="inlineRadio3" class="schedule" frequencytype="week" value="Weekly" name="frequency" ${questionnaireBo.frequency=='Weekly' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} ${isAnchorQuestionnaire?'disabled':''}>
                <label for="inlineRadio3">Weekly</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio4" class="schedule" frequencytype="month" value="Monthly" name="frequency" ${questionnaireBo.frequency=='Monthly' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+               <input type="radio" id="inlineRadio4" class="schedule" frequencytype="month" value="Monthly" name="frequency" ${questionnaireBo.frequency=='Monthly' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} ${isAnchorQuestionnaire?'disabled':''}>
                <label for="inlineRadio4">Monthly</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} ${isAnchorQuestionnaire?'disabled':''}>
                <label for="inlineRadio5">Custom Schedule</label>
                </span>
             </div>
@@ -313,8 +313,8 @@ function isNumber(evt, thisAttr) {
 			               <div>
 				                <span class="pr-md">Anchor Date</span>
 				                <span>
-					                 <select class="signDropDown selectpicker sign-box" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="onetimeXSign">
-					                          <option value="0" ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+					                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="onetimeXSign">
+					                          <option value="0" ${studyBo.enrollmentdateAsAnchordate?'selected':''} ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 					                          <option value="1" ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 					                 </select>
 				                </span>
@@ -322,13 +322,13 @@ function isNumber(evt, thisAttr) {
 				                 <span class="form-group m-none dis-inline vertical-align-middle">
 				                <c:choose>
 	                     	     <c:when test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}">
-	                     	       <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-				                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+	                     	       <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+				                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays" value="" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
 				                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 	                     	     </c:when>
 	                     	     <c:otherwise>
-	                     	        <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-				                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+	                     	        <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+				                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
 				                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 	                     	      </c:otherwise>
 	                             </c:choose>
@@ -383,7 +383,7 @@ function isNumber(evt, thisAttr) {
 			               <div>
 				                <span class="pr-md">Anchor Date</span>
 				                <span>
-					                 <select class="signDropDown selectpicker sign-box" title="Select" name="questionnairesFrequenciesBo.yDaysSign" id="onetimeYSign">
+					                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" title="Select" name="questionnairesFrequenciesBo.yDaysSign" id="onetimeYSign">
 					                          <option value="0" ${not questionnaireBo.questionnairesFrequenciesBo.yDaysSign ?'selected':''}>+</option>
 					                          <option value="1" ${questionnaireBo.questionnairesFrequenciesBo.yDaysSign ?'selected':''}>-</option>
 					                 </select>
@@ -392,13 +392,13 @@ function isNumber(evt, thisAttr) {
 				                 <span class="form-group m-none dis-inline vertical-align-middle">
 				                 <c:choose>
 	                     	     <c:when test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}">
-	                     	       <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-				                     placeholder="Y" name="questionnairesFrequenciesBo.timePeriodToDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+	                     	       <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+				                     placeholder="Y" name="questionnairesFrequenciesBo.timePeriodToDays" value="" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
 				                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 	                     	     </c:when>
 	                     	     <c:otherwise>
-	                     	        <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-				                     placeholder="Y" name="questionnairesFrequenciesBo.timePeriodToDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodToDays}" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
+	                     	        <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+				                     placeholder="Y" name="questionnairesFrequenciesBo.timePeriodToDays" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodToDays}" <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
 				                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 	                     	      </c:otherwise>
 	                             </c:choose>
@@ -466,14 +466,14 @@ function isNumber(evt, thisAttr) {
 	                                 <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
 					                <span class="pr-md">Anchor Date</span>
 					                <span>
-						                 <select class="signDropDown selectpicker sign-box" title="Select" name="questionnairesFrequenciesList[0].xDaysSign" id="dailyXSign">
+						                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" title="Select" name="questionnairesFrequenciesList[0].xDaysSign" id="dailyXSign">
 						                          <option value="0" ${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0) && not questionnaireBo.questionnairesFrequenciesList[0].xDaysSign ?'selected':''}>+</option>
 						                          <option value="1" ${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0) && questionnaireBo.questionnairesFrequenciesList[0].xDaysSign ?'selected':''}>-</option>
 						                 </select>
 					                </span>
 					                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                     	        <input id="dailyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-					                     placeholder="X" name="questionnairesFrequenciesList[0].timePeriodFromDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0)?questionnaireBo.questionnairesFrequenciesList[0].timePeriodFromDays:''}"
+		                     	        <input id="dailyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+					                     placeholder="X" name="questionnairesFrequenciesList[0].timePeriodFromDays" value="${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0)?questionnaireBo.questionnairesFrequenciesList[0].timePeriodFromDays:''}"
 					                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 					                 	 <span class="help-block with-errors red-txt"></span>
 					                 </span>
@@ -554,14 +554,14 @@ function isNumber(evt, thisAttr) {
 	                                 <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
 					                <span class="pr-md">Anchor Date</span>
 					                <span>
-						                 <select class="signDropDown selectpicker sign-box" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="weeklyXSign">
+						                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="weeklyXSign">
 						                          <option value="0" ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 						                          <option value="1" ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 						                 </select>
 					                </span>
 					                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                     	        <input id="weeklyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-					                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
+		                     	        <input id="weeklyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+					                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
 					                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 					                 	 <span class="help-block with-errors red-txt"></span>
 					                 </span>
@@ -634,14 +634,14 @@ function isNumber(evt, thisAttr) {
 	                                 <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
 					                <span class="pr-md">Anchor Date</span>
 					                <span>
-						                 <select class="signDropDown selectpicker sign-box" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="monthlyXSign">
+						                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="monthlyXSign">
 						                          <option value="0" ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 						                          <option value="1" ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 						                 </select>
 					                </span>
 					                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                     	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm " 
-					                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
+		                     	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" 
+					                     placeholder="X" name="questionnairesFrequenciesBo.timePeriodFromDays" value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
 					                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 					                 	 <span class="help-block with-errors red-txt"></span>
 					                 </span>
@@ -727,7 +727,7 @@ function isNumber(evt, thisAttr) {
 			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
-			                  <span class="addbtn addBtnDis align-span-center mr-md " onclick="addDate();">+</span>
+			                  <span class="addbtn addBtnDis align-span-center mr-md ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="addDate();">+</span>
 			                  <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="removeDate(this);"></span>
 			               </div>
 	                 	</c:forEach>
@@ -792,13 +792,13 @@ function isNumber(evt, thisAttr) {
 					                    <span class="light-txt opacity06"> Anchor Date </span>                   
 					                 </span>
 					                <span>
-						              <select class="signDropDown selectpicker sign-box" count='${customVar.index}' title="Select" name="questionnaireCustomScheduleBo[${customVar.index}].xDaysSign" id="xSign${customVar.index}">
+						              <select class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" count='${customVar.index}' title="Select" name="questionnaireCustomScheduleBo[${customVar.index}].xDaysSign" id="xSign${customVar.index}">
 						                      <option value="0" ${not questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
 						                      <option value="1" ${questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>-</option>
 						              </select>
 					                </span>
 					                 <span class="form-group m-none dis-inline vertical-align-middle">
-					                     <input id="xdays${customVar.index}" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" 
+					                     <input id="xdays${customVar.index}" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" 
 					                     count='${customVar.index}' placeholder="X" name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodFromDays" value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
 					                     maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
 					                 	 <span class="help-block with-errors red-txt"></span>
@@ -808,14 +808,14 @@ function isNumber(evt, thisAttr) {
 					                 </span>
 					                 
 					                 <span>
-					                 	<select class="signDropDown selectpicker sign-box" count='${customVar.index}' title="Select" name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign" id="ySign0">
+					                 	<select class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" count='${customVar.index}' title="Select" name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign" id="ySign0">
 					                           <option value="0" ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 					                            <option value="1" ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
 					                    </select>
 					                 </span>
 					                 
 					            <span class="form-group m-none dis-inline vertical-align-middle">
-					                 <input id="ydays${customVar.index}" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" count='${customVar.index}' placeholder="Y" 
+					                 <input id="ydays${customVar.index}" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" count='${customVar.index}' placeholder="Y" 
 					                     	name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodToDays" value="${questionnaireCustomScheduleBo.timePeriodToDays}" maxlength="3" pattern="[0-9]+" data-pattern-error="Please enter valid number." required />
 					                 <span class="help-block with-errors red-txt"></span>
 					            </span>
@@ -825,10 +825,10 @@ function isNumber(evt, thisAttr) {
 						        </span>
 						             
 						        <span class="form-group  dis-inline vertical-align-middle pr-md" style="margin-bottom: -13px">
-						              <input id="manualTime${customVar.index}" type="text"  class="form-control clock" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" required/>
+						              <input id="manualTime${customVar.index}" type="text"  class="form-control clock ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" required/>
 						              <span class='help-block with-errors red-txt'></span>
 						       </span>
-			                  <span class="addbtn addBtnDis align-span-center mr-md " onclick="addDateAnchor();">+</span>
+			                  <span class="addbtn addBtnDis align-span-center mr-md ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="addDateAnchor();">+</span>
 			                  <span id="deleteAncchor" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="removeDateAnchor(this);"></span>
 			               </div>
 	                 	</c:forEach>
@@ -903,6 +903,10 @@ function isNumber(evt, thisAttr) {
 	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
 
+<c:if test="${questionnaireBo.shortTitleDuplicate > 0}">
+  $('span.addBtnDis').remove();
+  $('span.remBtnDis').remove();
+</c:if>
 
 var count = 0;
 var customCount = 0;
@@ -1288,7 +1292,7 @@ $(document).ready(function() {
 			$('.manuallyContainer').show();
 			$('.manuallyContainer').find('input:text').attr('required',true);
 			$(".manuallyAnchorContainer").hide();
-			$(".manuallyAnchorContainer").find('input:text').removeAttr('required',true);
+			$(".manuallyAnchorContainer").find('input:text,select').removeAttr('required',true);
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
 			$("#anchorDateId").val("");
@@ -1347,6 +1351,33 @@ $(document).ready(function() {
 			$('.monthlyStartCls').find('input:text').removeAttr('required');
 			$(".manuallyContainer").hide();
 			$(".manuallyContainer").find('input:text').removeAttr('required');
+    	}else{
+    		$(".onetimeanchorClass").hide();
+			$('.onetimeanchorClass').find('input:text').removeAttr('required');
+			$('.regularClass').show();
+			$('.regularClass').find('input:text').attr('required',true);
+			
+			$('.dailyStartCls').show();
+			$('.dailyStartCls').find('input:text').attr('required',true);
+			$(".dailyanchorDiv").hide();
+			$(".dailyanchorDiv").find('input:text').removeAttr('required',true);
+			
+			$('.weeklyStartCls').show();
+			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$(".weeklyanchorDiv").hide();
+			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
+			
+			$('.monthlyStartCls').show();
+			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$(".monthlyanchorDiv").hide();
+			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
+			
+			$('.manuallyContainer').show();
+			$('.manuallyContainer').find('input:text').attr('required',true);
+			$(".manuallyAnchorContainer").hide();
+			$(".manuallyAnchorContainer").find('input:text,select').removeAttr('required',true);
+			$('.anchortypeclass').hide();
+			$('.anchortypeclass').removeAttr('required');
     	}
     }
     
@@ -2487,6 +2518,7 @@ function doneQuestionnaire(item, actType, callback) {
     	var valForm = false;
     	var anchorForm = true;
     	var onetimeForm = true;
+    	$('.typeofschedule').prop('disabled', false);
     	if(actType !=='save'){
     		$("#status").val(true); 
     		if(scheduletype == 'AnchorDate'){
@@ -2589,9 +2621,11 @@ function deletStep(stepId,stepType){
 		    					if(isAnchorQuestionnaire){
 		    						$('#anchorspanId').prop('title','This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it.');
 		    						$('#schedule2').attr('disabled',true);
+		    						$('.schedule').attr('disabled',true);
 		    					}else{
-		    						$('#anchorspanId').prop('title','');
+		    						$('#anchorspanId').removeAttr('data-original-title');
 		    						$('#schedule2').attr('disabled',false);
+		    						$('.schedule').attr('disabled',false);
 		    					}
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
