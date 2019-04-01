@@ -335,7 +335,7 @@ public class FdahpStudyDesignerUtil {
 				String value = rb.getString(key);
 				hm.put(key, value);
 			}
-			/*ServletContext context = ServletContextHolder.getServletContext();
+			ServletContext context = ServletContextHolder.getServletContext();
 			Properties prop = new Properties();
 			prop.load(new FileInputStream(context
 					.getInitParameter("property_file_location_path")));
@@ -344,14 +344,8 @@ public class FdahpStudyDesignerUtil {
 				String key = (String) objectKeys.nextElement();
 				String value = prop.getProperty(key);
 				hm.put(key, value);
-			}*/
-			ResourceBundle rb1 = ResourceBundle.getBundle("application_local.properties");
-			keys = rb1.getKeys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
-				String value = rb1.getString(key);
-				hm.put(key, value);
 			}
+
 		} catch (Exception e) {
 			logger.error(
 					"FdahpStudyDesignerUtil - getAppProperties() - ERROR ", e);

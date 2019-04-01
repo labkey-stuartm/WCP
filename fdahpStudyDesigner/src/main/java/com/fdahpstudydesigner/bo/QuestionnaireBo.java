@@ -125,6 +125,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Column(name = "anchor_date_id")
 	private Integer anchorDateId;
+	
+	@Transient
+	private boolean anchorQuestionnaireExist = false;
 
 	public Boolean getActive() {
 		return active;
@@ -367,5 +370,13 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setAnchorDateId(Integer anchorDateId) {
 		this.anchorDateId = anchorDateId;
+	}
+
+	public boolean isAnchorQuestionnaireExist() {
+		return anchorQuestionnaireExist;
+	}
+
+	public void setAnchorQuestionnaireExist(boolean anchorQuestionnaireExist) {
+		this.anchorQuestionnaireExist = anchorQuestionnaireExist;
 	}
 }

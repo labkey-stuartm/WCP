@@ -6943,52 +6943,53 @@ public class StudyDAOImpl implements StudyDAO {
 //				} else {
 //					isExists = true;
 //				}
-				String subQuery = "";
-				if(!studyBo.isEnrollmentdateAsAnchordate())
-					subQuery = " AND a.name!='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'";
-				query = session
-						.createSQLQuery("SELECT a.id FROM anchordate_type a WHERE a.study_id ="+studyBo.getId()+" AND a.has_anchortype_draft=1"+subQuery);
-				anchorDateTypeIds = query.list();
-				if(anchorDateTypeIds!=null && !anchorDateTypeIds.isEmpty()) {
-					int count = 0;
-					Boolean isAnchorExist = false;
-					for(Integer anchorId: anchorDateTypeIds) {
-					   searchQuery = "select count(*) from questionnaires q where q.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and q.anchor_date_id="+anchorId;
-					   anchorCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
-						if (anchorCount == null || anchorCount.intValue()==0) {
-							searchQuery = "select count(*) from active_task a where a.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and a.anchor_date_id="+anchorId;
-							anchorCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
-							if(anchorCount == null || anchorCount.intValue()==0) {
-								searchQuery = "select count(*) from resources r where r.anchor_date_id="+anchorId;
-								anchorCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
-								if(anchorCount != null && anchorCount.intValue()>0) 
-									isAnchorExist =true;
-							}else {
-								isAnchorExist = true;
-							}
-						}else {
-							isAnchorExist = true;
-						}
-						if(isAnchorExist) {
-							count++;
-							isAnchorExist = false;
-						}	
-					}
-					if(anchorDateTypeIds.size() == count)
-						isExists = true;
-				}else {
-					isExists = true;
-				}
-				if (!isExists)
-					resourceAnchorFlag = false;
-
-			}
+				/** anchor date test **/
+//				String subQuery = "";
+//				if(!studyBo.isEnrollmentdateAsAnchordate())
+//					subQuery = " AND a.name!='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'";
+//				query = session
+//						.createSQLQuery("SELECT a.id FROM anchordate_type a WHERE a.study_id ="+studyBo.getId()+" AND a.has_anchortype_draft=1"+subQuery);
+//				anchorDateTypeIds = query.list();
+//				if(anchorDateTypeIds!=null && !anchorDateTypeIds.isEmpty()) {
+//					int count = 0;
+//					Boolean isAnchorExist = false;
+//					for(Integer anchorId: anchorDateTypeIds) {
+//					   searchQuery = "select count(*) from questionnaires q where q.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and q.anchor_date_id="+anchorId;
+//					   anchorCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+//						if (anchorCount == null || anchorCount.intValue()==0) {
+//							searchQuery = "select count(*) from active_task a where a.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and a.anchor_date_id="+anchorId;
+//							anchorCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+//							if(anchorCount == null || anchorCount.intValue()==0) {
+//								searchQuery = "select count(*) from resources r where r.anchor_date_id="+anchorId;
+//								anchorCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+//								if(anchorCount != null && anchorCount.intValue()>0) 
+//									isAnchorExist =true;
+//							}else {
+//								isAnchorExist = true;
+//							}
+//						}else {
+//							isAnchorExist = true;
+//						}
+//						if(isAnchorExist) {
+//							count++;
+//							isAnchorExist = false;
+//						}	
+//					}
+//					if(anchorDateTypeIds.size() == count)
+//						isExists = true;
+//				}else {
+//					isExists = true;
+//				}
+//				if (!isExists)
+//					resourceAnchorFlag = false;
+//
+//			}
 			// Anchor date Checking
-			if (!resourceAnchorFlag) {
-				//message = FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG;
-				message = FdahpStudyDesignerConstants.ANCHOR_ERROR_MSG;
-				return message;
-			} else {
+//			if (!resourceAnchorFlag) {
+//				//message = FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG;
+//				message = FdahpStudyDesignerConstants.ANCHOR_ERROR_MSG;
+//				return message;
+//			} else {
 				// getting activeTasks based on StudyId
 				query = session
 						.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
@@ -14,6 +15,7 @@ import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
+import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyQuestionnaireDAO {
@@ -119,4 +121,6 @@ public interface StudyQuestionnaireDAO {
 	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 	
 	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
+	
+	public String updateAnchordateInQuestionnaire(Session session, Transaction transaction, StudyVersionBo studyVersionBo, Integer questionnaireId,SessionObject sessionObject,Integer studyId, Integer stepId, Integer questionId, String stepType);
 }

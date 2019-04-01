@@ -2189,6 +2189,7 @@ function doneActiveTask(item, actType, callback) {
     	var anchorForm = true;
     	var onetimeForm = true;
     	var valForm = false;
+    	var anchorDateForm = true; 
     	$('.typeofschedule').prop('disabled', false);
     	if(actType !=='save'){
     		if(scheduletype == 'AnchorDate'){
@@ -2205,6 +2206,11 @@ function doneActiveTask(item, actType, callback) {
 	    		if(x != null && x != '' && typeof x != 'undefined'
 	    				&& y != null && y != '' && typeof y != 'undefined'){
 	    			onetimeForm = chkDaysValid(true);
+	    		}
+	    		if(scheduletype == 'AnchorDate'){
+	    			if($('#isLaunchStudy').is(':checked') && $('#isStudyLifeTime').is(':checked')){
+	    	    		anchorDateForm = false;
+	    			}
 	    		}
 	    	}else if(frequency == 'Manually Schedule'){
 	    		$("#customfrequencyId").val(frequency);
@@ -2231,12 +2237,19 @@ function doneActiveTask(item, actType, callback) {
     		valForm = true;
     	} 
     	if(valForm && anchorForm && onetimeForm) {
-			        saveActiveTask(item, actType, function(val) {
-			    			if(!val){
-			    				$('.scheduleTaskClass a').tab('show');
-			    			}
-							callback(val);
-					});
+    		if(anchorDateForm){
+    			saveActiveTask(item, actType, function(val) {
+	    			if(!val){
+	    				$('.scheduleTaskClass a').tab('show');
+	    			}
+					callback(val);
+			   });
+    		}else{
+    			showErrMsg("Please choose anchordays.");
+	    		$('.scheduleTaskClass a').tab('show');
+	    		if (callback)
+	    			callback(false);
+    		}
     	} else {
     		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleTaskClass a').tab('show');

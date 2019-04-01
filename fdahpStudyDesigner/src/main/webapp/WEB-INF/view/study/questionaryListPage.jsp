@@ -193,7 +193,12 @@ $(document).ready(function(){
 			    						$('#markAsTooltipId').removeAttr('data-original-title');
 			    					}
 			    				}else{
-			    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+			    					if(status == 'FAILUREanchorused'){
+			    						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Questionnaire already live anchorbased.unable to delete");
+			    					}else{
+			    						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+				    					
+			    					}
 			    					$('#alertMsg').show();
 			    	            }
 			    				setTimeout(hideDisplayMessage, 4000);

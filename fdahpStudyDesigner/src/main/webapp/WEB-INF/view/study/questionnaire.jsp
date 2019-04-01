@@ -2518,6 +2518,7 @@ function doneQuestionnaire(item, actType, callback) {
     	var valForm = false;
     	var anchorForm = true;
     	var onetimeForm = true;
+    	var anchorDateForm = true; 
     	$('.typeofschedule').prop('disabled', false);
     	if(actType !=='save'){
     		$("#status").val(true); 
@@ -2535,6 +2536,11 @@ function doneQuestionnaire(item, actType, callback) {
 	    		if(x != null && x != '' && typeof x != 'undefined'
 	    				&& y != null && y != '' && typeof y != 'undefined'){
 	    			onetimeForm = chkDaysValid(true);
+	    		}
+	    		if(scheduletype == 'AnchorDate'){
+	    			if($('#isLaunchStudy').is(':checked') && $('#isStudyLifeTime').is(':checked')){
+	    	    		anchorDateForm = false;
+	    			}
 	    		}
 	    	}else if(frequency == 'Manually Schedule'){
 	    		$("#customfrequencyId").val(frequency);
@@ -2562,15 +2568,22 @@ function doneQuestionnaire(item, actType, callback) {
     		$("#status").val(false);
     	} 
     	if(valForm && anchorForm && onetimeForm) {
-    		saveQuestionnaire(item, function(val) {
-    			if(!val){
-    				$('.scheduleQusClass a').tab('show');
-    			} else if(actType ==='save'){
-    				showSucMsg("Content saved as draft.");
-    				$("body").removeClass("loading");
-    			}
-				callback(val);
-			});
+    		if(anchorDateForm){
+    			saveQuestionnaire(item, function(val) {
+        			if(!val){
+        				$('.scheduleQusClass a').tab('show');
+        			} else if(actType ==='save'){
+        				showSucMsg("Content saved as draft.");
+        				$("body").removeClass("loading");
+        			}
+    				callback(val);
+    			});
+    		}else{
+    			showErrMsg("Please choose anchordays.");
+	    		$('.scheduleTaskClass a').tab('show');
+	    		if (callback)
+	    			callback(false);
+    		}
     	} else {
     		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleQusClass a').tab('show');
@@ -2620,15 +2633,21 @@ function deletStep(stepId,stepType){
 		    					var isAnchorQuestionnaire = jsonobject.isAnchorQuestionnaire;
 		    					if(isAnchorQuestionnaire){
 		    						$('#anchorspanId').prop('title','This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it.');
+		    						$('#anchorspanId').attr('disabled',true);
 		    						$('#schedule2').attr('disabled',true);
 		    						$('.schedule').attr('disabled',true);
 		    					}else{
 		    						$('#anchorspanId').removeAttr('data-original-title');
+		    						$('#anchorspanId').attr('disabled',false);
 		    						$('#schedule2').attr('disabled',false);
 		    						$('.schedule').attr('disabled',false);
 		    					}
 		    				}else{
-		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					if(status == 'FAILUREanchorused'){
+		    						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Questionnaire step already live anchorbased.unable to delete");
+		    					}else{
+		    					    $("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					}
 		    					$('#alertMsg').show();
 		    	            }
 		    				setTimeout(hideDisplayMessage, 4000);

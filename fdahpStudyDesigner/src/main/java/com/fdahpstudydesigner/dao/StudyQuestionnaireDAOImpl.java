@@ -45,6 +45,7 @@ import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
@@ -1068,6 +1069,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						+ formMappingBo.getSequenceNo();
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
+				//delete anchordate start
+				StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
+				if(studyBo!=null) {
+				  message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyBo.getId(), null, questionId, "");
+				  if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+						 return message;
+				  }
+				}
+				//delete anchordate end
 				if (studyVersionBo != null) {
 					// doing the soft delete after study is launched
 					formMappingBo.setActive(false);
@@ -1090,18 +1100,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					query = session.createQuery(deleteSubResponse);
 					query.executeUpdate();
 				} else {
-					//delete anchordate start
-					String searchQuery = "from QuestionsBo QBO where QBO.id="+questionId;
-					QuestionsBo questionsBo = (QuestionsBo) session.createQuery(searchQuery).uniqueResult();
-					if(questionsBo!=null) {
-						if(questionsBo.getAnchorDateId()!=null) {
-							String delQury = "delete AnchorDateTypeBo a where a.id="+questionsBo.getAnchorDateId();
-							query = session.createQuery(delQury);
-							query.executeUpdate();
-						}
-					}
-					//delete anchordate end
-					
 					// doing the hard delete before study launched
 					String deleteQuery = "delete QuestionsBo QBO where QBO.id="
 							+ questionId;
@@ -1183,6 +1181,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					"customStudyId", customStudyId);
 			query.setMaxResults(1);
 			studyVersionBo = (StudyVersionBo) query.uniqueResult();
+			
+			//Anchordate delete based on stepId start
+			if(!stepType.equalsIgnoreCase(
+					FdahpStudyDesignerConstants.INSTRUCTION_STEP)) {
+				StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
+				if(studyBo!=null) {
+					 message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, questionnaireId, sessionObject, studyBo.getId(), stepId, null, stepType);
+					 if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+						 return message;
+					 }
+				}
+			}
+			//Anchordate delete based on stepId end
 
 			if (studyVersionBo != null) {
 				// doing the soft delete after study launch
@@ -1199,7 +1210,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
 					questionnairesStepsBo.setActive(false);
 					session.saveOrUpdate(questionnairesStepsBo);
-
+					
 					query = session
 							.createSQLQuery(
 									"CALL deleteQuestionnaireStep(:questionnaireId,:modifiedOn,:modifiedBy,:sequenceNo,:stepId,:steptype)")
@@ -1355,7 +1366,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						+ questionnairesStepsBo.getSequenceNo();
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
-
+				
 				if (stepType
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)) {
 					String deleteQuery = "delete InstructionsBo IBO where IBO.id="
@@ -1374,18 +1385,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
 				} else if (stepType
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)) {
-					//delete anchordate start
-					searchQuery = "from QuestionsBo QBO where QBO.id="+stepId;
-					QuestionsBo questionsBo = (QuestionsBo) session.createQuery(searchQuery).uniqueResult();
-					if(questionsBo!=null) {
-						if(questionsBo.getAnchorDateId()!=null) {
-							String delQury = "delete AnchorDateTypeBo a where a.id="+questionsBo.getAnchorDateId();
-							query = session.createQuery(delQury);
-							query.executeUpdate();
-						}
-					}
-					//delete anchordate end
-					
 					String deleteQuery = "delete QuestionsBo QBO where QBO.id="
 							+ stepId;
 					query = session.createQuery(deleteQuery);
@@ -1415,25 +1414,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 							+ stepId;
 					query = session.createQuery(subQuery);
 					if (query.list() != null && !query.list().isEmpty()) {
-						//delete anchordate start
-						searchQuery = "from QuestionsBo QBO where QBO.id in ("+subQuery+")";
-						List<QuestionsBo> questionsBoList = session.createQuery(searchQuery).list();
-						if(!questionsBoList.isEmpty() && questionsBoList.size()>0) {
-							//List<Integer> qIds = new ArrayList<Integer>();
-							for(QuestionsBo questionsBo: questionsBoList) {
-								if(questionsBo.getAnchorDateId()!=null) {
-									query = session.createQuery("delete AnchorDateTypeBo a where a.id="+questionsBo.getAnchorDateId());
-									query.executeUpdate();
-								  //qIds.add(questionsBo.getId());
-								}
-							}
-							/*if(!qIds.isEmpty() && qIds.size()>0) {
-								session.createSQLQuery(
-										"DELETE FROM anchordate_type WHERE id in("
-												+ StringUtils.join(qIds, ",") + ")")
-										.executeUpdate();*/
-						}
-						//delete anchordate end
 						String deleteQuery = "delete QuestionsBo QBO where QBO.id IN ("
 								+ subQuery + ")";
 						query = session.createQuery(deleteQuery);
@@ -1515,6 +1495,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			query.setMaxResults(1);
 			studyVersionBo = (StudyVersionBo) query.uniqueResult();
 
+			
+			//delete anchordate from question start 
+			/***------------------**/
+			 message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, questionnaireId, sessionObject, studyId, null, null, "");
+			 if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+				 return message;
+			 }
+			/******-----------------------**/
+			//delete anchordate from question end	
+			
+			
 			if (studyVersionBo != null) {
 				// doing the soft delete after study launch
 				query = session
@@ -3194,11 +3185,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		logger.info("StudyQuestionnaireDAOImpl - getStudyQuestionnairesByStudyId() - Starts");
 		Session session = null;
 		List<QuestionnaireBo> questionnaires = null;
+		String searchQuery = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(studyId)) {
 				if (isLive) {
-					String searchQuery = "From QuestionnaireBo QBO WHERE QBO.customStudyId ='"
+					searchQuery = "From QuestionnaireBo QBO WHERE QBO.customStudyId ='"
 							+ studyId
 							+ "' and QBO.active=1 and QBO.live=1 order by QBO.createdDate DESC";
 					query = session.createQuery(searchQuery);
@@ -3248,7 +3240,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.study_id in(select s.id from studies s where s.custom_study_id='"
 						+ customStudyId
-						+ "' and s.is_live=0) and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
+						+ "' and s.is_live=0) and qq.active=1 and q.active=1;";
 				BigInteger count = (BigInteger) session.createSQLQuery(
 						searchQuery).uniqueResult();
 				if (count.intValue() > 0) {
@@ -3259,7 +3251,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and study_id in (select s.id from studies s where s.custom_study_id='"
 							+ customStudyId
-							+ "' and s.is_live=0) and q.use_anchor_date=1 and q.active=1";
+							+ "' and s.is_live=0) and q.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(
 							subQuery).uniqueResult();
 					if (subCount != null && subCount.intValue() > 0) {
@@ -3271,7 +3263,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.study_id="
 						+ studyId
-						+ " and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
+						+ " and qq.active=1 and q.active=1;";
 				BigInteger count = (BigInteger) session.createSQLQuery(
 						searchQuery).uniqueResult();
 				if (count.intValue() > 0) {
@@ -3282,7 +3274,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and study_id="
 							+ studyId
-							+ " and q.use_anchor_date=1 and q.active=1";
+							+ " and q.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(
 							subQuery).uniqueResult();
 					if (subCount != null && subCount.intValue() > 0) {
@@ -3955,9 +3947,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				}
 				}
 			 }else {
-			     if(questionsBo.getAnchorDateId()!=null)
-				  session.createQuery("delete from AnchorDateTypeBo where id="+questionsBo.getAnchorDateId()).executeUpdate();
-				 questionsBo.setAnchorDateId(null);
+			     if(questionsBo.getAnchorDateId()!=null && questionsBo.getId() != null) {
+			    	 query = session.getNamedQuery("getStudyByCustomStudyId").setString(
+								"customStudyId", questionsBo.getCustomStudyId());
+					 query.setMaxResults(1);
+					 StudyVersionBo	studyVersionBo = (StudyVersionBo) query.uniqueResult();
+			    	 Integer studyId = this.getStudyIdByCustomStudy(session, questionsBo.getCustomStudyId());
+			    	 SessionObject sessionObject = new SessionObject();
+			    	 sessionObject.setUserId(questionsBo.getModifiedBy());
+			    	 updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyId, null, questionsBo.getId(), "");
+			    	 //session.createQuery("delete from AnchorDateTypeBo where id="+questionsBo.getAnchorDateId()).executeUpdate();
+					 questionsBo.setAnchorDateId(null); 
+			     }
 		     }
 			 //Anchordate Text end
 			session.saveOrUpdate(questionsBo);
@@ -4587,8 +4588,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						 }
 						}
 					 }else {
-						     if(questionnairesStepsBo.getQuestionsBo().getAnchorDateId()!=null)
-							  session.createQuery("delete from AnchorDateTypeBo where id="+questionnairesStepsBo.getQuestionsBo().getAnchorDateId()).executeUpdate();
+						     if(questionnairesStepsBo.getQuestionsBo().getAnchorDateId()!=null && questionsBo != null && questionsBo.getId()!=null) {
+						    	 query = session.getNamedQuery("getStudyByCustomStudyId").setString(
+											"customStudyId", questionsBo.getCustomStudyId());
+								 query.setMaxResults(1);
+								 StudyVersionBo	studyVersionBo = (StudyVersionBo) query.uniqueResult();
+						    	 Integer studyId = this.getStudyIdByCustomStudy(session, questionsBo.getCustomStudyId());
+						    	 updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyId, null, questionsBo.getId(), "");
+						      }
+							  //session.createQuery("delete from AnchorDateTypeBo where id="+questionnairesStepsBo.getQuestionsBo().getAnchorDateId()).executeUpdate();
 							 questionsBo.setAnchorDateId(null);
 					 }
 					 //Anchordate Text end
@@ -5175,7 +5183,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="
 						+ questionnaireId
-						+ " and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
+						+ " and qq.active=1 and q.active=1;";
 				BigInteger count = (BigInteger) session.createSQLQuery(
 						searchQuery).uniqueResult();
 				if (count.intValue() > 0) {
@@ -5186,7 +5194,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
 							+ questionnaireId
-							+ " and q.use_anchor_date=1 and q.active=1";
+							+ " and q.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(
 							subQuery).uniqueResult();
 					if (subCount != null && subCount.intValue() > 0) {
@@ -5200,6 +5208,142 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistByQuestionnaire - Ends");
 		return isExist;
 	}
+     
+	  @SuppressWarnings("unchecked")
+	  @Override 
+	  public String updateAnchordateInQuestionnaire(Session session, Transaction transaction, StudyVersionBo studyVersionBo, Integer questionnaireId,
+			  SessionObject sessionObject,Integer studyId, Integer stepId, Integer questionId,String stepType) {
+	  logger.info("StudyQuestionnaireDAOImpl - updateAnchordateInQuestionnaire - Starts");
+	  List<Integer> anchorIds = new ArrayList<Integer>();
+	  List<Integer> anchorExistIds = new ArrayList<Integer>();
+	  Boolean isAnchorUsed = false; 
+	  String searchQuery = "";
+	  String message = FdahpStudyDesignerConstants.FAILURE;
+	  try {
+		     if(!stepType.isEmpty()) {
+		    	 if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)) {
+		    		 searchQuery = "select q.anchor_date_id from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
+								+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="+ questionnaireId
+								+ " and qsq.step_id="+stepId
+								+ " and qq.active=1 and q.active=1;";
+							List<Integer> aIds = session.createSQLQuery(searchQuery).list();
+							if(aIds!=null && aIds.size()>0)
+						    	anchorIds.addAll(aIds);
+		    	 }else if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)) {
+		    		 String subQuery = "select q.anchor_date_id from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
+								+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
+								+ questionnaireId
+								+ " and f.form_id="+stepId
+								+ " and q.active=1";
+							 List<Integer> aaIds = session.createSQLQuery(subQuery).list();
+						     if(aaIds!=null && aaIds.size()>0)
+						    	 anchorIds.addAll(aaIds);
+		    	 }
+		     }
+		     //Question level deletion
+			 if(questionId!=null) {
+				   searchQuery = "select q.anchor_date_id from questions q where q.active=1 and q.id="+questionId;
+				   List<Integer> aIds = session.createSQLQuery(searchQuery).list();
+				   if(aIds!=null && aIds.size()>0)
+				    	anchorIds.addAll(aIds);
+			 }
+		     //Questionnaire level deletion
+		     if(stepId==null && questionnaireId!=null) {
+		    	// checking in the question step anchor date is selected or not
+				    searchQuery = "select q.anchor_date_id from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
+						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="+ questionnaireId
+						+ " and qq.active=1 and q.active=1;";
+					List<Integer> aIds = session.createSQLQuery(searchQuery).list();
+				    if(aIds!=null && aIds.size()>0)
+				    	anchorIds.addAll(aIds);
+					// checking in the form step question anchor date is
+					// selected or not
+					String subQuery = "select q.anchor_date_id from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
+						+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
+						+ questionnaireId
+						+ " and q.active=1";
+					 List<Integer> aaIds = session.createSQLQuery(subQuery).list();
+				     if(aaIds!=null && aaIds.size()>0)
+				    	 anchorIds.addAll(aaIds);
+		      }
+		      if(!anchorIds.isEmpty() && anchorIds.size()>0) {
+		    	 searchQuery = "select q.id from questionnaires q where q.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and q.anchor_date_id in("+StringUtils.join(anchorIds, ",")+")";
+		    	 anchorExistIds = session.createSQLQuery(searchQuery).list();
+		    	 if(!anchorExistIds.isEmpty() && anchorExistIds.size()>0) {
+		    		 isAnchorUsed = true;
+		    	 }else {
+		    		 searchQuery = "select q.id from active_task q where q.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and q.anchor_date_id in("+StringUtils.join(anchorIds, ",")+")";
+			    	 anchorExistIds = session.createSQLQuery(searchQuery).list();
+			    	 if(!anchorExistIds.isEmpty() && anchorExistIds.size()>0) {
+			    		 isAnchorUsed = true;
+			    	 }else {
+			    		 searchQuery = "select q.id from resources q where q.anchor_date_id in("+StringUtils.join(anchorIds, ",")+")";
+				    	 anchorExistIds = session.createSQLQuery(searchQuery).list();
+				    	 if(!anchorExistIds.isEmpty() && anchorExistIds.size()>0) {
+				    		 isAnchorUsed = true;
+				    	 }
+			    	 }
+		    	 }
+		    	 if(studyVersionBo!=null) {
+						if(isAnchorUsed) {
+							message = FdahpStudyDesignerConstants.FAILURE+"anchorused";
+							return message;
+						}
+					}else {
+						if(isAnchorUsed) {
+							StudySequenceBo studySequence = (StudySequenceBo) session
+									.getNamedQuery("getStudySequenceByStudyId")
+									.setInteger("studyId", studyId)
+									.uniqueResult();
+						  if (studySequence != null) {
+							  int count1 = session.createSQLQuery("update questionnaires set status=0,anchor_date_id=null,"
+										+ "modified_by="+sessionObject.getUserId()+",modified_date='"+FdahpStudyDesignerUtil.getCurrentDateTime()+
+										"' where active=1 and anchor_date_id in("+StringUtils.join(anchorIds, ",")+")").executeUpdate();
+								if(count1>0) {
+									studySequence.setStudyExcQuestionnaries(false);
+									auditLogDAO.updateDraftToEditedStatus(session, transaction,
+											sessionObject.getUserId(),
+											FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE,
+											studyId);
+								}
+								int count2 = session.createSQLQuery("update active_task set action=0 ,anchor_date_id=null, modified_by="+sessionObject.getUserId()
+										+ ",modified_date='"+ FdahpStudyDesignerUtil.getCurrentDateTime()+
+										"' where active=1 and anchor_date_id in("+StringUtils.join(anchorIds, ",")+")").executeUpdate();
+								if(count2>0) {
+									studySequence.setStudyExcActiveTask(false); 
+									auditLogDAO.updateDraftToEditedStatus(session, transaction,
+											sessionObject.getUserId(),
+											FdahpStudyDesignerConstants.DRAFT_ACTIVETASK,
+											studyId);
+								}
+								int count3 = session.createSQLQuery("update resources set action=0,anchor_date_id=null "
+										+ "where status=1 and anchor_date_id in("+StringUtils.join(anchorIds, ",")+")").executeUpdate();
+								
+								if(count3>0) {
+									studySequence.setMiscellaneousResources(false);
+									auditLogDAO.updateDraftToEditedStatus(session, transaction,
+											sessionObject.getUserId(),
+											FdahpStudyDesignerConstants.DRAFT_STUDY,
+											studyId);
+								}
+							session.saveOrUpdate(studySequence);
+						  }
+						}
+						String deleteAncQuery = "delete from anchordate_type"  
+							    +" where id IN("+StringUtils.join(anchorIds, ",")+")";
+						query = session.createSQLQuery(deleteAncQuery);
+						query.executeUpdate();
+						message = FdahpStudyDesignerConstants.SUCCESS;
+				  }
+		     }
+	      } catch (Exception e) { 
+		  transaction.rollback(); logger.error("StudyQuestionnaireDAOImpl - updateAnchordateInQuestionnaire - ERROR ",e); 
+		  }
+	  logger.info("StudyQuestionnaireDAOImpl - updateAnchordateInQuestionnaire - Ends");
+	return message; 
+	}
+	 
+	
 	
 	
 }

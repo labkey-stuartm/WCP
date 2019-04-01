@@ -601,7 +601,11 @@ function deletQuestion(formId,questionId){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
 		    				}else{
-		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					if(status == 'FAILUREanchorused'){
+		    						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Form Step Question already live anchorbased.unable to delete");
+		    					}else{
+		    					    $("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					}
 		    					$('#alertMsg').show();
 		    	            }
 		    				setTimeout(hideDisplayMessage, 4000);
