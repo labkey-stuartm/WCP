@@ -3282,6 +3282,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					}
 				}
 			}
+			if(!isExists) {
+				char isEnrollAnchorExist = (char) session.createSQLQuery("select s.enrollmentdate_as_anchordate from studies s where s.id="+studyId).uniqueResult();
+				if(isEnrollAnchorExist!=' ' && isEnrollAnchorExist == 'Y')
+					isExists = true;
+			}
 		} catch (Exception e) {
 			logger.error(
 					"StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - ERROR ",
