@@ -181,4 +181,6 @@ public interface StudyService {
 			Integer eligibilityTestId);
 	
 	public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+	
+	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
 }

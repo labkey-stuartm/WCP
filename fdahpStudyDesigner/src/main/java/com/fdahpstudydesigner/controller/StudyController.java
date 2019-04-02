@@ -5109,7 +5109,8 @@ public class StudyController {
 		List<StudyPermissionBO> studyPermissionList = null;
 		List<Integer> permissions = null;
 		String user = "";
-		boolean isAnchorForEnrollment = false;
+		boolean isAnchorForEnrollmentLive = false;
+		boolean isAnchorForEnrollmentDraft = false;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -5192,8 +5193,11 @@ public class StudyController {
 							.removeAttribute(
 									sessionStudyCount
 											+ FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
-					isAnchorForEnrollment = studyService.isAnchorDateExistForEnrollment(studyBo.getId(), studyBo.getCustomStudyId());
-					map.addAttribute("isAnchorForEnrollment", isAnchorForEnrollment);
+					isAnchorForEnrollmentLive = studyService.isAnchorDateExistForEnrollment(studyBo.getId(), studyBo.getCustomStudyId());
+					isAnchorForEnrollmentDraft = studyService.isAnchorDateExistForEnrollmentDraftStudy(studyBo.getId(), studyBo.getCustomStudyId());
+					map.addAttribute("isAnchorForEnrollmentLive", isAnchorForEnrollmentLive);
+					map.addAttribute("isAnchorForEnrollmentDraft", isAnchorForEnrollmentDraft);
+					
 					mav = new ModelAndView(
 							FdahpStudyDesignerConstants.VIEW_SETTING_AND_ADMINS,
 							map);

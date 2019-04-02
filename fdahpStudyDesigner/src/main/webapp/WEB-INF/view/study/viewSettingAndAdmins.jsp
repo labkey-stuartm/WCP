@@ -90,7 +90,7 @@ table.dataTable thead th:last-child{
                             <label for="inlineRadio11">Yes</label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" id="inlineRadio22" value="No" name="enrollmentdateAsAnchordate" ${isAnchorForEnrollment?'disabled':''} <c:if test="${studyBo.enrollmentdateAsAnchordate eq false}">checked</c:if> required>
+                            <input type="radio" id="inlineRadio22" value="No" name="enrollmentdateAsAnchordate" ${isAnchorForEnrollmentLive?'disabled':''} <c:if test="${studyBo.enrollmentdateAsAnchordate eq false}">checked</c:if> required>
                             <label for="inlineRadio22">No</label>
                         </span>
                         <div class="help-block with-errors red-txt"></div>
@@ -500,6 +500,7 @@ function platformTypeValidation(buttonText){
 function submitButton(buttonText){
 	setAllowRejoinText();
 	admins() //Pradyumn
+	var isAnchorForEnrollmentDraft = '${isAnchorForEnrollmentDraft}';
 	if(buttonText === 'save'){
 		$('#settingfoFormId').validator('destroy');
 		$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
@@ -507,6 +508,7 @@ function submitButton(buttonText){
         $("#settingfoFormId").submit();
 	}else{
 		var retainParticipant = $('input[name=retainParticipant]:checked').val();
+		var enrollmentdateAsAnchordate = $('input[name=enrollmentdateAsAnchordate]:checked').val();
         if(retainParticipant){
         	if(retainParticipant=='All')
         		retainParticipant = 'Participant Choice';
@@ -525,13 +527,16 @@ function submitButton(buttonText){
 			    },
 			    callback: function(result) {
 			        if (result) {
-			        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
-			        	$("#buttonText").val('completed');
-	                    $("#settingfoFormId").submit();
+// 			        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
+// 			        	$("#buttonText").val('completed');
+// 	                    $("#settingfoFormId").submit();
+	                    //phase2a anchor
+	                    showWarningForAnchor(isAnchorForEnrollmentDraft, enrollmentdateAsAnchordate);
+	                   //phase 2a anchor  
 			        }else{
 			        	$('#completedId').removeAttr('disabled');
 			        }
-			    }
+			     }
 				});
         }else{
         	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
@@ -664,4 +669,36 @@ function admins(){
 		    });
 		}
 	</c:if>
+	function showWarningForAnchor(isAnchorForEnrollmentDraft, enrollmentdateAsAnchordate){
+		if(isAnchorForEnrollmentDraft == 'true' && enrollmentdateAsAnchordate=='No'){
+        	var text = "You have chosen not to use Enrollment Date as an Anchor Date.You will need to revise the schedules of Target Activities or Resources,if any, that were set based on the Enrollment Date.Buttons: OK, Cancel.";
+        	bootbox.confirm({
+        		closeButton: false,
+        		message: text,
+        		buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(valid) {
+			    	if (valid) {
+			    		console.log(1);
+			    		$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
+			        	$("#buttonText").val('completed');
+	                    $("#settingfoFormId").submit();
+			    	}else{
+			    		console.log(2);
+			    		$('#completedId').removeAttr('disabled');
+			    	}
+			    }
+        	});
+        }else{
+        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
+        	$("#buttonText").val('completed');
+        	$("#settingfoFormId").submit();
+        }
+	}
 </script>

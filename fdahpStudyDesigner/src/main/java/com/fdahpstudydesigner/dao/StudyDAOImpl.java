@@ -4861,6 +4861,9 @@ public class StudyDAOImpl implements StudyDAO {
 							"from StudySequenceBo where studyId="
 									+ studyBo.getId()).uniqueResult();
 					if (study != null && studySequence != null) {
+						//validation of anchor date 
+						updateAnchordateForEnrollmentDate(study, studyBo, session, transaction);
+						//validation of anchor date 
 						study.setPlatform(studyBo.getPlatform());
 						study.setAllowRejoin(studyBo.getAllowRejoin());
 						study.setEnrollingParticipants(studyBo
@@ -4873,6 +4876,12 @@ public class StudyDAOImpl implements StudyDAO {
 						study.setModifiedOn(FdahpStudyDesignerUtil
 								.getCurrentDateTime());
 						//Phase2a code Start(adding enrollment date as anchor date(yes/no))
+						if(studyBo.isEnrollmentdateAsAnchordate()) {
+							if(studyBo.isEnrollmentdateAsAnchordate() != study.isEnrollmentdateAsAnchordate()) {
+								
+							}
+							
+						}
 						study.setEnrollmentdateAsAnchordate(studyBo.isEnrollmentdateAsAnchordate());
 						//Phase2a code end
 						session.saveOrUpdate(study);
@@ -7504,7 +7513,7 @@ public class StudyDAOImpl implements StudyDAO {
 				searchQuery = "select count(*) from questionnaires qr" + 
 						" where qr.anchor_date_id IS NOT NULL "
 						+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') " 
-						+"and (qr.study_id="+studyId+" || qr.custom_study_id='"+customStudyId+"') and qr.active=1";
+						+"and qr.custom_study_id='"+customStudyId+"' and qr.active=1";
 				BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 				if (count.intValue() > 0) {
 					isExist = true;
@@ -7513,7 +7522,7 @@ public class StudyDAOImpl implements StudyDAO {
 					searchQuery = "select count(*) from active_task qr" + 
 							" where qr.anchor_date_id IS NOT NULL "
 							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') " 
-							+"and (qr.study_id="+studyId+" || qr.custom_study_id='"+customStudyId+"') and qr.active=1";
+							+"and qr.custom_study_id='"+customStudyId+"' and qr.active=1";
 					BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 					if (subCount != null && subCount.intValue() > 0) {
 						isExist = true;
@@ -7521,7 +7530,7 @@ public class StudyDAOImpl implements StudyDAO {
 					searchQuery = "select count(*) from resources qr" + 
 							" where qr.anchor_date_id IS NOT NULL "
 							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') "
-							+"and (qr.study_id="+studyId+" || qr.custom_study_id='"+customStudyId+"') and qr.status=1";
+							+"and qr.custom_study_id='"+customStudyId+"' and qr.status=1";
 					BigInteger sub1Count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 					if (sub1Count != null && sub1Count.intValue() > 0) {
 						isExist = true;
@@ -7533,5 +7542,132 @@ public class StudyDAOImpl implements StudyDAO {
 		}
 		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollment - Ends");
 		return isExist;
+	}
+
+	@Override
+	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId) {
+		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
+		Session session = null;
+		Boolean isExist = false;
+		String searchQuery = "";
+		try {
+			 session = hibernateTemplate.getSessionFactory().openSession();
+			// checking in the questionnaire step anchor date is selected or not
+				searchQuery = "select count(*) from questionnaires qr" + 
+						" where qr.anchor_date_id IS NOT NULL "
+						+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') " 
+						+"and qr.study_id="+studyId+" and qr.active=1";
+				BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+				if (count.intValue() > 0) {
+					isExist = true;
+				}else{
+					//activetask target anchordate
+					searchQuery = "select count(*) from active_task qr" + 
+							" where qr.anchor_date_id IS NOT NULL "
+							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') " 
+							+"and qr.study_id="+studyId+" and qr.active=1";
+					BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+					if (subCount != null && subCount.intValue() > 0) {
+						isExist = true;
+					}else {
+					searchQuery = "select count(*) from resources qr" + 
+							" where qr.anchor_date_id IS NOT NULL "
+							+"and qr.anchor_date_id=(select t.id from anchordate_type t where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+customStudyId+"') "
+							+"and qr.study_id="+studyId+" and qr.status=1";
+					BigInteger sub1Count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+					if (sub1Count != null && sub1Count.intValue() > 0) {
+						isExist = true;
+					}
+				}
+			}	
+		}catch(Exception e) {
+			
+		}
+		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
+		return isExist;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String updateAnchordateForEnrollmentDate(StudyBo oldStudy, StudyBo updatedStudy, Session session, Transaction transaction) {
+		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
+		Boolean isAnchorUsed = false; 
+		String searchQuery = "";
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		List<Integer> anchorIds = new ArrayList<Integer>();
+		List<Integer> anchorExistIds = new ArrayList<Integer>();
+		
+		try {
+			if(oldStudy.isEnrollmentdateAsAnchordate() && !updatedStudy.isEnrollmentdateAsAnchordate()) {
+				
+				anchorIds = session.createSQLQuery("select t.id from anchordate_type t "
+						+ "where t.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"' and t.custom_study_id='"+oldStudy.getCustomStudyId()+"'").list();
+			   if(!anchorIds.isEmpty() && anchorIds.size()>0) {
+		    	 
+				 searchQuery = "select q.id from questionnaires q where q.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and q.anchor_date_id in("+StringUtils.join(anchorIds, ",")+")";
+		    	 anchorExistIds = session.createSQLQuery(searchQuery).list();
+		    	 if(!anchorExistIds.isEmpty() && anchorExistIds.size()>0) {
+		    		 isAnchorUsed = true;
+		    	 }else {
+		    		 searchQuery = "select q.id from active_task q where q.schedule_type='"+FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE+"' and q.anchor_date_id in("+StringUtils.join(anchorIds, ",")+")";
+			    	 anchorExistIds = session.createSQLQuery(searchQuery).list();
+			    	 if(!anchorExistIds.isEmpty() && anchorExistIds.size()>0) {
+			    		 isAnchorUsed = true;
+			    	 }else {
+			    		 searchQuery = "select q.id from resources q where q.anchor_date_id in("+StringUtils.join(anchorIds, ",")+")";
+				    	 anchorExistIds = session.createSQLQuery(searchQuery).list();
+				    	 if(!anchorExistIds.isEmpty() && anchorExistIds.size()>0) {
+				    		 isAnchorUsed = true;
+				    	 }
+			    	 }
+		    	 }
+		    	 if(isAnchorUsed) {
+		    		 
+		 			StudySequenceBo studySequence = (StudySequenceBo) session
+		 					.getNamedQuery("getStudySequenceByStudyId")
+		 					.setInteger("studyId", oldStudy.getId())
+		 					.uniqueResult();
+		 		  if (studySequence != null) {
+		 			  int count1 = session.createSQLQuery("update questionnaires set status=0,anchor_date_id=null,"
+		 						+ "modified_by="+updatedStudy.getModifiedBy()+",modified_date='"+FdahpStudyDesignerUtil.getCurrentDateTime()+
+		 						"' where active=1 and anchor_date_id in("+StringUtils.join(anchorIds, ",")+")").executeUpdate();
+		 				if(count1>0) {
+		 					studySequence.setStudyExcQuestionnaries(false);
+		 					auditLogDAO.updateDraftToEditedStatus(session, transaction,
+		 							updatedStudy.getModifiedBy(),
+		 							FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE,
+		 							oldStudy.getId());
+		 				}
+		 				int count2 = session.createSQLQuery("update active_task set action=0 ,anchor_date_id=null, modified_by="+updatedStudy.getModifiedBy()
+		 						+ ",modified_date='"+ FdahpStudyDesignerUtil.getCurrentDateTime()+
+		 						"' where active=1 and anchor_date_id in("+StringUtils.join(anchorIds, ",")+")").executeUpdate();
+		 				if(count2>0) {
+		 					studySequence.setStudyExcActiveTask(false); 
+		 					auditLogDAO.updateDraftToEditedStatus(session, transaction,
+		 							updatedStudy.getModifiedBy(),
+		 							FdahpStudyDesignerConstants.DRAFT_ACTIVETASK,
+		 							oldStudy.getId());
+		 				}
+		 				int count3 = session.createSQLQuery("update resources set action=0,anchor_date_id=null "
+		 						+ "where status=1 and anchor_date_id in("+StringUtils.join(anchorIds, ",")+")").executeUpdate();
+		 				
+		 				if(count3>0) {
+		 					studySequence.setMiscellaneousResources(false);
+		 					auditLogDAO.updateDraftToEditedStatus(session, transaction,
+		 							updatedStudy.getModifiedBy(),
+		 							FdahpStudyDesignerConstants.DRAFT_STUDY,
+		 							oldStudy.getId());
+		 				}
+		 			session.saveOrUpdate(studySequence);
+		 			message = FdahpStudyDesignerConstants.SUCCESS;
+		 		  }
+		 		}
+			  }	 
+		 }
+		}catch(Exception e) {
+			transaction.rollback(); logger.error("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - ERROR ",e); 
+		}
+		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
+		return message;
 	}
 }

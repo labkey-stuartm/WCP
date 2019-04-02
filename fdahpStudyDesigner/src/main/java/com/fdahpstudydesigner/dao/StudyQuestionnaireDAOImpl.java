@@ -5185,7 +5185,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		try {
 			 session = hibernateTemplate.getSessionFactory().openSession();
 			// checking in the question step anchor date is selected or not
-				String searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
+				String searchQuery = "select count(q.anchor_date_id) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="
 						+ questionnaireId
 						+ " and qq.active=1 and q.active=1;";
@@ -5196,7 +5196,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				} else {
 					// checking in the form step question anchor date is
 					// selected or not
-					String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
+					String subQuery = "select count(q.anchor_date_id) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 							+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
 							+ questionnaireId
 							+ " and q.active=1";

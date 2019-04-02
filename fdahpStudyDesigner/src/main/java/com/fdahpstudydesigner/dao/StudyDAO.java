@@ -28,6 +28,7 @@ import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
 
@@ -193,4 +194,8 @@ public interface StudyDAO {
 			Integer eligibilityTestId);
 	
 	public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+	
+	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+	
+	public String updateAnchordateForEnrollmentDate(StudyBo oldStudyBo,StudyBo updatedStudyBo, Session session, Transaction transaction);
 }

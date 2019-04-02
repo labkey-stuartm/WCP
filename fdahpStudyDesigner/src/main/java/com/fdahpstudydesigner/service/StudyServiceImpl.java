@@ -2126,4 +2126,10 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - isAnchorDateExistForEnrollment - Starts");
 		return studyDAO.isAnchorDateExistForEnrollment(studyId, customStudyId);
 	}
+	
+	@Override
+	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId) {
+		logger.info("StudyServiceImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
+		return studyDAO.isAnchorDateExistForEnrollmentDraftStudy(studyId, customStudyId);
+	}
 }
