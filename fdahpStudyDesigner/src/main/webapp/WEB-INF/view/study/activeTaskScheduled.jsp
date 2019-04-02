@@ -47,7 +47,7 @@
              <select id="anchorDateId" class="selectpicker ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required name="anchorDateId">
               <option value='' >Select</option>
               <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-              	<option value="${anchorTypeInfo.id}" ${activeTaskBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+              	<option value="${anchorTypeInfo.id}" name="${anchorTypeInfo.name}" ${activeTaskBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
               </c:forEach>
              </select>
              <div class="help-block with-errors red-txt"></div>
@@ -895,6 +895,8 @@ $(document).ready(function() {
         //AnchorDate start
 		var scheduletype = $('input[name="scheduleType"]:checked').val();
 		if(scheduletype == 'AnchorDate'){
+			var element = $('#anchorDateId').find('option:selected').text(); 
+			setAnchorDropdown(val, element);
 			 if(val == 'One time'){
 				   $(".onetimeanchorClass").show();
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
@@ -1407,6 +1409,12 @@ $(document).ready(function() {
 		});
 	});
 // 	updateLogoutCsrf();
+	$('#anchorDateId').change(function(){ 
+        var frequency_text = $('input[name="frequency"]:checked').val();
+    	var element = $(this).find('option:selected').text(); 
+        setAnchorDropdown(frequency_text, element);
+   });
+
 });
 function disablePastTime(timeId, dateId) {
 	$(document).on('click change dp.change', timeId+', '+dateId, function() {
@@ -2515,6 +2523,67 @@ function validateCustTime(dateRef, timeRef) {
 				$('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
 			}
 			//$(document).find('.cusTime').trigger('dp.change');
+	}
+	function setAnchorDropdown(frequency_text,anchorType){
+	    if(anchorType == 'Enrollment Date'){
+		   if(frequency_text == 'One time'){
+		     $('#onetimeXSign').children('option').remove();
+			 $('#onetimeXSign').append("<option value='0' selected>+</option>");
+			 $('#onetimeYSign').children('option').remove();
+		     $('#onetimeYSign').append("<option value='0' selected>+</option>");
+		   }
+		   if(frequency_text == 'Manually Schedule'){
+		      $('.manually-anchor-option').each(function(){
+			     var id = $(this).attr("id");
+				 $("#xSign"+id).children('option').remove();
+				 $("#ySign"+id).children('option').remove();
+				 $("#xSign"+id).append("<option value='0' selected>+</option>");
+				 $("#ySign"+id).append("<option value='0' selected>+</option>");
+			  });
+		   }
+		   if(frequency_text == 'Daily'){
+			  $('#dailyXSign').children('option').remove();
+			  $('#dailyXSign').append("<option value='0' selected>+</option>");
+		   }
+		   if(frequency_text == 'Weekly'){
+			 $('#weeklyXSign').children('option').remove();
+			 $('#weeklyXSign').append("<option value='0' selected>+</option>");
+		   }
+		   if(frequency_text == 'Monthly'){
+			 $('#monthlyXSign').children('option').remove();
+			 $('#monthlyXSign').append("<option value='0' selected>+</option>");
+		   }
+		   $('.selectpicker').selectpicker('refresh');
+		}else{
+		   if(frequency_text == 'One time'){
+		       $('#onetimeXSign').children('option').remove();
+			   $('#onetimeXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+			   $('#onetimeYSign').children('option').remove();
+			   $('#onetimeYSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+		   }
+		   if(frequency_text == 'Manually Schedule'){
+		      $('.manually-anchor-option').each(function(){
+			     var id = $(this).attr("id");
+				 $("#xSign"+id).children('option').remove();
+				 $("#ySign"+id).children('option').remove();
+				 $("#xSign"+id).append("<option value='0' selected>+</option><option value='1'>-</option>");
+				 $("#ySign"+id).append("<option value='0' selected>+</option><option value='1'>-</option>");
+			  });
+		   }
+		   if(frequency_text == 'Daily'){
+			  $('#dailyXSign').children('option').remove();
+			  $('#dailyXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+		   }
+		   if(frequency_text == 'Weekly'){
+			 $('#weeklyXSign').children('option').remove();
+			 $('#weeklyXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+		   }
+		   if(frequency_text == 'Monthly'){
+			 $('#monthlyXSign').children('option').remove();
+			 $('#monthlyXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+		   }
+		   $('.selectpicker').selectpicker('refresh');
+		}
 	}
 //# sourceURL=filename.js
 </script>

@@ -698,6 +698,22 @@ $(document).ready(function(){
 		$('#pdfDownloadFormId').submit();
 		$("body").removeClass("loading");
  	});
+	 
+	 $('#anchorDateId').change(function(){ 
+			var element = $(this).find('option:selected').text(); 
+			if(element == 'Enrollment Date'){
+				$('#xSign').children('option').remove();
+				$('#xSign').append("<option value='0' selected>+</option>");
+				$('#ySign').children('option').remove();
+			    $('#ySign').append("<option value='0' selected>+</option>");
+			}else{
+				$('#xSign').children('option').remove();
+				$('#xSign').append("<option value='0' selected>+</option><option value='1' selected>-</option>");
+				$('#ySign').children('option').remove();
+			    $('#ySign').append("<option value='0' selected>+</option><option value='1' selected>-</option>");
+			}
+			$('.selectpicker').selectpicker('refresh');
+	}); 
 });
 function chkDaysValid(clickDone){
 	var x = $("#xdays").val();

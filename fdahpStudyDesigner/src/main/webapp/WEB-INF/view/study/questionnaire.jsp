@@ -313,7 +313,7 @@ function isNumber(evt, thisAttr) {
 			               <div>
 				                <span class="pr-md">Anchor Date</span>
 				                <span>
-					                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" title="Select" name="questionnairesFrequenciesBo.xDaysSign" id="onetimeXSign">
+					                 <select class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="questionnairesFrequenciesBo.xDaysSign" id="onetimeXSign">
 					                          <option value="0" ${studyBo.enrollmentdateAsAnchordate?'selected':''} ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
 					                          <option value="1" ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
 					                 </select>
@@ -1235,6 +1235,8 @@ $(document).ready(function() {
       //AnchorDate start
 		var scheduletype = $('input[name="scheduleType"]:checked').val();
 		if(scheduletype == 'AnchorDate'){
+			 var element = $('#anchorDateId').find('option:selected').text(); 
+			 setAnchorDropdown(val, element);
 			 if(val == 'One time'){
 				   $(".onetimeanchorClass").show();
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
@@ -1849,6 +1851,13 @@ $(document).ready(function() {
     $("#infoIconId").hover(function(){
     	$('#myModal').modal('show');
     });
+    
+    $('#anchorDateId').change(function(){ 
+        var frequency_text = $('input[name="frequency"]:checked').val();
+    	var element = $(this).find('option:selected').text(); 
+        setAnchorDropdown(frequency_text, element);
+   });
+    
 });
 function formatDate(date) {
     var d = new Date(date),
@@ -3067,6 +3076,68 @@ function removeDateAnchor(param){
 			$('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
 		}
 		//$(document).find('.cusTime').trigger('dp.change');
+}
+
+function setAnchorDropdown(frequency_text,anchorType){
+    if(anchorType == 'Enrollment Date'){
+	   if(frequency_text == 'One time'){
+	     $('#onetimeXSign').children('option').remove();
+		 $('#onetimeXSign').append("<option value='0' selected>+</option>");
+		 $('#onetimeYSign').children('option').remove();
+	     $('#onetimeYSign').append("<option value='0' selected>+</option>");
+	   }
+	   if(frequency_text == 'Manually Schedule'){
+	      $('.manually-anchor-option').each(function(){
+		     var id = $(this).attr("id");
+			 $("#xSign"+id).children('option').remove();
+			 $("#ySign"+id).children('option').remove();
+			 $("#xSign"+id).append("<option value='0' selected>+</option>");
+			 $("#ySign"+id).append("<option value='0' selected>+</option>");
+		  });
+	   }
+	   if(frequency_text == 'Daily'){
+		  $('#dailyXSign').children('option').remove();
+		  $('#dailyXSign').append("<option value='0' selected>+</option>");
+	   }
+	   if(frequency_text == 'Weekly'){
+		 $('#weeklyXSign').children('option').remove();
+		 $('#weeklyXSign').append("<option value='0' selected>+</option>");
+	   }
+	   if(frequency_text == 'Monthly'){
+		 $('#monthlyXSign').children('option').remove();
+		 $('#monthlyXSign').append("<option value='0' selected>+</option>");
+	   }
+	   $('.selectpicker').selectpicker('refresh');
+	}else{
+	   if(frequency_text == 'One time'){
+	       $('#onetimeXSign').children('option').remove();
+		   $('#onetimeXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+		   $('#onetimeYSign').children('option').remove();
+		   $('#onetimeYSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+	   }
+	   if(frequency_text == 'Manually Schedule'){
+	      $('.manually-anchor-option').each(function(){
+		     var id = $(this).attr("id");
+			 $("#xSign"+id).children('option').remove();
+			 $("#ySign"+id).children('option').remove();
+			 $("#xSign"+id).append("<option value='0' selected>+</option><option value='1'>-</option>");
+			 $("#ySign"+id).append("<option value='0' selected>+</option><option value='1'>-</option>");
+		  });
+	   }
+	   if(frequency_text == 'Daily'){
+		  $('#dailyXSign').children('option').remove();
+		  $('#dailyXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+	   }
+	   if(frequency_text == 'Weekly'){
+		 $('#weeklyXSign').children('option').remove();
+		 $('#weeklyXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+	   }
+	   if(frequency_text == 'Monthly'){
+		 $('#monthlyXSign').children('option').remove();
+		 $('#monthlyXSign').append("<option value='0' selected>+</option><option value='1'>-</option>");
+	   }
+	   $('.selectpicker').selectpicker('refresh');
+	}
 }
 
 </script>
