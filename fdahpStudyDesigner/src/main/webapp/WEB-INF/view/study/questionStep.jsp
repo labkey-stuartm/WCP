@@ -187,12 +187,14 @@ function isNumberKey(evt)
             <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
             <c:choose>
             	<c:when test="${questionnairesStepsBo.questionsBo.useAnchorDate}">
+            		<span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top"  title="The date supplied by a participant in response to this question can be used to dictate the schedule for other questionnaires or active tasks in the study, or to determine the Period of Visibility of study resources."  >
             		<span class="checkbox checkbox-inline">
 			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>>
 			               <label for="useAnchorDateId"> Use response as Anchor Date </label>
 		             </span>
+		             </span>
 		             <div class="clearfix"></div>
-	            	<div class="col-md-6 p-none useAnchorDateName" style="display: none">
+	            	<div class="col-md-6 p-none useAnchorDateName mt-md" style="display: none">
 		                <div class="gray-xs-f mb-xs">Define name for Anchor date<span class="requiredStar">*</span></div>
 		                <div class="form-group">
 		                  <input type="text" class="form-control" name="questionsBo.anchorDateName" id="anchorTextId" value="${questionnairesStepsBo.questionsBo.anchorDateName}" maxlength="50" <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
@@ -215,7 +217,7 @@ function isNumberKey(evt)
 		               </span>
 	               </span>
 	               <div class="clearfix"></div>
-	            	<div class="col-md-6 p-none useAnchorDateName" style="display: none">
+	            	<div class="col-md-6 p-none useAnchorDateName mt-md" style="display: none">
 		                <div class="gray-xs-f mb-xs">Define name for Anchor date<span class="requiredStar">*</span></div>
 		                <div class="form-group">
 		                  <input type="text" class="form-control" name="questionsBo.anchorDateName" id="anchorTextId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.anchorDateName)}" maxlength="50" <c:if test="${questionsBo.isShorTitleDuplicate gt 0}">disabled</c:if> <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
@@ -2099,12 +2101,12 @@ $(document).ready(function(){
     		  }else if(resType == 'Date'){
     			  var skiappable=$('input[name="skiappable"]:checked').val();
     			  var anchorText = $("#anchorTextId").val();
-    			  if(anchorText != '' && anchorText != null && typeof anchorText != 'undefined'){
+    			  var anchorDateUsed = $('#useAnchorDateId').is(':checked');
+    			  if(anchorDateUsed && anchorText != '' && anchorText != null && typeof anchorText != 'undefined'){
     				$("#anchorTextId,#useAnchorDateId").attr("disabled",false);  
    				    validateAnchorDateText('',function(val){});
-    			  }else{
-    				  if(skiappable == 'Yes')
-    					  anchorDateFlag = false;
+   				   if(skiappable == 'Yes')
+     				 anchorDateFlag = false;
     			  }
     		  }
     		 $("#placeholderTextId").val(placeholderText);

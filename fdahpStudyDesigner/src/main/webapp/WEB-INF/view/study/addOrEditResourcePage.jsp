@@ -118,20 +118,21 @@
                     <label for="inlineRadio5">Anchor Date-based Period</label><br/>
                 </span>
                 <c:if test="${fn:length(anchorTypeList) gt 0}">
-		            	  <div class="gray-xs-f mb-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
-		            	  <div class="clearfix"></div>
-		                  <div class="col-md-4 col-lg-3 p-none">
-			                  <div class="form-group">
-			                     <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
-			                      <option value='' >Select</option>
-			                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-			                      	<option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
-			                      </c:forEach>
-			                     </select>
-			                     <div class="help-block with-errors red-txt"></div>
-			                  </div>
+                	<div>
+	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
+	                  <div class="col-md-3 col-lg-3 p-none">
+		                  <div class="form-group">
+		                     <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
+		                      <option value='' >Select</option>
+		                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+		                      	<option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+		                      </c:forEach>
+		                     </select>
+		                     <div class="help-block with-errors red-txt"></div>
 		                  </div>
-		                  <div class="clearfix"></div>
+	                  </div>
+	                  <div class="clearfix"></div>
+	                 </div>
                 </c:if>
                 <span class="mb-sm pr-md">
                     <span class="light-txt opacity06">Anchor Date </span>                   
@@ -255,8 +256,34 @@ $(document).ready(function(){
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
           if( chkDaysValid(true) && isFromValid('#resourceForm')){
-       	   	$('#buttonText').val('done');
- 		   		$('#resourceForm').submit();
+        	  if($('#inlineRadio5').is(':checked')){
+        		  var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Source Questionnaire providing the Anchor Date response is scheduled appropriately.";
+              	  bootbox.confirm({
+              		closeButton: false,
+              		message: text,
+              		buttons: {
+      			        'cancel': {
+      			            label: 'Cancel',
+      			        },
+      			        'confirm': {
+      			            label: 'OK',
+      			        },
+      			    },
+      			    callback: function(valid) {
+      			    	if (valid) {
+      			    		console.log(1);
+      			    		$('#buttonText').val('done');
+      	   		   		    $('#resourceForm').submit(); 
+      			    	}else{
+      			    		console.log(2);
+      			    		$('#doneResourceId').prop('disabled',false);
+      			    	}
+      			      }
+              	   });
+        	  }else{
+        		  $('#buttonText').val('done');
+   		   		  $('#resourceForm').submit(); 
+        	  }
  		   }else{
  			  $('#doneResourceId').prop('disabled',false);
  		   }

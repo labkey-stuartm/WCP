@@ -218,7 +218,7 @@ function isNumber(evt, thisAttr) {
          <!-- Schedule--> 
          <div id="schedule" class="tab-pane fade mt-lg">
             <div class="gray-xs-f mb-sm">Questionnaire Schedule Type</div>
-            <div class="pb-lg b-bor">
+            <div class="pb-lg ">
                <span class="radio radio-info radio-inline p-40">
                <input type="radio" id="schedule1" class="typeofschedule" scheduletype="Regular" value="Regular" name="scheduleType" ${empty questionnaireBo.scheduleType  || questionnaireBo.scheduleType=='Regular' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
                                                  <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
@@ -241,7 +241,7 @@ function isNumber(evt, thisAttr) {
             <c:if test="${fn:length(anchorTypeList) gt 0}">
             <div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
             <div class="clearfix"></div>
-            <div class="col-md-4 col-lg-3 p-none">
+            <div class="col-md-5 col-lg-5 p-none">
                   <div class="form-group">
                      <select id="anchorDateId" class="selectpicker ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required name="anchorDateId" >
                       <option value='' >Select</option>
@@ -303,13 +303,13 @@ function isNumber(evt, thisAttr) {
 	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} required ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
 	                  <label for="isLaunchStudy"> Launch with study</label>
 	                  </span>
-	                  <div class="onetimeanchorClass" style="display: none">
+	                  <div class="onetimeanchorClass mt-sm" style="display: none">
 	                  <!-- Anchordate start -->
 	                  <div class="opacity06">
 	                    OR	
 	                  </div>
 	                  <!-- Anchordate start-->
-			           <div class="mt-lg resetDate">
+			           <div class="mt-none resetDate">
 			               <div>
 				                <span class="pr-md">Anchor Date</span>
 				                <span>
@@ -338,7 +338,7 @@ function isNumber(evt, thisAttr) {
 				                    <span class="light-txt opacity06"> days</span>                   
 				                 </span>
 				                 <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                        <input id="selectTime" type="text" class="form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"  name="questionnairesFrequenciesBo.frequencyTime"  value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"   />
+			                        <input id="selectTime" type="text" class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"  name="questionnairesFrequenciesBo.frequencyTime"  value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"   />
 			                        <span class='help-block with-errors red-txt'></span>
 	                            </span>
 			                </div>
@@ -349,11 +349,11 @@ function isNumber(evt, thisAttr) {
 	                  
 	                  <div class="mt-md form-group regularClass">
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="chooseDate" type="text" class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="questionnairesFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
+	                     <input id="chooseDate" type="text" class="mt-sm form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="questionnairesFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
 	                      <span class='help-block with-errors red-txt'></span>
 	                     </span>
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="selectTime1" type="text" class="form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"  name="questionnairesFrequenciesBo.frequencyTime"  value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"   />
+	                     <input id="selectTime1" type="text" class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"  name="questionnairesFrequenciesBo.frequencyTime"  value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"   />
 	                     <span class='help-block with-errors red-txt'></span>
 	                     </span>
 	                  </div>
@@ -374,12 +374,12 @@ function isNumber(evt, thisAttr) {
 	                     <span class='help-block with-errors red-txt'></span>
 	                     </span>                            
 	                  </div>
-	                  <div class="onetimeanchorClass" style="display: none">
+	                  <div class="onetimeanchorClass mt-sm" style="display: none">
 	                  <div class="opacity06">
 	                    OR	
 	                  </div>
 	                  <!-- Anchordate start-->
-			           <div class="mt-lg resetDate">
+			           <div class="mt-none resetDate">
 			               <div>
 				                <span class="pr-md">Anchor Date</span>
 				                <span>
@@ -451,7 +451,7 @@ function isNumber(evt, thisAttr) {
 	               </c:if>
 	               </div>
 	               <div class="mt-md">                        
-	                  <div class="dailyStartCls">
+	                  <div class="dailyStartCls col-md-3 pl-none">
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                          
 	                  <input id="startDate" type="text" class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" placeholder="Choose Date" name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
@@ -459,7 +459,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  </div>
 	                   <!-- Anchordate start-->
-		               <div class="dailyanchorDiv" style="display:none;">
+		               <div class="dailyanchorDiv col-md-4 pl-none" style="display:none;">
 				           <div class=" resetDate">
 				               <div>
 				                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -485,11 +485,14 @@ function isNumber(evt, thisAttr) {
 			                </div>
 		               </div>
 	               <!-- Anchordate End -->
-	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	               <div class="col-md-6 pr-none">
+	               	<span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="days" type="text" class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="repeatQuestionnaire" placeholder="No of Times" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
+	               </div>
+	                  <div class="clearfix"></div>
 	               </div>
 	               <div class="mt-md">
 	                  <div class="gray-xs-f mb-xs">End Date </div>
@@ -516,30 +519,31 @@ function isNumber(evt, thisAttr) {
 	             <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="week all mt-lg dis-none">
 	               <div>      
-	                  <span class="gray-xs-f">Day/Time (of the week) <span class="requiredStar">*</span></span><br/>
-	                  <div class="weeklyStartCls">                  
-	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <select id="startDateWeekly" class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="dayOfTheWeek" required>
-		                  <option value=''>Select</option>
-		                  <option value='Sunday' ${questionnaireBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
-		                  <option value='Monday' ${questionnaireBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
-		                  <option value='Tuesday' ${questionnaireBo.dayOfTheWeek eq 'Tuesday' ?'selected':''}>Tuesday</option>
-		                  <option value='Wednesday' ${questionnaireBo.dayOfTheWeek eq 'Wednesday' ?'selected':''}>Wednesday</option>
-		                  <option value='Thursday' ${questionnaireBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
-		                  <option value='Friday' ${questionnaireBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday </option>
-		                  <option value='Saturday' ${questionnaireBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
-	                  </select>   
-	                  <span class='help-block with-errors red-txt'></span>                         
+	                  <span class="gray-xs-f">Day/Time (of the week) <span class="requiredStar">*</span><br/>
+	                  <span class="weeklyStartCls form-group m-none dis-inline vertical-align-middle pr-md">                  
+		                  <span class="">
+			                  <select id="startDateWeekly" class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="dayOfTheWeek" required>
+				                  <option value=''>Select</option>
+				                  <option value='Sunday' ${questionnaireBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
+				                  <option value='Monday' ${questionnaireBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
+				                  <option value='Tuesday' ${questionnaireBo.dayOfTheWeek eq 'Tuesday' ?'selected':''}>Tuesday</option>
+				                  <option value='Wednesday' ${questionnaireBo.dayOfTheWeek eq 'Wednesday' ?'selected':''}>Wednesday</option>
+				                  <option value='Thursday' ${questionnaireBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
+				                  <option value='Friday' ${questionnaireBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday </option>
+				                  <option value='Saturday' ${questionnaireBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
+			                  </select>   
+			                  <span class='help-block with-errors red-txt'></span>                         
+		                  </span>
 	                  </span>
-	                  </div>
+	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">&nbsp;</span><br/>
+	                  <!-- <span class="gray-xs-f">&nbsp;</span><br/> -->
 	                  <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>                        
 	               </div>
 	               <div class="mt-md">
-	                  <div class="weeklyStartCls">                  
+	                  <div class="weeklyStartCls col-md-3 pl-none">                  
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                           
 	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
@@ -547,7 +551,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  </div>
 	                  <!-- Anchordate start-->
-		               <div class="weeklyanchorDiv" style="display:none;">
+		               <div class="weeklyanchorDiv col-md-4 pl-none" style="display:none;">
 				           <div class=" resetDate">
 				               <div>
 				                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -573,11 +577,14 @@ function isNumber(evt, thisAttr) {
 			                </div>
 		               </div>
 	               <!-- Anchordate End -->
+	               <div class="col-md-6 pr-none">
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="weeks" type="text" class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="repeatQuestionnaire"  placeholder="No of Times" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
+	                  </div>
+	                  <div class="clearfix"></div>
 	               </div>
 	               <div class="mt-md">
 	                  <div class="gray-xs-f mb-xs">End Date </div>
@@ -605,21 +612,21 @@ function isNumber(evt, thisAttr) {
 	            <div class="month all mt-lg dis-none">
 	               <div>
 	                  <span class="gray-xs-f">Select Date/Time (of the month) <span class="requiredStar">*</span></span><br/> 
-	                  <div class="monthlyStartCls">
-	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	                  <span class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
+	                  <span class="">
 	                  <input id="startDateMonthly" type="text" class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required  placeholder="Choose Date" name="questionnairesFrequenciesBo.frequencyDate" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
-	                  </div>
+	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">&nbsp;</span><br/>
+<!-- 	                  <span class="gray-xs-f">&nbsp;</span><br/> -->
 	                  <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <div class="gray-xs-f mt-xs italic-txt text-weight-light monthlyStartCls">If the selected date is not available in a month, the last day of the month will be used instead</div>
 	               </div>
 	               <div class="mt-lg">
-	                  <div class="monthlyStartCls">                         
+	                  <div class="monthlyStartCls col-md-3 pl-none">                         
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>      
 	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"  readonly="readonly"/>
@@ -627,7 +634,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  </div>
 	                  <!-- Anchordate start-->
-		               <div class="monthlyanchorDiv" style="display:none;">
+		               <div class="monthlyanchorDiv col-md-4 pl-none" style="display:none;">
 				           <div class=" resetDate">
 				               <div>
 				                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -778,7 +785,7 @@ function isNumber(evt, thisAttr) {
 						                  <input id="manualTime0" type="text"  class="form-control clock" name="questionnaireCustomScheduleBo[0].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" required/>
 						                  <span class='help-block with-errors red-txt'></span>
 						             </span>
-						             <span class="addbtn addBtnDis dis-inline vertical-align-middle " onclick="addDateAnchor();">+</span>
+						             <span class="addbtn addBtnDis dis-inline vertical-align-middle mr-sm" onclick="addDateAnchor();">+</span>
 					                 <span id="deleteAncchor" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDateAnchor(this);"></span>
 	                     </div>
 	                     </c:if>
@@ -828,11 +835,11 @@ function isNumber(evt, thisAttr) {
 						              <input id="manualTime${customVar.index}" type="text"  class="form-control clock ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" required/>
 						              <span class='help-block with-errors red-txt'></span>
 						       </span>
-			                  <span class="addbtn addBtnDis align-span-center mr-md ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="addDateAnchor();">+</span>
+			                  <span class="addbtn addBtnDis align-span-center mr-sm ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="addDateAnchor();">+</span>
 			                  <span id="deleteAncchor" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="removeDateAnchor(this);"></span>
 			               </div>
 	                 	</c:forEach>
-	                 </c:if>
+	                 </c:if> 
 	                    </div>
 	                     <!-- anchordate end -->
 	               
@@ -2588,7 +2595,7 @@ function doneQuestionnaire(item, actType, callback) {
     				callback(val);
     			});
     		}else{
-    			showErrMsg("Please choose anchordays.");
+    			showErrMsg("Please choose anchor date for date/time of the launch.");
 	    		$('.scheduleTaskClass a').tab('show');
 	    		if (callback)
 	    			callback(false);
@@ -3028,7 +3035,7 @@ function addDateAnchor(){
 	customAnchorCount = parseInt(customAnchorCount) +1;
 	var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 				                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
-				                  +"<span><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"
+				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"
 				                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 				                  +"</select></span>"
 				                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
@@ -3037,7 +3044,7 @@ function addDateAnchor(){
 					              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
 					              +"</span>"
 					              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days <span style='padding-right:5px;padding-left:5px'>to </span>  Anchor Date </span></span>"
-				                  +"<span><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].yDaysSign' id='ySign"+customAnchorCount+"'>"
+				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].yDaysSign' id='ySign"+customAnchorCount+"'>"
 				                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 				                  +"</select></span>"
 				                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
