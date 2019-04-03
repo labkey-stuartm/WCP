@@ -842,6 +842,8 @@ $(document).ready(function() {
             		if(frequency_txt != '' && frequency_txt != null && typeof frequency_txt != 'undefined'){
             			$("#previousFrequency").val(frequency_txt);
             		}
+            		$('#onetimexdaysId').val('');
+            		$('#onetimeydaysId').val('');
             	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
@@ -859,6 +861,7 @@ $(document).ready(function() {
             		$('.dailyClock').val('');
             		$('.dailyClock:not(:first)').parent().parent().remove();
             		multiTimeVal = true;
+            		$('#dailyxdaysId').val('');
             	}else if(val == 'Weekly'){
             		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
@@ -868,6 +871,7 @@ $(document).ready(function() {
             		$("#weekEndDate").text('NA');
             		$("#weekLifeTimeEnd").text('-');
             		$("#selectWeeklyTime").val('');
+            		$('#weeklyxdaysId').val('');
             	}else if(val == 'Monthly'){
             		$("#monthFreId").val('');
             		$("#selectMonthlyTime").val('');
@@ -875,6 +879,7 @@ $(document).ready(function() {
             		$("#months").val('');
             		$("#monthEndDate").text('NA');
             		$("#monthLifeTimeDate").text('-');
+            		$('#monthlyxdaysId').val('');
             	}
         	}
         }else{
