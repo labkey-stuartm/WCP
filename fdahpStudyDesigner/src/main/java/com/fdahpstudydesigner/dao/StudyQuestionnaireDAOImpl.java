@@ -5340,6 +5340,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						query.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 				  }
+		     }else {
+		    	 message = FdahpStudyDesignerConstants.SUCCESS; 
 		     }
 	      } catch (Exception e) { 
 		  transaction.rollback(); logger.error("StudyQuestionnaireDAOImpl - updateAnchordateInQuestionnaire - ERROR ",e); 
