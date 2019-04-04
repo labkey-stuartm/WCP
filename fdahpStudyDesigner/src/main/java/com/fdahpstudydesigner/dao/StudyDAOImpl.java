@@ -1065,6 +1065,10 @@ public class StudyDAOImpl implements StudyDAO {
 					session.createSQLQuery(
 							"DELETE FROM studies WHERE custom_study_id='"
 									+ customStudyId + "'").executeUpdate();
+					
+					session.createSQLQuery(
+							"DELETE FROM anchordate_type WHERE custom_study_id='"
+									+ customStudyId + "'").executeUpdate();
 				} else {
 					session.createSQLQuery(
 							"DELETE FROM studies WHERE id in(" + studyId + ")")

@@ -951,14 +951,20 @@ $(document).ready(function() {
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Daily'){
+				 $("#endDateId").text('NA');
+         		 $("#lifeTimeId").text('-');
 				 $(".dailyanchorDiv").show();
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Weekly'){
+				   $("#weekEndDate").text('NA');
+				   $("#weekLifeTimeEnd").text('-');
 				   $(".weeklyanchorDiv").show();
 				   $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Monthly'){
+				   $("#monthEndDate").text('NA');
+				   $("#monthLifeTimeDate").text('-');
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1254,14 +1260,21 @@ $(document).ready(function() {
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Daily'){
+				 $("#startDate").val('');
+				 $("#endDateId").text('NA');
+				 $("#lifeTimeId").text('-');
 				 $(".dailyanchorDiv").show();
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Weekly'){
+				 $("#weekEndDate").text('NA');
+				 $("#weekLifeTimeEnd").text('-');
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
+				 $("#monthEndDate").text('NA');
+				 $("#monthLifeTimeDate").text('-');
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -2307,6 +2320,12 @@ function saveQuestionnaire(item, callback){
 		if( multiTimeVal  && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none, :disabled'), $(document).find(".dailyClock").not('.cursor-none, :disabled')))){
 			isFormValid = false;
 		}
+		
+		if(scheduletype == 'AnchorDate'){
+			questionnaire.studyLifetimeStart=null;
+			questionnaire.studyLifetimeEnd=null;
+		}
+        		
 	}else if(frequency_text == 'Weekly'){
 		
 		var frequence_id = $("#weeklyFreId").val();
@@ -2359,6 +2378,10 @@ function saveQuestionnaire(item, callback){
 		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none, :disabled'), $(document).find("#selectWeeklyTime").not('.cursor-none, :disabled')))) {
 			isFormValid = false;
 		}
+		if(scheduletype == 'AnchorDate'){
+			questionnaire.studyLifetimeStart=null;
+			questionnaire.studyLifetimeEnd=null;
+		}
 	}else if(frequency_text == 'Monthly'){
 		
 		var frequence_id = $("#monthFreId").val();
@@ -2410,6 +2433,10 @@ function saveQuestionnaire(item, callback){
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
 		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none, :disabled'), $(document).find("#selectMonthlyTime").not('.cursor-none, :disabled')))){
 			isFormValid = false;
+		}
+		if(scheduletype == 'AnchorDate'){
+			questionnaire.studyLifetimeStart=null;
+			questionnaire.studyLifetimeEnd=null;
 		}
 	}
 	
