@@ -206,7 +206,7 @@
 					<div class="form-group">
 						<input type="text" class="form-control" id="studyWebsiteId"
 							name="studyWebsite" value="${studyBo.studyWebsite}"
-							pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
+							pattern="^(http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
 							title="Include http://" maxlength="100"
 							data-pattern-error="Please enter a valid URL" />
 						<div class="help-block with-errors red-txt"></div>
