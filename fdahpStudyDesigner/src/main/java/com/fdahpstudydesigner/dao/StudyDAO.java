@@ -198,4 +198,6 @@ public interface StudyDAO {
 	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
 	
 	public String updateAnchordateForEnrollmentDate(StudyBo oldStudyBo,StudyBo updatedStudyBo, Session session, Transaction transaction);
+	
+	public boolean validateAppId(String appId, String studyType);
 }

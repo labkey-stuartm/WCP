@@ -183,4 +183,6 @@ public interface StudyService {
 	public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
 	
 	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+	
+	public boolean validateAppId(String appId, String studyType);
 }

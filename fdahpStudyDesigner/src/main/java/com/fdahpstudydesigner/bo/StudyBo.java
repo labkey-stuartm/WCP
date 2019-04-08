@@ -178,6 +178,12 @@ public class StudyBo implements Serializable {
 	@Column(name = "enrollmentdate_as_anchordate")
 	@Type(type = "yes_no")
 	private boolean enrollmentdateAsAnchordate = false;
+	
+	@Column(name = "app_id")
+	private String appId;
+	
+	@Column(name = "org_id")
+	private String orgId;
 
 	public String getAllowRejoin() {
 		return allowRejoin;
@@ -545,5 +551,21 @@ public class StudyBo implements Serializable {
 
 	public void setEnrollmentdateAsAnchordate(boolean enrollmentdateAsAnchordate) {
 		this.enrollmentdateAsAnchordate = enrollmentdateAsAnchordate;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
 	}
 }

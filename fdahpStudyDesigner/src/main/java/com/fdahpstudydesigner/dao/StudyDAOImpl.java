@@ -7674,4 +7674,44 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
 		return message;
 	}
+	
+	/**
+	 * validating study app id
+	 *
+	 * @author BTC
+	 *
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean validateAppId(String appId, String studyType) {
+		logger.info("StudyDAOImpl - validateAppId() - Starts");
+		boolean flag = false;
+		Session session = null;
+		List<StudyBo> studyBos = null;
+		String searchQuery = "";
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(!studyType.isEmpty() && !appId.isEmpty()){
+				
+				if(studyType.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_TYPE_GT)){
+					searchQuery = "From StudyBo WHERE appId='"+appId+"' and type='"+FdahpStudyDesignerConstants.STUDY_TYPE_SD+"'";
+				}else{
+					searchQuery = "From StudyBo WHERE appId='"+appId+"'";
+				}
+				studyBos = session.createQuery(searchQuery).list();
+			}
+			if (studyBos != null && !studyBos.isEmpty())
+				flag = true;
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - validateAppId() - ERROR", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - validateAppId() - Starts");
+		return flag;
+	}
 }

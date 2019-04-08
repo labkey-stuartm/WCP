@@ -5036,6 +5036,7 @@ public class StudyController {
 				}
 				if (studyBo == null) {
 					studyBo = new StudyBo();
+					studyBo.setType(FdahpStudyDesignerConstants.STUDY_TYPE_GT);
 				} else if (studyBo != null
 						&& StringUtils.isNotEmpty(studyBo.getCustomStudyId())) {
 					request.getSession()
@@ -5659,5 +5660,51 @@ public class StudyController {
 		}
 		logger.info("StudyController - viewStudyNotificationList() - ends");
 		return mav;
+	}
+	
+	/**
+	 * validated for uniqueness of customStudyId of study throughout the
+	 * application
+	 * 
+	 * @author BTC
+	 * @param request
+	 *            , {@link HttpServletRequest}
+	 * @param response
+	 *            , {@link HttpServletResponse}
+	 * @throws IOException
+	 * @return void
+	 */
+	@RequestMapping(value = "/adminStudies/validateAppId.do", method = RequestMethod.POST)
+	public void validateAppId(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		logger.info("StudyController - validateAppId() - Starts ");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		boolean flag = false;
+		try {
+			HttpSession session = request.getSession();
+			SessionObject userSession = (SessionObject) session
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if (userSession != null) {
+				String appId = FdahpStudyDesignerUtil.isEmpty(request
+						.getParameter("appId")) ? "" : request
+						.getParameter("appId");
+				
+				String studyType = FdahpStudyDesignerUtil.isEmpty(request
+						.getParameter("studyType")) ? "" : request
+						.getParameter("studyType");
+				flag = studyService.validateAppId(appId, studyType);
+				if (flag)
+					message = FdahpStudyDesignerConstants.SUCCESS;
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - validateAppId() - ERROR ", e);
+		}
+		logger.info("StudyController - validateAppId() - Ends ");
+		jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+		response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+		out = response.getWriter();
+		out.print(jsonobject);
 	}
 }
