@@ -5228,7 +5228,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		    	 if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)) {
 		    		 searchQuery = "select q.anchor_date_id from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 								+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="+ questionnaireId
-								+ " and qsq.step_id="+stepId
+								+ " and q.id="+stepId
 								+ " and qq.active=1 and q.active=1"
 								+ " and q.anchor_date_id IS NOT NULL;";
 							List<Integer> aIds = session.createSQLQuery(searchQuery).list();
@@ -5296,6 +5296,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						if(isAnchorUsed) {
 							message = FdahpStudyDesignerConstants.FAILURE+"anchorused";
 							return message;
+						}else{
+							String deleteAncQuery = "delete from anchordate_type"  
+								    +" where id IN("+StringUtils.join(anchorIds, ",")+")";
+							query = session.createSQLQuery(deleteAncQuery);
+							query.executeUpdate();
+							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 					}else {
 						if(isAnchorUsed) {
