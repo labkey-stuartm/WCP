@@ -29,7 +29,6 @@ import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
@@ -5230,7 +5229,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		    		 searchQuery = "select q.anchor_date_id from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
 								+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="+ questionnaireId
 								+ " and qsq.step_id="+stepId
-								+ " and qq.active=1 and q.active=1;";
+								+ " and qq.active=1 and q.active=1"
+								+ " and q.anchor_date_id IS NOT NULL;";
 							List<Integer> aIds = session.createSQLQuery(searchQuery).list();
 							if(aIds!=null && aIds.size()>0)
 						    	anchorIds.addAll(aIds);
@@ -5239,7 +5239,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 								+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
 								+ questionnaireId
 								+ " and f.form_id="+stepId
-								+ " and q.active=1";
+								+ " and q.active=1"
+								+ " and q.anchor_date_id IS NOT NULL;";
 							 List<Integer> aaIds = session.createSQLQuery(subQuery).list();
 						     if(aaIds!=null && aaIds.size()>0)
 						    	 anchorIds.addAll(aaIds);
@@ -5247,7 +5248,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		     }
 		     //Question level deletion
 			 if(questionId!=null) {
-				   searchQuery = "select q.anchor_date_id from questions q where q.active=1 and q.id="+questionId;
+				   searchQuery = "select q.anchor_date_id from questions q where q.active=1 and q.id="+questionId + " and q.anchor_date_id IS NOT NULL;";
 				   List<Integer> aIds = session.createSQLQuery(searchQuery).list();
 				   if(aIds!=null && aIds.size()>0)
 				    	anchorIds.addAll(aIds);
@@ -5255,9 +5256,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		     //Questionnaire level deletion
 		     if(stepId==null && questionnaireId!=null) {
 		    	// checking in the question step anchor date is selected or not
-				    searchQuery = "select q.anchor_date_id from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
-						+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="+ questionnaireId
-						+ " and qq.active=1 and q.active=1;";
+				    searchQuery = "select q.anchor_date_id from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question'"
+						+ " and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.id="+ questionnaireId
+						+ " and qq.active=1 and q.active=1"
+						+ " and q.anchor_date_id IS NOT NULL;";
 					List<Integer> aIds = session.createSQLQuery(searchQuery).list();
 				    if(aIds!=null && aIds.size()>0)
 				    	anchorIds.addAll(aIds);
@@ -5266,7 +5268,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					String subQuery = "select q.anchor_date_id from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
 						+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id="
 						+ questionnaireId
-						+ " and q.active=1";
+						+ " and q.active=1"
+						+ " and q.anchor_date_id IS NOT NULL;";
 					 List<Integer> aaIds = session.createSQLQuery(subQuery).list();
 				     if(aaIds!=null && aaIds.size()>0)
 				    	 anchorIds.addAll(aaIds);
