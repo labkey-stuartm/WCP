@@ -4880,12 +4880,6 @@ public class StudyDAOImpl implements StudyDAO {
 						study.setModifiedOn(FdahpStudyDesignerUtil
 								.getCurrentDateTime());
 						//Phase2a code Start(adding enrollment date as anchor date(yes/no))
-						if(studyBo.isEnrollmentdateAsAnchordate()) {
-							if(studyBo.isEnrollmentdateAsAnchordate() != study.isEnrollmentdateAsAnchordate()) {
-								
-							}
-							
-						}
 						study.setEnrollmentdateAsAnchordate(studyBo.isEnrollmentdateAsAnchordate());
 						//Phase2a code end
 						session.saveOrUpdate(study);
@@ -4912,11 +4906,22 @@ public class StudyDAOImpl implements StudyDAO {
 						session.update(studySequence);
 						
 						//Phase2a code Start(adding enrollment date as anchor date(yes/no))
-						if(studyBo.isEnrollmentdateAsAnchordate()){
-							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=1 where study_id='"+study.getId()+"' and has_anchortype_draft=0 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
-						}else{
-							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=0 where study_id='"+study.getId()+"' and has_anchortype_draft=1 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
-						}
+						 BigInteger count = (BigInteger) session.createSQLQuery("select count(*) from anchordate_type a where a.custom_study_id='"+study.getCustomStudyId()+"' and a.name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").uniqueResult();
+						 if(count.intValue() == 0){
+							//create one record in anchordate_type table to give user to use enrollmentdate if not exist
+								AnchorDateTypeBo anchorDateTypeBo = new AnchorDateTypeBo();
+								anchorDateTypeBo.setCustomStudyId(study.getCustomStudyId());
+								anchorDateTypeBo.setStudyId(study.getId());
+								anchorDateTypeBo.setName(FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE);
+								anchorDateTypeBo.setHasAnchortypeDraft(study.isEnrollmentdateAsAnchordate()?1:0);
+								session.save(anchorDateTypeBo);
+						 }else{
+							    if(studyBo.isEnrollmentdateAsAnchordate()){
+									session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=1 where study_id='"+study.getId()+"' and has_anchortype_draft=0 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
+								}else{
+									session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=0 where study_id='"+study.getId()+"' and has_anchortype_draft=1 and name='"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'").executeUpdate();
+								}
+						 }
 						//Phase2a code end
 					}
 				}
