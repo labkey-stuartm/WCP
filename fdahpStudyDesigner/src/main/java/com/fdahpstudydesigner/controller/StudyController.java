@@ -5687,6 +5687,10 @@ public class StudyController {
 			SessionObject userSession = (SessionObject) session
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if (userSession != null) {
+				String customStudyId = FdahpStudyDesignerUtil.isEmpty(request
+						.getParameter("customStudyId")) ? "" : request
+						.getParameter("customStudyId");
+				
 				String appId = FdahpStudyDesignerUtil.isEmpty(request
 						.getParameter("appId")) ? "" : request
 						.getParameter("appId");
@@ -5694,7 +5698,7 @@ public class StudyController {
 				String studyType = FdahpStudyDesignerUtil.isEmpty(request
 						.getParameter("studyType")) ? "" : request
 						.getParameter("studyType");
-				flag = studyService.validateAppId(appId, studyType);
+				flag = studyService.validateAppId(customStudyId, appId, studyType);
 				if (flag)
 					message = FdahpStudyDesignerConstants.SUCCESS;
 			}

@@ -7687,25 +7687,29 @@ public class StudyDAOImpl implements StudyDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean validateAppId(String appId, String studyType) {
+	public boolean validateAppId(String customStudyId, String appId, String studyType) {
 		logger.info("StudyDAOImpl - validateAppId() - Starts");
 		boolean flag = false;
 		Session session = null;
 		List<StudyBo> studyBos = null;
 		String searchQuery = "";
+		String subQry = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(!studyType.isEmpty() && !appId.isEmpty()){
-				
+				if(StringUtils.isNotEmpty(customStudyId)){
+			    	subQry = " and customStudyId!='"+customStudyId+"'";
+			    }
 				if(studyType.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_TYPE_GT)){
-					searchQuery = "From StudyBo WHERE appId='"+appId+"' and type='"+FdahpStudyDesignerConstants.STUDY_TYPE_SD+"'";
+					searchQuery = "From StudyBo WHERE appId='"+appId+"' and type='"+FdahpStudyDesignerConstants.STUDY_TYPE_SD+"'"+ subQry;
 				}else{
-					searchQuery = "From StudyBo WHERE appId='"+appId+"'";
+					searchQuery = "From StudyBo WHERE appId='"+appId+"'"+subQry;
 				}
 				studyBos = session.createQuery(searchQuery).list();
-			}
-			if (studyBos != null && !studyBos.isEmpty())
-				flag = true;
+		   }
+			
+		   if (studyBos != null && !studyBos.isEmpty())
+		    flag = true;
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - validateAppId() - ERROR", e);
 		} finally {

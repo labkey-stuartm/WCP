@@ -694,14 +694,14 @@ function validateAppId(item,callback){
 	var appId = $("#appId").val();
 	var studyType = $('input[name=type]:checked').val();
 	var thisAttr= $("#appId");
-	var dbAppId = '${studyBo.appId}';
+	var customStudyId = $("#customStudyId").val();
 	if(appId != null && appId !='' && typeof appId!= 'undefined'){
-		if(dbAppId !=appId){
 			$.ajax({
 				url: "/fdahpStudyDesigner/adminStudies/validateAppId.do?_S=${param._S}",
                 type: "POST",
                 datatype: "json",
                 data: {
+                       customStudyId:customStudyId,
                 	   appId:appId,
                 	   studyType:studyType,
                        "${_csrf.parameterName}":"${_csrf.token}",
@@ -723,9 +723,6 @@ function validateAppId(item,callback){
                 },
                 global : false
           });
-		}else{
-			callback(true);
-		}
 	}else{
 		 callback(false);
 	}

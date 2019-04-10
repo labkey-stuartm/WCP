@@ -2134,9 +2134,9 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public boolean validateAppId(String appId, String studyType) {
+	public boolean validateAppId(String customStudyId,String appId, String studyType) {
 		logger.info("StudyServiceImpl - validateAppId - Starts");
-		return studyDAO.validateAppId(appId, studyType);
+		return studyDAO.validateAppId(customStudyId, appId, studyType);
 	}
 	
 }
