@@ -224,7 +224,11 @@ public class LoginDAOImpl implements LoginDAO {
 			if (userBo != null) {
 				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil
 						.getCurrentDateTime());
-
+                if(userBo.getRoleId()!=null){
+                	String role = (String) session.createSQLQuery("select role_name from roles where role_id="+userBo.getRoleId()).uniqueResult();
+                	if(StringUtils.isNotEmpty(role))
+                		userBo.setRoleName(role);
+                }
 			}
 		} catch (Exception e) {
 			userBo = null;

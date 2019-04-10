@@ -98,6 +98,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		sesObj.setPasswordExpairdedDateTime(userdetails
 				.getPasswordExpairdedDateTime());
 		sesObj.setCreatedDate(userdetails.getCreatedOn());
+		sesObj.setRole(userdetails.getRoleName());
 
 //		masterDataBO = dashBoardAndProfileService.getMasterData("terms");
 //		sesObj.setTermsText(masterDataBO.getTermsText());

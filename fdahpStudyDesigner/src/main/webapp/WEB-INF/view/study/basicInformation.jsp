@@ -86,7 +86,7 @@
 						App ID  <small>(15 characters max)</small><span
 							class="requiredStar"> *</span><span><span data-toggle="tooltip" data-placement="top" title="Enter a unique human-readable identifier corresponding to the app that this study must belong to." class="filled-tooltip"></span></span>
 					</div>
-					<div class="form-group customStudyClass">
+					<div class="form-group">
 						<input type="text" custAttType="cust" autofocus="autofocus"
 							class="form-control aq-inp appIdCls" name="appId"
 							id="appId" maxlength="15"
@@ -103,9 +103,9 @@
 					</div>
 					<div class="form-group appIdClass">
 						<input type="text" custAttType="cust"
-							class="form-control aq-inp" name="orgId"
+							class="form-control aq-inp orgIdCls" name="orgId"
 							id="orgId" maxlength="15"
-							value="${studyBo.appId}"
+							value="${studyBo.orgId}"
 							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>
 							required />
 						<div class="help-block with-errors red-txt"></div>
@@ -413,13 +413,15 @@
     						if(parseInt(studyCount) >= 1){
     							return false;
 						    }else{
+						        $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+				      	        if(isFromValid("#basicInfoFormId"))
 						        validateAppId('',function(valid){
 							     if(valid){
 							       var appCount = $('.appIdClass').find('.help-block').children().length;
     						       if(parseInt(appCount) >= 1){
     							     return false;
 						           }else{
-									      $('.studyTypeClass,.studyIdCls,.appIdCls').prop('disabled', false);
+									      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
 				      	               	  if(isFromValid("#basicInfoFormId"))
 				      	                	var file = $('#uploadImg').val();
 				      	                    var thumbnailImageId = $('#thumbnailImageId').val();
@@ -438,7 +440,7 @@
 							    						            if(parseInt(appCount) >= 1){
 							    							         return false;
 														            }else{
-																	     $('.studyTypeClass,.studyIdCls,.appIdCls').prop('disabled', false);
+																	     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
 									      		                       	 if(isFromValid("#basicInfoFormId")){
 									      		                       		 $("#buttonText").val('completed');
 									      		                        	 $("#basicInfoFormId").submit();
@@ -464,13 +466,15 @@
 						if(parseInt(studyCount) >= 1){
 							return false;
 						}else{
+						      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+						      if(isFromValid("#basicInfoFormId"));
 						       validateAppId('',function(valid){
 							     if(valid){
 							       var appCount = $('.appIdClass').find('.help-block').children().length;
     						       if(parseInt(appCount) >= 1){
     							     return false;
 						           }else{
-									     $('.studyTypeClass,.studyIdCls,.appIdCls').prop('disabled', false);
+									     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
 				                   		 if(isFromValid("#basicInfoFormId")){
 				                   			 $("#buttonText").val('completed');
 				                    	  	 $("#basicInfoFormId").submit();
@@ -508,10 +512,27 @@
 							$("#customStudyName").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                         	return false;
                         }else{
-                        	$('.studyTypeClass,.studyIdCls,.appIdCls').prop('disabled', false);
-                			$('#basicInfoFormId').validator('destroy');
-                        	$("#buttonText").val('save');
-                        	$('#basicInfoFormId').submit();
+                            var appId = $('#appId').val();
+                            if(null != appId && appId !='' && typeof appId != 'undefined'){
+                               validateAppId('',function(valid){
+							     if(valid){
+							         $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+			                		 $('#basicInfoFormId').validator('destroy');
+			                         $("#buttonText").val('save');
+			                         $('#basicInfoFormId').submit();
+							     }else{
+							           $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+			                		   $('#basicInfoFormId').validator('destroy');
+			                           $("#buttonText").val('save');
+			                           $('#basicInfoFormId').submit();
+							     }
+							   });
+                            }else{
+                               $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+	                		   $('#basicInfoFormId').validator('destroy');
+	                           $("#buttonText").val('save');
+	                           $('#basicInfoFormId').submit();
+                            }
                         }
             		}else{
             			var studyCount = $('.customStudyClass').find('.help-block').children().length;

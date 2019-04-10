@@ -27,7 +27,7 @@ table.dataTable thead th:last-child{
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut" id="cancelId">Cancel</button>
                      </div>
-                     <c:if test="${empty permission}">
+                     <c:if test="${(empty permission) && (sessionObject.role ne 'Org-level Admin')}">
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
@@ -372,7 +372,7 @@ $(document).ready(function(){
 		$(".rejoin_radio").click(function(){
 			checkRadioRequired();
 		})
-		<c:if test="${not empty permission}">
+		<c:if test="${(not empty permission) || (sessionObject.role eq 'Org-level Admin')}">
             $('#settingfoFormId input,textarea,select').prop('disabled', true);
             $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
         </c:if>

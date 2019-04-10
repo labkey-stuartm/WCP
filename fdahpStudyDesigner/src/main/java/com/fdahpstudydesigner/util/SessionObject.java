@@ -37,6 +37,7 @@ public class SessionObject implements Serializable {
 	private String userName = "";
 	private String userPermissions = "";
 	private String userType = "";
+	private String role = "";
 
 	public Integer getAdminstratorId() {
 		return adminstratorId;
@@ -204,5 +205,13 @@ public class SessionObject implements Serializable {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

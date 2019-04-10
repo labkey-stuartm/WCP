@@ -108,7 +108,7 @@
                      <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar"> *</span></div>
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
-                            <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>" name="roleId" required>
+                            <select id="roleId" class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>" name="roleId" required>
                               <option value="" selected disabled>- Select Role -</option>
                               <c:forEach items="${roleBOList}" var="role">
                               	<option ${role.roleId eq userBO.roleId ? 'selected' : ''} value="${role.roleId}">${role.roleName}</option>
@@ -209,7 +209,7 @@
                     <div class="mt-lg pl-lg">
                         <div class="pb-md bor-dashed">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="${fn:contains(permissions,8)?'1':''}" <c:if test="${fn:contains(permissions,8)}"> checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                                <input type="checkbox" id="inlineCheckbox5" class="changeView1" name="addingNewStudy" value="${fn:contains(permissions,8)?'1':''}" <c:if test="${fn:contains(permissions,8)}"> checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                                 <label for="inlineCheckbox5"> Create New Studies </label>
                             </span> 
                         </div>
@@ -293,6 +293,25 @@
     	$('[data-toggle="tooltip"]').tooltip();	
     	
     	
+    	$('#roleId').on('change', function() {
+		  var element = $(this).find('option:selected').text(); 
+		  if(element == 'Org-level Admin'){
+		     $('#inlineCheckbox1').prop('checked', false);
+		     $('#inlineCheckbox3').prop('checked', false);
+		     $('#inlineCheckbox4').prop('checked', false);
+		     $('.changeView1').prop('checked', false);
+		     $('.musr').prop('checked',false);
+             $('.mnotf').prop('checked',false);
+		     $('#inlineCheckbox1').attr('disabled',true);
+		     $('#inlineCheckbox3').attr('disabled',true);
+		     $('.changeView1').prop('disabled',true);
+		  }else{
+		     $('#inlineCheckbox1').attr('disabled',false);
+		     $('#inlineCheckbox3').attr('disabled',false);
+		  }
+		});
+    	
+    	
    var countCall = 0;
    $(window).on('load',function(){
 	   countCall = 1;
@@ -367,16 +386,22 @@
     	});
     	
     	$('#inlineCheckbox4').on('click',function(){
-    		if($(this).prop("checked") == true){
-                $(this).val(1);
-                $('.changeView').prop('disabled',false);
-            }
-            else if($(this).prop("checked") == false){
-                $(this).val('');
-                $('#inlineCheckbox5').val('');
-                $('#inlineCheckbox5').prop('checked',false);
-                $('.changeView').prop('disabled',true);
-            }
+   		   if($(this).prop("checked") == true){
+               $(this).val(1);
+               $('.changeView').prop('disabled',false);
+               var element = $("#roleId option:selected").text();
+               if(element == 'Org-level Admin'){
+		         $('.changeView1').prop('disabled',true);
+			   }else{
+			       $('.changeView1').prop('disabled',false);
+			   }
+           }else if($(this).prop("checked") == false){
+               $(this).val('');
+               $('#inlineCheckbox5').val('');
+               $('#inlineCheckbox5').prop('checked',false);
+               $('.changeView').prop('disabled',true);
+               $('.changeView1').prop('disabled',true);
+           }
     	});
     	
     	$('#inlineCheckbox5').on('click',function(){
