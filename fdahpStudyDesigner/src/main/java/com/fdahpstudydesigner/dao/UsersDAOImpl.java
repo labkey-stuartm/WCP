@@ -424,6 +424,11 @@ public class UsersDAOImpl implements UsersDAO {
 			query = session.getNamedQuery("getUserById").setInteger("userId",
 					userId);
 			userBO = (UserBO) query.uniqueResult();
+			if(userBO!=null && userBO.getRoleId()!=null){
+				String  roleName = (String) session.createSQLQuery("select role_name from roles where role_id="+userBO.getRoleId()).uniqueResult();
+				if(StringUtils.isNotEmpty(roleName))
+					userBO.setRoleName(roleName);
+			}
 		} catch (Exception e) {
 			logger.error("UsersDAOImpl - getUserDetails() - ERROR", e);
 		} finally {

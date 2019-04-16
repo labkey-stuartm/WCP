@@ -292,23 +292,23 @@
     	
     	$('[data-toggle="tooltip"]').tooltip();	
     	
+    	var isManageStudyChecked =$("#inlineCheckbox4").is(":checked");
+    	if(isManageStudyChecked){
+    	
+    	}else{
+    	   $('#inlineCheckbox5').val('');
+           $('#inlineCheckbox5').prop('checked',false);
+           $('.changeView').prop('disabled',true);
+           $('.changeView1').prop('disabled',true);
+    	}
+    	var role = '${userBO.roleName}';
+    	if(role){
+    	   setStudySettingByRole(role);
+    	}
     	
     	$('#roleId').on('change', function() {
 		  var element = $(this).find('option:selected').text(); 
-		  if(element == 'Org-level Admin'){
-		     $('#inlineCheckbox1').prop('checked', false);
-		     $('#inlineCheckbox3').prop('checked', false);
-		     $('#inlineCheckbox4').prop('checked', false);
-		     $('.changeView1').prop('checked', false);
-		     $('.musr').prop('checked',false);
-             $('.mnotf').prop('checked',false);
-		     $('#inlineCheckbox1').attr('disabled',true);
-		     $('#inlineCheckbox3').attr('disabled',true);
-		     $('.changeView1').prop('disabled',true);
-		  }else{
-		     $('#inlineCheckbox1').attr('disabled',false);
-		     $('#inlineCheckbox3').attr('disabled',false);
-		  }
+		  setStudySettingByRole(element);
 		});
     	
     	
@@ -656,6 +656,27 @@
     	  	</c:if>
       		$('.addUpdate').parents('form').submit();	
       	}
+    }
+    function setStudySettingByRole(element){
+      if(element == 'Org-level Admin'){
+		     $('#inlineCheckbox1').prop('checked', false);
+		     $('#inlineCheckbox3').prop('checked', false);
+		     $('.changeView1').prop('checked', false);
+		     $('.musr').prop('checked',false);
+             $('.mnotf').prop('checked',false);
+             $('.musr').prop('disabled',true);
+             $('.mnotf').prop('disabled',true);
+		     $('#inlineCheckbox1').attr('disabled',true);
+		     $('#inlineCheckbox3').attr('disabled',true);
+		     $('.changeView1').prop('disabled',true);
+		     $('#inlineCheckbox5').prop('checked',false);
+		     $('#inlineCheckbox5').attr('disabled',true);
+		  }else{
+		     $('#inlineCheckbox1').attr('disabled',false);
+		     $('#inlineCheckbox3').attr('disabled',false);
+		     $('#inlineCheckbox5').attr('disabled',false);
+		  }
+		  
     }
 </script>
 
