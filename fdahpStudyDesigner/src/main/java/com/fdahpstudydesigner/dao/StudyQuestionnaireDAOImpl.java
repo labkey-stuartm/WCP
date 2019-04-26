@@ -723,6 +723,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 											.getUserId());
 									newQuestionsBo.setModifiedBy(null);
 									newQuestionsBo.setModifiedOn(null);
+									newQuestionsBo.setAnchorDateId(null);
 									if (questionsBo
 											.getUseStasticData()
 											.equalsIgnoreCase(
@@ -867,6 +868,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 														.setModifiedBy(null);
 												newQuestionsBo
 														.setModifiedOn(null);
+												newQuestionsBo.setAnchorDateId(null);
 												if (questionsBo
 														.getUseStasticData()
 														.equalsIgnoreCase(
