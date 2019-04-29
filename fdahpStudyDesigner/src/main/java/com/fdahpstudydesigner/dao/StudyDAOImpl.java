@@ -7415,7 +7415,7 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			studyBos = session
-					.getNamedQuery("getStudyBycustomStudyId")
+					.getNamedQuery("StudyBo.getStudyBycustomStudyId")
 					.setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID,
 							customStudyId).list();
 			if (studyBos != null && !studyBos.isEmpty())

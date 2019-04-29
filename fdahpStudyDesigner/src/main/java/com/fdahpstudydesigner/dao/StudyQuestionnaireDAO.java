@@ -122,5 +122,5 @@ public interface StudyQuestionnaireDAO {
 	
 	public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
 	
-	public String updateAnchordateInQuestionnaire(Session session, Transaction transaction, StudyVersionBo studyVersionBo, Integer questionnaireId,SessionObject sessionObject,Integer studyId, Integer stepId, Integer questionId, String stepType);
+	public String updateAnchordateInQuestionnaire(Session session, Transaction transaction, StudyVersionBo studyVersionBo, Integer questionnaireId,SessionObject sessionObject,Integer studyId, Integer stepId, Integer questionId, String stepType, boolean isChange);
 }

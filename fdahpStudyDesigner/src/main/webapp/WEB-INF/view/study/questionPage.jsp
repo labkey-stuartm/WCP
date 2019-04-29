@@ -88,6 +88,7 @@ function isNumberKey(evt)
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
          <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <input type="hidden" id="anchorDateId" name="anchorDateId" value="${questionnairesStepsBo.questionsBo.anchorDateId}" />
+         <input type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate" value="${questionsBo.isShorTitleDuplicate}" />
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade active in mt-xlg">
             <div class="col-md-6 pl-none">
@@ -1474,6 +1475,16 @@ function isNumberKey(evt)
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	if($('#useAnchorDateId').is(':checked')){
+		$("#anchorTextId").attr('required',true);
+	}else{
+		$('.useAnchorDateName').hide();
+		$("#anchorTextId").attr('required',false);
+		$("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
+	    $("#anchorTextId").parent().find(".help-block").html("");
+	}
+	
 	$('#useAnchorDateId').click(function() {	
 		if ($(this).is(':checked')){
 			$('.useAnchorDateName').show();

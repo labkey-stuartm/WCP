@@ -1118,6 +1118,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 						addQuestionsBo.setStatus(true);
 					}
 				}
+				if(questionsBo.getIsShorTitleDuplicate()!=null && questionsBo.getIsShorTitleDuplicate()>0)
+					addQuestionsBo.setIsShorTitleDuplicate(questionsBo.getIsShorTitleDuplicate());
+				
 				addQuestionsBo.setCustomStudyId(customStudyId);
 				addQuestionsBo = studyQuestionnaireDAO
 						.saveOrUpdateQuestion(addQuestionsBo);
