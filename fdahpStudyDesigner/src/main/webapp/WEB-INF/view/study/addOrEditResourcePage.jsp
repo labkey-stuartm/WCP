@@ -98,8 +98,9 @@
             <div class="mt-xs">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span> <span data-toggle="tooltip" data-placement="top" title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study." class="filled-tooltip"></span></div>
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
-                    <label for="inlineRadio3">Yes</label>
+                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0"
+                     <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
+                      <label for="inlineRadio3">Yes</label>
                 </span>
                 <span class="radio radio-inline">
                     <input type="radio" id="inlineRadio4" name="resourceVisibilityParam" value="1" <c:if test="${resourceBO.resourceVisibility  || empty resourceBO}">checked</c:if>>
@@ -112,12 +113,12 @@
                
              <div class="mt-lg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
-                <div>
+                <div id="selectTime">
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
                     <label for="inlineRadio5">Anchor Date-based Period</label><br/>
                 </span>
-                <c:if test="${fn:length(anchorTypeList) gt 0}">
+                <%-- <c:if test="${fn:length(anchorTypeList) gt 0}">
                 	<div>
 	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
 	                  <div class="col-md-3 col-lg-3 p-none">
@@ -133,12 +134,27 @@
 	                  </div>
 	                  <div class="clearfix"></div>
 	                 </div>
-                </c:if>
+                </c:if> --%>
+                	<div>
+	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
+	                  <div class="col-md-3 col-lg-3 p-none">
+		                  <div class="form-group">
+		                     <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
+		                      <option value='' >Select</option>
+		                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+		                      	<option value="${anchorTypeInfo.id}">${anchorTypeInfo.name}</option>
+		                      </c:forEach>
+		                     </select>
+		                     <div class="help-block with-errors red-txt"></div>
+		                  </div>
+	                  </div>
+	                  <div class="clearfix"></div>
+	                 </div>
                 <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06">Anchor Date </span>                   
+                    <span class="light-txt opacity06 disBtn1">Anchor Date </span>                   
                  </span>
                 <span>
-	                 <select class="signDropDown selectpicker sign-box" title="Select" name="xDaysSign" id="xSign">
+	                 <select class="signDropDown selectpicker sign-box disBtn1" title="Select" name="xDaysSign" id="xSign">
 	                          <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
 	                          <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
 	                 </select>
@@ -156,7 +172,7 @@
                  </span>
                  
                  <span>
-                 	 <select class="signDropDown selectpicker sign-box" title="Select" name="yDaysSign" id="ySign">
+                 	 <select class="signDropDown selectpicker sign-box disBtn1" title="Select" name="yDaysSign" id="ySign">
                               <option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
                               <option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
                      </select>
@@ -170,7 +186,7 @@
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-	                    <span class="light-txt opacity06"> days </span>                   
+	                    <span class="light-txt opacity06 disBtn1"> days </span>                   
 	                 </span>
                  </div>
              </div>
@@ -601,9 +617,23 @@ $(document).ready(function(){
 		
 		$('#inlineRadio3').on('click',function(){
 			if($('#inlineRadio3').prop('checked') == true){
-			$('.disBtn1').prop('disabled',false);
+				
+			var anchorTypeList = "${anchorTypeList}";
+			var length = anchorTypeList.length;
+				 if(length < 3){
+					 $('#inlineRadio5').prop('disabled',false);
+					 $("#selectTime").children().attr("disabled","disabled");
+						$('.disRadBtn1').prop('disabled',true);	
+						$('.disRadBtn1').prop('checked',false);
+						$('.disRadBtn1').val('');	
+						$('.disBtn1').removeAttr('required');
+						$('.disBtn1').val('');
+				 }
+			//$('.disBtn1').prop('disabled',false);
+			
+			resetValidation($('.resetDate'));
 			$('.disBtn2').prop('disabled',true);
-			$('#inlineRadio5,#inlineRadio6').prop('disabled',false);
+			$('#inlineRadio6').prop('disabled',false);
 			$('.disBtn2').val('');
 				if($('#xdays').attr('oldxDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
@@ -647,6 +677,16 @@ $(document).ready(function(){
 					$('.disBtn1').prop('disabled',true);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
+					//added by sweta
+					 if(length > 3){
+					 $('#inlineRadio5').prop('disabled',true);
+					 $("#selectTime").children().attr("disabled",false);
+						$('.disRadBtn1').prop('disabled',false);	
+						$('.disRadBtn1').prop('checked',true);
+						$('.disRadBtn1').val('');	
+						//$('.disBtn1').addAttr('required');
+						$('.disBtn1').val('');
+					 }
 					resetValidation($('.resetDate'));
 				}
 			}

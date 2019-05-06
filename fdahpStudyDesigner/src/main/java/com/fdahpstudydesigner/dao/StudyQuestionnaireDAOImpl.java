@@ -5171,11 +5171,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
 			if(studyBo!=null) {
-				if(!studyBo.isEnrollmentdateAsAnchordate()) {
-					subQuery = "and name != '"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'";
-				}
+				  if(!studyBo.isEnrollmentdateAsAnchordate()) {
+					  subQuery ="and name != '"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'"; 
+					  }
 			}
-			queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+"' and hasAnchortypeDraft=1"+subQuery;
+			//queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+ "' and hasAnchortypeDraft=1"+subQuery;
+			//Added by sweta
+			queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+ "' and hasAnchortypeDraft=1";
 			anchorDateTypeBos = session.createQuery(queryString).list();
 			
 			
