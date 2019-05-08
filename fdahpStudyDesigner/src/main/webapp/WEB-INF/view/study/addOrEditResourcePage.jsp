@@ -351,6 +351,8 @@ $(document).ready(function(){
 		   	$("#resourceTitle").parent().find(".help-block").empty();
 	   		$('#resourceForm').validator('destroy').validator();
 	   		var isValid = true;
+	   		var anchorList = "${anchorTypeList}";
+			 var length = anchorList.length;
 	   if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
 		   isValid = chkDaysValid(false);
 	   }
@@ -631,8 +633,7 @@ $(document).ready(function(){
 			var anchorTypeList = "${anchorTypeList}";
 			var length = anchorTypeList.length;
 				 if(length < 3){
-					 $('#inlineRadio5').prop('disabled',false);
-					 //$("#selectTime").children().attr("disabled","disabled");
+					 $('#inlineRadio5').prop('disabled',true);
 						$('.disRadBtn1').prop('disabled',true);	
 						$('.disRadBtn1').prop('checked',false);
 						$('.disRadBtn1').val('');	
@@ -640,7 +641,6 @@ $(document).ready(function(){
 						$('.disBtn1').val('');
 						
 				 }
-			//$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('#inlineRadio6').prop('disabled',false);
 			$('.disBtn2').val('');
@@ -680,6 +680,17 @@ $(document).ready(function(){
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
 					$('.disRadBtn1').prop('checked',false);
+					 if(length < 3){
+						 $('#inlineRadio5').prop('disabled',true);
+							$('.disRadBtn1').prop('disabled',true);	
+							$('.disRadBtn1').prop('checked',false);
+							$('.disRadBtn1').val('');	
+							$('.disBtn1').removeAttr('required');
+							$('.disBtn1').val('');
+							
+					 }else{
+						 $('#inlineRadio5').prop('disabled',false);
+					 }
 					resetValidation($('.resetDate'));
 				}
 				if($('#EndDate').attr('oldEndDateVal') != ''){
@@ -690,6 +701,17 @@ $(document).ready(function(){
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
 					$('.disBtn1').selectpicker('refresh');
+					 if(length < 3){
+						 $('#inlineRadio5').prop('disabled',true);
+							$('.disRadBtn1').prop('disabled',true);	
+							$('.disRadBtn1').prop('checked',false);
+							$('.disRadBtn1').val('');	
+							$('.disBtn1').removeAttr('required');
+							$('.disBtn1').val('');
+							
+					 }else{
+						 $('#inlineRadio5').prop('disabled',false);
+					 }
 					resetValidation($('.resetDate'));
 				}
 				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
@@ -700,7 +722,7 @@ $(document).ready(function(){
 					$('.disBtn1').removeAttr('required');
 					
 					//added by sweta
-				 	 if(length > 3 || $('#ydays').attr('oldyDaysVal') == '' || $('#ydays').attr('oldyDaysVal') != ''){
+				 	 if(length > 3 || $('#ydays').attr('oldyDaysVal') != '' || $('#ydays').attr('oldyDaysVal') != ''){
 				 		 $('#inlineRadio5').prop('disabled',false);
 				 		 //added by sweta
 				 		resetValidation($('.resetDate'));
@@ -718,12 +740,21 @@ $(document).ready(function(){
 		});
 		
 		if($('#inlineRadio3').prop('checked') == true){
+			var anchorTypeList = "${anchorTypeList}";
+			var length = anchorTypeList.length;
+				
 		if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
+			 if(length < 3){
+				 $('#inlineRadio5').prop('checked',false);
+				 $('.disBtn1').prop('disabled',true);
+				 $('.disBtn1').prop('disabled',true);
+				 $('#inlineRadio5').prop('disabled',true);
+			 }
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
 			$('#inlineRadio5').prop('checked',true);
 			$('.disBtn1').prop('disabled',false);
@@ -736,6 +767,12 @@ $(document).ready(function(){
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
+			 if(length < 3){
+				 $('#inlineRadio5').prop('checked',false);
+				 $('.disBtn1').prop('disabled',true);
+				 $('.disBtn1').prop('disabled',true);
+				 $('#inlineRadio5').prop('disabled',true);
+			 }
 		}
 		var a = $("#inlineRadio3").val();
 		if(a ==0){
