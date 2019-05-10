@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -5590,6 +5591,10 @@ public class StudyDAOImpl implements StudyDAO {
 									List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
 									List<QuestionResponseSubTypeBo> existingQuestionResponseSubTypeList = new ArrayList<>();
 									List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList = new ArrayList<>();
+									
+									List<QuestionReponseTypeBo> existingQuestionResponseTypeList = new ArrayList<>();
+									List<QuestionReponseTypeBo> newQuestionResponseTypeList = new ArrayList<>();
+									
 									query = session.getNamedQuery(
 											"getQuestionnaireStepSequenceNo")
 											.setInteger("questionnairesId",
@@ -5722,6 +5727,11 @@ public class StudyDAOImpl implements StudyDAO {
 														// Question response
 														// Type
 														if (questionReponseTypeBo != null) {
+															
+															
+															
+															
+															
 															QuestionReponseTypeBo newQuestionReponseTypeBo = SerializationUtils
 																	.clone(questionReponseTypeBo);
 															newQuestionReponseTypeBo
@@ -5729,7 +5739,14 @@ public class StudyDAOImpl implements StudyDAO {
 															newQuestionReponseTypeBo
 																	.setQuestionsResponseTypeId(newQuestionsBo
 																			.getId());
+															newQuestionReponseTypeBo
+															.setOtherDestinationStepId(null);
 															session.save(newQuestionReponseTypeBo);
+															
+															if(StringUtils.isNotEmpty(questionReponseTypeBo.getOtherType()) && questionReponseTypeBo.getOtherType().equals("on")){
+																 existingQuestionResponseTypeList.add(questionReponseTypeBo);
+																 newQuestionResponseTypeList.add(newQuestionReponseTypeBo);
+															}
 														}
 
 														// Question Condition
@@ -5998,16 +6015,81 @@ public class StudyDAOImpl implements StudyDAO {
 											}
 											destinationResList.add(desId);
 										}
-										for (int i = 0; i < destinationResList
-												.size(); i++) {
-											newQuestionResponseSubTypeList.get(
-													i).setDestinationStepId(
-													destinationResList.get(i));
-											session.update(newQuestionResponseSubTypeList
-													.get(i));
+										for (int i = 0; i < destinationResList.size(); i++) {
+											newQuestionResponseSubTypeList.get(i).setDestinationStepId(destinationResList.get(i));
+											session.update(newQuestionResponseSubTypeList.get(i));
 										}
 									}
+									
+									//for other type , update the destination in questionresponsetype table 
+									/** start**/
+									List<Integer> sequenceTypeList = new ArrayList<>();
+									List<Integer> destinationResTypeList = new ArrayList<>();
+									if (existingQuestionResponseTypeList != null
+											&& !existingQuestionResponseTypeList
+													.isEmpty()) {
+										for (QuestionReponseTypeBo questionResponseTypeBo : existingQuestionResponseTypeList) {
+											if (questionResponseTypeBo
+													.getOtherDestinationStepId() == null) {
+												sequenceTypeList.add(null);
+											} else if (questionResponseTypeBo
+													.getOtherDestinationStepId() != null
+													&& questionResponseTypeBo
+															.getOtherDestinationStepId()
+															.equals(0)) {
+												sequenceTypeList.add(-1);
+											} else {
+												if (existedQuestionnairesStepsBoList != null
+														&& !existedQuestionnairesStepsBoList
+																.isEmpty()) {
+													for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
+														if (questionResponseTypeBo
+																.getOtherDestinationStepId() != null
+																&& questionResponseTypeBo
+																		.getOtherDestinationStepId()
+																		.equals(questionnairesStepsBo
+																				.getStepId())) {
+															sequenceTypeList
+																	.add(questionnairesStepsBo
+																			.getSequenceNo());
+															break;
+														}
+													}
 
+												}
+											}
+										}
+									}
+									if (sequenceTypeList != null
+											&& !sequenceTypeList.isEmpty()) {
+										for (int i = 0; i < sequenceTypeList
+												.size(); i++) {
+											Integer desId = null;
+											if (sequenceTypeList.get(i) == null) {
+												desId = null;
+											} else if (sequenceTypeList.get(
+													i).equals(-1)) {
+												desId = 0;
+											} else {
+												for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
+													if (sequenceTypeList
+															.get(i)
+															.equals(questionnairesStepsBo
+																	.getSequenceNo())) {
+														desId = questionnairesStepsBo
+																.getStepId();
+														break;
+													}
+												}
+											}
+											destinationResTypeList.add(desId);
+										}
+										for (int i = 0; i < destinationResTypeList.size(); i++) {
+											newQuestionResponseTypeList.get(i).setOtherDestinationStepId(destinationResTypeList.get(i));
+											session.update(newQuestionResponseTypeList.get(i));
+										}
+									}
+                                    /*** end***/
 									studyActivityVersionBo
 											.setActivityVersion(newQuestionnaireBo
 													.getVersion());

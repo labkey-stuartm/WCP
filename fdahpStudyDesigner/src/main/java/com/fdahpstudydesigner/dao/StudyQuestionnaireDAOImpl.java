@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.persistence.Column;
+
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -601,6 +603,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
 				List<QuestionResponseSubTypeBo> existingQuestionResponseSubTypeList = new ArrayList<>();
 				List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList = new ArrayList<>();
+				
+				List<QuestionReponseTypeBo> existingQuestionResponseTypeList = new ArrayList<>();
+				List<QuestionReponseTypeBo> newQuestionResponseTypeList = new ArrayList<>();
+				
 				query = session.getNamedQuery("getQuestionnaireStepList")
 						.setInteger("questionnaireId", questionnaireBo.getId());
 				existedQuestionnairesStepsBoList = query.list();
@@ -744,7 +750,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 										newQuestionReponseTypeBo
 												.setQuestionsResponseTypeId(newQuestionsBo
 														.getId());
+										newQuestionReponseTypeBo
+										.setOtherDestinationStepId(null);
 										session.save(newQuestionReponseTypeBo);
+										if(StringUtils.isNotEmpty(questionReponseTypeBo.getOtherType()) && questionReponseTypeBo.getOtherType().equals("on")){
+											 existingQuestionResponseTypeList.add(questionReponseTypeBo);
+											 newQuestionResponseTypeList.add(newQuestionReponseTypeBo);
+										}
 									}
 
 									// Question Condition branching logic
@@ -1010,6 +1022,77 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						session.update(newQuestionResponseSubTypeList.get(i));
 					}
 				}
+				
+				
+				//for other type , update the destination in questionresponsetype table 
+				/** start**/
+				List<Integer> sequenceTypeList = new ArrayList<>();
+				List<Integer> destinationResTypeList = new ArrayList<>();
+				if (existingQuestionResponseTypeList != null
+						&& !existingQuestionResponseTypeList
+								.isEmpty()) {
+					for (QuestionReponseTypeBo questionResponseTypeBo : existingQuestionResponseTypeList) {
+						if (questionResponseTypeBo
+								.getOtherDestinationStepId() == null) {
+							sequenceTypeList.add(null);
+						} else if (questionResponseTypeBo
+								.getOtherDestinationStepId() != null
+								&& questionResponseTypeBo
+										.getOtherDestinationStepId()
+										.equals(0)) {
+							sequenceTypeList.add(-1);
+						} else {
+							if (existedQuestionnairesStepsBoList != null
+									&& !existedQuestionnairesStepsBoList
+											.isEmpty()) {
+								for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
+									if (questionResponseTypeBo
+											.getOtherDestinationStepId() != null
+											&& questionResponseTypeBo
+													.getOtherDestinationStepId()
+													.equals(questionnairesStepsBo
+															.getStepId())) {
+										sequenceTypeList
+												.add(questionnairesStepsBo
+														.getSequenceNo());
+										break;
+									}
+								}
+
+							}
+						}
+					}
+				}
+				if (sequenceTypeList != null
+						&& !sequenceTypeList.isEmpty()) {
+					for (int i = 0; i < sequenceTypeList
+							.size(); i++) {
+						Integer desId = null;
+						if (sequenceTypeList.get(i) == null) {
+							desId = null;
+						} else if (sequenceTypeList.get(
+								i).equals(-1)) {
+							desId = 0;
+						} else {
+							for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
+								if (sequenceTypeList
+										.get(i)
+										.equals(questionnairesStepsBo
+												.getSequenceNo())) {
+									desId = questionnairesStepsBo
+											.getStepId();
+									break;
+								}
+							}
+						}
+						destinationResTypeList.add(desId);
+					}
+					for (int i = 0; i < destinationResTypeList.size(); i++) {
+						newQuestionResponseTypeList.get(i).setOtherDestinationStepId(destinationResTypeList.get(i));
+						session.update(newQuestionResponseTypeList.get(i));
+					}
+				}
+                /*** end***/
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -3159,6 +3242,32 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 							.setConditionFormula(questionsResponseTypeBo
 									.getConditionFormula());
 				}
+				
+				
+				/** Other type set addded by ronalin**/
+				if (StringUtils.isNotEmpty(questionsResponseTypeBo.getOtherType())&& 
+						questionsResponseTypeBo.getOtherType().equals("on")){
+					addOrUpdateQuestionsResponseTypeBo.setOtherType(questionsResponseTypeBo.getOtherType());
+					addOrUpdateQuestionsResponseTypeBo.setOtherText(questionsResponseTypeBo.getOtherText());
+					addOrUpdateQuestionsResponseTypeBo.setOtherValue(questionsResponseTypeBo.getOtherValue());
+					addOrUpdateQuestionsResponseTypeBo.setOtherExclusive(questionsResponseTypeBo.getOtherExclusive());
+					addOrUpdateQuestionsResponseTypeBo.setOtherDestinationStepId(questionsResponseTypeBo.getOtherDestinationStepId());
+					addOrUpdateQuestionsResponseTypeBo.setOtherDescription(questionsResponseTypeBo.getOtherDescription());
+					addOrUpdateQuestionsResponseTypeBo.setOtherIncludeText(questionsResponseTypeBo.getOtherIncludeText());
+					addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(questionsResponseTypeBo.getOtherPlaceholderText());
+					addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(questionsResponseTypeBo.getOtherParticipantFill());
+				}else{
+					addOrUpdateQuestionsResponseTypeBo.setOtherType(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherText(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherValue(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherExclusive(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherDestinationStepId(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherDescription(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherIncludeText(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(null);
+				}
+				/** Other type set addded by ronalin**/
 			}
 		} catch (Exception e) {
 			logger.error(
