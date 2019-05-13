@@ -139,10 +139,10 @@
 	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
 	                  <div class="col-md-3 col-lg-3 p-none">
 		                  <div class="form-group">
-		                     <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
+		                     <select id="anchorDateId" class="selectpicker disBtn1" required name="anchorDateId">
 		                      <option value='' >Select</option>
 		                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-		                      	<option value="${anchorTypeInfo.id}">${anchorTypeInfo.name}</option>
+		                      <option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
 		                      </c:forEach>
 		                     </select>
 		                     <div class="help-block with-errors red-txt"></div>
@@ -151,10 +151,10 @@
 	                  <div class="clearfix"></div>
 	                 </div>
                 <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06 disBtn1">Anchor Date </span>                   
+                    <span class="light-txt opacity06">Anchor Date </span>                   
                  </span>
                 <span>
-	                 <select class="signDropDown selectpicker sign-box disBtn1" title="Select" name="xDaysSign" id="xSign">
+	                 <select class="signDropDown selectpicker sign-box" title="Select" name="xDaysSign" id="xSign">
 	                          <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
 	                          <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
 	                 </select>
@@ -172,7 +172,7 @@
                  </span>
                  
                  <span>
-                 	 <select class="signDropDown selectpicker sign-box disBtn1" title="Select" name="yDaysSign" id="ySign">
+                 	 <select class="signDropDown selectpicker sign-box" title="Select" name="yDaysSign" id="ySign">
                               <option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
                               <option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
                      </select>
@@ -254,6 +254,9 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	//$('[data-id="anchorDateId"]').prop('disabled', true);
+	
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
@@ -348,6 +351,8 @@ $(document).ready(function(){
 		   	$("#resourceTitle").parent().find(".help-block").empty();
 	   		$('#resourceForm').validator('destroy').validator();
 	   		var isValid = true;
+	   		var anchorList = "${anchorTypeList}";
+			 var length = anchorList.length;
 	   if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
 		   isValid = chkDaysValid(false);
 	   }
@@ -559,21 +564,26 @@ $(document).ready(function(){
 		$('#inlineRadio5').on('click',function(){
 			if($('#inlineRadio5').prop('checked') == true){
 			$('.disBtn1').prop('disabled',false);
+			$('.disRadBtn1').prop('disabled',false);
+			$('.disBtn1').selectpicker('refresh');
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn2').val('');
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
+			//$('[data-id="anchorDateId"]').prop('disabled', false);
 			if($('#xdays').attr('oldxDaysVal') != ''){
 				$('#inlineRadio5').prop('checked',true);
-				$('#xdays').val($('#xdays').attr('oldxDaysVal'));
+				//$('#xdays').val($('#xdays').attr('oldxDaysVal'));
 				$('.disBtn1').prop('disabled',false);
 				$('.disBtn2').prop('disabled',true);
+				$('.disBtn1').selectpicker('refresh');
 			}
 			if($('#ydays').attr('oldyDaysVal') != ''){
 				$('#inlineRadio5').prop('checked',true);
-				$('#ydays').val($('#ydays').attr('oldyDaysVal'));
+				//$('#ydays').val($('#ydays').attr('oldyDaysVal'));
 				$('.disBtn1').prop('disabled',false);
 				$('.disBtn2').prop('disabled',true);
+				$('.disBtn1').selectpicker('refresh');
 			}
 			resetValidation('.resetDate');
 			}
@@ -586,6 +596,8 @@ $(document).ready(function(){
 			$('.disBtn1').val('');
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
+			$('.disBtn1').selectpicker('refresh');
+			//$('[data-id="anchorDateId"]').prop('disabled', true);
 			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
 			if($('#StartDate').attr('oldStartDateVal') != ''){
 				$('#inlineRadio6').prop('checked',true);
@@ -621,17 +633,14 @@ $(document).ready(function(){
 			var anchorTypeList = "${anchorTypeList}";
 			var length = anchorTypeList.length;
 				 if(length < 3){
-					 $('#inlineRadio5').prop('disabled',false);
-					 $("#selectTime").children().attr("disabled","disabled");
+					 $('#inlineRadio5').prop('disabled',true);
 						$('.disRadBtn1').prop('disabled',true);	
 						$('.disRadBtn1').prop('checked',false);
 						$('.disRadBtn1').val('');	
 						$('.disBtn1').removeAttr('required');
 						$('.disBtn1').val('');
+						
 				 }
-			//$('.disBtn1').prop('disabled',false);
-			
-			resetValidation($('.resetDate'));
 			$('.disBtn2').prop('disabled',true);
 			$('#inlineRadio6').prop('disabled',false);
 			$('.disBtn2').val('');
@@ -642,6 +651,11 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',true);
 					$('.disBtn1').attr('required','required');
 					$('.disBtn2').removeAttr('required');
+					$('#inlineRadio5').prop('disabled',false);	
+					$('#inlineRadio5').val('');	
+					//$('.disRadBtn1').prop('checked',true);
+					$('.disBtn1').val('');
+					$('.disBtn1').selectpicker('refresh');
 					resetValidation($('.resetDate'));
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
@@ -651,6 +665,11 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',true);
 					$('.disBtn1').attr('required','required');
 					$('.disBtn2').removeAttr('required');
+					$('.disBtn1').val('');
+					$('#inlineRadio5').prop('disabled',false);	
+					$('#inlineRadio5').val('');	
+					//$('.disRadBtn1').prop('checked',true);
+					$('.disBtn1').selectpicker('refresh');
 					resetValidation($('.resetDate'));
 				}
 				if($('#StartDate').attr('oldStartDateVal') != ''){
@@ -660,6 +679,18 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',false);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
+					$('.disRadBtn1').prop('checked',false);
+					 if(length < 3){
+						 $('#inlineRadio5').prop('disabled',true);
+							$('.disRadBtn1').prop('disabled',true);	
+							$('.disRadBtn1').prop('checked',false);
+							$('.disRadBtn1').val('');	
+							$('.disBtn1').removeAttr('required');
+							$('.disBtn1').val('');
+							
+					 }else{
+						 $('#inlineRadio5').prop('disabled',false);
+					 }
 					resetValidation($('.resetDate'));
 				}
 				if($('#EndDate').attr('oldEndDateVal') != ''){
@@ -669,46 +700,61 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',false);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
+					$('.disBtn1').selectpicker('refresh');
+					 if(length < 3){
+						 $('#inlineRadio5').prop('disabled',true);
+							$('.disRadBtn1').prop('disabled',true);	
+							$('.disRadBtn1').prop('checked',false);
+							$('.disRadBtn1').val('');	
+							$('.disBtn1').removeAttr('required');
+							$('.disBtn1').val('');
+							
+					 }else{
+						 $('#inlineRadio5').prop('disabled',false);
+					 }
 					resetValidation($('.resetDate'));
 				}
 				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
-					$('#inlineRadio6').prop('checked',true);
+					 $('#inlineRadio6').prop('checked',true);
 					$('.disBtn2').prop('disabled',false);
 					$('.disBtn1').prop('disabled',true);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
+					
 					//added by sweta
-					 if(length > 3){
-					 $('#inlineRadio5').prop('disabled',true);
-					 $("#selectTime").children().attr("disabled",false);
-						$('.disRadBtn1').prop('disabled',false);	
-						$('.disRadBtn1').prop('checked',true);
-						$('.disRadBtn1').val('');	
-						//$('.disBtn1').addAttr('required');
-						$('.disBtn1').val('');
-					 }
-					resetValidation($('.resetDate'));
+				 	 if(length > 3 || $('#ydays').attr('oldyDaysVal') != '' || $('#ydays').attr('oldyDaysVal') != ''){
+				 		 $('#inlineRadio5').prop('disabled',false);
+				 		 //added by sweta
+				 		resetValidation($('.resetDate'));
+					 } 
+					
 				}
 			}
-			var a = $("#inlineRadio3").val();
+			 var a = $("#inlineRadio3").val();
 			if(a ==0){
 			   $(".light-txt").removeClass("opacity06");
 			}else{
 			  $(".light-txt").addClass("opacity06");
-			}
+			} 
 			resetValidation($('.resetDate'));
-			
-			
-			
 		});
 		
 		if($('#inlineRadio3').prop('checked') == true){
+			var anchorTypeList = "${anchorTypeList}";
+			var length = anchorTypeList.length;
+				
 		if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
+			 if(length < 3){
+				 $('#inlineRadio5').prop('checked',false);
+				 $('.disBtn1').prop('disabled',true);
+				 $('.disBtn1').prop('disabled',true);
+				 $('#inlineRadio5').prop('disabled',true);
+			 }
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
 			$('#inlineRadio5').prop('checked',true);
 			$('.disBtn1').prop('disabled',false);
@@ -721,6 +767,12 @@ $(document).ready(function(){
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
+			 if(length < 3){
+				 $('#inlineRadio5').prop('checked',false);
+				 $('.disBtn1').prop('disabled',true);
+				 $('.disBtn1').prop('disabled',true);
+				 $('#inlineRadio5').prop('disabled',true);
+			 }
 		}
 		var a = $("#inlineRadio3").val();
 		if(a ==0){
@@ -736,9 +788,12 @@ $(document).ready(function(){
 			$('.disRadBtn1').prop('disabled',true);	
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
+			$('.disBtn1').prop('disabled',true);	
 			$('.disBtn1').val('');
 			$('.disBtn1').removeAttr('required');
 			$('.disBtn2').removeAttr('required');
+			$('.disBtn1').selectpicker('refresh');
+			//$('[data-id="anchorDateId"]').prop('disabled', true);
 			resetValidation($('.resetDate'));
 			}
 			
@@ -773,7 +828,7 @@ $(document).ready(function(){
 				$('#xSign').append("<option value='0' selected>+</option>");
 				$('#ySign').children('option').remove();
 			    $('#ySign').append("<option value='0' selected>+</option>");
-			}else{
+			} else{
 				$('#xSign').children('option').remove();
 				$('#xSign').append("<option value='0' selected>+</option><option value='1' selected>-</option>");
 				$('#ySign').children('option').remove();

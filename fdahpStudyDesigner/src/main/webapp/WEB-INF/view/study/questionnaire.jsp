@@ -230,7 +230,7 @@ function isNumber(evt, thisAttr) {
 	           </c:if>>
                <span class="radio radio-inline p-40">
                <input type="radio" id="schedule2" class="typeofschedule" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${isAnchorQuestionnaire?'disabled':''} ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                                                      <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
+                                                      <c:if test="${empty anchorTypeList}">disabled</c:if>>
                <label for="schedule2">Anchor-Date-based</label>
                </span>
                </span>
@@ -1650,7 +1650,14 @@ $(document).ready(function() {
 		});
 	 });
 	 $("#saveId").click(function(){
+		 /* var anchorList = "${anchorTypeList}";
+		 var length = anchorList.length; */
 		 var table = $('#content').DataTable();
+		 /* if(length < 3){
+			 $("#schedule2").attr('disabled', true);
+		 }else{
+			 $("#schedule2").attr('disabled', false);
+		 } */
 		 validateShortTitle('',function(val){
 			 if(val){
 				 if(isFromValid("#contentFormId")){
@@ -2461,6 +2468,13 @@ function saveQuestionnaire(item, callback){
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
 					$("#questionnaireId").val(questionnaireId);
+					var anchorList = "${anchorTypeList}";
+					 var length = anchorList.length;
+					 if(length < 3){
+						 $("#schedule2").attr('disabled', true);
+					 }else{
+						 $("#schedule2").attr('disabled', false);
+					 }
 					if(frequency_text == 'Daily'){
 						var previous_frequency = $("#previousFrequency").val();
 						if(previous_frequency !='' && previous_frequency != null && previous_frequency != 'undefined'){
@@ -3180,6 +3194,8 @@ function setAnchorDropdown(frequency_text,anchorType){
 }
 
 $(document).ready(function(){
+	
+	
 	jQuery(document).on("keyup",".xdays",function(){
 	    
 		var xday = $(this).val()
