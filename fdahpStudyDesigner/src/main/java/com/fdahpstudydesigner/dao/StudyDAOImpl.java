@@ -5743,7 +5743,7 @@ public class StudyDAOImpl implements StudyDAO {
 															.setOtherDestinationStepId(null);
 															session.save(newQuestionReponseTypeBo);
 															
-															if(StringUtils.isNotEmpty(questionReponseTypeBo.getOtherType()) && questionReponseTypeBo.getOtherType().equals("on")){
+															if(questionReponseTypeBo.getOtherType()!=null && StringUtils.isNotEmpty(questionReponseTypeBo.getOtherType()) && questionReponseTypeBo.getOtherType().equals("on")){
 																 existingQuestionResponseTypeList.add(questionReponseTypeBo);
 																 newQuestionResponseTypeList.add(newQuestionReponseTypeBo);
 															}
