@@ -749,7 +749,7 @@ function isNumber(evt, thisAttr) {
 					                    <span class="light-txt opacity06"> Anchor Date </span>                   
 					                 </span>
 					                <span>
-						                 <select class="signDropDown selectpicker sign-box" count='0' title="Select" name="questionnaireCustomScheduleBo[0].xDaysSign" id="xSign0">
+						                 <select class="signDropDown selectpicker sign-box selectXSign" count='0' title="Select" name="questionnaireCustomScheduleBo[0].xDaysSign" id="xSign0">
 						                          <option value="0" ${not questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
 						                          <option value="1" ${questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>-</option>
 						                 </select>
@@ -765,7 +765,7 @@ function isNumber(evt, thisAttr) {
 					                 </span>
 					                 
 					                 <span>
-					                 	 <select class="signDropDown selectpicker sign-box" count='0' title="Select" name="questionnaireCustomScheduleBo[0].yDaysSign" id="ySign0">
+					                 	 <select class="signDropDown selectpicker sign-box selectYSign" count='0' title="Select" name="questionnaireCustomScheduleBo[0].yDaysSign" id="ySign0">
 					                              <option value="0" ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 					                              <option value="1" ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
 					                     </select>
@@ -815,7 +815,7 @@ function isNumber(evt, thisAttr) {
 					                 </span>
 					                 
 					                 <span>
-					                 	<select class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" count='${customVar.index}' title="Select" name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign" id="ySign0">
+					                 	<select class="signDropDown selectpicker sign-box selectYSign ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" count='${customVar.index}' title="Select" name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign" id="ySign0">
 					                           <option value="0" ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 					                            <option value="1" ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
 					                    </select>
@@ -3067,7 +3067,7 @@ function addDateAnchor(){
 	customAnchorCount = parseInt(customAnchorCount) +1;
 	var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 				                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
-				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"
+				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box selectXSign' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"
 				                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 				                  +"</select></span>"
 				                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
@@ -3076,7 +3076,7 @@ function addDateAnchor(){
 					              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
 					              +"</span>"
 					              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days <span style='padding-right:5px;padding-left:5px'>to </span>  Anchor Date </span></span>"
-				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].yDaysSign' id='ySign"+customAnchorCount+"'>"
+				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box selectYSign' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].yDaysSign' id='ySign"+customAnchorCount+"'>"
 				                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 				                  +"</select></span>"
 				                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
@@ -3243,9 +3243,7 @@ $(document).ready(function(){
 				  }
 			  }		
 		  }
-		  
-		 
-		  
+		  		  
 		    
 		  /* if(xdayValue < pydayValue){
 			 $("xdays"+parent_id).addClass("red-border");
@@ -3271,13 +3269,91 @@ $(document).ready(function(){
 		});
 
 		jQuery(document).on("change",".xdays",function(){				
-		    var parent_id = $(this).parent().parent().attr("id");
-		    var siblings_length = $(".manuallyAnchorContainer > div").length;
-		    
-		    for(i= parseInt(parent_id)+1; i<= siblings_length; i++){
-		    $("#"+i).remove();
-		}		    
+			$(this).parent().parent().siblings().removeClass("current");
+			$(this).parent().parent().addClass("current");
+			
+			$(".current").nextAll().remove();	
 		});	
+		
+		jQuery(document).on("keyup",".ydays",function(){			
+			
+			var parent_id = $(this).parent().parent().attr("id");
+			var xsign = $("#xSign"+parent_id).val() === "0" ? "+" : "-";
+			var xday = $("#xdays"+parent_id).val();
+			var xdayValue = parseInt(xsign+""+xday);
+			var yday = $("#ydays"+parent_id).val();
+			var ysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+			var ydayValue = parseInt(ysign+""+yday);
+			
+			
+			if(ydayValue < xdayValue){
+				$(this).addClass("red-border");
+			    $("#xdays"+parent_id).addClass("red-border");
+			    $("#addbtn"+parent_id).addClass("not-allowed");
+			}else{
+				$(this).removeClass("red-border");
+			    $("#xdays"+parent_id).removeClass("red-border");
+			    $("#addbtn"+parent_id).removeClass("not-allowed");
+			}	
+			
+			
+		});
+		
+		
+		jQuery(document).on("change",".ydays",function(){	
+			$(this).parent().parent().siblings().removeClass("current");
+			$(this).parent().parent().addClass("current");
+			
+			$(".current").nextAll().remove();			
+		    
+		});	
+		
+		
+		jQuery(document).on("change",".sign-box select",function(){
+			
+			var parent_id = $(this).attr("count");
+			var signValue = $("#xSign"+parent_id).val();
+			
+			var xsign = signValue === "0" ? "+" : "-";
+			var xday = $("#xdays"+parent_id).val();
+			var xdayValue = parseInt(xsign+""+xday);
+			
+			var yday = $("#ydays"+parent_id).val();
+			var ysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+			var ydayValue = parseInt(ysign+""+yday);
+			
+			if(ydayValue < xdayValue){				
+			    $("#xdays"+parent_id).addClass("red-border");
+			    $("#ydays"+parent_id).addClass("red-border");
+			    $("#addbtn"+parent_id).addClass("not-allowed");
+			}else{				
+			    $("#xdays"+parent_id).removeClass("red-border");			    
+			    $("#ydays"+parent_id).removeClass("red-border");
+			    $("#addbtn"+parent_id).removeClass("not-allowed");
+			}	
+			
+			$(this).parent().parent().parent().siblings().removeClass("current");
+			$(this).parent().parent().parent().addClass("current");
+			
+			/* $("#"+parent_id).siblings().removeClass("current");
+			$("#"+parent_id).parent().parent().addClass("current"); */
+			
+			$(".current").nextAll().remove();
+			
+			
+			/* var siblings_length = $(".manuallyAnchorContainer > div").length;			
+			for(i= 0; i<= siblings_length; i++){
+				
+				if(i !== parseInt(parent_id)){
+					$("#"+i).remove();
+				}			
+		    	
+		    } */
+					
+			
+		})
+		
+		
 })
 
 </script>
