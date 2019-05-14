@@ -520,7 +520,7 @@ function isNumber(evt, thisAttr) {
 	            <div class="week all mt-lg dis-none">
 	               <div>      
 	                  <span class="gray-xs-f">Day/Time (of the week) <span class="requiredStar">*</span><br/>
-	                  <span class="weeklyStartCls form-group m-none dis-inline vertical-align-middle pr-md">                  
+	                  <span class=" form-group m-none dis-inline vertical-align-middle pr-md">                  
 		                  <span class="">
 			                  <select id="startDateWeekly" class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="dayOfTheWeek" required>
 				                  <option value=''>Select</option>
