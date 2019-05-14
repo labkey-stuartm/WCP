@@ -16,6 +16,10 @@
 .tooltip {
   width: 175px;
 }
+.display__flex__{
+	    display: flex;
+    align-items: center;
+}
 </style>
 <script type="text/javascript">
 function isNumber(evt) {
@@ -1291,7 +1295,7 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 						  </c:if>
-               <div class="col-md-12 p-none display__flex__center">
+               <div class="col-md-12 p-none display__flex__">
 					      <div class="col-md-10 pl-none">
 					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
 					         <div class="form-group">					     
@@ -1350,7 +1354,7 @@ function isNumberKey(evt)
 				         </div>
 				      </div>
 					  </c:if>
-             <div class="col-md-12 p-none display__flex__center">
+             <div class="col-md-12 p-none display__flex__">
 				      <div class="col-md-10 pl-none">
 				         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
 				         <div class="form-group">					     
@@ -1405,7 +1409,7 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 						  </c:if>
-              <div class="col-md-12 p-none display__flex__center">
+              <div class="col-md-12 p-none display__flex__">
 					      <div class="col-md-10 pl-none">
 					         <div class="gray-xs-f mb-xs">Description(1 to 150 characters) </div>
 					         <div class="form-group">					     
@@ -1485,15 +1489,16 @@ function isNumberKey(evt)
               <div>
                 <span class="gray-xs-f mb-xs pr-md">Include text field to specify 'Other'</span>
                   <span class="radio radio-info radio-inline pr-md">
-                  <input type="radio" class="" id="otherYes" value="Yes" name="questionReponseTypeBo.otherIncludeText" ${empty questionnairesStepsBo.questionReponseTypeBo.otherIncludeText  || questionnairesStepsBo.questionReponseTypeBo.otherIncludeText=='Yes' ?'checked':''}>
+                  <input type="radio" class="otherIncludeTextCls" id="otherYes" value="Yes" name="questionReponseTypeBo.otherIncludeText" ${questionnairesStepsBo.questionReponseTypeBo.otherIncludeText=='Yes' ?'checked':''}>
                   <label for="otherYes">Yes</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" class="" id="otherNo" value="No" name="questionReponseTypeBo.otherIncludeText" ${questionnairesStepsBo.questionReponseTypeBo.otherIncludeText=='No' ?'checked':''}>
+                  <input type="radio" class="otherIncludeTextCls" id="otherNo" value="No" name="questionReponseTypeBo.otherIncludeText" ${empty questionnairesStepsBo.questionReponseTypeBo.otherIncludeText  || questionnairesStepsBo.questionReponseTypeBo.otherIncludeText=='No' ?'checked':''}>
                   <label for="otherNo">No</label>
                   </span>
                </div>
            </div>
+           <div class="OtherOptionCls" style="display:none;">
 			<div class="clearfix"></div>
            	<div class="col-md-6 p-none mt-md">
                 <div class="gray-xs-f mb-xs pr-md">Place holder text for the text field</div>
@@ -1506,14 +1511,16 @@ function isNumberKey(evt)
               <div>
                 <span class="gray-xs-f mb-xs pr-md">Is this field mandatory for the participant to fill in?</span>
                   <span class="radio radio-info radio-inline pr-md">
-                  <input type="radio" class="" id="pYes" value="Yes" name="questionReponseTypeBo.otherParticipantFill" ${empty questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill  || questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill=='Yes' ?'checked':''}>
+                  <input type="radio" class="" id="pYes" value="Yes" name="questionReponseTypeBo.otherParticipantFill" ${questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill=='Yes' ?'checked':''}>
                   <label for="pYes">Yes</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" class="" id="pNo" value="No" name="questionReponseTypeBo.otherParticipantFill" ${questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill=='No' ?'checked':''}>
+                  <input type="radio" class="" id="pNo" value="No" name="questionReponseTypeBo.otherParticipantFill" ${empty questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill  || questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill=='No' ?'checked':''}>
                   <label for="pNo">No</label>
                   </span>
                </div>
+           </div>
+           </div>
            </div>
 		 </div>
 		 <!-- other end -->
@@ -2024,9 +2031,21 @@ $(document).ready(function(){
 		if ($(this).is(':checked')){
 			$('.textchoiceOtherCls').show();
 			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
+			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
 		}else{
 			$('.textchoiceOtherCls').hide();
 			$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
+		}
+	});
+	
+	$('.otherIncludeTextCls').click(function() {
+		var otherText = $('.otherIncludeTextCls:checked').val();
+		if(otherText == 'Yes'){
+			$('.OtherOptionCls').show();
+			$('.OtherOptionCls').find('input:text,select').attr('required',true);
+		}else{
+			$('.OtherOptionCls').hide();
+			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
 		}
 	});
 	
@@ -5120,9 +5139,19 @@ $(window).on('load', function() {
 	    if($('#textchoiceOtherId').is(':checked')){
 			$('.textchoiceOtherCls').show();
 			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
+			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
 		}else{
 			$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
 			$('.textchoiceOtherCls').hide();
+		}
+	    
+	    var otherText = $('.otherIncludeTextCls:checked').val();
+		if(otherText == 'Yes'){
+			$('.OtherOptionCls').show();
+			$('.OtherOptionCls').find('input:text,select').attr('required',true);
+		}else{
+			$('.OtherOptionCls').hide();
+			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
 		}
 })
 </script>

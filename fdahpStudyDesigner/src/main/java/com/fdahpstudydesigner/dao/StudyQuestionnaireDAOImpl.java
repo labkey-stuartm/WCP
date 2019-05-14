@@ -3254,8 +3254,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					addOrUpdateQuestionsResponseTypeBo.setOtherDestinationStepId(questionsResponseTypeBo.getOtherDestinationStepId());
 					addOrUpdateQuestionsResponseTypeBo.setOtherDescription(questionsResponseTypeBo.getOtherDescription());
 					addOrUpdateQuestionsResponseTypeBo.setOtherIncludeText(questionsResponseTypeBo.getOtherIncludeText());
-					addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(questionsResponseTypeBo.getOtherPlaceholderText());
-					addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(questionsResponseTypeBo.getOtherParticipantFill());
+					if(StringUtils.isNotEmpty(questionsResponseTypeBo.getOtherIncludeText())&& 
+							questionsResponseTypeBo.getOtherIncludeText().equals("Yes")){
+						addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(questionsResponseTypeBo.getOtherPlaceholderText());
+						addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(questionsResponseTypeBo.getOtherParticipantFill());
+					}else{
+						addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(null);
+						addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(null);
+					}
 				}else{
 					addOrUpdateQuestionsResponseTypeBo.setOtherType(null);
 					addOrUpdateQuestionsResponseTypeBo.setOtherText(null);
