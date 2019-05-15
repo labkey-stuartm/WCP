@@ -17,8 +17,8 @@
   width: 175px;
 }
 .display__flex__{
-	    display: flex;
-    align-items: center;
+	display:flex;
+	align-items:center;
 }
 </style>
 <script type="text/javascript">
@@ -1425,14 +1425,14 @@ function isNumberKey(evt)
 					   <!-- Section End  -->
 				</c:otherwise>
 			</c:choose>
-			<!-- other start -->
-			<div class="clearfix"></div>
+         </div>
+         <div>
+            <div class="clearfix"></div>
 			<div class="checkbox checkbox-inline">
 	               <input type="checkbox" name="questionReponseTypeBo.otherType" id="textchoiceOtherId" ${not empty questionnairesStepsBo.questionReponseTypeBo.otherType ? 'checked':''}>
 	               <label for="textchoiceOtherId"> Include 'Other' as an option </label>
-		    </div>
-			
-			<div class="textchoiceOtherCls" style="display: none;">
+		     </div>
+		     <div class="textchoiceOtherCls" style="display: none;">
 		    <!-- Section Start  -->
 				   <div class="mt-xlg">
 				      <div class="col-md-3 pl-none">
@@ -1522,11 +1522,11 @@ function isNumberKey(evt)
            </div>
            </div>
            </div>
-		 </div>
-		 <!-- other end -->
+		 </div>    
+		     
+		     
          </div>
-         </div>
-         <!-- text choice end-->
+         
        <div id="ImageChoice" style="display: none;">
          	<div class="mt-lg"><div class="gray-choice-f mb-xs">Image Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div></div>
          	<div class="mt-sm row">
@@ -2002,14 +2002,14 @@ function isNumberKey(evt)
 <script type="text/javascript">
 $(document).ready(function(){
 	
-    if($('#useAnchorDateId').is(':checked')){
-        $("#anchorTextId").attr('required',true);
-    }else{
-        $('.useAnchorDateName').hide();
-        $("#anchorTextId").attr('required',false);
-        $("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
-        $("#anchorTextId").parent().find(".help-block").html("");
-    }
+	if($('#useAnchorDateId').is(':checked')){
+		$("#anchorTextId").attr('required',true);
+	}else{
+		$('.useAnchorDateName').hide();
+		$("#anchorTextId").attr('required',false);
+		$("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
+	    $("#anchorTextId").parent().find(".help-block").html("");
+	}
 
 	  $('#useAnchorDateId').click(function() {	
 		if ($(this).is(':checked')){
@@ -2026,6 +2026,7 @@ $(document).ready(function(){
 	$("#anchorTextId").blur(function(){
 		validateAnchorDateText('',function(val){});
     });
+	
 	
 	$('#textchoiceOtherId').click(function() {	
 		if ($(this).is(':checked')){
@@ -4108,7 +4109,7 @@ function addTextChoice(){
 	      " </div>"+
 	      "</div>";
 		  </c:if>
-	      newTextChoice +="<div class='col-md-12 p-none display__flex__center'><div class='col-md-10 pl-none'>"+
+	      newTextChoice +="<div class='col-md-12 p-none display__flex__'><div class='col-md-10 pl-none'>"+
 	         "<div class='gray-xs-f mb-xs'>Description(1 to 150 characters) </div>"+
 	         "<div class='form-group'>"+			     
 	         "   <textarea type='text' class='form-control' name='questionResponseSubTypeList["+choiceCount+"].description' id='displayTextChoiceDescription"+choiceCount+"'  maxlength='150'></textarea>"+
@@ -5120,6 +5121,7 @@ function validateAnchorDateText(item,callback){
  	        $(thisAttr).parent().find(".help-block").html("");
  	}
 }
+
 function setOtherExclusiveData(item){
 	var value = $(item).val();
 	if(value == "Yes"){
@@ -5133,25 +5135,23 @@ function setOtherExclusiveData(item){
 	
 }
 
-
-
 $(window).on('load', function() {
-	    if($('#textchoiceOtherId').is(':checked')){
-			$('.textchoiceOtherCls').show();
-			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
-			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
-		}else{
-			$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
-			$('.textchoiceOtherCls').hide();
-		}
-	    
-	    var otherText = $('.otherIncludeTextCls:checked').val();
-		if(otherText == 'Yes'){
-			$('.OtherOptionCls').show();
-			$('.OtherOptionCls').find('input:text,select').attr('required',true);
-		}else{
-			$('.OtherOptionCls').hide();
-			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
-		}
+    if($('#textchoiceOtherId').is(':checked')){
+		$('.textchoiceOtherCls').show();
+		$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
+		$('.OtherOptionCls').find('input:text,select').removeAttr('required');
+	}else{
+		$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
+		$('.textchoiceOtherCls').hide();
+	}
+    
+    var otherText = $('.otherIncludeTextCls:checked').val();
+	if(otherText == 'Yes'){
+		$('.OtherOptionCls').show();
+		$('.OtherOptionCls').find('input:text,select').attr('required',true);
+	}else{
+		$('.OtherOptionCls').hide();
+		$('.OtherOptionCls').find('input:text,select').removeAttr('required');
+	}
 })
 </script>
