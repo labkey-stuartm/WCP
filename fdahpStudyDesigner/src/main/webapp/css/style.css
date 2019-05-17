@@ -2491,7 +2491,7 @@ a:focus{
 	border: 1px solid red !important;
 }
 
-.not-allowed{
+.not-allowed,.disabled{
 	cursor: not-allowed !important;
 	pointer-events: none !important;
 	opacity: 0.5 !important;
