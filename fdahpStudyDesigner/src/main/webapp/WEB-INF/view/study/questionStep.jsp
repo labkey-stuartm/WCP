@@ -5153,4 +5153,23 @@ function setOtherExclusiveData(item){
 	}
 	
 }
+$(window).on('load', function() {
+    if($('#textchoiceOtherId').is(':checked')){
+		$('.textchoiceOtherCls').show();
+		$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
+		$('.OtherOptionCls').find('input:text,select').removeAttr('required');
+	}else{
+		$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
+		$('.textchoiceOtherCls').hide();
+	}
+    
+    var otherText = $('.otherIncludeTextCls:checked').val();
+	if(otherText == 'Yes'){
+		$('.OtherOptionCls').show();
+		$('.OtherOptionCls').find('input:text,select').attr('required',true);
+	}else{
+		$('.OtherOptionCls').hide();
+		$('.OtherOptionCls').find('input:text,select').removeAttr('required');
+	}
+})
 </script>
