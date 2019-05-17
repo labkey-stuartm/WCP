@@ -253,7 +253,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
 			sb = new StringBuilder(
-					"select n.notification_id as notificationId, n.notification_text as notificationText, s.custom_study_id as customStudyId, n.notification_type as notificationType, n.notification_subType as notificationSubType ");
+					"select n.notification_id as notificationId, n.notification_text as notificationText, s.custom_study_id as customStudyId, n.notification_type as notificationType, n.notification_subType as notificationSubType,n.app_id as appId ");
 			sb.append(
 					"from (notification as n) LEFT OUTER JOIN studies as s ON s.id = n.study_id")
 					.append(" where n.schedule_date ='")
@@ -270,7 +270,8 @@ public class NotificationDAOImpl implements NotificationDAO {
 			query = session.createSQLQuery(sb.toString())
 					.addScalar("notificationId").addScalar("notificationText")
 					.addScalar("customStudyId").addScalar("notificationType")
-					.addScalar("notificationSubType");
+					.addScalar("notificationSubType")
+					.addScalar("appId");
 			pushNotificationBeans = query.setResultTransformer(
 					Transformers.aliasToBean(PushNotificationBean.class))
 					.list();
@@ -386,6 +387,9 @@ public class NotificationDAOImpl implements NotificationDAO {
 					notificationBOUpdate.setNotificationAction(false);
 					notificationBOUpdate.setNotificationDone(true);
 				}
+				if(StringUtils.isNotEmpty(notificationBO.getAppId())){
+					notificationBOUpdate.setAppId(notificationBO.getAppId());
+				}
 				notificationBOUpdate
 						.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
 				notificationId = (Integer) session.save(notificationBOUpdate);
@@ -450,6 +454,9 @@ public class NotificationDAOImpl implements NotificationDAO {
 				}
 				notificationBOUpdate
 						.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+				if(StringUtils.isNotEmpty(notificationBO.getAppId())){
+					notificationBOUpdate.setAppId(notificationBO.getAppId());
+				}
 				session.update(notificationBOUpdate);
 				notificationId = notificationBOUpdate.getNotificationId();
 				session.flush();
@@ -505,6 +512,33 @@ public class NotificationDAOImpl implements NotificationDAO {
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getGatwayAppList() {
+		logger.info("NotificationDAOImpl - getGatwayAppList() - Starts");
+		List<String> gatewayAppList = null;
+		Session session = null;
+		String queryString = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			queryString = "select s.app_id from studies s where" 
+						  + " s.type='GT'"
+						  + " and s.version=1"
+						  + " and s.app_id IS NOT NULL;";
+			query = session.createSQLQuery(queryString);
+			gatewayAppList = query.list();
+		} catch (Exception e) {
+			logger.error("NotificationDAOImpl - getGatwayAppList() - ERROR",
+					e);
+		} finally {
+			if (null != session) {
+				session.close();
+			}
+		}
+		logger.info("NotificationDAOImpl - getGatwayAppList - Ends");
+		return gatewayAppList;
 	}
 
 }

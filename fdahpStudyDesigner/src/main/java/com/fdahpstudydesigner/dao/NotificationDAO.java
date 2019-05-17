@@ -25,4 +25,6 @@ public interface NotificationDAO {
 	public Integer saveOrUpdateOrResendNotification(
 			NotificationBO notificationBO, String notificationType,
 			String buttonType, SessionObject sessionObject);
+	
+	public List<String> getGatwayAppList();
 }

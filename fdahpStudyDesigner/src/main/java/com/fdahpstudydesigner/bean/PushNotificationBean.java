@@ -17,6 +17,8 @@ public class PushNotificationBean {
 	private String notificationTitle = "";
 
 	private String notificationType = "ST";
+	
+	private String appId = "";
 
 	// private String notificationTitle =
 	// FdahpStudyDesignerUtil.getAppProperties().get("push.notification.title");
@@ -102,5 +104,13 @@ public class PushNotificationBean {
 	 */
 	public void setNotificationType(String notificationType) {
 		this.notificationType = notificationType;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 }

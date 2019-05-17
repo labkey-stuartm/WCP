@@ -94,6 +94,7 @@ public class NotificationController {
 		NotificationBO notificationBO = null;
 		ModelAndView mav = new ModelAndView();
 		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
+		List<String> gatewayAppList = null;
 		try {
 			String notificationId = FdahpStudyDesignerUtil.isEmpty(request
 					.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID)) ? ""
@@ -110,6 +111,8 @@ public class NotificationController {
 					.getParameter(FdahpStudyDesignerConstants.ACTION_TYPE)) ? ""
 					: request
 							.getParameter(FdahpStudyDesignerConstants.ACTION_TYPE);
+			gatewayAppList = notificationService.getGatwayAppList();
+			map.addAttribute("gatewayAppList", gatewayAppList);
 			if (!"".equals(chkRefreshflag)) {
 				if (!"".equals(notificationId)) {
 					// Fetching notification detail from notification table by

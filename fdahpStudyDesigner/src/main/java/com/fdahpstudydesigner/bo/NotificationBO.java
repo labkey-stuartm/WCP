@@ -95,6 +95,9 @@ public class NotificationBO implements Serializable {
 
 	@Column(name = "x_days")
 	private Integer xDays;
+	
+	@Column(name = "app_id")
+	private String appId;
 
 	public String getActionPage() {
 		return actionPage;
@@ -287,5 +290,13 @@ public class NotificationBO implements Serializable {
 
 	public void setxDays(Integer xDays) {
 		this.xDays = xDays;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 }

@@ -209,4 +209,12 @@ public class NotificationServiceImpl implements NotificationService {
 		this.studyDAO = studyDAO;
 	}
 
+	@Override
+	public List<String> getGatwayAppList() {
+		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
+		List<String> gatewayAppList = notificationDAO.getGatwayAppList();
+		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Ends");
+		return gatewayAppList;
+	}
+
 }

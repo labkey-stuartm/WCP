@@ -89,6 +89,19 @@
 	                </div>
 	            </div>
 	            
+            <div class=" ">
+                  <div class="form-group">
+                  <div class="gray-xs-f mb-xs">Select AppId</div>
+                     <select id="appId" class="selectpicker" name="appId" >
+                      <option value='' >Select</option>
+                      <c:forEach items="${gatewayAppList}" var="app">
+                      	<option value="${app}" ${notificationBO.appId eq app ? 'selected' : ''}>${app}</option>
+                      </c:forEach>
+                     </select>
+                     <div class="help-block with-errors red-txt"></div>
+                  </div>
+             </div>
+	            
 	            
 	        </div>
 	    </div>

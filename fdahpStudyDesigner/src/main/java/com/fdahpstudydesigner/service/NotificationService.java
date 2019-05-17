@@ -21,5 +21,8 @@ public interface NotificationService {
 	public Integer saveOrUpdateOrResendNotification(
 			NotificationBO notificationBO, String notificationType,
 			String buttonType, SessionObject sessionObject, String customStudyId);
+	
+	
+	public List<String> getGatwayAppList();
 
 }

@@ -183,7 +183,7 @@ public class StudyBo implements Serializable {
 	private String appId;
 	
 	@Column(name = "org_id")
-	private String orgId;
+	private String orgId = "OrgName";
 
 	public String getAllowRejoin() {
 		return allowRejoin;

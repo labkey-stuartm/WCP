@@ -96,21 +96,21 @@
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
-				<div class="col-md-6 pr-none">
-					<div class="gray-xs-f mb-xs">
-						Org ID <small>(15 characters max)</small><span
-							class="requiredStar"> *</span><span><span data-toggle="tooltip" data-placement="top" title="Enter a unique human-readable identifier corresponding to the organization that this study belongs to." class="filled-tooltip"></span></span>
-					</div>
-					<div class="form-group appIdClass">
-						<input type="text" custAttType="cust"
-							class="form-control aq-inp orgIdCls" name="orgId"
-							id="orgId" maxlength="15"
-							value="${studyBo.orgId}"
-							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>
-							required />
-						<div class="help-block with-errors red-txt"></div>
-					</div>
-				</div>
+<!-- 				<div class="col-md-6 pr-none"> -->
+<!-- 					<div class="gray-xs-f mb-xs"> -->
+<!-- 						Org ID <small>(15 characters max)</small><span -->
+<!-- 							class="requiredStar"> *</span><span><span data-toggle="tooltip" data-placement="top" title="Enter a unique human-readable identifier corresponding to the organization that this study belongs to." class="filled-tooltip"></span></span> -->
+<!-- 					</div> -->
+<!-- 					<div class="form-group appIdClass"> -->
+<!-- 						<input type="text" custAttType="cust" -->
+<!-- 							class="form-control aq-inp orgIdCls" name="orgId" -->
+<!-- 							id="orgId" maxlength="15" -->
+<%-- 							value="${studyBo.orgId}" --%>
+<%-- 							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if> --%>
+<!-- 							required /> -->
+<!-- 						<div class="help-block with-errors red-txt"></div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 			</div>
 			<!--phase2a sp1-->
 

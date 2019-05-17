@@ -4679,7 +4679,7 @@ public class StudyDAOImpl implements StudyDAO {
 					dbStudyBo.setModifiedOn(FdahpStudyDesignerUtil
 							.getCurrentDateTime());
 					dbStudyBo.setAppId(studyBo.getAppId());
-					dbStudyBo.setOrgId(studyBo.getOrgId());
+					//dbStudyBo.setOrgId(studyBo.getOrgId());
 					session.update(dbStudyBo);
 
 				}
@@ -6492,6 +6492,8 @@ public class StudyDAOImpl implements StudyDAO {
 						notificationBO.setStudyId(studyBo.getId());
 						notificationBO.setCustomStudyId(studyBo
 								.getCustomStudyId());
+						if(StringUtils.isNotEmpty(studyBo.getAppId()))
+						 notificationBO.setAppId(studyBo.getAppId());
 						notificationBO
 								.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
 						notificationBO
@@ -6598,6 +6600,8 @@ public class StudyDAOImpl implements StudyDAO {
 								notificationBO.setStudyId(studyBo.getId());
 								notificationBO.setCustomStudyId(studyBo
 										.getCustomStudyId());
+								if(StringUtils.isNotEmpty(studyBo.getAppId()))
+									 notificationBO.setAppId(studyBo.getAppId());
 								notificationBO
 										.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
 								notificationBO
@@ -6700,6 +6704,8 @@ public class StudyDAOImpl implements StudyDAO {
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo
 										.getCustomStudyId());
+								if(StringUtils.isNotEmpty(studyBo.getAppId()))
+									 notificationBO.setAppId(studyBo.getAppId());
 								notificationBO
 										.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 								notificationBO
@@ -6741,6 +6747,8 @@ public class StudyDAOImpl implements StudyDAO {
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo
 										.getCustomStudyId());
+								if(StringUtils.isNotEmpty(studyBo.getAppId()))
+									 notificationBO.setAppId(studyBo.getAppId());
 								notificationBO
 										.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 								notificationBO
@@ -6783,6 +6791,8 @@ public class StudyDAOImpl implements StudyDAO {
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo
 										.getCustomStudyId());
+								if(StringUtils.isNotEmpty(studyBo.getAppId()))
+									 notificationBO.setAppId(studyBo.getAppId());
 								notificationBO
 										.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 								notificationBO
