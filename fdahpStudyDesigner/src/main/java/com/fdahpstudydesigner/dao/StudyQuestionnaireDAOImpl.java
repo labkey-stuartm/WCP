@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.persistence.Column;
+
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -601,6 +603,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
 				List<QuestionResponseSubTypeBo> existingQuestionResponseSubTypeList = new ArrayList<>();
 				List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList = new ArrayList<>();
+				
+				List<QuestionReponseTypeBo> existingQuestionResponseTypeList = new ArrayList<>();
+				List<QuestionReponseTypeBo> newQuestionResponseTypeList = new ArrayList<>();
+				
 				query = session.getNamedQuery("getQuestionnaireStepList")
 						.setInteger("questionnaireId", questionnaireBo.getId());
 				existedQuestionnairesStepsBoList = query.list();
@@ -723,6 +729,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 											.getUserId());
 									newQuestionsBo.setModifiedBy(null);
 									newQuestionsBo.setModifiedOn(null);
+									newQuestionsBo.setAnchorDateId(null);
 									if (questionsBo
 											.getUseStasticData()
 											.equalsIgnoreCase(
@@ -743,7 +750,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 										newQuestionReponseTypeBo
 												.setQuestionsResponseTypeId(newQuestionsBo
 														.getId());
+										newQuestionReponseTypeBo
+										.setOtherDestinationStepId(null);
 										session.save(newQuestionReponseTypeBo);
+										if(questionReponseTypeBo.getOtherType()!=null && StringUtils.isNotEmpty(questionReponseTypeBo.getOtherType()) && questionReponseTypeBo.getOtherType().equals("on")){
+											 existingQuestionResponseTypeList.add(questionReponseTypeBo);
+											 newQuestionResponseTypeList.add(newQuestionReponseTypeBo);
+										}
 									}
 
 									// Question Condition branching logic
@@ -867,6 +880,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 														.setModifiedBy(null);
 												newQuestionsBo
 														.setModifiedOn(null);
+												newQuestionsBo.setAnchorDateId(null);
 												if (questionsBo
 														.getUseStasticData()
 														.equalsIgnoreCase(
@@ -1008,6 +1022,77 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						session.update(newQuestionResponseSubTypeList.get(i));
 					}
 				}
+				
+				
+				//for other type , update the destination in questionresponsetype table 
+				/** start**/
+				List<Integer> sequenceTypeList = new ArrayList<>();
+				List<Integer> destinationResTypeList = new ArrayList<>();
+				if (existingQuestionResponseTypeList != null
+						&& !existingQuestionResponseTypeList
+								.isEmpty()) {
+					for (QuestionReponseTypeBo questionResponseTypeBo : existingQuestionResponseTypeList) {
+						if (questionResponseTypeBo
+								.getOtherDestinationStepId() == null) {
+							sequenceTypeList.add(null);
+						} else if (questionResponseTypeBo
+								.getOtherDestinationStepId() != null
+								&& questionResponseTypeBo
+										.getOtherDestinationStepId()
+										.equals(0)) {
+							sequenceTypeList.add(-1);
+						} else {
+							if (existedQuestionnairesStepsBoList != null
+									&& !existedQuestionnairesStepsBoList
+											.isEmpty()) {
+								for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
+									if (questionResponseTypeBo
+											.getOtherDestinationStepId() != null
+											&& questionResponseTypeBo
+													.getOtherDestinationStepId()
+													.equals(questionnairesStepsBo
+															.getStepId())) {
+										sequenceTypeList
+												.add(questionnairesStepsBo
+														.getSequenceNo());
+										break;
+									}
+								}
+
+							}
+						}
+					}
+				}
+				if (sequenceTypeList != null
+						&& !sequenceTypeList.isEmpty()) {
+					for (int i = 0; i < sequenceTypeList
+							.size(); i++) {
+						Integer desId = null;
+						if (sequenceTypeList.get(i) == null) {
+							desId = null;
+						} else if (sequenceTypeList.get(
+								i).equals(-1)) {
+							desId = 0;
+						} else {
+							for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
+								if (sequenceTypeList
+										.get(i)
+										.equals(questionnairesStepsBo
+												.getSequenceNo())) {
+									desId = questionnairesStepsBo
+											.getStepId();
+									break;
+								}
+							}
+						}
+						destinationResTypeList.add(desId);
+					}
+					for (int i = 0; i < destinationResTypeList.size(); i++) {
+						newQuestionResponseTypeList.get(i).setOtherDestinationStepId(destinationResTypeList.get(i));
+						session.update(newQuestionResponseTypeList.get(i));
+					}
+				}
+                /*** end***/
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -1071,7 +1156,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				//delete anchordate start
 				StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
 				if(studyBo!=null) {
-				  message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyBo.getId(), null, questionId, "");
+				  boolean isChange = true;
+				  message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyBo.getId(), null, questionId, "", isChange);
 				  if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 						 return message;
 				  }
@@ -1186,7 +1272,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					FdahpStudyDesignerConstants.INSTRUCTION_STEP)) {
 				StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
 				if(studyBo!=null) {
-					 message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, questionnaireId, sessionObject, studyBo.getId(), stepId, null, stepType);
+					 boolean isChange = true;
+					 message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, questionnaireId, sessionObject, studyBo.getId(), stepId, null, stepType, isChange);
 					 if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 						 return message;
 					 }
@@ -1497,7 +1584,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			
 			//delete anchordate from question start 
 			/***------------------**/
-			 message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, questionnaireId, sessionObject, studyId, null, null, "");
+			 boolean isChange = true;
+			 message = updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, questionnaireId, sessionObject, studyId, null, null, "", isChange);
 			 if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 				 return message;
 			 }
@@ -3154,6 +3242,38 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 							.setConditionFormula(questionsResponseTypeBo
 									.getConditionFormula());
 				}
+				
+				
+				/** Other type set addded by ronalin**/
+				if (StringUtils.isNotEmpty(questionsResponseTypeBo.getOtherType())&& 
+						questionsResponseTypeBo.getOtherType().equals("on")){
+					addOrUpdateQuestionsResponseTypeBo.setOtherType(questionsResponseTypeBo.getOtherType());
+					addOrUpdateQuestionsResponseTypeBo.setOtherText(questionsResponseTypeBo.getOtherText());
+					addOrUpdateQuestionsResponseTypeBo.setOtherValue(questionsResponseTypeBo.getOtherValue());
+					addOrUpdateQuestionsResponseTypeBo.setOtherExclusive(questionsResponseTypeBo.getOtherExclusive());
+					addOrUpdateQuestionsResponseTypeBo.setOtherDestinationStepId(questionsResponseTypeBo.getOtherDestinationStepId());
+					addOrUpdateQuestionsResponseTypeBo.setOtherDescription(questionsResponseTypeBo.getOtherDescription());
+					addOrUpdateQuestionsResponseTypeBo.setOtherIncludeText(questionsResponseTypeBo.getOtherIncludeText());
+					if(StringUtils.isNotEmpty(questionsResponseTypeBo.getOtherIncludeText())&& 
+							questionsResponseTypeBo.getOtherIncludeText().equals("Yes")){
+						addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(questionsResponseTypeBo.getOtherPlaceholderText());
+						addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(questionsResponseTypeBo.getOtherParticipantFill());
+					}else{
+						addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(null);
+						addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(null);
+					}
+				}else{
+					addOrUpdateQuestionsResponseTypeBo.setOtherType(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherText(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherValue(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherExclusive(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherDestinationStepId(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherDescription(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherIncludeText(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherPlaceholderText(null);
+					addOrUpdateQuestionsResponseTypeBo.setOtherParticipantFill(null);
+				}
+				/** Other type set addded by ronalin**/
 			}
 		} catch (Exception e) {
 			logger.error(
@@ -3959,8 +4079,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			    	 Integer studyId = this.getStudyIdByCustomStudy(session, questionsBo.getCustomStudyId());
 			    	 SessionObject sessionObject = new SessionObject();
 			    	 sessionObject.setUserId(questionsBo.getModifiedBy());
-			    	 updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyId, null, questionsBo.getId(), "");
-			    	 //session.createQuery("delete from AnchorDateTypeBo where id="+questionsBo.getAnchorDateId()).executeUpdate();
+			    	 boolean isChange = false;
+			    	 if(questionsBo.getIsShorTitleDuplicate()!=null && questionsBo.getIsShorTitleDuplicate()>0){
+					    isChange = true;
+			    	 }
+			    	 updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyId, null, questionsBo.getId(), "", isChange);
 					 questionsBo.setAnchorDateId(null); 
 			     }
 		     }
@@ -4488,6 +4611,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
 		String activitydetails = "";
 		String activity = "";
+		boolean isChange = false;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -4592,13 +4716,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						 }
 						}
 					 }else {
+						    if(questionnairesStepsBo.getIsShorTitleDuplicate()!=null && questionnairesStepsBo.getIsShorTitleDuplicate()>0){
+						    	isChange = true;
+						    }
+						     if(StringUtils.isEmpty(customStudyId)){
+						    	 customStudyId = questionsBo.getCustomStudyId();
+						     }
 						     if(questionnairesStepsBo.getQuestionsBo().getAnchorDateId()!=null && questionsBo != null && questionsBo.getId()!=null) {
 						    	 query = session.getNamedQuery("getStudyByCustomStudyId").setString(
-											"customStudyId", questionsBo.getCustomStudyId());
+											"customStudyId", customStudyId);
 								 query.setMaxResults(1);
 								 StudyVersionBo	studyVersionBo = (StudyVersionBo) query.uniqueResult();
-						    	 Integer studyId = this.getStudyIdByCustomStudy(session, questionsBo.getCustomStudyId());
-						    	 updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyId, null, questionsBo.getId(), "");
+						    	 Integer studyId = this.getStudyIdByCustomStudy(session, customStudyId);
+						    	 updateAnchordateInQuestionnaire(session, transaction, studyVersionBo, null, sessionObject, studyId, null, questionsBo.getId(), "", isChange);
 						      }
 							  //session.createQuery("delete from AnchorDateTypeBo where id="+questionnairesStepsBo.getQuestionsBo().getAnchorDateId()).executeUpdate();
 							 questionsBo.setAnchorDateId(null);
@@ -5135,7 +5265,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		logger.info("INFO: ActivityMetaDataDao - getQuestionnaireFrequencyAncorDetailsForManuallySchedule() :: Starts");
 		Integer studyId = null;
 		try {
-		     String searchQuery = "select id from studies where custom_study_id='"+customStudyId+"'";
+		     String searchQuery = "select id from studies where custom_study_id='"+customStudyId+"' and is_live=0";
 		     studyId =(Integer) session.createSQLQuery(searchQuery).uniqueResult();
 		
 		}catch (Exception e) {
@@ -5156,11 +5286,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			StudyBo studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"' and live=0").uniqueResult();
 			if(studyBo!=null) {
-				if(!studyBo.isEnrollmentdateAsAnchordate()) {
-					subQuery = "and name != '"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'";
-				}
+				  if(!studyBo.isEnrollmentdateAsAnchordate()) {
+					  subQuery ="and name != '"+FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE+"'"; 
+					  }
 			}
-			queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+"' and hasAnchortypeDraft=1"+subQuery;
+			//queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+ "' and hasAnchortypeDraft=1"+subQuery;
+			//Added by sweta
+			queryString = "From AnchorDateTypeBo where customStudyId='"+customStudyId+ "' and hasAnchortypeDraft=1";
 			anchorDateTypeBos = session.createQuery(queryString).list();
 			
 			
@@ -5216,7 +5348,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 	  @SuppressWarnings("unchecked")
 	  @Override 
 	  public String updateAnchordateInQuestionnaire(Session session, Transaction transaction, StudyVersionBo studyVersionBo, Integer questionnaireId,
-			  SessionObject sessionObject,Integer studyId, Integer stepId, Integer questionId,String stepType) {
+			  SessionObject sessionObject,Integer studyId, Integer stepId, Integer questionId,String stepType, boolean isChange) {
 	  logger.info("StudyQuestionnaireDAOImpl - updateAnchordateInQuestionnaire - Starts");
 	  List<Integer> anchorIds = new ArrayList<Integer>();
 	  List<Integer> anchorExistIds = new ArrayList<Integer>();
@@ -5292,7 +5424,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				    	 }
 			    	 }
 		    	 }
-		    	 if(studyVersionBo!=null) {
+		    	 if(studyVersionBo!=null && isChange) {
 						if(isAnchorUsed) {
 							message = FdahpStudyDesignerConstants.FAILURE+"anchorused";
 							return message;

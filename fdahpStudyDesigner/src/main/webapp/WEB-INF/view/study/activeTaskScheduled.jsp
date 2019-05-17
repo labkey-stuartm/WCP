@@ -32,7 +32,7 @@
                </span>
                <span class="radio radio-inline p-40">
                <input type="radio" id="schedule2" class="typeofschedule" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${isAnchorQuestionnaire?'disabled':''} ${activeTaskBo.scheduleType=='AnchorDate' ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
-                                                      <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if> >
+                                                      <c:if test="${empty anchorTypeList}">disabled</c:if> >
                <label for="schedule2">Anchor-Date-based</label>
                </span>
     </div>
@@ -310,7 +310,7 @@
 	 <div class="week all mt-lg dis-none">
 	    <div> 
 	       <span class="gray-xs-f">Day/Time (of the week)<span class="requiredStar"> * </span></span><br/>
-	       <div class="weeklyStartCls form-group m-none dis-inline vertical-align-middle pr-md">                       
+	       <div class=" form-group m-none dis-inline vertical-align-middle pr-md">                       
 	       <span class="">
 	       <select id="startDateWeekly" class="form-control mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="dayOfTheWeek" required>
 	        <option value=''>Select</option>
