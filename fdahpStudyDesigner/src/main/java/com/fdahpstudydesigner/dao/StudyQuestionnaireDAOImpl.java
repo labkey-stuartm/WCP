@@ -4541,6 +4541,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						notificationBO.setStudyId(questionnaireBo.getStudyId());
 						notificationBO.setCustomStudyId(studyBo
 								.getCustomStudyId());
+						if(StringUtils.isNotEmpty(studyBo.getAppId()))
+							 notificationBO.setAppId(studyBo.getAppId());
 						notificationBO
 								.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 						notificationBO
