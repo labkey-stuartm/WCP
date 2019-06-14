@@ -72,6 +72,7 @@
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
 		<input type="hidden" id="actionType" name="actionType">
+		 <input type="hidden" id="appId" name="appId">
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 
@@ -93,10 +94,12 @@
              </c:if>
              
         	$('.studyNotificationDetails').on('click',function(){
+        		var appId = '${appId}';
         		$('.studyNotificationDetails').addClass('cursor-none');
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
     			$('#actionType').val($(this).attr('actionType'));
+    			$('#appId').val(appId);
     			$('#getStudyNotificationEditPage').submit();
     			
     		});

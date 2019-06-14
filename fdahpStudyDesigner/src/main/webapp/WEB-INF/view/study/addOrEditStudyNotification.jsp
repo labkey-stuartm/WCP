@@ -13,6 +13,7 @@
        <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
        <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
        <input type="hidden" name="actionPage" value="${notificationBO.actionPage}">
+       <input type="hidden" name="appId" value="${appId}">
        <div class="right-content-head"> 
            <div class="text-right">
                <div class="black-md-f dis-line pull-left line34">
@@ -121,7 +122,8 @@
 	<input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
 </form:form>
 <script>
-     $(document).ready(function(){  
+     $(document).ready(function(){ 
+    	 var appId = '${appId}';
          $(".menuNav li").removeClass('active');
          $(".eigthNotification").addClass('active'); 
          $("#createStudyId").show();
@@ -306,6 +308,7 @@
       				} else if($('#inlineRadio1').prop('checked')){
         			  if(validateTime()){
         				  $('#doneStudyId').prop('disabled',true);
+        				  //$('#appId').val(appId);
         				  $('#studyNotificationFormId').submit();
       	  			}
         		  }

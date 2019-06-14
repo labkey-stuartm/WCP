@@ -2103,6 +2103,7 @@ public class StudyController {
 					// Getting study details by userId for notification
 					studyBo = studyService.getStudyById(studyId,
 							sessionObject.getUserId());
+					System.out.println(studyBo.getAppId());
 					if (!"".equals(notificationId)) {
 						// Fetching notification detail from notification table by
 						// Id.
@@ -2160,7 +2161,9 @@ public class StudyController {
 							notificationHistoryNoDateTime);
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
 							studyBo);
+					map.addAttribute("appId",studyBo.getAppId());
 					mav = new ModelAndView("addOrEditStudyNotification", map);
+					
 				} else {
 					mav = new ModelAndView(
 							"redirect:viewStudyNotificationList.do", map);
@@ -4161,6 +4164,11 @@ public class StudyController {
 				String actionPage = (String) request.getSession().getAttribute(
 						sessionStudyCount
 								+ FdahpStudyDesignerConstants.ACTION_PAGE);
+				/*
+				 * String appId1 = (String) request.getSession().getAttribute(sessionStudyCount
+				 * +"appId");
+				 */
+				String appId1 = (String) request.getAttribute("appId");
 				customStudyId = (String) request.getSession().getAttribute(
 						sessionStudyCount
 								+ FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
@@ -4234,6 +4242,7 @@ public class StudyController {
 							notificationBO.setCustomStudyId(studyBo
 									.getCustomStudyId());
 							notificationBO.setStudyId(Integer.valueOf(studyId));
+							//notificationBO.setAppId(appId);
 						}
 					}
 					if (notificationBO.getNotificationId() == null) {
@@ -5655,6 +5664,7 @@ public class StudyController {
 				map.addAttribute(FdahpStudyDesignerConstants.PERMISSION,
 						permission);
 				map.addAttribute("_S", sessionStudyCount);
+				map.addAttribute("appId", studyBo.getAppId());
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		} catch (Exception e) {
