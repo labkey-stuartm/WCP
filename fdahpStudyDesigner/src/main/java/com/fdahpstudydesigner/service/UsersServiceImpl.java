@@ -180,8 +180,8 @@ public class UsersServiceImpl implements UsersService {
 						.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO
 						.getLastName().trim() : "");
-				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO
-						.getUserEmail().trim() : "");
+				userBO2.setUserEmail((null != userBO.getUserEmail() ? userBO
+						.getUserEmail().trim() : "").toLowerCase());
 				userBO2.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO
 						.getPhoneNumber().trim() : "");
 				userBO2.setRoleId(userBO.getRoleId());
@@ -203,8 +203,8 @@ public class UsersServiceImpl implements UsersService {
 					emailIdChange = true;
 					userBO2.setEmailChanged(true);
 				}
-				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO
-						.getUserEmail().trim() : "");
+				userBO2.setUserEmail((null != userBO.getUserEmail() ? userBO
+						.getUserEmail().trim() : "").toLowerCase());
 				userBO2.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO
 						.getPhoneNumber().trim() : "");
 				userBO2.setRoleId(userBO.getRoleId());

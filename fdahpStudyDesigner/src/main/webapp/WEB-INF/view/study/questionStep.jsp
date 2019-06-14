@@ -1430,7 +1430,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
 			<div class="checkbox checkbox-inline">
 	               <input type="checkbox" name="questionReponseTypeBo.otherType" id="textchoiceOtherId" ${not empty questionnairesStepsBo.questionReponseTypeBo.otherType ? 'checked':''}>
-	               <label for="textchoiceOtherId"> Include 'Other' as an option </label>
+	               <label for="textchoiceOtherId"> Include 'Other' as an option ? </label>
 		     </div>
 		     <div class="textchoiceOtherCls" style="display: none;">
 		    <!-- Section Start  -->
@@ -1487,7 +1487,7 @@ function isNumberKey(evt)
 		    <div class="clearfix"></div>
 			<div class="mt-lg">
               <div>
-                <span class="gray-xs-f mb-xs pr-md">Include text field to specify 'Other'</span>
+                <span class="gray-xs-f mb-xs pr-md">Include text field to specify 'Other' ?</span>
                   <span class="radio radio-info radio-inline pr-md">
                   <input type="radio" class="otherIncludeTextCls" id="otherYes" value="Yes" name="questionReponseTypeBo.otherIncludeText" ${questionnairesStepsBo.questionReponseTypeBo.otherIncludeText=='Yes' ?'checked':''}>
                   <label for="otherYes">Yes</label>
@@ -1509,7 +1509,7 @@ function isNumberKey(evt)
 			<div class="clearfix"></div>
 			<div class="mt-lg">
               <div>
-                <span class="gray-xs-f mb-xs pr-md">Is this field mandatory for the participant to fill in?</span>
+                <span class="gray-xs-f mb-xs pr-md">Is this field mandatory for the participant to fill in ?</span>
                   <span class="radio radio-info radio-inline pr-md">
                   <input type="radio" class="" id="pYes" value="Yes" name="questionReponseTypeBo.otherParticipantFill" ${questionnairesStepsBo.questionReponseTypeBo.otherParticipantFill=='Yes' ?'checked':''}>
                   <label for="pYes">Yes</label>

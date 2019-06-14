@@ -2140,5 +2140,12 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - validateAppId - Starts");
 		return studyDAO.validateAppId(customStudyId, appId, studyType);
 	}
+
+	@Override
+	public StudyPermissionBO findStudyPermissionBO(int studyId, int userId) {
+		logger.info("StudyServiceImpl - findStudyPermissionBO() - Starts");
+		return studyDAO.getStudyPermissionBO(studyId,userId);
+	}
+
 	
 }

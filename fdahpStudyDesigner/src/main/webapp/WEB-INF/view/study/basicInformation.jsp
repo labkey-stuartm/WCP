@@ -558,6 +558,10 @@
         $(".appIdCls").blur(function(){
         	validateAppId('',function(val){});
         });
+        $("#inlineRadio6").change(function() {
+            	validateAppId('',function(val){});
+        });
+        
   });
         // Displaying images from file upload 
         function readURL(input) {

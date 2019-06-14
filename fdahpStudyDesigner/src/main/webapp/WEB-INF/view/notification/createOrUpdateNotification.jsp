@@ -91,7 +91,7 @@
 	            
             <div class=" ">
                   <div class="form-group">
-                  <div class="gray-xs-f mb-xs">Select AppId</div>
+                  <div class="gray-xs-f mb-xs">Select App ID</div>
                      <select id="appId" class="selectpicker" name="appId" >
                       <option value='' >Select</option>
                       <c:forEach items="${gatewayAppList}" var="app">

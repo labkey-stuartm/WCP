@@ -100,6 +100,7 @@ public class StudyController {
 		StudyBo studyBo = null;
 		StudyBo liveStudyBo = null;
 		String actionSucMsg = "";
+		StudyPermissionBO studyPermissionBO=null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -154,13 +155,14 @@ public class StudyController {
 					liveStudyBo = studyService
 							.getStudyLiveStatusByCustomId(studyBo
 									.getCustomStudyId());
-
+					studyPermissionBO=studyService.findStudyPermissionBO(studyBo.getId(),sesObj.getUserId());
 					map.addAttribute("_S", sessionStudyCount);
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,
 							studyBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION,
 							permission);
 					map.addAttribute("liveStudyBo", liveStudyBo);
+					map.addAttribute("studyPermissionBO",studyPermissionBO);
 					mav = new ModelAndView("actionList", map);
 				} else {
 					return new ModelAndView(
@@ -1381,6 +1383,7 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute(
 						sessionStudyCount
 								+ FdahpStudyDesignerConstants.PERMISSION);
+				System.out.println(permission);
 				if (StringUtils.isEmpty(studyId)) {
 					studyId = FdahpStudyDesignerUtil
 							.isEmpty(request
