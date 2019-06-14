@@ -1,5 +1,7 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -212,7 +214,7 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public List<String> getGatwayAppList() {
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
-		List<String> gatewayAppList = notificationDAO.getGatwayAppList();
+		List<String> gatewayAppList = new ArrayList<>(new HashSet(notificationDAO.getGatwayAppList()));
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Ends");
 		return gatewayAppList;
 	}
