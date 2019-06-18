@@ -5153,6 +5153,10 @@ function setOtherExclusiveData(item){
 	}
 	
 }
+
+$('[data-toggle="tooltip"]').tooltip({ container: 'body' });
+
+
 $(window).on('load', function() {
     if($('#textchoiceOtherId').is(':checked')){
 		$('.textchoiceOtherCls').show();

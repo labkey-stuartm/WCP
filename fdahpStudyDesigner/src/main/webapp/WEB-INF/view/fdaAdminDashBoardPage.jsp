@@ -64,7 +64,7 @@
                 <img src="/fdahpStudyDesigner/images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               My Studies <br>Management Portal
+               MyStudies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="/fdahpStudyDesigner/images/icons/web.png"/>
@@ -136,7 +136,7 @@
             <div class="manage-content-parent">
                 <div class="lg-space-center">
                     <div class="lg-space-txt">
-                        FDA My Studies Management Portal
+                        FDA MyStudies Management Portal
                     </div>
                     <div class="ll__border__bottom"></div>
                     <div class="lg-space-title">
