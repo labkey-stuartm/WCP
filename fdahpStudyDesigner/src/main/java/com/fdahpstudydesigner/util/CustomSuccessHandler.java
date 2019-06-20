@@ -81,7 +81,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		String activity;
 		String activityDetail;
 		MasterDataBO masterDataBO;
-
 		userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		if (userdetails.isForceLogout()) {
 			userdetails.setForceLogout(false);

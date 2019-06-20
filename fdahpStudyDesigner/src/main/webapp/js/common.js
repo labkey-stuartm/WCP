@@ -653,9 +653,7 @@ $(document)
 											isValidLoginForm = true;
 										}
 										if (isValidLoginForm) {
-											var email = $('#email').val();
-											var username = $('#email').val()
-													.toLowerCase();
+											var username = $('#email').val();
 											$('#email').val('');
 											var password = $('#password').val();
 											$('#password')
@@ -717,7 +715,7 @@ $(document)
 																				"password");
 																$('#email')
 																		.val(
-																				email);
+																				username);
 																$("body")
 																		.removeClass(
 																				"loading");

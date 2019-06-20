@@ -217,8 +217,8 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			SQLQuery query = session
-					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
-							+ email + "'");
+					.createSQLQuery("select * from users UBO where BINARY lower(UBO.email) = '"
+							+ email.toLowerCase() + "'");
 			query.addEntity(UserBO.class);
 			userBo = (UserBO) query.uniqueResult();
 			if (userBo != null) {
