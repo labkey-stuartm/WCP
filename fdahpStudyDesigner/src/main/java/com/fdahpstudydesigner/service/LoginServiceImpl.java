@@ -497,12 +497,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			passwordResetToken = RandomStringUtils.randomAlphanumeric(10);
 			accessCode = RandomStringUtils.randomAlphanumeric(6);
 			if (!StringUtils.isEmpty(passwordResetToken)) {
+				logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - Email- "+email);
 				userdetails = loginDAO.getValidUserByEmail(email);
-
 				if ("".equals(type) && userdetails.getEmailChanged()) {
 					userdetails = null;
 				}
-
 				UserAttemptsBo userAttempts = loginDAO.getUserAttempts(email);
 				// Restricting the user to login for specified minutes if the
 				// user has max fails attempts
@@ -586,6 +585,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								flag = EmailNotification.sendEmailNotification(
 										"userRegistrationSubject",
 										dynamicContent, email, null, null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - userRegistrationSubject "+flag);
 							} else if ("USER_UPDATE".equals(type)
 									&& userdetails.isEnabled()) {
 								dynamicContent = FdahpStudyDesignerUtil
@@ -595,6 +595,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								flag = EmailNotification.sendEmailNotification(
 										"mailForUserUpdateSubject",
 										dynamicContent, email, null, null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - userUpdateSubject "+flag);
 							} else if ("USER_EMAIL_UPDATE".equals(type)) {
 								// Email to old email address
 								dynamicContent = FdahpStudyDesignerUtil
@@ -606,6 +607,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 												"mailToOldEmailForUserEmailUpdateSubject",
 												dynamicContent, oldEmail, null,
 												null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - mailToOldEmailForUserEmailUpdateSubject "+flag);
 								// Email to new email address
 								anotherdynamicContent = FdahpStudyDesignerUtil
 										.genarateEmailContent(
@@ -616,6 +618,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 												"mailToNewEmailForUserEmailUpdateSubject",
 												anotherdynamicContent, email,
 												null, null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - mailToNewEmailForUserEmailUpdateSubject "+flag);
 							} else if ("enforcePasswordChange".equals(type)) {
 								dynamicContent = FdahpStudyDesignerUtil
 										.genarateEmailContent(
@@ -624,6 +627,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								flag = EmailNotification.sendEmailNotification(
 										"mailForEnforcePasswordChangeSubject",
 										dynamicContent, email, null, null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - mailForEnforcePasswordChangeSubject "+flag);
 							} else if ("ReactivateMailAfterEnforcePassChange"
 									.equals(type) && userdetails.isEnabled()) {
 								dynamicContent = FdahpStudyDesignerUtil
@@ -635,6 +639,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 												"mailForReactivatingUserAfterEnforcePassChangeSubject",
 												dynamicContent, email, null,
 												null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - mailForReactivatingUserAfterEnforcePassChangeSubject "+flag);
 							} else if ("".equals(type)
 									&& userdetails.isEnabled()) {
 								dynamicContent = FdahpStudyDesignerUtil
@@ -644,6 +649,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								flag = EmailNotification.sendEmailNotification(
 										"passwordResetLinkSubject",
 										dynamicContent, email, null, null);
+								logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - EmailNotification - passwordResetLinkSubject "+flag);
 							}
 							if (flag) {
 								message = FdahpStudyDesignerConstants.SUCCESS;

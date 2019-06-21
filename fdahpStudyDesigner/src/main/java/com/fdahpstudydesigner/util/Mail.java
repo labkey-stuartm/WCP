@@ -125,14 +125,19 @@ public class Mail {
 
 	public boolean sendemail() {
 		logger.warn("sendemail()====start");
+		//logger.info("sendemail()====start");
 		boolean sentMail = false;
 		Session session = null;
 		try {
 			final String username = this.getFromEmailAddress();
+			logger.info("sendemail()====username==="+username);
 			final String password = this.getFromEmailPassword();
+			logger.info("sendemail()====Passworde==="+password);
 			Properties props = new Properties();
 			props.put("mail.smtp.host", this.getSmtpHostname());
+			logger.info("sendemail()====mail.smtp.host==="+this.getSmtpHostname());
 			props.put("mail.smtp.port", this.getSmtpPortvalue());
+			logger.info("sendemail()====mail.smtp.port==="+this.getSmtpPortvalue());
 
 			if (configMap.get("fda.env") != null
 					&& FdahpStudyDesignerConstants.FDA_ENV_LOCAL
@@ -140,7 +145,9 @@ public class Mail {
 				props.put("mail.smtp.auth", "true");
 				props.put("mail.smtp.socketFactory.port",
 						this.getSmtpPortvalue());
+				logger.info("sendemail()====mail.smtp.socketFactory.port==="+this.getSmtpPortvalue());
 				props.put("mail.smtp.socketFactory.class", this.getSslFactory());
+				logger.info("sendemail()====mail.smtp.socketFactory.class==="+this.getSslFactory());
 				session = Session.getInstance(props,
 						new javax.mail.Authenticator() {
 							@Override
@@ -175,6 +182,7 @@ public class Mail {
 			}
 			message.setSubject(this.subject);
 			message.setContent(this.getMessageBody(), "text/html");
+			logger.debug("sendemail()====start");
 			Transport.send(message);
 			logger.debug("sendemail()====end");
 			sentMail = true;
