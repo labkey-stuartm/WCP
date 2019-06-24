@@ -686,7 +686,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 	scheduletype = $('input[name="scheduleType"]:checked').val();
 }
 var customAnchorCount = 0;
-customAnchorCount = '${customCount}';
+//customAnchorCount = '${customCount}';
 
 <c:if test="${activeTaskBo.isDuplicate > 0}">
 $('span.addBtnDis').remove();
@@ -2519,6 +2519,9 @@ function validateCustTime(dateRef, timeRef) {
 	    $(".manually-anchor-option").parents("form").validator();
 		if($('.manually-anchor-option').length > 1){
 			$('.manuallyAnchorContainer').find(".remBtnDis").removeClass("hide");
+			if($('#anchorDateId').find('option:selected').text()=='Enrollment Date'){
+				setAnchorDropdown('Manually Schedule','Enrollment Date');
+			}
 		}else{
 			$('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
 		}

@@ -1,5 +1,7 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -1719,8 +1721,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 	public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Starts");
 		List<AnchorDateTypeBo> anchorDateTypeBos = null;
+		HashMap<String,AnchorDateTypeBo> anchorMap=new HashMap<>();
 		try {
 			anchorDateTypeBos = studyQuestionnaireDAO.getAnchorTypesByStudyId(customStudyId);
+			for(AnchorDateTypeBo anchorDateTypeBo:anchorDateTypeBos) {
+				anchorMap.put(anchorDateTypeBo.getName(),anchorDateTypeBo);
+			}
+			anchorDateTypeBos=new ArrayList<>(anchorMap.values());
 		} catch (Exception e) {
 			logger.error("StudyQuestionnaireServiceImpl - getAnchorTypesByStudyId - Error",e);
 		}

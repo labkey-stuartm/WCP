@@ -3111,6 +3111,9 @@ function addDateAnchor(){
     $(".manually-anchor-option").parents("form").validator();
 	if($('.manually-anchor-option').length > 1){
 		$('.manuallyAnchorContainer').find(".remBtnDis").removeClass("hide");
+		if($('#anchorDateId').find('option:selected').text() == 'Enrollment Date'){
+			setAnchorDropdown('Manually Schedule','Enrollment Date');
+		}
 	}else{
 		$('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
 	}

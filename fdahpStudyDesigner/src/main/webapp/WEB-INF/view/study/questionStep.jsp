@@ -1314,7 +1314,7 @@ function isNumberKey(evt)
 				<c:otherwise>
 					
 					<!-- Section Start  -->
-				   <div class="mt-xlg text-choice" id="0">
+				   <div class="mt-xlg text-choice otherOptionChecked" id="0">
 				      <div class="col-md-3 pl-none">
 				         <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 				         <div class="form-group mb-none">
@@ -2028,12 +2028,14 @@ $(document).ready(function(){
     });
 	
 	
-	$('#textchoiceOtherId').click(function() {	
+	$('#textchoiceOtherId').click(function() {
 		if ($(this).is(':checked')){
+			$('.otherOptionChecked').hide();
 			$('.textchoiceOtherCls').show();
 			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
 			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
 		}else{
+			$('.otherOptionChecked').show();
 			$('.textchoiceOtherCls').hide();
 			$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
 		}
