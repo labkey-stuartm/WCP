@@ -449,21 +449,17 @@ public class UsersController {
 				String userId = FdahpStudyDesignerUtil.isEmpty(request
 						.getParameter("userId")) ? "" : request
 						.getParameter("userId");
-				logger.info("UsersController - resendActivateDetailsLink()-UserId-"+userId);
 				if (StringUtils.isNotEmpty(userId)) {
 					userBo = usersService.getUserDetails(Integer
 							.parseInt(userId));
-					logger.info("UsersController - resendActivateDetailsLink() - Email-"+userBo.getUserEmail());
 					if (userBo != null) {
 						msg = loginService.sendPasswordResetLinkToMail(request,
 								userBo.getUserEmail(), "", "USER");
-						logger.info("UsersController - resendActivateDetailsLink() - message-"+msg);
 					}
 					if (msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 						request.getSession().setAttribute(
 								FdahpStudyDesignerConstants.SUC_MSG,
 								propMap.get("resent.link.success.message"));
-						logger.info("UsersController - resendActivateDetailsLink() -'resent.link.success.message'- "+propMap.get("resent.link.success.message"));
 					} else {
 						request.getSession().setAttribute(
 								FdahpStudyDesignerConstants.ERR_MSG, msg);

@@ -30,7 +30,7 @@
 				                    disabled
 				             </c:when>
 				            </c:choose>
-				            <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Publishas Upcoming Study</button>
+				            <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Publish as Upcoming Study</button>
 				</div>
 			</c:if>
 			<c:if test="${studyBo.studyPreActiveFlag eq true}">

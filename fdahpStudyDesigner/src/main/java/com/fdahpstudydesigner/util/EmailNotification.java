@@ -43,24 +43,16 @@ public class EmailNotification {
 				toMail = toMail.trim();
 				mail.setToemail(toMail.toLowerCase());
 			}
-			logger.info("EmailNotification - sendEmailNotification() - "+mail.getToemail());
 			mail.setFromEmailAddress(propMap.get("from.email.address"));
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("from.email.address"));
 			mail.setFromEmailPassword(propMap.get("from.email.password"));
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("from.email.password"));
 			mail.setSmtpHostname(propMap.get("smtp.hostname"));
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("smtp.hostname"));
 			mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("smtp.portvalue"));
 			mail.setSslFactory(propMap.get("sslfactory.value"));
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("sslfactory.value"));
 			mail.setCcEmail(StringUtils.join(ccMailList, ','));
 			mail.setBccEmail(StringUtils.join(bccMailList, ','));
 			mail.setSubject(propMap.get(subjectProprtyName));
 			mail.setMessageBody(content);
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("sslfactory.value"));
 			mail.sendemail();
-			logger.info("EmailNotification - sendEmailNotification() - "+propMap.get("sslfactory.value"));
 			sentMail = true;
 		} catch (Exception e) {
 			logger.error("EmailNotification.sendEmailNotification() :: ERROR ",

@@ -215,23 +215,17 @@ public class LoginDAOImpl implements LoginDAO {
 		UserBO userBo = null;
 		Session session = null;
 		try {
-			logger.info("LoginDAOImpl - getValidUserByEmail() Email - "+email);
 			session = hibernateTemplate.getSessionFactory().openSession();
-			logger.info("LoginDAOImpl - getValidUserByEmail() - query :" +"select * from users UBO where BINARY lower(UBO.email) = '"
-					+ email.toLowerCase() + "'");
 			SQLQuery query = session
 					.createSQLQuery("select * from users UBO where BINARY lower(UBO.email) = '"
 							+ email.toLowerCase() + "'");
 			query.addEntity(UserBO.class);
 			userBo = (UserBO) query.uniqueResult();
-			logger.info("LoginDAOImpl - getValidUserByEmail() userBo - "+userBo);
 			if (userBo != null) {
 				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil
 						.getCurrentDateTime());
-				logger.info("LoginDAOImpl - getValidUserByEmail() - UserLastLoginDateTime-"+FdahpStudyDesignerUtil.getCurrentDateTime());
                 if(userBo.getRoleId()!=null){
                 	String role = (String) session.createSQLQuery("select role_name from roles where role_id="+userBo.getRoleId()).uniqueResult();
-                	logger.info("LoginDAOImpl - getValidUserByEmail() - user role-"+role);
                 	if(StringUtils.isNotEmpty(role))
                 		userBo.setRoleName(role);
                 }
