@@ -39,6 +39,13 @@
     *border-collapse: expression('separate', cellSpacing = '10px');
 }
 
+/* error box css start here  */
+.help-block ul {
+    width: 150px;
+    //font-size:10px !important;
+}
+/* error box css end here  */
+
 </style>
 
 <script type="text/javascript">
@@ -3226,10 +3233,12 @@ $(document).ready(function(){
 		  if(xdayValue > ydayValue){		    
 		    $(this).addClass("red-border");
 		    $("#ydays"+parent_id).addClass("red-border");
+		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 		    $("#addbtn"+parent_id).addClass("not-allowed");
 		  }else{				
 			$(this).removeClass("red-border");
 		    $("#ydays"+parent_id).removeClass("red-border");
+		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
 		    $("#addbtn"+parent_id).removeClass("not-allowed");
 			}   
 		}
@@ -3245,19 +3254,23 @@ $(document).ready(function(){
 		  if(xdayValue < pydayValue){
 			  $(this).addClass("red-border");
 			  $("#ydays"+pre_parent).addClass("red-border");
+			  $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
 			  $("#addbtn"+parent_id).addClass("not-allowed");
 		  }else{
 			  $(this).removeClass("red-border");
 			  $("#ydays"+pre_parent).removeClass("red-border");
+			  $(this).parent().removeClass('has-error has-danger').find(".help-block").html("");
 			  $("#addbtn"+parent_id).addClass("not-allowed");
 			  if(ydayValue !== ""){
 				  if(xdayValue > ydayValue){
 					  $(this).addClass("red-border");
 					  $("#ydays"+parent_id).addClass("red-border");
+					  $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 					  $("#addbtn"+parent_id).addClass("not-allowed");
 				  }else{
 					  $(this).removeClass("red-border");
 					  $("#ydays"+parent_id).removeClass("red-border");
+					  $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
 					  $("#addbtn"+parent_id).removeClass("not-allowed");
 				  }
 			  }		
@@ -3308,10 +3321,15 @@ $(document).ready(function(){
 			if(ydayValue < xdayValue){
 				$(this).addClass("red-border");
 			    $("#xdays"+parent_id).addClass("red-border");
-			    $("#addbtn"+parent_id).addClass("not-allowed");
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    $(this).parent().parent().siblings().removeClass("current");
+				$(this).parent().parent().addClass("current");
+				$(".current").nextAll().remove();	
+				$("#addbtn"+parent_id).addClass("not-allowed");
 			}else{
 				$(this).removeClass("red-border");
 			    $("#xdays"+parent_id).removeClass("red-border");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
 			    $("#addbtn"+parent_id).removeClass("not-allowed");
 			}	
 			
@@ -3322,14 +3340,12 @@ $(document).ready(function(){
 		jQuery(document).on("change",".ydays",function(){	
 			$(this).parent().parent().siblings().removeClass("current");
 			$(this).parent().parent().addClass("current");
-			
 			$(".current").nextAll().remove();			
 		    
 		});	
 		
 		
 		jQuery(document).on("change",".sign-box select",function(){
-			
 			var parent_id = $(this).attr("count");
 			var signValue = $("#xSign"+parent_id).val();
 			
@@ -3344,13 +3360,35 @@ $(document).ready(function(){
 			if(ydayValue < xdayValue){				
 			    $("#xdays"+parent_id).addClass("red-border");
 			    $("#ydays"+parent_id).addClass("red-border");
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			    $("#addbtn"+parent_id).addClass("not-allowed");
 			}else{				
 			    $("#xdays"+parent_id).removeClass("red-border");			    
 			    $("#ydays"+parent_id).removeClass("red-border");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
 			    $("#addbtn"+parent_id).removeClass("not-allowed");
 			}	
 			
+			if($('.manually-anchor-option').length > 1){
+				  var pre_parent = $("#"+parent_id).prev().attr("id");
+				  var pyday = $("#ydays"+pre_parent).val();  
+				  var pysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+				  var pydayValue = parseInt(pysign+""+pyday);
+				  
+				  
+				  if(xdayValue < pydayValue){
+					  $(this).addClass("red-border");
+					  $("#ydays"+pre_parent).addClass("red-border");
+					  $("#xdays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+					  $("#addbtn"+parent_id).addClass("not-allowed");
+				  }else{
+					  $(this).removeClass("red-border");
+					  $("#ydays"+pre_parent).removeClass("red-border");
+					  $("#xdays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  $("#addbtn"+parent_id).addClass("not-allowed");
+				  }	  
+			}
+			  
 			$(this).parent().parent().parent().siblings().removeClass("current");
 			$(this).parent().parent().parent().addClass("current");
 			

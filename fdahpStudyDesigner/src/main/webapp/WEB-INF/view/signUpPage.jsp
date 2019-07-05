@@ -202,7 +202,7 @@
       <!--container-->
       <div>
             <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-            <div class=" col-xs-12"><!--lg-register-center  -->
+            <div class=" col-xs-12" id="alignCenter"><!--lg-register-center  -->
              <form:form id="signUpForm" data-toggle="validator"  role="form" action="addPassword.do" method="post" autocomplete="off">
              
                     <div id="errMsg" class="error_msg">${errMsg}</div>
@@ -340,6 +340,11 @@
    
    <script>
     	$(document).ready(function(e) {
+    		
+    		var w = $(window).height();
+    		var b = $("#alignCenter").innerHeight();
+    		var a = (w - b)/2;
+    		$("#alignCenter").css("margin-top", a);
     		
     		$('.terms').on('click',function(){
     			$('#termsModal').modal('show');

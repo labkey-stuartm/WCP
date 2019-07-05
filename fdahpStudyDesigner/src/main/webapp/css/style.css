@@ -2496,3 +2496,8 @@ a:focus{
 	pointer-events: none !important;
 	opacity: 0.5 !important;
 }
+
+#alignCenter{
+	position: absolute;
+	top: 0px;
+}
