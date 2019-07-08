@@ -2029,13 +2029,21 @@ $(document).ready(function(){
 	
 	
 	$('#textchoiceOtherId').click(function() {
+		   var displayText=$("#displayTextChoiceText0").val().trim();
+		   var displayValue=$("#displayTextChoiceValue0").val().trim();
+		   var exclusive=$("#exclusiveId0").val().trim();
+		   var choiceDescription=$("#displayTextChoiceDescription0").val().trim();
 		if ($(this).is(':checked')){
-			$('.otherOptionChecked').hide();
+			if(displayText.length <= 0 && displayValue.length <= 0 && exclusive.length <= 0 &&  choiceDescription.length <= 0){
+				$('.otherOptionChecked').hide();
+				$('.otherOptionChecked').find('input:text,select').removeAttr('required');
+			}
 			$('.textchoiceOtherCls').show();
 			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
 			$('.OtherOptionCls').find('input:text,select').removeAttr('required');
 		}else{
 			$('.otherOptionChecked').show();
+			$('.otherOptionChecked').find('input:text,select').attr('required',true);
 			$('.textchoiceOtherCls').hide();
 			$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
 		}

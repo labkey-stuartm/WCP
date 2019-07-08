@@ -525,7 +525,7 @@ function isNumber(evt, thisAttr) {
 	             <input type="hidden" name="questionnairesFrequenciesBo.id" id="weeklyFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
 	             <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="week all mt-lg dis-none">
-	               <div>      
+	               <div id="weekDaysId">      
 	                  <span class="gray-xs-f">Day/Time (of the week) <span class="requiredStar">*</span><br/>
 	                  <span class=" form-group m-none dis-inline vertical-align-middle pr-md">                  
 		                  <span class="">
@@ -558,8 +558,8 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  </div>
 	                  <!-- Anchordate start-->
-		               <div class="weeklyanchorDiv col-md-4 pl-none" style="display:none;">
-				           <div class=" resetDate">
+		               <div class="weeklyanchorDiv col-md-8 pl-none" style="display:none;">
+				           <div class=" resetDate col-md-7 p-none">
 				               <div>
 				                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                                 <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
@@ -582,9 +582,18 @@ function isNumber(evt, thisAttr) {
 					                 </span>
 				                </div>
 			                </div>
+			                 <div class="col-md-5 p-none">      
+	                  		<span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
+	                 	    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	                  		<input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                        <span class='help-block with-errors red-txt'></span>
+	                        </span>                        
+	                      </div>
+	                      
 		               </div>
+		              
 	               <!-- Anchordate End -->
-	               <div class="col-md-6 pr-none">
+	               <div class="col-md-4 p-none">
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="weeks" type="text" class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="repeatQuestionnaire"  placeholder="No of Times" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
@@ -617,7 +626,7 @@ function isNumber(evt, thisAttr) {
 	            <input type="hidden" name="questionnairesFrequenciesBo.id" id="monthFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
 	             <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="month all mt-lg dis-none">
-	               <div>
+	               <div id="monthlyDateId">
 	                  <span class="gray-xs-f">Select Date/Time (of the month) <span class="requiredStar">*</span></span><br/> 
 	                  <span class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="">
@@ -641,7 +650,8 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  </div>
 	                  <!-- Anchordate start-->
-		               <div class="monthlyanchorDiv col-md-4 pl-none" style="display:none;">
+		               <div class="monthlyanchorDiv col-md-8 pl-none" style="display:none;">
+		               <div class="col-md-7 p-none">
 				           <div class=" resetDate">
 				               <div>
 				                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -665,24 +675,34 @@ function isNumber(evt, thisAttr) {
 					                 </span>
 				                </div>
 			                </div>
+			                </div>
+			                <div class="col-md-5 p-none">
+	                           <span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br/> 
+	                           <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	                              <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                              <span class='help-block with-errors red-txt'></span>
+	                           </span>
+	                       </div>
 		               </div>
 	               <!-- Anchordate End -->
+	               <div class="col-md-4 p-none">
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="months" type="text" class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" name="repeatQuestionnaire"  placeholder="No of Times" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
+	                  </div>
 	               </div>
-	               <div class="mt-md">
+	               <div class="mt-md col-md-12 p-none">
 	                  <div class="gray-xs-f mb-xs">End Date </div>
 	                  <div class="black-xs-f" id="monthEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
 	                  <input type="hidden" name="studyLifetimeEnd" id="studyMonthlyLifetimeEnd" value="${questionnaireBo.studyLifetimeEnd}">
 	               </div>
-	               <div class="mt-lg">
+	               <div class="mt-lg col-md-12 p-none">
 	                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	                  <div class="black-xs-f">Until the next run comes up</div>
 	               </div>
-	               <div class="mt-lg">
+	               <div class="mt-lg col-md-12 p-none">
 	                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
 	                  <div class="black-xs-f" id="monthLifeTimeDate">${questionnaireBo.studyLifetimeStart}  -  ${questionnaireBo.studyLifetimeEnd}</div>
 	               </div>
@@ -966,12 +986,16 @@ $(document).ready(function() {
 			 if(schedule_opts == 'Weekly'){
 				   $("#weekEndDate").text('NA');
 				   $("#weekLifeTimeEnd").text('-');
+				   $("#weekDaysId").hide();
+				   $("#weekDaysId").find('input:text').removeAttr('required',true);
 				   $(".weeklyanchorDiv").show();
 				   $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Monthly'){
 				   $("#monthEndDate").text('NA');
 				   $("#monthLifeTimeDate").text('-');
+				   $("#monthlyDateId").hide();
+				   $("#monthlyDateId").find('input:text').removeAttr('required',true);
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1005,11 +1029,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true);
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true);
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -1276,12 +1304,16 @@ $(document).ready(function() {
 			 if(val == 'Weekly'){
 				 $("#weekEndDate").text('NA');
 				 $("#weekLifeTimeEnd").text('-');
+				 $("#weekDaysId").hide();
+				 $("#weekDaysId").find('input:text').removeAttr('required',true);
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
 				 $("#monthEndDate").text('NA');
 				 $("#monthLifeTimeDate").text('-');
+				 $("#monthlyDateId").hide();
+				 $("#monthlyDateId").find('input:text').removeAttr('required',true);
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1315,11 +1347,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true);
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true);
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
