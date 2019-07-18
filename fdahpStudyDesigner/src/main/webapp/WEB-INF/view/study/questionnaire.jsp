@@ -236,7 +236,7 @@ function isNumber(evt, thisAttr) {
 	             title="This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it." 
 	           </c:if>>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="schedule2" class="typeofschedule" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${isAnchorQuestionnaire?'disabled':''} ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''} ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+               <input type="radio" id="schedule2" class="typeofschedule" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${isAnchorQuestionnaire?'disabled':''} ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''} ${questionnaireBo.shortTitleDuplicate > 0?'disabled' : ''}
                                                       <c:if test="${empty anchorTypeList}">disabled</c:if>>
                <label for="schedule2">Anchor-Date-based</label>
                </span>
@@ -722,7 +722,7 @@ function isNumber(evt, thisAttr) {
 	                 	<div class="manually-option mb-md form-group" id="0" >
 	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
 		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
-		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate " name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
+		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="gray-xs-f mb-sm pr-md align-span-center">
@@ -747,22 +747,22 @@ function isNumber(evt, thisAttr) {
 	                 	  	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${questionnaireCustomScheduleBo.used}">
 	                 	  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId" id="questionnairesId" value="${questionnaireCustomScheduleBo.questionnairesId}">
 			                  <span class="form-group dis-inline vertical-align-middle pr-md">
-			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
+			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used?'cursor-none' : ''} " name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 			                  to 
 			                  </span>
 			                  <span class="form-group dis-inline vertical-align-middle pr-md">
-			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
+			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="form-group  dis-inline vertical-align-middle pr-md">
-			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
+			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
-			                  <span class="addbtn addBtnDis align-span-center mr-md ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="addDate();">+</span>
-			                  <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" onclick="removeDate(this);"></span>
+			                  <span class="addbtn addBtnDis align-span-center mr-md ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display" onclick="addDate();">+</span>
+			                  <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display" onclick="removeDate(this);"></span>
 			               </div>
 	                 	</c:forEach>
 	                 </c:if>
@@ -937,6 +937,21 @@ function isNumber(evt, thisAttr) {
 	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
 
+<c:if test="${questionnaireBo.shortTitleDuplicate <= 0}">
+$('#contentFormId input[type="text"]').prop('disabled', true);
+$('#contentFormId input[type="checkbox"]').prop('disabled', true);
+$('#schedule input[type="radio"]').prop('disabled', true);
+$('#oneTimeFormId input').prop('disabled', true);
+$('#oneTimeFormId input[type="text"]').prop('disabled', true);
+$('#dailyFormId input[type="text"]').prop('disabled', true);
+$('#weeklyFormId input[type="text"]').prop('disabled', true);
+$('#monthlyFormId input[type="text"]').prop('disabled', true);
+$('select').prop('disabled', true);
+$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
+$('.addBtnDis, .remBtnDis').addClass('');
+$('.cursor-display').removeClass('cursor-none');
+</c:if>
+
 <c:if test="${questionnaireBo.shortTitleDuplicate > 0}">
   $('span.addBtnDis').remove();
   $('span.remBtnDis').remove();
@@ -957,6 +972,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 	scheduletype = $('input[name="scheduleType"]:checked').val();
 }
 $(document).ready(function() {
+	/* var shortTitleDuplicateVal= ${questionnaireBo.shortTitleDuplicate};
+	if(shortTitleDuplicateVal<=0){
+		alert("000000");
+		$("#customFormId").show();
+	} */
 	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -3444,9 +3464,9 @@ $(document).ready(function(){
 		    } */
 					
 			
-		})
+		});
 		
 		
-})
+});
 
 </script>

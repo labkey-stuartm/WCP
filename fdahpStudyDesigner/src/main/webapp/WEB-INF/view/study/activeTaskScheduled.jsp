@@ -21,6 +21,12 @@
 /* .time-opts .remBtnDis{
 	display: initial;
 } */
+
+.help-block ul {
+    width: 150px;
+    //font-size:10px !important;
+}
+
 </style>
 <!-- <div id="schedule" class="tab-pane fade in active mt-xlg"> -->
     <div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
@@ -308,7 +314,7 @@
 	  <input type="hidden" name="activeTaskFrequenciesBo.id" id="weeklyFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
 	 <div class="week all mt-lg dis-none">
-	    <div> 
+	    <div id="weekDaysId"> 
 	       <span class="gray-xs-f">Day/Time (of the week)<span class="requiredStar"> * </span></span><br/>
 	       <div class=" form-group m-none dis-inline vertical-align-middle pr-md">                       
 	       <span class="">
@@ -364,9 +370,25 @@
                  </span>
                 </div>
                </div>
+               
             </div>
+            
+            <div class="col-md-4 p-none">      
+	               <span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
+	               <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	                  <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                  <span class='help-block with-errors red-txt'></span>
+	               </span>                        
+	           </div>
+            
+            
+            
+            
+            
+            
+            
 	       <!-- Anchordate End -->
-	       <div class="col-md-6 pr-none">
+	       <div class="col-md-4 p-none">
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
 	       <input id="weeks" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
@@ -399,7 +421,7 @@
 	 <input type="hidden" name="activeTaskFrequenciesBo.id" id="monthFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
 	 <div class="month all mt-lg dis-none">
-	    <div>
+	    <div id="monthlyDateId">
 	       <span class="gray-xs-f">Select Date/Time (of the month)<span class="requiredStar"> * </span></span><br/>
 	       <span class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="">
@@ -447,9 +469,17 @@
 		                 </span>
 		               </div>
 		              </div>
+		              
             </div>
+            <div class="col-md-4 p-none">
+	                           <span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br/> 
+	                           <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	                              <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                              <span class='help-block with-errors red-txt'></span>
+	                           </span>
+	                 </div>
 	       <!-- Anchordate End -->
-	       <div class="col-md-6 pr-none">
+	       <div class="col-md-4 p-none">
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
 	       <input id="months" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
@@ -458,16 +488,16 @@
 	       </div>
 	       <div class="clearfix"></div>
 	    </div>
-	    <div class="mt-md">
+	    <div class="mt-md col-md-12 p-none">
 	       <div class="gray-xs-f mb-xs">End Date </div>
 	       <div class="black-xs-f" id="monthEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
 	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyMonthlyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
 	    </div>
-	    <div class="mt-lg">
+	    <div class="mt-lg col-md-12 p-none">
 	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
-	    <div class="mt-lg">
+	    <div class="mt-lg col-md-12 p-none">
 	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
 	       <div class="black-xs-f" id="monthLifeTimeDate">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
@@ -501,7 +531,7 @@
 	        <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
-	        <span class="addbtn addBtnDis align-span-center mr-md" onclick="addDate();">+</span>
+	        <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
 	        <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
 	     </div>
 	      </c:if>
@@ -550,7 +580,7 @@
 					</select>
 					</span> <span class="form-group m-none dis-inline vertical-align-middle">
 						<input id="xdays0" type="text"
-						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate"
 						count='0' placeholder="X"
 						name="activeTaskCustomScheduleBo[0].timePeriodFromDays"
 						value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
@@ -572,7 +602,7 @@
 					</select>
 					</span> <span class="form-group m-none dis-inline vertical-align-middle">
 						<input id="ydays0" type="text"
-						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate"
 						count='0' placeholder="Y"
 						name="activeTaskCustomScheduleBo[0].timePeriodToDays"
 						value="${activeTaskCustomScheduleBo.timePeriodToDays}"
@@ -616,7 +646,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="xdays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="X"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 							value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
@@ -639,7 +669,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="ydays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="Y"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodToDays"
 							value="${activeTaskCustomScheduleBo.timePeriodToDays}"
@@ -716,10 +746,14 @@ $(document).ready(function() {
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Weekly'){
+				   $("#weekDaysId").hide();
+				   $("#weekDaysId").find('input:text').removeAttr('required',true);
 				   $(".weeklyanchorDiv").show();
 				   $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Monthly'){
+				   $("#monthlyDateId").hide();
+				   $("#monthlyDateId").find('input:text').removeAttr('required',true);
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -753,11 +787,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true);
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true);
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -920,10 +958,14 @@ $(document).ready(function() {
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Weekly'){
+				 $("#weekDaysId").hide();
+				 $("#weekDaysId").find('input:text').removeAttr('required',true);
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
+				 $("#monthlyDateId").hide();
+				 $("#monthlyDateId").find('input:text').removeAttr('required',true);
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -957,11 +999,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
+			$("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true);
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
+			$("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true);
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -2493,7 +2539,7 @@ function validateCustTime(dateRef, timeRef) {
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate xancorText'" 
+					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate xancorText'" 
 						              +"count='"+customAnchorCount+"' placeholder='X' name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodFromDays'"
 						              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='xancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
@@ -2502,7 +2548,7 @@ function validateCustTime(dateRef, timeRef) {
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
+					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
 						              +"name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='yancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
 						              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days </span></span>"
@@ -2603,4 +2649,224 @@ function validateCustTime(dateRef, timeRef) {
 		}
 	}
 //# sourceURL=filename.js
+
+$(document).ready(function(){
+	
+	
+	jQuery(document).on("keyup",".xdays",function(){
+	    
+		var xday = $(this).val()
+		var parent_id = $(this).parent().parent().attr("id");
+		var xsign = $("#xSign"+parent_id).val() === "0" ? "+" : "-";
+		var xdayValue = parseInt(xsign+""+xday);
+		var yday = $("#ydays"+parent_id).val();
+		var ysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+		var ydayValue = parseInt(ysign+""+yday);
+		    
+		    
+		//var siblings_length = $(".manuallyAnchorContainer > div").length;
+		//
+		//for(i= parseInt(parent_id)+1  ; i<= siblings_length; i++){
+//		    $("#"+i).remove();
+		//}
+
+		    
+		//$("#"+parent_id).next().remove();
+
+		  
+		if(parent_id === "0"){
+		 
+		if(ydayValue !== ""){
+		  if(xdayValue > ydayValue){		    
+		    $(this).addClass("red-border");
+		    $("#ydays"+parent_id).addClass("red-border");
+		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+		    //$("#addbtn"+parent_id).addClass("not-allowed");
+		    $(".addbtn").addClass("not-allowed");
+		  }else{				
+			$(this).removeClass("red-border");
+		    $("#ydays"+parent_id).removeClass("red-border");
+		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+		    //$("#addbtn"+parent_id).removeClass("not-allowed");
+		    $(".addbtn").removeClass("not-allowed");
+			}   
+		}
+
+		}else{	
+		  
+		  var pre_parent = $("#"+parent_id).prev().attr("id");
+		  var pyday = $("#ydays"+pre_parent).val();  
+		  var pysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+		  var pydayValue = parseInt(pysign+""+pyday);	
+		  
+		  
+		  if(xdayValue < pydayValue){
+			  $(this).addClass("red-border");
+			  $("#ydays"+pre_parent).addClass("red-border");
+			  $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+			  //$("#addbtn"+parent_id).addClass("not-allowed");
+			  $(".addbtn").addClass("not-allowed");
+		  }else{
+			  $(this).removeClass("red-border");
+			  $("#ydays"+pre_parent).removeClass("red-border");
+			  $(this).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			  //$("#addbtn"+parent_id).addClass("not-allowed");
+			  $(".addbtn").addClass("not-allowed");
+			  if(ydayValue !== ""){
+				  if(xdayValue > ydayValue){
+					  $(this).addClass("red-border");
+					  $("#ydays"+parent_id).addClass("red-border");
+					  $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+					  //$("#addbtn"+parent_id).addClass("not-allowed");
+					  $(".addbtn").addClass("not-allowed");
+				  }else{
+					  $(this).removeClass("red-border");
+					  $("#ydays"+parent_id).removeClass("red-border");
+					  $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  //$("#addbtn"+parent_id).removeClass("not-allowed");
+					  $(".addbtn").removeClass("not-allowed");
+				  }
+			  }		
+		  }
+		  		  
+		    
+		  /* if(xdayValue < pydayValue){
+			 $("xdays"+parent_id).addClass("red-border");
+		     $("#ydays"+pre_parent).addClass("red-border");
+		  }else if(ydayValue !== ""){
+		      if(xdayValue > ydayValue){
+		    	  $(this).addClass("red-border");
+				  $("#ydays"+parent_id).addClass("red-border");
+				  $("#addbtn"+parent_id).addClass("not-allowed");
+		       }else{
+		    	   $(this).removeClass("red-border");
+				   $("#ydays"+parent_id).removeClass("red-border");
+				   $("#addbtn"+parent_id).removeClass("not-allowed");
+		       }    
+	     } */
+	     
+	     
+		  	
+		}   
+		
+		
+
+		});
+
+		jQuery(document).on("change",".xdays",function(){				
+			$(this).parent().parent().siblings().removeClass("current");
+			$(this).parent().parent().addClass("current");
+			
+			$(".current").nextAll().remove();	
+		});	
+		
+		jQuery(document).on("keyup",".ydays",function(){			
+			
+			var parent_id = $(this).parent().parent().attr("id");
+			var xsign = $("#xSign"+parent_id).val() === "0" ? "+" : "-";
+			var xday = $("#xdays"+parent_id).val();
+			var xdayValue = parseInt(xsign+""+xday);
+			var yday = $("#ydays"+parent_id).val();
+			var ysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+			var ydayValue = parseInt(ysign+""+yday);
+			
+			
+			if(ydayValue < xdayValue){
+				$(this).addClass("red-border");
+			    $("#xdays"+parent_id).addClass("red-border");
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    $(this).parent().parent().siblings().removeClass("current");
+				$(this).parent().parent().addClass("current");
+				$(".current").nextAll().remove();	
+				//$("#addbtn"+parent_id).addClass("not-allowed");
+				$(".addbtn").addClass("not-allowed");
+			}else{
+				$(this).removeClass("red-border");
+			    $("#xdays"+parent_id).removeClass("red-border");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			    //$("#addbtn"+parent_id).removeClass("not-allowed");
+			    $(".addbtn").removeClass("not-allowed");
+			}	
+			
+			
+		});
+		
+		
+		jQuery(document).on("change",".ydays",function(){	
+			$(this).parent().parent().siblings().removeClass("current");
+			$(this).parent().parent().addClass("current");
+			$(".current").nextAll().remove();			
+		    
+		});	
+		
+		
+		jQuery(document).on("change",".sign-box select",function(){
+			var parent_id = $(this).attr("count");
+			var signValue = $("#xSign"+parent_id).val();
+			
+			var xsign = signValue === "0" ? "+" : "-";
+			var xday = $("#xdays"+parent_id).val();
+			var xdayValue = parseInt(xsign+""+xday);
+			
+			var yday = $("#ydays"+parent_id).val();
+			var ysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+			var ydayValue = parseInt(ysign+""+yday);
+			
+			if(ydayValue < xdayValue){				
+			    $("#xdays"+parent_id).addClass("red-border");
+			    $("#ydays"+parent_id).addClass("red-border");
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    //$("#addbtn"+parent_id).addClass("not-allowed");
+			    $(".addbtn").addClass("not-allowed");
+			}else{				
+			    $("#xdays"+parent_id).removeClass("red-border");			    
+			    $("#ydays"+parent_id).removeClass("red-border");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			    //$("#addbtn"+parent_id).removeClass("not-allowed");
+			    $(".addbtn").removeClass("not-allowed");
+			}	
+			
+			if($('.manually-anchor-option').length > 1){
+				  var pre_parent = $("#"+parent_id).prev().attr("id");
+				  var pyday = $("#ydays"+pre_parent).val();  
+				  var pysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
+				  var pydayValue = parseInt(pysign+""+pyday);
+				  
+				  
+				  if(xdayValue < pydayValue){
+					  $(this).addClass("red-border");
+					  $("#ydays"+pre_parent).addClass("red-border");
+					  $("#xdays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+					  //$("#addbtn"+parent_id).addClass("not-allowed");
+					  $(".addbtn").addClass("not-allowed");
+				  }else{
+					  $(this).removeClass("red-border");
+					  $("#ydays"+pre_parent).removeClass("red-border");
+					  $("#xdays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  //$("#addbtn"+parent_id).addClass("not-allowed");
+					  $(".addbtn").addClass("not-allowed");
+				  }	  
+			}
+			  
+			$(this).parent().parent().parent().siblings().removeClass("current");
+			$(this).parent().parent().parent().addClass("current");
+			
+			/* $("#"+parent_id).siblings().removeClass("current");
+			$("#"+parent_id).parent().parent().addClass("current"); */
+			
+			$(".current").nextAll().remove();
+			
+			
+			/* var siblings_length = $(".manuallyAnchorContainer > div").length;			
+			for(i= 0; i<= siblings_length; i++){
+				
+				if(i !== parseInt(parent_id)){
+					$("#"+i).remove();
+				}			
+		    	
+		    } */
+					
+			
+		});
+});
 </script>
