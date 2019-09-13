@@ -217,7 +217,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_SUBTYPE_RESOURCE = "Resource";
 
 	// STUDY NOTIFICATION TEST
-	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available in the FDA My Studies App. Check it out now.";
+	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available in the FDA MyStudies App. Check it out now.";
 	public static final String NOTIFICATION_VIEWED = "Y";
 	// Notification flags
 	public static final String NOTIFICATIONID = "notificationId";
