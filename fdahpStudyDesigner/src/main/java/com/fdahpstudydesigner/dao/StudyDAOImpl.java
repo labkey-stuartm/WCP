@@ -1860,13 +1860,18 @@ public class StudyDAOImpl implements StudyDAO {
 								&& StringUtils.isNotEmpty(bean.getResearchSponsor())) {
 							// get the Category, Research Sponsor name of the
 							// study from categoryIds
-							query = session.createQuery("from ReferenceTablesBo where id in(" + bean.getCategory() + ","
-									+ bean.getResearchSponsor() + ")");
+							/*
+							 * query = session.createQuery("from ReferenceTablesBo where id in(" +
+							 * bean.getCategory() + "," + bean.getResearchSponsor() + ")");
+							 */
+							query = session.createQuery("from ReferenceTablesBo where id in(" + bean.getCategory() + ")");
 							referenceTablesBos = query.list();
 							if (referenceTablesBos != null && !referenceTablesBos.isEmpty()) {
 								bean.setCategory(referenceTablesBos.get(0).getValue());
-								bean.setResearchSponsor(
-										referenceTablesBos.size() == 2 ? referenceTablesBos.get(1).getValue() : "");
+								/*
+								 * bean.setResearchSponsor( referenceTablesBos.size() == 2 ?
+								 * referenceTablesBos.get(1).getValue() : "");
+								 */
 							}
 						}
 						if (StringUtils.isNotEmpty(bean.getCustomStudyId())) {
@@ -3875,6 +3880,7 @@ public class StudyDAOImpl implements StudyDAO {
 		String activity = "";
 		List<Integer> userSuperAdminList = null;
 		try {
+			System.out.println("StudyDAOImpl.saveOrUpdateStudy() ==>> "+studyBo.getResearchSponsor());
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();

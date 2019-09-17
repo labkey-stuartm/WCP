@@ -113,4 +113,12 @@ public class PushNotificationBean {
 	public void setAppId(String appId) {
 		this.appId = appId;
 	}
+
+	@Override
+	public String toString() {
+		return "PushNotificationBean [customStudyId=" + customStudyId + ", notificationId=" + notificationId
+				+ ", notificationSubType=" + notificationSubType + ", notificationText=" + notificationText
+				+ ", notificationTitle=" + notificationTitle + ", notificationType=" + notificationType + ", appId="
+				+ appId + "]";
+	}
 }
