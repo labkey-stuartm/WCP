@@ -373,13 +373,13 @@
                
             </div>
             
-            <div class="col-md-4 p-none">      
+            <%-- <div class="col-md-4 p-none">      
 	               <span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
 	               <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	               </span>                        
-	           </div>
+	           </div> --%>
             
             
             
@@ -471,13 +471,13 @@
 		              </div>
 		              
             </div>
-            <div class="col-md-4 p-none">
+            <%-- <div class="col-md-4 p-none">
 	                           <span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br/> 
 	                           <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                              <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
 	                              <span class='help-block with-errors red-txt'></span>
 	                           </span>
-	                 </div>
+	                 </div> --%>
 	       <!-- Anchordate End -->
 	       <div class="col-md-4 p-none">
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -746,14 +746,14 @@ $(document).ready(function() {
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Weekly'){
-				   $("#weekDaysId").hide();
-				   $("#weekDaysId").find('input:text').removeAttr('required',true);
+				   /* $("#weekDaysId").hide();
+				   $("#weekDaysId").find('input:text').removeAttr('required',true); */
 				   $(".weeklyanchorDiv").show();
 				   $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Monthly'){
-				   $("#monthlyDateId").hide();
-				   $("#monthlyDateId").find('input:text').removeAttr('required',true);
+				  /*  $("#monthlyDateId").hide();
+				   $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -787,15 +787,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			$("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true);
+			/* $("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true); */
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			$("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true);
+			/* $("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -958,14 +958,14 @@ $(document).ready(function() {
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Weekly'){
-				 $("#weekDaysId").hide();
-				 $("#weekDaysId").find('input:text').removeAttr('required',true);
+				 /* $("#weekDaysId").hide();
+				 $("#weekDaysId").find('input:text').removeAttr('required',true); */
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
-				 $("#monthlyDateId").hide();
-				 $("#monthlyDateId").find('input:text').removeAttr('required',true);
+				 /* $("#monthlyDateId").hide();
+				 $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -999,15 +999,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			$("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true);
+			/* $("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true); */
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			$("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true);
+			/* $("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			

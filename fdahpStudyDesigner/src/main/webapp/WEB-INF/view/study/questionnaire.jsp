@@ -859,7 +859,7 @@ function isNumber(evt, thisAttr) {
 										</span>
 									</div>
 								</div>
-								<div class="col-md-5 p-none">
+								<%-- <div class="col-md-5 p-none">
 									<span class="gray-xs-f">Time <span class="requiredStar">*</span><br /></span>
 									<span
 										class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -870,12 +870,12 @@ function isNumber(evt, thisAttr) {
 										value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" />
 										<span class='help-block with-errors red-txt'></span>
 									</span>
-								</div>
+								</div> --%>
 
 							</div>
 
 							<!-- Anchordate End -->
-							<div class="col-md-4 p-none">
+							<div class="col-md-5 p-none">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">No. of times to repeat the
@@ -1006,7 +1006,7 @@ function isNumber(evt, thisAttr) {
 										</div>
 									</div>
 								</div>
-								<div class="col-md-5 p-none">
+								<%-- <div class="col-md-5 p-none">
 									<span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br />
 									<span
 										class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -1017,10 +1017,10 @@ function isNumber(evt, thisAttr) {
 										value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" />
 										<span class='help-block with-errors red-txt'></span>
 									</span>
-								</div>
+								</div> --%>
 							</div>
 							<!-- Anchordate End -->
-							<div class="col-md-4 p-none">
+							<div class="col-md-5 p-none">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">No. of times to repeat the
@@ -1455,10 +1455,9 @@ $(document).ready(function() {
 	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
-	var scheduletype = $(".typeofschedule").attr('scheduletype');
+	//var scheduletype = $(".typeofschedule").attr('scheduletype');
 	//alert(scheduletype);
-	if(scheduletype == 'AnchorDate'){
-		alert("1111");
+	/* if(scheduletype == 'AnchorDate'){
 		 $('.weeklyCls').hide();
 		 $('.weekDaysId').find('input:text,select').removeAttr('required');
 		 $('.weeklyStartCls').hide();
@@ -1468,7 +1467,7 @@ $(document).ready(function() {
 		$("#weekDaysId").find('input:text').attr('required',true);
 		$(".weeklyanchorDiv").hide();
 		$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
-	}
+	} */
 	
 	$(".typeofschedule").change(function() {
 		var scheduletype = $(this).attr('scheduletype');
@@ -1503,8 +1502,8 @@ $(document).ready(function() {
 			 if(schedule_opts == 'Monthly'){
 				   $("#monthEndDate").text('NA');
 				   $("#monthLifeTimeDate").text('-');
-				   $("#monthlyDateId").hide();
-				   $("#monthlyDateId").find('input:text').removeAttr('required',true);
+				   /* $("#monthlyDateId").hide();
+				   $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1519,8 +1518,8 @@ $(document).ready(function() {
 			 $('.selectpicker').selectpicker('refresh');
 			 $('.dailyStartCls').hide();
 			 $('.dailyStartCls').find('input:text').removeAttr('required');
-			 $('.weeklyCls').hide();
-			 $('.weekDaysId').find('input:text,select').removeAttr('required');
+			 //$('.weeklyCls').hide();
+			 //$('.weekDaysId').find('input:text,select').removeAttr('required');
 			 $('.weeklyStartCls').hide();
 			 $('.weeklyStartCls').find('input:text,select').removeAttr('required');
 			 $('.monthlyStartCls').hide();
@@ -1540,15 +1539,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			$("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true);
+			/* $("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true); */
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			$("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true);
+			/* $("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -1815,16 +1814,16 @@ $(document).ready(function() {
 			 if(val == 'Weekly'){
 				 $("#weekEndDate").text('NA');
 				 $("#weekLifeTimeEnd").text('-');
-				 $("#weekDaysId").hide();
-				 $("#weekDaysId").find('input:text').removeAttr('required',true);
+				 /* $("#weekDaysId").hide();
+				 $("#weekDaysId").find('input:text').removeAttr('required',true); */
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
 				 $("#monthEndDate").text('NA');
 				 $("#monthLifeTimeDate").text('-');
-				 $("#monthlyDateId").hide();
-				 $("#monthlyDateId").find('input:text').removeAttr('required',true);
+				 /* $("#monthlyDateId").hide();
+				 $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1858,15 +1857,15 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			$("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true);
+			/* $("#weekDaysId").show();
+			$("#weekDaysId").find('input:text').attr('required',true); */
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			$("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true);
+			/* $("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
