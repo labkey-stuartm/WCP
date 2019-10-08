@@ -28,7 +28,16 @@
 	display: none;
 }
 
-.manually-option:last-child .addBtnDis {
+.manually-option:last-child .addBtnDis {  
+	display: inline-block;
+}
+
+
+.manually-anchor-option .addBtnDis {
+	display: none;
+}
+
+.manually-anchor-option:last-child .addBtnDis {
 	display: inline-block;
 }
 
@@ -45,6 +54,15 @@
 	border-spacing: 10px;
 	*border-collapse: expression('separate', cellSpacing = '10px');
 }
+
+/* .delete{
+	background-position: -113px -63px ;
+	width: 17px;
+	height: 22px;
+    display: inline-block !important;
+    cursor: pointer;
+    vertical-align:middle;
+} */
 
 /* error box css start here  */
 .help-block ul {
@@ -1157,7 +1175,7 @@ function isNumber(evt, thisAttr) {
 											placeholder="Time" onclick='timep(this.id);' required /> <span
 											class='help-block with-errors red-txt'></span>
 										</span> <span
-											class="addbtn addBtnDis align-span-center mr-md ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
+											class="addbtn addBtnDis align-span-center mr-md cursor-display"
 											onclick="addDate();">+</span> <span id="delete"
 											class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
 											onclick="removeDate(this);"></span>
@@ -1284,7 +1302,7 @@ function isNumber(evt, thisAttr) {
 											class="signDropDown selectpicker sign-box selectYSign ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
 											count='${customVar.index}' title="Select"
 											name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign"
-											id="ySign0">
+											id="ySign${customVar.index}">
 												<option value="0"
 													${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 												<option value="1"
@@ -1312,10 +1330,10 @@ function isNumber(evt, thisAttr) {
 											placeholder="Time" required /> <span
 											class='help-block with-errors red-txt'></span>
 										</span> <span id="addbtn${customVar.index}"
-											class="addbtn addBtnDis align-span-center mr-sm ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="addbtn addBtnDis align-span-center mr-sm cursor-display"
 											onclick="addDateAnchor();">+</span> <span
 											id="deleteAncchor${customVar.index}"
-											class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
 											onclick="removeDateAnchor(this);"></span>
 									</div>
 								</c:forEach>
@@ -1427,10 +1445,12 @@ $('.addBtnDis, .remBtnDis').addClass('');
 $('.cursor-display').removeClass('cursor-none');
 </c:if>*/
 
-<c:if test="${questionnaireBo.shortTitleDuplicate > 0}">
+
+/* <c:if test="${questionnaireBo.shortTitleDuplicate > 0}">
   $('span.addBtnDis').remove();
   $('span.remBtnDis').remove();
-</c:if>
+</c:if> */
+
 
 var count = 0;
 var customCount = 0;
@@ -1447,11 +1467,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 	scheduletype = $('input[name="scheduleType"]:checked').val();
 }
 $(document).ready(function() {
-	/*var shortTitleDuplicateVal= ${questionnaireBo.shortTitleDuplicate};
+	/* var shortTitleDuplicateVal= ${questionnaireBo.shortTitleDuplicate};
 	if(shortTitleDuplicateVal<=0){
 		alert("000000");
 		$("#customFormId").show();
-	}*/
+	} */
+	
 	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -3631,7 +3652,8 @@ function chkDaysValid(clickDone){
 	return valid;
 }
 function addDateAnchor(){
-	customAnchorCount = parseInt(customAnchorCount) +1;
+	//customAnchorCount = parseInt(customAnchorCount) +1;
+	customAnchorCount = $('.manually-anchor-option').length;
 	var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 				                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
 				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box selectXSign' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"

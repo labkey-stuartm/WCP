@@ -18,6 +18,15 @@
 .manually-option:last-child .addBtnDis{
 	display: inline-block;
 }
+
+.manually-anchor-option .addBtnDis {
+	display: none;
+}
+
+.manually-anchor-option:last-child .addBtnDis {
+	display: inline-block;
+}
+
 /* .time-opts .remBtnDis{
 	display: initial;
 } */
@@ -718,10 +727,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 var customAnchorCount = 0;
 //customAnchorCount = '${customCount}';
 
-<c:if test="${activeTaskBo.isDuplicate > 0}">
+/* <c:if test="${activeTaskBo.isDuplicate > 0}">
 $('span.addBtnDis').remove();
 $('span.remBtnDis').remove();
-</c:if>
+</c:if> */
 
 $(document).ready(function() {
 	$('.selectpicker').selectpicker('refresh');
@@ -2532,7 +2541,8 @@ function validateCustTime(dateRef, timeRef) {
 		return valid;
 	}
 	function addDateAnchor(){
-		customAnchorCount = parseInt(customAnchorCount) +1;
+		//customAnchorCount = parseInt(customAnchorCount) +1;
+		customAnchorCount = $('.manually-anchor-option').length;
 		var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 					                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
 					                  +"<span><select class='signDropDown selectpicker sign-box' count='"+customAnchorCount+"' title='Select' name='activeTaskCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"

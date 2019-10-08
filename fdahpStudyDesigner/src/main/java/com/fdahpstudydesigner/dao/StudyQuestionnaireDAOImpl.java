@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -1577,24 +1575,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 									+ questionnaireBo.getShortTitle() + "' and custom_study_id = '" + customStudyId
 									+ "' and active=1 and is_live=1")
 							.uniqueResult();
-
-					if (shortTitleCount != null && shortTitleCount.intValue() > 0 && questionnaireBo.getScheduleType().equals("AnchorDate")) {
-						  System.out.println(shortTitleCount.intValue());
-						  questionnaireBo.setShortTitleDuplicate(shortTitleCount .intValue());
-					}else if(shortTitleCount != null && shortTitleCount.intValue() > 0 && questionnaireBo.getScheduleType().equals("Regular") ) {
-						  if(questionnaireBo.getFrequency()
-									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY) 
-									|| questionnaireBo.getFrequency()
-									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY) 
-									|| questionnaireBo.getFrequency()
-									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
-									|| questionnaireBo.getFrequency()
-									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY)) {
-							  questionnaireBo.setShortTitleDuplicate(shortTitleCount .intValue());
-						  }else {
-							  questionnaireBo.setShortTitleDuplicate(0);
-						  }
-					}else {
+					if (shortTitleCount != null && shortTitleCount.intValue() > 0
+							&& questionnaireBo.getScheduleType().equals("AnchorDate")) {
+						questionnaireBo.setShortTitleDuplicate(shortTitleCount.intValue());
+					} else if (shortTitleCount != null && shortTitleCount.intValue() > 0
+							&& questionnaireBo.getScheduleType().equals("Regular")) {
+						if (questionnaireBo.getFrequency()
+								.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)
+								|| questionnaireBo.getFrequency()
+										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY)
+								|| questionnaireBo.getFrequency()
+										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
+								|| questionnaireBo.getFrequency()
+										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY)
+								|| questionnaireBo.getFrequency().equalsIgnoreCase(
+										FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)) {
+							questionnaireBo.setShortTitleDuplicate(shortTitleCount.intValue());
+						} else {
+							questionnaireBo.setShortTitleDuplicate(0);
+						}
+					} else {
 						questionnaireBo.setShortTitleDuplicate(0);
 					}
 
