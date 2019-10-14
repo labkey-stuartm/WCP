@@ -4330,6 +4330,7 @@ public class StudyController {
 
 				String appId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("appId")) ? ""
 						: request.getParameter("appId");
+				appId=appId.toUpperCase();
 
 				String studyType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyType")) ? ""
 						: request.getParameter("studyType");

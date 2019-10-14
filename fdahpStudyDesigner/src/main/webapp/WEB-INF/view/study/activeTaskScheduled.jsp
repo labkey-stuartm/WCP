@@ -27,6 +27,11 @@
 	display: inline-block;
 }
 
+.dis_inlinetop{
+	display: inline-block;
+	vertical-align: top;
+}
+
 /* .time-opts .remBtnDis{
 	display: initial;
 } */
@@ -238,7 +243,7 @@
 	        <span class='help-block with-errors red-txt'></span>
 	        </span> 
 	        <span class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" onclick='addTime();'>+</span>
-	        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span>
+	        <!-- <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span> -->
 	     </div>
 	    </c:if>
 	    <c:if test="${fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0}">
@@ -355,8 +360,8 @@
 	       </span>
 	       </span>
 	       <!-- Anchordate start-->
-            <div class="weeklyanchorDiv col-md-4 pl-none" style="display:none;">
-             <div class=" resetDate">
+            <div class="weeklyanchorDiv pl-none" style="display:none;">
+             <div class=" resetDate dis_inlinetop p-none">
                <div>
                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
                              <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
@@ -379,25 +384,24 @@
                  </span>
                 </div>
                </div>
-               
-            </div>
-            
-            <%-- <div class="col-md-4 p-none">      
+               <div class="dis_inlinetop p-none">      
 	               <span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
 	               <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                  <input id="selectWeeklyTimeAnchor" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	               </span>                        
-	           </div> --%>
-            
-            
-            
-            
-            
-            
+	           </div>
+            <div class="dis_inlinetop">
+	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
+	       <input id="weeksAnchor" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <span class='help-block with-errors red-txt'></span>
+	       </span>
+	       </div>
+            </div>
             
 	       <!-- Anchordate End -->
-	       <div class="col-md-4 p-none">
+	       <div class="col-md-4 p-none weeklyRegular">
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
 	       <input id="weeks" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
@@ -443,7 +447,7 @@
 	       <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
-	       <div class="gray-xs-f mt-md italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
+	       <div class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
 	    </div>
 	    <div class="mt-xs"> 
 	       <div class="monthlyStartCls  col-md-3 pl-none">                       
@@ -454,8 +458,8 @@
 	       </span>
 	       </div>
 	       <!-- Anchordate start-->
-            <div class="monthlyanchorDiv col-md-4 pl-none" style="display:none;">
-		          <div class=" resetDate">
+            <div class="monthlyanchorDiv pl-none" style="display:none;">
+		          <div class="dis_inlinetop resetDate">
 		              <div>
 		                   <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 		                             <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
@@ -479,21 +483,30 @@
 		               </div>
 		              </div>
 		              
+		           <div class="dis_inlinetop">
+		                <span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br/> 
+		                <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                   <input id="selectMonthlyTimeAnchor" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
+		                   <span class='help-block with-errors red-txt'></span>
+		                </span>
+			       </div>
+		          <div class="dis_inlinetop">
+				       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+				       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
+				       <input id="monthsAnchor" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+				        <span class='help-block with-errors red-txt'></span>
+				       </span>
+			       </div>
+		              
             </div>
-            <%-- <div class="col-md-4 p-none">
-	                           <span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br/> 
-	                           <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                              <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
-	                              <span class='help-block with-errors red-txt'></span>
-	                           </span>
-	                 </div> --%>
+	           
 	       <!-- Anchordate End -->
-	       <div class="col-md-4 p-none">
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="months" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
-	        <span class='help-block with-errors red-txt'></span>
-	       </span>
+	       <div id="activeMonthlyRegular" class="dis_inlinetop">
+		       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
+		       <input id="months" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+		        <span class='help-block with-errors red-txt'></span>
+		       </span>
 	       </div>
 	       <div class="clearfix"></div>
 	    </div>
@@ -540,8 +553,8 @@
 	        <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
-	        <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
-	        <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
+	        <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addDate();'>+</span>
+	        <!-- <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span> -->
 	     </div>
 	      </c:if>
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) gt 0}">
@@ -628,9 +641,9 @@
 						placeholder="Time" required /> <span
 						class='help-block with-errors red-txt'></span>
 					</span> <span class="addbtn addBtnDis dis-inline vertical-align-middle "
-						onclick="addDateAnchor();">+</span> <span id="deleteAncchor"
+						onclick="addDateAnchor();">+</span> <!-- <span id="deleteAncchor"
 						class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-						onclick="removeDateAnchor(this);"></span>
+						onclick="removeDateAnchor(this);"></span> -->
 				</div>
 			</c:if>
 			<c:if
@@ -733,7 +746,29 @@ $('span.remBtnDis').remove();
 </c:if> */
 
 $(document).ready(function() {
+		$(".remBtnDis").addClass("hide");
+	
 	$('.selectpicker').selectpicker('refresh');
+	
+	if($("#schedule2").prop("checked")){
+		$("#weekDaysId").hide();
+		$(".weeklyRegular").hide();
+		$("#monthlyDateId").hide();
+		$(".monthlyRegular").hide();
+		$("#activeMonthlyRegular").hide();
+		localStorage.setItem("IsActiveAnchorDateSelected", "true");
+		localStorage.setItem("IsActiveRegularSelected", "false");
+	}else{
+		$("#weekDaysId").show();
+		$(".weeklyRegular").show();
+		$("#monthlyDateId").show();
+		$(".monthlyRegular").show();
+		$("#activeMonthlyRegular").show();
+		localStorage.setItem("IsActiveAnchorDateSelected", "false");
+		localStorage.setItem("IsActiveRegularSelected", "true");
+	}
+	
+	
 	$(".typeofschedule").change(function() {
 		var scheduletype = $(this).attr('scheduletype');
         $('#isLaunchStudy').prop('checked', false);
@@ -746,6 +781,22 @@ $(document).ready(function() {
     	$("#onetimeydaysId").prop('disabled',false);
         var schedule_opts = $("input[name='frequency']:checked"). val();
 		if(scheduletype == 'AnchorDate'){
+			
+			$("#weekDaysId").hide();
+			$("#weekDaysId").find('input:text').removeAttr('required',true);
+			$(".weeklyRegular").hide();
+			$(".weeklyRegular").removeAttr('required');
+			
+			$("#monthlyDateId").hide();
+			$("#monthlyDateId").find('input:text').removeAttr('required',true);
+			
+			$("#activeMonthlyRegular").hide();
+			$("#months").removeAttr('required');
+			
+			
+			localStorage.setItem("IsActiveAnchorDateSelected", "true");
+			localStorage.setItem("IsActiveRegularSelected", "false");
+			
 			if(schedule_opts == 'One time'){
 				   $(".onetimeanchorClass").show();
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
@@ -784,6 +835,23 @@ $(document).ready(function() {
 			 $(".manuallyContainer").hide();
 			 $(".manuallyContainer").find('input:text').removeAttr('required');
 		}else{
+			
+			localStorage.setItem("IsActiveAnchorDateSelected", "false");
+			localStorage.setItem("IsActiveRegularSelected", "true");
+			
+			$("#weekDaysId").show();
+			$("#weekDaysId").attr('required',true);
+			
+			$(".weeklyRegular").show();
+			$(".weeklyRegular").attr('required');
+			
+			$("#monthlyDateId").show();
+			$("#monthlyDateId").attr('required',true);
+			
+			$("#activeMonthlyRegular").show();
+			$("#months").attr('required',true);
+			
+			
 			$(".onetimeanchorClass").hide();
 			$('.onetimeanchorClass').find('input:text').removeAttr('required');
 			$('.regularClass').show();
@@ -1940,11 +2008,20 @@ function saveActiveTask(item, actType, callback){
 		var frequence_id = $("#weeklyFreId").val();
 		study_lifetime_start = $("#startWeeklyDate").val();
 		var frequence_time = $("#selectWeeklyTime").val();
+		var frequence_time_anchor = $("#selectWeeklyTimeAnchor").val();
 		var dayOftheweek = $("#startDateWeekly").val();
 		repeat_active_task = $("#weeks").val();
+		repeat_active_task_anchor = $("#weeksAnchor").val();
 		study_lifetime_end = $("#weekEndDate").text();
 		var weeklyXSign = $('#weeklyXSign').val();
 		var weeklyXSignVal = $('#weeklyxdaysId').val();
+		
+		/* $("#weekDaysId").hide();			
+		$("#startDateWeekly").removeAttr('required');
+		$("#startDateWeekly").parent().parent().removeClass("has-error has-danger");
+		$("#startDateWeekly").next().children().remove();
+		$(".weeklyRegular").hide();			
+		$(".weeklyRegular").removeAttr('required'); */
 		
 		if(dayOftheweek != null && dayOftheweek != '' && typeof dayOftheweek != 'undefined'){
 			activeTask.dayOfTheWeek=dayOftheweek;
@@ -1958,6 +2035,9 @@ function saveActiveTask(item, actType, callback){
 		if(repeat_active_task != null && repeat_active_task != '' && typeof repeat_active_task != 'undefined'){
 			activeTask.repeatActiveTask=repeat_active_task;
 		}
+		if(repeat_active_task_anchor != null && repeat_active_task_anchor != '' && typeof repeat_active_task_anchor != 'undefined'){
+			activeTask.repeatActiveTask=repeat_active_task_anchor;
+		}
 		if(id != null && id != '' && typeof id != 'undefined'){
 			activeTaskFrequencey.activeTaskId = id;
 		}
@@ -1966,6 +2046,9 @@ function saveActiveTask(item, actType, callback){
 		}
 		if(frequence_time != null && frequence_time != '' && typeof frequence_time != 'undefined'){
 			activeTaskFrequencey.frequencyTime=frequence_time;
+		}
+		if(frequence_time_anchor != null && frequence_time_anchor != '' && typeof frequence_time_anchor != 'undefined'){
+			activeTaskFrequencey.frequencyTime=frequence_time_anchor;
 		}
 		if(weeklyXSign != null && weeklyXSign != '' && typeof weeklyXSign != 'undefined'){
 			var xval = true;
@@ -1992,8 +2075,10 @@ function saveActiveTask(item, actType, callback){
 		var frequence_id = $("#monthFreId").val();
 		var frequencydate = $("#startDateMonthly").val();
 		var frequencetime = $("#selectMonthlyTime").val();
+		var frequencetime_anchor = $("#selectMonthlyTimeAnchor").val();
 		study_lifetime_start = $("#pickStartDate").val();
 		repeat_active_task = $("#months").val();
+		repeat_active_task_anchor = $("#monthsAnchor").val();
 		study_lifetime_end = $("#monthEndDate").text();
 		var monthlyXSign = $('#monthlyXSign').val();
 		var monthlyXSignVal = $('#monthlyxdaysId').val();
@@ -2007,6 +2092,9 @@ function saveActiveTask(item, actType, callback){
 		if(repeat_active_task != null && repeat_active_task != '' && typeof repeat_active_task != 'undefined'){
 			activeTask.repeatActiveTask=repeat_active_task;
 		}
+		if(repeat_active_task_anchor != null && repeat_active_task_anchor != '' && typeof repeat_active_task_anchor != 'undefined'){
+			activeTask.repeatActiveTask=repeat_active_task_anchor;
+		}
 		if(id != null && id != '' && typeof id != 'undefined'){
 			activeTaskFrequencey.activeTaskId = id;
 		}
@@ -2019,6 +2107,11 @@ function saveActiveTask(item, actType, callback){
 		if(frequencetime != null && frequencetime != '' && typeof frequencetime != 'undefined'){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
+		
+		if(frequencetime_anchor != null && frequencetime_anchor != '' && typeof frequencetime_anchor != 'undefined'){
+			activeTaskFrequencey.frequencyTime=frequencetime_anchor;
+		}
+		
 		if(monthlyXSign != null && monthlyXSign != '' && typeof monthlyXSign != 'undefined'){
 			var xval = true;
 			if(monthlyXSign == '0')

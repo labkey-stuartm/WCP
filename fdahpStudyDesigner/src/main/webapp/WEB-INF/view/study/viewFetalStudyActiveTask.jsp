@@ -516,6 +516,35 @@
 			  return statFlag;
           }
          $(document).on('click', '#doneId', function(e){
+        	 
+        	 var res = localStorage.getItem('IsActiveAnchorDateSelected');
+        	 if(res){        		
+        		$("#startDateWeekly").removeAttr("required");
+        		$("#startDateWeekly").parent().parent().removeClass("has-error has-danger");
+        		$("#startDateWeekly").next().children().remove();
+        		
+        		$("#weeks").removeAttr("required");
+        		$("#weeks").parent().parent().removeClass("has-error has-danger");
+        		$("#weeks").next().children().remove();
+        		
+        		$("#monthlyDateId").hide();
+    			$("#monthlyDateId").removeAttr('required');
+    			
+    			$("#activeMonthlyRegular").hide();
+    			$("#months").removeAttr('required');
+        		
+        	 }else{
+        		$("#startDateWeekly").attr("required");
+        		$("#weeks").attr("required");
+        		
+        		$("#monthlyDateId").show();
+    			$("#monthlyDateId").attr('required');
+    			
+    			$("#activeMonthlyRegular").show();
+    			$("#months").attr('required');
+        	 }
+        	 
+        	 
         	 console.log("done method");
         	 $("body").addClass('loading');
         	 $("#doneId").attr("disabled",true);

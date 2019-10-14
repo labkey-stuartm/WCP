@@ -55,6 +55,11 @@
 	*border-collapse: expression('separate', cellSpacing = '10px');
 }
 
+.dis_inlinetop{
+	display: inline-block;
+	vertical-align: top;
+}
+
 /* .delete{
 	background-position: -113px -63px ;
 	width: 17px;
@@ -656,9 +661,9 @@ function isNumber(evt, thisAttr) {
 										onclick='timep(this.id);' /> <span
 										class='help-block with-errors red-txt'></span>
 									</span> <span class="addBtnDis addbtn mr-sm align-span-center"
-										onclick='addTime();'>+</span> <span
+										onclick='addTime();'>+</span> <!-- <span
 										class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
-										onclick='removeTime(this);'></span>
+										onclick='removeTime(this);'></span> -->
 								</div>
 							</c:if>
 							<c:if
@@ -796,7 +801,8 @@ function isNumber(evt, thisAttr) {
 							<span class="gray-xs-f">Day/Time (of the week) <span
 								class="requiredStar">*</span><br /> <span
 								class=" form-group m-none dis-inline vertical-align-middle pr-md">
-									<span class=""> <select id="startDateWeekly"
+									<span class=""> 
+									<select id="startDateWeekly"
 										class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
 										name="dayOfTheWeek" required>
 											<option value=''>Select</option>
@@ -844,9 +850,9 @@ function isNumber(evt, thisAttr) {
 								</span>
 							</div>
 							<!-- Anchordate start-->
-							<div class="weeklyanchorDiv col-md-8 pl-none"
+							<div class="weeklyanchorDiv col-md-12 pl-none"
 								style="display: none;">
-								<div class=" resetDate col-md-7 p-none">
+								<div class=" resetDate dis_inlinetop p-none">
 									<div>
 										<span
 											class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -877,23 +883,39 @@ function isNumber(evt, thisAttr) {
 										</span>
 									</div>
 								</div>
-								<%-- <div class="col-md-5 p-none">
+								<div class="dis_inlinetop p-none">
 									<span class="gray-xs-f">Time <span class="requiredStar">*</span><br /></span>
 									<span
 										class="form-group m-none dis-inline vertical-align-middle pr-md">
-										<input id="selectWeeklyTime" type="text"
+										<input id="selectWeeklyTimeAnchor" type="text"
 										class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
 										required onclick="timep(this.id)" placeholder="Time"
 										name="questionnairesFrequenciesBo.frequencyTime"
 										value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" />
 										<span class='help-block with-errors red-txt'></span>
 									</span>
-								</div> --%>
+								</div>
+								
+								<div class="dis_inlinetop">
+									<span
+									class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">No. of times to repeat the
+										questionnaire <span class="requiredStar">*</span>
+								</span><br /> <input id="weeksAnchor" type="text"
+									class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+									name="repeatQuestionnaire" placeholder="No of Times"
+									value="${questionnaireBo.repeatQuestionnaire}" required
+									onkeypress="return isNumber(event, this)"
+									pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+									data-pattern-error="Please enter valid number." maxlength="3" />
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+								</div>
 
 							</div>
 
 							<!-- Anchordate End -->
-							<div class="col-md-5 p-none">
+							<div class="col-md-5 p-none weeklyRegular">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">No. of times to repeat the
@@ -969,12 +991,10 @@ function isNumber(evt, thisAttr) {
 								<span class='help-block with-errors red-txt'></span>
 							</span>
 							<div
-								class="gray-xs-f mt-xs italic-txt text-weight-light monthlyStartCls">If
+								class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light monthlyStartCls">If
 								the selected date is not available in a month, the last day of
 								the month will be used instead</div>
-						</div>
-						<div class="mt-lg">
-							<div class="monthlyStartCls col-md-3 pl-none">
+							<div class="monthlyStartCls dis_inlinetop p-none">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">Start date (pick a date) <span
@@ -987,12 +1007,43 @@ function isNumber(evt, thisAttr) {
 									readonly="readonly" /> <span
 									class='help-block with-errors red-txt'></span>
 								</span>
+							</div> 		
+							<div class="dis_inlinetop p-none monthlyRegular">
+								<span
+									class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">No. of times to repeat the
+										questionnaire <span class="requiredStar">*</span>
+								</span><br /> <input id="months" type="text"
+									class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+									name="repeatQuestionnaire" placeholder="No of Times" required
+									value="${questionnaireBo.repeatQuestionnaire}"
+									onkeypress="return isNumber(event, this)"
+									pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+									data-pattern-error="Please enter valid number." maxlength="3" />
+									<span class='help-block with-errors red-txt'></span>
+								</span>
 							</div>
-							<!-- Anchordate start-->
-							<div class="monthlyanchorDiv col-md-8 pl-none"
+						</div>
+						<!-- Anchordate start-->
+						<!-- <div class="mt-lg"> -->
+							<%-- <div class="monthlyStartCls dis_inlinetop p-none">
+								<span
+									class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">Start date (pick a date) <span
+										class="requiredStar">*</span></span><br /> <input id="pickStartDate"
+									type="text"
+									class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+									placeholder="Choose Start Date" required
+									name="studyLifetimeStart"
+									value="${questionnaireBo.studyLifetimeStart}"
+									readonly="readonly" /> <span
+									class='help-block with-errors red-txt'></span>
+								</span>
+							</div> --%>
+							<div class="monthlyanchorDiv"
 								style="display: none;">
-								<div class="col-md-7 p-none">
-									<div class=" resetDate">
+								<div class="dis_inlinetop p-none">
+									<div class=" resetDate dis_inlinetop p-none">
 										<div>
 											<span
 												class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -1018,32 +1069,32 @@ function isNumber(evt, thisAttr) {
 													data-pattern-error="Please enter valid number." /> <span
 													class="help-block with-errors red-txt"></span>
 											</span> <span class="mb-sm pr-md"> <span
-													class="light-txt opacity06"> days</span>
+													class="light-txt opacity06">days</span>
 											</span>
 											</span>
 										</div>
 									</div>
 								</div>
-								<%-- <div class="col-md-5 p-none">
+								
+								
+							  <div class="dis_inlinetop p-none">
 									<span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br />
 									<span
 										class="form-group m-none dis-inline vertical-align-middle pr-md">
-										<input id="selectMonthlyTime" type="text"
+										<input id="selectMonthlyTimeAnchor" type="text"
 										class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
 										required onclick="timep(this.id)" placeholder="Time"
 										name="questionnairesFrequenciesBo.frequencyTime"
 										value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" />
 										<span class='help-block with-errors red-txt'></span>
 									</span>
-								</div> --%>
-							</div>
-							<!-- Anchordate End -->
-							<div class="col-md-5 p-none">
+								</div>
+									<div class="dis_inlinetop">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">No. of times to repeat the
 										questionnaire <span class="requiredStar">*</span>
-								</span><br /> <input id="months" type="text"
+								</span><br /> <input id="monthsAnchor" type="text"
 									class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
 									name="repeatQuestionnaire" placeholder="No of Times" required
 									value="${questionnaireBo.repeatQuestionnaire}"
@@ -1052,8 +1103,11 @@ function isNumber(evt, thisAttr) {
 									data-pattern-error="Please enter valid number." maxlength="3" />
 									<span class='help-block with-errors red-txt'></span>
 								</span>
+							</div> 
 							</div>
-						</div>
+						<!-- </div> -->
+						<!-- Anchordate End -->
+						
 						<div class="mt-md col-md-12 p-none">
 							<div class="gray-xs-f mb-xs">End Date</div>
 							<div class="black-xs-f" id="monthEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
@@ -1121,9 +1175,9 @@ function isNumber(evt, thisAttr) {
 										placeholder="Time" onclick='timep(this.id);' disabled required />
 										<span class='help-block with-errors red-txt'></span>
 									</span> <span class="addbtn addBtnDis align-span-center mr-md"
-										onclick="addDate();">+</span> <span id="delete"
+										onclick="addDate();">+</span> <!-- <span id="delete"
 										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-										onclick="removeDate(this);"></span>
+										onclick="removeDate(this);"></span> -->
 								</div>
 							</c:if>
 							<c:if
@@ -1248,9 +1302,9 @@ function isNumber(evt, thisAttr) {
 										class='help-block with-errors red-txt'></span>
 									</span> <span id="addbtn0"
 										class="addbtn addBtnDis dis-inline vertical-align-middle mr-sm"
-										onclick="addDateAnchor();">+</span> <span id="deleteAncchor0"
+										onclick="addDateAnchor();">+</span> <!-- <span id="deleteAncchor0"
 										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-										onclick="removeDateAnchor(this);"></span>
+										onclick="removeDateAnchor(this);"></span> -->
 								</div>
 							</c:if>
 							<c:if
@@ -1467,30 +1521,33 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 	scheduletype = $('input[name="scheduleType"]:checked').val();
 }
 $(document).ready(function() {
-	/* var shortTitleDuplicateVal= ${questionnaireBo.shortTitleDuplicate};
-	if(shortTitleDuplicateVal<=0){
-		alert("000000");
-		$("#customFormId").show();
-	} */
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
-	//var scheduletype = $(".typeofschedule").attr('scheduletype');
-	//alert(scheduletype);
-	/* if(scheduletype == 'AnchorDate'){
-		 $('.weeklyCls').hide();
-		 $('.weekDaysId').find('input:text,select').removeAttr('required');
-		 $('.weeklyStartCls').hide();
-		 $('.weeklyStartCls').find('input:text,select').removeAttr('required');
-	}else{
-		$("#weekDaysId").show();
-		$("#weekDaysId").find('input:text').attr('required',true);
-		$(".weeklyanchorDiv").hide();
-		$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
-	} */
+	
+	$(".scheduleQusClass").click(function(){
+		if($("#schedule2").prop("checked")){
+			$("#weekDaysId").hide();
+			$(".weeklyRegular").hide();
+			$("#monthlyDateId").hide();
+			$(".monthlyRegular").hide();
+		}
+	})
+	
+	$(".scheduleQusClass").click(function(){
+	if($("#schedule1").prop("checked")){
+			$("#weekDaysId").show();
+			$(".weeklyRegular").show();
+			$("#monthlyDateId").show();
+			$(".monthlyRegular").show();
+		}
+	})
 	
 	$(".typeofschedule").change(function() {
+		
+		
+		
 		var scheduletype = $(this).attr('scheduletype');
         $('#isLaunchStudy').prop('checked', false);
         $('#isStudyLifeTime').prop('checked', false);
@@ -1502,6 +1559,20 @@ $(document).ready(function() {
     	$("#onetimeydaysId").prop('disabled',false);
         var schedule_opts = $("input[name='frequency']:checked"). val();
 		if(scheduletype == 'AnchorDate'){
+			
+			$("#weekDaysId").hide();
+			$("#weekDaysId").find('input:text').removeAttr('required',true);
+			$(".weeklyRegular").hide();
+			$(".weeklyRegular").removeAttr('required');
+			
+			$("#monthlyDateId").hide();
+			$("#monthlyDateId").find('input:text').removeAttr('required',true);
+			$(".monthlyRegular").hide();
+			$(".monthlyRegular").removeAttr('required');
+			
+			localStorage.setItem("IsAnchorDateSelected", "true");
+			localStorage.setItem("IsRegularSelected", "false");
+			
 			if(schedule_opts == 'One time'){
 				   $(".onetimeanchorClass").show();
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
@@ -1515,8 +1586,8 @@ $(document).ready(function() {
 			 if(schedule_opts == 'Weekly'){
 				   $("#weekEndDate").text('NA');
 				   $("#weekLifeTimeEnd").text('-');
-				   //$("#weekDaysId").hide();
-				   //$("#weekDaysId").find('input:text').removeAttr('required',true);
+				   $("#weekDaysId").hide();
+				   $("#weekDaysId").find('input:text').removeAttr('required',true);
 				   $(".weeklyanchorDiv").show();
 				   $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1548,6 +1619,10 @@ $(document).ready(function() {
 			 $(".manuallyContainer").hide();
 			 $(".manuallyContainer").find('input:text').removeAttr('required');
 		}else{
+			
+			localStorage.setItem("IsAnchorDateSelected", "false");
+			localStorage.setItem("IsRegularSelected", "true");
+			
 			$(".onetimeanchorClass").hide();
 			$('.onetimeanchorClass').find('input:text').removeAttr('required');
 			$('.regularClass').show();
@@ -1560,15 +1635,23 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			/* $("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true); */
+			$("#weekDaysId").show();			
+			$("#weekDaysId").find('input:text').attr('required',true);
+			
+			$(".weeklyRegular").show();
+			$(".weeklyRegular").attr('required',true);
+			
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			/* $("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true); */
+			$("#monthlyDateId").show();
+			$("#monthlyDateId").find('input:text').attr('required',true); 
+			
+			$(".monthlyRegular").show();
+			$(".monthlyRegular").attr('required',true);
+			
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -1616,11 +1699,13 @@ $(document).ready(function() {
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
 	if($('.time-opts').length > 1){
+		alert("dailyContainer > 1");
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.dailyContainer').find(".remBtnDis").addClass("hide");
 	}
 	if($('.manually-option').length > 1){
+		alert("manuallyContainer > 1");
 		$('.manuallyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
@@ -1835,8 +1920,8 @@ $(document).ready(function() {
 			 if(val == 'Weekly'){
 				 $("#weekEndDate").text('NA');
 				 $("#weekLifeTimeEnd").text('-');
-				 /* $("#weekDaysId").hide();
-				 $("#weekDaysId").find('input:text').removeAttr('required',true); */
+				 //$("#weekDaysId").hide();
+				 //$("#weekDaysId").find('input:text').removeAttr('required',true);
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
@@ -1878,8 +1963,8 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			/* $("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true); */
+			//$("#weekDaysId").show();
+			//$("#weekDaysId").find('input:text').attr('required',true);
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -2176,6 +2261,36 @@ $(document).ready(function() {
     	$('#startWeeklyDate').val('');
     });
 	$("#doneId").click(function(){
+		
+		var res = localStorage.getItem("IsAnchorDateSelected");
+		
+		if(res){
+			$("#weekDaysId").hide();			
+			$("#startDateWeekly").removeAttr('required');
+			$("#startDateWeekly").parent().parent().removeClass("has-error has-danger");
+			$("#startDateWeekly").next().children().remove();
+			$(".weeklyRegular").hide();			
+			$(".weeklyRegular").removeAttr('required');
+			
+			$("#monthlyDateId").hide();
+			$("#startDateMonthly").removeAttr('required');
+			$("#startDateMonthly").parent().parent().removeClass("has-error has-danger");
+			$("#startDateMonthly").next().children().remove();
+			$(".monthlyRegular").hide();			
+			$(".monthlyRegular").removeAttr('required');
+		}else{
+			$("#weekDaysId").show();
+			$("#startDateWeekly").attr('required');		
+			$(".weeklyRegular").show();			
+			$(".weeklyRegular").attr('required',true);
+			
+			$("#monthlyDateId").show();
+			$("#startDateMonthly").attr('required');		
+			$(".monthlyRegular").show();			
+			$(".monthlyRegular").attr('required',true);
+			
+		}
+		
 		var table = $('#content').DataTable();		
 		validateShortTitle('',function(val){
 			if(val){
@@ -2907,13 +3022,14 @@ function saveQuestionnaire(item, callback){
 			questionnaire.studyLifetimeEnd=null;
 		}
         		
-	}else if(frequency_text == 'Weekly'){
-		
+	}else if(frequency_text == 'Weekly'){		
 		var frequence_id = $("#weeklyFreId").val();
 		study_lifetime_start = $("#startWeeklyDate").val();
 		var frequence_time = $("#selectWeeklyTime").val();
+		var frequence_time_anchor = $("#selectWeeklyTimeAnchor").val();
 		var dayOftheweek = $("#startDateWeekly").val();
 		repeat_questionnaire = $("#weeks").val();
+		repeat_questionnaire_anchor = $("#weeksAnchor").val();
 		study_lifetime_end = $("#weekEndDate").text();
 		var weeklyXSign = $('#weeklyXSign').val();
 		var weeklyXSignVal = $('#weeklyxdaysId').val(); 
@@ -2930,6 +3046,11 @@ function saveQuestionnaire(item, callback){
 		if(repeat_questionnaire != null && repeat_questionnaire != '' && typeof repeat_questionnaire != 'undefined'){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
+		
+		if(repeat_questionnaire_anchor != null && repeat_questionnaire_anchor != '' && typeof repeat_questionnaire_anchor != 'undefined'){
+			questionnaire.repeatQuestionnaire=repeat_questionnaire_anchor;
+		}
+		
 		if(id != null && id != '' && typeof id != 'undefined'){
 			questionnaireFrequencey.questionnairesId = id;
 		}
@@ -2939,6 +3060,11 @@ function saveQuestionnaire(item, callback){
 		if(frequence_time != null && frequence_time != '' && typeof frequence_time != 'undefined'){
 			questionnaireFrequencey.frequencyTime=frequence_time;
 		}
+		
+		if(frequence_time_anchor != null && frequence_time_anchor != '' && typeof frequence_time_anchor != 'undefined'){
+			questionnaireFrequencey.frequencyTime=frequence_time_anchor;
+		}
+		
 		if(weeklyXSign != null && weeklyXSign != '' && typeof weeklyXSign != 'undefined'){
 			var xval = true;
 			if(weeklyXSign == '0')
@@ -2968,8 +3094,10 @@ function saveQuestionnaire(item, callback){
 		var frequence_id = $("#monthFreId").val();
 		var frequencydate = $("#startDateMonthly").val();
 		var frequencetime = $("#selectMonthlyTime").val();
+		var frequencetime_anchor = $("#selectMonthlyTimeAnchor").val();
 		study_lifetime_start = $("#pickStartDate").val();
 		repeat_questionnaire = $("#months").val();
+		repeat_questionnaire_anchor = $("#monthsAnchor").val();
 		study_lifetime_end = $("#monthEndDate").text();
 		var monthlyXSign = $('#monthlyXSign').val();
 		var monthlyXSignVal = $('#monthlyxdaysId').val(); 
@@ -2983,6 +3111,11 @@ function saveQuestionnaire(item, callback){
 		if(repeat_questionnaire != null && repeat_questionnaire != '' && typeof repeat_questionnaire != 'undefined'){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
+		
+		if(repeat_questionnaire_anchor != null && repeat_questionnaire_anchor != '' && typeof repeat_questionnaire_anchor != 'undefined'){
+			questionnaire.repeatQuestionnaire=repeat_questionnaire_anchor;
+		}
+		
 		if(id != null && id != '' && typeof id != 'undefined'){
 			questionnaireFrequencey.questionnairesId = id;
 		}
@@ -2994,6 +3127,9 @@ function saveQuestionnaire(item, callback){
 		}
 		if(frequencetime != null && frequencetime != '' && typeof frequencetime != 'undefined'){
 			questionnaireFrequencey.frequencyTime=frequencetime;
+		}
+		if(frequencetime_anchor != null && frequencetime_anchor != '' && typeof frequencetime_anchor != 'undefined'){
+			questionnaireFrequencey.frequencyTime=frequencetime_anchor;
 		}
 		if(monthlyXSign != null && monthlyXSign != '' && typeof monthlyXSign != 'undefined'){
 			var xval = true;
@@ -3772,7 +3908,6 @@ function setAnchorDropdown(frequency_text,anchorType){
 }
 
 $(document).ready(function(){
-	
 	
 	jQuery(document).on("keyup",".xdays",function(){
 	    

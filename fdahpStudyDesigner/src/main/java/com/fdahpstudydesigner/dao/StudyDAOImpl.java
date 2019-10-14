@@ -3882,11 +3882,14 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			System.out.println("StudyDAOImpl.saveOrUpdateStudy() ==>> "+studyBo.getResearchSponsor());
 			userId = studyBo.getUserId();
+			String appId="";
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 
 			if (studyBo.getId() == null) {
 				studyBo.setCreatedBy(studyBo.getUserId());
+				appId=studyBo.getAppId().toUpperCase();
+				studyBo.setAppId(appId);
 				studyBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				studyId = (Integer) session.save(studyBo);
 

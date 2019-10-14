@@ -282,7 +282,7 @@
 	<definition name="viewSpatialStudyActiveTask"
 		template="/WEB-INF/view/study/viewSpatialStudyActiveTask.jsp" />
 
-	<definition name="activeTaskScviewStudyActiveTaskheduled"
+	<definition name="activeTaskScheduled"
 		template="/WEB-INF/view/study/activeTaskScheduled.jsp" />
 
 	<definition name="questionnairePage"
