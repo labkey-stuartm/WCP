@@ -1699,13 +1699,11 @@ $(document).ready(function() {
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
 	if($('.time-opts').length > 1){
-		alert("dailyContainer > 1");
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.dailyContainer').find(".remBtnDis").addClass("hide");
 	}
 	if($('.manually-option').length > 1){
-		alert("manuallyContainer > 1");
 		$('.manuallyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
@@ -2264,7 +2262,7 @@ $(document).ready(function() {
 		
 		var res = localStorage.getItem("IsAnchorDateSelected");
 		
-		if(res){
+		if(res === 'true'){
 			$("#weekDaysId").hide();			
 			$("#startDateWeekly").removeAttr('required');
 			$("#startDateWeekly").parent().parent().removeClass("has-error has-danger");

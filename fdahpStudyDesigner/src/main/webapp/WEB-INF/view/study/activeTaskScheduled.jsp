@@ -668,7 +668,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="xdays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave xdays daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="X"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 							value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
@@ -691,7 +691,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="ydays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave ydays daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="Y"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodToDays"
 							value="${activeTaskCustomScheduleBo.timePeriodToDays}"
@@ -703,7 +703,7 @@
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md"
 							style="margin-bottom: -13px"> <input
 							id="manualTime${customVar.index}" type="text"
-							class="form-control clock ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control remove_required clock ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"
 							value="${activeTaskCustomScheduleBo.frequencyTime}"
 							placeholder="Time" required /> <span
@@ -746,6 +746,7 @@ $('span.remBtnDis').remove();
 </c:if> */
 
 $(document).ready(function() {
+	
 		$(".remBtnDis").addClass("hide");
 	
 	$('.selectpicker').selectpicker('refresh');
@@ -2360,7 +2361,7 @@ function doneActiveTask(item, actType, callback) {
     	var onetimeForm = true;
     	var valForm = false;
     	var anchorDateForm = true; 
-    	$('.typeofschedule').prop('disabled', false);
+    	//$('.typeofschedule').prop('disabled', false);
     	if(actType !=='save'){
     		if(scheduletype == 'AnchorDate'){
        		 if(!isFromValid("#anchorFormId"))

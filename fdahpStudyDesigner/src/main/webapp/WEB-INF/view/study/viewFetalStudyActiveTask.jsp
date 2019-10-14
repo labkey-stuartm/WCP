@@ -518,7 +518,7 @@
          $(document).on('click', '#doneId', function(e){
         	 
         	 var res = localStorage.getItem('IsActiveAnchorDateSelected');
-        	 if(res){        		
+        	 if(res === 'true'){        		
         		$("#startDateWeekly").removeAttr("required");
         		$("#startDateWeekly").parent().parent().removeClass("has-error has-danger");
         		$("#startDateWeekly").next().children().remove();
@@ -534,6 +534,7 @@
     			$("#months").removeAttr('required');
         		
         	 }else{
+        		$('.remove_required').prop('required',false);
         		$("#startDateWeekly").attr("required");
         		$("#weeks").attr("required");
         		
@@ -602,6 +603,7 @@
 	  	  														$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 	  	  							                        	$("#buttonText").val('completed');
 	  	  							                            //$('#shortTitleId').val(shortTitle);
+	  	  							                            $('.typeofschedule').prop('disabled', false);
 	  	  							                        	document.activeContentFormId.submit();
 	  	  													}
 	  	  											      })
