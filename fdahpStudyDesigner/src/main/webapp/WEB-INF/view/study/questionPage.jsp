@@ -2985,7 +2985,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	questionsBo.questionReponseTypeBo=questionReponseTypeBo;
 	if(fromId != null && fromId!= '' && typeof fromId !='undefined' && 
-			questionText != null && questionText!= '' && typeof questionText !='undefined' &&
+			questionText != null && questionText!= '' && typeof questionText !='undefined' ||
 			short_title != null && short_title!= '' && typeof short_title !='undefined'){
 		formData.append("questionInfo", JSON.stringify(questionsBo)); 
 		

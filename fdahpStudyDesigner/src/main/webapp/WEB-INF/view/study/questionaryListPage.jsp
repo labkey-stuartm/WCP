@@ -252,7 +252,7 @@ $(document).ready(function(){
 		  $("#markAsCompleteBtnId").prop("disabled",false);
 		  $("#markAsTooltipId").removeAttr('data-original-title');
 	  }
-	  
+	  $('[data-toggle="tooltip"]').tooltip();
   }
   function markAsCompleted(){
 		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 

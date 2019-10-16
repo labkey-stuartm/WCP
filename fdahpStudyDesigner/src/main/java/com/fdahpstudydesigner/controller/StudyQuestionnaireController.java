@@ -2053,7 +2053,7 @@ public class StudyQuestionnaireController {
 
 	/**
 	 * Question of a form step contains the two attributes.Question-level
-	 * attributes – these are the same set of attributes as that for question
+	 * attributes-these are the same set of attributes as that for question
 	 * step with the exception of the skippable property and branching logic
 	 * based on participant choice of response or the conditional logic based
 	 * branching Response-level attributes (same as that for Question Step).
@@ -2548,7 +2548,7 @@ public class StudyQuestionnaireController {
 
 	/**
 	 * Question of a form step contains the two attributes .Question-level
-	 * attributes – these are the same set of attributes as that for question
+	 * attributes-these are the same set of attributes as that for question
 	 * step with the exception of the skippable property and branching logic
 	 * based on participant choice of response or the conditional logic based
 	 * branching Response-level attributes (same as that for Question Step).Here
