@@ -1325,7 +1325,7 @@ function isNumberKey(evt)
 				      <div class="col-md-3 pl-none">
 				         <div class="gray-xs-f mb-xs">Value (1 to 100 characters)<span class="requiredStar">*</span> </div>
 				         <div class="form-group mb-none">
-				            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+				            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="100">
 				            <div class="help-block with-errors red-txt"></div>
 				         </div>
 				      </div>
