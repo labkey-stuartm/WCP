@@ -1264,9 +1264,9 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 					      <div class="col-md-3 pl-none">
-					         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+					         <div class="gray-xs-f mb-xs">Value (1 to 100 characters)<span class="requiredStar">*</span> </div>
 					         <div class="form-group mb-none">
-					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="100">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
@@ -1323,7 +1323,7 @@ function isNumberKey(evt)
 				         </div>
 				      </div>
 				      <div class="col-md-3 pl-none">
-				         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+				         <div class="gray-xs-f mb-xs">Value (1 to 100 characters)<span class="requiredStar">*</span> </div>
 				         <div class="form-group mb-none">
 				            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 				            <div class="help-block with-errors red-txt"></div>
@@ -1378,9 +1378,9 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 					      <div class="col-md-3 pl-none">
-					         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+					         <div class="gray-xs-f mb-xs">Value (1 to 100 characters)<span class="requiredStar">*</span> </div>
 					         <div class="form-group mb-none">
-					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					            <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="100">
 					            <div class="help-block with-errors red-txt"></div>
 					         </div>
 					      </div>
@@ -1443,9 +1443,9 @@ function isNumberKey(evt)
 				         </div>
 				      </div>
 				      <div class="col-md-3 pl-none">
-				         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
+				         <div class="gray-xs-f mb-xs">Value (1 to 100 characters)<span class="requiredStar">*</span> </div>
 				         <div class="form-group mb-none">
-				            <input type="text" class="form-control TextChoiceRequired" name="questionReponseTypeBo.otherValue" id="" value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}" maxlength="50">
+				            <input type="text" class="form-control TextChoiceRequired" name="questionReponseTypeBo.otherValue" id="" value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}" maxlength="100">
 				            <div class="help-block with-errors red-txt"></div>
 				         </div>
 				      </div>
@@ -4104,9 +4104,9 @@ function addTextChoice(){
 	      "   </div>"+
 	      "</div>"+
 	      "<div class='col-md-3 pl-none'>"+
-	      "   <div class='gray-xs-f mb-xs'>Value (1 to 50 characters)<span class='requiredStar'>*</span> </div>"+
+	      "   <div class='gray-xs-f mb-xs'>Value (1 to 100 characters)<span class='requiredStar'>*</span> </div>"+
 	      "   <div class='form-group mb-none'>"+
-	          "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
+	          "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='100' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
 	      "      <div class='help-block with-errors red-txt'></div>"+
 	      "   </div>"+
 	      "</div>"+
