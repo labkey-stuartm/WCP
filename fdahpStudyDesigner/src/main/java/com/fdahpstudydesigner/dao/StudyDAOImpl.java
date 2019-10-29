@@ -5120,12 +5120,17 @@ public class StudyDAOImpl implements StudyDAO {
 							+ " and shortTitle is NOT NULL");
 					query = session.createQuery(subString.toString());
 					objectList = query.list();
-					if (objectList != null && !objectList.isEmpty()) {
+					/*if (objectList != null && !objectList.isEmpty()) {
 						String subQuery = "update questionnaires SET is_live=2,modified_date='"
 								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "', active=0 where short_title IN("
 								+ StringUtils.join(objectList, ",") + ") and is_live=1 and custom_study_id='"
 								+ studyBo.getCustomStudyId() + "'";
-						query = session.createSQLQuery(subQuery);
+						query = session.createSQLQuery(subQuery);*/
+						if (objectList != null && !objectList.isEmpty()) {
+							String subQuery = "update questionnaires SET is_live=2,modified_date='"
+									+ FdahpStudyDesignerUtil.getCurrentDateTime() + "', active=0 where short_title IN(:objectList) and is_live=1 and custom_study_id='"
+									+ studyBo.getCustomStudyId() + "'";
+							query = session.createSQLQuery(subQuery).setParameterList("objectList", objectList);
 						query.executeUpdate();
 					}
 
