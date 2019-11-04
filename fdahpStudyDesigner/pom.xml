@@ -25,6 +25,7 @@
 				<configuration>
 					<url>http://localhost:8080/manager/html</url>
 					<server>TomcatServer</server>
+					<port>8081</port>
 					<path>/fdahpStudyDesigner</path>
 					<username>admin</username>
 					<password>password</password>
