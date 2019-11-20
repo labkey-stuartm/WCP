@@ -12,7 +12,6 @@ import java.util.Set;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -1864,7 +1863,8 @@ public class StudyDAOImpl implements StudyDAO {
 							 * query = session.createQuery("from ReferenceTablesBo where id in(" +
 							 * bean.getCategory() + "," + bean.getResearchSponsor() + ")");
 							 */
-							query = session.createQuery("from ReferenceTablesBo where id in(" + bean.getCategory() + ")");
+							query = session
+									.createQuery("from ReferenceTablesBo where id in(" + bean.getCategory() + ")");
 							referenceTablesBos = query.list();
 							if (referenceTablesBos != null && !referenceTablesBos.isEmpty()) {
 								bean.setCategory(referenceTablesBos.get(0).getValue());
@@ -3880,15 +3880,15 @@ public class StudyDAOImpl implements StudyDAO {
 		String activity = "";
 		List<Integer> userSuperAdminList = null;
 		try {
-			System.out.println("StudyDAOImpl.saveOrUpdateStudy() ==>> "+studyBo.getResearchSponsor());
+			System.out.println("StudyDAOImpl.saveOrUpdateStudy() ==>> " + studyBo.getResearchSponsor());
 			userId = studyBo.getUserId();
-			String appId="";
+			String appId = "";
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 
 			if (studyBo.getId() == null) {
 				studyBo.setCreatedBy(studyBo.getUserId());
-				appId=studyBo.getAppId().toUpperCase();
+				appId = studyBo.getAppId().toUpperCase();
 				studyBo.setAppId(appId);
 				studyBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				studyId = (Integer) session.save(studyBo);
@@ -5119,20 +5119,27 @@ public class StudyDAOImpl implements StudyDAO {
 					subString.append("') from QuestionnaireBo where active=0 and studyId=" + studyBo.getId()
 							+ " and shortTitle is NOT NULL");
 					query = session.createQuery(subString.toString());
+
 					objectList = query.list();
-					/*if (objectList != null && !objectList.isEmpty()) {
+
+					if (objectList != null && !objectList.isEmpty()) {
 						String subQuery = "update questionnaires SET is_live=2,modified_date='"
 								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "', active=0 where short_title IN("
 								+ StringUtils.join(objectList, ",") + ") and is_live=1 and custom_study_id='"
 								+ studyBo.getCustomStudyId() + "'";
-						query = session.createSQLQuery(subQuery);*/
-						if (objectList != null && !objectList.isEmpty()) {
-							String subQuery = "update questionnaires SET is_live=2,modified_date='"
-									+ FdahpStudyDesignerUtil.getCurrentDateTime() + "', active=0 where short_title IN(:objectList) and is_live=1 and custom_study_id='"
-									+ studyBo.getCustomStudyId() + "'";
-							query = session.createSQLQuery(subQuery).setParameterList("objectList", objectList);
+						query = session.createSQLQuery(subQuery);
 						query.executeUpdate();
 					}
+
+					/*
+					 * if (objectList != null && !objectList.isEmpty()) { String subQuery =
+					 * "update questionnaires SET is_live=2,modified_date='" +
+					 * FdahpStudyDesignerUtil.getCurrentDateTime() +
+					 * "', active=0 where short_title IN(:objectList) and is_live=1 and custom_study_id='"
+					 * + studyBo.getCustomStudyId() + "'"; query =
+					 * session.createSQLQuery(subQuery).setParameterList("objectList", objectList);
+					 * query.executeUpdate(); }
+					 */
 
 					// In ActiveTask change or not Start
 					// is there any change doing clone of active task
@@ -5359,6 +5366,7 @@ public class StudyDAOImpl implements StudyDAO {
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - studyDraftCreation() - ERROR ", e);
+			e.printStackTrace();
 		}
 		logger.info("StudyDAOImpl - studyDraftCreation() - Ends");
 
@@ -6497,12 +6505,12 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		StudyPermissionBO studyPermissionBO = null;
 		String searchQuery = "";
-		Query query=null;
+		Query query = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			searchQuery = "From StudyPermissionBO WHERE studyId=" + studyId + " and userId=" + userId;
 			query = session.createQuery(searchQuery);
-			studyPermissionBO=(StudyPermissionBO) query.uniqueResult();
+			studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyPermissionBO() - ERROR", e);
 		} finally {
