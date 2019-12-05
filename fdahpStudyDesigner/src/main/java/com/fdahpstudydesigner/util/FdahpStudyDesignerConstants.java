@@ -252,6 +252,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String QUESTIONNAIRE_CREATED = "Questionnaire created";
 	public static final String QUESTIONNAIRE_DELETED = "Questionnaire has been deleted";
 	public static final String QUESTIONNAIRE_LIST = "questionnaireList";
+	public static final String PARTICIPANTPROPERTIES_LIST = "participantPropertiesList";
 	public static final String QUESTIONNAIRELIST_MARKED_AS_COMPLETED = "Questionnaire list marked as completed and can be publish / launch the study";
 	public static final String QUESTIONNARIE_STUDY_ID = "questionnarieStudyId";
 	public static final String QUESTIONNARIES_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";

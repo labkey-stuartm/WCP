@@ -122,7 +122,7 @@ function isNumber(evt) {
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".menuNav li").removeClass('active');
-    $(".fifthComre").addClass('active'); 
+    $(".sixthComre").addClass('active'); 
 	$("#createStudyId").show();
 	<c:if test="${permission eq 'view'}">
 	    $('#comprehensionInfoForm input,textarea,select').prop('disabled', true);

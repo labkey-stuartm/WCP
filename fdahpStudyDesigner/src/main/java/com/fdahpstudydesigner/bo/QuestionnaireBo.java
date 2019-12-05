@@ -14,8 +14,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Type;
-
 /**
  * The persistent class for the questionnaires database table.
  * 
@@ -24,8 +22,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "questionnaires")
-@NamedQueries({
-		@NamedQuery(name = "QuestionnaireBo.findAll", query = "SELECT q FROM QuestionnaireBo q"),
+@NamedQueries({ @NamedQuery(name = "QuestionnaireBo.findAll", query = "SELECT q FROM QuestionnaireBo q"),
 		@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
 		@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle"),
 		@NamedQuery(name = "getQuestionariesByStudyIdDone", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
@@ -119,15 +116,18 @@ public class QuestionnaireBo implements Serializable {
 
 	@Column(name = "version")
 	private Float version = 0f;
-	
+
 	@Column(name = "schedule_type")
 	private String scheduleType = "";
-	
+
 	@Column(name = "anchor_date_id")
 	private Integer anchorDateId;
-	
+
 	@Transient
 	private boolean anchorQuestionnaireExist = false;
+
+	@Column(name = "add_new_runs")
+	private boolean addNewRuns = false;
 
 	public Boolean getActive() {
 		return active;
@@ -297,18 +297,15 @@ public class QuestionnaireBo implements Serializable {
 		this.previousFrequency = previousFrequency;
 	}
 
-	public void setQuestionnaireCustomScheduleBo(
-			List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo) {
+	public void setQuestionnaireCustomScheduleBo(List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo) {
 		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
 	}
 
-	public void setQuestionnairesFrequenciesBo(
-			QuestionnairesFrequenciesBo questionnairesFrequenciesBo) {
+	public void setQuestionnairesFrequenciesBo(QuestionnairesFrequenciesBo questionnairesFrequenciesBo) {
 		this.questionnairesFrequenciesBo = questionnairesFrequenciesBo;
 	}
 
-	public void setQuestionnairesFrequenciesList(
-			List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList) {
+	public void setQuestionnairesFrequenciesList(List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList) {
 		this.questionnairesFrequenciesList = questionnairesFrequenciesList;
 	}
 
@@ -378,5 +375,13 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setAnchorQuestionnaireExist(boolean anchorQuestionnaireExist) {
 		this.anchorQuestionnaireExist = anchorQuestionnaireExist;
+	}
+
+	public boolean isAddNewRuns() {
+		return addNewRuns;
+	}
+
+	public void setAddNewRuns(boolean addNewRuns) {
+		this.addNewRuns = addNewRuns;
 	}
 }

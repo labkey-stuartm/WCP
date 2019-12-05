@@ -42,6 +42,7 @@ import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
@@ -3880,7 +3881,6 @@ public class StudyDAOImpl implements StudyDAO {
 		String activity = "";
 		List<Integer> userSuperAdminList = null;
 		try {
-			System.out.println("StudyDAOImpl.saveOrUpdateStudy() ==>> " + studyBo.getResearchSponsor());
 			userId = studyBo.getUserId();
 			String appId = "";
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -3991,6 +3991,253 @@ public class StudyDAOImpl implements StudyDAO {
 			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateSubAdmin() - Ends");
+		return message;
+	}
+
+	@Override
+	public ParticipantPropertiesBO saveOrUpdateParticipantProperties(ParticipantPropertiesBO participantPropertiesBO) {
+		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
+		Session session = null;
+		ParticipantPropertiesBO participantPropertiesBo = null;
+		Integer result = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+
+			if (participantPropertiesBO.getId() == null) {
+				if (participantPropertiesBO.isUseAsAnchorDate()) {
+					Integer anchorDateId = addAnchorDate(Integer.valueOf(participantPropertiesBO.getStudyId()),
+							participantPropertiesBO.getCustomStudyId(), participantPropertiesBO.getShortTitle(),
+							session);
+					participantPropertiesBO.setAnchorDateId(anchorDateId);
+				}
+				participantPropertiesBO.setActive(true);
+				participantPropertiesBO.setStatus(true);
+				session.save(participantPropertiesBO);
+			} else {
+				participantPropertiesBo = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
+						participantPropertiesBO.getId());
+				if (participantPropertiesBo.getAnchorDateId() != null) {
+					if (!participantPropertiesBO.isUseAsAnchorDate()) {
+						result = deleteParticipantPropertyAsAnchorDate(participantPropertiesBo.getAnchorDateId(),
+								session);
+						if (result != 0) {
+							participantPropertiesBO.setAnchorDateId(null);
+						}
+					}
+				} else {
+					if (participantPropertiesBO.isUseAsAnchorDate()) {
+						Integer anchorDateId = addAnchorDate(Integer.valueOf(participantPropertiesBO.getStudyId()),
+								participantPropertiesBO.getCustomStudyId(), participantPropertiesBO.getShortTitle(),
+								session);
+						participantPropertiesBO.setAnchorDateId(anchorDateId);
+					}
+				}
+				participantPropertiesBO.setCreatedBy(participantPropertiesBo.getCreatedBy());
+				participantPropertiesBO.setCreatedDate(participantPropertiesBo.getCreatedDate());
+				participantPropertiesBO.setActive(true);
+				participantPropertiesBO.setStatus(true);
+				// session.update(participantPropertiesBO);
+				session.merge(participantPropertiesBO);
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrUpdateSubAdmin() - ERROR", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateSubAdmin() - Ends");
+		return participantPropertiesBO;
+	}
+
+	@Override
+	public Integer addAnchorDate(int studyId, String customStudyId, String anchorDateName, Session session) {
+		logger.info("StudyDAOImpl - addAnchorDate() - Starts");
+		AnchorDateTypeBo anchorDateTypeBo = null;
+		Integer anchorDateId = null;
+		try {
+			anchorDateTypeBo = new AnchorDateTypeBo();
+			anchorDateTypeBo.setCustomStudyId(customStudyId);
+			anchorDateTypeBo.setStudyId(studyId);
+			anchorDateTypeBo.setName(anchorDateName);
+			anchorDateTypeBo.setHasAnchortypeDraft(1);
+			anchorDateTypeBo.setParticipantProperty(true);
+			anchorDateId = (Integer) session.save(anchorDateTypeBo);
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - addAnchorDate() - ERROR", e);
+		}
+		logger.info("StudyDAOImpl - addAnchorDate() - Ends");
+		return anchorDateId;
+	}
+
+	@Override
+	public Integer deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session) {
+		logger.info("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - Starts");
+		Query query = null;
+		Integer result = null;
+		try {
+			if (anchorDateId != null) {
+				query = session.createQuery("delete from AnchorDateTypeBo where id=" + anchorDateId);
+				result = query.executeUpdate();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - ERROR", e);
+		}
+		logger.info("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - Ends");
+		return result;
+	}
+
+	@Override
+	public List<ParticipantPropertiesBO> getParticipantProperties(String customStudyId) {
+		logger.info("StudyDAOImpl - getParticipantProperties() - Starts");
+		Session session = null;
+		Query query = null;
+		List<ParticipantPropertiesBO> participantPropertiesBoList = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if (StringUtils.isNotEmpty(customStudyId)) {
+				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='"
+						+ customStudyId + "' and PPBO.active=1 order by PPBO.createdDate DESC");
+				participantPropertiesBoList = query.list();
+			}
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - getParticipantProperties() - ERROR", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getParticipantProperties() - Ends");
+		return participantPropertiesBoList;
+	}
+
+	@Override
+	public ParticipantPropertiesBO getParticipantProperty(String participantPropertyId, String customStudyId) {
+		logger.info("StudyDAOImpl - getParticipantProperty() - Starts");
+		Session session = null;
+		Query query = null;
+		ParticipantPropertiesBO participantPropertiesBO = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if (StringUtils.isNotEmpty(participantPropertyId) && StringUtils.isNotEmpty(customStudyId)) {
+				query = session
+						.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='" + customStudyId
+								+ "' and PPBO.id =" + Integer.valueOf(participantPropertyId) + " and PPBO.active=1");
+				participantPropertiesBO = (ParticipantPropertiesBO) query.uniqueResult();
+			}
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - getParticipantProperty() - ERROR", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getParticipantProperty() - Ends");
+		return participantPropertiesBO;
+	}
+
+	@Override
+	public String activateOrDeactivateParticipantProperty(int participantPropertyId, int userId,
+			int participantPropertyStatus) {
+		logger.info("StudyDAOImpl - activateOrDeactivateParticipantProperty() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		Query query = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if (participantPropertyStatus != 0) {
+				query = session.createQuery(
+						"UPDATE ParticipantPropertiesBO set status=0, modifiedBy=" + userId + ", modifiedDate='"
+								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
+			} else {
+				query = session.createQuery(
+						"UPDATE ParticipantPropertiesBO set status=1, modifiedBy=" + userId + ", modifiedDate='"
+								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
+			}
+			count = query.executeUpdate();
+			if (count > 0) {
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - activateOrDeactivateParticipantProperty() - ERROR", e);
+		} finally {
+			if (null != session) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - activateOrDeactivateParticipantProperty() - Ends");
+		return message;
+	}
+
+	@Override
+	public String deleteParticipantProperty(int participantPropertyId, int userId) {
+		logger.info("StudyDAOImpl - deleteParticipantProperty() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		Query query = null;
+		ParticipantPropertiesBO participantPropertiesBO = null;
+		Integer anchorDateId = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			participantPropertiesBO = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
+					participantPropertyId);
+			anchorDateId = participantPropertiesBO.getAnchorDateId();
+			query = session.createQuery("UPDATE ParticipantPropertiesBO set active=0, modifiedBy=" + userId
+					+ ", modifiedDate='" + FdahpStudyDesignerUtil.getCurrentDateTime() + "',anchorDateId=null where id="
+					+ participantPropertyId);
+			count = query.executeUpdate();
+			if (count > 0) {
+				deleteParticipantPropertyAsAnchorDate(anchorDateId, session);
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteParticipantProperty() - ERROR", e);
+		} finally {
+			if (null != session) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteParticipantProperty() - Ends");
+		return message;
+	}
+
+	@Override
+	public String checkParticipantPropertyShortTitle(String shortTitle, String customStudyId) {
+		logger.info("StudyDAOImpl - checkParticipantPropertyShortTitle() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		List<ParticipantPropertiesBO> participantPropertiesBOs = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if (StringUtils.isNotEmpty(customStudyId) && StringUtils.isNotEmpty(shortTitle)) {
+				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='"
+						+ customStudyId + "' and PPBO.shortTitle='" + shortTitle + "'");
+				participantPropertiesBOs = query.list();
+				if (participantPropertiesBOs != null && !participantPropertiesBOs.isEmpty()) {
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - checkParticipantPropertyShortTitle() - ERROR ", e);
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - checkParticipantPropertyShortTitle() - Ends");
 		return message;
 	}
 

@@ -365,7 +365,7 @@ $(document).ready(function(){
 	
 	//active li
     $(".menuNav li").removeClass('active');
-    $(".fifthConsentReview").addClass('active');
+    $(".sixthConsentReview").addClass('active');
 	$("#createStudyId").show();
 	consentDocumentDivType();
 	//check the consent type

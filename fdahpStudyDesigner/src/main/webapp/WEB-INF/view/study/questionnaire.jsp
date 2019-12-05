@@ -28,10 +28,9 @@
 	display: none;
 }
 
-.manually-option:last-child .addBtnDis {  
+.manually-option:last-child .addBtnDis {
 	display: inline-block;
 }
-
 
 .manually-anchor-option .addBtnDis {
 	display: none;
@@ -55,7 +54,7 @@
 	*border-collapse: expression('separate', cellSpacing = '10px');
 }
 
-.dis_inlinetop{
+.dis_inlinetop {
 	display: inline-block;
 	vertical-align: top;
 }
@@ -360,7 +359,8 @@ function isNumber(evt, thisAttr) {
 										required name="anchorDateId">
 										<option value=''>Select</option>
 										<c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-											<option value="${anchorTypeInfo.id}"
+											<option data-id="${anchorTypeInfo.participantProperty}"
+												value="${anchorTypeInfo.id}"
 												${questionnaireBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
 										</c:forEach>
 									</select>
@@ -661,7 +661,8 @@ function isNumber(evt, thisAttr) {
 										onclick='timep(this.id);' /> <span
 										class='help-block with-errors red-txt'></span>
 									</span> <span class="addBtnDis addbtn mr-sm align-span-center"
-										onclick='addTime();'>+</span> <!-- <span
+										onclick='addTime();'>+</span>
+									<!-- <span
 										class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
 										onclick='removeTime(this);'></span> -->
 								</div>
@@ -801,8 +802,7 @@ function isNumber(evt, thisAttr) {
 							<span class="gray-xs-f">Day/Time (of the week) <span
 								class="requiredStar">*</span><br /> <span
 								class=" form-group m-none dis-inline vertical-align-middle pr-md">
-									<span class=""> 
-									<select id="startDateWeekly"
+									<span class=""> <select id="startDateWeekly"
 										class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
 										name="dayOfTheWeek" required>
 											<option value=''>Select</option>
@@ -895,21 +895,21 @@ function isNumber(evt, thisAttr) {
 										<span class='help-block with-errors red-txt'></span>
 									</span>
 								</div>
-								
+
 								<div class="dis_inlinetop">
 									<span
-									class="form-group m-none dis-inline vertical-align-middle pr-md">
-									<span class="gray-xs-f">No. of times to repeat the
-										questionnaire <span class="requiredStar">*</span>
-								</span><br /> <input id="weeksAnchor" type="text"
-									class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-									name="repeatQuestionnaire" placeholder="No of Times"
-									value="${questionnaireBo.repeatQuestionnaire}" required
-									onkeypress="return isNumber(event, this)"
-									pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-									data-pattern-error="Please enter valid number." maxlength="3" />
-									<span class='help-block with-errors red-txt'></span>
-								</span>
+										class="form-group m-none dis-inline vertical-align-middle pr-md">
+										<span class="gray-xs-f">No. of times to repeat the
+											questionnaire <span class="requiredStar">*</span>
+									</span><br /> <input id="weeksAnchor" type="text"
+										class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+										name="repeatQuestionnaire" placeholder="No of Times"
+										value="${questionnaireBo.repeatQuestionnaire}" required
+										onkeypress="return isNumber(event, this)"
+										pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+										data-pattern-error="Please enter valid number." maxlength="3" />
+										<span class='help-block with-errors red-txt'></span>
+									</span>
 								</div>
 
 							</div>
@@ -1007,7 +1007,7 @@ function isNumber(evt, thisAttr) {
 									readonly="readonly" /> <span
 									class='help-block with-errors red-txt'></span>
 								</span>
-							</div> 		
+							</div>
 							<div class="dis_inlinetop p-none monthlyRegular">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -1026,7 +1026,7 @@ function isNumber(evt, thisAttr) {
 						</div>
 						<!-- Anchordate start-->
 						<!-- <div class="mt-lg"> -->
-							<%-- <div class="monthlyStartCls dis_inlinetop p-none">
+						<%-- <div class="monthlyStartCls dis_inlinetop p-none">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">Start date (pick a date) <span
@@ -1040,56 +1040,55 @@ function isNumber(evt, thisAttr) {
 									class='help-block with-errors red-txt'></span>
 								</span>
 							</div> --%>
-							<div class="monthlyanchorDiv"
-								style="display: none;">
-								<div class="dis_inlinetop p-none">
-									<div class=" resetDate dis_inlinetop p-none">
-										<div>
-											<span
-												class="form-group m-none dis-inline vertical-align-middle pr-md">
-												<span class="gray-xs-f">Start date (pick a date) <span
-													class="requiredStar">*</span></span><br /> <span class="pr-md">Anchor
-													Date</span> <span> <select
-													class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-													title="Select" name="questionnairesFrequenciesBo.xDaysSign"
-													id="monthlyXSign">
-														<option value="0"
-															${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
-														<option value="1"
-															${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-												</select>
-											</span> <span
-												class="form-group m-none dis-inline vertical-align-middle">
-													<input id="monthlyxdaysId" type="text"
-													class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-													placeholder="X"
-													name="questionnairesFrequenciesBo.timePeriodFromDays"
-													value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
-													maxlength="3" pattern="[0-9]+"
-													data-pattern-error="Please enter valid number." /> <span
-													class="help-block with-errors red-txt"></span>
-											</span> <span class="mb-sm pr-md"> <span
-													class="light-txt opacity06">days</span>
-											</span>
-											</span>
-										</div>
+						<div class="monthlyanchorDiv" style="display: none;">
+							<div class="dis_inlinetop p-none">
+								<div class=" resetDate dis_inlinetop p-none">
+									<div>
+										<span
+											class="form-group m-none dis-inline vertical-align-middle pr-md">
+											<span class="gray-xs-f">Start date (pick a date) <span
+												class="requiredStar">*</span></span><br /> <span class="pr-md">Anchor
+												Date</span> <span> <select
+												class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+												title="Select" name="questionnairesFrequenciesBo.xDaysSign"
+												id="monthlyXSign">
+													<option value="0"
+														${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+													<option value="1"
+														${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+											</select>
+										</span> <span
+											class="form-group m-none dis-inline vertical-align-middle">
+												<input id="monthlyxdaysId" type="text"
+												class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+												placeholder="X"
+												name="questionnairesFrequenciesBo.timePeriodFromDays"
+												value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
+												maxlength="3" pattern="[0-9]+"
+												data-pattern-error="Please enter valid number." /> <span
+												class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+												class="light-txt opacity06">days</span>
+										</span>
+										</span>
 									</div>
 								</div>
-								
-								
-							  <div class="dis_inlinetop p-none">
-									<span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br />
-									<span
-										class="form-group m-none dis-inline vertical-align-middle pr-md">
-										<input id="selectMonthlyTimeAnchor" type="text"
-										class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-										required onclick="timep(this.id)" placeholder="Time"
-										name="questionnairesFrequenciesBo.frequencyTime"
-										value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" />
-										<span class='help-block with-errors red-txt'></span>
-									</span>
-								</div>
-									<div class="dis_inlinetop">
+							</div>
+
+
+							<div class="dis_inlinetop p-none">
+								<span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br />
+								<span
+									class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<input id="selectMonthlyTimeAnchor" type="text"
+									class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+									required onclick="timep(this.id)" placeholder="Time"
+									name="questionnairesFrequenciesBo.frequencyTime"
+									value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" />
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+							</div>
+							<div class="dis_inlinetop">
 								<span
 									class="form-group m-none dis-inline vertical-align-middle pr-md">
 									<span class="gray-xs-f">No. of times to repeat the
@@ -1103,11 +1102,11 @@ function isNumber(evt, thisAttr) {
 									data-pattern-error="Please enter valid number." maxlength="3" />
 									<span class='help-block with-errors red-txt'></span>
 								</span>
-							</div> 
 							</div>
+						</div>
 						<!-- </div> -->
 						<!-- Anchordate End -->
-						
+
 						<div class="mt-md col-md-12 p-none">
 							<div class="gray-xs-f mb-xs">End Date</div>
 							<div class="black-xs-f" id="monthEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
@@ -1175,7 +1174,8 @@ function isNumber(evt, thisAttr) {
 										placeholder="Time" onclick='timep(this.id);' disabled required />
 										<span class='help-block with-errors red-txt'></span>
 									</span> <span class="addbtn addBtnDis align-span-center mr-md"
-										onclick="addDate();">+</span> <!-- <span id="delete"
+										onclick="addDate();">+</span>
+									<!-- <span id="delete"
 										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
 										onclick="removeDate(this);"></span> -->
 								</div>
@@ -1301,8 +1301,9 @@ function isNumber(evt, thisAttr) {
 										placeholder="Time" required /> <span
 										class='help-block with-errors red-txt'></span>
 									</span> <span id="addbtn0"
-										class="addbtn addBtnDis dis-inline vertical-align-middle mr-sm"
-										onclick="addDateAnchor();">+</span> <!-- <span id="deleteAncchor0"
+										class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle mr-sm"
+										onclick="addDateAnchor();">+</span>
+									<!-- <span id="deleteAncchor0"
 										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
 										onclick="removeDateAnchor(this);"></span> -->
 								</div>
@@ -1384,21 +1385,29 @@ function isNumber(evt, thisAttr) {
 											placeholder="Time" required /> <span
 											class='help-block with-errors red-txt'></span>
 										</span> <span id="addbtn${customVar.index}"
-											class="addbtn addBtnDis align-span-center mr-sm cursor-display"
+											class="addbtn addBtnDis addbtnZero align-span-center mr-sm cursor-display"
 											onclick="addDateAnchor();">+</span> <span
 											id="deleteAncchor${customVar.index}"
-											class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
+											class="sprites_icon delete vertical-align-middle remBtnDis remBtnZero hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
 											onclick="removeDateAnchor(this);"></span>
 									</div>
 								</c:forEach>
 							</c:if>
 						</div>
 						<!-- anchordate end -->
-
 						<div class="mt-md">
 							<div class="gray-xs-f mb-xs">Default Lifetime of each run</div>
 							<div class="black-xs-f">As defined by the start and end
 								times selected above</div>
+						</div>
+						<div class="col-md-4 col-lg-3 mt-xlg mb-lg addNewRuns"
+							style="display: none;">
+							<span class="checkbox checkbox-inline addNewRuns"> <input
+								type="checkbox" id="addNewRunsId"
+								value="${questionnaireBo.addNewRuns}"
+								<c:if test="${questionnaireBo.addNewRuns}">checked</c:if>>
+								<label for="addNewRunsId"> Add New Runs </label>
+							</span>
 						</div>
 					</div>
 				</form:form>
@@ -1520,7 +1529,18 @@ var scheduletype = "${questionnaireBo.scheduleType}";
 if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefined'){
 	scheduletype = $('input[name="scheduleType"]:checked').val();
 }
+var isParticipantProp="";
 $(document).ready(function() {
+	isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
+	if(isParticipantProp==='true'){
+		$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+		//$('.manuallyAnchorContainer').find('.remBtnZero').hide();
+		$('.addNewRuns').show();
+	 }else{
+		 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+		 //$('.manuallyAnchorContainer').find('.remBtnZero').show();
+		 $('.addNewRuns').hide();
+	 }
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
@@ -1534,6 +1554,24 @@ $(document).ready(function() {
 			$(".monthlyRegular").hide();
 		}
 	})
+	$("#anchorDateId").change(function() {
+		isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
+		 if(isParticipantProp==='true'){
+				$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+				$('.addNewRuns').show();
+			 }else{
+				 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+				 $('.addNewRuns').hide();
+			 }
+	});
+	
+	$('#addNewRunsId').change(function () {
+		if(this.checked) {
+			$("#addNewRunsId").val('true');
+	    }else{
+	    	$("#addNewRunsId").val('false');
+	    }
+	 });
 	
 	$(".scheduleQusClass").click(function(){
 	if($("#schedule1").prop("checked")){
@@ -1543,11 +1581,8 @@ $(document).ready(function() {
 			$(".monthlyRegular").show();
 		}
 	})
-	
 	$(".typeofschedule").change(function() {
-		
-		
-		
+		isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
 		var scheduletype = $(this).attr('scheduletype');
         $('#isLaunchStudy').prop('checked', false);
         $('#isStudyLifeTime').prop('checked', false);
@@ -1594,14 +1629,19 @@ $(document).ready(function() {
 			 if(schedule_opts == 'Monthly'){
 				   $("#monthEndDate").text('NA');
 				   $("#monthLifeTimeDate").text('-');
-				   /* $("#monthlyDateId").hide();
-				   $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Manually Schedule'){
-	    			$(".manuallyAnchorContainer").show();
-					$(".manuallyAnchorContainer").find('input:text').attr('required',true);
+				 $(".manuallyAnchorContainer").show();
+				 $(".manuallyAnchorContainer").find('input:text').attr('required',true);
+				 if(isParticipantProp==='true'){
+						$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+						$('.addNewRuns').show();
+					 }else{
+						 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+						 $('.addNewRuns').hide();
+					 }
 	    	}
 			 $('.regularClass').hide();
 			 $('.regularClass').find('input:text').removeAttr('required');
@@ -1610,8 +1650,6 @@ $(document).ready(function() {
 			 $('.selectpicker').selectpicker('refresh');
 			 $('.dailyStartCls').hide();
 			 $('.dailyStartCls').find('input:text').removeAttr('required');
-			 //$('.weeklyCls').hide();
-			 //$('.weekDaysId').find('input:text,select').removeAttr('required');
 			 $('.weeklyStartCls').hide();
 			 $('.weeklyStartCls').find('input:text,select').removeAttr('required');
 			 $('.monthlyStartCls').hide();
@@ -1659,6 +1697,8 @@ $(document).ready(function() {
 			$('.manuallyContainer').find('input:text').attr('required',true);
 			$(".manuallyAnchorContainer").hide();
 			$(".manuallyAnchorContainer").find('input:text').removeAttr('required',true);
+			$(".manuallyAnchorContainerParticipantProperties").hide();
+			$(".manuallyAnchorContainerParticipantProperties").find('input:text').removeAttr('required',true);
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
 			$("#anchorDateId").val("");
@@ -1815,6 +1855,7 @@ $(document).ready(function() {
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
+        isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
        
         $("." + schedule_opts).removeClass("dis-none");
         resetValidation($("#oneTimeFormId"));
@@ -1918,22 +1959,25 @@ $(document).ready(function() {
 			 if(val == 'Weekly'){
 				 $("#weekEndDate").text('NA');
 				 $("#weekLifeTimeEnd").text('-');
-				 //$("#weekDaysId").hide();
-				 //$("#weekDaysId").find('input:text').removeAttr('required',true);
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
 				 $("#monthEndDate").text('NA');
 				 $("#monthLifeTimeDate").text('-');
-				 /* $("#monthlyDateId").hide();
-				 $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Manually Schedule'){
 	    			$(".manuallyAnchorContainer").show();
 					$(".manuallyAnchorContainer").find('input:text').attr('required',true);
+					if(isParticipantProp==='true'){
+						$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+						$('.addNewRuns').show();
+					 }else{
+						 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+						 $('.addNewRuns').hide();
+					 }
 	    	}
 			 $('.regularClass').hide();
 			 $('.regularClass').find('input:text').removeAttr('required');
@@ -1961,22 +2005,20 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			//$("#weekDaysId").show();
-			//$("#weekDaysId").find('input:text').attr('required',true);
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			/* $("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.manuallyContainer').show();
 			$('.manuallyContainer').find('input:text').attr('required',true);
 			$(".manuallyAnchorContainer").hide();
-			$(".manuallyAnchorContainer").find('input:text,select').removeAttr('required',true);
+			$(".manuallyAnchorContainer").find('input:text').removeAttr('required',true);
+			$(".manuallyAnchorContainerParticipantProperties").hide();
+			$(".manuallyAnchorContainerParticipantProperties").find('input:text').removeAttr('required',true);
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
 			$("#anchorDateId").val("");
@@ -2337,14 +2379,7 @@ $(document).ready(function() {
 		});
 	 });
 	 $("#saveId").click(function(){
-		 /* var anchorList = "${anchorTypeList}";
-		 var length = anchorList.length; */
 		 var table = $('#content').DataTable();
-		 /* if(length < 3){
-			 $("#schedule2").attr('disabled', true);
-		 }else{
-			 $("#schedule2").attr('disabled', false);
-		 } */
 		 validateShortTitle('',function(val){
 			 if(val){
 				 if(isFromValid("#contentFormId")){
@@ -2738,6 +2773,7 @@ function saveQuestionnaire(item, callback){
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var schedule_text = $('input[name="scheduleType"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
+	var addNewRuns=$("#addNewRunsId").val();
 	var isFormValid = true;
 	var statusText = $("#status").val();
 	var study_lifetime_end = '';
@@ -2787,6 +2823,9 @@ function saveQuestionnaire(item, callback){
 	}
 	if(schedule_text != null && schedule_text != '' && typeof schedule_text != 'undefined'){
 		questionnaire.scheduleType=schedule_text;
+	}
+	if(addNewRuns != null && addNewRuns != '' && typeof addNewRuns != 'undefined'){
+		questionnaire.addNewRuns=addNewRuns;
 	}
 	
 	var questionnaireFrequencey = new Object();
@@ -2888,6 +2927,7 @@ function saveQuestionnaire(item, callback){
 				var ySignVal = $('#ydays'+id).val(); 
 				var time = $("#manualTime"+id).val();
 				var isUsed = $("#isUsed"+id).val();
+				
 				
 				questionnaireCustomFrequencey.frequencyStartDate=null;
 				questionnaireCustomFrequencey.frequencyEndDate=null;
@@ -3811,7 +3851,7 @@ function addDateAnchor(){
 				                  +"<input id='manualTime"+customAnchorCount+"' type='text' count='"+customAnchorCount+"' class='form-control clock' name='questionnaireCustomScheduleBo["+customAnchorCount+"].frequencyTime' placeholder='Time' required/>"
 				                  +"<span class='help-block with-errors red-txt'></span>"
 				                  +"</span>"
-				                  +"<span id='addbtn"+customAnchorCount+"' class='addbtn addBtnDis align-span-center mr-md' onclick='addDateAnchor();'>+</span>"
+				                  +"<span id='addbtn"+customAnchorCount+"' class='addbtn addBtnDis addbtnZero align-span-center mr-md' onclick='addDateAnchor();'>+</span>"
 								  +"<span id='deleteAncchor"+customAnchorCount+"' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDateAnchor(this);'></span>"
 			                      +"</div>";
 			                   

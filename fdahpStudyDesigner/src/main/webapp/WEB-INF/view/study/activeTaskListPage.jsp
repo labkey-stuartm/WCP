@@ -104,7 +104,7 @@ var dataTable;
 $(document).ready(function(){  
 	        $('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
-			$(".sixthTask").addClass('active');
+			$(".seventhTask").addClass('active');
 	
             // Fancy Scroll Bar
            /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});

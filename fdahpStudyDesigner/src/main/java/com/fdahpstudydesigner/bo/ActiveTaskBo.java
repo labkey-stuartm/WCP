@@ -21,8 +21,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "active_task")
-@NamedQueries({
-		@NamedQuery(name = "ActiveTaskBo.findAll", query = "SELECT ATB FROM ActiveTaskBo ATB"),
+@NamedQueries({ @NamedQuery(name = "ActiveTaskBo.findAll", query = "SELECT ATB FROM ActiveTaskBo ATB"),
 		@NamedQuery(name = "ActiveTaskBo.getActiveTasksByByStudyId", query = "SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.studyId =:studyId order by id"),
 		@NamedQuery(name = "ActiveTaskBo.getActiveTasksByByStudyIdDone", query = "SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.studyId =:studyId order by id"),
 		@NamedQuery(name = "updateStudyActiveTaskVersion", query = "UPDATE ActiveTaskBo SET live=2 WHERE customStudyId=:customStudyId and live=1"),
@@ -141,15 +140,18 @@ public class ActiveTaskBo implements Serializable {
 
 	@Column(name = "version")
 	private Float version = 0f;
-	
+
 	@Column(name = "schedule_type")
 	private String scheduleType = "";
-	
+
 	@Column(name = "anchor_date_id")
 	private Integer anchorDateId;
 
 	@Transient
 	private boolean versionFlag = false;
+
+	@Column(name = "add_new_runs")
+	private boolean addNewRuns = false;
 
 	public ActiveTaskBo() {
 		// Do nothing
@@ -359,29 +361,23 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @param activeTaskCustomScheduleBo
-	 *            the activeTaskCustomScheduleBo to set
+	 * @param activeTaskCustomScheduleBo the activeTaskCustomScheduleBo to set
 	 */
-	public void setActiveTaskCustomScheduleBo(
-			List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo) {
+	public void setActiveTaskCustomScheduleBo(List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo) {
 		this.activeTaskCustomScheduleBo = activeTaskCustomScheduleBo;
 	}
 
 	/**
-	 * @param activeTaskFrequenciesBo
-	 *            the activeTaskFrequenciesBo to set
+	 * @param activeTaskFrequenciesBo the activeTaskFrequenciesBo to set
 	 */
-	public void setActiveTaskFrequenciesBo(
-			ActiveTaskFrequencyBo activeTaskFrequenciesBo) {
+	public void setActiveTaskFrequenciesBo(ActiveTaskFrequencyBo activeTaskFrequenciesBo) {
 		this.activeTaskFrequenciesBo = activeTaskFrequenciesBo;
 	}
 
 	/**
-	 * @param activeTaskFrequenciesList
-	 *            the activeTaskFrequenciesList to set
+	 * @param activeTaskFrequenciesList the activeTaskFrequenciesList to set
 	 */
-	public void setActiveTaskFrequenciesList(
-			List<ActiveTaskFrequencyBo> activeTaskFrequenciesList) {
+	public void setActiveTaskFrequenciesList(List<ActiveTaskFrequencyBo> activeTaskFrequenciesList) {
 		this.activeTaskFrequenciesList = activeTaskFrequenciesList;
 	}
 
@@ -410,16 +406,14 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @param createdBy
-	 *            the createdBy to set
+	 * @param createdBy the createdBy to set
 	 */
 	public void setCreatedBy(Integer createdBy) {
 		this.createdBy = createdBy;
 	}
 
 	/**
-	 * @param createdDate
-	 *            the createdDate to set
+	 * @param createdDate the createdDate to set
 	 */
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
@@ -430,8 +424,7 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @param dayOfTheWeek
-	 *            the dayOfTheWeek to set
+	 * @param dayOfTheWeek the dayOfTheWeek to set
 	 */
 	public void setDayOfTheWeek(String dayOfTheWeek) {
 		this.dayOfTheWeek = dayOfTheWeek;
@@ -450,8 +443,7 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @param frequency
-	 *            the frequency to set
+	 * @param frequency the frequency to set
 	 */
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
@@ -478,32 +470,28 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @param modifiedBy
-	 *            the modifiedBy to set
+	 * @param modifiedBy the modifiedBy to set
 	 */
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
 	/**
-	 * @param modifiedDate
-	 *            the modifiedDate to set
+	 * @param modifiedDate the modifiedDate to set
 	 */
 	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
 	/**
-	 * @param previousFrequency
-	 *            the previousFrequency to set
+	 * @param previousFrequency the previousFrequency to set
 	 */
 	public void setPreviousFrequency(String previousFrequency) {
 		this.previousFrequency = previousFrequency;
 	}
 
 	/**
-	 * @param repeatActiveTask
-	 *            the repeatActiveTask to set
+	 * @param repeatActiveTask the repeatActiveTask to set
 	 */
 	public void setRepeatActiveTask(Integer repeatActiveTask) {
 		this.repeatActiveTask = repeatActiveTask;
@@ -517,13 +505,11 @@ public class ActiveTaskBo implements Serializable {
 		this.studyId = studyId;
 	}
 
-	public void setTaskAttributeValueBos(
-			List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos) {
+	public void setTaskAttributeValueBos(List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos) {
 		this.taskAttributeValueBos = taskAttributeValueBos;
 	}
 
-	public void setTaskMasterAttributeBos(
-			List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos) {
+	public void setTaskMasterAttributeBos(List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos) {
 		this.taskMasterAttributeBos = taskMasterAttributeBos;
 	}
 
@@ -532,16 +518,14 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @param title
-	 *            the title to set
+	 * @param title the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
 	/**
-	 * @param type
-	 *            the type to set
+	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -569,5 +553,13 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setAnchorDateId(Integer anchorDateId) {
 		this.anchorDateId = anchorDateId;
+	}
+
+	public boolean isAddNewRuns() {
+		return addNewRuns;
+	}
+
+	public void setAddNewRuns(boolean addNewRuns) {
+		this.addNewRuns = addNewRuns;
 	}
 }

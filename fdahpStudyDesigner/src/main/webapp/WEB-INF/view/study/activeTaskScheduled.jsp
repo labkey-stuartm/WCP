@@ -1,21 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <jsp:useBean id="date" class="java.util.Date" />
-<c:set var="tz" value="America/Los_Angeles"/>
+<c:set var="tz" value="America/Los_Angeles" />
 <style>
-.time-opts .addBtnDis{
+.time-opts .addBtnDis {
 	display: none;
 }
-.time-opts:last-child .addBtnDis{
+
+.time-opts:last-child .addBtnDis {
 	display: inline-block;
 }
-.manually-option .addBtnDis{
+
+.manually-option .addBtnDis {
 	display: none;
 }
-.manually-option:last-child .addBtnDis{
+
+.manually-option:last-child .addBtnDis {
 	display: inline-block;
 }
 
@@ -27,7 +31,7 @@
 	display: inline-block;
 }
 
-.dis_inlinetop{
+.dis_inlinetop {
 	display: inline-block;
 	vertical-align: top;
 }
@@ -35,563 +39,853 @@
 /* .time-opts .remBtnDis{
 	display: initial;
 } */
-
 .help-block ul {
-    width: 150px;
-    //font-size:10px !important;
+	width: 150px; //
+	font-size: 10px !important;
 }
-
 </style>
 <!-- <div id="schedule" class="tab-pane fade in active mt-xlg"> -->
-    <div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
-    <div class="pb-lg ">
-               <span class="radio radio-info radio-inline p-40">
-               <input type="radio" id="schedule1" class="typeofschedule" scheduletype="Regular" value="Regular" name="scheduleType" ${empty activeTaskBo.scheduleType  || activeTaskBo.scheduleType=='Regular' ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
-                                                 <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
-               <label for="schedule1">Regular</label>
-               </span>
-               <span class="radio radio-inline p-40">
-               <input type="radio" id="schedule2" class="typeofschedule" scheduletype="AnchorDate" value="AnchorDate" name="scheduleType" ${isAnchorQuestionnaire?'disabled':''} ${activeTaskBo.scheduleType=='AnchorDate' ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
-                                                      <c:if test="${empty anchorTypeList}">disabled</c:if> >
-               <label for="schedule2">Anchor-Date-based</label>
-               </span>
-    </div>
-    <!-- Anchor date type -->
-    <form:form action="" name="anchorFormId" id="anchorFormId" method="post" role="form" data-toggle="validator">
-    <div class="anchortypeclass" style="display:none;">
-    <c:if test="${fn:length(anchorTypeList) gt 0}">
-    <div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
-    <div class="clearfix"></div>
-    <div class="col-md-5 col-lg-5 p-none">
-          <div class="form-group">
-             <select id="anchorDateId" class="selectpicker ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required name="anchorDateId">
-              <option value='' >Select</option>
-              <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-              	<option value="${anchorTypeInfo.id}" name="${anchorTypeInfo.name}" ${activeTaskBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
-              </c:forEach>
-             </select>
-             <div class="help-block with-errors red-txt"></div>
-          </div>
-     </div>
-     <div class="clearfix"></div>
-     </c:if>
-     </div>
-     </form:form> 
-     <!-- Ancor date type -->
-	<div class="gray-xs-f mb-sm">Active Task Frequency</div>
-	<div class="pb-lg b-bor">
-	   <span class="radio radio-info radio-inline p-40">
-	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One time' ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''} >
-	   <label for="oneTimeRadio1">One time</label> 
-	   </span>
-	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="dailyRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${activeTaskBo.frequency=='Daily' ?'checked':''} ${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}>
-	   <label for="dailyRadio2">Daily</label>
-	   </span>
-	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="weeklyRadio3" class="schedule" frequencytype="week" value="Weekly" name="frequency" ${activeTaskBo.frequency=='Weekly' ?'checked':''} ${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}>
-	   <label for="weeklyRadio3">Weekly</label>
-	   </span>
-	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="monthlyRadio4" class="schedule" frequencytype="month" value="Monthly" name="frequency" ${activeTaskBo.frequency=='Monthly' ?'checked':''} ${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}>
-	   <label for="monthlyRadio4">Monthly</label>
-	   </span>
-	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${activeTaskBo.frequency=='Manually Schedule' ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}>
-	   <label for="manuallyRadio5">Custom Schedule</label>
-	   </span>
+<div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
+<div class="pb-lg ">
+	<span class="radio radio-info radio-inline p-40"> <input
+		type="radio" id="schedule1" class="typeofschedule"
+		scheduletype="Regular" value="Regular" name="scheduleType"
+		${empty activeTaskBo.scheduleType  || activeTaskBo.scheduleType=='Regular' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
+		<c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
+		<label for="schedule1">Regular</label>
+	</span> <span class="radio radio-inline p-40"> <input type="radio"
+		id="schedule2" class="typeofschedule" scheduletype="AnchorDate"
+		value="AnchorDate" name="scheduleType"
+		${isAnchorQuestionnaire?'disabled':''}
+		${activeTaskBo.scheduleType=='AnchorDate' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
+		<c:if test="${empty anchorTypeList}">disabled</c:if>> <label
+		for="schedule2">Anchor-Date-based</label>
+	</span>
+</div>
+<!-- Anchor date type -->
+<form:form action="" name="anchorFormId" id="anchorFormId" method="post"
+	role="form" data-toggle="validator">
+	<div class="anchortypeclass" style="display: none;">
+		<c:if test="${fn:length(anchorTypeList) gt 0}">
+			<div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
+			<div class="clearfix"></div>
+			<div class="col-md-5 col-lg-5 p-none">
+				<div class="form-group">
+					<select id="anchorDateId"
+						class="selectpicker ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						required name="anchorDateId">
+						<option value=''>Select</option>
+						<c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+							<option data-id="${anchorTypeInfo.participantProperty}"
+								value="${anchorTypeInfo.id}" name="${anchorTypeInfo.name}"
+								${activeTaskBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+						</c:forEach>
+					</select>
+					<div class="help-block with-errors red-txt"></div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</c:if>
 	</div>
-	<!-- One time Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
-	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="id" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}">
-	 <input type="hidden" name="type" id="type" value="schedule">
-	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	 <div class="oneTime all mt-lg">
-	    <div class="gray-xs-f mb-sm">Date/Time of launch (pick one)<span class="requiredStar"> * </span></div>
-	    <div class="mt-sm">
-	       <span class="checkbox checkbox-inline">
-	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy"  name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}>
-	       <label for="isLaunchStudy"> Launch with study</label>
-	       </span>
-	       <div class="onetimeanchorClass mt-sm" style="display: none">
-             <!-- Anchordate start -->
-             <div class="opacity06">
-               OR	
-             </div>
-             <!-- Anchordate start-->
-        <div class="mt-none resetDate">
-            <div>
-              <span class="pr-md">Anchor Date</span>
-              <span>
-                <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="onetimeXSign">
-                         <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''} ${studyBo.enrollmentdateAsAnchordate?'selected':''}>+</option>
-                         <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-                </select>
-              </span>
-            	    <!--  selectpicker -->
-               <span class="form-group m-none dis-inline vertical-align-middle">
-              <c:choose>
-                	     <c:when test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}">
-                	       <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-                   placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
-                   maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-                	     </c:when>
-                	     <c:otherwise>
-                	        <input id="onetimexdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-                   placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
-                   maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-                	      </c:otherwise>
-                        </c:choose>
-               	 <span class="help-block with-errors red-txt"></span>
-               </span>
-               <span class="mb-sm pr-md">
-                  <span class="light-txt opacity06"> days</span>                   
-               </span>
-               <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="selectTime" type="text" class="mt-sm form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"  name="activeTaskFrequenciesBo.frequencyTime"  value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"  <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"   />
-                     <span class='help-block with-errors red-txt'></span>
-                       </span>
-             </div>
-            </div>
-       		<!-- Anchordate End -->
-           </div>
-	       <div class="mt-md form-group regularClass">
-	          <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	          <input id="chooseDate" type="text" class="mt-sm form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
-	           <span class='help-block with-errors red-txt'></span>
-	          </span>
-	          <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	          <input id="selectTime1" type="text" class="mt-sm form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"  name="activeTaskFrequenciesBo.frequencyTime"  value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"  />
-	          <span class='help-block with-errors red-txt'></span>
-	          </span>
-	       </div>
-	    </div>
-	    <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
-	    <div class="mt-sm">
-	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''} required="required">
-	       <label for="isStudyLifeTime"> Study Lifetime</label>
-	       </span>
-	       <div class="mt-md form-group regularClass">
-	          <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	          <c:choose>
-	          	<c:when test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}"><input id="chooseEndDate" type="text" class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskLifetimeEnd" placeholder="Choose End Date" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value=""/></c:when>
-	          	<c:otherwise><input id="chooseEndDate" type="text" class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskLifetimeEnd" placeholder="Choose End Date" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${activeTaskBo.activeTaskLifetimeEnd}"/></c:otherwise>
-	          </c:choose>
-	          <span class='help-block with-errors red-txt'></span>
-	          </span>                            
-	       </div>
-	       <div class="onetimeanchorClass mt-sm" style="display: none">
-                 <div class="opacity06">
-                   OR	
-                 </div>
-                 <!-- Anchordate start-->
-	          <div class="mt-none resetDate">
-	               <div>
-		                <span class="pr-md">Anchor Date</span>
-		                <span>
-			                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.yDaysSign" id="onetimeYSign">
-			                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.yDaysSign ?'selected':''}>+</option>
-			                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.yDaysSign ?'selected':''}>-</option>
-			                 </select>
-		                </span>
-	               	    <!--  selectpicker -->
-		                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                 <c:choose>
-                    	     <c:when test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}">
-                    	       <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-		                     placeholder="Y" name="activeTaskFrequenciesBo.timePeriodToDays" value="" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
-		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-                    	     </c:when>
-                    	     <c:otherwise>
-                    	        <input id="onetimeydaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-		                     placeholder="Y" name="activeTaskFrequenciesBo.timePeriodToDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodToDays}" <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
-		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-                    	      </c:otherwise>
-                            </c:choose>
-		                 	 <span class="help-block with-errors red-txt"></span>
-		                 </span>
-		                 <span class="mb-sm pr-md">
-		                    <span class="light-txt opacity06"> days</span>                   
-		                 </span>
-	                </div>
-                </div>
-           </div>
-           <!-- Anchordate End -->
-	    </div>
-	 </div>
-	</form:form>
-	<!-- Daily Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="dailyFormId" id="dailyFormId" method="post" role="form">
-		 <input type="hidden" name="frequency" id="dailyFrequencyId" value="${activeTaskBo.frequency}">
-		 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
-	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	  <input type="hidden" name="type" id="type" value="schedule">
-	  <input type="hidden" name="fetalCickDuration" value=""> 
-	  <input type="hidden" name="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
-	 <div class="daily all mt-lg dis-none">
-	    <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence<span class="requiredStar"> *</span></div>
-	    <div class="dailyContainer">
-	    <c:if test="${fn:length(activeTaskBo.activeTaskFrequenciesList) eq 0}">
-	     <div class="time-opts mt-md dailyTimeDiv" id="0">
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	        <input id="time0" type="text" name="activeTaskFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);'/>
-	        <span class='help-block with-errors red-txt'></span>
-	        </span> 
-	        <span class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" onclick='addTime();'>+</span>
-	        <!-- <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span> -->
-	     </div>
-	    </c:if>
-	    <c:if test="${fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0}">
-	      <c:forEach items="${activeTaskBo.activeTaskFrequenciesList}" var="activeTasksFrequencies" varStatus="frequeincesVar">
-	       <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
-	       <input type="hidden" name="activeTaskFrequenciesList[${frequeincesVar.index}].id" value="${activeTasksFrequencies.id}">
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="time${frequeincesVar.index}" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
-	         <span class='help-block with-errors red-txt'></span>
-	         </span> 
-	         <span class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" onclick='addTime();'>+</span>
-	         <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" onclick='removeTime(this);'></span>
-	      </div>
-	      </c:forEach>
-	    </c:if>
-	    </div>
-	    <div class="mt-md"> 
-	       <div class="dailyStartCls col-md-3 pl-none">                       
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Start date (pick a date)<span class="requiredStar"> * </span></span><br/>                          
-	       <input id="startDate" type="text" class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" placeholder="Choose Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </div>
-	       <!-- Anchordate start-->
-           <div class="dailyanchorDiv col-md-4 pl-none" style="display:none;">
-             <div class=" resetDate">
-               <div>
-                    <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                              <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
-	                <span class="pr-md">Anchor Date</span>
-	                <span>
-		                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesList[0].xDaysSign" id="dailyXSign">
-		                          <option value="0" ${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0) && not activeTaskBo.activeTaskFrequenciesList[0].xDaysSign ?'selected':''}>+</option>
-		                          <option value="1" ${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0) && activeTaskBo.activeTaskFrequenciesList[0].xDaysSign ?'selected':''}>-</option>
-		                 </select>
-	                </span>
-	                 <span class="form-group m-none dis-inline vertical-align-middle">
-                   	        <input id="dailyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-	                     placeholder="X" name="activeTaskFrequenciesList[0].timePeriodFromDays" value="${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0)?activeTaskBo.activeTaskFrequenciesList[0].timePeriodFromDays:''}"
-	                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-	                 	 <span class="help-block with-errors red-txt"></span>
-	                 </span>
-	                 <span class="mb-sm pr-md">
-	                    <span class="light-txt opacity06"> days</span>                   
-	                 </span>
-	                 </span>
-                </div>
-               </div>
-             </div>
-	               <!-- Anchordate End -->
-	               <div class="col-md-6 pr-none">
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Number of times to repeat the task<span class="requiredStar"> * </span></span><br/>
-	       <input id="days" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask" placeholder="No of Times"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
-	        <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </div>
-	       <div class="clearfix"></div>
-	    </div>
-	    <div class="mt-md">
-	       <div class="gray-xs-f mb-xs">End Date </div>
-	       <div class="black-xs-f" id="endDateId">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
-	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyDailyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
-	    </div>
-	    <div class="mt-lg">
-	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
-	       <div class="black-xs-f">Until the next run comes up</div>
-	    </div>
-	    <div class="mt-lg">
-	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
-	       <div class="black-xs-f" id="lifeTimeId">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
-	    </div>
-	 </div> 
-	</form:form>
-	<!-- Weekly Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
-	  <input type="hidden" name="frequency" id="weeklyfrequencyId">
-	  <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	  <input type="hidden" name="id" id="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
-	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	  <input type="hidden" name="activeTaskFrequenciesBo.id" id="weeklyFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	  <input type="hidden" name="type" id="type" value="schedule">
-	 <div class="week all mt-lg dis-none">
-	    <div id="weekDaysId"> 
-	       <span class="gray-xs-f">Day/Time (of the week)<span class="requiredStar"> * </span></span><br/>
-	       <div class=" form-group m-none dis-inline vertical-align-middle pr-md">                       
-	       <span class="">
-	       <select id="startDateWeekly" class="form-control mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="dayOfTheWeek" required>
-	        <option value=''>Select</option>
-	        <option value='Sunday' ${activeTaskBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
-	        <option value='Monday' ${activeTaskBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
-	        <option value='Tuesday' ${activeTaskBo.dayOfTheWeek eq 'Tuesday' ?'selected':''}>Tuesday</option>
-	        <option value='Wednesday' ${activeTaskBo.dayOfTheWeek eq 'Wednesday' ?'selected':''}>Wednesday</option>
-	        <option value='Thursday' ${activeTaskBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
-	        <option value='Friday' ${activeTaskBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday </option>
-	        <option value='Saturday' ${activeTaskBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
-	       </select>   
-	       <span class='help-block with-errors red-txt'></span>                         
-	       </span>
-	       </div>
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> -->
-	       <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>                        
-	    </div>
-	    <div class="mt-md">
-	       <span class="weeklyStartCls  col-md-3 pl-none">                         
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>                           
-	       <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required name="activeTaskLifetimeStart"  placeholder="Choose Date" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </span>
-	       <!-- Anchordate start-->
-            <div class="weeklyanchorDiv pl-none" style="display:none;">
-             <div class=" resetDate dis_inlinetop p-none">
-               <div>
-                   <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                             <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
-                <span class="pr-md">Anchor Date</span>
-                <span>
-	                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="weeklyXSign">
-	                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
-	                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-	                 </select>
-                </span>
-                 <span class="form-group m-none dis-inline vertical-align-middle">
-                  	        <input id="weeklyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
-                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-                 	 <span class="help-block with-errors red-txt"></span>
-                 </span>
-                 <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06"> days</span>                   
-                 </span>
-                 </span>
-                </div>
-               </div>
-               <div class="dis_inlinetop p-none">      
-	               <span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
-	               <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <input id="selectWeeklyTimeAnchor" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-	                  <span class='help-block with-errors red-txt'></span>
-	               </span>                        
-	           </div>
-            <div class="dis_inlinetop">
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="weeksAnchor" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </div>
-            </div>
-            
-	       <!-- Anchordate End -->
-	       <div class="col-md-4 p-none weeklyRegular">
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="weeks" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </div>
-	       <div class="clearfix"></div>
-	    </div>
-	    <div class="mt-md">
-	       <div class="gray-xs-f mb-xs">End Date </div>
-	       <div class="black-xs-f" id="weekEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
-	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyWeeklyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
-	    </div>
-	    <div class="mt-lg">
-	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
-	       <div class="black-xs-f">Until the next run comes up</div>
-	    </div>
-	    <div class="mt-lg">
-	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
-	       <div class="black-xs-f" id="weekLifeTimeEnd">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
-	    </div>
-	 </div> 
-	</form:form>
-	<!-- Monthly Section-->   
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
-	 <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="id" id="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
-	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	 <input type="hidden" name="activeTaskFrequenciesBo.id" id="monthFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	  <input type="hidden" name="type" id="type" value="schedule">
-	 <div class="month all mt-lg dis-none">
-	    <div id="monthlyDateId">
-	       <span class="gray-xs-f">Select Date/Time (of the month)<span class="requiredStar"> * </span></span><br/>
-	       <span class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="">
-	       <input id="startDateMonthly" type="text" class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required  placeholder="Choose Date" name="activeTaskFrequenciesBo.frequencyDate" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </span>
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> -->
-	       <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       <div class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
-	    </div>
-	    <div class="mt-xs"> 
-	       <div class="monthlyStartCls  col-md-3 pl-none">                       
-	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>      
-	       <input id="pickStartDate" type="text" class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"  placeholder="Choose Start Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
-	       <span class='help-block with-errors red-txt'></span>
-	       </span>
-	       </div>
-	       <!-- Anchordate start-->
-            <div class="monthlyanchorDiv pl-none" style="display:none;">
-		          <div class="dis_inlinetop resetDate">
-		              <div>
-		                   <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                             <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>
-		                <span class="pr-md">Anchor Date</span>
-		                <span>
-			                 <select class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" title="Select" name="activeTaskFrequenciesBo.xDaysSign" id="monthlyXSign">
-			                          <option value="0" ${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
-			                          <option value="1" ${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-			                 </select>
-		                </span>
-		                 <span class="form-group m-none dis-inline vertical-align-middle">
-		                  	        <input id="monthlyxdaysId" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" 
-		                     placeholder="X" name="activeTaskFrequenciesBo.timePeriodFromDays" value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
-		                     maxlength="3"  pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-		                 	 <span class="help-block with-errors red-txt"></span>
-		                 </span>
-		                 <span class="mb-sm pr-md">
-		                    <span class="light-txt opacity06"> days</span>                   
-		                 </span>
-		                 </span>
-		               </div>
-		              </div>
-		              
-		           <div class="dis_inlinetop">
-		                <span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br/> 
-		                <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                   <input id="selectMonthlyTimeAnchor" type="text" class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-		                   <span class='help-block with-errors red-txt'></span>
-		                </span>
-			       </div>
-		          <div class="dis_inlinetop">
-				       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-				       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-				       <input id="monthsAnchor" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
-				        <span class='help-block with-errors red-txt'></span>
-				       </span>
-			       </div>
-		              
-            </div>
-	           
-	       <!-- Anchordate End -->
-	       <div id="activeMonthlyRegular" class="dis_inlinetop">
-		       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-		       <input id="months" type="text" class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
-		        <span class='help-block with-errors red-txt'></span>
-		       </span>
-	       </div>
-	       <div class="clearfix"></div>
-	    </div>
-	    <div class="mt-md col-md-12 p-none">
-	       <div class="gray-xs-f mb-xs">End Date </div>
-	       <div class="black-xs-f" id="monthEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
-	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyMonthlyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
-	    </div>
-	    <div class="mt-lg col-md-12 p-none">
-	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
-	       <div class="black-xs-f">Until the next run comes up</div>
-	    </div>
-	    <div class="mt-lg col-md-12 p-none">
-	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
-	       <div class="black-xs-f" id="monthLifeTimeDate">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
-	    </div>
-	 </div> 
-	</form:form>
-	<!-- Manually Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="customFormId" id="customFormId" method="post" role="form">
+</form:form>
+<!-- Ancor date type -->
+<div class="gray-xs-f mb-sm">Active Task Frequency</div>
+<div class="pb-lg b-bor">
+	<span class="radio radio-info radio-inline p-40"> <input
+		type="radio" id="oneTimeRadio1" class="schedule"
+		frequencytype="oneTime" value="One time" name="frequency"
+		${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One time' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}> <label
+		for="oneTimeRadio1">One time</label>
+	</span> <span class="radio radio-inline p-40"> <input type="radio"
+		id="dailyRadio2" class="schedule" frequencytype="daily" value="Daily"
+		name="frequency" ${activeTaskBo.frequency=='Daily' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}> <label
+		for="dailyRadio2">Daily</label>
+	</span> <span class="radio radio-inline p-40"> <input type="radio"
+		id="weeklyRadio3" class="schedule" frequencytype="week" value="Weekly"
+		name="frequency" ${activeTaskBo.frequency=='Weekly' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}> <label
+		for="weeklyRadio3">Weekly</label>
+	</span> <span class="radio radio-inline p-40"> <input type="radio"
+		id="monthlyRadio4" class="schedule" frequencytype="month"
+		value="Monthly" name="frequency"
+		${activeTaskBo.frequency=='Monthly' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0) ?'disabled' : ''}> <label
+		for="monthlyRadio4">Monthly</label>
+	</span> <span class="radio radio-inline p-40"> <input type="radio"
+		id="manuallyRadio5" class="schedule" frequencytype="manually"
+		value="Manually Schedule" name="frequency"
+		${activeTaskBo.frequency=='Manually Schedule' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}> <label
+		for="manuallyRadio5">Custom Schedule</label>
+	</span>
+</div>
+<!-- One time Section-->
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
+	name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
+	<input type="hidden" name="frequency" id="frequencyId"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="previousFrequency" id="previousFrequency"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="id" id="activeTaskId"
+		class="activeTaskIdClass" value="${activeTaskBo.id}">
+	<input type="hidden" name="type" id="type" value="schedule">
+	<input type="hidden" name="studyId" id="studyId"
+		value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
+	<div class="oneTime all mt-lg">
+		<div class="gray-xs-f mb-sm">
+			Date/Time of launch (pick one)<span class="requiredStar"> * </span>
+		</div>
+		<div class="mt-sm">
+			<span class="checkbox checkbox-inline"> <input type="hidden"
+				name="activeTaskFrequenciesBo.id" id="oneTimeFreId"
+				value="${activeTaskBo.activeTaskFrequenciesBo.id}"> <input
+				type="checkbox" id="isLaunchStudy"
+				name="activeTaskFrequenciesBo.isLaunchStudy" value="true"
+				${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}
+				${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}> <label
+				for="isLaunchStudy"> Launch with study</label>
+			</span>
+			<div class="onetimeanchorClass mt-sm" style="display: none">
+				<!-- Anchordate start -->
+				<div class="opacity06">OR</div>
+				<!-- Anchordate start-->
+				<div class="mt-none resetDate">
+					<div>
+						<span class="pr-md">Anchor Date</span> <span> <select
+							class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							title="Select" name="activeTaskFrequenciesBo.xDaysSign"
+							id="onetimeXSign">
+								<option value="0"
+									${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}
+									${studyBo.enrollmentdateAsAnchordate?'selected':''}>+</option>
+								<option value="1"
+									${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+						</select>
+						</span>
+						<!--  selectpicker -->
+						<span class="form-group m-none dis-inline vertical-align-middle">
+							<c:choose>
+								<c:when
+									test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}">
+									<input id="onetimexdaysId" type="text"
+										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+										placeholder="X"
+										name="activeTaskFrequenciesBo.timePeriodFromDays" value=""
+										<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+										maxlength="3" pattern="[0-9]+"
+										data-pattern-error="Please enter valid number." />
+								</c:when>
+								<c:otherwise>
+									<input id="onetimexdaysId" type="text"
+										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+										placeholder="X"
+										name="activeTaskFrequenciesBo.timePeriodFromDays"
+										value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
+										<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+										maxlength="3" pattern="[0-9]+"
+										data-pattern-error="Please enter valid number." />
+								</c:otherwise>
+							</c:choose> <span class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+							class="light-txt opacity06"> days</span>
+						</span> <span
+							class="form-group m-none dis-inline vertical-align-middle pr-md">
+							<input id="selectTime" type="text"
+							class="mt-sm form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							name="activeTaskFrequenciesBo.frequencyTime"
+							value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"
+							<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>
+							placeholder="Select Time" /> <span
+							class='help-block with-errors red-txt'></span>
+						</span>
+					</div>
+				</div>
+				<!-- Anchordate End -->
+			</div>
+			<div class="mt-md form-group regularClass">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<input id="chooseDate" type="text"
+					class="mt-sm form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					name="activeTaskFrequenciesBo.frequencyDate"
+					placeholder="Choose Date"
+					value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}"
+					required
+					<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
+					<span class='help-block with-errors red-txt'></span>
+				</span> <span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<input id="selectTime1" type="text"
+					class="mt-sm form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					name="activeTaskFrequenciesBo.frequencyTime"
+					value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"
+					required
+					<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>
+					placeholder="Select Time" /> <span
+					class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+		</div>
+		<div class="gray-xs-f mb-sm mt-md">
+			Lifetime of the run and of the task (pick one)<span
+				class="requiredStar"> * </span>
+		</div>
+		<div class="mt-sm">
+			<span class="checkbox checkbox-inline"> <input type="checkbox"
+				id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime"
+				value="true"
+				${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''}
+				${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}
+				required="required"> <label for="isStudyLifeTime">
+					Study Lifetime</label>
+			</span>
+			<div class="mt-md form-group regularClass">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<c:choose>
+						<c:when
+							test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}">
+							<input id="chooseEndDate" type="text"
+								class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								name="activeTaskLifetimeEnd" placeholder="Choose End Date"
+								required
+								<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+								value="" />
+						</c:when>
+						<c:otherwise>
+							<input id="chooseEndDate" type="text"
+								class="form-control calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								name="activeTaskLifetimeEnd" placeholder="Choose End Date"
+								required
+								<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+								value="${activeTaskBo.activeTaskLifetimeEnd}" />
+						</c:otherwise>
+					</c:choose> <span class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<div class="onetimeanchorClass mt-sm" style="display: none">
+				<div class="opacity06">OR</div>
+				<!-- Anchordate start-->
+				<div class="mt-none resetDate">
+					<div>
+						<span class="pr-md">Anchor Date</span> <span> <select
+							class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							title="Select" name="activeTaskFrequenciesBo.yDaysSign"
+							id="onetimeYSign">
+								<option value="0"
+									${not activeTaskBo.activeTaskFrequenciesBo.yDaysSign ?'selected':''}>+</option>
+								<option value="1"
+									${activeTaskBo.activeTaskFrequenciesBo.yDaysSign ?'selected':''}>-</option>
+						</select>
+						</span>
+						<!--  selectpicker -->
+						<span class="form-group m-none dis-inline vertical-align-middle">
+							<c:choose>
+								<c:when
+									test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}">
+									<input id="onetimeydaysId" type="text"
+										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+										placeholder="Y"
+										name="activeTaskFrequenciesBo.timePeriodToDays" value=""
+										<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+										maxlength="3" pattern="[0-9]+"
+										data-pattern-error="Please enter valid number." />
+								</c:when>
+								<c:otherwise>
+									<input id="onetimeydaysId" type="text"
+										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+										placeholder="Y"
+										name="activeTaskFrequenciesBo.timePeriodToDays"
+										value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodToDays}"
+										<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
+										maxlength="3" pattern="[0-9]+"
+										data-pattern-error="Please enter valid number." />
+								</c:otherwise>
+							</c:choose> <span class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+							class="light-txt opacity06"> days</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<!-- Anchordate End -->
+		</div>
+	</div>
+</form:form>
+<!-- Daily Section-->
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
+	name="dailyFormId" id="dailyFormId" method="post" role="form">
+	<input type="hidden" name="frequency" id="dailyFrequencyId"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="previousFrequency" id="previousFrequency"
+		value="${activeTaskBo.frequency}">
 	<input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
-	   <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	   <input type="hidden" name="frequency" id="customfrequencyId" value="${activeTaskBo.frequency}">
-	   <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	    <input type="hidden" name="type" id="type" value="schedule">
+	<input type="hidden" name="studyId" id="studyId"
+		value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
+	<input type="hidden" name="type" id="type" value="schedule">
+	<input type="hidden" name="fetalCickDuration" value="">
+	<input type="hidden" name="id" class="activeTaskIdClass"
+		value="${activeTaskBo.id}">
+	<div class="daily all mt-lg dis-none">
+		<div class="gray-xs-f mb-sm">
+			Time(s) of the day for daily occurrence<span class="requiredStar">
+				*</span>
+		</div>
+		<div class="dailyContainer">
+			<c:if
+				test="${fn:length(activeTaskBo.activeTaskFrequenciesList) eq 0}">
+				<div class="time-opts mt-md dailyTimeDiv" id="0">
+					<span
+						class="form-group m-none dis-inline vertical-align-middle pr-md">
+						<input id="time0" type="text"
+						name="activeTaskFrequenciesList[0].frequencyTime" required
+						class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						placeholder="Time" onclick='timep(this.id);' /> <span
+						class='help-block with-errors red-txt'></span>
+					</span> <span
+						class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						onclick='addTime();'>+</span>
+					<!-- <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span> -->
+				</div>
+			</c:if>
+			<c:if
+				test="${fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0}">
+				<c:forEach items="${activeTaskBo.activeTaskFrequenciesList}"
+					var="activeTasksFrequencies" varStatus="frequeincesVar">
+					<div class="time-opts mt-md dailyTimeDiv"
+						id="${frequeincesVar.index}">
+						<input type="hidden"
+							name="activeTaskFrequenciesList[${frequeincesVar.index}].id"
+							value="${activeTasksFrequencies.id}"> <span
+							class="form-group m-none dis-inline vertical-align-middle pr-md">
+							<input id="time${frequeincesVar.index}" type="text"
+							name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime"
+							required
+							class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							placeholder="Time" onclick='timep(this.id);'
+							value="${activeTasksFrequencies.frequencyTime}" /> <span
+							class='help-block with-errors red-txt'></span>
+						</span> <span
+							class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							onclick='addTime();'>+</span> <span
+							class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							onclick='removeTime(this);'></span>
+					</div>
+				</c:forEach>
+			</c:if>
+		</div>
+		<div class="mt-md">
+			<div class="dailyStartCls col-md-3 pl-none">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<span class="gray-xs-f">Start date (pick a date)<span
+						class="requiredStar"> * </span></span><br /> <input id="startDate"
+					type="text"
+					class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					placeholder="Choose Date" required name="activeTaskLifetimeStart"
+					value="${activeTaskBo.activeTaskLifetimeStart}" /> <span
+					class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<!-- Anchordate start-->
+			<div class="dailyanchorDiv col-md-4 pl-none" style="display: none;">
+				<div class=" resetDate">
+					<div>
+						<span
+							class="form-group m-none dis-inline vertical-align-middle pr-md">
+							<span class="gray-xs-f">Start date (pick a date) <span
+								class="requiredStar">*</span></span><br /> <span class="pr-md">Anchor
+								Date</span> <span> <select
+								class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								title="Select" name="activeTaskFrequenciesList[0].xDaysSign"
+								id="dailyXSign">
+									<option value="0"
+										${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0) && not activeTaskBo.activeTaskFrequenciesList[0].xDaysSign ?'selected':''}>+</option>
+									<option value="1"
+										${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0) && activeTaskBo.activeTaskFrequenciesList[0].xDaysSign ?'selected':''}>-</option>
+							</select>
+						</span> <span class="form-group m-none dis-inline vertical-align-middle">
+								<input id="dailyxdaysId" type="text"
+								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								placeholder="X"
+								name="activeTaskFrequenciesList[0].timePeriodFromDays"
+								value="${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0)?activeTaskBo.activeTaskFrequenciesList[0].timePeriodFromDays:''}"
+								maxlength="3" pattern="[0-9]+"
+								data-pattern-error="Please enter valid number." /> <span
+								class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+								class="light-txt opacity06"> days</span>
+						</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<!-- Anchordate End -->
+			<div class="col-md-6 pr-none">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<span class="gray-xs-f">Number of times to repeat the task<span
+						class="requiredStar"> * </span></span><br /> <input id="days"
+					type="text"
+					class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					name="repeatActiveTask" placeholder="No of Times" required
+					value="${activeTaskBo.repeatActiveTask}"
+					onkeypress="return isNumber(event, this)"
+					pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+					data-pattern-error="Please enter valid number." maxlength="3" /> <span
+					class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="mt-md">
+			<div class="gray-xs-f mb-xs">End Date</div>
+			<div class="black-xs-f" id="endDateId">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
+			<input type="hidden" name="activeTaskLifetimeEnd"
+				id="studyDailyLifetimeEnd"
+				value="${activeTaskBo.activeTaskLifetimeEnd}">
+		</div>
+		<div class="mt-lg">
+			<div class="gray-xs-f mb-xs">Lifetime of each run</div>
+			<div class="black-xs-f">Until the next run comes up</div>
+		</div>
+		<div class="mt-lg">
+			<div class="gray-xs-f mb-xs">Lifetime of the task</div>
+			<div class="black-xs-f" id="lifeTimeId">${activeTaskBo.activeTaskLifetimeStart}
+				- ${activeTaskBo.activeTaskLifetimeEnd}</div>
+		</div>
+	</div>
+</form:form>
+<!-- Weekly Section-->
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
+	name="weeklyFormId" id="weeklyFormId" method="post" role="form">
+	<input type="hidden" name="frequency" id="weeklyfrequencyId">
+	<input type="hidden" name="previousFrequency" id="previousFrequency"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="id" id="id" class="activeTaskIdClass"
+		value="${activeTaskBo.id}">
+	<input type="hidden" name="studyId" id="studyId"
+		value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
+	<input type="hidden" name="activeTaskFrequenciesBo.id" id="weeklyFreId"
+		value="${activeTaskBo.activeTaskFrequenciesBo.id}">
+	<input type="hidden" name="type" id="type" value="schedule">
+	<div class="week all mt-lg dis-none">
+		<div id="weekDaysId">
+			<span class="gray-xs-f">Day/Time (of the week)<span
+				class="requiredStar"> * </span></span><br />
+			<div
+				class=" form-group m-none dis-inline vertical-align-middle pr-md">
+				<span class=""> <select id="startDateWeekly"
+					class="form-control mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					name="dayOfTheWeek" required>
+						<option value=''>Select</option>
+						<option value='Sunday'
+							${activeTaskBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
+						<option value='Monday'
+							${activeTaskBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
+						<option value='Tuesday'
+							${activeTaskBo.dayOfTheWeek eq 'Tuesday' ?'selected':''}>Tuesday</option>
+						<option value='Wednesday'
+							${activeTaskBo.dayOfTheWeek eq 'Wednesday' ?'selected':''}>Wednesday</option>
+						<option value='Thursday'
+							${activeTaskBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
+						<option value='Friday'
+							${activeTaskBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday
+						</option>
+						<option value='Saturday'
+							${activeTaskBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
+				</select> <span class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<span
+				class="form-group m-none dis-inline vertical-align-middle pr-md">
+				<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> --> <input
+				id="selectWeeklyTime" type="text"
+				class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+				required onclick="timep(this.id)" placeholder="Time"
+				name="activeTaskFrequenciesBo.frequencyTime"
+				value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" /> <span
+				class='help-block with-errors red-txt'></span>
+			</span>
+		</div>
+		<div class="mt-md">
+			<span class="weeklyStartCls  col-md-3 pl-none"> <span
+				class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<span class="gray-xs-f">Start date<span class="requiredStar">
+							* </span></span><br /> <input id="startWeeklyDate" type="text"
+					class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					required name="activeTaskLifetimeStart" placeholder="Choose Date"
+					value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly" />
+					<span class='help-block with-errors red-txt'></span>
+			</span>
+			</span>
+			<!-- Anchordate start-->
+			<div class="weeklyanchorDiv pl-none" style="display: none;">
+				<div class=" resetDate dis_inlinetop p-none">
+					<div>
+						<span
+							class="form-group m-none dis-inline vertical-align-middle pr-md">
+							<span class="gray-xs-f">Start date (pick a date) <span
+								class="requiredStar">*</span></span><br /> <span class="pr-md">Anchor
+								Date</span> <span> <select
+								class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								title="Select" name="activeTaskFrequenciesBo.xDaysSign"
+								id="weeklyXSign">
+									<option value="0"
+										${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+									<option value="1"
+										${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+							</select>
+						</span> <span class="form-group m-none dis-inline vertical-align-middle">
+								<input id="weeklyxdaysId" type="text"
+								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								placeholder="X"
+								name="activeTaskFrequenciesBo.timePeriodFromDays"
+								value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
+								maxlength="3" pattern="[0-9]+"
+								data-pattern-error="Please enter valid number." /> <span
+								class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+								class="light-txt opacity06"> days</span>
+						</span>
+						</span>
+					</div>
+				</div>
+				<div class="dis_inlinetop p-none">
+					<span class="gray-xs-f">Time <span class="requiredStar">*</span><br /></span>
+					<span
+						class="form-group m-none dis-inline vertical-align-middle pr-md">
+						<input id="selectWeeklyTimeAnchor" type="text"
+						class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						required onclick="timep(this.id)" placeholder="Time"
+						name="activeTaskFrequenciesBo.frequencyTime"
+						value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" />
+						<span class='help-block with-errors red-txt'></span>
+					</span>
+				</div>
+				<div class="dis_inlinetop">
+					<span
+						class="form-group m-none dis-inline vertical-align-middle pr-md">
+						<span class="gray-xs-f">Number of times to repeat the task
+							<span class="requiredStar"> * </span>
+					</span><br /> <input id="weeksAnchor" type="text"
+						class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						name="repeatActiveTask" placeholder="No of Times"
+						value="${activeTaskBo.repeatActiveTask}" required
+						onkeypress="return isNumber(event, this)"
+						pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+						data-pattern-error="Please enter valid number." maxlength="3" />
+						<span class='help-block with-errors red-txt'></span>
+					</span>
+				</div>
+			</div>
+
+			<!-- Anchordate End -->
+			<div class="col-md-4 p-none weeklyRegular">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<span class="gray-xs-f">Number of times to repeat the task <span
+						class="requiredStar"> * </span></span><br /> <input id="weeks"
+					type="text"
+					class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					name="repeatActiveTask" placeholder="No of Times"
+					value="${activeTaskBo.repeatActiveTask}" required
+					onkeypress="return isNumber(event, this)"
+					pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+					data-pattern-error="Please enter valid number." maxlength="3" /> <span
+					class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="mt-md">
+			<div class="gray-xs-f mb-xs">End Date</div>
+			<div class="black-xs-f" id="weekEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
+			<input type="hidden" name="activeTaskLifetimeEnd"
+				id="studyWeeklyLifetimeEnd"
+				value="${activeTaskBo.activeTaskLifetimeEnd}">
+		</div>
+		<div class="mt-lg">
+			<div class="gray-xs-f mb-xs">Lifetime of each run</div>
+			<div class="black-xs-f">Until the next run comes up</div>
+		</div>
+		<div class="mt-lg">
+			<div class="gray-xs-f mb-xs">Lifetime of the task</div>
+			<div class="black-xs-f" id="weekLifeTimeEnd">${activeTaskBo.activeTaskLifetimeStart}
+				- ${activeTaskBo.activeTaskLifetimeEnd}</div>
+		</div>
+	</div>
+</form:form>
+<!-- Monthly Section-->
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
+	name="monthlyFormId" id="monthlyFormId" method="post" role="form">
+	<input type="hidden" name="frequency" id="monthlyfrequencyId"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="previousFrequency" id="previousFrequency"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="id" id="id" class="activeTaskIdClass"
+		value="${activeTaskBo.id}">
+	<input type="hidden" name="studyId" id="studyId"
+		value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
+	<input type="hidden" name="activeTaskFrequenciesBo.id" id="monthFreId"
+		value="${activeTaskBo.activeTaskFrequenciesBo.id}">
+	<input type="hidden" name="type" id="type" value="schedule">
+	<div class="month all mt-lg dis-none">
+		<div id="monthlyDateId">
+			<span class="gray-xs-f">Select Date/Time (of the month)<span
+				class="requiredStar"> * </span></span><br /> <span
+				class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
+				<span class=""> <input id="startDateMonthly" type="text"
+					class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					required placeholder="Choose Date"
+					name="activeTaskFrequenciesBo.frequencyDate"
+					value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}" /> <span
+					class='help-block with-errors red-txt'></span>
+			</span>
+			</span> <span
+				class="form-group m-none dis-inline vertical-align-middle pr-md">
+				<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> --> <input
+				id="selectMonthlyTime" type="text"
+				class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+				required onclick="timep(this.id)" placeholder="Time"
+				name="activeTaskFrequenciesBo.frequencyTime"
+				value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" /> <span
+				class='help-block with-errors red-txt'></span>
+			</span>
+			<div class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light">If
+				the selected date is not available in a month, the last day of the
+				month will be used instead</div>
+		</div>
+		<div class="mt-xs">
+			<div class="monthlyStartCls  col-md-3 pl-none">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<span class="gray-xs-f">Start date<span class="requiredStar">
+							* </span></span><br /> <input id="pickStartDate" type="text"
+					class="form-control mt-sm calendar ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					placeholder="Choose Start Date" required
+					name="activeTaskLifetimeStart"
+					value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly" />
+					<span class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<!-- Anchordate start-->
+			<div class="monthlyanchorDiv pl-none" style="display: none;">
+				<div class="dis_inlinetop resetDate">
+					<div>
+						<span
+							class="form-group m-none dis-inline vertical-align-middle pr-md">
+							<span class="gray-xs-f">Start date (pick a date) <span
+								class="requiredStar">*</span></span><br /> <span class="pr-md">Anchor
+								Date</span> <span> <select
+								class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								title="Select" name="activeTaskFrequenciesBo.xDaysSign"
+								id="monthlyXSign">
+									<option value="0"
+										${not activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+									<option value="1"
+										${activeTaskBo.activeTaskFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+							</select>
+						</span> <span class="form-group m-none dis-inline vertical-align-middle">
+								<input id="monthlyxdaysId" type="text"
+								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								placeholder="X"
+								name="activeTaskFrequenciesBo.timePeriodFromDays"
+								value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
+								maxlength="3" pattern="[0-9]+"
+								data-pattern-error="Please enter valid number." /> <span
+								class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+								class="light-txt opacity06"> days</span>
+						</span>
+						</span>
+					</div>
+				</div>
+
+				<div class="dis_inlinetop">
+					<span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br />
+					<span
+						class="form-group m-none dis-inline vertical-align-middle pr-md">
+						<input id="selectMonthlyTimeAnchor" type="text"
+						class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						required onclick="timep(this.id)" placeholder="Time"
+						name="activeTaskFrequenciesBo.frequencyTime"
+						value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" />
+						<span class='help-block with-errors red-txt'></span>
+					</span>
+				</div>
+				<div class="dis_inlinetop">
+					<span
+						class="form-group m-none dis-inline vertical-align-middle pr-md">
+						<span class="gray-xs-f">Number of times to repeat the task
+							<span class="requiredStar"> * </span>
+					</span><br /> <input id="monthsAnchor" type="text"
+						class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						name="repeatActiveTask" placeholder="No of Times" required
+						value="${activeTaskBo.repeatActiveTask}"
+						onkeypress="return isNumber(event, this)"
+						pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+						data-pattern-error="Please enter valid number." maxlength="3" />
+						<span class='help-block with-errors red-txt'></span>
+					</span>
+				</div>
+
+			</div>
+
+			<!-- Anchordate End -->
+			<div id="activeMonthlyRegular" class="dis_inlinetop">
+				<span
+					class="form-group m-none dis-inline vertical-align-middle pr-md">
+					<span class="gray-xs-f">Number of times to repeat the task <span
+						class="requiredStar"> * </span></span><br /> <input id="months"
+					type="text"
+					class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					name="repeatActiveTask" placeholder="No of Times" required
+					value="${activeTaskBo.repeatActiveTask}"
+					onkeypress="return isNumber(event, this)"
+					pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+					data-pattern-error="Please enter valid number." maxlength="3" /> <span
+					class='help-block with-errors red-txt'></span>
+				</span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="mt-md col-md-12 p-none">
+			<div class="gray-xs-f mb-xs">End Date</div>
+			<div class="black-xs-f" id="monthEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
+			<input type="hidden" name="activeTaskLifetimeEnd"
+				id="studyMonthlyLifetimeEnd"
+				value="${activeTaskBo.activeTaskLifetimeEnd}">
+		</div>
+		<div class="mt-lg col-md-12 p-none">
+			<div class="gray-xs-f mb-xs">Lifetime of each run</div>
+			<div class="black-xs-f">Until the next run comes up</div>
+		</div>
+		<div class="mt-lg col-md-12 p-none">
+			<div class="gray-xs-f mb-xs">Lifetime of the task</div>
+			<div class="black-xs-f" id="monthLifeTimeDate">${activeTaskBo.activeTaskLifetimeStart}
+				- ${activeTaskBo.activeTaskLifetimeEnd}</div>
+		</div>
+	</div>
+</form:form>
+<!-- Manually Section-->
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
+	name="customFormId" id="customFormId" method="post" role="form">
+	<input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
+	<input type="hidden" name="studyId" id="studyId"
+		value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
+	<input type="hidden" name="frequency" id="customfrequencyId"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="previousFrequency" id="previousFrequency"
+		value="${activeTaskBo.frequency}">
+	<input type="hidden" name="type" id="type" value="schedule">
 	<div class="manually all mt-lg dis-none">
-	    <div class="gray-xs-f mb-sm">Select time period<span class="requiredStar"> * </span></div>
-	    <div class="manuallyContainer">
-	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
-	      	<div class="manually-option mb-md form-group" id="0" >
-	      	  <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}">
-	        <span class="form-group dis-inline vertical-align-middle pr-md">
-	        <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="activeTaskCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
-	        <span class='help-block with-errors red-txt'></span>
-	        </span>
-	        <span class="gray-xs-f mb-sm pr-md align-span-center">
-	        to 
-	        </span>
-	        <span class="form-group dis-inline vertical-align-middle pr-md">
-	        <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="activeTaskCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
-	         <span class='help-block with-errors red-txt'></span>
-	        </span>
-	        <span class="form-group dis-inline vertical-align-middle pr-md">
-	        <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
-	         <span class='help-block with-errors red-txt'></span>
-	        </span>
-	        <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addDate();'>+</span>
-	        <!-- <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span> -->
-	     </div>
-	      </c:if>
-	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) gt 0}">
-	      	<c:forEach items="${activeTaskBo.activeTaskCustomScheduleBo}" var="activeTaskCustomScheduleBo" varStatus="customVar">
-	        <div class="manually-option mb-md form-group" id="${customVar.index}" >
-	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id" value="${activeTaskCustomScheduleBo.id}">
-	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${activeTaskCustomScheduleBo.used}">
-	      	  	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId" id="activeTaskId" value="${activeTaskCustomScheduleBo.activeTaskId}">
-	         <span class="form-group  dis-inline vertical-align-middle pr-md">
-	         <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${activeTaskCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
-	         <span class='help-block with-errors red-txt'></span>
-	         </span>
-	         <span class="gray-xs-f mb-sm pr-md align-span-center">
-	         to 
-	         </span>
-	         <span class="form-group  dis-inline vertical-align-middle pr-md">
-	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
-	          <span class='help-block with-errors red-txt'></span>
-	         </span>
-	         <span class="form-group  dis-inline vertical-align-middle pr-md">
-	         <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime" value="${activeTaskCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
-	          <span class='help-block with-errors red-txt'></span>
-	         </span>
-	         <span class="addbtn addBtnDis align-span-center mr-md " onclick="addDate();">+</span>
-	         <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" onclick="removeDate(this);"></span>
-	      </div>
-	      	</c:forEach>
-	      </c:if>
-	    </div>
-	    <!-- anchor start-->
-	     <div class="manuallyAnchorContainer" style="display:none;">
+		<div class="gray-xs-f mb-sm">
+			Select time period<span class="requiredStar"> * </span>
+		</div>
+		<div class="manuallyContainer">
+			<c:if
+				test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
+				<div class="manually-option mb-md form-group" id="0">
+					<input type="hidden"
+						name="activeTaskCustomScheduleBo[0].activeTaskId"
+						id="activeTaskId" class="activeTaskIdClass"
+						value="${activeTaskBo.id}"> <span
+						class="form-group dis-inline vertical-align-middle pr-md">
+						<input id="StartDate0" type="text" count='0'
+						class="form-control calendar customCalnder cusStrDate"
+						name="activeTaskCustomScheduleBo[0].frequencyStartDate" value=""
+						placeholder="Start Date" onclick='customStartDate(this.id,0);'
+						required /> <span class='help-block with-errors red-txt'></span>
+					</span> <span class="gray-xs-f mb-sm pr-md align-span-center"> to </span>
+					<span class="form-group dis-inline vertical-align-middle pr-md">
+						<input id="EndDate0" type="text" count='0'
+						class="form-control calendar customCalnder cusEndDate"
+						name="activeTaskCustomScheduleBo[0].frequencyEndDate"
+						placeholder="End Date" onclick='customEndDate(this.id,0);'
+						required /> <span class='help-block with-errors red-txt'></span>
+					</span> <span class="form-group dis-inline vertical-align-middle pr-md">
+						<input id="customTime0" type="text" count='0'
+						class="form-control clock cusTime"
+						name="activeTaskCustomScheduleBo[0].frequencyTime"
+						placeholder="Time" onclick='timep(this.id);' disabled required />
+						<span class='help-block with-errors red-txt'></span>
+					</span> <span class="addBtnDis addbtn mr-sm align-span-center"
+						onclick='addDate();'>+</span>
+					<!-- <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span> -->
+				</div>
+			</c:if>
+			<c:if
+				test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) gt 0}">
+				<c:forEach items="${activeTaskBo.activeTaskCustomScheduleBo}"
+					var="activeTaskCustomScheduleBo" varStatus="customVar">
+					<div class="manually-option mb-md form-group"
+						id="${customVar.index}">
+						<input type="hidden"
+							name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id"
+							value="${activeTaskCustomScheduleBo.id}"> <input
+							type="hidden"
+							name="activeTaskCustomScheduleBo[${customVar.index}].used"
+							id="isUsed${customVar.index}"
+							value="${activeTaskCustomScheduleBo.used}"> <input
+							type="hidden"
+							name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId"
+							id="activeTaskId"
+							value="${activeTaskCustomScheduleBo.activeTaskId}"> <span
+							class="form-group  dis-inline vertical-align-middle pr-md">
+							<input id="StartDate${customVar.index}" type="text"
+							count='${customVar.index}'
+							class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate"
+							value="${activeTaskCustomScheduleBo.frequencyStartDate}"
+							placeholder="Start Date"
+							onclick='customStartDate(this.id,${customVar.index});' required />
+							<span class='help-block with-errors red-txt'></span>
+						</span> <span class="gray-xs-f mb-sm pr-md align-span-center"> to
+						</span> <span class="form-group  dis-inline vertical-align-middle pr-md">
+							<input id="EndDate${customVar.index}" type="text"
+							count='${customVar.index}'
+							class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate"
+							value="${activeTaskCustomScheduleBo.frequencyEndDate}"
+							placeholder="End Date"
+							onclick='customEndDate(this.id,${customVar.index});' required />
+							<span class='help-block with-errors red-txt'></span>
+						</span> <span class="form-group  dis-inline vertical-align-middle pr-md">
+							<input id="customTime${customVar.index}" type="text"
+							count='${customVar.index}'
+							class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"
+							value="${activeTaskCustomScheduleBo.frequencyTime}"
+							placeholder="Time" onclick='timep(this.id);' required /> <span
+							class='help-block with-errors red-txt'></span>
+						</span> <span class="addbtn addBtnDis align-span-center mr-md "
+							onclick="addDate();">+</span> <span id="delete"
+							class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							onclick="removeDate(this);"></span>
+					</div>
+				</c:forEach>
+			</c:if>
+		</div>
+		<!-- anchor start-->
+		<div class="manuallyAnchorContainer" style="display: none;">
 			<c:if
 				test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
 				<div class="manually-anchor-option mb-md form-group" id="0">
-					<input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}"> 
-					<span class="mb-sm pr-md"> <span class="light-txt opacity06">
-							Anchor Date </span>
+					<input type="hidden"
+						name="activeTaskCustomScheduleBo[0].activeTaskId"
+						id="activeTaskId" class="activeTaskIdClass"
+						value="${activeTaskBo.id}"> <span class="mb-sm pr-md">
+						<span class="light-txt opacity06"> Anchor Date </span>
 					</span> <span> <select class="signDropDown selectpicker sign-box"
 						count='0' title="Select"
 						name="activeTaskCustomScheduleBo[0].xDaysSign" id="xSign0">
@@ -640,8 +934,10 @@
 						value="${activeTaskCustomScheduleBo.frequencyTime}"
 						placeholder="Time" required /> <span
 						class='help-block with-errors red-txt'></span>
-					</span> <span class="addbtn addBtnDis dis-inline vertical-align-middle "
-						onclick="addDateAnchor();">+</span> <!-- <span id="deleteAncchor"
+					</span> <span
+						class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle "
+						onclick="addDateAnchor();">+</span>
+					<!-- <span id="deleteAncchor"
 						class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
 						onclick="removeDateAnchor(this);"></span> -->
 				</div>
@@ -652,15 +948,24 @@
 					var="activeTaskCustomScheduleBo" varStatus="customVar">
 					<div class="manually-anchor-option mb-md form-group"
 						id="${customVar.index}">
-						 <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id" value="${activeTaskCustomScheduleBo.id}">
-	        	         <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${activeTaskCustomScheduleBo.used}">
-	      	  	         <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId" id="activeTaskId" value="${activeTaskCustomScheduleBo.activeTaskId}">
-						<span class="mb-sm pr-md"> <span
-							class="light-txt opacity06"> Anchor Date </span>
-						</span> <span> <select class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+						<input type="hidden"
+							name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id"
+							value="${activeTaskCustomScheduleBo.id}"> <input
+							type="hidden"
+							name="activeTaskCustomScheduleBo[${customVar.index}].used"
+							id="isUsed${customVar.index}"
+							value="${activeTaskCustomScheduleBo.used}"> <input
+							type="hidden"
+							name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId"
+							id="activeTaskId"
+							value="${activeTaskCustomScheduleBo.activeTaskId}"> <span
+							class="mb-sm pr-md"> <span class="light-txt opacity06">
+								Anchor Date </span>
+						</span> <span> <select
+							class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].xDaysSign"
-							id="xSign${customVar.index}"> 
+							id="xSign${customVar.index}">
 								<option value="0"
 									${not activeTaskCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
 								<option value="1"
@@ -673,17 +978,19 @@
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 							value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
 							maxlength="3" required pattern="[0-9]+"
-							data-pattern-error="Please enter valid number."  data-type='xancorText'/> <span
+							data-pattern-error="Please enter valid number."
+							data-type='xancorText' /> <span
 							class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> days <span
 								style="padding-right: 5px; padding-left: 5px">to </span> Anchor
 								Date
 						</span>
-						</span> <span> <select class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+						</span> <span> <select
+							class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].yDaysSign"
-							id="ySign0" >
+							id="ySign0">
 								<option value="0"
 									${not activeTaskCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
 								<option value="1"
@@ -696,7 +1003,8 @@
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodToDays"
 							value="${activeTaskCustomScheduleBo.timePeriodToDays}"
 							maxlength="3" pattern="[0-9]+"
-							data-pattern-error="Please enter valid number." required data-type='yancorText'/> <span
+							data-pattern-error="Please enter valid number." required
+							data-type='yancorText' /> <span
 							class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> days </span>
@@ -708,7 +1016,8 @@
 							value="${activeTaskCustomScheduleBo.frequencyTime}"
 							placeholder="Time" required /> <span
 							class='help-block with-errors red-txt'></span>
-						</span> <span class="addbtn addBtnDis align-span-center mr-md "
+						</span> <span
+							class="addbtn addBtnDis addbtnZero align-span-center mr-md "
 							onclick="addDateAnchor();">+</span> <span id="deleteAncchor"
 							class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
 							onclick="removeDateAnchor(this);"></span>
@@ -716,13 +1025,22 @@
 				</c:forEach>
 			</c:if>
 		</div>
-	    <!-- anchor end-->
-	    <div class="mt-md">
-	       <div class="gray-xs-f mb-xs">Default Lifetime of each run </div>
-	       <div class="black-xs-f">As defined by the start and end times selected above</div>
-	    </div>
-	 </div>
-	</form:form> 
+		<!-- anchor end-->
+		<div class="mt-md">
+			<div class="gray-xs-f mb-xs">Default Lifetime of each run</div>
+			<div class="black-xs-f">As defined by the start and end times
+				selected above</div>
+		</div>
+		<div class="col-md-4 col-lg-3 mt-xlg mb-lg addNewRuns"
+			style="display: none;">
+			<span class="checkbox checkbox-inline addNewRuns"> <input
+				type="checkbox" id="addNewRunsId" value="${activeTaskBo.addNewRuns}"
+				<c:if test="${activeTaskBo.addNewRuns}">checked</c:if>> <label
+				for="addNewRunsId"> Add New Runs </label>
+			</span>
+		</div>
+	</div>
+</form:form>
 <!-- </div> -->
 <script type="text/javascript">
 var count = 0;
@@ -744,7 +1062,7 @@ var customAnchorCount = 0;
 $('span.addBtnDis').remove();
 $('span.remBtnDis').remove();
 </c:if> */
-
+var isParticipantProp="";
 $(document).ready(function() {
 	
 		$(".remBtnDis").addClass("hide");
@@ -769,9 +1087,39 @@ $(document).ready(function() {
 		localStorage.setItem("IsActiveRegularSelected", "true");
 	}
 	
+	isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
+	if(isParticipantProp==='true'){
+		$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+		//$('.manuallyAnchorContainer').find('.remBtnZero').hide();
+		$('.addNewRuns').show();
+	 }else{
+		 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+		 //$('.manuallyAnchorContainer').find('.remBtnZero').show();
+		 $('.addNewRuns').hide();
+	 }
+	
+	$("#anchorDateId").change(function() {
+		isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
+		 if(isParticipantProp==='true'){
+				$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+				$('.addNewRuns').show();
+			 }else{
+				 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+				 $('.addNewRuns').hide();
+			 }
+	});
+	
+	$('#addNewRunsId').change(function () {
+		if(this.checked) {
+			$("#addNewRunsId").val('true');
+	    }else{
+	    	$("#addNewRunsId").val('false');
+	    }
+	 });
 	
 	$(".typeofschedule").change(function() {
 		var scheduletype = $(this).attr('scheduletype');
+		isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
         $('#isLaunchStudy').prop('checked', false);
         $('#isStudyLifeTime').prop('checked', false);
     	$("#chooseDate").attr("disabled",false);
@@ -807,20 +1155,23 @@ $(document).ready(function() {
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Weekly'){
-				   /* $("#weekDaysId").hide();
-				   $("#weekDaysId").find('input:text').removeAttr('required',true); */
 				   $(".weeklyanchorDiv").show();
 				   $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Monthly'){
-				  /*  $("#monthlyDateId").hide();
-				   $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				   $(".monthlyanchorDiv").show();
 				   $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(schedule_opts == 'Manually Schedule'){
 	    			$(".manuallyAnchorContainer").show();
 					$(".manuallyAnchorContainer").find('input:text').attr('required',true);
+					if(isParticipantProp==='true'){
+						$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+						$('.addNewRuns').show();
+					 }else{
+						 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+						 $('.addNewRuns').hide();
+					 }
 	    	}
 			 $('.regularClass').hide();
 			 $('.regularClass').find('input:text').removeAttr('required');
@@ -865,15 +1216,11 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			/* $("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true); */
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			/* $("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -932,11 +1279,11 @@ $(document).ready(function() {
 	}
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").change(function() {
-		//alert("on change");
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
         console.log("val:"+val);
+        isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
         $("." + schedule_opts).removeClass("dis-none");
         resetValidation($("#oneTimeFormId"));
         resetValidation($("#customFormId"));
@@ -1036,20 +1383,23 @@ $(document).ready(function() {
 				 $(".dailyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Weekly'){
-				 /* $("#weekDaysId").hide();
-				 $("#weekDaysId").find('input:text').removeAttr('required',true); */
 				 $(".weeklyanchorDiv").show();
 				 $(".weeklyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Monthly'){
-				 /* $("#monthlyDateId").hide();
-				 $("#monthlyDateId").find('input:text').removeAttr('required',true); */
 				 $(".monthlyanchorDiv").show();
 				 $(".monthlyanchorDiv").find('input:text').attr('required',true);
 			 }
 			 if(val == 'Manually Schedule'){
 	    			$(".manuallyAnchorContainer").show();
 					$(".manuallyAnchorContainer").find('input:text').attr('required',true);
+					if(isParticipantProp==='true'){
+						$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+						$('.addNewRuns').show();
+					 }else{
+						 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+						 $('.addNewRuns').hide();
+					 }
 	    	}
 			 $('.regularClass').hide();
 			 $('.regularClass').find('input:text').removeAttr('required');
@@ -1077,15 +1427,11 @@ $(document).ready(function() {
 			
 			$('.weeklyStartCls').show();
 			$('.weeklyStartCls').find('input:text,select').attr('required',true);
-			/* $("#weekDaysId").show();
-			$("#weekDaysId").find('input:text').attr('required',true); */
 			$(".weeklyanchorDiv").hide();
 			$(".weeklyanchorDiv").find('input:text').removeAttr('required',true);
 			
 			$('.monthlyStartCls').show();
 			$('.monthlyStartCls').find('input:text').attr('required',true);
-			/* $("#monthlyDateId").show();
-			$("#monthlyDateId").find('input:text').attr('required',true); */
 			$(".monthlyanchorDiv").hide();
 			$(".monthlyanchorDiv").find('input:text').removeAttr('required',true);
 			
@@ -1096,9 +1442,6 @@ $(document).ready(function() {
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
 			$("#anchorDateId").val("");
-			
-			
-			
 		} 
 	//AnchorDate type end
         
@@ -1118,6 +1461,7 @@ $(document).ready(function() {
     		$(".month").removeClass("dis-none");
     	}
     	var scheduletype = $('input[name="scheduleType"]:checked').val();
+    	isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
     	if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefined' && scheduletype == 'AnchorDate'){
     		if(frequencey == 'One time'){  
     		 $(".onetimeanchorClass").show();
@@ -1142,6 +1486,13 @@ $(document).ready(function() {
     		if(frequencey == 'Manually Schedule'){
     			$(".manuallyAnchorContainer").show();
 				$(".manuallyAnchorContainer").find('input:text').attr('required',true);
+				if(isParticipantProp==='true'){
+					$('.manuallyAnchorContainer').find('.addbtnZero').hide();
+					$('.addNewRuns').show();
+				 }else{
+					 $('.manuallyAnchorContainer').find('.addbtnZero').show();
+					 $('.addNewRuns').hide();
+				 }
     		}
     		$('.regularClass').hide();
     		$('.regularClass').find('input:text').removeAttr('required');
@@ -1747,6 +2098,7 @@ function saveActiveTask(item, actType, callback){
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var schedule_text = $('input[name="scheduleType"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
+	var addNewRuns=$("#addNewRunsId").val();
 	var isFormValid = true;
 	
 	var study_lifetime_end = '';
@@ -1782,6 +2134,9 @@ function saveActiveTask(item, actType, callback){
 	}
 	if(schedule_text != null && schedule_text != '' && typeof schedule_text != 'undefined'){
 		activeTask.scheduleType=schedule_text;
+	}
+	if(addNewRuns != null && addNewRuns != '' && typeof addNewRuns != 'undefined'){
+		activeTask.addNewRuns=addNewRuns;
 	}
 	
 	var activeTaskFrequencey = new Object();
@@ -2758,7 +3113,6 @@ $(document).ready(function(){
 	
 	
 	jQuery(document).on("keyup",".xdays",function(){
-	    
 		var xday = $(this).val()
 		var parent_id = $(this).parent().parent().attr("id");
 		var xsign = $("#xSign"+parent_id).val() === "0" ? "+" : "-";
@@ -2779,15 +3133,14 @@ $(document).ready(function(){
 
 		  
 		if(parent_id === "0"){
-		 
 		if(ydayValue !== ""){
-		  if(xdayValue > ydayValue){		    
+		  if(xdayValue > ydayValue){
 		    $(this).addClass("red-border");
 		    $("#ydays"+parent_id).addClass("red-border");
 		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 		    //$("#addbtn"+parent_id).addClass("not-allowed");
 		    $(".addbtn").addClass("not-allowed");
-		  }else{				
+		  }else{		
 			$(this).removeClass("red-border");
 		    $("#ydays"+parent_id).removeClass("red-border");
 		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
@@ -2797,7 +3150,6 @@ $(document).ready(function(){
 		}
 
 		}else{	
-		  
 		  var pre_parent = $("#"+parent_id).prev().attr("id");
 		  var pyday = $("#ydays"+pre_parent).val();  
 		  var pysign = $("#ySign"+parent_id).val() === "0" ? "+" : "-";
@@ -2857,11 +3209,11 @@ $(document).ready(function(){
 
 		});
 
-		jQuery(document).on("change",".xdays",function(){				
+		jQuery(document).on("change",".xdays",function(){	
 			$(this).parent().parent().siblings().removeClass("current");
 			$(this).parent().parent().addClass("current");
 			
-			$(".current").nextAll().remove();	
+			//$(".current").nextAll().remove();	
 		});	
 		
 		jQuery(document).on("keyup",".ydays",function(){			
@@ -2899,7 +3251,7 @@ $(document).ready(function(){
 		jQuery(document).on("change",".ydays",function(){	
 			$(this).parent().parent().siblings().removeClass("current");
 			$(this).parent().parent().addClass("current");
-			$(".current").nextAll().remove();			
+			//$(".current").nextAll().remove();			
 		    
 		});	
 		
@@ -2958,7 +3310,7 @@ $(document).ready(function(){
 			/* $("#"+parent_id).siblings().removeClass("current");
 			$("#"+parent_id).parent().parent().addClass("current"); */
 			
-			$(".current").nextAll().remove();
+			//$(".current").nextAll().remove();
 			
 			
 			/* var siblings_length = $(".manuallyAnchorContainer > div").length;			

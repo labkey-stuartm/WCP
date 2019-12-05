@@ -94,7 +94,7 @@
 $(document).ready(function(){  
 			$('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
-			$(".sixthQuestionnaires").addClass('active');
+			$(".seventhQuestionnaires").addClass('active');
 	
              $('#questionnaire_list').DataTable( {
                  "paging":   true,

@@ -44,19 +44,19 @@ public class QuestionnaireCustomScheduleBo implements Serializable {
 	@Column(name = "is_used")
 	@Type(type = "yes_no")
 	private boolean used = false;
-	
+
 	@Column(name = "x_days_sign", length = 1)
 	private boolean xDaysSign = false;
 
 	@Column(name = "y_days_sign", length = 1)
 	private boolean yDaysSign = false;
-	
+
 	@Column(name = "time_period_from_days")
 	private Integer timePeriodFromDays;
 
 	@Column(name = "time_period_to_days")
 	private Integer timePeriodToDays;
-	
+
 	public String getFrequencyEndDate() {
 		return frequencyEndDate;
 	}

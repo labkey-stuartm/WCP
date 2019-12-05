@@ -42,6 +42,7 @@ import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
+import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -1759,6 +1760,334 @@ public class StudyController {
 		}
 		logger.info("StudyController - overviewStudyPages - Ends");
 		return mav;
+	}
+
+	@RequestMapping("/adminStudies/participantPropertiesPage.do")
+	public ModelAndView participantPropertiesPages(HttpServletRequest request) {
+		logger.info("StudyController - participantPropertiesPages - Starts");
+		ModelAndView mav = null;
+		ModelMap map = null;
+		String customStudyId = "";
+		List<ParticipantPropertiesBO> propertiesList = null;
+		StudyBo studyBo = null;
+		String permission = "";
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				String studyId = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID));
+				permission = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION));
+				customStudyId = (String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				propertiesList = studyService.getParticipantProperties(customStudyId);
+				if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				}
+			}
+			map = new ModelMap();
+			map.addAttribute("participantPropertiesList", propertiesList);
+			map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+			map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+			map.addAttribute("_S", sessionStudyCount);
+			mav = new ModelAndView("participantPropertiesPage", map);
+		} catch (Exception e) {
+			logger.error("StudyController - participantPropertiesPages - ERROR", e);
+		}
+		logger.info("StudyController - participantPropertiesPages - Ends");
+		return mav;
+	}
+
+	@RequestMapping("/adminStudies/addParticipantProperties.do")
+	public ModelAndView addParticipantProperties(HttpServletRequest request) {
+		logger.info("StudyController - addParticipantProperties - Starts");
+		ModelAndView mav = null;
+		ModelMap map = null;
+		StudyBo studyBo = null;
+		String permission = "";
+		ParticipantPropertiesBO participantPropertiesBO = null;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+
+				String studyId = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID));
+				permission = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION));
+				if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				}
+			}
+			String actionType = (String) request.getParameter("actionType");
+			participantPropertiesBO = new ParticipantPropertiesBO();
+			String[] propertyType = new String[] { "Date", "Enrollment Date", "Study Join Date" };
+			String[] dataSource = new String[] { "External System", "Through API" };
+			map = new ModelMap();
+			map.addAttribute("participantProperties", participantPropertiesBO);
+			map.addAttribute("propertyType", propertyType);
+			map.addAttribute("_S", sessionStudyCount);
+			map.addAttribute("dataSource", dataSource);
+			map.addAttribute("actionType", actionType);
+			map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+			map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+			mav = new ModelAndView("addParticipantProperties", map);
+		} catch (Exception e) {
+			logger.error("StudyController - addParticipantProperties - ERROR", e);
+		}
+		logger.info("StudyController - addParticipantProperties - Ends");
+		return mav;
+	}
+
+	@RequestMapping(value = "/adminStudies/saveorUpdateParticipantProperties.do", method = RequestMethod.POST)
+	public ModelAndView saveOrUpdateParticipantProperties(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("participantProperties") ParticipantPropertiesBO participantPropertiesBO) {
+		logger.info("StudyController - saveOrUpdateParticipantProperties - Starts");
+		ModelAndView mav = null;
+		ModelMap map = null;
+		String customStudyId = "";
+		String actionType = "";
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			actionType = request.getParameter("actionType");
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				if (participantPropertiesBO != null) {
+					String studyId = (String) request.getSession()
+							.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+					customStudyId = (String) request.getSession()
+							.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					participantPropertiesBO.setStudyId(Integer.valueOf(studyId));
+					participantPropertiesBO.setCustomStudyId(customStudyId);
+					if (participantPropertiesBO.getId() != null) {
+						participantPropertiesBO.setModifiedBy(sesObj.getUserId());
+						participantPropertiesBO.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+						if (participantPropertiesBO.isActive()) {
+							request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+									"Questionnaire Updated successfully.");
+						}
+					} else {
+						participantPropertiesBO.setCreatedBy(sesObj.getUserId());
+						participantPropertiesBO.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+						if (participantPropertiesBO.isActive()) {
+							request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+									"Questionnaire added successfully.");
+						}
+					}
+					participantPropertiesBO = studyService.saveOrUpdateParticipantProperties(participantPropertiesBO);
+				}
+			}
+			if (actionType.equalsIgnoreCase("save")) {
+				String[] propertyType = new String[] { "Date", "Enrollment Date", "Study Join Date" };
+				String[] dataSource = new String[] { "External System", "Through API" };
+				map = new ModelMap();
+				map.addAttribute("participantProperties", participantPropertiesBO);
+				map.addAttribute("propertyType", propertyType);
+				map.addAttribute("dataSource", dataSource);
+				map.addAttribute("_S", sessionStudyCount);
+				mav = new ModelAndView("addParticipantProperties", map);
+			} else {
+				map = new ModelMap();
+				map.addAttribute("participantProperties", participantPropertiesBO);
+				map.addAttribute("_S", sessionStudyCount);
+				mav = new ModelAndView("redirect:participantPropertiesPage.do", map);
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - saveOrUpdateParticipantProperties - Error", e);
+		}
+		logger.info("StudyController - saveOrUpdateParticipantProperties - Ends");
+		return mav;
+	}
+
+	@RequestMapping("/adminStudies/editParticipantProperties.do")
+	public ModelAndView editParticipantProperties(HttpServletRequest request) {
+		logger.info("StudyController - participantPropertiesPages - Starts");
+		ModelAndView mav = null;
+		ModelMap map = null;
+		String customStudyId = "", participantPropertyId = "";
+		ParticipantPropertiesBO participantPropertiesBO = null;
+		String permission = "";
+		StudyBo studyBo = null;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				String studyId = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID));
+				permission = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION));
+				customStudyId = (String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				}
+				participantPropertyId = request.getParameter("participantPropertyId");
+				participantPropertiesBO = studyService.getParticipantProperty(participantPropertyId, customStudyId);
+			}
+			String actionType = (String) request.getParameter("actionType");
+			String[] propertyType = new String[] { "Date", "Enrollment Date", "Study Join Date" };
+			String[] dataSource = new String[] { "External System", "Through API" };
+			map = new ModelMap();
+			map.addAttribute("participantProperties", participantPropertiesBO);
+			map.addAttribute("propertyType", propertyType);
+			map.addAttribute("dataSource", dataSource);
+			map.addAttribute("actionType", actionType);
+			map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+			map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+			map.addAttribute("_S", sessionStudyCount);
+			mav = new ModelAndView("addParticipantProperties", map);
+		} catch (Exception e) {
+			logger.error("StudyController - participantPropertiesPages - ERROR", e);
+		}
+		logger.info("StudyController - participantPropertiesPages - Ends");
+		return mav;
+	}
+
+	@RequestMapping("/adminUsersEdit/activateOrDeactivateParticipantProperty.do")
+	public void activateOrDeactivateParticipantProperty(HttpServletRequest request, HttpServletResponse response,
+			String participantPropertyId, String participantPropertyStatus) throws IOException {
+		logger.info("StudyController - activateOrDeactivateParticipantProperty - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if (sesObj != null) {
+				if (StringUtils.isNotEmpty(participantPropertyId)
+						&& StringUtils.isNotEmpty(participantPropertyStatus)) {
+					message = studyService.activateOrDeactivateParticipantProperty(
+							Integer.valueOf(participantPropertyId), sesObj.getUserId(),
+							Integer.valueOf(participantPropertyStatus));
+				}
+			}
+
+		} catch (Exception e) {
+			logger.error("StudyController - activateOrDeactivateParticipantProperty - ERROR", e);
+		}
+		logger.info("StudyController - activateOrDeactivateParticipantProperty - Ends");
+		jsonobject.put("message", message);
+		response.setContentType("application/json");
+		out = response.getWriter();
+		out.print(jsonobject);
+	}
+
+	@RequestMapping(value = "/adminStudies/deleteParticipantProperty.do", method = RequestMethod.POST)
+	public void deleteParticipantPropertyInfo(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("StudyController - deleteParticipantPropertyInfo - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		List<ParticipantPropertiesBO> participantPropertiesBOs = null;
+		JSONArray participantPropertiesJsonArray = null;
+		ObjectMapper mapper = new ObjectMapper();
+		String customStudyId = "";
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			String participantPropertyId = request.getParameter("participantPropertyId");
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				customStudyId = (String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				if (StringUtils.isNotEmpty(participantPropertyId)) {
+					message = studyService.deleteParticipantProperty(Integer.valueOf(participantPropertyId),
+							Integer.valueOf(sesObj.getUserId()));
+					participantPropertiesBOs = studyService.getParticipantProperties(customStudyId);
+					if (participantPropertiesBOs != null && !participantPropertiesBOs.isEmpty()) {
+						participantPropertiesJsonArray = new JSONArray(
+								mapper.writeValueAsString(participantPropertiesBOs));
+						jsonobject.put(FdahpStudyDesignerConstants.PARTICIPANTPROPERTIES_LIST,
+								participantPropertiesJsonArray);
+					}
+					/*
+					 * if (StringUtils.isNotEmpty(studyId)) {
+					 * studyService.markAsCompleted(Integer.valueOf(studyId),
+					 * FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId); }
+					 */
+					/*
+					 * boolean markAsComplete = true; actMsg =
+					 * studyService.validateActivityComplete(studyId,
+					 * FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE); if
+					 * (!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+					 * markAsComplete = false; jsonobject.put("markAsComplete", markAsComplete);
+					 * jsonobject.put(FdahpStudyDesignerConstants.ACTIVITY_MESSAGE, actMsg);
+					 */
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		} catch (Exception e) {
+			logger.error("StudyController - deleteParticipantPropertyInfo - ERROR", e);
+		}
+		logger.info("StudyController - deleteParticipantPropertyInfo - Ends");
+	}
+
+	@RequestMapping(value = "/adminStudies/validateParticipantPropertyKey.do", method = RequestMethod.POST)
+	public void validateParticipantPropertyShortTitle(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("StudyController - validateParticipantPropertyShortTitle - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String customStudyId = "";
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			if (sesObj != null && sesObj.getStudySession() != null
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				customStudyId = (String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				String shortTitle = FdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle")) ? ""
+						: request.getParameter("shortTitle");
+				if (!StringUtils.isEmpty(shortTitle) && !StringUtils.isEmpty(customStudyId)) {
+					message = studyService.checkParticipantPropertyShortTitle(shortTitle, customStudyId);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		} catch (Exception e) {
+			logger.error("StudyController - validateParticipantPropertyShortTitle - ERROR", e);
+		}
+		logger.info("StudyController - validateParticipantPropertyShortTitle - Ends");
 	}
 
 	/**
@@ -4330,7 +4659,7 @@ public class StudyController {
 
 				String appId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("appId")) ? ""
 						: request.getParameter("appId");
-				appId=appId.toUpperCase();
+				appId = appId.toUpperCase();
 
 				String studyType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyType")) ? ""
 						: request.getParameter("studyType");
