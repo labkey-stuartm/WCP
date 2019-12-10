@@ -63,7 +63,7 @@
 					<input type="hidden" id="preShortTitleId"
 						value="${fn:escapeXml(participantProperties.shortTitle)}" />
 					<div class="row">
-						<div class="col-md-4 pl-none">
+						<div class="col-md-4 pl-none mt-lg">
 							<div class="gray-xs-f mb-xs">
 								Short Title or Key(1 to 50 characters)<span class="requiredStar">*</span>
 								<span class="ml-xs sprites_v3 filled-tooltip"
@@ -73,14 +73,15 @@
 							<div class="form-group mb-none">
 								<form:input autofocus="autofocus" type="text"
 									class="form-control" name="shortTitle" id="shortTitleId"
-									path="shortTitle" required="required" maxlength="50" />
+									path="shortTitle" maxlength="50" 
+									required="required" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="row">
-						<div class="col-md-4 pl-none">
+						<div class="col-md-4 pl-none mt-lg">
 							<div class="gray-xs-f mb-xs">
 								Property Name(1 to 300 characters)<span class="requiredStar">*</span>
 								<span class="ml-xs sprites_v3 filled-tooltip"
@@ -97,16 +98,18 @@
 						<div class="clearfix"></div>
 					</div>
 					<div>
-						<div class="gray-xs-f mb-xs">
+						<div class="gray-xs-f mb-xs mt-lg">
 							Property Type<span class="requiredStar">*</span> <span
 								class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
 						<div>
-							<span class="radio radio-info radio-inline p-45"> <form:radiobutton
+							<span class="radio radio-info radio-inline p-45"> 
+							<form:radiobutton
 									id="inlineRadio1" value="preEnrollment" name="radioInline1"
 									path="propertyType" /> <label for="inlineRadio1">Pre-Enrollment</label>
-							</span> <span class="radio radio-inline"> <form:radiobutton
+							</span> <span class="radio radio-inline"> 
+							<form:radiobutton
 									id="inlineRadio2" value="postEnrollment" name="radioInline1"
 									path="propertyType" /> <label for="inlineRadio2">Post-Enrollment</label>
 							</span>
