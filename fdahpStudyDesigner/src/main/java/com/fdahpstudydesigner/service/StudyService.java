@@ -145,7 +145,7 @@ public interface StudyService {
 	public List<ParticipantPropertiesBO> getParticipantProperties(String customStudyId);
 
 	public ParticipantPropertiesBO getParticipantProperty(String participantPropertyId, String customStudyId);
-
+	
 	public String activateOrDeactivateParticipantProperty(int participantPropertyId, int userId,
 			int participantPropertyStatus);
 
@@ -161,6 +161,8 @@ public interface StudyService {
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
 	public String validateActivityComplete(String studyId, String action);
+	
+	public String validateParticipantPropertyComplete(String customStudyId);
 
 	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
 

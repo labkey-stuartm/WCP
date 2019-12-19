@@ -10,244 +10,269 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "participant_properties")
 public class ParticipantPropertiesBO {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
-  @Column(name = "short_title")
-  private String shortTitle;
+	@Column(name = "short_title")
+	private String shortTitle;
 
-  @Column(name = "property_name", length = 300)
-  private String propertyName;
+	@Column(name = "property_name", length = 300)
+	private String propertyName;
 
-  @Column(name = "property_type")
-  private String propertyType;
+	@Column(name = "property_type")
+	private String propertyType;
 
-  @Column(name = "data_type")
-  private String dataType;
+	@Column(name = "data_type")
+	private String dataType;
 
-  @Column(name = "use_as_anchor_date")
-  private boolean useAsAnchorDate;
+	@Column(name = "use_as_anchor_date")
+	private Boolean useAsAnchorDate;
 
-  @Column(name = "data_source")
-  private String dataSource;
+	@Column(name = "data_source")
+	private String dataSource;
 
-  @Column(name = "populated_at_enrollment")
-  private boolean populatedAtEnrollment;
+	@Column(name = "populated_at_enrollment")
+	private Boolean populatedAtEnrollment;
 
-  @Column(name = "refreshed_value")
-  private boolean refreshedValue;
+	@Column(name = "refreshed_value")
+	private Boolean refreshedValue;
 
-  @Column(name = "created_by")
-  private Integer createdBy;
+	@Column(name = "created_by")
+	private Integer createdBy;
 
-  @Column(name = "created_date")
-  private String createdDate;
+	@Column(name = "created_date")
+	private String createdDate;
 
-  @Column(name = "modified_by")
-  private Integer modifiedBy;
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
 
-  @Column(name = "modified_date")
-  private String modifiedDate;
+	@Column(name = "modified_date")
+	private String modifiedDate;
 
-  @Column(name = "custom_study_id")
-  private String customStudyId;
+	@Column(name = "custom_study_id")
+	private String customStudyId;
 
-  @Column(name = "study_id")
-  private Integer studyId;
+	@Column(name = "study_id")
+	private Integer studyId;
 
-  @Column(name = "status")
-  private boolean status;
+	@Column(name = "status")
+	private Boolean status;
 
-  @Column(name = "active")
-  private boolean active;
+	@Column(name = "active")
+	private Boolean active;
 
-  @Column(name = "anchor_date_id")
-  private Integer anchorDateId;
+	@Column(name = "anchor_date_id")
+	private Integer anchorDateId;
 
-  public Integer getId() {
-    return id;
-  }
+	@Column(name = "completed")
+	private Boolean completed = false;
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+	@Column(name = "version")
+	private Float version = 0f;
 
-  public String getShortTitle() {
-    return shortTitle;
-  }
+	@Column(name = "is_live")
+	private Integer live = 0;
 
-  public void setShortTitle(String shortTitle) {
-    this.shortTitle = shortTitle;
-  }
+	@Column(name = "is_change")
+	private Boolean isChange = false;
 
-  public String getPropertyName() {
-    return propertyName;
-  }
+	@Column(name = "app_id")
+	private String appId;
 
-  public void setPropertyName(String propertyName) {
-    this.propertyName = propertyName;
-  }
+	@Column(name = "org_id")
+	private String orgId = "OrgName";
 
-  public String getPropertyType() {
-    return propertyType;
-  }
+	public Integer getId() {
+		return id;
+	}
 
-  public void setPropertyType(String propertyType) {
-    this.propertyType = propertyType;
-  }
+	public String getShortTitle() {
+		return shortTitle;
+	}
 
-  public String getDataType() {
-    return dataType;
-  }
+	public String getPropertyName() {
+		return propertyName;
+	}
 
-  public void setDataType(String dataType) {
-    this.dataType = dataType;
-  }
+	public String getPropertyType() {
+		return propertyType;
+	}
 
-  public boolean isUseAsAnchorDate() {
-    return useAsAnchorDate;
-  }
+	public String getDataType() {
+		return dataType;
+	}
 
-  public void setUseAsAnchorDate(boolean useAsAnchorDate) {
-    this.useAsAnchorDate = useAsAnchorDate;
-  }
+	public Boolean getUseAsAnchorDate() {
+		return useAsAnchorDate;
+	}
 
-  public String getDataSource() {
-    return dataSource;
-  }
+	public String getDataSource() {
+		return dataSource;
+	}
 
-  public void setDataSource(String dataSource) {
-    this.dataSource = dataSource;
-  }
+	public Boolean getPopulatedAtEnrollment() {
+		return populatedAtEnrollment;
+	}
 
-  public boolean isPopulatedAtEnrollment() {
-    return populatedAtEnrollment;
-  }
+	public Boolean getRefreshedValue() {
+		return refreshedValue;
+	}
 
-  public void setPopulatedAtEnrollment(boolean populatedAtEnrollment) {
-    this.populatedAtEnrollment = populatedAtEnrollment;
-  }
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
 
-  public boolean isRefreshedValue() {
-    return refreshedValue;
-  }
+	public String getCreatedDate() {
+		return createdDate;
+	}
 
-  public void setRefreshedValue(boolean refreshedValue) {
-    this.refreshedValue = refreshedValue;
-  }
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
 
-  public Integer getCreatedBy() {
-    return createdBy;
-  }
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
 
-  public void setCreatedBy(Integer createdBy) {
-    this.createdBy = createdBy;
-  }
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
 
-  public String getCreatedDate() {
-    return createdDate;
-  }
+	public Integer getStudyId() {
+		return studyId;
+	}
 
-  public void setCreatedDate(String createdDate) {
-    this.createdDate = createdDate;
-  }
+	public Boolean getStatus() {
+		return status;
+	}
 
-  public Integer getModifiedBy() {
-    return modifiedBy;
-  }
+	public Boolean getActive() {
+		return active;
+	}
 
-  public void setModifiedBy(Integer modifiedBy) {
-    this.modifiedBy = modifiedBy;
-  }
+	public Integer getAnchorDateId() {
+		return anchorDateId;
+	}
 
-  public String getModifiedDate() {
-    return modifiedDate;
-  }
+	public Boolean getCompleted() {
+		return completed;
+	}
 
-  public void setModifiedDate(String modifiedDate) {
-    this.modifiedDate = modifiedDate;
-  }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-  public String getCustomStudyId() {
-    return customStudyId;
-  }
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
 
-  public void setCustomStudyId(String customStudyId) {
-    this.customStudyId = customStudyId;
-  }
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
 
-  public Integer getStudyId() {
-    return studyId;
-  }
+	public void setPropertyType(String propertyType) {
+		this.propertyType = propertyType;
+	}
 
-  public void setStudyId(Integer studyId) {
-    this.studyId = studyId;
-  }
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
 
-  public boolean isStatus() {
-    return status;
-  }
+	public void setUseAsAnchorDate(Boolean useAsAnchorDate) {
+		this.useAsAnchorDate = useAsAnchorDate;
+	}
 
-  public void setStatus(boolean status) {
-    this.status = status;
-  }
+	public void setDataSource(String dataSource) {
+		this.dataSource = dataSource;
+	}
 
-  public boolean isActive() {
-    return active;
-  }
+	public void setPopulatedAtEnrollment(Boolean populatedAtEnrollment) {
+		this.populatedAtEnrollment = populatedAtEnrollment;
+	}
 
-  public void setActive(boolean active) {
-    this.active = active;
-  }
+	public void setRefreshedValue(Boolean refreshedValue) {
+		this.refreshedValue = refreshedValue;
+	}
 
-  public Integer getAnchorDateId() {
-    return anchorDateId;
-  }
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
 
-  public void setAnchorDateId(Integer anchorDateId) {
-    this.anchorDateId = anchorDateId;
-  }
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
 
-  @Override
-  public String toString() {
-    return "ParticipantPropertiesBO [id="
-        + id
-        + ", shortTitle="
-        + shortTitle
-        + ", propertyName="
-        + propertyName
-        + ", propertyType="
-        + propertyType
-        + ", dataType="
-        + dataType
-        + ", useAsAnchorDate="
-        + useAsAnchorDate
-        + ", dataSource="
-        + dataSource
-        + ", populatedAtEnrollment="
-        + populatedAtEnrollment
-        + ", refreshedValue="
-        + refreshedValue
-        + ", createdBy="
-        + createdBy
-        + ", createdDate="
-        + createdDate
-        + ", modifiedBy="
-        + modifiedBy
-        + ", modifiedDate="
-        + modifiedDate
-        + ", customStudyId="
-        + customStudyId
-        + ", studyId="
-        + studyId
-        + ", status="
-        + status
-        + ", active="
-        + active
-        + ", anchorDateId="
-        + anchorDateId
-        + "]";
-  }
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
+
+	public void setStudyId(Integer studyId) {
+		this.studyId = studyId;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public void setAnchorDateId(Integer anchorDateId) {
+		this.anchorDateId = anchorDateId;
+	}
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
+
+	public Float getVersion() {
+		return version;
+	}
+
+	public void setVersion(Float version) {
+		this.version = version;
+	}
+
+	public Integer getLive() {
+		return live;
+	}
+
+	public void setLive(Integer live) {
+		this.live = live;
+	}
+
+	public Boolean getIsChange() {
+		return isChange;
+	}
+
+	public void setIsChange(Boolean isChange) {
+		this.isChange = isChange;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
 }

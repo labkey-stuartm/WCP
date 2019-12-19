@@ -96,6 +96,10 @@ public class StudySequenceBo implements Serializable {
 	@Type(type = "yes_no")
 	private boolean studyExcQuestionnaries = false;
 
+	@Column(name = "participant_properties")
+	@Type(type = "yes_no")
+	private Boolean participantProperties = false;
+
 	@Column(name = "study_id")
 	private Integer studyId;
 
@@ -246,5 +250,13 @@ public class StudySequenceBo implements Serializable {
 
 	public void setStudySequenceId(Integer studySequenceId) {
 		this.studySequenceId = studySequenceId;
+	}
+
+	public Boolean getParticipantProperties() {
+		return participantProperties;
+	}
+
+	public void setParticipantProperties(Boolean participantProperties) {
+		this.participantProperties = participantProperties;
 	}
 }

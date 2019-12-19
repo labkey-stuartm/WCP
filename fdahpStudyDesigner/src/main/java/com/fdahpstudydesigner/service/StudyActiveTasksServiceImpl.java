@@ -395,7 +395,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 				if (activeTaskBo.getScheduleType() != null && !activeTaskBo.getScheduleType().isEmpty()) {
 					addActiveTaskeBo.setScheduleType(activeTaskBo.getScheduleType());
 				}
-				addActiveTaskeBo.setAddNewRuns(activeTaskBo.isAddNewRuns());
+				addActiveTaskeBo.setAddNewRuns(activeTaskBo.getAddNewRuns());
 				if (activeTaskBo.getFrequency() != null) {
 					if (!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())) {
 						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());

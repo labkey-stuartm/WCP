@@ -995,7 +995,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 				if (questionnaireBo.getBranching() != null) {
 					addQuestionnaireBo.setBranching(questionnaireBo.getBranching());
 				}
-				addQuestionnaireBo.setAddNewRuns(questionnaireBo.isAddNewRuns());
+				addQuestionnaireBo.setAddNewRuns(questionnaireBo.getAddNewRuns());
 				if (questionnaireBo.getStatus() != null) {
 					addQuestionnaireBo.setStatus(questionnaireBo.getStatus());
 					if (questionnaireBo.getStatus()) {

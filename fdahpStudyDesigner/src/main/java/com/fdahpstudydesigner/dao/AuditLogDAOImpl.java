@@ -37,21 +37,15 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String date = new SimpleDateFormat(
-					FdahpStudyDesignerConstants.DB_SDF_DATE)
-					.format(FdahpStudyDesignerUtil
-							.addDaysToDate(new Date(), -1));
-			auditLogs = session
-					.createQuery(
-							"select ALBO.auditLogId AS auditLogId, ALBO.userId AS userId, ALBO.activity AS activity, "
-									+ "ALBO.activityDetails AS activityDetails, ALBO.createdDateTime AS createdDateTime, ALBO.classMethodName AS classMethodName, "
-									+ "(select UBO from UserBO UBO where UBO.userId = ALBO.userId) As userBO "
-									+ "from AuditLogBO ALBO "
-									+ "where ALBO.createdDateTime BETWEEN :stDate AND :edDate")
-					.setString("stDate", date + " 00:00:00")
-					.setString("edDate", date + " 23:59:59")
-					.setResultTransformer(
-							Transformers.aliasToBean(AuditLogBO.class)).list();
+			String date = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE)
+					.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+			auditLogs = session.createQuery(
+					"select ALBO.auditLogId AS auditLogId, ALBO.userId AS userId, ALBO.activity AS activity, "
+							+ "ALBO.activityDetails AS activityDetails, ALBO.createdDateTime AS createdDateTime, ALBO.classMethodName AS classMethodName, "
+							+ "(select UBO from UserBO UBO where UBO.userId = ALBO.userId) As userBO "
+							+ "from AuditLogBO ALBO " + "where ALBO.createdDateTime BETWEEN :stDate AND :edDate")
+					.setString("stDate", date + " 00:00:00").setString("edDate", date + " 23:59:59")
+					.setResultTransformer(Transformers.aliasToBean(AuditLogBO.class)).list();
 		} catch (Exception e) {
 			logger.error("AuditLogDAOImpl - getTodaysAuditLogs() - ERROR", e);
 		} finally {
@@ -72,8 +66,7 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 	 * @return
 	 */
 	@Override
-	public String saveToAuditLog(Session session, Transaction transaction,
-			SessionObject sessionObject, String activity,
+	public String saveToAuditLog(Session session, Transaction transaction, SessionObject sessionObject, String activity,
 			String activityDetails, String classsMethodName) {
 		logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
@@ -81,20 +74,16 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 		Session newSession = null;
 		try {
 			if (session == null) {
-				newSession = hibernateTemplate.getSessionFactory()
-						.openSession();
+				newSession = hibernateTemplate.getSessionFactory().openSession();
 				transaction = newSession.beginTransaction();
 			}
-			if (FdahpStudyDesignerUtil.isNotEmpty(activity)
-					&& FdahpStudyDesignerUtil.isNotEmpty(activityDetails)) {
+			if (FdahpStudyDesignerUtil.isNotEmpty(activity) && FdahpStudyDesignerUtil.isNotEmpty(activityDetails)) {
 				auditLog = new AuditLogBO();
 				auditLog.setActivity(activity);
 				auditLog.setActivityDetails(activityDetails);
-				auditLog.setUserId(sessionObject != null ? sessionObject
-						.getUserId() : 0);
+				auditLog.setUserId(sessionObject != null ? sessionObject.getUserId() : 0);
 				auditLog.setClassMethodName(classsMethodName);
-				auditLog.setCreatedDateTime(new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss.SSS").format(new Date()));
+				auditLog.setCreatedDateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()));
 				if (newSession != null) {
 					newSession.save(auditLog);
 				} else {
@@ -132,8 +121,7 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 	 * @return
 	 */
 	@Override
-	public String updateDraftToEditedStatus(Session session,
-			Transaction transaction, Integer userId, String actionType,
+	public String updateDraftToEditedStatus(Session session, Transaction transaction, Integer userId, String actionType,
 			Integer studyId) {
 		logger.info("AuditLogDAOImpl - updateDraftToEditedStatus() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
@@ -142,35 +130,28 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 		String draftColumn = null;
 		try {
 			if (session == null) {
-				newSession = hibernateTemplate.getSessionFactory()
-						.openSession();
+				newSession = hibernateTemplate.getSessionFactory().openSession();
 				transaction = newSession.beginTransaction();
 			}
 			if (userId != null && studyId != null) {
-				if (actionType != null
-						&& (FdahpStudyDesignerConstants.DRAFT_STUDY)
-								.equals(actionType)) {
+				if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_STUDY).equals(actionType)) {
 					draftColumn = "hasStudyDraft = 1";
-				}/*
-				 * else if (actionType != null &&
-				 * (FdahpStudyDesignerConstants.DRAFT_ACTIVITY
-				 * ).equals(actionType)){ draftColumn =
-				 * "hasActivityDraft = 1, hasStudyDraft = 1 "; }
-				 */else if (actionType != null
-						&& (FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE)
-								.equals(actionType)) {
+				} /*
+					 * else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY
+					 * ).equals(actionType)){ draftColumn =
+					 * "hasActivityDraft = 1, hasStudyDraft = 1 "; }
+					 */
+				else if (actionType != null
+						&& (FdahpStudyDesignerConstants.DRAFT_PARTICIPANT_PROPERTIES).equals(actionType)) {
+					draftColumn = "hasStudyDraft = 1";
+				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE).equals(actionType)) {
 					draftColumn = "hasQuestionnaireDraft = 1, hasStudyDraft = 1 ";
-				} else if (actionType != null
-						&& (FdahpStudyDesignerConstants.DRAFT_ACTIVETASK)
-								.equals(actionType)) {
+				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVETASK).equals(actionType)) {
 					draftColumn = "hasActivetaskDraft = 1, hasStudyDraft = 1 ";
-				} else if (actionType != null
-						&& (FdahpStudyDesignerConstants.DRAFT_CONSCENT)
-								.equals(actionType)) {
+				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONSCENT).equals(actionType)) {
 					draftColumn = "hasConsentDraft = 1, hasActivetaskDraft = 1, hasQuestionnaireDraft=1, hasStudyDraft = 1";
 				}
-				queryString = "Update StudyBo set " + draftColumn
-						+ " , modifiedBy =" + userId
+				queryString = "Update StudyBo set " + draftColumn + " , modifiedBy =" + userId
 						+ " , modifiedOn = now() where id =" + studyId;
 				if (newSession != null) {
 					newSession.createQuery(queryString).executeUpdate();
@@ -186,8 +167,7 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 			if (session == null && null != transaction) {
 				transaction.rollback();
 			}
-			logger.error("AuditLogDAOImpl - updateDraftToEditedStatus - ERROR",
-					e);
+			logger.error("AuditLogDAOImpl - updateDraftToEditedStatus - ERROR", e);
 		} finally {
 			if (null != newSession) {
 				newSession.close();

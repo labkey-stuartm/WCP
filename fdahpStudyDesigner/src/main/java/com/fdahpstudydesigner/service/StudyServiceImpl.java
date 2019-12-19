@@ -1811,6 +1811,19 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
+	public String validateParticipantPropertyComplete(String customStudyId) {
+		logger.info("StudyServiceImpl - validateParticipantPropertyComplete() - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			message = studyDAO.validateParticipantPropertyComplete(customStudyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - validateParticipantPropertyComplete() - Error", e);
+		}
+		logger.info("StudyServiceImpl - validateParticipantPropertyComplete() - Ends");
+		return message;
+	}
+
+	@Override
 	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId) {
 		logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
 		String message = FdahpStudyDesignerConstants.SUCCESS;

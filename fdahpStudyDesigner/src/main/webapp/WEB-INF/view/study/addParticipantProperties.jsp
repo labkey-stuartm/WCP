@@ -25,6 +25,7 @@
 					src="../images/icons/back-b.png" class="pr-md" /></span>
 				<c:if test="${actionType eq 'add'}">Add Property</c:if>
 				<c:if test="${actionType eq 'edit'}">Edit Property</c:if>
+				<c:if test="${actionType eq 'view'}">View Property</c:if>
 			</div>
 
 			<div class="dis-line form-group mb-none mr-sm">
@@ -32,13 +33,15 @@
 					onclick="goToBackPage(this);">Cancel</button>
 			</div>
 
-			<div class="dis-line form-group mb-none mr-sm">
-				<button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
-			</div>
+			<c:if test="${actionType ne 'view'}">
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
+				</div>
 
-			<div class="dis-line form-group mb-none">
-				<button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
-			</div>
+				<div class="dis-line form-group mb-none">
+					<button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
+				</div>
+			</c:if>
 		</div>
 	</div>
 	<!--  End  top tab section-->
@@ -59,7 +62,10 @@
 						value="${csrf.token}">
 					<form:hidden path="id" />
 					<form:hidden path="anchorDateId" />
-					<input type="hidden" id="actionType" name="actionType" value="">
+					<input type="hidden" id="actionType" name="actionType"
+						value="${actionType}">
+					<input type="hidden" id="actionButtonType" name="actionButtonType"
+						value="">
 					<input type="hidden" id="preShortTitleId"
 						value="${fn:escapeXml(participantProperties.shortTitle)}" />
 					<div class="row">
@@ -73,8 +79,7 @@
 							<div class="form-group mb-none">
 								<form:input autofocus="autofocus" type="text"
 									class="form-control" name="shortTitle" id="shortTitleId"
-									path="shortTitle" maxlength="50" 
-									required="required" />
+									path="shortTitle" maxlength="50" required="required" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
 						</div>
@@ -91,7 +96,7 @@
 							<div class="form-group mb-none">
 								<form:input type="text" class="form-control" name="propertyName"
 									id="propertyName" path="propertyName" required="required"
-									maxlength="300" />
+									maxlength="200" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
 						</div>
@@ -104,14 +109,14 @@
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
 						<div>
-							<span class="radio radio-info radio-inline p-45"> 
-							<form:radiobutton
-									id="inlineRadio1" value="preEnrollment" name="radioInline1"
-									path="propertyType" /> <label for="inlineRadio1">Pre-Enrollment</label>
-							</span> <span class="radio radio-inline"> 
-							<form:radiobutton
-									id="inlineRadio2" value="postEnrollment" name="radioInline1"
-									path="propertyType" /> <label for="inlineRadio2">Post-Enrollment</label>
+							<span class="radio radio-info radio-inline p-45"> <form:radiobutton
+									class="enrollment-cls" id="inlineRadio1" value="preEnrollment"
+									name="typeOfProperty" path="propertyType" /> <label
+								for="inlineRadio1">Pre-Enrollment</label>
+							</span> <span class="radio radio-inline"> <form:radiobutton
+									class="enrollment-cls" id="inlineRadio2" value="postEnrollment"
+									name="typeOfProperty" path="propertyType" /> <label
+								for="inlineRadio2">Post-Enrollment</label>
 							</span>
 							<div class="help-block with-errors red-txt"></div>
 						</div>
@@ -125,15 +130,16 @@
 									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 							</div>
 							<div class="form-group">
-								<form:select id="dp" class="selectpicker" title="Select"
+								<form:select id="dataType" class="selectpicker" title="Select"
 									required="required" path="dataType">
-									<form:options items="${propertyType}" />
+									<form:options items="${dataType}" />
 								</form:select>
 								<div class="help-block with-errors red-txt"></div>
 							</div>
 						</div>
 
-						<div class="col-md-4 col-lg-3 mt-xlg mb-lg">
+						<div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate"
+							style="display: none;">
 							<!-- <span class="checkbox checkbox-inline"> -->
 							<form:checkbox id="inlineCheckbox1" value=""
 								path="useAsAnchorDate" />
@@ -149,12 +155,8 @@
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
 						<div class="form-group">
-							<form:select id="dp" class="selectpicker" title="Select"
+							<form:select id="dataSource" class="selectpicker" title="Select"
 								required="required" path="dataSource">
-								<!-- <option>External System Integration Data to Response
-								Server</option>
-							<option>Step 4: DosageQuestion</option>
-							<option>Step 4: DosageQuestion</option> -->
 								<form:options items="${dataSource}" />
 							</form:select>
 							<div class="help-block with-errors red-txt"></div>
@@ -181,7 +183,7 @@
 					</div>
 					<div class="clearfix"></div>
 
-					<div class="mt-lg mb-lg">
+					<div class="mt-lg mb-lg refresh-value" style="display: none;">
 						<!-- <span class="checkbox checkbox-inline">  -->
 						<form:checkbox id="inlineCheckbox2" path="refreshedValue" />
 						<label class="checkBoxForm" for="inlineCheckbox2"> Query
@@ -195,15 +197,65 @@
 	</div>
 </div>
 <script>
+	<c:if test="${actionType == 'view'}">
+	$('#participantPropertiesFormId input[type="text"]').prop('disabled', true);
+	$('#participantPropertiesFormId input[type="checkbox"]').prop('disabled', true);
+	$('select').prop('disabled', true);
+	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5')
+			.prop('disabled', true);
+	</c:if>
+
+	var dataVal = "";
+	var propType = "";
 	$(document).ready(function() {
 		$('#doneId').click(function(e) {
 			if (isFromValid("#participantPropertiesFormId")) {
-				$("#actionType").val('done');
+				$("#actionButtonType").val('done');
 				$('#participantPropertiesFormId').submit();
 			}
 		});
 		$(".menuNav li.active").removeClass('active');
 		$(".menuNav li.fourth").addClass('active');
+		dataVal = $("#dataType").val();
+		if (dataVal === 'Date') {
+			$(".useAsAnchorDate").show();
+		} else {
+			$(".useAsAnchorDate").hide();
+		}
+		propType = $('.enrollment-cls:checked').val();
+
+		if (propType === 'postEnrollment' && dataVal === 'Date') {
+			if ($('#inlineCheckbox1').is(':checked')) {
+				$('.refresh-value').show();
+			} else {
+				$('.refresh-value').hide();
+			}
+		} else {
+			$('.refresh-value').hide();
+		}
+	});
+
+	$('#inlineCheckbox1').change(function() {
+		propType = $('.enrollment-cls:checked').val();
+		dataVal = $("#dataType").val();
+		if (propType === 'postEnrollment' && dataVal === 'Date') {
+			if (this.checked) {
+				$('.refresh-value').show();
+			} else {
+				$('.refresh-value').hide();
+			}
+		} else {
+			$('.refresh-value').hide();
+		}
+	});
+
+	$("#dataType").change(function() {
+		dataVal = $("#dataType").val();
+		if (dataVal === 'Date') {
+			$(".useAsAnchorDate").show();
+		} else {
+			$(".useAsAnchorDate").hide();
+		}
 	});
 
 	$("#shortTitleId").blur(function() {
@@ -213,7 +265,7 @@
 
 	$("#saveId").click(function() {
 		if (isFromValid("#participantPropertiesFormId")) {
-			$("#actionType").val('save');
+			$("#actionButtonType").val('save');
 			$('#participantPropertiesFormId').submit();
 			showSucMsg("Content saved as draft.");
 		}
@@ -283,6 +335,7 @@
 
 	function goToBackPage(item) {
 		$(item).prop('disabled', true);
+		<c:if test="${actionType ne 'view'}">
 		bootbox
 				.confirm({
 					closeButton : false,
@@ -305,5 +358,11 @@
 						}
 					}
 				});
+		</c:if>
+		<c:if test="${actionType eq 'view'}">
+		var a = document.createElement('a');
+		a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}";
+		document.body.appendChild(a).click();
+		</c:if>
 	}
 </script>

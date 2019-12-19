@@ -2143,6 +2143,17 @@ public class StudyDAOImpl implements StudyDAO {
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_CONSCENT, studyId);
+			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES)) {
+				query = session.createQuery(
+						" UPDATE StudySequenceBo SET participantProperties = " + flag + " WHERE studyId = " + studyId);
+				count = query.executeUpdate();
+				if (flag) {
+					activity = "Participant Properties succesfully checked for minimum content completeness.";
+					activityDetails = "Participant Properties succesfully checked for minimum content completeness and marked 'Done'. (Study ID = "
+							+ customStudyId + ")";
+				}
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
+						FdahpStudyDesignerConstants.DRAFT_PARTICIPANT_PROPERTIES, studyId);
 			}
 			if (count > 0) {
 				msg = FdahpStudyDesignerConstants.SUCCESS;
@@ -3998,14 +4009,14 @@ public class StudyDAOImpl implements StudyDAO {
 	public ParticipantPropertiesBO saveOrUpdateParticipantProperties(ParticipantPropertiesBO participantPropertiesBO) {
 		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
 		Session session = null;
-		ParticipantPropertiesBO participantPropertiesBo = null;
+		ParticipantPropertiesBO participantProperties = null;
 		Integer result = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 
 			if (participantPropertiesBO.getId() == null) {
-				if (participantPropertiesBO.isUseAsAnchorDate()) {
+				if (participantPropertiesBO.getUseAsAnchorDate()) {
 					Integer anchorDateId = addAnchorDate(Integer.valueOf(participantPropertiesBO.getStudyId()),
 							participantPropertiesBO.getCustomStudyId(), participantPropertiesBO.getShortTitle(),
 							session);
@@ -4013,31 +4024,34 @@ public class StudyDAOImpl implements StudyDAO {
 				}
 				participantPropertiesBO.setActive(true);
 				participantPropertiesBO.setStatus(true);
+				participantPropertiesBO.setVersion(0f);
+				participantPropertiesBO.setLive(0);
 				session.save(participantPropertiesBO);
 			} else {
-				participantPropertiesBo = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
+				participantProperties = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
 						participantPropertiesBO.getId());
-				if (participantPropertiesBo.getAnchorDateId() != null) {
-					if (!participantPropertiesBO.isUseAsAnchorDate()) {
-						result = deleteParticipantPropertyAsAnchorDate(participantPropertiesBo.getAnchorDateId(),
+				if (participantProperties.getAnchorDateId() != null) {
+					if (!participantPropertiesBO.getUseAsAnchorDate()) {
+						result = deleteParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(),
 								session);
 						if (result != 0) {
 							participantPropertiesBO.setAnchorDateId(null);
 						}
 					}
 				} else {
-					if (participantPropertiesBO.isUseAsAnchorDate()) {
+					if (participantPropertiesBO.getUseAsAnchorDate()) {
 						Integer anchorDateId = addAnchorDate(Integer.valueOf(participantPropertiesBO.getStudyId()),
 								participantPropertiesBO.getCustomStudyId(), participantPropertiesBO.getShortTitle(),
 								session);
 						participantPropertiesBO.setAnchorDateId(anchorDateId);
 					}
 				}
-				participantPropertiesBO.setCreatedBy(participantPropertiesBo.getCreatedBy());
-				participantPropertiesBO.setCreatedDate(participantPropertiesBo.getCreatedDate());
-				participantPropertiesBO.setActive(true);
-				participantPropertiesBO.setStatus(true);
-				// session.update(participantPropertiesBO);
+				participantPropertiesBO.setCreatedBy(participantProperties.getCreatedBy());
+				participantPropertiesBO.setCreatedDate(participantProperties.getCreatedDate());
+				participantPropertiesBO.setActive(participantProperties.getActive());
+				participantPropertiesBO.setStatus(participantProperties.getStatus());
+				participantPropertiesBO.setVersion(participantProperties.getVersion());
+				participantPropertiesBO.setLive(participantProperties.getLive());
 				session.merge(participantPropertiesBO);
 			}
 			transaction.commit();
@@ -4099,8 +4113,8 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(customStudyId)) {
-				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='"
-						+ customStudyId + "' and PPBO.active=1 order by PPBO.createdDate DESC");
+				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='" + customStudyId
+						+ "' and PPBO.active=1 order by PPBO.createdDate DESC");
 				participantPropertiesBoList = query.list();
 			}
 		} catch (Exception e) {
@@ -4673,6 +4687,7 @@ public class StudyDAOImpl implements StudyDAO {
 		List<String> questionnarieShorttitleList = null;
 		List<AnchorDateTypeBo> anchorDateTypeList = null;
 		Map<Integer, Integer> anchordateoldnewMapList = new HashMap<>();
+		List<ParticipantPropertiesBO> participantPropertiesBOs = null;
 		try {
 			if (studyBo != null) {
 				logger.info("StudyDAOImpl - studyDraftCreation() getStudyByCustomStudyId- Starts");
@@ -4826,6 +4841,22 @@ public class StudyDAOImpl implements StudyDAO {
 						logger.info("StudyDAOImpl - studyDraftCreation() ResourceBO- Ends");
 					}
 
+					query = session.createQuery("FROM ParticipantPropertiesBO PBO WHERE PBO.studyId=" + studyBo.getId()
+							+ " AND PBO.active = 1 ORDER BY PBO.createdDate DESC");
+					participantPropertiesBOs = query.list();
+					for (ParticipantPropertiesBO pbo : participantPropertiesBOs) {
+
+						if (null != pbo.getLive() && pbo.getLive() != 0) {
+							if (pbo.getIsChange()) {
+								pbo.setVersion(pbo.getVersion() + 0.1f);
+							}
+						} else {
+							pbo.setLive(1);
+							pbo.setVersion(1f);
+						}
+						pbo.setIsChange(false);
+						session.update(pbo);
+					}
 					// If Questionnaire updated flag -1 then update(clone)
 					if (studyVersionBo == null || (studyBo.getHasQuestionnaireDraft() != null
 							&& studyBo.getHasQuestionnaireDraft().equals(1))) {
@@ -5720,6 +5751,7 @@ public class StudyDAOImpl implements StudyDAO {
 									+ ")");
 							query.executeUpdate();
 						}
+
 						message = FdahpStudyDesignerConstants.SUCCESS;
 						// StudyDraft version creation
 						message = studyDraftCreation(studyBo, session);
@@ -5982,6 +6014,52 @@ public class StudyDAOImpl implements StudyDAO {
 			}
 		}
 		logger.info("StudyDAOImpl - validateActivityComplete() - Ends");
+		return message;
+	}
+
+	@Override
+	public String validateParticipantPropertyComplete(String customStudyId) {
+		logger.info("StudyDAOImpl - validateParticipantPropertyComplete() - Starts");
+		Session session = null;
+		boolean participantPropertiesFlag = true;
+		List<ParticipantPropertiesBO> completedParticipantProperties = null;
+		// StudySequenceBo studySequence = null;
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery(
+					"From ParticipantPropertiesBO PBO WHERE PBO.customStudyId =:customStudyId and PBO.active=1 order by PBO.createdDate DESC")
+					.setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId);
+			completedParticipantProperties = query.list();
+			/*
+			 * studySequence = (StudySequenceBo)
+			 * session.getNamedQuery("getStudySequenceByStudyId") .setInteger("studyId",
+			 * Integer.parseInt(studyId)).uniqueResult();
+			 */
+
+			if (completedParticipantProperties != null && !completedParticipantProperties.isEmpty()) {
+				for (ParticipantPropertiesBO participantPropertiesBO : completedParticipantProperties) {
+					if (participantPropertiesBO.getCompleted() != null && !participantPropertiesBO.getCompleted()) {
+						participantPropertiesFlag = false;
+						break;
+					}
+				}
+			} /*
+				 * else { participantPropertiesEmpty = true; }
+				 */
+			// questionnarieFlag, activeTaskFlag will be true, then only
+			// will allow to mark as complete
+			if (!participantPropertiesFlag) {
+				message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - validateParticipantPropertyComplete() - ERROR ", e);
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - validateParticipantPropertyComplete() - Ends");
 		return message;
 	}
 

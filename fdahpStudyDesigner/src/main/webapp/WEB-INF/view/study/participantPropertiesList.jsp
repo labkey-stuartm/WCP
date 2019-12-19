@@ -25,9 +25,21 @@
 			<div class="black-md-f text-uppercase dis-line pull-left line34">Participant
 				Properties</div>
 			<div class="dis-line form-group mb-none">
-				<button type="button" class="btn btn-primary blue-btn"
-					onclick="addParticipantProperties();">+ Add Consent</button>
+				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
+
+			<c:if test="${empty permission}">
+				<div class="dis-line form-group mb-none ml-sm">
+					<span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+						data-placement="bottom"
+						<c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if>>
+						<button type="button" class="btn btn-primary blue-btn"
+							id="markAsCompleteBtnId" onclick="markAsCompleted();"
+							<c:if test="${!markAsComplete}"> disabled </c:if>>Mark
+							as Completed</button>
+					</span>
+				</div>
+			</c:if>
 		</div>
 	</div>
 	<!--  End  top tab section-->
@@ -39,9 +51,14 @@
 				class="display bor-none dragtbl dataTable no-footer">
 				<thead>
 					<tr>
-						<th>Name</th>
+						<th>SHORT TITLE</th>
 						<th>DATA TYPE</th>
-						<th>Actions</th>
+						<th><c:if test="${empty permission}">
+								<div class="dis-line form-group mb-none">
+									<button type="button" class="btn btn-primary blue-btn"
+										onclick="addParticipantProperties();">+ Add Property</button>
+								</div>
+							</c:if></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -50,13 +67,21 @@
 						<tr>
 							<td>${participantProperty.propertyName}</td>
 							<td>${participantProperty.dataType}</td>
-							<td><span class="sprites_icon edit-g mr-lg"
+							<td>
+								<%-- <span class="sprites_icon edit-g mr-lg"
+								data-toggle="tooltip" data-placement="top" title="Edit"
+								onclick="editQuestionnaires(${participantProperty.id});"></span> --%>
+								<span class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
+								data-placement="top" title="View"
+								onclick="viewQuestionnaires(${participantProperty.id});"></span>
+								<span
+								class="${participantProperty.completed?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
 								data-toggle="tooltip" data-placement="top" title="Edit"
 								onclick="editQuestionnaires(${participantProperty.id});"></span>
-								<span class="sprites_icon copy delete" data-toggle="tooltip"
+								<%-- <span class="sprites_icon copy delete" data-toggle="tooltip"
 								data-placement="top" title="Delete"
-								onclick="deleteQuestionnaire(${participantProperty.id});"></span>
-								<span class="ml-lg"> <label class="switch"
+								onclick="deleteQuestionnaire(${participantProperty.id});"></span> --%>
+								<%-- <span class="ml-lg"> <label class="switch"
 									data-toggle="tooltip" id="label${participantProperty.id}"
 									data-placement="top"
 									<c:if test="${participantProperty.status}">title="Active"</c:if>
@@ -69,7 +94,8 @@
 										<span class="switch-label" data-on="On" data-off="Off"></span>
 										<span class="switch-handle"></span>
 								</label>
-							</span></td>
+							</span> --%>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -97,10 +123,11 @@
 	action="/fdahpStudyDesigner/adminStudies/editParticipantProperties.do?_S=${param._S}"
 	name="editParticipantProperties" id="editParticipantProperties"
 	method="post">
-	<input type="hidden" name="actionType" value="edit">
+	<input type="hidden" name="actionType" id="actionType" value="">
 	<input type="hidden" name="${csrf.parameterName}" value="${csrf.token}">
 	<input type="hidden" name="participantPropertyId"
 		id="participantPropertyId" value="">
+	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script>
 	$(document).ready(function() {
@@ -135,30 +162,15 @@
    	    	// $('td:eq(0)', nRow).addClass("dis-none");
    	      }
         } );
+		if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
+     		$('[data-toggle="tooltip"]').tooltip();
+     	}
 	});
 </script>
 
 
 <script>
 	$(document).ready(function() {
-		//User_List page Datatable
-// 		$('#user_list').DataTable({
-// 			"paging" : false,
-// 			"aoColumns" : [ {
-// 				"bSortable" : false
-// 			}, {
-// 				"bSortable" : false
-// 			}, {
-// 				"bSortable" : false
-// 			}, {
-// 				"bSortable" : false
-// 			} ],
-
-// 			"info" : false,
-// 			"lengthChange" : false,
-// 			"searching" : false,
-// 			"pageLength" : false
-// 		});
 
 		//datatable icon toggle
 		$("#user_list thead tr th").click(function() {
@@ -166,10 +178,8 @@
 			$(this).siblings().children().removeAttr('class').addClass('sort');
 			if ($(this).attr('class') == 'sorting_asc') {
 				$(this).children().addClass('asc');
-				//alert('asc');
 			} else if ($(this).attr('class') == 'sorting_desc') {
 				$(this).children().addClass('desc');
-				//alert('desc');
 			} else {
 				$(this).children().addClass('sort');
 			}
@@ -180,9 +190,18 @@
 		$("#participantPropertiesId").val('');
 		$("#participantPropertiesForm").submit();
 	}
+	
+	function viewQuestionnaires(participantPropertyId){
+		if(participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId !='undefined'){
+			$("#actionType").val('view');
+			$("#participantPropertyId").val(participantPropertyId);
+			$("#editParticipantProperties").submit();
+	    }
+	  }
 
 	function editQuestionnaires(participantPropertyId) {
 		if(participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId !='undefined'){
+			$("#actionType").val('edit');
 			$("#participantPropertyId").val(participantPropertyId);
 			$("#editParticipantProperties").submit();
 		}
@@ -360,4 +379,8 @@
 		  }
 		  $('[data-toggle="tooltip"]').tooltip();
 	  }
+	function markAsCompleted(){
+		document.editParticipantProperties.action="/fdahpStudyDesigner/adminStudies/participantPropertiesMarkAsCompleted.do?_S=${param._S}";	 
+		document.editParticipantProperties.submit();
+	}
 </script>

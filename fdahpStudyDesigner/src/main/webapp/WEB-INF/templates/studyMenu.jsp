@@ -48,7 +48,7 @@
 				</c:if>
 			</li>
 			<li class="fourth commonCls">PARTICIPANT PROPERTIES <c:if
-					test="${studyBo.studySequenceBo.overView}">
+					test="${studyBo.studySequenceBo.participantProperties}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>

@@ -165,7 +165,7 @@ public interface StudyDAO {
 			int participantPropertyStatus);
 
 	public String deleteParticipantProperty(int participantPropertyId, int userId);
-	
+
 	public String checkParticipantPropertyShortTitle(String shortTitle, String customStudyId);
 
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
@@ -178,6 +178,8 @@ public interface StudyDAO {
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
 	public String validateActivityComplete(String studyId, String action);
+
+	public String validateParticipantPropertyComplete(String customStudyId);
 
 	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
 
