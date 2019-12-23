@@ -161,8 +161,7 @@ public interface StudyDAO {
 
 	public ParticipantPropertiesBO getParticipantProperty(String participantPropertyId, String customStudyId);
 
-	public String activateOrDeactivateParticipantProperty(int participantPropertyId, int userId,
-			int participantPropertyStatus);
+	public String deactivateParticipantProperty(int participantPropertyId, int userId);
 
 	public String deleteParticipantProperty(int participantPropertyId, int userId);
 

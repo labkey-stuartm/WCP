@@ -95,7 +95,7 @@
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li").removeClass('active');
-    $(".sixthConsent").addClass('active'); 
+    $(".fifthConsent").addClass('active'); 
 	$("#createStudyId").show();
     var viewPermission = "${permission}";
     var permission = "${permission}";

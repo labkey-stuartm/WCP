@@ -4113,8 +4113,8 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(customStudyId)) {
-				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='" + customStudyId
-						+ "' and PPBO.active=1 order by PPBO.createdDate DESC");
+				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='"
+						+ customStudyId + "' and PPBO.active=1 order by PPBO.createdDate DESC");
 				participantPropertiesBoList = query.list();
 			}
 		} catch (Exception e) {
@@ -4156,9 +4156,8 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	@Override
-	public String activateOrDeactivateParticipantProperty(int participantPropertyId, int userId,
-			int participantPropertyStatus) {
-		logger.info("StudyDAOImpl - activateOrDeactivateParticipantProperty() - Starts");
+	public String deactivateParticipantProperty(int participantPropertyId, int userId) {
+		logger.info("StudyDAOImpl - deactivateParticipantProperty() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
@@ -4166,15 +4165,10 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if (participantPropertyStatus != 0) {
-				query = session.createQuery(
-						"UPDATE ParticipantPropertiesBO set status=0, modifiedBy=" + userId + ", modifiedDate='"
-								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
-			} else {
-				query = session.createQuery(
-						"UPDATE ParticipantPropertiesBO set status=1, modifiedBy=" + userId + ", modifiedDate='"
-								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
-			}
+
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesBO set status=0, modifiedBy=" + userId + ", modifiedDate='"
+							+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
 			count = query.executeUpdate();
 			if (count > 0) {
 				message = FdahpStudyDesignerConstants.SUCCESS;
@@ -4182,13 +4176,13 @@ public class StudyDAOImpl implements StudyDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
-			logger.error("StudyDAOImpl - activateOrDeactivateParticipantProperty() - ERROR", e);
+			logger.error("StudyDAOImpl - deactivateParticipantProperty() - ERROR", e);
 		} finally {
 			if (null != session) {
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - activateOrDeactivateParticipantProperty() - Ends");
+		logger.info("StudyDAOImpl - deactivateParticipantProperty() - Ends");
 		return message;
 	}
 

@@ -1666,17 +1666,15 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public String activateOrDeactivateParticipantProperty(int participantPropertyId, int userId,
-			int participantPropertyStatus) {
-		logger.info("StudyServiceImpl - activateOrDeactivateParticipantProperty() - Starts");
+	public String deactivateParticipantProperty(int participantPropertyId, int userId) {
+		logger.info("StudyServiceImpl - deactivateParticipantProperty() - Starts");
 		String message = "";
 		try {
-			message = studyDAO.activateOrDeactivateParticipantProperty(participantPropertyId, userId,
-					participantPropertyStatus);
+			message = studyDAO.deactivateParticipantProperty(participantPropertyId, userId);
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - activateOrDeactivateParticipantProperty() - ERROR ", e);
+			logger.error("StudyServiceImpl - deactivateParticipantProperty() - ERROR ", e);
 		}
-		logger.info("StudyServiceImpl - activateOrDeactivateParticipantProperty() - Ends");
+		logger.info("StudyServiceImpl - deactivateParticipantProperty() - Ends");
 		return message;
 	}
 

@@ -76,7 +76,8 @@
 									data-toggle="tooltip"
 									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 							</div>
-							<div class="form-group mb-none">
+							<div
+								class="form-group mb-none <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:input autofocus="autofocus" type="text"
 									class="form-control" name="shortTitle" id="shortTitleId"
 									path="shortTitle" maxlength="50" required="required" />
@@ -109,14 +110,18 @@
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
 						<div>
-							<span class="radio radio-info radio-inline p-45"> <form:radiobutton
-									class="enrollment-cls" id="inlineRadio1" value="preEnrollment"
-									name="typeOfProperty" path="propertyType" /> <label
-								for="inlineRadio1">Pre-Enrollment</label>
-							</span> <span class="radio radio-inline"> <form:radiobutton
-									class="enrollment-cls" id="inlineRadio2" value="postEnrollment"
-									name="typeOfProperty" path="propertyType" /> <label
-								for="inlineRadio2">Post-Enrollment</label>
+							<span
+								class="radio radio-info radio-inline p-45 
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
+								<form:radiobutton class="enrollment-cls" id="inlineRadio1"
+									value="preEnrollment" name="typeOfProperty" path="propertyType" />
+								<label for="inlineRadio1">Pre-Enrollment</label>
+							</span> <span
+								class="radio radio-inline 
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
+								<form:radiobutton class="enrollment-cls" id="inlineRadio2"
+									value="postEnrollment" name="typeOfProperty"
+									path="propertyType" /> <label for="inlineRadio2">Post-Enrollment</label>
 							</span>
 							<div class="help-block with-errors red-txt"></div>
 						</div>
@@ -129,7 +134,9 @@
 									class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 							</div>
-							<div class="form-group">
+							<div
+								class="form-group 
+							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:select id="dataType" class="selectpicker" title="Select"
 									required="required" path="dataType">
 									<form:options items="${dataType}" />
@@ -138,7 +145,9 @@
 							</div>
 						</div>
 
-						<div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate"
+						<div
+							class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate 
+						<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>"
 							style="display: none;">
 							<!-- <span class="checkbox checkbox-inline"> -->
 							<form:checkbox id="inlineCheckbox1" value=""
@@ -171,12 +180,18 @@
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
 						<div>
-							<span class="radio radio-info radio-inline p-45"> <form:radiobutton
-									id="inlineRadio3" value="true" name="radioInline2"
-									path="populatedAtEnrollment" /> <label for="inlineRadio3">Yes</label>
-							</span> <span class="radio radio-inline"> <form:radiobutton
-									id="inlineRadio4" value="false" name="radioInline2"
-									path="populatedAtEnrollment" /> <label for="inlineRadio4">No</label>
+							<span
+								class="radio radio-info radio-inline p-45 
+							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
+								<form:radiobutton id="inlineRadio3" value="true"
+									name="radioInline2" path="populatedAtEnrollment" /> <label
+								for="inlineRadio3">Yes</label>
+							</span> <span
+								class="radio radio-inline
+							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
+								<form:radiobutton id="inlineRadio4" value="false"
+									name="radioInline2" path="populatedAtEnrollment" /> <label
+								for="inlineRadio4">No</label>
 							</span>
 							<div class="help-block with-errors red-txt"></div>
 						</div>
@@ -193,16 +208,52 @@
 					<div class="clearfix"></div>
 				</form:form>
 			</div>
+			<!-- <div class="dis-line form-group mb-none">
+				<button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
+			</div> -->
+			<div class="dis-line form-group mb-none mr-sm">
+				<c:choose>
+					<c:when test="${participantProperties.live eq 1}">
+						<!-- <button type="button" class="btn btn-default gray-btn"
+								id="saveId">Save</button> -->
+						<div class="form-group mr-sm" style="white-space: normal;">
+							<button type="button" class="btn btn-default red-btn-action "
+								id="deactivateId"
+								onclick="deactivateParticipantProperty(${participantProperties.id});">Deactivate</button>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<!-- <button type="button" class="btn btn-default gray-btn"
+								id="saveId">Next</button> -->
+						<div class="form-group mr-sm" style="white-space: normal;">
+							<button type="button"
+								class="btn btn-default red-btn-action 
+							<c:if test="${empty participantProperties.id}">cursor-none</c:if>"
+								id="deleteId"
+								onclick="deleteParticipantProperty(${participantProperties.id});">Delete</button>
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 	</div>
 </div>
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/deactivateParticipantProperty.do?_S=${param._S}"
+	name="deactivateParticipantPropertyForm"
+	id="deactivateParticipantPropertyFormId" method="post">
+	<input type="hidden" name="participantPropertyId"
+		id="participantPropertyId" value="" />
+</form:form>
 <script>
 	<c:if test="${actionType == 'view'}">
 	$('#participantPropertiesFormId input[type="text"]').prop('disabled', true);
-	$('#participantPropertiesFormId input[type="checkbox"]').prop('disabled', true);
+	$('#participantPropertiesFormId input[type="checkbox"]').prop('disabled',
+			true);
 	$('select').prop('disabled', true);
 	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5')
 			.prop('disabled', true);
+	$('#deactivateId,#deleteId').prop('disabled', true);
 	</c:if>
 
 	var dataVal = "";
@@ -215,7 +266,7 @@
 			}
 		});
 		$(".menuNav li.active").removeClass('active');
-		$(".menuNav li.fourth").addClass('active');
+		$(".menuNav li.sixth").addClass('active');
 		dataVal = $("#dataType").val();
 		if (dataVal === 'Date') {
 			$(".useAsAnchorDate").show();
@@ -365,4 +416,38 @@
 		document.body.appendChild(a).click();
 		</c:if>
 	}
+
+	function deactivateParticipantProperty(participantPropertyId){
+	  	 bootbox.confirm("Are you sure you want to deactivate this Participant Property?", function(result){
+			 if(result){
+				$("#participantPropertyId").val(participantPropertyId);
+				$("#deactivateParticipantPropertyFormId").submit();
+				showSucMsg('Participant Property successfully deactivated.');
+		 	}
+	 	});
+	}
+	
+	function deleteParticipantProperty(participantPropertyId){
+		alert("Deleted "+participantPropertyId);
+		  bootbox.confirm({
+			    message: "Are you sure you want to delete this Participant Property item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+			    buttons: {
+			        confirm: {
+			            label: 'Yes',
+			        },
+			        cancel: {
+			            label: 'No',
+			        }
+			    },
+			    callback: function (result) {
+			    	if(result){
+						if(participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId !='undefined'){
+							document.deactivateParticipantPropertyForm.action="/fdahpStudyDesigner/adminStudies/deleteParticipantProperty.do?_S=${param._S}";
+							$("#participantPropertyId").val(participantPropertyId);
+							document.deactivateParticipantPropertyForm.submit();
+						}
+					}
+			    }
+		  });
+	  }
 </script>

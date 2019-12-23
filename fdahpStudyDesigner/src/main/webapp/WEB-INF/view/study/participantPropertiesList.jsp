@@ -75,7 +75,9 @@
 								data-placement="top" title="View"
 								onclick="viewQuestionnaires(${participantProperty.id});"></span>
 								<span
-								class="${participantProperty.completed?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+								class="${participantProperty.completed?'edit-inc':'edit-inc-draft mr-md'} mr-lg 
+								<c:if test="${not empty permission}"> cursor-none </c:if> 
+								<c:if test="${not participantProperty.status}"> cursor-none </c:if>"
 								data-toggle="tooltip" data-placement="top" title="Edit"
 								onclick="editQuestionnaires(${participantProperty.id});"></span>
 								<%-- <span class="sprites_icon copy delete" data-toggle="tooltip"
@@ -144,7 +146,7 @@
 		});
 		
 		$(".menuNav li.active").removeClass('active');
-	   	$(".menuNav li.fourth").addClass('active');
+	   	$(".menuNav li.sixth").addClass('active');
 		
 		$('#participantProperties_list').DataTable( {
             "paging":   true,

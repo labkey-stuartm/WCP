@@ -2006,45 +2006,50 @@ public class StudyController {
 		return mav;
 	}
 
-	@RequestMapping("/adminUsersEdit/activateOrDeactivateParticipantProperty.do")
-	public void activateOrDeactivateParticipantProperty(HttpServletRequest request, HttpServletResponse response,
-			String participantPropertyId, String participantPropertyStatus) throws IOException {
-		logger.info("StudyController - activateOrDeactivateParticipantProperty - Starts");
+	@RequestMapping("/adminStudies/deactivateParticipantProperty.do")
+	public ModelAndView deactivateParticipantProperty(HttpServletRequest request) throws IOException {
+		logger.info("StudyController - deactivateParticipantProperty - Starts");
+		ModelAndView mav = null;
+		ModelMap map = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
-		JSONObject jsonobject = new JSONObject();
-		PrintWriter out;
+		String participantPropertyId = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-			if (sesObj != null) {
-				if (StringUtils.isNotEmpty(participantPropertyId)
-						&& StringUtils.isNotEmpty(participantPropertyStatus)) {
-					message = studyService.activateOrDeactivateParticipantProperty(
-							Integer.valueOf(participantPropertyId), sesObj.getUserId(),
-							Integer.valueOf(participantPropertyStatus));
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			if ((sesObj != null) && (sesObj.getStudySession() != null)
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				participantPropertyId = request.getParameter("participantPropertyId");
+				if (StringUtils.isNotEmpty(participantPropertyId)) {
+					message = studyService.deactivateParticipantProperty(Integer.valueOf(participantPropertyId),
+							sesObj.getUserId());
 				}
+			}
+			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+				map = new ModelMap();
+				map.addAttribute("_S", sessionStudyCount);
+				mav = new ModelAndView("redirect:participantPropertiesPage.do", map);
+			} else {
+				map = new ModelMap();
+				map.addAttribute("_S", sessionStudyCount);
+				mav = new ModelAndView("redirect:editParticipantProperties.do", map);
 			}
 
 		} catch (Exception e) {
-			logger.error("StudyController - activateOrDeactivateParticipantProperty - ERROR", e);
+			logger.error("StudyController - deactivateParticipantProperty - ERROR", e);
 		}
-		logger.info("StudyController - activateOrDeactivateParticipantProperty - Ends");
-		jsonobject.put("message", message);
-		response.setContentType("application/json");
-		out = response.getWriter();
-		out.print(jsonobject);
+		logger.info("StudyController - deactivateParticipantProperty - Ends");
+		return mav;
 	}
 
 	@RequestMapping(value = "/adminStudies/deleteParticipantProperty.do", method = RequestMethod.POST)
-	public void deleteParticipantPropertyInfo(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView deleteParticipantPropertyInfo(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("StudyController - deleteParticipantPropertyInfo - Starts");
-		JSONObject jsonobject = new JSONObject();
-		PrintWriter out = null;
 		String message = FdahpStudyDesignerConstants.SUCCESS;
-		List<ParticipantPropertiesBO> participantPropertiesBOs = null;
-		JSONArray participantPropertiesJsonArray = null;
-		ObjectMapper mapper = new ObjectMapper();
-		String customStudyId = "";
+		ModelAndView mav = null;
+		ModelMap map = null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -2054,18 +2059,22 @@ public class StudyController {
 			String participantPropertyId = request.getParameter("participantPropertyId");
 			if ((sesObj != null) && (sesObj.getStudySession() != null)
 					&& sesObj.getStudySession().contains(sessionStudyCount)) {
-				customStudyId = (String) request.getSession()
-						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				/*
+				 * customStudyId = (String) request.getSession() .getAttribute(sessionStudyCount
+				 * + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+				 */
 				if (StringUtils.isNotEmpty(participantPropertyId)) {
 					message = studyService.deleteParticipantProperty(Integer.valueOf(participantPropertyId),
 							Integer.valueOf(sesObj.getUserId()));
-					participantPropertiesBOs = studyService.getParticipantProperties(customStudyId);
-					if ((participantPropertiesBOs != null) && !participantPropertiesBOs.isEmpty()) {
-						participantPropertiesJsonArray = new JSONArray(
-								mapper.writeValueAsString(participantPropertiesBOs));
-						jsonobject.put(FdahpStudyDesignerConstants.PARTICIPANTPROPERTIES_LIST,
-								participantPropertiesJsonArray);
-					}
+					// participantPropertiesBOs =
+					// studyService.getParticipantProperties(customStudyId);
+					/*
+					 * if ((participantPropertiesBOs != null) &&
+					 * !participantPropertiesBOs.isEmpty()) { participantPropertiesJsonArray = new
+					 * JSONArray( mapper.writeValueAsString(participantPropertiesBOs));
+					 * jsonobject.put(FdahpStudyDesignerConstants.PARTICIPANTPROPERTIES_LIST,
+					 * participantPropertiesJsonArray); }
+					 */
 					/*
 					 * if (StringUtils.isNotEmpty(studyId)) {
 					 * studyService.markAsCompleted(Integer.valueOf(studyId),
@@ -2081,14 +2090,19 @@ public class StudyController {
 					 */
 				}
 			}
-			jsonobject.put("message", message);
-			response.setContentType("application/json");
-			out = response.getWriter();
-			out.print(jsonobject);
+			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+				map = new ModelMap();
+				map.addAttribute("_S", sessionStudyCount);
+				mav = new ModelAndView("redirect:participantPropertiesPage.do", map);
+			} /*
+				 * else { map = new ModelMap(); map.addAttribute("_S", sessionStudyCount); mav =
+				 * new ModelAndView("redirect:editParticipantProperties.do", map); }
+				 */
 		} catch (Exception e) {
 			logger.error("StudyController - deleteParticipantPropertyInfo - ERROR", e);
 		}
 		logger.info("StudyController - deleteParticipantPropertyInfo - Ends");
+		return mav;
 	}
 
 	@RequestMapping(value = "/adminStudies/validateParticipantPropertyKey.do", method = RequestMethod.POST)

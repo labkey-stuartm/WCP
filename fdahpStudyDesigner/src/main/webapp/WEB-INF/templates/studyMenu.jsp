@@ -47,33 +47,33 @@
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="fourth commonCls">PARTICIPANT PROPERTIES <c:if
-					test="${studyBo.studySequenceBo.participantProperties}">
-					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
-				</c:if>
-			</li>
-			<li class="fifth commonCls">Eligibility <c:if
+			<li class="fourth commonCls">Eligibility <c:if
 					test="${studyBo.studySequenceBo.eligibility}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="sixth commonCls">Informed Consent <c:if
+			<li class="fifth commonCls">Informed Consent <c:if
 					test="${studyBo.studySequenceBo.consentEduInfo && studyBo.studySequenceBo.comprehensionTest && studyBo.studySequenceBo.eConsent}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="sub sixthConsent commonCls">Consent Sections <c:if
+			<li class="sub fifthConsent commonCls">Consent Sections <c:if
 					test="${studyBo.studySequenceBo.consentEduInfo}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="sub sixthComre commonCls">Comprehension Test <c:if
+			<li class="sub fifthComre commonCls">Comprehension Test <c:if
 					test="${studyBo.studySequenceBo.comprehensionTest}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="sub sixthConsentReview commonCls">Review and
+			<li class="sub fifthConsentReview commonCls">Review and
 				E-consent Steps <c:if test="${studyBo.studySequenceBo.eConsent}">
+					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
+				</c:if>
+			</li>
+			<li class="sixth commonCls">PARTICIPANT PROPERTIES <c:if
+					test="${studyBo.studySequenceBo.participantProperties}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
@@ -197,27 +197,27 @@ $("#rowId").addClass('lc-gray-bg');
 				document.body.appendChild(a).click();
 			});
 		   $('.fourth').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}";
-				document.body.appendChild(a).click();
-			});
-		   $('.fifth').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
-			$('.sixth').click(function() {
+		   $('.fifth').click(function() {
+			   a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+				document.body.appendChild(a).click();
+			});
+			$('.fifthConsent').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
-			$('.sixthConsent').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
-				document.body.appendChild(a).click();
-			});
- 			$('.sixthComre').click(function() {
+ 			$('.fifthComre').click(function() {
  				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}";
  				document.body.appendChild(a).click();
 			});
-			$('.sixthConsentReview').click(function() {
+			$('.fifthConsentReview').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}";
+				document.body.appendChild(a).click();
+			});
+			$('.sixth').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.seventh , .seventhQuestionnaires').click(function() {

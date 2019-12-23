@@ -128,7 +128,7 @@
 	var table1;
 	$(document).ready(function(){
 	   $(".menuNav li.active").removeClass('active');
-	   $(".menuNav li.fifth").addClass('active');
+	   $(".menuNav li.fourth").addClass('active');
 	   
 	   <c:if test="${not empty permission}">
 	       $('#eleFormId input,textarea,select').prop('disabled', true);
