@@ -246,14 +246,14 @@
 									</div>
 									<div class="mt-md">
 										<div class="gray-xs-f mb-xs">
-											Description <small>(200 characters max) </small><span
+											Description <small>(250 characters max) </small><span
 												class="requiredStar">*</span>
 										</div>
 										<div class="form-group elaborateClass">
 											<textarea class="form-control updateInput" rows="5"
 												name="description" id="editor${spbSt.count}" required
-												data-error="Please enter plain text of up to 200 characters max."
-												maxlength="200">${studyPageBo.description}</textarea>
+												data-error="Please enter plain text of up to 250 characters max."
+												maxlength="250">${studyPageBo.description}</textarea>
 											<div class="help-block with-errors red-txt"></div>
 										</div>
 									</div>
@@ -432,8 +432,8 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-lg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description <small>(200 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required data-error='Please enter plain text of up to 200 characters max.' maxlength='200'></textarea>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
+        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required data-error='Please enter plain text of up to 250 characters max.' maxlength='250'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+

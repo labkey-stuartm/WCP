@@ -43,7 +43,10 @@ public class AnchorDateTypeBo implements Serializable {
 	private Float version = 0f;
 
 	@Column(name = "participant_property")
-	private boolean participantProperty;
+	private Boolean participantProperty = false;
+
+	@Column(name = "is_active")
+	private Boolean isActive = true;
 
 	public Integer getId() {
 		return id;
@@ -93,11 +96,19 @@ public class AnchorDateTypeBo implements Serializable {
 		this.version = version;
 	}
 
-	public boolean isParticipantProperty() {
+	public Boolean getParticipantProperty() {
 		return participantProperty;
 	}
 
-	public void setParticipantProperty(boolean participantProperty) {
+	public void setParticipantProperty(Boolean participantProperty) {
 		this.participantProperty = participantProperty;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 }

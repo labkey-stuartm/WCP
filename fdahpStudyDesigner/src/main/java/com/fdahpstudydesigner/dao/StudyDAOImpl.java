@@ -4010,7 +4010,6 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
 		Session session = null;
 		ParticipantPropertiesBO participantProperties = null;
-		Integer result = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -4032,11 +4031,7 @@ public class StudyDAOImpl implements StudyDAO {
 						participantPropertiesBO.getId());
 				if (participantProperties.getAnchorDateId() != null) {
 					if (!participantPropertiesBO.getUseAsAnchorDate()) {
-						result = deleteParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(),
-								session);
-						if (result != 0) {
-							participantPropertiesBO.setAnchorDateId(null);
-						}
+						deleteParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(), session);
 					}
 				} else {
 					if (participantPropertiesBO.getUseAsAnchorDate()) {
@@ -4077,7 +4072,6 @@ public class StudyDAOImpl implements StudyDAO {
 			anchorDateTypeBo.setCustomStudyId(customStudyId);
 			anchorDateTypeBo.setStudyId(studyId);
 			anchorDateTypeBo.setName(anchorDateName);
-			anchorDateTypeBo.setHasAnchortypeDraft(1);
 			anchorDateTypeBo.setParticipantProperty(true);
 			anchorDateId = (Integer) session.save(anchorDateTypeBo);
 		} catch (Exception e) {
@@ -4088,20 +4082,18 @@ public class StudyDAOImpl implements StudyDAO {
 	}
 
 	@Override
-	public Integer deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session) {
+	public void deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session) {
 		logger.info("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - Starts");
 		Query query = null;
-		Integer result = null;
 		try {
 			if (anchorDateId != null) {
-				query = session.createQuery("delete from AnchorDateTypeBo where id=" + anchorDateId);
-				result = query.executeUpdate();
+				query = session.createQuery("UPDATE AnchorDateTypeBo set isActive=0 where id=" + anchorDateId);
+				query.executeUpdate();
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - ERROR", e);
 		}
 		logger.info("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - Ends");
-		return result;
 	}
 
 	@Override
@@ -4162,15 +4154,23 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		int count = 0;
 		Query query = null;
+		ParticipantPropertiesBO participantPropertiesBO = null;
+		Integer anchorDateId = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-
+			participantPropertiesBO = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
+					participantPropertyId);
+			anchorDateId = participantPropertiesBO.getAnchorDateId();
 			query = session.createQuery(
 					"UPDATE ParticipantPropertiesBO set status=0, modifiedBy=" + userId + ", modifiedDate='"
 							+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
 			count = query.executeUpdate();
 			if (count > 0) {
+				if (count > 0) {
+					deleteParticipantPropertyAsAnchorDate(anchorDateId, session);
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 			transaction.commit();
@@ -4201,9 +4201,9 @@ public class StudyDAOImpl implements StudyDAO {
 			participantPropertiesBO = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
 					participantPropertyId);
 			anchorDateId = participantPropertiesBO.getAnchorDateId();
-			query = session.createQuery("UPDATE ParticipantPropertiesBO set active=0, modifiedBy=" + userId
-					+ ", modifiedDate='" + FdahpStudyDesignerUtil.getCurrentDateTime() + "',anchorDateId=null where id="
-					+ participantPropertyId);
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesBO set active=0, modifiedBy=" + userId + ", modifiedDate='"
+							+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
 			count = query.executeUpdate();
 			if (count > 0) {
 				deleteParticipantPropertyAsAnchorDate(anchorDateId, session);
@@ -5397,8 +5397,8 @@ public class StudyDAOImpl implements StudyDAO {
 					if (objectList != null && !objectList.isEmpty()) {
 						String subQuery = "update questionnaires SET is_live=2,modified_date='"
 								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "', active=0 where short_title IN("
-								+ StringUtils.join(objectList, ",") + ") and is_live=1 and custom_study_id='"
-								+ studyBo.getCustomStudyId() + "'";
+								+ StringUtils.join(objectList, ",").replaceAll(":", "':'")
+								+ ") and is_live=1 and custom_study_id='" + studyBo.getCustomStudyId() + "'";
 						query = session.createSQLQuery(subQuery);
 						query.executeUpdate();
 					}

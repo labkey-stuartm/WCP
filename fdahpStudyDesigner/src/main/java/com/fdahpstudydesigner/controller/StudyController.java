@@ -398,7 +398,7 @@ public class StudyController {
 				if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
 							propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
-					mav = new ModelAndView("redirect:viewStudyQuestionnaires.do", map);
+					mav = new ModelAndView("redirect:participantPropertiesPage.do", map);
 				} else {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
 							FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
@@ -2169,7 +2169,7 @@ public class StudyController {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
 							propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
 					map.addAttribute("_S", sessionStudyCount);
-					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
+					mav = new ModelAndView("redirect:viewStudyQuestionnaires.do", map);
 				} else {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
 							FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
@@ -3751,7 +3751,7 @@ public class StudyController {
 					if (buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)) {
 						request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
 								propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
-						return new ModelAndView("redirect:participantPropertiesPage.do", map);
+						return new ModelAndView("redirect:viewStudyEligibilty.do", map);
 					} else {
 						request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
 								propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));

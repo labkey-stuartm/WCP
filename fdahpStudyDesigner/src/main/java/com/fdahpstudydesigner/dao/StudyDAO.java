@@ -155,7 +155,7 @@ public interface StudyDAO {
 
 	public Integer addAnchorDate(int studyId, String customStudyId, String anchorDateName, Session session);
 
-	public Integer deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session);
+	public void deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session);
 
 	public List<ParticipantPropertiesBO> getParticipantProperties(String customStudyId);
 

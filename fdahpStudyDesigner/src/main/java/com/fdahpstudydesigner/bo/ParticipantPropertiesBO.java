@@ -84,6 +84,9 @@ public class ParticipantPropertiesBO {
 	@Column(name = "org_id")
 	private String orgId = "OrgName";
 
+	@Column(name = "is_used")
+	private Boolean isUsed = false;
+
 	public Integer getId() {
 		return id;
 	}
@@ -274,5 +277,13 @@ public class ParticipantPropertiesBO {
 
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
+	}
+
+	public Boolean getIsUsed() {
+		return isUsed;
+	}
+
+	public void setIsUsed(Boolean isUsed) {
+		this.isUsed = isUsed;
 	}
 }
