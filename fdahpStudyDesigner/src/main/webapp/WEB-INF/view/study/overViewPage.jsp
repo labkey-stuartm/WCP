@@ -146,14 +146,14 @@
 									</div>
 									<div class="mt-xlg">
 										<div class="gray-xs-f mb-xs">
-											Description <small>(200 characters max) </small><span
+											Description <small>(250 characters max) </small><span
 												class="requiredStar">*</span>
 										</div>
 										<div class="form-group elaborateClass">
 											<textarea class=" form-control updateInput" rows="5"
 												id="editor1" name="description" required
-												data-error="Please enter plain text of up to 200 characters max."
-												maxlength="200"></textarea>
+												data-error="Please enter plain text of up to 250 characters max."
+												maxlength="250"></textarea>
 
 											<div class="help-block with-errors red-txt"></div>
 										</div>

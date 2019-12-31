@@ -1226,6 +1226,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		String activitydetails = "";
 		String activity = "";
 		StudyVersionBo studyVersionBo = null;
+		QuestionnaireBo questionnaireBo = null;
+		AnchorDateTypeBo anchorDateTypeBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1257,6 +1259,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			} else {
 				// doing the hard delete before study launch
 				message = deleteQuestuionnaireInfo(studyId, questionnaireId, customStudyId, session, transaction);
+			}
+			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+				questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
+				anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+						questionnaireBo.getAnchorDateId());
+				if (null != anchorDateTypeBo.getParticipantProperty() && anchorDateTypeBo.getParticipantProperty()) {
+					query = session.createQuery(
+							"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
+					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
+					Long count = (Long) query.uniqueResult();
+					if (count < 1) {
+						System.out.println(
+								"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
+						query = session.createQuery(
+								"Update ParticipantPropertiesBO PBO SET PBO.isUsed = 0 where PBO.anchorDateId=:anchorDateId");
+						query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
+						query.executeUpdate();
+					}
+				}
 			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted.";
 			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted. (Study ID = "
@@ -3330,9 +3351,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		Session session = null;
 		String activitydetails = "";
 		String activity = "";
+		AnchorDateTypeBo anchorDateTypeBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+			anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+					questionnaireBo.getAnchorDateId());
+			if (null != anchorDateTypeBo.getParticipantProperty() && anchorDateTypeBo.getParticipantProperty()) {
+				query = session.createQuery(
+						"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
+				query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
+				Long count = (Long) query.uniqueResult();
+				if (count < 1) {
+					System.out.println(
+							"StudyQuestionnaireDAOImpl.saveORUpdateQuestionnaire() participant prop count condition match");
+					query = session.createQuery(
+							"Update ParticipantPropertiesBO PBO SET PBO.isUsed = 1 where PBO.anchorDateId=:anchorDateId");
+					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
+					query.executeUpdate();
+				}
+			}
 			session.saveOrUpdate(questionnaireBo);
 			if (questionnaireBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.SCHEDULE)) {
 				if (questionnaireBo != null && questionnaireBo.getId() != null) {

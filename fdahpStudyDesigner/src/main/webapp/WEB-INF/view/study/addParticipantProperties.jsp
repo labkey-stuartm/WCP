@@ -109,19 +109,20 @@
 								class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
-						<div>
+						<div class="form-group">
 							<span
 								class="radio radio-info radio-inline p-45 
 								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio1"
-									value="preEnrollment" name="typeOfProperty" path="propertyType" />
-								<label for="inlineRadio1">Pre-Enrollment</label>
+									value="preEnrollment" name="typeOfProperty" path="propertyType"
+									required="required" /> <label for="inlineRadio1">Pre-Enrollment</label>
 							</span> <span
 								class="radio radio-inline 
 								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio2"
-									value="postEnrollment" name="typeOfProperty"
-									path="propertyType" /> <label for="inlineRadio2">Post-Enrollment</label>
+									required="required" value="postEnrollment"
+									name="typeOfProperty" path="propertyType" /> <label
+								for="inlineRadio2">Post-Enrollment</label>
 							</span>
 							<div class="help-block with-errors red-txt"></div>
 						</div>
@@ -137,8 +138,8 @@
 							<div
 								class="form-group 
 							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
-								<form:select id="dataType" class="selectpicker" title="Select"
-									required="required" path="dataType">
+								<form:select id="dataType" class="selectpicker required-attr"
+									title="Select" required="required" path="dataType">
 									<form:options items="${dataType}" />
 								</form:select>
 								<div class="help-block with-errors red-txt"></div>
@@ -164,8 +165,8 @@
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
 						<div class="form-group">
-							<form:select id="dataSource" class="selectpicker" title="Select"
-								required="required" path="dataSource">
+							<form:select id="dataSource" class="selectpicker required-attr"
+								title="Select" required="required" path="dataSource">
 								<form:options items="${dataSource}" />
 							</form:select>
 							<div class="help-block with-errors red-txt"></div>
@@ -179,18 +180,20 @@
 								data-toggle="tooltip"
 								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 						</div>
-						<div>
+						<div class="form-group">
 							<span
 								class="radio radio-info radio-inline p-45 
 							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton id="inlineRadio3" value="true"
-									name="radioInline2" path="populatedAtEnrollment" /> <label
+									class="required-attr" name="radioInline2"
+									path="populatedAtEnrollment" required="required" /> <label
 								for="inlineRadio3">Yes</label>
 							</span> <span
 								class="radio radio-inline
 							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton id="inlineRadio4" value="false"
-									name="radioInline2" path="populatedAtEnrollment" /> <label
+									class="required-attr" name="radioInline2"
+									path="populatedAtEnrollment" required="required" /> <label
 								for="inlineRadio4">No</label>
 							</span>
 							<div class="help-block with-errors red-txt"></div>
@@ -214,17 +217,13 @@
 			<div class="dis-line form-group mb-none mr-sm">
 				<c:choose>
 					<c:when test="${participantProperties.live eq 1}">
-						<!-- <button type="button" class="btn btn-default gray-btn"
-								id="saveId">Save</button> -->
 						<div class="form-group mr-sm" style="white-space: normal;">
-							<button type="button" class="btn btn-default red-btn-action "
+							<button type="button" class="btn btn-default red-btn-action"
 								id="deactivateId"
 								onclick="deactivateParticipantProperty(${participantProperties.id});">Deactivate</button>
 						</div>
 					</c:when>
 					<c:otherwise>
-						<!-- <button type="button" class="btn btn-default gray-btn"
-								id="saveId">Next</button> -->
 						<div class="form-group mr-sm" style="white-space: normal;">
 							<button type="button"
 								class="btn btn-default red-btn-action 
@@ -260,6 +259,7 @@
 	var propType = "";
 	$(document).ready(function() {
 		$('#doneId').click(function(e) {
+			$('.required-attr').prop('required',true);
 			if (isFromValid("#participantPropertiesFormId")) {
 				$("#actionButtonType").val('done');
 				$('#participantPropertiesFormId').submit();
@@ -283,6 +283,15 @@
 			}
 		} else {
 			$('.refresh-value').hide();
+		}
+		if(${participantProperties.isUsed}){
+			$('#deactivateId').mouseenter(function(){
+				  alert("You are trying to deactivate a perticipant property which is already in use");
+			});
+			
+			$('#deleteId').mouseenter(function(){
+				  alert("You are trying to delete a perticipant property which is already in use");
+			});
 		}
 	});
 
@@ -315,6 +324,7 @@
 	});
 
 	$("#saveId").click(function() {
+		$('.required-attr').prop('required',false);
 		if (isFromValid("#participantPropertiesFormId")) {
 			$("#actionButtonType").val('save');
 			$('#participantPropertiesFormId').submit();
@@ -428,7 +438,6 @@
 	}
 	
 	function deleteParticipantProperty(participantPropertyId){
-		alert("Deleted "+participantPropertyId);
 		  bootbox.confirm({
 			    message: "Are you sure you want to delete this Participant Property item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
 			    buttons: {

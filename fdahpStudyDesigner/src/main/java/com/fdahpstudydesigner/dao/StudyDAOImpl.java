@@ -4072,6 +4072,7 @@ public class StudyDAOImpl implements StudyDAO {
 			anchorDateTypeBo.setCustomStudyId(customStudyId);
 			anchorDateTypeBo.setStudyId(studyId);
 			anchorDateTypeBo.setName(anchorDateName);
+			anchorDateTypeBo.setHasAnchortypeDraft(1);
 			anchorDateTypeBo.setParticipantProperty(true);
 			anchorDateId = (Integer) session.save(anchorDateTypeBo);
 		} catch (Exception e) {
@@ -4087,7 +4088,8 @@ public class StudyDAOImpl implements StudyDAO {
 		Query query = null;
 		try {
 			if (anchorDateId != null) {
-				query = session.createQuery("UPDATE AnchorDateTypeBo set isActive=0 where id=" + anchorDateId);
+				query = session
+						.createQuery("UPDATE AnchorDateTypeBo set hasAnchortypeDraft=0 where id=" + anchorDateId);
 				query.executeUpdate();
 			}
 		} catch (Exception e) {
