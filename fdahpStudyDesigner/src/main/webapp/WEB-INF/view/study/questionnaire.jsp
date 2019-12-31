@@ -1406,7 +1406,7 @@ function isNumber(evt, thisAttr) {
 								type="checkbox" id="addNewRunsId"
 								value="${questionnaireBo.addNewRuns}"
 								<c:if test="${questionnaireBo.addNewRuns}">checked</c:if>>
-								<label for="addNewRunsId"> Add New Runs </label>
+								<label for="addNewRunsId"> Add Runs </label>
 							</span>
 						</div>
 					</div>
