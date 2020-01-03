@@ -3355,8 +3355,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
-					questionnaireBo.getAnchorDateId());
+			if (null != questionnaireBo.getAnchorDateId()) {
+				anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+						questionnaireBo.getAnchorDateId());
+			}
 			if (null != anchorDateTypeBo.getParticipantProperty() && anchorDateTypeBo.getParticipantProperty()) {
 				query = session.createQuery(
 						"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
