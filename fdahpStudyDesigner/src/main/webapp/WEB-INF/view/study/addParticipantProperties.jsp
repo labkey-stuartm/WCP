@@ -97,7 +97,7 @@
 							<div class="form-group mb-none">
 								<form:input type="text" class="form-control" name="propertyName"
 									id="propertyName" path="propertyName" required="required"
-									maxlength="200" />
+									maxlength="300" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
 						</div>
@@ -111,13 +111,13 @@
 						</div>
 						<div class="form-group">
 							<span
-								class="radio radio-info radio-inline p-45 
+								class="radio radio-info radio-inline p-45 propTypeCls
 								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio1"
 									value="preEnrollment" name="typeOfProperty" path="propertyType"
 									required="required" /> <label for="inlineRadio1">Pre-Enrollment</label>
 							</span> <span
-								class="radio radio-inline 
+								class="radio radio-inline propTypeCls
 								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio2"
 									required="required" value="postEnrollment"
@@ -286,11 +286,11 @@
 		}
 		if(${participantProperties.isUsed}){
 			$('#deactivateId').mouseenter(function(){
-				  alert("You are trying to deactivate a perticipant property which is already in use");
+				  alert("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 			});
 			
 			$('#deleteId').mouseenter(function(){
-				  alert("You are trying to delete a perticipant property which is already in use");
+				  alert("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 			});
 		}
 	});
@@ -300,6 +300,35 @@
 		dataVal = $("#dataType").val();
 		if (propType === 'postEnrollment' && dataVal === 'Date') {
 			if (this.checked) {
+				$('.refresh-value').show();
+			} else {
+				$('.refresh-value').hide();
+			}
+		} else {
+			$('.refresh-value').hide();
+		}
+	});
+	
+	$('.propTypeCls').change(function() {
+		propType = $('.enrollment-cls:checked').val();
+		dataVal = $("#dataType").val();
+		if (propType === 'postEnrollment' && dataVal === 'Date') {
+			if ($('#inlineCheckbox1').is(':checked')) {
+				$('.refresh-value').show();
+			} else {
+				$('.refresh-value').hide();
+			}
+		} else {
+			$('.refresh-value').hide();
+		}
+	});
+	
+	$('#dataType').change(function() {
+		propType = $('.enrollment-cls:checked').val();
+		dataVal = $("#dataType").val();
+		alert(propType+"  "+dataVal);
+		if (propType === 'postEnrollment' && dataVal === 'Date') {
+			if ($('#inlineCheckbox1').is(':checked')) {
 				$('.refresh-value').show();
 			} else {
 				$('.refresh-value').hide();

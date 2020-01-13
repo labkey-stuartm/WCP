@@ -1262,20 +1262,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			}
 			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 				questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
-				anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
-						questionnaireBo.getAnchorDateId());
-				if (null != anchorDateTypeBo.getParticipantProperty() && anchorDateTypeBo.getParticipantProperty()) {
-					query = session.createQuery(
-							"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
-					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
-					Long count = (Long) query.uniqueResult();
-					if (count < 1) {
-						System.out.println(
-								"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
+				if (null != questionnaireBo.getAnchorDateId()) {
+					anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+							questionnaireBo.getAnchorDateId());
+					if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
+							&& anchorDateTypeBo.getParticipantProperty()) {
 						query = session.createQuery(
-								"Update ParticipantPropertiesBO PBO SET PBO.isUsed = 0 where PBO.anchorDateId=:anchorDateId");
+								"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
 						query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
-						query.executeUpdate();
+						Long count = (Long) query.uniqueResult();
+						if (count < 1) {
+							System.out.println(
+									"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
+							query = session.createQuery(
+									"Update ParticipantPropertiesBO PBO SET PBO.isUsedInQuestionnaire = 0 where PBO.anchorDateId=:anchorDateId");
+							query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
+							query.executeUpdate();
+						}
 					}
 				}
 			}
@@ -3355,7 +3358,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if (null != questionnaireBo.getAnchorDateId()) {
+			if (null != questionnaireBo && null != questionnaireBo.getAnchorDateId()) {
 				anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
 						questionnaireBo.getAnchorDateId());
 			}
@@ -3369,7 +3372,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					System.out.println(
 							"StudyQuestionnaireDAOImpl.saveORUpdateQuestionnaire() participant prop count condition match");
 					query = session.createQuery(
-							"Update ParticipantPropertiesBO PBO SET PBO.isUsed = 1 where PBO.anchorDateId=:anchorDateId");
+							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInQuestionnaire = 1 where PBO.anchorDateId=:anchorDateId");
 					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
 					query.executeUpdate();
 				}
