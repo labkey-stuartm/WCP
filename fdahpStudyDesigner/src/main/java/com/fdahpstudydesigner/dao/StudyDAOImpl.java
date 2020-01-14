@@ -539,6 +539,8 @@ public class StudyDAOImpl implements StudyDAO {
 		Query resourceQuery = null;
 		Query notificationQuery = null;
 		List<ResourceBO> resourceBOList = null;
+		ResourceBO resource = null;
+		AnchorDateTypeBo anchorDateTypeBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -563,6 +565,29 @@ public class StudyDAOImpl implements StudyDAO {
 			resourceCount = resourceQuery.executeUpdate();
 
 			if (!resourceVisibility && resourceCount > 0) {
+
+				resource = (ResourceBO) session.get(ResourceBO.class, resourceInfoId);
+				if (null != resource && null != resource.getAnchorDateId()) {
+					anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+							resource.getAnchorDateId());
+					if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
+							&& anchorDateTypeBo.getParticipantProperty()) {
+						query = session.createQuery(
+								"select count(*) from ResourceBO RBO  where RBO.studyId=:studyId and RBO.anchorDateId=:anchorDateId and RBO.status=1");
+						query.setInteger("studyId", resource.getStudyId());
+						query.setInteger("anchorDateId", resource.getAnchorDateId());
+						Long count = (Long) query.uniqueResult();
+						if (count < 1) {
+							System.out.println(
+									"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
+							query = session.createQuery(
+									"Update ParticipantPropertiesBO PBO SET PBO.isUsedInResource = 0 where PBO.anchorDateId=:anchorDateId");
+							query.setInteger("anchorDateId", resource.getAnchorDateId());
+							query.executeUpdate();
+						}
+					}
+				}
+
 				String deleteNotificationQuery = " UPDATE NotificationBO NBO set NBO.notificationStatus = 1 WHERE NBO.resourceId = "
 						+ resourceInfoId;
 				notificationQuery = session.createQuery(deleteNotificationQuery);
@@ -3845,9 +3870,30 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - saveOrUpdateResource() - Starts");
 		Session session = null;
 		Integer resourceId = 0;
+		AnchorDateTypeBo anchorDateTypeBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+
+			if (null != resourceBO && null != resourceBO.getAnchorDateId()) {
+				anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class, resourceBO.getAnchorDateId());
+			}
+			if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
+					&& anchorDateTypeBo.getParticipantProperty()) {
+				query = session.createQuery(
+						"select count(*) from ResourceBO RBO  where RBO.studyId=:studyId and RBO.anchorDateId=:anchorDateId and RBO.status=1");
+				query.setInteger("studyId", resourceBO.getStudyId());
+				query.setInteger("anchorDateId", resourceBO.getAnchorDateId());
+				Long count = (Long) query.uniqueResult();
+				if (count < 1) {
+					System.out.println("StudyDAOImpl.saveOrUpdateResource()  participant prop count condition match");
+					query = session.createQuery(
+							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInResource = 1 where PBO.anchorDateId=:anchorDateId");
+					query.setInteger("anchorDateId", resourceBO.getAnchorDateId());
+					query.executeUpdate();
+				}
+			}
+
 			if (null == resourceBO.getId()) {
 				resourceId = (Integer) session.save(resourceBO);
 			} else {

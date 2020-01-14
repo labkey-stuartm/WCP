@@ -284,7 +284,7 @@
 		} else {
 			$('.refresh-value').hide();
 		}
-		if(${participantProperties.isUsed}){
+		if(${participantProperties.isUsedInQuestionnaire || participantProperties.isUsedInActiveTask || participantProperties.isUsedInResource}){
 			$('#deactivateId').mouseenter(function(){
 				  alert("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 			});

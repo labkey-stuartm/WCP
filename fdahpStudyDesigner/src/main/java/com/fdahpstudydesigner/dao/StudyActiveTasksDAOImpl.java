@@ -141,7 +141,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
 							&& anchorDateTypeBo.getParticipantProperty()) {
 						query = session.createQuery(
-								"select count(*) from ActiveTaskBo ABO  where ABO.anchorDateId=:anchorDateId and ABO.active=1");
+								"select count(*) from ActiveTaskBo ABO  where ABO.studyId=:studyId and ABO.anchorDateId=:anchorDateId and ABO.active=1");
+						query.setInteger("studyId", activeTaskBo.getStudyId());
 						query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
 						Long count = (Long) query.uniqueResult();
 						if (count < 1) {
@@ -474,7 +475,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 			if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
 					&& anchorDateTypeBo.getParticipantProperty()) {
 				query = session.createQuery(
-						"select count(*) from ActiveTaskBo ABO  where ABO.anchorDateId=:anchorDateId and ABO.active=1");
+						"select count(*) from ActiveTaskBo ABO  where ABO.studyId=:studyId and ABO.anchorDateId=:anchorDateId and ABO.active=1");
+				query.setInteger("studyId", activeTaskBo.getStudyId());
 				query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {

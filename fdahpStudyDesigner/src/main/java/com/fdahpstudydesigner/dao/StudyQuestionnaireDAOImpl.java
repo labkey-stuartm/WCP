@@ -1262,13 +1262,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			}
 			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 				questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
-				if (null != questionnaireBo.getAnchorDateId()) {
+				if (null != questionnaireBo && null != questionnaireBo.getAnchorDateId()) {
 					anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
 							questionnaireBo.getAnchorDateId());
 					if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
 							&& anchorDateTypeBo.getParticipantProperty()) {
 						query = session.createQuery(
-								"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
+								"select count(*) from QuestionnaireBo QBO  where QBO.studyId=:studyId and QBO.anchorDateId=:anchorDateId and QBO.active=1");
+						query.setInteger("studyId", studyId);
 						query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
 						Long count = (Long) query.uniqueResult();
 						if (count < 1) {
@@ -3364,8 +3365,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			}
 			if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
 					&& anchorDateTypeBo.getParticipantProperty()) {
+
 				query = session.createQuery(
-						"select count(*) from QuestionnaireBo QBO  where QBO.anchorDateId=:anchorDateId and QBO.active=1");
+						"select count(*) from QuestionnaireBo QBO  where QBO.studyId=:studyId and QBO.anchorDateId=:anchorDateId and QBO.active=1");
+				query.setInteger("studyId", questionnaireBo.getStudyId());
 				query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {
