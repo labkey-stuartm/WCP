@@ -4891,10 +4891,12 @@ public class StudyDAOImpl implements StudyDAO {
 						if (null != pbo.getLive() && pbo.getLive() != 0) {
 							if (pbo.getIsChange()) {
 								pbo.setVersion(pbo.getVersion() + 0.1f);
+								pbo.setStudyVersion(studyDreaftBo.getVersion());
 							}
 						} else {
 							pbo.setLive(1);
 							pbo.setVersion(1f);
+							pbo.setStudyVersion(studyDreaftBo.getVersion());
 						}
 						pbo.setIsChange(false);
 						session.update(pbo);
@@ -5431,35 +5433,47 @@ public class StudyDAOImpl implements StudyDAO {
 					// which are already in live those are deleted in draft to
 					// making update those questionnarie to archived and make it
 					// inactive(status=0)
+					/*
+					 * StringBuilder subString = new StringBuilder();
+					 * subString.append("select CONCAT('"); subString.append('"');
+					 * subString.append("',shortTitle,'"); subString.append('"');
+					 * subString.append("') from QuestionnaireBo where active=0 and studyId=" +
+					 * studyBo.getId() + " and shortTitle is NOT NULL");
+					 */
+
 					StringBuilder subString = new StringBuilder();
 					subString.append("select CONCAT('");
-					subString.append('"');
 					subString.append("',shortTitle,'");
-					subString.append('"');
 					subString.append("') from QuestionnaireBo where active=0 and studyId=" + studyBo.getId()
 							+ " and shortTitle is NOT NULL");
 					query = session.createQuery(subString.toString());
 
 					objectList = query.list();
 
-					if (objectList != null && !objectList.isEmpty()) {
-						String subQuery = "update questionnaires SET is_live=2,modified_date='"
-								+ FdahpStudyDesignerUtil.getCurrentDateTime() + "', active=0 where short_title IN("
-								+ StringUtils.join(objectList, ",").replaceAll(":", "':'")
-								+ ") and is_live=1 and custom_study_id='" + studyBo.getCustomStudyId() + "'";
-						query = session.createSQLQuery(subQuery);
-						query.executeUpdate();
-					}
-
 					/*
 					 * if (objectList != null && !objectList.isEmpty()) { String subQuery =
 					 * "update questionnaires SET is_live=2,modified_date='" +
 					 * FdahpStudyDesignerUtil.getCurrentDateTime() +
-					 * "', active=0 where short_title IN(:objectList) and is_live=1 and custom_study_id='"
-					 * + studyBo.getCustomStudyId() + "'"; query =
-					 * session.createSQLQuery(subQuery).setParameterList("objectList", objectList);
+					 * "', active=0 where short_title IN(" + StringUtils.join(objectList,
+					 * ",").replaceAll(":", "':'") + ") and is_live=1 and custom_study_id='" +
+					 * studyBo.getCustomStudyId() + "'"; query = session.createSQLQuery(subQuery);
 					 * query.executeUpdate(); }
 					 */
+
+					if (objectList != null && !objectList.isEmpty()) {
+						try {
+							String currentDateTime = FdahpStudyDesignerUtil.getCurrentDateTime();
+							String subQuery = "update questionnaires SET is_live=2,modified_date=:currentTime, "
+									+ " active=0 where short_title IN(:objectList) and is_live=1 and custom_study_id=:custStudyId";
+							query = session.createSQLQuery(subQuery);
+							query.setParameter("currentTime", currentDateTime);
+							query.setParameterList("objectList", objectList);
+							query.setParameter("custStudyId", studyBo.getCustomStudyId());
+							query.executeUpdate();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 
 					// In ActiveTask change or not Start
 					// is there any change doing clone of active task

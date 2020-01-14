@@ -8,6 +8,39 @@
 .checkBoxForm {
 	
 }
+
+#infoModel{
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999999;
+    display: none;
+}
+
+#infoModel > div{
+	display: table;
+	width: 500px;
+	padding: 20px;
+	background: #fff;
+	color: #000;
+	margin: 5% auto 0;
+}
+
+#infoModel .infoOkBtn{
+	color: #fff;
+	background: #007cba;
+    border-color: #007cba !important;
+    padding: 4px 20px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 30px;
+    float: right;
+}
+
 </style>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -69,7 +102,7 @@
 					<input type="hidden" id="preShortTitleId"
 						value="${fn:escapeXml(participantProperties.shortTitle)}" />
 					<div class="row">
-						<div class="col-md-4 pl-none mt-lg">
+						<div class="form-group col-md-4 pl-none mt-lg">
 							<div class="gray-xs-f mb-xs">
 								Short Title or Key(1 to 50 characters)<span class="requiredStar">*</span>
 								<span class="ml-xs sprites_v3 filled-tooltip"
@@ -78,7 +111,7 @@
 							</div>
 							<div
 								class="form-group mb-none <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
-								<form:input autofocus="autofocus" type="text"
+								<form:input autofocus="autofocus" type="text" custAttType="cust"
 									class="form-control" name="shortTitle" id="shortTitleId"
 									path="shortTitle" maxlength="50" required="required" />
 								<div class="help-block with-errors red-txt"></div>
@@ -237,6 +270,16 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+<div id="infoModel">
+	<div>
+		<div class="tt">Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again</div>
+		<button class="infoOkBtn">OK</button>
+	</div>
+	
+</div>
+
 <form:form
 	action="/fdahpStudyDesigner/adminStudies/deactivateParticipantProperty.do?_S=${param._S}"
 	name="deactivateParticipantPropertyForm"
@@ -286,13 +329,22 @@
 		}
 		if(${participantProperties.isUsedInQuestionnaire || participantProperties.isUsedInActiveTask || participantProperties.isUsedInResource}){
 			$('#deactivateId').mouseenter(function(){
-				  alert("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
+				  $("#infoModel").css("display", "block");
+				  $("#infoModel .tt").text("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
+				  //alert("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
+				  //$("#infoModel").removeClass("hide")
 			});
 			
 			$('#deleteId').mouseenter(function(){
-				  alert("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
+				  //alert("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
+				$("#infoModel").css("display", "block");
+				  $("#infoModel .tt").text("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 			});
 		}
+	});
+	
+	$(".infoOkBtn").click(function(){
+		$("#infoModel").css("display", "none");
 	});
 
 	$('#inlineCheckbox1').change(function() {
@@ -326,7 +378,6 @@
 	$('#dataType').change(function() {
 		propType = $('.enrollment-cls:checked').val();
 		dataVal = $("#dataType").val();
-		alert(propType+"  "+dataVal);
 		if (propType === 'postEnrollment' && dataVal === 'Date') {
 			if ($('#inlineCheckbox1').is(':checked')) {
 				$('.refresh-value').show();

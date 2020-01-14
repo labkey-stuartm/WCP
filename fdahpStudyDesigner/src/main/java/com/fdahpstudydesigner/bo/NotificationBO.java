@@ -95,9 +95,12 @@ public class NotificationBO implements Serializable {
 
 	@Column(name = "x_days")
 	private Integer xDays;
-	
+
 	@Column(name = "app_id")
 	private String appId;
+
+	@Column(name = "is_active")
+	private Boolean isActive = true;
 
 	public String getActionPage() {
 		return actionPage;
@@ -207,8 +210,7 @@ public class NotificationBO implements Serializable {
 		this.anchorDate = anchorDate;
 	}
 
-	public void setCheckNotificationSendingStatus(
-			String checkNotificationSendingStatus) {
+	public void setCheckNotificationSendingStatus(String checkNotificationSendingStatus) {
 		this.checkNotificationSendingStatus = checkNotificationSendingStatus;
 	}
 
@@ -298,5 +300,13 @@ public class NotificationBO implements Serializable {
 
 	public void setAppId(String appId) {
 		this.appId = appId;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 }
