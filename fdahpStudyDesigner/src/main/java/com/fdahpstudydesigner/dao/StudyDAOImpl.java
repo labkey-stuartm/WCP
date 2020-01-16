@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -43,6 +44,7 @@ import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
+import com.fdahpstudydesigner.bo.ParticipantPropertiesDraftBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
@@ -4891,16 +4893,51 @@ public class StudyDAOImpl implements StudyDAO {
 						if (null != pbo.getLive() && pbo.getLive() != 0) {
 							if (pbo.getIsChange()) {
 								pbo.setVersion(pbo.getVersion() + 0.1f);
-								pbo.setStudyVersion(studyDreaftBo.getVersion());
+								// pbo.setStudyVersion(studyDreaftBo.getVersion());
 							}
 						} else {
 							pbo.setLive(1);
 							pbo.setVersion(1f);
-							pbo.setStudyVersion(studyDreaftBo.getVersion());
+							// pbo.setStudyVersion(studyDreaftBo.getVersion());
 						}
 						pbo.setIsChange(false);
 						session.update(pbo);
 					}
+
+					query = session.createQuery("FROM ParticipantPropertiesBO PBO WHERE PBO.studyId=" + studyBo.getId()
+							+ "and PBO.active=1 ORDER BY PBO.createdDate DESC");
+					participantPropertiesBOs = query.list();
+					if (participantPropertiesBOs != null && !participantPropertiesBOs.isEmpty()) {
+						for (ParticipantPropertiesBO bo : participantPropertiesBOs) {
+							ParticipantPropertiesDraftBO pBO = new ParticipantPropertiesDraftBO();
+							BeanUtils.copyProperties(pBO, bo);
+							pBO.setStudyId(studyDreaftBo.getId());
+							pBO.setStudyVersion(studyDreaftBo.getVersion());
+							pBO.setId(null);
+							session.save(pBO);
+						}
+					}
+
+					query = session.createQuery(
+							"select shortTitle from ParticipantPropertiesBO where status=0 and studyId=:studyId and shortTitle is NOT NULL");
+					query.setInteger("studyId", studyBo.getId());
+					objectList = query.list();
+
+					if (objectList != null && !objectList.isEmpty()) {
+						try {
+							String currentDateTime = FdahpStudyDesignerUtil.getCurrentDateTime();
+							String subQuery = "update participant_properties_draft SET modified_date=:currentTime, "
+									+ " status=0 where short_title IN(:objectList) and status=1 and custom_study_id=:custStudyId";
+							query = session.createSQLQuery(subQuery);
+							query.setParameter("currentTime", currentDateTime);
+							query.setParameterList("objectList", objectList);
+							query.setParameter("custStudyId", studyBo.getCustomStudyId());
+							query.executeUpdate();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
 					// If Questionnaire updated flag -1 then update(clone)
 					if (studyVersionBo == null || (studyBo.getHasQuestionnaireDraft() != null
 							&& studyBo.getHasQuestionnaireDraft().equals(1))) {

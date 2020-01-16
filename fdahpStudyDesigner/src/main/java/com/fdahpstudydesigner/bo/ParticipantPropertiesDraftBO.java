@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "participant_properties")
-public class ParticipantPropertiesBO {
+@Table(name = "participant_properties_draft")
+public class ParticipantPropertiesDraftBO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -93,9 +93,8 @@ public class ParticipantPropertiesBO {
 	@Column(name = "is_used_in_resource")
 	private Boolean isUsedInResource = false;
 
-	/*
-	 * @Column(name = "study_version") private Float studyVersion;
-	 */
+	@Column(name = "study_version")
+	private Float studyVersion;
 
 	public Integer getId() {
 		return id;
@@ -313,10 +312,11 @@ public class ParticipantPropertiesBO {
 		this.isUsedInResource = isUsedInResource;
 	}
 
-	/*
-	 * public Float getStudyVersion() { return studyVersion; }
-	 * 
-	 * public void setStudyVersion(Float studyVersion) { this.studyVersion =
-	 * studyVersion; }
-	 */
+	public Float getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Float studyVersion) {
+		this.studyVersion = studyVersion;
+	}
 }

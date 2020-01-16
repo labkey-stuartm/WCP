@@ -9,19 +9,19 @@
 	
 }
 
-#infoModel{
+#infoModel {
 	position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999999;
-    display: none;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 999999;
+	display: none;
 }
 
-#infoModel > div{
+#infoModel>div {
 	display: table;
 	width: 500px;
 	padding: 20px;
@@ -30,17 +30,16 @@
 	margin: 5% auto 0;
 }
 
-#infoModel .infoOkBtn{
+#infoModel .infoOkBtn {
 	color: #fff;
 	background: #007cba;
-    border-color: #007cba !important;
-    padding: 4px 20px;
-    border: none;
-    border-radius: 4px;
-    margin-top: 30px;
-    float: right;
+	border-color: #007cba !important;
+	padding: 4px 20px;
+	border: none;
+	border-radius: 4px;
+	margin-top: 30px;
+	float: right;
 }
-
 </style>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -147,13 +146,13 @@
 								class="radio radio-info radio-inline p-45 propTypeCls
 								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio1"
-									value="preEnrollment" name="typeOfProperty" path="propertyType"
+									value="PreEnrollment" name="typeOfProperty" path="propertyType"
 									required="required" /> <label for="inlineRadio1">Pre-Enrollment</label>
 							</span> <span
 								class="radio radio-inline propTypeCls
 								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio2"
-									required="required" value="postEnrollment"
+									required="required" value="PostEnrollment"
 									name="typeOfProperty" path="propertyType" /> <label
 								for="inlineRadio2">Post-Enrollment</label>
 							</span>
@@ -274,10 +273,13 @@
 <!-- Modal -->
 <div id="infoModel">
 	<div>
-		<div class="tt">Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again</div>
+		<div class="tt">Please Note. You are trying to deactivate a
+			Participant Property which is already in use. Please delete the
+			Activities or Resources which uses this Participant Property as
+			Anchor based scheduling and try again</div>
 		<button class="infoOkBtn">OK</button>
 	</div>
-	
+
 </div>
 
 <form:form
@@ -311,14 +313,14 @@
 		$(".menuNav li.active").removeClass('active');
 		$(".menuNav li.sixth").addClass('active');
 		dataVal = $("#dataType").val();
-		if (dataVal === 'Date') {
+		if (dataVal === 'date') {
 			$(".useAsAnchorDate").show();
 		} else {
 			$(".useAsAnchorDate").hide();
 		}
 		propType = $('.enrollment-cls:checked').val();
 
-		if (propType === 'postEnrollment' && dataVal === 'Date') {
+		if (propType === 'PostEnrollment' && dataVal === 'date') {
 			if ($('#inlineCheckbox1').is(':checked')) {
 				$('.refresh-value').show();
 			} else {
@@ -331,12 +333,10 @@
 			$('#deactivateId').mouseenter(function(){
 				  $("#infoModel").css("display", "block");
 				  $("#infoModel .tt").text("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
-				  //alert("Please Note. You are trying to deactivate a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 				  //$("#infoModel").removeClass("hide")
 			});
 			
 			$('#deleteId').mouseenter(function(){
-				  //alert("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 				$("#infoModel").css("display", "block");
 				  $("#infoModel .tt").text("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 			});
@@ -350,7 +350,7 @@
 	$('#inlineCheckbox1').change(function() {
 		propType = $('.enrollment-cls:checked').val();
 		dataVal = $("#dataType").val();
-		if (propType === 'postEnrollment' && dataVal === 'Date') {
+		if (propType === 'PostEnrollment' && dataVal === 'date') {
 			if (this.checked) {
 				$('.refresh-value').show();
 			} else {
@@ -364,7 +364,7 @@
 	$('.propTypeCls').change(function() {
 		propType = $('.enrollment-cls:checked').val();
 		dataVal = $("#dataType").val();
-		if (propType === 'postEnrollment' && dataVal === 'Date') {
+		if (propType === 'PostEnrollment' && dataVal === 'date') {
 			if ($('#inlineCheckbox1').is(':checked')) {
 				$('.refresh-value').show();
 			} else {
@@ -378,7 +378,7 @@
 	$('#dataType').change(function() {
 		propType = $('.enrollment-cls:checked').val();
 		dataVal = $("#dataType").val();
-		if (propType === 'postEnrollment' && dataVal === 'Date') {
+		if (propType === 'PostEnrollment' && dataVal === 'date') {
 			if ($('#inlineCheckbox1').is(':checked')) {
 				$('.refresh-value').show();
 			} else {
@@ -391,7 +391,7 @@
 
 	$("#dataType").change(function() {
 		dataVal = $("#dataType").val();
-		if (dataVal === 'Date') {
+		if (dataVal === 'date') {
 			$(".useAsAnchorDate").show();
 		} else {
 			$(".useAsAnchorDate").hide();
