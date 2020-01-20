@@ -2016,7 +2016,7 @@ function isNumberKey(evt)
 							<div class="TextChoiceContainer">
 								<c:choose>
 									<c:when
-										test="${questionnairesStepsBo.questionsBo.responseType eq 6 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
+										test="${questionnairesStepsBo.questionsBo.responseType eq 6 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 0}">
 										<c:forEach
 											items="${questionnairesStepsBo.questionResponseSubTypeList}"
 											var="questionResponseSubType" varStatus="subtype">
@@ -2216,7 +2216,7 @@ function isNumberKey(evt)
 										</div>
 										<!-- Section End  -->
 										<!-- Section Start  -->
-										<div class="mt-xlg text-choice" id="1">
+										<div class="mt-xlg text-choice otherOptionChecked1" id="1">
 											<div class="col-md-3 pl-none">
 												<div class="gray-xs-f mb-xs">
 													Display Text (1 to 100 characters)<span
@@ -3321,10 +3321,21 @@ $(document).ready(function(){
 		   var displayValue=$("#displayTextChoiceValue0").val().trim();
 		   var exclusive=$("#exclusiveId0").val().trim();
 		   var choiceDescription=$("#displayTextChoiceDescription0").val().trim();
+		   
+		   var displayText1=$("#displayTextChoiceText1").val().trim();
+		   var displayValue1=$("#displayTextChoiceValue1").val().trim();
+		   var exclusive1=$("#exclusiveId1").val().trim();
+		   var choiceDescription1=$("#displayTextChoiceDescription1").val().trim();
+		   
 		if ($(this).is(':checked')){
 			if(displayText.length <= 0 && displayValue.length <= 0 && exclusive.length <= 0 &&  choiceDescription.length <= 0){
 				$('.otherOptionChecked').hide();
 				$('.otherOptionChecked').find('input:text,select').removeAttr('required');
+				$(".otherOptionChecked").removeClass("text-choice");
+			}else if(displayText1.length <= 0 && displayValue1.length <= 0 && exclusive1.length <= 0 &&  choiceDescription1.length <= 0){
+				$('.otherOptionChecked1').hide();
+				$('.otherOptionChecked1').find('input:text,select').removeAttr('required');
+				$(".otherOptionChecked1").removeClass("text-choice");
 			}
 			$('.textchoiceOtherCls').show();
 			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
@@ -3332,6 +3343,12 @@ $(document).ready(function(){
 		}else{
 			$('.otherOptionChecked').show();
 			$('.otherOptionChecked').find('input:text,select').attr('required',true);
+			$('.otherOptionChecked').addClass("text-choice");
+			
+			$('.otherOptionChecked1').show();
+			$('.otherOptionChecked1').find('input:text,select').attr('required',true);
+			$('.otherOptionChecked1').addClass("text-choice");
+			
 			$('.textchoiceOtherCls').hide();
 			$('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
 		}
@@ -5451,16 +5468,31 @@ function addTextChoice(){
 	$('#'+choiceCount).find('input:first').focus();
 }
 function removeTextChoice(param){
-	if($('.text-choice').length > 2){
-		$(param).parents(".text-choice").remove();
-		$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
-	    $(".text-choice").parent().find(".help-block").empty();
-	    $(".text-choice").parents("form").validator("destroy");
-		$(".text-choice").parents("form").validator();
+	if($("#textchoiceOtherId").is(':checked')){
+		if ($('.text-choice').length > 1){
+			$(param).parents(".text-choice").remove();
+			$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+		    $(".text-choice").parent().find(".help-block").empty();
+		    $(".text-choice").parents("form").validator("destroy");
+			$(".text-choice").parents("form").validator();
+			if($('.text-choice').length > 1){
+				$(".remBtnDis").removeClass("hide");
+			}else{
+				$(".remBtnDis").addClass("hide");
+			}
+		}
+	}else{
 		if($('.text-choice').length > 2){
-			$(".remBtnDis").removeClass("hide");
-		}else{
-			$(".remBtnDis").addClass("hide");
+			$(param).parents(".text-choice").remove();
+			$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+		    $(".text-choice").parent().find(".help-block").empty();
+		    $(".text-choice").parents("form").validator("destroy");
+			$(".text-choice").parents("form").validator();
+			if($('.text-choice').length > 2){
+				$(".remBtnDis").removeClass("hide");
+			}else{
+				$(".remBtnDis").addClass("hide");
+			}
 		}
 	}
 }
