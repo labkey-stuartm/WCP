@@ -114,7 +114,7 @@
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
                     <div>
-                    <p class="white__text">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                    <p class="white__text">Please set up your new password using this form. You would be required to enter the access code provided to you over email for the same.</p>
                         <div class="mb-lg form-group">
                              <input autofocus="autofocus" type="text" class="input-field wow_input" id="" tabindex="1" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>

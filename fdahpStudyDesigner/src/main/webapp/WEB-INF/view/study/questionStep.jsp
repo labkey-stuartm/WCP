@@ -1643,6 +1643,12 @@ function isNumberKey(evt)
 										Value (1 to 50 characters)<span class="requiredStar">*</span>
 									</div>
 								</div>
+								<c:if test="${questionnaireBo.branching}">
+									<div class="col-md-4 pl-none">
+										<div class="gray-xs-f mb-xs">Destination Step</div>
+									</div>
+								</c:if>
+
 								<div class="clearfix"></div>
 								<div class="ValuePickerContainer">
 									<c:choose>
@@ -1679,6 +1685,30 @@ function isNumberKey(evt)
 															<div class="help-block with-errors red-txt"></div>
 														</div>
 													</div>
+													<c:if test="${questionnaireBo.branching}">
+														<div class="col-md-2 pl-none">
+															<!-- <div class="gray-xs-f mb-xs">Destination Step</div> -->
+															<div class="form-group">
+																<select
+																	name="questionResponseSubTypeList[${subtype.index}].destinationStepId"
+																	id="destinationTextChoiceStepId${subtype.index}"
+																	class="selectpicker destionationYes"<%-- <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if> --%>>
+																	<option value="">select</option>
+																	<c:forEach items="${destinationStepList}"
+																		var="destinationStep">
+																		<option value="${destinationStep.stepId}"
+																			${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step
+																			${destinationStep.sequenceNo} :
+																			${destinationStep.stepShortTitle}</option>
+																	</c:forEach>
+																	<option value="0"
+																		${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion
+																		Step</option>
+																</select>
+																<div class="help-block with-errors red-txt"></div>
+															</div>
+														</div>
+													</c:if>
 													<div class="col-md-2 pl-none mt__6">
 														<span class="addBtnDis addbtn mr-sm align-span-center"
 															onclick='addValuePicker();'>+</span> <span
@@ -1712,6 +1742,29 @@ function isNumberKey(evt)
 														<div class="help-block with-errors red-txt"></div>
 													</div>
 												</div>
+												<c:if test="${questionnaireBo.branching}">
+													<div class="col-md-2 pl-none">
+														<div class="form-group">
+															<select
+																name="questionResponseSubTypeList[0].destinationStepId"
+																id="destinationTextChoiceStepId0"
+																class="selectpicker destionationYes"<%-- <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> --%>>
+																<option value="" selected>Select</option>
+																<c:forEach items="${destinationStepList}"
+																	var="destinationStep">
+																	<option value="${destinationStep.stepId}"
+																		${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step
+																		${destinationStep.sequenceNo} :
+																		${destinationStep.stepShortTitle}</option>
+																</c:forEach>
+																<option value="0"
+																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion
+																	Step</option>
+															</select>
+															<div class="help-block with-errors red-txt"></div>
+														</div>
+													</div>
+												</c:if>
 												<div class="col-md-2 pl-none mt__6">
 													<span class="addBtnDis addbtn mr-sm align-span-center"
 														onclick='addValuePicker();'>+</span> <span
@@ -1742,6 +1795,29 @@ function isNumberKey(evt)
 														<div class="help-block with-errors red-txt"></div>
 													</div>
 												</div>
+												<c:if test="${questionnaireBo.branching}">
+													<div class="col-md-2 pl-none">
+														<div class="form-group">
+															<select
+																name="questionResponseSubTypeList[1].destinationStepId"
+																id="destinationTextChoiceStepId1"
+																class="selectpicker destionationYes"<%-- <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if> --%>>
+																<option value="" selected>select</option>
+																<c:forEach items="${destinationStepList}"
+																	var="destinationStep">
+																	<option value="${destinationStep.stepId}"
+																		${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step
+																		${destinationStep.sequenceNo} :
+																		${destinationStep.stepShortTitle}</option>
+																</c:forEach>
+																<option value="0"
+																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion
+																	Step</option>
+															</select>
+															<div class="help-block with-errors red-txt"></div>
+														</div>
+													</div>
+												</c:if>
 												<div class="col-md-2 pl-none mt__6">
 													<span class="addBtnDis addbtn mr-sm align-span-center"
 														onclick='addValuePicker();'>+</span> <span
@@ -3336,6 +3412,7 @@ $(document).ready(function(){
 				$('.otherOptionChecked1').hide();
 				$('.otherOptionChecked1').find('input:text,select').removeAttr('required');
 				$(".otherOptionChecked1").removeClass("text-choice");
+				$('.addBtnDis').show();
 			}
 			$('.textchoiceOtherCls').show();
 			$('.textchoiceOtherCls').find('input:text,select').attr('required',true);
@@ -4979,10 +5056,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 			var response_sub_type_id = $("#valPickSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayValPickText"+id).val();
 			var diaplay_value = $("#displayValPickValue"+id).val();
+			var destination_step = $("#destinationTextChoiceStepId"+id).val();
 			
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
+			questionSubResponseType.destinationStepId=destination_step;
 			
 			
 			questionSubResponseArray.push(questionSubResponseType);
@@ -5282,13 +5361,27 @@ function addValuePicker(){
 						"      <input type='text' class='form-control valuePickerVal' name='questionResponseSubTypeList["+count+"].value' id='displayValPickValue"+count+"' required maxlength='50' onblur='validateForUniqueValue(this,&#34;Value Picker&#34;,function(){})';>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
-						"</div>"+
-						"<div class='col-md-2 pl-none mt__6'>"+
+						"</div>";
+						<c:if test='${questionnaireBo.branching}'>
+						newValuePicker += "<div class='col-md-2 pl-none'>"+
+					      "   <div class='form-group'>"+
+					      "  <select name='questionResponseSubTypeList["+count+"].destinationStepId' id='destinationTextChoiceStepId"+count+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value='' disabled selected>Select</option>";
+					          <c:forEach items='${destinationStepList}' var='destinationStep'>
+					          newValuePicker +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+					          </c:forEach>
+					          newValuePicker +="<option value='0'>Completion Step</option>"+
+					      "</select>"+
+					      "  <div class='help-block with-errors red-txt'></div>"+
+					      " </div>"+
+					      "</div>";
+						  </c:if>
+						newValuePicker+="<div class='col-md-2 pl-none mt__6'>"+
 						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
 					"</div>";	
 	$(".value-picker:last").after(newValuePicker);
+	$('.selectpicker').selectpicker('refresh');
 	$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
     $(".value-picker").parent().find(".help-block").empty();
 	$(".value-picker").parents("form").validator("destroy");
@@ -5322,7 +5415,7 @@ function addTextScale(){
 	var newTextScale = "<div class='text-scale row' id="+scaleCount+">"+
 					    "	<div class='col-md-3 pl-none'>"+
 					    "    <div class='form-group'>"+
-				        "      <input type='text' class='form-control TextScaleRequired' name='questionResponseSubTypeList["+scaleCount+"].text' id='displayTextSclText"+scaleCount+"'+  maxlength='15' required>"+
+				        "      <input type='text' class='form-control TextScaleRequired' name='questionResponseSubTypeList["+scaleCount+"].text' id='displayTextSclText"+scaleCount+"'+  maxlength='100' required>"+
 					    "      <div class='help-block with-errors red-txt'></div>"+
 					    "   </div>"+
 						"</div>"+

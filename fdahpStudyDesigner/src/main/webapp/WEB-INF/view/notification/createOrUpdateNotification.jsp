@@ -247,7 +247,34 @@ $(document).ready(function(){
 	
 	$('.backOrCancelBtnOfNotification').on('click',function(){
 		$('.backOrCancelBtnOfNotification').prop('disabled', true);
-		$('#notificationBackOrCancelBtnForm').submit();
+		//$('#notificationBackOrCancelBtnForm').submit();
+		<c:if test="${notificationBO.actionPage ne 'view'}">
+		bootbox
+				.confirm({
+					closeButton : false,
+					message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+					buttons : {
+						'cancel' : {
+							label : 'Cancel',
+						},
+						'confirm' : {
+							label : 'OK',
+						},
+					},
+					callback : function(result) {
+						if (result) {
+							$('#notificationBackOrCancelBtnForm').submit();
+						} else {
+							$('.backOrCancelBtnOfNotification').prop('disabled', false);
+						}
+					}
+				});
+		</c:if>
+		<c:if test="${notificationBO.actionPage eq 'view'}">
+			$('#notificationBackOrCancelBtnForm').submit();
+		</c:if>
+		
+		
 	});
 	
 	$('.addNotification').on('click',function(){

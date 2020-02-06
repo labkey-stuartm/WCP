@@ -1923,6 +1923,10 @@ public class StudyController {
 						participantPropertiesBO.setOrgId(studyBo.getOrgId());
 					}
 					participantPropertiesBO = studyService.saveOrUpdateParticipantProperties(participantPropertiesBO);
+					if (null != participantPropertiesBO) {
+						studyService.markAsCompleted(Integer.valueOf(studyId),
+								FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES, false, sesObj, customStudyId);
+					}
 				}
 			}
 			if (actionButtonType.equalsIgnoreCase("save")) {
