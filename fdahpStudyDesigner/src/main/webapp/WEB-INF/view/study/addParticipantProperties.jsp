@@ -30,6 +30,12 @@
 	margin: 5% auto 0;
 }
 
+.not-allowed {
+	cursor: not-allowed;
+	pointer-events: none;
+	opacity: 0.5;
+}
+
 #infoModel .infoOkBtn {
 	color: #fff;
 	background: #007cba;
@@ -109,7 +115,7 @@
 									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
 							</div>
 							<div
-								class="form-group mb-none <%-- <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if> --%>">
+								class="form-group mb-none <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>">
 								<form:input autofocus="autofocus" type="text" custAttType="cust"
 									class="form-control" name="shortTitle" id="shortTitleId"
 									path="shortTitle" maxlength="50" required="required" />
@@ -144,13 +150,13 @@
 						<div class="form-group">
 							<span
 								class="radio radio-info radio-inline p-45 propTypeCls
-								<%-- <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if> --%>">
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio1"
 									value="PreEnrollment" name="typeOfProperty" path="propertyType"
 									required="required" /> <label for="inlineRadio1">Pre-Enrollment</label>
 							</span> <span
 								class="radio radio-inline propTypeCls
-								<%-- <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if> --%>">
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton class="enrollment-cls" id="inlineRadio2"
 									required="required" value="PostEnrollment"
 									name="typeOfProperty" path="propertyType" /> <label
@@ -180,7 +186,7 @@
 
 						<div
 							class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate 
-						<%-- <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if> --%>"
+						<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>"
 							style="display: none;">
 							<!-- <span class="checkbox checkbox-inline"> -->
 							<form:checkbox id="inlineCheckbox1" value=""
@@ -215,14 +221,14 @@
 						<div class="form-group">
 							<span
 								class="radio radio-info radio-inline p-45 
-							<%-- <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if> --%>">
+							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton id="inlineRadio3" value="true"
 									class="required-attr" name="radioInline2"
 									path="populatedAtEnrollment" required="required" /> <label
 								for="inlineRadio3">Yes</label>
 							</span> <span
 								class="radio radio-inline
-							<%-- <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if> --%>">
+							<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
 								<form:radiobutton id="inlineRadio4" value="false"
 									class="required-attr" name="radioInline2"
 									path="populatedAtEnrollment" required="required" /> <label
@@ -243,9 +249,6 @@
 					<div class="clearfix"></div>
 				</form:form>
 			</div>
-			<!-- <div class="dis-line form-group mb-none">
-				<button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
-			</div> -->
 			<div class="dis-line form-group mb-none mr-sm">
 				<c:choose>
 					<c:when test="${participantProperties.live eq 1}">
@@ -341,14 +344,26 @@
 				  $("#infoModel .tt").text("Please Note. You are trying to delete a Participant Property which is already in use. Please delete the Activities or Resources which uses this Participant Property as Anchor based scheduling and try again");
 			});
 		}
-		if(${actionType eq 'edit' && participantProperties.live eq 1}){
+		/* if(${actionType eq 'edit' && participantProperties.live eq 1}){
 			$("#shortTitleId").prop('disabled', true);
 			$("#inlineRadio1").prop('disabled', true);
 			$("#inlineRadio2").prop('disabled', true);
 			$("#inlineRadio3").prop('disabled', true);
 			$("#inlineRadio4").prop('disabled', true);
 			$("#inlineCheckbox1").prop('disabled', true);
-		}
+		}  */
+		/* if(${actionType eq 'edit' && participantProperties.live eq 1}){
+			$("#shortTitleId").addClass('not-allowed')
+			$("#inlineRadio1").addClass('not-allowed')
+			$("#inlineRadio2").addClass('not-allowed')
+			$("#inlineRadio3").prop('readonly', true);
+			$("#inlineRadio4").prop('readonly', true);
+			$("#inlineCheckbox1").prop('readonly', true);
+		} */
+		
+		 if(${actionType eq 'edit' && participantProperties.live eq 1}){
+				$("#shortTitleId").attr("tabindex", "-1");
+			}
 	});
 	
 	$(".infoOkBtn").click(function(){
