@@ -227,7 +227,7 @@
                             <button type="button" class="btn lg-btn" id="siginNoteBtnId">SIGN IN</button>
                         </div>
                         <div class="pb-md pt-xs">
-                            <a id="forgot_pwd" class="gray-link white__text" href="javascript:void(0)">Forgot Password?</a>
+                            <span class="white__text">Forgot Password? </span> <a id="forgot_pwd" class="gray-link white__text" href="javascript:void(0)">Get Help</a>
                         </div>
                    </div>
                    <input type="password" name="password" id="hidePass" style="display: none;"/>

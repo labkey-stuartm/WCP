@@ -77,13 +77,13 @@
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="seventh commonCls">Study Activities</li>
+			<li class="seventh commonCls" style="padding-left:18px;">Study Activities</li>
 			<li class="sub seventhQuestionnaires commonCls">Questionnaires <c:if
 					test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
 			</li>
-			<li class="sub seventhTask commonCls ">Active Tasks <c:if
+			<li class="sub seventhTask commonCls " style="padding-left:25px;">Active Tasks <c:if
 					test="${studyBo.studySequenceBo.studyExcActiveTask}">
 					<span class="sprites-icons-2 tick pull-right mt-xs"></span>
 				</c:if>
