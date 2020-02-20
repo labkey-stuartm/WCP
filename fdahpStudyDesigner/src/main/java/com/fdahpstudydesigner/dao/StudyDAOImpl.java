@@ -1469,6 +1469,9 @@ public class StudyDAOImpl implements StudyDAO {
 			} else if (!studySequenceBo.isCheckList()) {
 				message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG;
 				return message;
+			} else if (!studySequenceBo.getParticipantProperties()) {
+				message = FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES_ERROR_MSG;
+				return message;
 			}
 		}
 		return message;
@@ -4212,9 +4215,10 @@ public class StudyDAOImpl implements StudyDAO {
 			participantPropertiesBO = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
 					participantPropertyId);
 			anchorDateId = participantPropertiesBO.getAnchorDateId();
-			query = session.createQuery(
-					"UPDATE ParticipantPropertiesBO set status=0, modifiedBy=" + userId + ", modifiedDate='"
-							+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
+			query = session
+					.createQuery("UPDATE ParticipantPropertiesBO set status=0,completed=1,isChange=1, modifiedBy="
+							+ userId + ", modifiedDate='" + FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id="
+							+ participantPropertyId);
 			count = query.executeUpdate();
 			if (count > 0) {
 				if (count > 0) {

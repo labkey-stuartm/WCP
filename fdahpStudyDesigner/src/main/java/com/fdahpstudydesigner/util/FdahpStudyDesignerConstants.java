@@ -76,6 +76,7 @@ public class FdahpStudyDesignerConstants {
 
 	public static final String PARTICIPANT_PROPERTIES = "participantProperties";
 	public static final String DRAFT_PARTICIPANT_PROPERTIES = "draftParticipantProperties";
+	public static final String PARTICIPANT_PROPERTIES_ERROR_MSG = "Required sections are not marked as Completed";
 
 	public static final String CONESENT_REVIEW = "consentreview";
 	public static final String CONSENT_ID = "consentId";

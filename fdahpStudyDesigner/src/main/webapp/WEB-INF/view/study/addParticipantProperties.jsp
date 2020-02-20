@@ -112,7 +112,7 @@
 								Short Title or Key(1 to 50 characters)<span class="requiredStar">*</span>
 								<span class="ml-xs sprites_v3 filled-tooltip"
 									data-toggle="tooltip"
-									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+									title="A human readable step identifier and must be unique for a participant property.Note that this field cannot be edited once the study is launched."></span>
 							</div>
 							<div
 								class="form-group mb-none <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>">
@@ -130,7 +130,7 @@
 								Property Name(1 to 300 characters)<span class="requiredStar">*</span>
 								<span class="ml-xs sprites_v3 filled-tooltip"
 									data-toggle="tooltip"
-									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+									title="A descriptive name for the property."></span>
 							</div>
 							<div class="form-group mb-none">
 								<form:input type="text" class="form-control" name="propertyName"
@@ -145,7 +145,7 @@
 						<div class="gray-xs-f mb-xs mt-lg">
 							Property Type<span class="requiredStar">*</span> <span
 								class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+								title="This determines whether the value of the property per participant will be made available to the system before the participant enrolls into the study using the mobile app. As a general guideline, pre-enrollment properties must be used for information that is generic or non-sensitive in nature. Note that this field cannot be edited once the study is launched."></span>
 						</div>
 						<div class="form-group">
 							<span
@@ -171,7 +171,7 @@
 							<div class="gray-xs-f mb-xs">
 								Data Type<span class="requiredStar">*</span> <span
 									class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-									title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+									title="The type of data that is used to hold the value of Participant property. Note this field cannot be edited once the study is launched."></span>
 							</div>
 							<div
 								class="form-group 
@@ -200,7 +200,7 @@
 						<div class="gray-xs-f mb-xs">
 							Data Source<span class="requiredStar">*</span> <span
 								class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-								title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+								title="The source/mechanism to get the value of the Participant Property per participant, into the system."></span>
 						</div>
 						<div class="form-group">
 							<form:select id="dataSource" class="selectpicker required-attr"
@@ -211,7 +211,7 @@
 						</div>
 					</div>
 					<div class="clearfix"></div>
-					<div>
+					<%-- <div>
 						<div class="gray-xs-f mb-xs">
 							Data to be populated at Enrollment?<span class="requiredStar">*</span>
 							<span class="ml-xs sprites_v3 filled-tooltip"
@@ -236,7 +236,7 @@
 							</span>
 							<div class="help-block with-errors red-txt"></div>
 						</div>
-					</div>
+					</div> --%>
 					<div class="clearfix"></div>
 
 					<div class="mt-lg mb-lg refresh-value" style="display: none;">

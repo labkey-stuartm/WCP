@@ -74,6 +74,13 @@
 	font-size: 10px !important;
 }
 /* error box css end here  */
+.display__none {
+	display: none !important;
+}
+
+.display__inline-block {
+	display: inline-block !important;
+}
 </style>
 
 <script type="text/javascript">
@@ -1174,10 +1181,9 @@ function isNumber(evt, thisAttr) {
 										placeholder="Time" onclick='timep(this.id);' disabled required />
 										<span class='help-block with-errors red-txt'></span>
 									</span> <span class="addbtn addBtnDis align-span-center mr-md"
-										onclick="addDate();">+</span>
-									<!-- <span id="delete"
+										onclick="addDate();">+</span> <span id="delete"
 										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-										onclick="removeDate(this);"></span> -->
+										onclick="removeDate(this);"></span>
 								</div>
 							</c:if>
 							<c:if
@@ -1542,6 +1548,13 @@ $(document).ready(function() {
 		 $('.addNewRuns').hide();
 	 }
 	
+	if($('.manually-option').length == 1){
+	    $('.manually-option').find('.delete').addClass('display__none');
+	}
+	else{
+	    $('.delete').removeClass('display__none');
+	}
+	
 	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -1888,6 +1901,12 @@ $(document).ready(function() {
             		$('.manually-anchor-option:not(:first)').find('.remBtnDis').click();
             		$('.manually-anchor-option').find('input').val('');
             		$('.manually-anchor-option').find('.cusTime').prop('disabled', true);
+            		if($('.manually-option').length == 1){
+            		    $('.manually-option').find('.delete').addClass('display__none');
+            		}
+            		else{
+            		    $('.delete').removeClass('display__none');
+            		}
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -1939,6 +1958,12 @@ $(document).ready(function() {
             $('.dailyClock:not(:first)').parent().parent().remove();
             $('.manually-option').find('.cusTime').prop('disabled', true);
     		$('.manually-anchor-option').find('.cusTime').prop('disabled', true);
+    		if($('.manually-option').length == 1){
+    		    $('.manually-option').find('.delete').addClass('display__none');
+    		}
+    		else{
+    		    $('.delete').removeClass('display__none');
+    		}
         }
       //AnchorDate start
 		var scheduletype = $('input[name="scheduleType"]:checked').val();
@@ -1978,6 +2003,12 @@ $(document).ready(function() {
 						 $('.manuallyAnchorContainer').find('.addbtnZero').show();
 						 $('.addNewRuns').hide();
 					 }
+					if($('.manually-anchor-option').length == 1){
+					    $('.manually-anchor-option').find('.delete').addClass('display__none');
+					}
+					else{
+					    $('.delete').removeClass('display__none');
+					}
 	    	}
 			 $('.regularClass').hide();
 			 $('.regularClass').find('input:text').removeAttr('required');
@@ -1992,6 +2023,12 @@ $(document).ready(function() {
 			 $('.monthlyStartCls').find('input:text').removeAttr('required');
 	    	 $(".manuallyContainer").hide();
 			 $(".manuallyContainer").find('input:text').removeAttr('required');
+			 if($('.manually-anchor-option').length == 1){
+				    $('.manually-anchor-option').find('.delete').addClass('display__none');
+				}
+				else{
+				    $('.delete').removeClass('display__none');
+				}
 		}else{
 			$(".onetimeanchorClass").hide();
 			$('.onetimeanchorClass').find('input:text').removeAttr('required');
@@ -2022,6 +2059,12 @@ $(document).ready(function() {
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
 			$("#anchorDateId").val("");
+			if($('.manually-anchor-option').length == 1){
+			    $('.manually-anchor-option').find('.delete').addClass('display__none');
+			}
+			else{
+			    $('.delete').removeClass('display__none');
+			}
 		} 
 	//AnchorDate type end
     });
@@ -2687,6 +2730,12 @@ function addDate(){
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
+	if($('.manually-option').length == 1){
+	    $('.manually-option').find('.delete').addClass('display__none');
+	}
+	else{
+	    $('.delete').removeClass('display__none');
+	}
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
 	timep('customTime'+customCount);
@@ -2701,6 +2750,12 @@ function removeDate(param){
 			$('.manuallyContainer').find(".remBtnDis").removeClass("hide");
 		}else{
 			$('.manuallyContainer').find(".remBtnDis").addClass("hide");
+		}
+		if($('.manually-option').length == 1){
+		    $('.manually-option').find('.delete').addClass('display__none');
+		}
+		else{
+		    $('.delete').removeClass('display__none');
 		}
 		$(document).find('.cusTime').trigger('dp.change');
 }
@@ -3866,6 +3921,13 @@ function addDateAnchor(){
 	}else{
 		$('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
 	}
+	
+	if($('.manually-anchor-option').length == 1){
+	    $('.manually-anchor-option').find('.delete').addClass('display__none');
+	}
+	else{
+	    $('.delete').removeClass('display__none');
+	}
  timep('manualTime'+customAnchorCount);
  //$('#manualTime'+customAnchorCount).val("");
  $('#'+customAnchorCount).find('input:first').focus();
@@ -3879,6 +3941,13 @@ function removeDateAnchor(param){
 			$('.manuallyAnchorContainer').find(".remBtnDis").removeClass("hide");
 		}else{
 			$('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
+		}
+		
+		if($('.manually-anchor-option').length == 1){
+		    $('.manually-anchor-option').find('.delete').addClass('display__none');
+		}
+		else{
+		    $('.delete').removeClass('display__none');
 		}
 		//$(document).find('.cusTime').trigger('dp.change');
 }
