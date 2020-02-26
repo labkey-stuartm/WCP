@@ -4083,6 +4083,9 @@ public class StudyDAOImpl implements StudyDAO {
 				if (participantProperties.getAnchorDateId() != null) {
 					if (!participantPropertiesBO.getUseAsAnchorDate()) {
 						deleteParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(), session);
+					} else {
+						updateParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(),
+								participantPropertiesBO.getShortTitle(), session);
 					}
 				} else {
 					if (participantPropertiesBO.getUseAsAnchorDate()) {
@@ -4147,6 +4150,22 @@ public class StudyDAOImpl implements StudyDAO {
 			logger.error("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - ERROR", e);
 		}
 		logger.info("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - Ends");
+	}
+
+	@Override
+	public void updateParticipantPropertyAsAnchorDate(Integer anchorDateId, String anchorDateName, Session session) {
+		logger.info("StudyDAOImpl - updateParticipantPropertyAsAnchorDate() - Starts");
+		Query query = null;
+		try {
+			if (anchorDateId != null) {
+				query = session.createQuery("UPDATE AnchorDateTypeBo set hasAnchortypeDraft=1,name='" + anchorDateName
+						+ "' where id=" + anchorDateId);
+				query.executeUpdate();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - updateParticipantPropertyAsAnchorDate() - ERROR", e);
+		}
+		logger.info("StudyDAOImpl - updateParticipantPropertyAsAnchorDate() - Ends");
 	}
 
 	@Override

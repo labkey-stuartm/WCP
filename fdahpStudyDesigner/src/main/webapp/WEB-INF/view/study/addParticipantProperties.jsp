@@ -106,6 +106,12 @@
 						value="">
 					<input type="hidden" id="preShortTitleId"
 						value="${fn:escapeXml(participantProperties.shortTitle)}" />
+
+					<form:hidden id="short-title-id" path="shortTitle" />
+					<form:hidden id="prePropertyType" path="propertyType" />
+					<form:hidden id="preUseAsAnchorDate" path="useAsAnchorDate" />
+					<form:hidden id="preRefreshedValue" path="refreshedValue" />
+
 					<div class="row">
 						<div class="form-group col-md-4 pl-none mt-lg">
 							<div class="gray-xs-f mb-xs">
@@ -114,11 +120,15 @@
 									data-toggle="tooltip"
 									title="A human readable step identifier and must be unique for a participant property.Note that this field cannot be edited once the study is launched."></span>
 							</div>
-							<div
-								class="form-group mb-none <c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>">
-								<form:input autofocus="autofocus" type="text" custAttType="cust"
+							<div class="form-group mb-none">
+								<%-- <form:input autofocus="autofocus" type="text" custAttType="cust"
 									class="form-control" name="shortTitle" id="shortTitleId"
-									path="shortTitle" maxlength="50" required="required" />
+									path="shortTitle" maxlength="50" required="required" /> --%>
+								<input autofocus="autofocus" type="text" custAttType="cust"
+									<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>
+									class="form-control" id="shortTitleId"
+									value="${participantProperties.shortTitle}" maxlength="50"
+									required="required" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
 						</div>
@@ -148,19 +158,23 @@
 								title="This determines whether the value of the property per participant will be made available to the system before the participant enrolls into the study using the mobile app. As a general guideline, pre-enrollment properties must be used for information that is generic or non-sensitive in nature. Note that this field cannot be edited once the study is launched."></span>
 						</div>
 						<div class="form-group">
-							<span
-								class="radio radio-info radio-inline p-45 propTypeCls
-								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
-								<form:radiobutton class="enrollment-cls" id="inlineRadio1"
+							<span class="radio radio-info radio-inline p-45 propTypeCls">
+								<%-- <form:radiobutton class="enrollment-cls" id="inlineRadio1"
 									value="PreEnrollment" name="typeOfProperty" path="propertyType"
-									required="required" /> <label for="inlineRadio1">Pre-Enrollment</label>
-							</span> <span
-								class="radio radio-inline propTypeCls
-								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>">
-								<form:radiobutton class="enrollment-cls" id="inlineRadio2"
+									required="required" /> --%> <input type="radio"
+								class="enrollment-cls" id="inlineRadio1" value="PreEnrollment"
+								name="typeOfProperty"
+								${participantProperties.propertyType=='PreEnrollment' ?'checked':''}
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>
+								required="required" /> <label for="inlineRadio1">Pre-Enrollment</label>
+							</span> <span class="radio radio-inline propTypeCls"> <%-- <form:radiobutton class="enrollment-cls" id="inlineRadio2"
 									required="required" value="PostEnrollment"
-									name="typeOfProperty" path="propertyType" /> <label
-								for="inlineRadio2">Post-Enrollment</label>
+									name="typeOfProperty" path="propertyType" /> --%> <input
+								type="radio" class="enrollment-cls" id="inlineRadio2"
+								required="required" value="PostEnrollment" name="typeOfProperty"
+								${participantProperties.propertyType=='PostEnrollment' ?'checked':''}
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if> />
+								<label for="inlineRadio2">Post-Enrollment</label>
 							</span>
 							<div class="help-block with-errors red-txt"></div>
 						</div>
@@ -184,15 +198,18 @@
 							</div>
 						</div>
 
-						<div
-							class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate 
-						<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">cursor-none</c:if>"
+						<div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate"
 							style="display: none;">
-							<!-- <span class="checkbox checkbox-inline"> -->
-							<form:checkbox id="inlineCheckbox1" value=""
+							<%-- <form:checkbox id="inlineCheckbox1" value=""
 								path="useAsAnchorDate" />
-							<label for="inlineCheckbox1"> Use as Anchor Date </label>
-							<!-- </span> -->
+							<label for="inlineCheckbox1"> Use as Anchor Date </label> --%>
+
+							<span class="checkbox checkbox-inline"> <input
+								type="checkbox" id="inlineCheckbox1" value="" name="anchorDate"
+								${participantProperties.useAsAnchorDate ?'checked':''}
+								<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if> />
+								<label for="inlineCheckbox1"> Use as Anchor Date </label>
+							</span>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -200,7 +217,7 @@
 						<div class="gray-xs-f mb-xs">
 							Data Source<span class="requiredStar">*</span> <span
 								class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-								title="The source/mechanism to get the value of the Participant Property per participant, into the system."></span>
+								title="The source/mechanism used to get the value of the Participant Property per participant, into the system."></span>
 						</div>
 						<div class="form-group">
 							<form:select id="dataSource" class="selectpicker required-attr"
@@ -240,11 +257,16 @@
 					<div class="clearfix"></div>
 
 					<div class="mt-lg mb-lg refresh-value" style="display: none;">
-						<!-- <span class="checkbox checkbox-inline">  -->
-						<form:checkbox id="inlineCheckbox2" path="refreshedValue" />
+						<%-- <form:checkbox id="inlineCheckbox2" path="refreshedValue" />
 						<label class="checkBoxForm" for="inlineCheckbox2"> Query
-							for Refreshed Value </label>
-						<!-- </span> -->
+							for Refreshed Value </label> --%>
+
+						<span class="checkbox checkbox-inline"> <input
+							type="checkbox" id="inlineCheckbox2"
+							${participantProperties.refreshedValue ?'checked':''} /> <label
+							class="checkBoxForm" for="inlineCheckbox2"> Query for
+								Refreshed Value </label>
+						</span>
 					</div>
 					<div class="clearfix"></div>
 				</form:form>
@@ -310,6 +332,20 @@
 			$('.required-attr').prop('required',true);
 			if (isFromValid("#participantPropertiesFormId")) {
 				$("#actionButtonType").val('done');
+				$("#short-title-id").val($("#shortTitleId").val());
+				$("#prePropertyType").val($('input[name="typeOfProperty"]:checked').val());
+				
+				if ($('#inlineCheckbox1').is(':checked')) {
+					$("#preUseAsAnchorDate").val(true);
+				} else {
+					$("#preUseAsAnchorDate").val(false);
+				}
+				
+				if ($('#inlineCheckbox2').is(':checked')) {
+					$("#preRefreshedValue").val(true);
+				} else {
+					$("#preRefreshedValue").val(false);
+				}
 				$('#participantPropertiesFormId').submit();
 			}
 		});
@@ -320,6 +356,7 @@
 			$(".useAsAnchorDate").show();
 		} else {
 			$(".useAsAnchorDate").hide();
+			$("#inlineCheckbox1").prop('checked', false);
 		}
 		propType = $('.enrollment-cls:checked').val();
 
@@ -328,9 +365,11 @@
 				$('.refresh-value').show();
 			} else {
 				$('.refresh-value').hide();
+				$("#inlineCheckbox2").prop('checked', false);
 			}
 		} else {
 			$('.refresh-value').hide();
+			$("#inlineCheckbox2").prop('checked', false);
 		}
 		if(${participantProperties.isUsedInQuestionnaire || participantProperties.isUsedInActiveTask || participantProperties.isUsedInResource}){
 			$('#deactivateId').mouseenter(function(){
@@ -378,9 +417,11 @@
 				$('.refresh-value').show();
 			} else {
 				$('.refresh-value').hide();
+				$("#inlineCheckbox2").prop('checked', false);
 			}
 		} else {
 			$('.refresh-value').hide();
+			$("#inlineCheckbox2").prop('checked', false);
 		}
 	});
 	
@@ -392,9 +433,11 @@
 				$('.refresh-value').show();
 			} else {
 				$('.refresh-value').hide();
+				$("#inlineCheckbox2").prop('checked', false);
 			}
 		} else {
 			$('.refresh-value').hide();
+			$("#inlineCheckbox2").prop('checked', false);
 		}
 	});
 	
@@ -406,9 +449,11 @@
 				$('.refresh-value').show();
 			} else {
 				$('.refresh-value').hide();
+				$("#inlineCheckbox2").prop('checked', false);
 			}
 		} else {
 			$('.refresh-value').hide();
+			$("#inlineCheckbox2").prop('checked', false);
 		}
 	});
 
@@ -418,6 +463,7 @@
 			$(".useAsAnchorDate").show();
 		} else {
 			$(".useAsAnchorDate").hide();
+			$("#inlineCheckbox1").prop('checked', false);
 		}
 	});
 
@@ -430,6 +476,21 @@
 		$('.required-attr').prop('required',false);
 		if (isFromValid("#participantPropertiesFormId")) {
 			$("#actionButtonType").val('save');
+			$("#short-title-id").val($("#shortTitleId").val());
+			$("#prePropertyType").val($('input[name="typeOfProperty"]:checked').val());
+			
+			if ($('#inlineCheckbox1').is(':checked')) {
+				$("#preUseAsAnchorDate").val(true);
+			} else {
+				$("#preUseAsAnchorDate").val(false);
+			}
+			
+			if ($('#inlineCheckbox2').is(':checked')) {
+				$("#preRefreshedValue").val(true);
+			} else {
+				$("#preRefreshedValue").val(false);
+			}
+			
 			$('#participantPropertiesFormId').submit();
 			showSucMsg("Content saved as draft.");
 		}

@@ -1,124 +1,169 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-  <!-- ============================================================== -->
-         <!-- Start right Content here -->
-         <!-- ============================================================== --> 
-        <div class="col-sm-10 col-rc white-bg p-none">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
-            <!--  Start top tab section-->
-            <div class="right-content-head">        
-                <div class="text-right">
-                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
-                    <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
-                    <c:if test="${actionOn eq 'add'}">Add Resource</c:if>
-                    <c:if test="${actionOn eq 'edit'}">Edit Resource</c:if>
-                    <c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-                    </c:if>
-                    <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
-                    <c:if test="${actionOn eq 'add'}">Add Study Protocol</c:if>
-                    <c:if test="${actionOn eq 'edit'}">Edit Study Protocol</c:if>
-                    </c:if></div>
-                     
-                    <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn goToResourceListForm" id="goToStudyListPage">Cancel</button>
-                     </div>
-                    
-                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn viewAct" id="saveResourceId">Save</button>
-                     </div>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="col-sm-10 col-rc white-bg p-none">
+	<form:form
+		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
+		data-toggle="validator" id="resourceForm" role="form" method="post"
+		autocomplete="off" enctype="multipart/form-data">
+		<!--  Start top tab section-->
+		<div class="right-content-head">
+			<div class="text-right">
+				<div class="black-md-f dis-line pull-left line34">
+					<span class="pr-sm"><a href="javascript:void(0)"
+						class="goToResourceListForm" id="goToResourceListForm"><img
+							src="/fdahpStudyDesigner/images/icons/back-b.png" /></a></span>
+					<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
+						<c:if test="${actionOn eq 'add'}">Add Resource</c:if>
+						<c:if test="${actionOn eq 'edit'}">Edit Resource</c:if>
+						<c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource <c:set
+								var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+					</c:if>
+					<c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
+						<c:if test="${actionOn eq 'add'}">Add Study Protocol</c:if>
+						<c:if test="${actionOn eq 'edit'}">Edit Study Protocol</c:if>
+					</c:if>
+				</div>
 
-                     <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn viewAct" id="doneResourceId">Done</button>
-                     </div>
-                 </div>
-            </div>
-            <!--  End  top tab section-->
-            <input type="hidden" name="id" value="${resourceBO.id}"/>
-            <input type="hidden" id="buttonText" name="buttonText">
-            <input type="hidden" id="actionOn" name="actionOn">
-            <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
-            	<input type="hidden" name="isstudyProtocol" value="isstudyProtocol"/>
-            </c:if>
-            
-            
-            <!--  Start body tab section -->
-            <div class="right-content-body">
-                
-             <div class="mt-none">
-                <!-- form- input-->
-                <div>
-                   <div class="gray-xs-f mb-xs">Title <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
-                   <div class="form-group">
-                        <input autofocus="autofocus" type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">readonly</c:if>/>
-                   		<div class="help-block with-errors red-txt"></div>
-                   </div>
-                </div>
-             </div>
-                
-            <div class="clearfix"></div>
-                
-            <div>
-            <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar"> *</span></div>
-                 <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio1">Rich Text editor</label>
-                </span>
-                <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio2">Upload PDF</label>
-                </span>  
-            </div>
-                
-            <div class="clearfix"></div>
-             
-            <div id="richEditor" class="mt-lg form-group resetContentType <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
-              <textarea class="remReqOnSave" id="richText" name="richText" required>${resourceBO.richText}</textarea>
-               <div class="help-block with-errors red-txt"></div>      
-            </div>
-            
-            
-            <div id="pdf_file" class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
-                <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf viewAct">Upload PDF</button>
-                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-error="Please select a pdf file" required>
-                <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
-                <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-             <span class="alert customalert pdfDiv">
-                <a href="javascript:void(0)" id="pdf_name" class="pdfClass" >${resourceBO.pdfName}</a>
-				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
-			</span>
-            <div class="help-block with-errors red-txt"></div>  
-            </div>
-             
-            <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">   
-            <div class="clearfix"></div>
-                
-            <div class="mt-xs">
-                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span> <span data-toggle="tooltip" data-placement="top" title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study." class="filled-tooltip"></span></div>
-                 <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0"
-                     <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
-                      <label for="inlineRadio3">Yes</label>
-                </span>
-                <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio4" name="resourceVisibilityParam" value="1" <c:if test="${resourceBO.resourceVisibility  || empty resourceBO}">checked</c:if>>
-                    <label for="inlineRadio4">No</label>
-                </span>    
-                <div class="help-block with-errors red-txt"></div>
-            </div>
-                
-            <div class="clearfix"></div>
-               
-             <div class="mt-lg resetDate">
-                <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
-                <div id="selectTime">
-                 <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
-                    <label for="inlineRadio5">Anchor Date-based Period</label><br/>
-                </span>
-                <%-- <c:if test="${fn:length(anchorTypeList) gt 0}">
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button"
+						class="btn btn-default gray-btn goToResourceListForm"
+						id="goToStudyListPage">Cancel</button>
+				</div>
+
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-default gray-btn viewAct"
+						id="saveResourceId">Save</button>
+				</div>
+
+				<div class="dis-line form-group mb-none">
+					<button type="button" class="btn btn-primary blue-btn viewAct"
+						id="doneResourceId">Done</button>
+				</div>
+			</div>
+		</div>
+		<!--  End  top tab section-->
+		<input type="hidden" name="id" value="${resourceBO.id}" />
+		<input type="hidden" id="buttonText" name="buttonText">
+		<input type="hidden" id="actionOn" name="actionOn">
+		<c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
+			<input type="hidden" name="isstudyProtocol" value="isstudyProtocol" />
+		</c:if>
+
+
+		<!--  Start body tab section -->
+		<div class="right-content-body">
+
+			<div class="mt-none">
+				<!-- form- input-->
+				<div>
+					<div class="gray-xs-f mb-xs">
+						Title
+						<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small
+								class="viewAct">(50 characters max)</small>
+						</c:if>
+						<span class="requiredStar"> *</span>
+					</div>
+					<div class="form-group">
+						<input autofocus="autofocus" type="text" class="form-control"
+							id="resourceTitle" name="title"
+							value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required
+							<c:if test="${isstudyProtocol eq 'isstudyProtocol'}">readonly</c:if> />
+						<div class="help-block with-errors red-txt"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div>
+				<div class="gray-xs-f mb-xs">
+					Content Type<span class="requiredStar"> *</span>
+				</div>
+				<span class="radio radio-info radio-inline p-45"> <input
+					type="radio" class="addResource" id="inlineRadio1"
+					name="textOrPdfParam" value="0"
+					<c:if test="${not resourceBO.textOrPdf}">checked</c:if>> <label
+					for="inlineRadio1">Rich Text editor</label>
+				</span> <span class="radio radio-inline"> <input type="radio"
+					id="inlineRadio2" class="addResource" name="textOrPdfParam"
+					value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
+					<label for="inlineRadio2">Upload PDF</label>
+				</span>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div id="richEditor"
+				class="mt-lg form-group resetContentType <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
+				<textarea class="remReqOnSave" id="richText" name="richText"
+					required>${resourceBO.richText}</textarea>
+				<div class="help-block with-errors red-txt"></div>
+			</div>
+
+
+			<div id="pdf_file"
+				class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
+				<button id="uploadPdf" type="button"
+					class="btn btn-default gray-btn uploadPdf viewAct">Upload
+					PDF</button>
+				<input id="uploadImg" class="dis-none remReqOnSave" type="file"
+					name="pdfFile" accept=".pdf" data-error="Please select a pdf file"
+					required> <input type="hidden" class="remReqOnSave"
+					value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
+				<input type="hidden" value="${resourceBO.pdfName}" id="pdfName"
+					name="pdfName"> <span class="alert customalert pdfDiv">
+					<a href="javascript:void(0)" id="pdf_name" class="pdfClass">${resourceBO.pdfName}</a>
+					<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a
+						href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove
+							PDF</a></span>
+				</span>
+				<div class="help-block with-errors red-txt"></div>
+			</div>
+
+			<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
+				<div class="clearfix"></div>
+
+				<div class="mt-xs">
+					<div class="gray-xs-f mb-sm">
+						Set a Period of Visibility for this resource? <span
+							class="requiredStar">*</span> <span data-toggle="tooltip"
+							data-placement="top"
+							title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study."
+							class="filled-tooltip"></span>
+					</div>
+					<span class="radio radio-info radio-inline p-45"> <input
+						type="radio" id="inlineRadio3" name="resourceVisibilityParam"
+						value="0"
+						<c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
+						<label for="inlineRadio3">Yes</label>
+					</span> <span class="radio radio-inline"> <input type="radio"
+						id="inlineRadio4" name="resourceVisibilityParam" value="1"
+						<c:if test="${resourceBO.resourceVisibility  || empty resourceBO}">checked</c:if>>
+						<label for="inlineRadio4">No</label>
+					</span>
+					<div class="help-block with-errors red-txt"></div>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class="mt-lg resetDate">
+					<div class="gray-xs-f mb-xs">
+						Select Time Period <span class="requiredStar">*</span>
+					</div>
+					<div id="selectTime">
+						<span class="radio radio-info radio-inline pr-md"> <input
+							type="radio" id="inlineRadio5" class="disRadBtn1" value="1"
+							name="resourceTypeParm"> <label for="inlineRadio5">Anchor
+								Date-based Period</label><br />
+						</span>
+						<%-- <c:if test="${fn:length(anchorTypeList) gt 0}">
                 	<div>
 	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
 	                  <div class="col-md-3 col-lg-3 p-none">
@@ -135,122 +180,149 @@
 	                  <div class="clearfix"></div>
 	                 </div>
                 </c:if> --%>
-                	<div>
-	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
-	                  <div class="col-md-3 col-lg-3 p-none">
-		                  <div class="form-group">
-		                     <select id="anchorDateId" class="selectpicker disBtn1" required name="anchorDateId">
-		                      <option value='' >Select</option>
-		                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-		                      <option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
-		                      </c:forEach>
-		                     </select>
-		                     <div class="help-block with-errors red-txt"></div>
-		                  </div>
-	                  </div>
-	                  <div class="clearfix"></div>
-	                 </div>
-                <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06">Anchor Date </span>                   
-                 </span>
-                <span>
-	                 <select class="signDropDown selectpicker sign-box" title="Select" name="xDaysSign" id="xSign">
-	                          <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
-	                          <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
-	                 </select>
-                </span>
-                <!--  selectpicker -->
-                 <span class="form-group m-none dis-inline vertical-align-middle">
-                 	
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" 
-                     placeholder="X" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
-                     maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
-                 	 <span class="help-block with-errors red-txt"></span>
-                 </span>
-                 <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06"> days <span style="padding-right:5px;padding-left:5px">to </span>  Anchor Date </span>                   
-                 </span>
-                 
-                 <span>
-                 	 <select class="signDropDown selectpicker sign-box" title="Select" name="yDaysSign" id="ySign">
-                              <option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
-                              <option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
-                     </select>
-                 </span>
-                 
-                  <span class="form-group m-none dis-inline vertical-align-middle">
-                    
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" placeholder="Y" 
-                     	name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
-                     	
-                 	 <span class="help-block with-errors red-txt"></span>
-                 </span>
-                 <span class="mb-sm pr-md">
-	                    <span class="light-txt opacity06 disBtn1"> days </span>                   
-	                 </span>
-                 </div>
-             </div>
-                
-             <div class="mt-lg resetDate">
-                 <div class="mb-none">
-                     <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
-                        <label for="inlineRadio6">Custom Date Range</label>
-                    </span>
-                </div>
-                 <div>
-                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" oldStartDateVal="${resourceBO.startDate}" required/>
-                         <span class="help-block with-errors red-txt"></span>
-                     </span>
-                     <span class="gray-xs-f mb-sm pr-md">
-                        to 
-                     </span>
-                      <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" oldEndDateVal="${resourceBO.endDate}" required/>
-                    	 <span class="help-block with-errors red-txt"></span>
-                     </span>
-                     <div class="help-block with-errors red-txt"></div>
-                 </div>
-             </div>
-            
-              <div class="clearfix"></div>
-                
-             <div class="mt-sm">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span> </div>
-                 
-                 <div class="form-group">
-                  <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" data-error="Please enter plain text of up to 250 characters max." maxlength="250" required>${resourceBO.resourceText}</textarea>
-                  <div class="help-block with-errors red-txt"></div>
-                 </div>
-             </div>
-            </c:if>
-            
-                
-            </div>
-            <!--  End body tab section -->
-            <!-- Modal -->
-			<div class="modal fade" id="myModal" role="dialog">
-			   <div class="modal-dialog modal-lg" style="width:98%;">
-			      <!-- Modal content-->
-			      <div class="modal-content">
-			      <div class="modal-header">
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			       </div>
-			         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg" >
-			            <embed id="embedPdfId" src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}" oncontextmenu="return false;" onkeydown="return false;" onmousedown="return false;" width="100%" height="500px" />
-			         </div>
-			      </div>
-			   </div>
+						<div>
+							<div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">
+								Select Anchor Date Type<span class="requiredStar">*</span>
+							</div>
+							<div class="col-md-3 col-lg-3 p-none">
+								<div class="form-group">
+									<select id="anchorDateId" class="selectpicker disBtn1" required
+										name="anchorDateId">
+										<option value=''>Select</option>
+										<c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+											<option data-id="${anchorTypeInfo.participantProperty}"
+												value="${anchorTypeInfo.id}"
+												${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+										</c:forEach>
+									</select>
+									<div class="help-block with-errors red-txt"></div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<span class="mb-sm pr-md"> <span
+							class="light-txt opacity06">Anchor Date </span>
+						</span> <span> <select class="signDropDown selectpicker sign-box"
+							title="Select" name="xDaysSign" id="xSign">
+								<option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
+								<option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
+						</select>
+						</span>
+						<!--  selectpicker -->
+						<span class="form-group m-none dis-inline vertical-align-middle">
+
+							<input id="xdays" type="text"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+							placeholder="X" name="timePeriodFromDays"
+							value="${resourceBO.timePeriodFromDays}"
+							oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3"
+							required pattern="[0-9]+"
+							data-pattern-error="Please enter valid number." /> <span
+							class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+							class="light-txt opacity06"> days <span
+								style="padding-right: 5px; padding-left: 5px">to </span> Anchor
+								Date
+						</span>
+						</span> <span> <select class="signDropDown selectpicker sign-box"
+							title="Select" name="yDaysSign" id="ySign">
+								<option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
+								<option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
+						</select>
+						</span> <span class="form-group m-none dis-inline vertical-align-middle">
+
+							<input id="ydays" type="text"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+							placeholder="Y" name="timePeriodToDays"
+							value="${resourceBO.timePeriodToDays}"
+							oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3"
+							required /> <span class="help-block with-errors red-txt"></span>
+						</span> <span class="mb-sm pr-md"> <span
+							class="light-txt opacity06 disBtn1"> days </span>
+						</span>
+					</div>
+				</div>
+
+				<div class="mt-lg resetDate">
+					<div class="mb-none">
+						<span class="radio radio-info radio-inline pr-md"> <input
+							type="radio" class="disRadBtn1" id="inlineRadio6" value="0"
+							name="resourceTypeParm"> <label for="inlineRadio6">Custom
+								Date Range</label>
+						</span>
+					</div>
+					<div>
+						<span
+							class="form-group m-none dis-inline vertical-align-middle pr-md">
+							<input id="StartDate" type="text"
+							class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md"
+							placeholder="Start Date" name="startDate"
+							value="${resourceBO.startDate}"
+							oldStartDateVal="${resourceBO.startDate}" required /> <span
+							class="help-block with-errors red-txt"></span>
+						</span> <span class="gray-xs-f mb-sm pr-md"> to </span> <span
+							class="form-group m-none dis-inline vertical-align-middle">
+							<input id="EndDate" type="text"
+							class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md"
+							placeholder="End Date" name="endDate"
+							value="${resourceBO.endDate}"
+							oldEndDateVal="${resourceBO.endDate}" required /> <span
+							class="help-block with-errors red-txt"></span>
+						</span>
+						<div class="help-block with-errors red-txt"></div>
+					</div>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class="mt-sm">
+					<div class="gray-xs-f mb-xs">
+						Text for notifying participants about the new resource being
+						available&nbsp;<small class="viewAct">(250 characters max)</small>
+						<span class="requiredStar">*</span>
+					</div>
+
+					<div class="form-group">
+						<textarea class="form-control remReqOnSave" rows="4" id="comment"
+							name="resourceText"
+							data-error="Please enter plain text of up to 250 characters max."
+							maxlength="250" required>${resourceBO.resourceText}</textarea>
+						<div class="help-block with-errors red-txt"></div>
+					</div>
+				</div>
+			</c:if>
+
+
+		</div>
+		<!--  End body tab section -->
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-lg" style="width: 98%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+						<embed id="embedPdfId"
+							src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"
+							oncontextmenu="return false;" onkeydown="return false;"
+							onmousedown="return false;" width="100%" height="500px" />
+					</div>
+				</div>
 			</div>
-        </form:form>   
-        </div>
-        <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
+		</div>
+	</form:form>
+</div>
+<!-- End right Content here -->
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}"
+	name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
-<form:form action="/fdahpStudyDesigner/downloadPdf.do?_S=${param._S}"  id="pdfDownloadFormId" method="post" target="_blank" >
-	<input type="hidden" value="studyResources"  name="fileFolder"/>
-	<input type="hidden" value="${resourceBO.pdfUrl}"  name="fileName"/>
+<form:form action="/fdahpStudyDesigner/downloadPdf.do?_S=${param._S}"
+	id="pdfDownloadFormId" method="post" target="_blank">
+	<input type="hidden" value="studyResources" name="fileFolder" />
+	<input type="hidden" value="${resourceBO.pdfUrl}" name="fileName" />
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -273,9 +345,37 @@ $(document).ready(function(){
 		$("#createStudyId").show();
         
 	 $("#doneResourceId").on('click', function(){
+		 var isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
+			if(isParticipantProp !='true'){
+				isParticipantProp=false;
+			}
 		 $('#doneResourceId').prop('disabled',true);
           if( chkDaysValid(true) && isFromValid('#resourceForm')){
-        	  if($('#inlineRadio5').is(':checked')){
+        	  if( $('#inlineRadio5').is(':checked') && isParticipantProp){
+        		  var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Anchor Date is scheduled appropriately in the third party system.";
+              	  bootbox.confirm({
+              		closeButton: false,
+              		message: text,
+              		buttons: {
+      			        'cancel': {
+      			            label: 'Cancel',
+      			        },
+      			        'confirm': {
+      			            label: 'OK',
+      			        },
+      			    },
+      			    callback: function(valid) {
+      			    	if (valid) {
+      			    		//console.log(1);
+      			    		$('#buttonText').val('done');
+      	   		   		    $('#resourceForm').submit(); 
+      			    	}else{
+      			    		//console.log(2);
+      			    		$('#doneResourceId').prop('disabled',false);
+      			    	}
+      			      }
+              	   });
+        	  }else if($('#inlineRadio5').is(':checked')){
         		  var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Source Questionnaire providing the Anchor Date response is scheduled appropriately.";
               	  bootbox.confirm({
               		closeButton: false,
