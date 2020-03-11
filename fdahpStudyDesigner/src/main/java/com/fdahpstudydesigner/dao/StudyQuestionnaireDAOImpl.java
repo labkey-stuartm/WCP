@@ -1613,8 +1613,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
 								|| questionnaireBo.getFrequency()
 										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY)
-								|| questionnaireBo.getFrequency().equalsIgnoreCase(
-										FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)) {
+								|| questionnaireBo.getFrequency()
+										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)
+								|| questionnaireBo.getFrequency()
+										.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONGOING)) {
 							questionnaireBo.setShortTitleDuplicate(shortTitleCount.intValue());
 						} else {
 							questionnaireBo.setShortTitleDuplicate(0);

@@ -4479,11 +4479,12 @@ public class StudyController {
 		logger.info("StudyController - viewStudyEligibilty - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		ModelMap map = new ModelMap();
-		StudyBo studyBo = null;
+		StudyBo studyBo = null, liveStudyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
 		EligibilityBo eligibilityBo;
 		List<EligibilityTestBo> eligibilityTestList = null;
+		Boolean isLiveStudy = false;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -4519,6 +4520,10 @@ public class StudyController {
 				if (StringUtils.isNotEmpty(studyId)) {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
+					liveStudyBo = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());
+					if (liveStudyBo != null) {
+						isLiveStudy = true;
+					}
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 					if (eligibilityBo == null) {
 						eligibilityBo = new EligibilityBo();
@@ -4530,6 +4535,7 @@ public class StudyController {
 					map.addAttribute("eligibility", eligibilityBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 					map.addAttribute("_S", sessionStudyCount);
+					map.addAttribute("liveStatus", isLiveStudy);
 					mav = new ModelAndView("studyEligibiltyPage", map);
 				}
 			}

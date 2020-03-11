@@ -892,6 +892,10 @@ public class FdahpStudyDesignerUtil {
 			case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
 				timeRangeList.add(FdahpStudyDesignerConstants.RUN_BASED);
 				break;
+
+			case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONGOING:
+				timeRangeList.add(FdahpStudyDesignerConstants.RUN_BASED);
+				break;
 			}
 		} else {
 			timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
@@ -923,6 +927,11 @@ public class FdahpStudyDesignerUtil {
 			case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
 				timeRange = FdahpStudyDesignerConstants.RUN_BASED;
 				break;
+
+			case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONGOING:
+				timeRange = FdahpStudyDesignerConstants.RUN_BASED;
+				break;
+
 			case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
 				timeRange = "";
 				break;

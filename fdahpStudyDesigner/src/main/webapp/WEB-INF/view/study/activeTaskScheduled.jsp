@@ -121,6 +121,12 @@
 		${activeTaskBo.frequency=='Manually Schedule' ?'checked':''}
 		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}> <label
 		for="manuallyRadio5">Custom Schedule</label>
+	</span> <span class="radio radio-inline p-40"> <input type="radio"
+		id="ongoingRadio6" class="schedule" frequencytype="ongoing"
+		value="Ongoing" name="frequency"
+		${activeTaskBo.frequency=='Ongoing' ?'checked':''}
+		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}> <label
+		for="ongoingRadio6">Ongoing</label>
 	</span>
 </div>
 <!-- One time Section-->
@@ -1097,6 +1103,10 @@ $(document).ready(function() {
 		 //$('.manuallyAnchorContainer').find('.remBtnZero').show();
 		 $('.addNewRuns').hide();
 	 }
+	var scheduletype = $('input[name="scheduleType"]:checked').val();
+	if(scheduletype == 'AnchorDate'){
+		$("#ongoingRadio6").parent().hide();
+	}
 	
 	$("#anchorDateId").change(function() {
 		isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
@@ -1150,6 +1160,12 @@ $(document).ready(function() {
 				   $(".onetimeanchorClass").show();
 				   $(".onetimeanchorClass").find('input:text').attr('required',true);
 			 }
+			if(schedule_opts == 'Ongoing'){
+				$("#oneTimeRadio1").prop("checked", true);
+				$(".oneTime").removeClass("dis-none");
+				$(".onetimeanchorClass").show();
+				$(".onetimeanchorClass").find('input:text').attr('required',true);
+			 }
 			 if(schedule_opts == 'Daily'){
 				 $("#endDateId").text('NA');
 				 $("#lifeTimeId").text('-');
@@ -1192,6 +1208,7 @@ $(document).ready(function() {
 			 $('.monthlyStartCls').find('input:text').removeAttr('required');
 			 $(".manuallyContainer").hide();
 			 $(".manuallyContainer").find('input:text').removeAttr('required');
+			 $("#ongoingRadio6").parent().hide();
 		}else{
 			
 			localStorage.setItem("IsActiveAnchorDateSelected", "false");
@@ -1237,6 +1254,7 @@ $(document).ready(function() {
 			$('.anchortypeclass').hide();
 			$('.anchortypeclass').removeAttr('required');
 			$("#anchorDateId").val("");
+			$("#ongoingRadio6").parent().show();
 		} 
 		
 		if(schedule_opts == 'One time'){
@@ -2506,6 +2524,54 @@ function saveActiveTask(item, actType, callback){
 			activeTask.activeTaskLifetimeStart=null;
 			activeTask.activeTaskLifetimeEnd=null;
 		}
+	}else if(frequency_text == 'Ongoing'){
+		/* var frequence_id = $("#monthFreId").val();
+		var frequencydate = $("#startDateMonthly").val();
+		var frequencetime = $("#selectMonthlyTime").val();
+		var frequencetime_anchor = $("#selectMonthlyTimeAnchor").val();
+		study_lifetime_start = $("#pickStartDate").val();
+		repeat_active_task = $("#months").val();
+		repeat_active_task_anchor = $("#monthsAnchor").val();
+		study_lifetime_end = $("#monthEndDate").text();
+		var monthlyXSign = $('#monthlyXSign').val();
+		var monthlyXSignVal = $('#monthlyxdaysId').val(); */
+		
+			activeTask.activeTaskLifetimeStart=null;
+		
+			activeTask.activeTaskLifetimeEnd=null;
+		
+			activeTask.repeatActiveTask=null;
+		
+			activeTask.repeatActiveTask=null;
+		
+		if(id != null && id != '' && typeof id != 'undefined'){
+			activeTaskFrequencey.activeTaskId = id;
+		}
+		
+			activeTaskFrequencey.id=null;
+		
+			activeTaskFrequencey.frequencyDate=null;
+		
+			activeTaskFrequencey.frequencyTime=null;
+		
+		
+			activeTaskFrequencey.xDaysSign=null;
+		
+		
+			activeTaskFrequencey.timePeriodFromDays=null;
+			activeTaskFrequencey.xDaysSign=true;
+			activeTaskFrequencey.timePeriodToDays=null;
+			activeTaskFrequencey.yDaysSign=true;
+		
+		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
+		
+		/* if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !validateTime($(document).find("#startDateMonthly").not('.cursor-none, :disabled'), $(document).find("#selectMonthlyTime").not('.cursor-none, :disabled'))){
+			isFormValid = false;
+		}
+		if(scheduletype == 'AnchorDate'){
+			activeTask.activeTaskLifetimeStart=null;
+			activeTask.activeTaskLifetimeEnd=null;
+		} */
 	}
 	console.log("activeTask:"+JSON.stringify(activeTask));
 	var data = JSON.stringify(activeTask);
@@ -2776,6 +2842,8 @@ function doneActiveTask(item, actType, callback) {
 	    		if(isFromValid("#monthlyFormId")){
 	    			valForm = true;
 	    		}
+	    	}else if(frequency == 'Ongoing'){
+	    		valForm = true;
 	    	}
     	} else {
     		valForm = true;

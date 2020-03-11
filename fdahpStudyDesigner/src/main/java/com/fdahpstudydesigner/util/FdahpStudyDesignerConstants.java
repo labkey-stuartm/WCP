@@ -161,6 +161,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String FREQUENCY_TYPE_DAILY = "Daily";
 	public static final String FREQUENCY_TYPE_MANUALLY_SCHEDULE = "Manually Schedule";
 	public static final String FREQUENCY_TYPE_MONTHLY = "Monthly";
+	public static final String FREQUENCY_TYPE_ONGOING = "Ongoing";
 	// questionaire frequency schedule
 	public static final String FREQUENCY_TYPE_ONE_TIME = "One time";
 	public static final String FREQUENCY_TYPE_WEEKLY = "Weekly";

@@ -387,7 +387,11 @@ function isNumberKey(evt)
 								<div class="gray-xs-f mb-xs">
 									Time range for the chart <span class="requiredStar">*</span> <span
 										class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-										title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span>
+										title="${questionnaireBo.frequency eq 'Ongoing' ? 'A max of x runs will be displayed in each view of the chart.' : 'The options available here depend on the scheduling frequency set for the activity. 
+										For multiple-times-a-day and custom- scheduled activities, the chart&#039s X axis divisions will represent runs.
+										For the former case, the chart will display all runs for the day while for the latter,
+										the chart will display a max of 5 runs at a time.'}"></span>
+									<!-- chart&#039s ==>chart's, escape " ' =>> &#039 " -->
 								</div>
 								<div class="form-group">
 									<select class="selectpicker elaborateClass chartrequireClass"
