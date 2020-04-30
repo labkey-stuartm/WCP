@@ -1047,6 +1047,9 @@
 		</div>
 	</div>
 </form:form>
+<div id="ongoingNoteId" class="note-center" style="display: none">Note: Activities
+	scheduled as ongoing will always be available for participants to take
+	any number of times, during the lifetime of the study</div>
 <!-- </div> -->
 <script type="text/javascript">
 var count = 0;
@@ -1106,6 +1109,10 @@ $(document).ready(function() {
 	var scheduletype = $('input[name="scheduleType"]:checked').val();
 	if(scheduletype == 'AnchorDate'){
 		$("#ongoingRadio6").parent().hide();
+	}
+	
+	if(frequencey == 'Ongoing'){
+		$("#ongoingNoteId").show();
 	}
 	
 	$("#anchorDateId").change(function() {
@@ -1209,6 +1216,7 @@ $(document).ready(function() {
 			 $(".manuallyContainer").hide();
 			 $(".manuallyContainer").find('input:text').removeAttr('required');
 			 $("#ongoingRadio6").parent().hide();
+			 $("#ongoingNoteId").hide();
 		}else{
 			
 			localStorage.setItem("IsActiveAnchorDateSelected", "false");
@@ -1331,6 +1339,7 @@ $(document).ready(function() {
             		}
             		$('#onetimexdaysId').val('');
             		$('#onetimeydaysId').val('');
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
@@ -1340,6 +1349,7 @@ $(document).ready(function() {
             		$('.manually-anchor-option:not(:first)').find('.remBtnDis').click();
             		$('.manually-anchor-option').find('input').val('');
             		$('.manually-anchor-option').find('.cusTime').prop('disabled', true);
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -1349,6 +1359,7 @@ $(document).ready(function() {
             		$('.dailyClock:not(:first)').parent().parent().remove();
             		multiTimeVal = true;
             		$('#dailyxdaysId').val('');
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Weekly'){
             		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
@@ -1359,6 +1370,7 @@ $(document).ready(function() {
             		$("#weekLifeTimeEnd").text('-');
             		$("#selectWeeklyTime").val('');
             		$('#weeklyxdaysId').val('');
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Monthly'){
             		$("#monthFreId").val('');
             		$("#selectMonthlyTime").val('');
@@ -1367,6 +1379,9 @@ $(document).ready(function() {
             		$("#monthEndDate").text('NA');
             		$("#monthLifeTimeDate").text('-');
             		$('#monthlyxdaysId').val('');
+            		$("#ongoingNoteId").hide();
+            	}else if(val == 'Ongoing'){
+            		$("#ongoingNoteId").show();
             	}
         	}
         }else{
@@ -1391,6 +1406,13 @@ $(document).ready(function() {
             $('.manually-option').find('.cusTime').prop('disabled', true);
             $('.manually-anchor-option').find('.cusTime').prop('disabled', true);
         }
+        
+        if(val == 'Ongoing'){
+    		$("#ongoingNoteId").show();
+    	}else{
+    		$("#ongoingNoteId").hide();
+    	}
+        
         var flag = 'schedule';
         setFrequencyVal(flag);
         //AnchorDate start
@@ -2951,7 +2973,7 @@ function setFrequencyVal(flag){
     		if(frequencyType == 'Monthly'){
     			$("#chartId,#chartId1,#chartId2").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
-    		if(frequencyType == 'Manually Schedule'){
+    		if(frequencyType == 'Manually Schedule' || frequencyType == 'Ongoing'){
     			$("#chartId,#chartId1,#chartId2").append("<option value='Run-based'>Run-based</option>");
     			$('.activeaddToChartText').show();
     			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')

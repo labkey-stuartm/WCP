@@ -1261,12 +1261,13 @@ public class StudyController {
 		SessionObject sesObj = null;
 		String studyId = "";
 		List<ConsentInfoBo> consentInfoBoList = null;
-		StudyBo studyBo = null;
+		StudyBo studyBo = null, liveStudyBo = null;
 		ConsentBo consentBo = null;
 		String sucMsg = "";
 		String errMsg = "";
 		String consentStudyId = "";
 		try {
+			Boolean isLiveStudy = false;
 			sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
 					? Integer.parseInt(request.getParameter("_S"))
@@ -1340,9 +1341,14 @@ public class StudyController {
 						map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, "addEdit");
 					}
 				}
+				liveStudyBo = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());
+				if (liveStudyBo != null) {
+					isLiveStudy = true;
+				}
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 				map.addAttribute("consentBo", consentBo);
 				map.addAttribute("_S", sessionStudyCount);
+				map.addAttribute("studyLiveStatus", isLiveStudy);
 				mav = new ModelAndView("consentReviewAndEConsentPage", map);
 			}
 		} catch (Exception e) {
@@ -4483,7 +4489,7 @@ public class StudyController {
 		String sucMsg = "";
 		String errMsg = "";
 		EligibilityBo eligibilityBo;
-		List<EligibilityTestBo> eligibilityTestList = null;
+		List<EligibilityTestBo> eligibilityTestList = new ArrayList<EligibilityTestBo>();
 		Boolean isLiveStudy = false;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession()
@@ -4530,7 +4536,10 @@ public class StudyController {
 						eligibilityBo.setStudyId(Integer.parseInt(studyId));
 						eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
 					}
-					eligibilityTestList = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+					if (eligibilityBo.getId() != null) {
+						eligibilityTestList = studyService
+								.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+					}
 					map.addAttribute("eligibilityTestList", eligibilityTestList);
 					map.addAttribute("eligibility", eligibilityBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);

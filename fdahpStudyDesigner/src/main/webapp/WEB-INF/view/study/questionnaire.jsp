@@ -1424,6 +1424,10 @@ function isNumber(evt, thisAttr) {
 						</div>
 					</div>
 				</form:form>
+				<div id="ongoingNoteId" class="note-center" style="display: none">Note:
+					Activities scheduled as ongoing will always be available for
+					participants to take any number of times, during the lifetime of
+					the study</div>
 			</div>
 		</div>
 	</div>
@@ -1502,7 +1506,7 @@ function isNumber(evt, thisAttr) {
 	$('#monthlyFormId input[type="text"]').prop('disabled', true);
 	$('#customFormId input[type="text"]').prop('disabled', true);
 	$('select').prop('disabled', true);
-	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
+	$('#schedule1,#schedule2,#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5,#inlineRadio6').prop('disabled', true);
 	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
 
@@ -1563,6 +1567,10 @@ $(document).ready(function() {
 	}
 	else{
 	    $('.delete').removeClass('display__none');
+	}
+	
+	if(frequencey == 'Ongoing'){
+		$("#ongoingNoteId").show();
 	}
 	
 	$('[data-toggle="tooltip"]').tooltip();
@@ -1691,6 +1699,7 @@ $(document).ready(function() {
 			 $(".manuallyContainer").hide();
 			 $(".manuallyContainer").find('input:text').removeAttr('required');
 			 $("#inlineRadio6").parent().hide();
+			 $("#ongoingNoteId").hide();
 		}else{
 			
 			localStorage.setItem("IsAnchorDateSelected", "false");
@@ -1914,6 +1923,7 @@ $(document).ready(function() {
             		}
             		$('#onetimexdaysId').val('');
             		$('#onetimeydaysId').val('');
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
@@ -1929,6 +1939,7 @@ $(document).ready(function() {
             		else{
             		    $('.delete').removeClass('display__none');
             		}
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -1938,6 +1949,7 @@ $(document).ready(function() {
             		$('.dailyClock:not(:first)').parent().parent().remove();
             		multiTimeVal = true;
             		$('#dailyxdaysId').val('');
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Weekly'){
             		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
@@ -1948,6 +1960,7 @@ $(document).ready(function() {
             		$("#weekLifeTimeEnd").text('-');
             		$("#selectWeeklyTime").val('');
             		$('#weeklyxdaysId').val('');
+            		$("#ongoingNoteId").hide();
             	}else if(val == 'Monthly'){
             		$("#monthFreId").val('');
             		$("#startDateMonthly").val('');
@@ -1957,6 +1970,9 @@ $(document).ready(function() {
             		$("#monthEndDate").text('NA');
             		$("#monthLifeTimeDate").text('-');
             		$('#monthlyxdaysId').val('');
+            		$("#ongoingNoteId").hide();
+            	}else if(val == 'Ongoing'){
+            		$("#ongoingNoteId").show();
             	}
         	}
         }else{
@@ -1987,6 +2003,13 @@ $(document).ready(function() {
     		    $('.delete').removeClass('display__none');
     		}
         }
+        
+        if(val == 'Ongoing'){
+    		$("#ongoingNoteId").show();
+    	}else{
+    		$("#ongoingNoteId").hide();
+    	}
+        
       //AnchorDate start
 		var scheduletype = $('input[name="scheduleType"]:checked').val();
 		if(scheduletype == 'AnchorDate'){

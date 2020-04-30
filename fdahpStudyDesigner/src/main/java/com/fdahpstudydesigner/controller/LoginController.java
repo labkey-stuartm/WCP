@@ -36,8 +36,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 @Controller
 public class LoginController {
 
-	private static Logger logger = Logger.getLogger(LoginController.class
-			.getName());
+	private static Logger logger = Logger.getLogger(LoginController.class.getName());
 
 	@Autowired
 	private DashBoardAndProfileService dashBoardAndProfileService;
@@ -49,8 +48,7 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/addPassword.do")
@@ -66,33 +64,25 @@ public class LoginController {
 		HttpSession session = null;
 		try {
 			session = request.getSession(false);
-			sesObj = (SessionObject) session
-					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("accessCode")) ? request
-					.getParameter("accessCode") : "";
-			password = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("password")) ? request.getParameter(
-					"password").replaceAll(request.getParameter("_csrf"), "")
+			sesObj = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode"))
+					? request.getParameter("accessCode")
 					: "";
-			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("securityToken")) ? request
-					.getParameter("securityToken") : "";
-			errorMsg = loginService.authAndAddPassword(securityToken,
-					accessCode, password, userBO, sesObj);
+			password = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password"))
+					? request.getParameter("password").replaceAll(request.getParameter("_csrf"), "")
+					: "";
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken"))
+					? request.getParameter("securityToken")
+					: "";
+			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO, sesObj);
 			if (!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)) {
 				request.getSession(false).setAttribute("errMsg", errorMsg);
-				mv = new ModelAndView(
-						"redirect:createPassword.do?securityToken="
-								+ securityToken);
+				mv = new ModelAndView("redirect:createPassword.do?securityToken=" + securityToken);
 			} else {
-				if (userBO != null
-						&& StringUtils.isNotEmpty(userBO.getFirstName())) {
-					request.getSession(false).setAttribute("sucMsg",
-							propMap.get("user.newaccount.success.msg"));
+				if (userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
+					request.getSession(false).setAttribute("sucMsg", propMap.get("user.newaccount.success.msg"));
 				} else {
-					request.getSession(false).setAttribute("sucMsg",
-							propMap.get("user.newpassword.success.msg"));
+					request.getSession(false).setAttribute("sucMsg", propMap.get("user.newpassword.success.msg"));
 				}
 			}
 		} catch (Exception e) {
@@ -121,10 +111,8 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
-	 * @param response
-	 *            , {@link HttpServletResponse}
+	 * @param request  , {@link HttpServletRequest}
+	 * @param response , {@link HttpServletResponse}
 	 * @return {@link ModelAndView} , forceChangePassword page view
 	 */
 	@RequestMapping(value = "/profile/changeExpiredPassword.do")
@@ -148,8 +136,7 @@ public class LoginController {
 			}
 			mv = new ModelAndView("changeExpiredPassword", map);
 		} catch (Exception e) {
-			logger.error("LoginController - changeExpiredPassword() - ERROR ",
-					e);
+			logger.error("LoginController - changeExpiredPassword() - ERROR ", e);
 		}
 		logger.info("LoginController - changeExpiredPassword() - Ends");
 		return mv;
@@ -160,10 +147,8 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
-	 * @param response
-	 *            , {@link HttpServletResponse}
+	 * @param request  , {@link HttpServletRequest}
+	 * @param response , {@link HttpServletResponse}
 	 * @return {@link ModelAndView} , login page
 	 */
 	@RequestMapping(value = "/changePassword.do")
@@ -177,30 +162,24 @@ public class LoginController {
 		HttpSession session = null;
 		try {
 			session = request.getSession(false);
-			sesObj = (SessionObject) session
-					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			sesObj = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			userId = sesObj.getUserId();
 			String newPassword = null != request.getParameter("newPassword")
-					&& !"".equals(request.getParameter("newPassword")) ? request
-					.getParameter("newPassword").replaceAll(
-							request.getParameter("_csrf"), "") : "";
+					&& !"".equals(request.getParameter("newPassword"))
+							? request.getParameter("newPassword").replaceAll(request.getParameter("_csrf"), "")
+							: "";
 			String oldPassword = null != request.getParameter("oldPassword")
-					&& !"".equals(request.getParameter("oldPassword")) ? request
-					.getParameter("oldPassword").replaceAll(
-							request.getParameter("_csrf"), "") : "";
-			message = loginService.changePassword(userId, newPassword,
-					oldPassword, sesObj);
+					&& !"".equals(request.getParameter("oldPassword"))
+							? request.getParameter("oldPassword").replaceAll(request.getParameter("_csrf"), "")
+							: "";
+			message = loginService.changePassword(userId, newPassword, oldPassword, sesObj);
 			if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-				sesObj.setPasswordExpairdedDateTime(FdahpStudyDesignerUtil
-						.getCurrentDateTime());
-				mv = new ModelAndView("redirect:sessionOut.do?sucMsg="
-						+ propMap.get("user.force.logout.success"));
-				request.getSession().setAttribute(
-						FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
+				sesObj.setPasswordExpairdedDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+				mv = new ModelAndView("redirect:sessionOut.do?sucMsg=" + propMap.get("user.force.logout.success"));
+				request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
 			} else {
 				request.getSession(false).setAttribute("errMsg", message);
-				mv = new ModelAndView(
-						"redirect:/profile/changeExpiredPassword.do");
+				mv = new ModelAndView("redirect:/profile/changeExpiredPassword.do");
 			}
 		} catch (Exception e) {
 			logger.error("LoginController - changePassword() - ERROR ", e);
@@ -214,39 +193,28 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param error
-	 *            , the error message from Spring security
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param error   , the error message from Spring security
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , View login page
 	 * @throws IOException
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/errorRedirect.do")
-	public ModelAndView errorRedirect(
-			@RequestParam(value = "error", required = false) String error,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-		if (error != null
-				&& (("timeOut").equalsIgnoreCase(error) || ("multiUser")
-						.equalsIgnoreCase(error))) {
-			request.getSession().setAttribute("errMsg",
-					propMap.get("user.session.timeout"));
+		if (error != null && (("timeOut").equalsIgnoreCase(error) || ("multiUser").equalsIgnoreCase(error))) {
+			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
-			request.getSession().setAttribute(
-					"errMsg",
-					FdahpStudyDesignerUtil.getErrorMessage(request,
-							"SPRING_SECURITY_LAST_EXCEPTION"));
+			request.getSession().setAttribute("errMsg",
+					FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
-		boolean ajax = "XMLHttpRequest".equals(request
-				.getHeader("X-Requested-With"));
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if (ajax) {
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
 			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE,
-					FdahpStudyDesignerUtil.getErrorMessage(request,
-							"SPRING_SECURITY_LAST_EXCEPTION"));
+					FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 			out = response.getWriter();
 			out.print(jsonobject);
@@ -261,8 +229,7 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , View redirect to login page
 	 */
 	@RequestMapping(value = "/forgotPassword.do")
@@ -272,14 +239,12 @@ public class LoginController {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try {
-			String email = (null != request.getParameter("email") && !""
-					.equals(request.getParameter("email"))) ? request
-					.getParameter("email") : "";
-			message = loginService.sendPasswordResetLinkToMail(request, email,
-					"", "");
+			String email = (null != request.getParameter("email") && !"".equals(request.getParameter("email")))
+					? request.getParameter("email")
+					: "";
+			message = loginService.sendPasswordResetLinkToMail(request, email, "", "");
 			if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-				request.getSession().setAttribute("sucMsg",
-						propMap.get("user.forgot.success.msg"));
+				request.getSession().setAttribute("sucMsg", propMap.get("user.forgot.success.msg"));
 			} else {
 				request.getSession().setAttribute("errMsg", message);
 			}
@@ -295,10 +260,8 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param error
-	 *            , the error message from Spring security
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param error   , the error message from Spring security
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , View login page
 	 * @throws Exception
 	 */
@@ -328,8 +291,7 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , termsAndCondition page
 	 */
 	@RequestMapping("/privacyPolicy.do")
@@ -350,18 +312,16 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView();
 		try {
 			if (null != request.getSession(false).getAttribute("sucMsg")) {
-				map.addAttribute("sucMsg", request.getSession(false)
-						.getAttribute("sucMsg"));
+				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
 				request.getSession(false).removeAttribute("sucMsg");
 			}
 			if (null != request.getSession(false).getAttribute("errMsg")) {
-				map.addAttribute("errMsg", request.getSession(false)
-						.getAttribute("errMsg"));
+				map.addAttribute("errMsg", request.getSession(false).getAttribute("errMsg"));
 				request.getSession(false).removeAttribute("errMsg");
 			}
-			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("securityToken")) ? request
-					.getParameter("securityToken") : "";
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken"))
+					? request.getParameter("securityToken")
+					: "";
 			userBO = loginService.checkSecurityToken(securityToken);
 			map.addAttribute("securityToken", securityToken);
 			if (userBO != null) {
@@ -381,29 +341,23 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
-	 * @param response
-	 *            , {@link HttpServletResponse}
+	 * @param request  , {@link HttpServletRequest}
+	 * @param response , {@link HttpServletResponse}
 	 * @return {@link ModelAndView} , View login page
 	 */
 	@RequestMapping("/sessionOut.do")
-	public ModelAndView sessionOut(HttpServletRequest request,
-			HttpServletResponse response,
+	public ModelAndView sessionOut(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "msg", required = false) String msg,
 			@RequestParam(value = "sucMsg", required = false) String sucMsg) {
 		logger.info("LoginController - sessionOut() - Starts");
 		SessionObject sesObj;
 		try {
-			Authentication auth = SecurityContextHolder.getContext()
-					.getAuthentication();
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null) {
 				sesObj = (SessionObject) request.getSession(false)
-						.getAttribute(
-								FdahpStudyDesignerConstants.SESSION_OBJECT);
+						.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				loginService.logUserLogOut(sesObj);
-				new SecurityContextLogoutHandler().logout(request, response,
-						auth);
+				new SecurityContextLogoutHandler().logout(request, response, auth);
 			}
 			request.getSession(true).setAttribute("errMsg", msg);
 			request.getSession(true).setAttribute("sucMsg", sucMsg);
@@ -425,8 +379,7 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , termsAndCondition page
 	 */
 	@RequestMapping("/termsAndCondition.do")
@@ -442,8 +395,7 @@ public class LoginController {
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , View unauthorized error page
 	 */
 	@RequestMapping(value = "/unauthorized.do")
@@ -456,8 +408,7 @@ public class LoginController {
 	 * This method is used to validate access code
 	 * 
 	 * @author BTC
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/validateAccessCode.do")
@@ -469,19 +420,17 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try {
-			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("accessCode")) ? request
-					.getParameter("accessCode") : "";
-			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("securityToken")) ? request
-					.getParameter("securityToken") : "";
-			errorMsg = loginService.validateAccessCode(securityToken,
-					accessCode);
+			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode"))
+					? request.getParameter("accessCode")
+					: "";
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken"))
+					? request.getParameter("securityToken")
+					: "";
+			errorMsg = loginService.validateAccessCode(securityToken, accessCode);
 			if (!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)) {
 				request.getSession(false).setAttribute("errMsg", errorMsg);
 			} else {
-				request.getSession(false).setAttribute("sucMsg",
-						propMap.get("user.access.code.success"));
+				request.getSession(false).setAttribute("sucMsg", propMap.get("user.access.code.success"));
 			}
 		} catch (Exception e) {
 			logger.error("LoginController - addPassword() - ERROR ", e);
@@ -491,48 +440,48 @@ public class LoginController {
 	}
 
 	/**
-	 * Validate the Security Token and navigate to sign up or change password
-	 * page
+	 * Validate the Security Token and navigate to sign up or change password page
 	 *
 	 * @author BTC
 	 *
-	 * @param request
-	 *            , {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/createPassword.do")
 	public ModelAndView validateSecurityToken(HttpServletRequest request) {
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - createPassword() - Starts");
-		String securityToken = null;
-		boolean checkSecurityToken = false;
+		String securityToken = null, message = "";
+		boolean checkSecurityToken = false, isDeactivateUser = false;
 		UserBO userBO = null;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		MasterDataBO masterDataBO = null;
 		try {
 			if (null != request.getSession(false).getAttribute("sucMsg")) {
-				map.addAttribute("sucMsg", request.getSession(false)
-						.getAttribute("sucMsg"));
+				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
 				request.getSession(false).removeAttribute("sucMsg");
 			}
 			if (null != request.getSession(false).getAttribute("errMsg")) {
-				map.addAttribute("errMsg", request.getSession(false)
-						.getAttribute("errMsg"));
+				map.addAttribute("errMsg", request.getSession(false).getAttribute("errMsg"));
 				request.getSession(false).removeAttribute("errMsg");
 			}
-			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request
-					.getParameter("securityToken")) ? request
-					.getParameter("securityToken") : "";
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken"))
+					? request.getParameter("securityToken")
+					: "";
 			userBO = loginService.checkSecurityToken(securityToken);
 			map.addAttribute("securityToken", securityToken);
 			masterDataBO = dashBoardAndProfileService.getMasterData("terms");
 			if (userBO != null) {
 				checkSecurityToken = true;
 			}
+			message = loginService.isActiveUser(securityToken);
+			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.USER_STATUS)) {
+				isDeactivateUser = true;
+			}
 			map.addAttribute("isValidToken", checkSecurityToken);
+			map.addAttribute("isDeactivateUser", isDeactivateUser);
 			map.addAttribute("masterDataBO", masterDataBO);
-			if (userBO != null
-					&& (StringUtils.isEmpty(userBO.getUserPassword()))) {
+			if (userBO != null && (StringUtils.isEmpty(userBO.getUserPassword()))) {
 				map.addAttribute("userBO", userBO);
 				mv = new ModelAndView("signUpPage", map);
 			} else {

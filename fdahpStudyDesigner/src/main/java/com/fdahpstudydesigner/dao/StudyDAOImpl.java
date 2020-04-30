@@ -4015,7 +4015,7 @@ public class StudyDAOImpl implements StudyDAO {
 					dbStudyBo.setModifiedBy(studyBo.getUserId());
 					dbStudyBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					dbStudyBo.setAppId(studyBo.getAppId());
-					// dbStudyBo.setOrgId(studyBo.getOrgId());
+					dbStudyBo.setOrgId(studyBo.getOrgId());
 					session.update(dbStudyBo);
 
 				}

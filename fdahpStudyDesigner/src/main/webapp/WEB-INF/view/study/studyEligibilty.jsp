@@ -164,6 +164,8 @@
 	console.log("viewPermission:" + viewPermission);
 	var reorder = true;
 	var table1;
+	var emVal=$("input[name='eligibilityMechanism']:checked"). val();
+	var eligibilityTestSize=${eligibilityTestList.size()};
 	$(document)
 			.ready(
 					function() {
@@ -176,6 +178,19 @@
 						$('#eleFormId').find('.elaborateClass').addClass(
 								'linkDis');
 						</c:if>
+						
+						<c:if test="${empty eligibility.id}">
+							$('#addQaId').prop('disabled',true);
+							$('.viewIcon, .editIcon, .deleteIcon').addClass('cursor-none');
+						</c:if>
+					
+						if(emVal != "1"){
+							if (eligibilityTestSize === 0){
+								$("#doneBut").attr("disabled",true);
+								$('#spancomId').attr('data-original-title','Please ensure you add one or more Eligibility Test before attempting to mark this section as Complete.');
+							}
+						}
+						
 						if ((!chkDone) && eligibilityMechanism != "1") {
 							$('#doneBut').prop('disabled', true);
 							$('#spancomId')
@@ -425,6 +440,16 @@
 													$('#doneBut').prop(
 															'disabled', true);
 											}
+											
+											emVal=$("input[name='eligibilityMechanism']:checked"). val();
+											eligibilityTestSize=${eligibilityTestList.size()};
+											if(emVal != "1"){
+												if (eligibilityTestSize === 0){
+													$("#doneBut").attr("disabled",true);
+													$('#spancomId').attr('data-original-title','Please ensure you add one or more Eligibility Test before attempting to mark this section as Complete.');
+												}
+											}
+											
 										})
 						// 		if(lastEligibilityOpt)
 						// 			$('#eligibilityOptDivId input[type=radio]').trigger('change');
@@ -538,7 +563,7 @@
 	}
 	function reloadEligibiltyTestDataTable(eligibiltyTestList) {
 		$('#consent_list').DataTable().clear();
-		if (eligibiltyTestList && eligibiltyTestList.length > 0) {
+		if (eligibiltyTestList != null && eligibiltyTestList.length > 0) {
 			$
 					.each(
 							eligibiltyTestList,
@@ -579,10 +604,8 @@
 			initActions();
 		} else {
 			$('#consent_list').DataTable().draw();
-			$('#helpNote')
-					.attr(
-							'data-original-title',
-							'Please ensure you add one or more Consent Sections before attempting to mark this section as Complete.');
+			$("#doneBut").attr("disabled",true);
+			$('#spancomId').attr('data-original-title','Please ensure you add one or more Eligibility Test before attempting to mark this section as Complete.');
 		}
 	}
 	function initActions() {

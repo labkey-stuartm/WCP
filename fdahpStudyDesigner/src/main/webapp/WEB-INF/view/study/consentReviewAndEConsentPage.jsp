@@ -46,15 +46,15 @@
                 <div id="menu1" class="tab-pane fade in active">
                  <!--   <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div> -->
                    <div class="mt-lg" >
-                   		<div class="gray-xs-f mb-sm">Enable share data permissions step for this study? <span class="gray-xs-f mb-xs">(Please ensure you have the IRB mandate to allow this)</span></div>
+                   		<div class="gray-xs-f mb-sm">Enable data-sharing permission step for this study? <span class="gray-xs-f mb-xs">(This will let participants choose whether they want to allow their response data to be shared with 3rd parties. <b>Note that this setting cannot be changed after study launch.</b>)</span></div>
                    		<div class="col-md-12 pl-none">
 	                        <div class="form-group">
 	                            <span class="radio radio-info radio-inline p-45">
-	                                <input type="radio" id="shareDataPermissionsYes" value="Yes" name="shareDataPermissions" ${consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''}>
+	                                <input type="radio" id="shareDataPermissionsYes" value="Yes" name="shareDataPermissions" ${consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''} <c:if test="${studyLiveStatus}"> disabled</c:if>>
 	                                <label for="shareDataPermissionsYes">Yes</label>
 	                            </span>
 	                            <span class="radio radio-inline">
-	                                <input type="radio" id="shareDataPermissionsNo" value="No" name="shareDataPermissions" ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'No' ? 'checked' : ''}>
+	                                <input type="radio" id="shareDataPermissionsNo" value="No" name="shareDataPermissions" ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'No' ? 'checked' : ''} <c:if test="${studyLiveStatus}"> disabled</c:if>>
 	                                <label for="shareDataPermissionsNo">No</label>
 	                            </span>
 	                        </div>
@@ -63,28 +63,28 @@
                     	<div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Title <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control requiredClass" placeholde="" id="titleId" name="title" value="${consentBo.title}" maxlength="250"/>
+		                        <input type="text" class="form-control requiredClass" placeholde="" id="titleId" name="title" value="${consentBo.title}" maxlength="250"/ <c:if test="${studyLiveStatus}"> disabled</c:if>>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">1 line description or tagline <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control requiredClass" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" />
+		                        <input type="text" class="form-control requiredClass" placeholder="" maxlength="250" name="taglineDescription" id="taglineDescriptionId" value="${consentBo.taglineDescription}" <c:if test="${studyLiveStatus}"> disabled</c:if> />
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Short Description for RO (Research Organization or Data Partner) <small>(250 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <input type="text" class="form-control requiredClass" placeholder=""  maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}"/>
+		                        <input type="text" class="form-control requiredClass" placeholder=""  maxlength="250" name="shortDescription" id="shortDescriptionId" value="${consentBo.shortDescription}" <c:if test="${studyLiveStatus}"> disabled</c:if>/>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
 		                <div class="col-md-12 p-none">
 		                    <div class="gray-xs-f mb-xs">Long Description for RO (Research Organization or Data Partner) <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 		                    <div class="form-group">
-		                        <textarea class="form-control requiredClass"  rows="5" maxlength="500"  placeholder="" name="longDescription" id="longDescriptionId">${consentBo.longDescription}</textarea>
+		                        <textarea class="form-control requiredClass"  rows="5" maxlength="500"  placeholder="" name="longDescription" id="longDescriptionId" <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.longDescription}</textarea>
 		                        <div class="help-block with-errors red-txt"></div>
 		                    </div>
 		                </div>
@@ -348,7 +348,6 @@ $(document).ready(function(){
 		$('#newDivId .elaborateClass').addClass('linkDis');
 	    $('#saveId,#doneId').hide();
 	}
-	
 	//auto select if consent Id is empty
 	//var consentId = "${consentBo.id}";
 	
@@ -622,6 +621,7 @@ $(document).ready(function(){
                 });
        	  	},
             <c:if test="${permission eq 'view'}">readonly:1</c:if>
+       	    <c:if test="${studyLiveStatus}">readonly:1</c:if>
         });
     }
     //save review and E-consent data

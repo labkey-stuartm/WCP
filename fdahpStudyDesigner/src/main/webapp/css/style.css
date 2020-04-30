@@ -2501,3 +2501,6 @@ a:focus{
 	position: absolute;
 	top: 0px;
 }
+.note-center{
+	margin-top:160px !important;
+}

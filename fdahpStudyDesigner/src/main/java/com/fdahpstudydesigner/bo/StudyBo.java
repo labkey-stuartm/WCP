@@ -27,8 +27,7 @@ import com.fdahpstudydesigner.bean.StudyListBean;
  */
 @Entity
 @Table(name = "studies")
-@NamedQueries({
-		@NamedQuery(name = "StudyBo.getStudiesById", query = " From StudyBo SBO WHERE SBO.id =:id"),
+@NamedQueries({ @NamedQuery(name = "StudyBo.getStudiesById", query = " From StudyBo SBO WHERE SBO.id =:id"),
 		@NamedQuery(name = "updateStudyVersion", query = "UPDATE StudyBo SET live=2 WHERE customStudyId=:customStudyId and live=1"),
 		@NamedQuery(name = "getStudyLiveVersion", query = " From StudyBo SBO WHERE SBO.live=1 AND customStudyId=:customStudyId"),
 		@NamedQuery(name = "StudyBo.getStudyBycustomStudyId", query = " From StudyBo SBO WHERE customStudyId=:customStudyId"),
@@ -174,16 +173,16 @@ public class StudyBo implements Serializable {
 
 	@Transient
 	private boolean viewPermission = true;
-	
+
 	@Column(name = "enrollmentdate_as_anchordate")
 	@Type(type = "yes_no")
 	private boolean enrollmentdateAsAnchordate = false;
-	
+
 	@Column(name = "app_id")
 	private String appId;
-	
+
 	@Column(name = "org_id")
-	private String orgId = "OrgName";
+	private String orgId;
 
 	public String getAllowRejoin() {
 		return allowRejoin;
