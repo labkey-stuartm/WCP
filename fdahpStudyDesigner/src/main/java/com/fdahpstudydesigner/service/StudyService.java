@@ -158,6 +158,8 @@ public interface StudyService {
 			String projectLead);
 
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
+	
+	public String switchStudyToLiveMode(String studyId);
 
 	public String validateActivityComplete(String studyId, String action);
 

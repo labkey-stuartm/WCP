@@ -1798,6 +1798,19 @@ public class StudyServiceImpl implements StudyService {
 		return message;
 	}
 
+	@Override
+	public String switchStudyToLiveMode(String studyId) {
+		logger.info("StudyServiceImpl - switchStudyToLiveMode() - Starts");
+		String message = "";
+		try {
+			message = studyDAO.switchStudyToLiveMode(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - switchStudyToLiveMode() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - switchStudyToLiveMode() - Ends");
+		return message;
+	}
+
 	/**
 	 * This method is validate the activity(Active task/Questionnaire) done or not
 	 * 

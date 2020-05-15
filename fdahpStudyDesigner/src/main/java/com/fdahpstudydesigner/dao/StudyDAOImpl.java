@@ -3953,6 +3953,8 @@ public class StudyDAOImpl implements StudyDAO {
 				appId = studyBo.getAppId().toUpperCase();
 				studyBo.setAppId(appId);
 				studyBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+				studyBo.setTestModeStudyId(studyBo.getCustomStudyId());
+				studyBo.setTestModeAppId(studyBo.getAppId());
 				studyId = (Integer) session.save(studyBo);
 
 				studyPermissionBO = new StudyPermissionBO();
@@ -3998,6 +4000,44 @@ public class StudyDAOImpl implements StudyDAO {
 				dbStudyBo = (StudyBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
 						.setInteger("id", studyBo.getId()).uniqueResult();
 				if (dbStudyBo != null) {
+
+					/*
+					 * if (!dbStudyBo.getCustomStudyId().equals(studyBo.getCustomStudyId()) ||
+					 * !dbStudyBo.getAppId().equals(studyBo.getAppId())) { if
+					 * (!dbStudyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.
+					 * STUDY_PAUSED)) { updateStudyId(dbStudyBo, studyBo.getCustomStudyId(),
+					 * session); } else { throw new
+					 * Exception(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG); }
+					 * 
+					 * }
+					 */
+
+					/*
+					 * if (!dbStudyBo.getAppId().equals(studyBo.getAppId())) { if
+					 * (!dbStudyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.
+					 * STUDY_PAUSED)) { updateAppId(studyBo.getCustomStudyId(), studyBo.getAppId(),
+					 * studyBo.getOrgId(), session); } else { throw new
+					 * Exception(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG); } }
+					 */
+
+					if (dbStudyBo.getStudyMode() != null
+							&& dbStudyBo.getStudyMode().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_MODE_LIVE)) {
+						if (dbStudyBo.getTestModeStudyId().equalsIgnoreCase(studyBo.getCustomStudyId())
+								|| dbStudyBo.getTestModeAppId().equalsIgnoreCase(studyBo.getAppId())) {
+							throw new Exception(FdahpStudyDesignerConstants.STUDY_ID_APP_ID_ERR_MSG);
+						}
+					}
+
+					if (dbStudyBo.getSwitchVal() != null && dbStudyBo.getSwitchVal() == 1) {
+						dbStudyBo.setSwitchVal(2);
+					}
+
+					if (dbStudyBo.getStudyMode() != null
+							&& dbStudyBo.getStudyMode().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_MODE_TEST)) {
+						dbStudyBo.setTestModeStudyId(studyBo.getCustomStudyId());
+						dbStudyBo.setTestModeAppId(studyBo.getAppId());
+					}
+
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
 					dbStudyBo.setName(studyBo.getName());
 					dbStudyBo.setFullName(studyBo.getFullName());
@@ -4047,6 +4087,7 @@ public class StudyDAOImpl implements StudyDAO {
 		} catch (Exception e) {
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateSubAdmin() - ERROR", e);
+			message = e.getMessage();
 		} finally {
 			if (null != session && session.isOpen()) {
 				session.close();
@@ -5750,7 +5791,8 @@ public class StudyDAOImpl implements StudyDAO {
 
 						// Updating Notification and Resources
 						session.createQuery("UPDATE NotificationBO set customStudyId='" + studyBo.getCustomStudyId()
-								+ "' where studyId=" + studyBo.getId()).executeUpdate();
+								+ "', appId = '" + studyBo.getAppId() + "' where studyId=" + studyBo.getId())
+								.executeUpdate();
 						session.createQuery("UPDATE Checklist set customStudyId='" + studyBo.getCustomStudyId()
 								+ "' where studyId=" + studyBo.getId()).executeUpdate();
 					}
@@ -5906,8 +5948,8 @@ public class StudyDAOImpl implements StudyDAO {
 							// customStudyId
 							session.createQuery("UPDATE NotificationBO set scheduleDate='"
 									+ FdahpStudyDesignerUtil.getCurrentDate() + "', scheduleTime = '"
-									+ FdahpStudyDesignerUtil.getCurrentTime() + "' where customStudyId='"
-									+ studyBo.getCustomStudyId()
+									+ FdahpStudyDesignerUtil.getCurrentTime() + "', appId = '" + studyBo.getAppId()
+									+ "'where customStudyId='" + studyBo.getCustomStudyId()
 									+ "' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"
 									+ FdahpStudyDesignerConstants.NOTIFICATION_ST + "' and notificationSubType='"
 									+ FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE
@@ -5918,8 +5960,8 @@ public class StudyDAOImpl implements StudyDAO {
 							// customStudyId
 							session.createQuery("UPDATE NotificationBO set scheduleDate='"
 									+ FdahpStudyDesignerUtil.getCurrentDate() + "', scheduleTime = '"
-									+ FdahpStudyDesignerUtil.getCurrentTime() + "' where customStudyId='"
-									+ studyBo.getCustomStudyId()
+									+ FdahpStudyDesignerUtil.getCurrentTime() + "', appId = '" + studyBo.getAppId()
+									+ "' where customStudyId='" + studyBo.getCustomStudyId()
 									+ "' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"
 									+ FdahpStudyDesignerConstants.NOTIFICATION_ST + "' and notificationSubType='"
 									+ FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
@@ -6049,6 +6091,277 @@ public class StudyDAOImpl implements StudyDAO {
 		}
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Ends");
 		return message;
+	}
+
+	@Override
+	public String switchStudyToLiveMode(String studyId) {
+		logger.info("StudyDAOImpl - switchStudyToLiveMode() - Starts");
+		Transaction transaction = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			Query query = null;
+			Session session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			StudyBo studyBo = (StudyBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
+					.setInteger("id", Integer.parseInt(studyId)).uniqueResult();
+			// reset all study and consent versions
+			query = session.createQuery("DELETE FROM StudyVersionBo SVBO where SVBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of study to -1 and archive all
+			query = session.createQuery(
+					"UPDATE StudyBo SBO set SBO.live=2,SBO.version=-1 where SBO.customStudyId=:studyId AND SBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update study to Pre-Lunch stat
+			studyBo.setStatus("Pre-launch");
+			studyBo.setStudyPreActiveFlag(false);
+			studyBo.setHasConsentDraft(1);
+			studyBo.setHasStudyDraft(1);
+			studyBo.setHasActivetaskDraft(1);
+			studyBo.setHasQuestionnaireDraft(1);
+			studyBo.setStudyMode(FdahpStudyDesignerConstants.STUDY_MODE_LIVE);
+			studyBo.setSwitchVal(1);
+			session.update(studyBo);
+
+			StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId")
+					.setInteger("studyId", Integer.parseInt(studyId)).uniqueResult();
+
+			// make basic info as not mark as completed
+			studySequence.setBasicInfo(false);
+			session.update(studySequence);
+
+			// update all published versions of consentinfo to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ConsentInfoBo CBO set CBO.live=2,CBO.version=-1 where CBO.customStudyId=:studyId AND CBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of consent to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ConsentBo CBO set CBO.live=2,CBO.version=-1 where CBO.customStudyId=:studyId AND CBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of Questionnaire to -1 and archive all
+			query = session.createQuery(
+					"UPDATE QuestionnaireBo QBO set QBO.live=2,QBO.version=-1 where QBO.customStudyId=:studyId AND QBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update Questionnaire base version to 0
+			query = session.createQuery(
+					"UPDATE QuestionnaireBo QBO set QBO.version=0,QBO.isChange=1 where QBO.studyId=:studyId AND QBO.live=0");
+			query.setParameter("studyId", studyBo.getId());
+			query.executeUpdate();
+
+			// reset all study activity versions
+			query = session.createQuery("DELETE FROM StudyActivityVersionBo SAVBO where SAVBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of activities to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ActiveTaskBo ABO set ABO.live=2,ABO.version=-1 where ABO.customStudyId=:studyId AND ABO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update activities base version to 0
+			query = session
+					.createQuery("UPDATE ActiveTaskBo ABO set ABO.version=0 where ABO.studyId=:studyId AND ABO.live=0");
+			query.setParameter("studyId", studyBo.getId());
+			query.executeUpdate();
+
+			// update all participant properties version to 1
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesBO PPBO set PPBO.version=1 where PPBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all draft participant properties study version to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesDraftBO PPDBO set PPDBO.version=-1,PPDBO.studyVersion =-1 where PPDBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			query = session.createQuery(
+					"SELECT notificationId from NotificationBO where studyId=:studyId AND notificationType='GT'");
+			query.setParameter("studyId", Integer.valueOf(studyId));
+			List<Integer> notificationIdList = query.list();
+
+			if (notificationIdList != null && notificationIdList.size() > 0) {
+				// clear previous sent notifications history
+				query = session.createQuery("DELETE from NotificationHistoryBO where notificationId IN(:idList)");
+				query.setParameterList("idList", notificationIdList);
+				query.executeUpdate();
+
+				// clear previous notifications
+				query = session.createQuery("DELETE from NotificationBO where notificationId IN(:idList)");
+				query.setParameterList("idList", notificationIdList);
+				query.executeUpdate();
+			}
+
+			message = FdahpStudyDesignerConstants.SUCCESS;
+			transaction.commit();
+
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - switchStudyToLiveMode() - ERROR ", e);
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			message = FdahpStudyDesignerConstants.FAILURE;
+		}
+		logger.info("StudyDAOImpl - switchStudyToLiveMode() - Ends");
+		return message;
+	}
+
+	@Override
+	public void updateStudyId(StudyBo studyBo, String newStudyId, Session session) {
+		logger.info("StudyDAOImpl - updateStudyId() - Starts");
+		try {
+			Query query = null;
+			// reset all study and consent versions
+			query = session.createQuery("DELETE FROM StudyVersionBo SVBO where SVBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of study to -1 and archive all
+			query = session.createQuery(
+					"UPDATE StudyBo SBO set SBO.live=2,SBO.version=-1 where SBO.customStudyId=:studyId AND SBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update study
+			studyBo.setStatus("Pre-launch");
+			studyBo.setStudyPreActiveFlag(false);
+			studyBo.setHasConsentDraft(1);
+			studyBo.setHasStudyDraft(1);
+			studyBo.setHasActivetaskDraft(1);
+			studyBo.setHasQuestionnaireDraft(1);
+			session.update(studyBo);
+
+			// update all published versions of consentinfo to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ConsentInfoBo CBO set CBO.live=2,CBO.version=-1 where CBO.customStudyId=:studyId AND CBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of consent to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ConsentBo CBO set CBO.live=2,CBO.version=-1 where CBO.customStudyId=:studyId AND CBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of Questionnaire to -1 and archive all
+			query = session.createQuery(
+					"UPDATE QuestionnaireBo QBO set QBO.live=2,QBO.version=-1 where QBO.customStudyId=:studyId AND QBO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update Questionnaire base version to 0
+			query = session.createQuery(
+					"UPDATE QuestionnaireBo QBO set QBO.version=0,QBO.isChange=1 where QBO.studyId=:studyId AND QBO.live=0");
+			query.setParameter("studyId", studyBo.getId());
+			query.executeUpdate();
+
+			// reset all study activity versions
+			query = session.createQuery("DELETE FROM StudyActivityVersionBo SAVBO where SAVBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all published versions of activities to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ActiveTaskBo ABO set ABO.live=2,ABO.version=-1 where ABO.customStudyId=:studyId AND ABO.live IN(1,2)");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update activities base version to 0
+			query = session
+					.createQuery("UPDATE ActiveTaskBo ABO set ABO.version=0 where ABO.studyId=:studyId AND ABO.live=0");
+			query.setParameter("studyId", studyBo.getId());
+			query.executeUpdate();
+
+			// update all participant properties version to 1
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesBO PPBO set PPBO.version=1,PPBO.customStudyId=:newStudyId where PPBO.customStudyId=:studyId");
+			query.setParameter("newStudyId", newStudyId);
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			// update all draft participant properties study version to -1 and archive all
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesDraftBO PPDBO set PPDBO.version=-1,PPDBO.studyVersion =-1 where PPDBO.customStudyId=:studyId");
+			query.setParameter("studyId", studyBo.getCustomStudyId());
+			query.executeUpdate();
+
+			query = session.createQuery(
+					"SELECT notificationId from NotificationBO where studyId=:studyId AND notificationType='GT'");
+			query.setParameter("studyId", studyBo.getId());
+			List<Integer> notificationIdList = query.list();
+
+			if (notificationIdList != null && notificationIdList.size() > 0) {
+				// clear previous sent notifications history
+				query = session.createQuery("DELETE from NotificationHistoryBO where notificationId IN(:idList)");
+				query.setParameterList("idList", notificationIdList);
+				query.executeUpdate();
+
+				// clear previous notifications
+				query = session.createQuery("DELETE from NotificationBO where notificationId IN(:idList)");
+				query.setParameterList("idList", notificationIdList);
+				query.executeUpdate();
+			}
+
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - updateStudyId() - ERROR ", e);
+			throw e;
+		}
+		logger.info("StudyDAOImpl - updateStudyId() - Ends");
+	}
+
+	@Override
+	public void updateAppId(String customStudyId, String appId, String orgId, Session session) {
+		logger.info("StudyDAOImpl - updateAppId() - Starts");
+		try {
+			Query query = null;
+
+			// update appid and orgid in study table
+			query = session.createQuery(
+					"UPDATE StudyBo SBO set SBO.appId=:appId,SBO.orgId=:orgId where SBO.customStudyId=:studyId");
+			query.setParameter("appId", appId);
+			query.setParameter("orgId", orgId);
+			query.setParameter("studyId", customStudyId);
+			query.executeUpdate();
+
+			// update appid and orgid in participant_properties table
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesBO PPBO set PPBO.appId=:appId,PPBO.orgId=:orgId where PPBO.customStudyId=:studyId");
+			query.setParameter("appId", appId);
+			query.setParameter("orgId", orgId);
+			query.setParameter("studyId", customStudyId);
+			query.executeUpdate();
+
+			// update appid and orgid in participant_properties_draft table
+			query = session.createQuery(
+					"UPDATE ParticipantPropertiesDraftBO PPDBO set PPDBO.appId=:appId,PPDBO.orgId=:orgId where PPDBO.customStudyId=:studyId");
+			query.setParameter("appId", appId);
+			query.setParameter("orgId", orgId);
+			query.setParameter("studyId", customStudyId);
+			query.executeUpdate();
+
+			// update appid in notification table
+			query = session
+					.createQuery("UPDATE NotificationBO NBO set NBO.appId=:appId where NBO.customStudyId=:studyId");
+			query.setParameter("appId", appId);
+			query.setParameter("studyId", customStudyId);
+			query.executeUpdate();
+
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - updateAppId() - ERROR ", e);
+			throw e;
+		}
+		logger.info("StudyDAOImpl - updateAppId() - Ends");
 	}
 
 	/**

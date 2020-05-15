@@ -92,7 +92,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String CONSENTEDUINFO_ERROR_MSG = "Required sections are not marked as Completed";
 	public static final String CONTENT = "content";
 	public static final String COPY_STUDY = "copy";
-	public static final String COPY_STUDY_FAILURE_MSG = "Sorry, a technical error occurred and copy could not be happened.";
+	public static final String COPY_STUDY_FAILURE_MSG = "Sorry, a technical error occurred and copy was not successful.";
 	public static final String COPY_STUDY_SUCCESS_MSG = "A new study has been created with existing study.";
 
 	public static final String CURRENT_PAGE = "currentPage";
@@ -203,11 +203,11 @@ public class FdahpStudyDesignerConstants {
 	public static final String NEW_ORDER_NUMBER = "newOrderNumber";
 	public static final String NO = "No";
 	public static final String NOTIFICATION = "notification";
-	public static final String NOTIFICATION_ACTIVETASK_TEXT = "A new activity $shortTitle has been added for the study: $customId. Check it out now.";
+	public static final String NOTIFICATION_ACTIVETASK_TEXT = "A new activity $shortTitle has been added for the study: $customId.";
 	// public static final String NOTIFICATION_ACTIVETASK_TEXT =
 	// "New activity $shortTitle available for the study: $customId. Check it out
 	// now.";
-	public static final String NOTIFICATION_ACTIVETASK_TEXT_PUBLISH = "1 or more activities have been added for the study: $customId. Check it out now.";
+	public static final String NOTIFICATION_ACTIVETASK_TEXT_PUBLISH = "1 or more activities have been added for the study: $customId.";
 	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation.";
 	public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's  notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
 	public static final String NOTIFICATION_GT = "GT";
@@ -225,7 +225,7 @@ public class FdahpStudyDesignerConstants {
 	// STUDY NOTIFICATION TEST
 	// public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new
 	// study is available in the FDA MyStudies App. Check it out now.";
-	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available. Check it out now.";
+	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available in the app.";
 	public static final String NOTIFICATION_VIEWED = "Y";
 	// Notification flags
 	public static final String NOTIFICATIONID = "notificationId";
@@ -385,7 +385,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String ANCHOR_TYPE_ENROLLMENTDATE = "Enrollment Date";
 	public static final String SCHEDULETYPE_REGULAR = "Regular";
 	public static final String SCHEDULETYPE_ANCHORDATE = "AnchorDate";
-	public static final String ANCHOR_ERROR_MSG = "One or more activity or resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
+	public static final String ANCHOR_ERROR_MSG = "One or more activities or resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
 
 	public static final String APP_ID_FMSA001 = "FMSA001";
 	public static final String APP_ID_COVFH001 = "COVFH001";
@@ -396,8 +396,14 @@ public class FdahpStudyDesignerConstants {
 	public static final String ORG_ID_CACFND = "CACFND";
 	public static final String ORG_ID_CARREG = "CARREG";
 	public static final String ORG_ID_OTHER = "OrgName";
-	
+
 	public static final String USER_STATUS = "deactivate";
+
+	public static final String STUDY_MODE_LIVE = "liveMode";
+	public static final String STUDY_MODE_TEST = "testMode";
+
+	public static final String STUDY_PAUSED_ERR_MSG = "The Study ID and App ID cannot be edited when the Study is in a Paused State.";
+	public static final String STUDY_ID_APP_ID_ERR_MSG = "The Study ID and App ID must be different from the values used in the Test Mode for this study.";
 
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

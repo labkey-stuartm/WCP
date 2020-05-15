@@ -30,6 +30,11 @@ import com.fdahpstudydesigner.bean.StudyListBean;
 @NamedQueries({ @NamedQuery(name = "StudyBo.getStudiesById", query = " From StudyBo SBO WHERE SBO.id =:id"),
 		@NamedQuery(name = "updateStudyVersion", query = "UPDATE StudyBo SET live=2 WHERE customStudyId=:customStudyId and live=1"),
 		@NamedQuery(name = "getStudyLiveVersion", query = " From StudyBo SBO WHERE SBO.live=1 AND customStudyId=:customStudyId"),
+		/*
+		 * @NamedQuery(name = "StudyBo.getStudyBycustomStudyId", query =
+		 * " From StudyBo SBO WHERE customStudyId=:customStudyId AND SBO.live IN (0,1)"
+		 * ),
+		 */
 		@NamedQuery(name = "StudyBo.getStudyBycustomStudyId", query = " From StudyBo SBO WHERE customStudyId=:customStudyId"),
 		@NamedQuery(name = "getStudyDraftVersion", query = " From StudyBo SBO WHERE SBO.live IN (0,2) AND customStudyId=:customStudyId"), })
 public class StudyBo implements Serializable {
@@ -183,6 +188,18 @@ public class StudyBo implements Serializable {
 
 	@Column(name = "org_id")
 	private String orgId;
+
+	@Column(name = "study_mode")
+	private String studyMode = "testMode";
+
+	@Column(name = "switch_val")
+	private Integer switchVal = 0;
+
+	@Column(name = "test_mode_studyId")
+	private String testModeStudyId;
+
+	@Column(name = "test_mode_appId")
+	private String testModeAppId;
 
 	public String getAllowRejoin() {
 		return allowRejoin;
@@ -566,5 +583,37 @@ public class StudyBo implements Serializable {
 
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
+	}
+
+	public String getStudyMode() {
+		return studyMode;
+	}
+
+	public void setStudyMode(String studyMode) {
+		this.studyMode = studyMode;
+	}
+
+	public Integer getSwitchVal() {
+		return switchVal;
+	}
+
+	public void setSwitchVal(Integer switchVal) {
+		this.switchVal = switchVal;
+	}
+
+	public String getTestModeStudyId() {
+		return testModeStudyId;
+	}
+
+	public void setTestModeStudyId(String testModeStudyId) {
+		this.testModeStudyId = testModeStudyId;
+	}
+
+	public String getTestModeAppId() {
+		return testModeAppId;
+	}
+
+	public void setTestModeAppId(String testModeAppId) {
+		this.testModeAppId = testModeAppId;
 	}
 }

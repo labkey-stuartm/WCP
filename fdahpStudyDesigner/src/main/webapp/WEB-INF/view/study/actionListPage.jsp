@@ -4,6 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<style>
+.btns__devider {
+	display: inline-block;
+	border-top: 1px solid #dddddd;
+	padding-top: 30px;
+	margin-top: 20px;
+}
+#spec-tooltip .tooltip-inner {
+    min-width: 430px !important;
+}
+</style>
 <div class="col-sm-10 col-rc white-bg p-none">
 
 	<!--  Start top tab section-->
@@ -16,7 +28,29 @@
 	</div>
 	<!--  End  top tab section-->
 	<!--  Start body tab section -->
-	<div class="right-content-body">
+	<div class="right-content-body pt-none pl-xlg">
+		<div class="gray-xs-f mb-xs mt-xlg mb-md" id="spec-tooltip">
+			Select Publishing Mode<span class="requiredStar">*</span><span
+				class="ml-xs sprites_v3 filled-tooltip" data-placement="top" data-toggle="tooltip"
+				title="Use the Test Mode to verify your study content and behavior in a test app prior to actual launch/publishing in Live Mode.  Please note that the study cannot be reverted back to Test Mode once you switch to the Live Mode. The Study ID and App ID fields cannot be edited once the study is launched (or published as an upcoming study) in either Test Mode or Live Mode. However, after you switch from Test Mode to Live Mode, you will need to enter in a Study ID and an App ID that are different from what were used in Test mode, before you launch (or publish as upcoming study) the study in Live Mode."></span>
+		</div>
+		<div class="pb-lg ">
+			<span class="radio radio-info radio-inline p-40"> <input
+				type="radio" id="testmode" class="typeofmode" value="testmode"
+				name="modetype" checked
+				<c:if test="${not empty permission}">disabled</c:if>
+				<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>
+				<label for="testmode">Test Mode</label>
+			</span> <span class="tool-tip" data-toggle="tooltip" data-html="true"
+				data-placement="top"> <span class="radio radio-inline p-40">
+					<input type="radio" id="livemode" class="typeofmode"
+					value="livemode" name="modetype"
+					<c:if test="${not empty permission}">disabled</c:if>
+					<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>> 
+					<label for="livemode">Live Mode</label>
+			</span>
+			</span>
+		</div>
 		<div>
 			<c:if test="${studyBo.studyPreActiveFlag eq false}">
 				<div class="form-group mr-sm" style="white-space: normal;">
@@ -30,7 +64,8 @@
 				                    disabled
 				             </c:when>
 				            </c:choose>
-				            <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Publish as Upcoming Study</button>
+						<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Publish
+						as Upcoming Study</button>
 				</div>
 			</c:if>
 			<c:if test="${studyBo.studyPreActiveFlag eq true}">
@@ -45,7 +80,7 @@
 				                    disabled
 				             </c:when>
 				            </c:choose>
-				            <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Unpublish</button>
+						<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Unpublish</button>
 				</div>
 			</c:if>
 			<div class="form-group mr-sm" style="white-space: normal;">
@@ -59,7 +94,7 @@
 				                    disabled
 				             </c:when>
 				            </c:choose>
-				            <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Launch
+					<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Launch
 					Study</button>
 			</div>
 
@@ -97,7 +132,8 @@
 			                    disabled
 			             </c:when>
 			           </c:choose>
-					<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Pause</button>
+					<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>
+					<%-- <c:if test="${empty liveStudyBo && studyMode eq 'testMode'}">disabled</c:if> --%>>Pause</button>
 			</div>
 
 			<div class="form-group mr-sm" style="white-space: normal;">
@@ -114,13 +150,14 @@
 			                    disabled
 			                 </c:when>
 				            </c:choose>
-				            <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Resume</button>
+					<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Resume</button>
 			</div>
 
 			<div class="form-group mr-sm" style="white-space: normal;">
-				<button type="button" class="btn btn-default red-btn-action "
-					id="deactivateId" onclick="validateStudyStatus(this);"
-					<c:choose>
+				<span class="btns__devider">
+					<button type="button" class="btn btn-default red-btn-action "
+						id="deactivateId" onclick="validateStudyStatus(this);"
+						<c:choose>
 			             <c:when test="${not empty permission}">
 			                disabled
 			             </c:when>
@@ -128,7 +165,9 @@
 			                    disabled
 			             </c:when>
 			            </c:choose>
-					<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Deactivate</button>
+						<c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>
+						<%-- <c:if test="${empty liveStudyBo && studyMode eq 'testMode'}">disabled</c:if> --%>>Deactivate</button>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -149,6 +188,58 @@
 		$(".tenth").addClass('active');
 		$("#createStudyId").show();
 		$('.tenth').removeClass('cursor-none');
+		
+		var studyMode = "${studyMode}";
+		if(studyMode == "liveMode"){
+			$("#livemode").prop("checked", true);
+			$("#testmode").attr('disabled', true);
+		}else{
+			$("#testmode").prop("checked", true);
+		} 
+		
+	});
+	$('input[type="radio"]').change(function() {
+		var studyId = "${studyBo.id}";
+		if ($(this).is(':checked') && $(this).val() == 'livemode') {
+			bootbox.confirm({
+			    message: "Are you sure you wish to switch to Live Mode from Test Mode? This action is NOT reversible.  You will need to enter a new Study ID and App ID before publishing the study in Live Mode. ",
+			    buttons: {
+			        confirm: {
+			            label: 'Yes',
+			        },
+			        cancel: {
+			            label: 'No',
+			        }
+			    },
+			    callback: function (result) {
+			    	if(result){
+			    		$.ajax({
+				    			url: "/fdahpStudyDesigner/adminStudies/switchToLiveMode.do?_S=${param._S}",
+				    			type: "POST",
+				    			datatype: "json",
+				    			data:{
+				    				studyId : studyId,
+				    				"${_csrf.parameterName}":"${_csrf.token}",
+				    			},
+				    			success: function switchToLiveMode(data){
+				    				var jsonobject = eval(data);
+				    				var status = jsonobject.message;
+				    				var studyMode = data.studyMode;
+				    				if(status == "SUCCESS"){
+				    					document.studyListInfoForm.action = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}";
+										document.studyListInfoForm.submit();
+				    				}
+				    			},
+				    			error: function(xhr, status, error) {
+				    			  $("#testmode").prop("checked", true);
+				    			}
+				    		});
+					}else{
+						$("#testmode").prop("checked", true);
+					}
+			    }
+			});
+		}
 	});
 	function validateStudyStatus(obj) {
 		var buttonText = obj.id;
@@ -195,6 +286,7 @@
 								var message = jsonobject.message;
 								var checkListMessage = jsonobject.checkListMessage;
 								var checkFailureMessage = jsonobject.checkFailureMessage;
+								var isRequiredSectionsCompleted=jsonobject.isRequiredSectionsCompleted;
 								if (message == "SUCCESS") {
 									if (checkListMessage == "Yes") {
 										showBootBoxMessage(buttonText,
@@ -229,7 +321,9 @@
 										messageText = "Publish Updates to a study requires that all sections be marked as Completed indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
 									}
 									bootbox.confirm(message, function(result) {
-										bootbox.alert(messageText);
+										if(!isRequiredSectionsCompleted){
+											bootbox.alert(messageText);
+										}
 									})
 
 								}

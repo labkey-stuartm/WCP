@@ -61,7 +61,9 @@
 							class="form-control aq-inp studyIdCls" name="customStudyId"
 							id="customStudyId" maxlength="15"
 							value="${studyBo.customStudyId}"
-							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>
+							<%-- <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') && studyMode eq 'liveMode'}"> disabled</c:if> --%>
+							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
+							<%-- <c:if test="${studyMode eq 'testMode' && not empty studyBo.status && studyBo.status == 'Paused'}"> disabled</c:if> --%>
 							required />
 						<div class="help-block with-errors red-txt"></div>
 					</div>
@@ -93,7 +95,9 @@
 						<input type="text" custAttType="cust" autofocus="autofocus"
 							class="form-control aq-inp appIdCls" name="appId" id="appId"
 							maxlength="15" value="${studyBo.appId}"
-							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>
+							<%-- <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') && studyMode eq 'liveMode'}"> disabled</c:if> --%>
+							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
+							<%-- <c:if test="${studyMode eq 'testMode' && not empty studyBo.status && studyBo.status == 'Paused'}"> disabled</c:if> --%>
 							required />
 						<div class="help-block with-errors red-txt"></div>
 					</div>

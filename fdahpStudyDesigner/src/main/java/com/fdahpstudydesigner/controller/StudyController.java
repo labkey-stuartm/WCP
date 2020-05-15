@@ -127,11 +127,21 @@ public class StudyController {
 					studyId = (String) request.getSession()
 							.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
 				}
-				String permission = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
+				// String permission = (String)
+				// request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
+				String permission = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession()
+						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION)) ? ""
+								: request.getSession()
+										.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION));
 				if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					liveStudyBo = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());
 					studyPermissionBO = studyService.findStudyPermissionBO(studyBo.getId(), sesObj.getUserId());
+					if (studyBo.getStudyMode() == null) {
+						map.addAttribute("studyMode", FdahpStudyDesignerConstants.STUDY_MODE_LIVE);
+					} else {
+						map.addAttribute("studyMode", studyBo.getStudyMode());
+					}
 					map.addAttribute("_S", sessionStudyCount);
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
@@ -3106,6 +3116,12 @@ public class StudyController {
 								propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
 						return new ModelAndView("redirect:viewBasicInfo.do", map);
 					}
+				} else if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG)) {
+					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG, message);
+					return new ModelAndView("redirect:viewBasicInfo.do", map);
+				} else if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ID_APP_ID_ERR_MSG)) {
+					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG, message);
+					return new ModelAndView("redirect:viewBasicInfo.do", map);
 				} else {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
 							"Error in set BasicInfo.");
@@ -3955,6 +3971,40 @@ public class StudyController {
 		return null;
 	}
 
+	@RequestMapping(value = "/adminStudies/switchToLiveMode", method = RequestMethod.POST)
+	public ModelAndView switchStudyToLiveMode(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("StudyController - switchStudyToLiveMode() - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession()
+					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S"))
+					? Integer.parseInt(request.getParameter("_S"))
+					: 0;
+			if ((sesObj != null) && (sesObj.getStudySession() != null)
+					&& sesObj.getStudySession().contains(sessionStudyCount)) {
+				String studyId = FdahpStudyDesignerUtil
+						.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? ""
+								: request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+
+				if (StringUtils.isNotEmpty(studyId)) {
+					message = studyService.switchStudyToLiveMode(studyId);
+				}
+			}
+			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+			jsonobject.put("studyMode", "live");
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+			out = response.getWriter();
+			out.print(jsonobject);
+		} catch (Exception e) {
+			logger.error("StudyController - switchStudyToLiveMode() - ERROR", e);
+		}
+		logger.info("StudyController - switchStudyToLiveMode() - Ends");
+		return null;
+	}
+
 	/**
 	 * This method is used to validate the Eligibility Short Title
 	 *
@@ -4034,6 +4084,7 @@ public class StudyController {
 		Checklist checklist = null;
 		String checkListMessage = "No";
 		String checkFailureMessage = "";
+		boolean isRequiredSectionsCompleted = false;
 		try {
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session
@@ -4062,6 +4113,9 @@ public class StudyController {
 						message = studyService.validateStudyAction(studyId, buttonText);
 					} else {
 						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+					if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG)) {
+						isRequiredSectionsCompleted = true;
 					}
 					checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
 					if (checklist != null) {
@@ -4113,6 +4167,7 @@ public class StudyController {
 		jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
 		jsonobject.put("checkListMessage", checkListMessage);
 		jsonobject.put("checkFailureMessage", checkFailureMessage);
+		jsonobject.put("isRequiredSectionsCompleted", isRequiredSectionsCompleted);
 		response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 		out = response.getWriter();
 		out.print(jsonobject);
@@ -4173,7 +4228,6 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		HashMap<String, List<ReferenceTablesBo>> referenceMap = null;
 		List<ReferenceTablesBo> categoryList = null;
-		// List<ReferenceTablesBo> researchSponserList = null;
 		List<ReferenceTablesBo> dataPartnerList = null;
 		StudyBo studyBo = null;
 		String sucMsg = "";
@@ -4270,10 +4324,6 @@ public class StudyController {
 							case FdahpStudyDesignerConstants.REFERENCE_TYPE_CATEGORIES:
 								categoryList = referenceMap.get(key);
 								break;
-							/*
-							 * case FdahpStudyDesignerConstants.REFERENCE_TYPE_RESEARCH_SPONSORS:
-							 * researchSponserList = referenceMap.get(key); break;
-							 */
 							case FdahpStudyDesignerConstants.REFERENCE_TYPE_DATA_PARTNER:
 								dataPartnerList = referenceMap.get(key);
 								break;
@@ -4283,8 +4333,16 @@ public class StudyController {
 						}
 					}
 				}
+				if (studyBo.getStudyMode() == null) {
+					map.addAttribute("studyMode", FdahpStudyDesignerConstants.STUDY_MODE_LIVE);
+				} else {
+					map.addAttribute("studyMode", studyBo.getStudyMode());
+				}
+				if (studyBo != null && studyBo.getSwitchVal() != null && studyBo.getSwitchVal() == 1) {
+					studyBo.setCustomStudyId("");
+					studyBo.setAppId("");
+				}
 				map.addAttribute("categoryList", categoryList);
-				// map.addAttribute("researchSponserList", researchSponserList);
 				map.addAttribute("dataPartnerList", dataPartnerList);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				map.addAttribute("createStudyId", "true");

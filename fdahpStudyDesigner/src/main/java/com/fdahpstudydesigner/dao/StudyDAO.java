@@ -178,6 +178,12 @@ public interface StudyDAO {
 
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
+	public String switchStudyToLiveMode(String studyId);
+
+	public void updateStudyId(StudyBo studyBo, String newStudyId, Session session);
+
+	public void updateAppId(String customStudyId, String appId, String orgId, Session session);
+
 	public String validateActivityComplete(String studyId, String action);
 
 	public String validateParticipantPropertyComplete(String customStudyId);
