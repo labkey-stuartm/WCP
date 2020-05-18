@@ -389,8 +389,11 @@ public class FdahpStudyDesignerConstants {
 
 	public static final String APP_ID_FMSA001 = "FMSA001";
 	public static final String APP_ID_COVFH001 = "COVFH001";
+	public static final String APP_ID_COVFHTEST = "COVFHTEST";
 	public static final String APP_ID_CCFSIBD001 = "CCFSIBD001";
+	public static final String APP_ID_CCFSBP001 = "CCFSBP001";
 	public static final String APP_ID_LIMITJIA001 = "LIMITJIA001";
+	public static final String APP_ID_LIMITJP001 = "LIMITJP001";
 
 	public static final String ORG_ID_FDAHPH = "FDAHPH";
 	public static final String ORG_ID_CACFND = "CACFND";

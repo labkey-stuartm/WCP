@@ -1621,11 +1621,14 @@ public class StudyServiceImpl implements StudyService {
 		try {
 			String appId = studyBo.getAppId();
 			if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
-					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)) {
+					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)
+					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFHTEST)) {
 				studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_FDAHPH);
-			} else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSIBD001)) {
+			} else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSIBD001)
+					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSBP001)) {
 				studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CACFND);
-			} else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJIA001)) {
+			} else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJIA001)
+					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJP001)) {
 				studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CARREG);
 			} else {
 				studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_OTHER);
