@@ -388,6 +388,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String ANCHOR_ERROR_MSG = "One or more activities or resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
 
 	public static final String APP_ID_FMSA001 = "FMSA001";
+	public static final String APP_ID_FMSTM001 = "FMSTM001";
 	public static final String APP_ID_COVFH001 = "COVFH001";
 	public static final String APP_ID_COVFHTEST = "COVFHTEST";
 	public static final String APP_ID_CCFSIBD001 = "CCFSIBD001";

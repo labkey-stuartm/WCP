@@ -78,10 +78,13 @@
 		<div class="white-bg box-space">
 			<c:if
 				test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword && not userBO.emailChanged}">
-				<div class="gray-xs-f text-weight-semibold pull-right">
-					<button type="button" class="btn btn-default gray-btn"
-						id="enforcePasswordId">Enforce Password Change</button>
-				</div>
+				<c:if
+					test="${fn:contains(sessionObject.userPermissions,'ROLE_SUPERADMIN')}">
+					<div class="gray-xs-f text-weight-semibold pull-right">
+						<button type="button" class="btn btn-default gray-btn"
+							id="enforcePasswordId">Enforce Password Change</button>
+					</div>
+				</c:if>
 			</c:if>
 			<div class="ed-user-layout row">
 				<!-- Edit User Layout-->

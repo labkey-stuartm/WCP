@@ -1621,6 +1621,7 @@ public class StudyServiceImpl implements StudyService {
 		try {
 			String appId = studyBo.getAppId();
 			if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
+					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSTM001)
 					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)
 					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFHTEST)) {
 				studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_FDAHPH);
