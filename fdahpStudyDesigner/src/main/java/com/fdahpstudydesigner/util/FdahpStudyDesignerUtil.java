@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
@@ -1126,5 +1128,41 @@ public class FdahpStudyDesignerUtil {
 			flag = true;
 		}
 		return flag;
+	}
+
+	public static String getUUID(String random) {
+		StringBuilder builder = new StringBuilder(UUID.randomUUID().toString());
+		int builderIndex = builder.length() - 1;
+		if (StringUtils.isNotBlank(random)) {
+			for (int i = 0; i < random.length(); i++) {
+				builder.insert(new SecureRandom().nextInt(builderIndex), random.charAt(i));
+			}
+		}
+		return builder.toString();
+	}
+
+	public static String getHashedPassword(String password, String rawSalt) {
+		StringBuilder sb = new StringBuilder();
+		if (StringUtils.isNotBlank(password)) {
+			try {
+				byte[] salt = rawSalt.getBytes();
+				MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+				// Pass salt to the digest
+				messageDigest.update(salt);
+
+				messageDigest.update(password.getBytes("UTF-8"));
+				byte[] digestBytes = messageDigest.digest();
+
+				for (int i = 0; i < digestBytes.length; i++) {
+					String hex = Integer.toHexString(0xff & digestBytes[i]);
+					if (hex.length() < 2) {
+						sb.append('0');
+					}
+					sb.append(hex);
+				}
+			} catch (Exception e) {
+			}
+		}
+		return sb.toString();
 	}
 }

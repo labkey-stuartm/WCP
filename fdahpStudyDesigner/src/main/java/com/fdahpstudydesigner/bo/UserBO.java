@@ -30,8 +30,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "users")
-@NamedQueries({
-		@NamedQuery(name = "getUserByEmail", query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
+@NamedQueries({ @NamedQuery(name = "getUserByEmail", query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
 		@NamedQuery(name = "getUserById", query = "SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId"),
 		@NamedQuery(name = "getUserBySecurityToken", query = "select UBO from UserBO UBO where UBO.securityToken =:securityToken"), })
 public class UserBO implements Serializable {
@@ -81,9 +80,10 @@ public class UserBO implements Serializable {
 	@Column(name = "password_expairded_datetime")
 	private String passwordExpairdedDateTime;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
-			CascadeType.MERGE })
-	@JoinTable(name = "user_permission_mapping", joinColumns = { @JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "permission_id", nullable = false) })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "user_permission_mapping", joinColumns = {
+			@JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "permission_id", nullable = false) })
 	private Set<UserPermissions> permissionList = new HashSet<>(0);
 
 	@Column(name = "phone_number")
@@ -120,6 +120,9 @@ public class UserBO implements Serializable {
 
 	@Column(name = "password")
 	private String userPassword;
+
+	@Column(name = "salt")
+	private String salt;
 
 	/**
 	 * @return the accessCode
@@ -260,24 +263,21 @@ public class UserBO implements Serializable {
 	}
 
 	/**
-	 * @param accessCode
-	 *            the accessCode to set
+	 * @param accessCode the accessCode to set
 	 */
 	public void setAccessCode(String accessCode) {
 		this.accessCode = accessCode;
 	}
 
 	/**
-	 * @param accountNonExpired
-	 *            the accountNonExpired to set
+	 * @param accountNonExpired the accountNonExpired to set
 	 */
 	public void setAccountNonExpired(boolean accountNonExpired) {
 		this.accountNonExpired = accountNonExpired;
 	}
 
 	/**
-	 * @param accountNonLocked
-	 *            the accountNonLocked to set
+	 * @param accountNonLocked the accountNonLocked to set
 	 */
 	public void setAccountNonLocked(boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
@@ -292,8 +292,7 @@ public class UserBO implements Serializable {
 	}
 
 	/**
-	 * @param credentialsNonExpired
-	 *            the credentialsNonExpired to set
+	 * @param credentialsNonExpired the credentialsNonExpired to set
 	 */
 	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
 		this.credentialsNonExpired = credentialsNonExpired;
@@ -332,24 +331,21 @@ public class UserBO implements Serializable {
 	}
 
 	/**
-	 * @param permissionList
-	 *            the permissionList to set
+	 * @param permissionList the permissionList to set
 	 */
 	public void setPermissionList(Set<UserPermissions> permissionList) {
 		this.permissionList = permissionList;
 	}
 
 	/**
-	 * @param permissions
-	 *            the permissions to set
+	 * @param permissions the permissions to set
 	 */
 	public void setPermissions(Set<UserPermissions> permissionList) {
 		this.permissionList = permissionList;
 	}
 
 	/**
-	 * @param phoneNumber
-	 *            the phoneNumber to set
+	 * @param phoneNumber the phoneNumber to set
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
@@ -364,24 +360,21 @@ public class UserBO implements Serializable {
 	}
 
 	/**
-	 * @param securityToken
-	 *            the securityToken to set
+	 * @param securityToken the securityToken to set
 	 */
 	public void setSecurityToken(String securityToken) {
 		this.securityToken = securityToken;
 	}
 
 	/**
-	 * @param tokenExpiryDate
-	 *            the tokenExpiryDate to set
+	 * @param tokenExpiryDate the tokenExpiryDate to set
 	 */
 	public void setTokenExpiryDate(String tokenExpiryDate) {
 		this.tokenExpiryDate = tokenExpiryDate;
 	}
 
 	/**
-	 * @param tokenUsed
-	 *            the tokenUsed to set
+	 * @param tokenUsed the tokenUsed to set
 	 */
 	public void setTokenUsed(Boolean tokenUsed) {
 		this.tokenUsed = tokenUsed;
@@ -405,5 +398,13 @@ public class UserBO implements Serializable {
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 }
