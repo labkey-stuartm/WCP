@@ -8,12 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.security.auth.login.CredentialExpiredException;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -97,6 +101,12 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
 				if (StringUtils.isNotBlank(userBO.getSalt())) {
 					if (StringUtils.equals(userBO.getUserPassword(), FdahpStudyDesignerUtil
 							.getHashedPassword(authentication.getCredentials().toString(), userBO.getSalt()))) {
+						if (!userBO.isEnabled()) {
+							throw new DisabledException(propMap.get("user.inactive.msg"));
+						}
+						if (!userBO.isCredentialsNonExpired()) {
+							throw new CredentialsExpiredException(propMap.get("user.admin.forcepassword.msg"));
+						}
 						Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
 								null, FdahpStudyDesignerUtil.buildUserAuthority(userBO.getPermissions()));
 						if (userAttempts != null) {
@@ -148,6 +158,10 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
 			}
 
 			throw new LockedException(error);
+		} catch (DisabledException e) {
+			throw e;
+		} catch (CredentialsExpiredException e) {
+			throw e;
 		}
 	}
 
