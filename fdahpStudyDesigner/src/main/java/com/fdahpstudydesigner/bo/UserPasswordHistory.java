@@ -20,7 +20,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users_password_history")
-@NamedQueries({ @NamedQuery(name = "getPaswordHistoryByUserId", query = "From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate") })
+@NamedQueries({
+		@NamedQuery(name = "getPaswordHistoryByUserId", query = "From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate") })
 public class UserPasswordHistory {
 	@Column(name = "created_date")
 	private String createdDate;
@@ -35,6 +36,9 @@ public class UserPasswordHistory {
 
 	@Column(name = "password")
 	private String userPassword;
+
+	@Column(name = "salt")
+	private String salt;
 
 	public String getCreatedDate() {
 		return createdDate;
@@ -66,5 +70,13 @@ public class UserPasswordHistory {
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 }

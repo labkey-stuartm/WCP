@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bean.ChangePasswordResponseBean;
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
@@ -90,13 +91,19 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						passwordHistories = loginDAO.getPasswordHistory(userBO.getUserId());
 						if (passwordHistories != null && !passwordHistories.isEmpty()) {
 							for (UserPasswordHistory userPasswordHistory : passwordHistories) {
-								if (FdahpStudyDesignerUtil
+								if (StringUtils.isNotBlank(userPasswordHistory.getSalt()) && StringUtils
+										.equals(userPasswordHistory.getUserPassword(), FdahpStudyDesignerUtil
+												.getHashedPassword(password, userPasswordHistory.getSalt()))) {
+									isValidPassword = false;
+									break;
+								} else if (FdahpStudyDesignerUtil
 										.compareEncryptedPassword(userPasswordHistory.getUserPassword(), password)) {
 									isValidPassword = false;
 									break;
 								}
 							}
 						}
+
 						if (isValidPassword) {
 							if (userBO2 != null && StringUtils.isNotEmpty(userBO2.getFirstName())) {
 								userBO.setFirstName(
@@ -111,7 +118,12 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								activity = "Forgot password";
 								activityDetail = "User successfully created the new password.";
 							}
-							userBO.setUserPassword(FdahpStudyDesignerUtil.getEncryptedPassword(password));
+
+							String rawSalt = FdahpStudyDesignerUtil.getUUID(RandomStringUtils.randomAlphanumeric(20));
+							String hashedPassword = FdahpStudyDesignerUtil.getHashedPassword(password, rawSalt);
+
+							userBO.setSalt(rawSalt);
+							userBO.setUserPassword(hashedPassword);
 							userBO.setTokenUsed(true);
 							userBO.setEnabled(true);
 							userBO.setAccountNonExpired(true);
@@ -122,7 +134,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 											.format(new Date()));
 							result = loginDAO.updateUser(userBO);
 							if (result.equals(FdahpStudyDesignerConstants.SUCCESS)) {
-								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
+								loginDAO.updatePasswordHistory(userBO.getUserId(), hashedPassword, rawSalt);
 								isValid = true;
 								SessionObject sessionObject = new SessionObject();
 								sessionObject.setUserId(userBO.getUserId());
@@ -204,22 +216,34 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					passwordHistories = loginDAO.getPasswordHistory(userId);
 					if (passwordHistories != null && !passwordHistories.isEmpty()) {
 						for (UserPasswordHistory userPasswordHistory : passwordHistories) {
-							if (FdahpStudyDesignerUtil.compareEncryptedPassword(userPasswordHistory.getUserPassword(),
-									newPassword)) {
+							if (StringUtils.isNotBlank(userPasswordHistory.getSalt())
+									&& StringUtils.equals(userPasswordHistory.getUserPassword(), FdahpStudyDesignerUtil
+											.getHashedPassword(newPassword, userPasswordHistory.getSalt()))) {
+								isValidPassword = false;
+								break;
+							} else if (FdahpStudyDesignerUtil
+									.compareEncryptedPassword(userPasswordHistory.getUserPassword(), newPassword)) {
 								isValidPassword = false;
 								break;
 							}
 						}
 					}
 					if (isValidPassword) {
-						message = loginDAO.changePassword(userId, newPassword, oldPassword);
-						if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
-							loginDAO.updatePasswordHistory(userId,
-									FdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
-							activity = "Change password.";
-							activityDetail = "User successfully changed his/her password.";
-							auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail,
-									"LoginDAOImpl - changePassword");
+						ChangePasswordResponseBean changePasswordResponseBean = loginDAO.changePassword(userId,
+								newPassword, oldPassword);
+						if (changePasswordResponseBean != null) {
+							message = changePasswordResponseBean.getMessage();
+							if (StringUtils.equals(message, FdahpStudyDesignerConstants.SUCCESS)
+									&& changePasswordResponseBean.getUser() != null) {
+								loginDAO.updatePasswordHistory(userId,
+										changePasswordResponseBean.getUser().getUserPassword(),
+										changePasswordResponseBean.getUser().getSalt());
+
+								activity = "Change password.";
+								activityDetail = "User successfully changed his/her password.";
+								auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail,
+										"LoginDAOImpl - changePassword");
+							}
 						}
 					} else {
 						message = oldPasswordError.replace("$countPass", passwordCount);

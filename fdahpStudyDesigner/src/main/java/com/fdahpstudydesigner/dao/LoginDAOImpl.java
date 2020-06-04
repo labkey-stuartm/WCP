@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -17,6 +18,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpstudydesigner.bean.ChangePasswordResponseBean;
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
@@ -27,8 +29,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 @Repository
 public class LoginDAOImpl implements LoginDAO {
 
-	private static Logger logger = Logger.getLogger(LoginDAOImpl.class
-			.getName());
+	private static Logger logger = Logger.getLogger(LoginDAOImpl.class.getName());
 	@Autowired
 	private AuditLogDAO auditLogDAO;
 	HibernateTemplate hibernateTemplate;
@@ -44,59 +45,57 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userId
-	 *            , The database user ID of the user
-	 * @param newPassword
-	 *            , The new password given by user
+	 * @param userId      , The database user ID of the user
+	 * @param newPassword , The new password given by user
 	 * @return {@link String}
 	 * @exception Exception
 	 */
 	@Override
-	public String changePassword(Integer userId, String newPassword,
-			String oldPassword) {
+	public ChangePasswordResponseBean changePassword(Integer userId, String newPassword, String oldPassword) {
 		logger.info("LoginDAOImpl - changePassword() - Starts");
-		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		UserBO adminUserBO = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-		String encrNewPass = "";
+		ChangePasswordResponseBean changePasswordResponseBean = new ChangePasswordResponseBean();
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			query = session.getNamedQuery("getUserById").setInteger("userId",
-					userId);
+			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
-			if (null != adminUserBO
-					&& FdahpStudyDesignerUtil.compareEncryptedPassword(
-							adminUserBO.getUserPassword(), oldPassword)) {
-				encrNewPass = FdahpStudyDesignerUtil
-						.getEncryptedPassword(newPassword);
-				if (null != encrNewPass && !"".equals(encrNewPass)) {
-					adminUserBO.setUserPassword(encrNewPass);
+			if (null != adminUserBO && StringUtils.equals(adminUserBO.getUserPassword(),
+					FdahpStudyDesignerUtil.getHashedPassword(oldPassword, adminUserBO.getSalt()))) {
+				String rawSalt = FdahpStudyDesignerUtil.getUUID(RandomStringUtils.randomAlphanumeric(20));
+				String hashedPassword = FdahpStudyDesignerUtil.getHashedPassword(newPassword, rawSalt);
+
+				if (StringUtils.isNotBlank(hashedPassword)) {
+					adminUserBO.setUserPassword(hashedPassword);
+					adminUserBO.setSalt(rawSalt);
 				}
 				adminUserBO.setModifiedBy(userId);
-				adminUserBO.setModifiedOn(FdahpStudyDesignerUtil
-						.getCurrentDate());
-				adminUserBO.setPasswordExpairdedDateTime(new SimpleDateFormat(
-						FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
-						.format(new Date()));
+				adminUserBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDate());
+				adminUserBO.setPasswordExpairdedDateTime(
+						new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(new Date()));
 				session.update(adminUserBO);
-				message = FdahpStudyDesignerConstants.SUCCESS;
+				changePasswordResponseBean.setMessage(FdahpStudyDesignerConstants.SUCCESS);
+				changePasswordResponseBean.setUser(adminUserBO);
 			} else {
-				message = propMap.get("invalid.oldpassword.msg");
+				changePasswordResponseBean.setMessage(propMap.get("invalid.oldpassword.msg"));
 			}
+
 			transaction.commit();
+			return changePasswordResponseBean;
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR ", e);
 			if (transaction != null)
 				transaction.rollback();
+			changePasswordResponseBean.setMessage(FdahpStudyDesignerConstants.FAILURE);
+			return changePasswordResponseBean;
 		} finally {
 			if (session != null && session.isOpen()) {
 				session.close();
 			}
+			logger.info("LoginDAOImpl - changePassword() - Ends");
 		}
-		logger.info("LoginDAOImpl - changePassword() - Ends");
-		return message;
 	}
 
 	/**
@@ -104,8 +103,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userId
-	 *            , The user id of user
+	 * @param userId , The user id of user
 	 * @return List of {@link UserPasswordHistory}
 	 */
 	@SuppressWarnings("unchecked")
@@ -117,9 +115,8 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (userId != null && userId != 0) {
-				passwordHistories = session
-						.getNamedQuery("getPaswordHistoryByUserId")
-						.setInteger("userId", userId).list();
+				passwordHistories = session.getNamedQuery("getPaswordHistoryByUserId").setInteger("userId", userId)
+						.list();
 			}
 
 		} catch (Exception e) {
@@ -138,8 +135,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userEmailId
-	 *            , The email id of user
+	 * @param userEmailId , The email id of user
 	 * @return {@link UserAttemptsBo}
 	 */
 	@Override
@@ -150,8 +146,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			SQLQuery query = session
-					.createSQLQuery("select * from user_attempts where BINARY email_id='"
-							+ userEmailId + "'");
+					.createSQLQuery("select * from user_attempts where BINARY email_id='" + userEmailId + "'");
 			query.addEntity(UserAttemptsBo.class);
 			attemptsBo = (UserAttemptsBo) query.uniqueResult();
 		} catch (Exception e) {
@@ -170,8 +165,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param securityToken
-	 *            , The security token of user
+	 * @param securityToken , The security token of user
 	 * @return {@link UserBO}
 	 * @exception Exception
 	 */
@@ -182,10 +176,9 @@ public class LoginDAOImpl implements LoginDAO {
 		UserBO userBO = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			userBO = (UserBO) session.getNamedQuery("getUserBySecurityToken")
-					.setString("securityToken", securityToken).uniqueResult();
-			if (null != userBO
-					&& !userBO.getSecurityToken().equals(securityToken)) {
+			userBO = (UserBO) session.getNamedQuery("getUserBySecurityToken").setString("securityToken", securityToken)
+					.uniqueResult();
+			if (null != userBO && !userBO.getSecurityToken().equals(securityToken)) {
 				userBO = null;
 			}
 		} catch (Exception e) {
@@ -204,8 +197,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param email
-	 *            , the email id of the user
+	 * @param email , the email id of the user
 	 * @return {@link UserBO}
 	 * @exception Exception
 	 */
@@ -216,19 +208,19 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			SQLQuery query = session
-					.createSQLQuery("select * from users UBO where BINARY lower(UBO.email) = '"
-							+ email.toLowerCase() + "'");
+			SQLQuery query = session.createSQLQuery(
+					"select * from users UBO where BINARY lower(UBO.email) = '" + email.toLowerCase() + "'");
 			query.addEntity(UserBO.class);
 			userBo = (UserBO) query.uniqueResult();
 			if (userBo != null) {
-				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil
-						.getCurrentDateTime());
-                if(userBo.getRoleId()!=null){
-                	String role = (String) session.createSQLQuery("select role_name from roles where role_id="+userBo.getRoleId()).uniqueResult();
-                	if(StringUtils.isNotEmpty(role))
-                		userBo.setRoleName(role);
-                }
+				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+				if (userBo.getRoleId() != null) {
+					String role = (String) session
+							.createSQLQuery("select role_name from roles where role_id=" + userBo.getRoleId())
+							.uniqueResult();
+					if (StringUtils.isNotEmpty(role))
+						userBo.setRoleName(role);
+				}
 			}
 		} catch (Exception e) {
 			userBo = null;
@@ -247,8 +239,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userId
-	 *            , The user id of user
+	 * @param userId , The user id of user
 	 * @return {@link Boolean}
 	 */
 	@Override
@@ -260,8 +251,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (userId != null && userId != 0) {
-				userBo = (UserBO) session.getNamedQuery("getUserById")
-						.setInteger("userId", userId).uniqueResult();
+				userBo = (UserBO) session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
 				if (userBo != null) {
 					result = userBo.isForceLogout();
 				}
@@ -283,8 +273,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userId
-	 *            , The user id of user
+	 * @param userId , The user id of user
 	 * @return {@link Boolean}
 	 */
 	@Override
@@ -296,8 +285,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (userId != null && userId != 0) {
-				userBo = (UserBO) session.getNamedQuery("getUserById")
-						.setInteger("userId", userId).uniqueResult();
+				userBo = (UserBO) session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
 				if (userBo != null) {
 					result = userBo.isEnabled();
 				}
@@ -319,8 +307,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userEmailId
-	 *            , The email id of user
+	 * @param userEmailId , The email id of user
 	 * @return boolean
 	 */
 	private boolean isUserExists(String userEmail) {
@@ -354,30 +341,24 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		List<Integer> userBOList = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-		int lastLoginExpirationInDay = Integer.parseInt("-"
-				+ propMap.get("lastlogin.expiration.in.day"));
+		int lastLoginExpirationInDay = Integer.parseInt("-" + propMap.get("lastlogin.expiration.in.day"));
 		String lastLoginDateTime;
 		StringBuilder sb = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			lastLoginDateTime = new SimpleDateFormat(
-					FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
-					.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(),
-							lastLoginExpirationInDay + 1));
+			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+					.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay + 1));
 			sb = new StringBuilder();
-			sb.append(
-					"SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in ")
+			sb.append("SELECT u.user_id FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id not in ")
 					.append("(select upm.user_id from user_permission_mapping upm where upm.permission_id = ")
 					.append("(select up.permission_id from user_permissions up where up.permissions ='ROLE_SUPERADMIN')) ")
-					.append("AND u.user_login_datetime < '")
-					.append(lastLoginDateTime).append("' AND u.status=1");
+					.append("AND u.user_login_datetime < '").append(lastLoginDateTime).append("' AND u.status=1");
 			query = session.createSQLQuery(sb.toString());
 			userBOList = query.list();
 			if (userBOList != null && !userBOList.isEmpty()) {
 				session.createSQLQuery(
-						"Update users set status = 0 WHERE user_id in("
-								+ StringUtils.join(userBOList, ",") + ")")
+						"Update users set status = 0 WHERE user_id in(" + StringUtils.join(userBOList, ",") + ")")
 						.executeUpdate();
 			}
 			transaction.commit();
@@ -398,8 +379,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userEmailId
-	 *            , The email id of user
+	 * @param userEmailId , The email id of user
 	 * @return
 	 */
 	@Override
@@ -438,8 +418,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userEmailId
-	 *            , The email id of user
+	 * @param userEmailId , The email id of user
 	 * @return
 	 */
 	@Override
@@ -449,11 +428,9 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		Boolean isAcountLocked = false;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap
-				.get("max.login.attempts"));
+		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
 		UserBO userBO = new UserBO();
-		final Integer USER_LOCK_DURATION = Integer.valueOf(propMap
-				.get("user.lock.duration.in.minutes"));
+		final Integer USER_LOCK_DURATION = Integer.valueOf(propMap.get("user.lock.duration.in.minutes"));
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -463,8 +440,7 @@ public class LoginDAOImpl implements LoginDAO {
 					attemptsBo = new UserAttemptsBo();
 					attemptsBo.setAttempts(1);
 					attemptsBo.setUserEmail(userEmailId);
-					attemptsBo.setLastModified(FdahpStudyDesignerUtil
-							.getCurrentDateTime());
+					attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
 					session.save(attemptsBo);
 				}
 			} else {
@@ -474,33 +450,26 @@ public class LoginDAOImpl implements LoginDAO {
 				}
 				if (this.isUserExists(userEmailId)) {
 					if (attemptsBo.getAttempts() >= MAX_ATTEMPTS
-							&& new SimpleDateFormat(
-									FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
-									.parse(FdahpStudyDesignerUtil.addMinutes(
-											attemptsBo.getLastModified(),
+							&& new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+									.parse(FdahpStudyDesignerUtil.addMinutes(attemptsBo.getLastModified(),
 											USER_LOCK_DURATION))
-									.before(new SimpleDateFormat(
-											FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
-											.parse(FdahpStudyDesignerUtil
-													.getCurrentDateTime()))) {
+									.before(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+											.parse(FdahpStudyDesignerUtil.getCurrentDateTime()))) {
 						attemptsBo.setAttempts(1);
 						attemptsBo.setUserEmail(userEmailId);
-						attemptsBo.setLastModified(FdahpStudyDesignerUtil
-								.getCurrentDateTime());
+						attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(attemptsBo);
 						isAcountLocked = false;
 					} else if (attemptsBo.getAttempts() < MAX_ATTEMPTS + 1) {
 						attemptsBo.setAttempts(attemptsBo.getAttempts() + 1);
 						attemptsBo.setUserEmail(userEmailId);
-						attemptsBo.setLastModified(FdahpStudyDesignerUtil
-								.getCurrentDateTime());
+						attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(attemptsBo);
 					}
 				}
 			}
 			SQLQuery query = session
-					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
-							+ userEmailId + "'");
+					.createSQLQuery("select * from users UBO where BINARY UBO.email = '" + userEmailId + "'");
 			query.addEntity(UserBO.class);
 			userBO = (UserBO) query.uniqueResult();
 			if (userBO != null) {
@@ -509,25 +478,16 @@ public class LoginDAOImpl implements LoginDAO {
 					sessionObject.setUserId(userBO.getUserId());
 					String activityDetails = FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_DEATILS_MESSAGE
 							.replace("&name", userEmailId);
-					auditLogDAO
-							.saveToAuditLog(
-									session,
-									transaction,
-									sessionObject,
-									FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_MESSAGE,
-									activityDetails,
-									"LoginDAOImpl - updateUser()");
+					auditLogDAO.saveToAuditLog(session, transaction, sessionObject,
+							FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_MESSAGE, activityDetails,
+							"LoginDAOImpl - updateUser()");
 				} else {
 					SessionObject sessionObject = new SessionObject();
 					sessionObject.setUserId(userBO.getUserId());
-					auditLogDAO
-							.saveToAuditLog(
-									session,
-									transaction,
-									sessionObject,
-									FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_MESSAGE,
-									FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_DEATILS_MESSAGE,
-									"LoginDAOImpl - updateUser()");
+					auditLogDAO.saveToAuditLog(session, transaction, sessionObject,
+							FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_MESSAGE,
+							FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_DEATILS_MESSAGE,
+							"LoginDAOImpl - updateUser()");
 				}
 			}
 			transaction.commit();
@@ -552,44 +512,41 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userId
-	 *            , The user id of user
-	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS
-	 *         or FdahpStudyDesignerConstants.FAILURE
+	 * @param userId , The user id of user
+	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or
+	 *         FdahpStudyDesignerConstants.FAILURE
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String updatePasswordHistory(Integer userId, String userPassword) {
+	public String updatePasswordHistory(Integer userId, String hashedPassword, String rawSalt) {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
 		List<UserPasswordHistory> passwordHistories = null;
 		UserPasswordHistory savePasswordHistory = null;
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-		Integer passwordHistoryCount = Integer.parseInt(propMap
-				.get("password.history.count"));
+		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if (userId != null && userId != 0) {
-				passwordHistories = session
-						.getNamedQuery("getPaswordHistoryByUserId")
-						.setInteger("userId", userId).list();
-				if (passwordHistories != null
-						&& passwordHistories.size() > (passwordHistoryCount - 1)) {
+				passwordHistories = session.getNamedQuery("getPaswordHistoryByUserId").setInteger("userId", userId)
+						.list();
+				if (passwordHistories != null && passwordHistories.size() > (passwordHistoryCount - 1)) {
 					for (int i = 0; i < ((passwordHistories.size() - passwordHistoryCount) + 1); i++) {
 						session.delete(passwordHistories.get(i));
 					}
 				}
 				savePasswordHistory = new UserPasswordHistory();
-				savePasswordHistory.setCreatedDate(FdahpStudyDesignerUtil
-						.getCurrentDateTime());
+				savePasswordHistory.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 				savePasswordHistory.setUserId(userId);
-				savePasswordHistory.setUserPassword(userPassword);
+				savePasswordHistory.setUserPassword(hashedPassword);
+				savePasswordHistory.setSalt(rawSalt);
 				session.save(savePasswordHistory);
 				result = FdahpStudyDesignerConstants.SUCCESS;
 			}
 			transaction.commit();
+
 		} catch (Exception e) {
 			if (transaction != null)
 				transaction.rollback();
@@ -599,8 +556,38 @@ public class LoginDAOImpl implements LoginDAO {
 				session.close();
 			}
 		}
+
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return result;
+	}
+
+	@Override
+	public void updateToHashedPassword(Integer userId, String hashedPassword, String rawSalt) {
+		logger.info("LoginDAOImpl - updateToHashedPassword() - Starts");
+		Session session = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if (userId != null && userId != 0) {
+				UserPasswordHistory passwordHistories = (UserPasswordHistory) session
+						.createQuery(
+								"From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate DESC")
+						.setInteger("userId", userId).setMaxResults(1).uniqueResult();
+				passwordHistories.setUserPassword(hashedPassword);
+				passwordHistories.setSalt(rawSalt);
+				session.update(passwordHistories);
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			logger.error("LoginDAOImpl - updateToHashedPassword() - ERROR ", e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("LoginDAOImpl - updateToHashedPassword() - Ends");
 	}
 
 	/**
@@ -608,8 +595,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 *
 	 * @author BTC
 	 *
-	 * @param userBO
-	 *            , the user Object of {@link UserBO}
+	 * @param userBO , the user Object of {@link UserBO}
 	 * @return {@link String}
 	 * @exception Exception
 	 */
