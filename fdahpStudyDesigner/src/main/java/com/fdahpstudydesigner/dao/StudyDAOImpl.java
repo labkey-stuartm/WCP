@@ -1274,10 +1274,11 @@ public class StudyDAOImpl implements StudyDAO {
 		Query query = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("from ConsentBo CBO where CBO.studyId=" + studyId + "");
-			consentBo = (ConsentBo) query.uniqueResult();
+			query = session
+					.createQuery("from ConsentBo CBO where CBO.studyId=" + studyId + " order by CBO.createdOn desc");
+			consentBo = (ConsentBo) query.setMaxResults(1).uniqueResult();
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+			logger.error("StudyDAOImpl - getConsentDetailsByStudyId() :: ERROR", e);
 		} finally {
 			if (null != session && session.isOpen()) {
 				session.close();
@@ -4038,6 +4039,39 @@ public class StudyDAOImpl implements StudyDAO {
 						dbStudyBo.setTestModeAppId(studyBo.getAppId());
 					}
 
+					if (!StringUtils.equals(dbStudyBo.getCustomStudyId(), studyBo.getCustomStudyId())) {
+						// update CustomStudyId in AnchorDateTypeBo if new CustomStudyId is there
+						query = session.createQuery(
+								"Update AnchorDateTypeBo ABO SET ABO.customStudyId=:newCustomStudyId where ABO.customStudyId=:customStudyId AND ABO.studyId=:studyId");
+						query.setParameter("newCustomStudyId", studyBo.getCustomStudyId());
+						query.setParameter("customStudyId", dbStudyBo.getCustomStudyId());
+						query.setParameter("studyId", dbStudyBo.getId());
+						query.executeUpdate();
+
+						// update CustomStudyId of ParticipantPropertiesBO if new CustomStudyId is there
+
+						query = session.createQuery(
+								"UPDATE ParticipantPropertiesBO PPBO set PPBO.customStudyId=:newStudyId,PPBO.appId=:appId,PPBO.orgId=:orgId where PPBO.customStudyId=:studyId");
+						query.setParameter("newStudyId", studyBo.getCustomStudyId());
+						query.setParameter("appId", studyBo.getAppId());
+						query.setParameter("orgId", studyBo.getOrgId());
+						query.setParameter("studyId", dbStudyBo.getCustomStudyId());
+						query.executeUpdate();
+
+					}
+
+					if (StringUtils.equals(dbStudyBo.getCustomStudyId(), studyBo.getCustomStudyId())
+							&& !StringUtils.equals(dbStudyBo.getAppId(), studyBo.getAppId())) {
+
+						query = session.createQuery(
+								"UPDATE ParticipantPropertiesBO PPBO set PPBO.appId=:appId,PPBO.orgId=:orgId where PPBO.customStudyId=:studyId");
+						query.setParameter("appId", studyBo.getAppId());
+						query.setParameter("orgId", studyBo.getOrgId());
+						query.setParameter("studyId", studyBo.getCustomStudyId());
+						query.executeUpdate();
+
+					}
+
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
 					dbStudyBo.setName(studyBo.getName());
 					dbStudyBo.setFullName(studyBo.getFullName());
@@ -4119,11 +4153,40 @@ public class StudyDAOImpl implements StudyDAO {
 				participantPropertiesBO.setLive(0);
 				session.save(participantPropertiesBO);
 			} else {
+				Query query = null;
 				participantProperties = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
 						participantPropertiesBO.getId());
 				if (participantProperties.getAnchorDateId() != null) {
 					if (!participantPropertiesBO.getUseAsAnchorDate()) {
 						deleteParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(), session);
+						StudySequenceBo studySequence = (StudySequenceBo) session
+								.getNamedQuery("getStudySequenceByStudyId")
+								.setInteger("studyId", participantProperties.getStudyId()).uniqueResult();
+						if (participantProperties.getIsUsedInQuestionnaire()) {
+							query = session.createQuery(
+									"UPDATE QuestionnaireBo QBO SET QBO.status=0,QBO.anchorDateId=:newAnchorDateId WHERE QBO.anchorDateId=:anchorDateId AND QBO.active=1");
+							query.setParameter("newAnchorDateId", null);
+							query.setParameter("anchorDateId", participantProperties.getAnchorDateId());
+							query.executeUpdate();
+							studySequence.setStudyExcQuestionnaries(false);
+						}
+						if (participantProperties.getIsUsedInActiveTask()) {
+							query = session.createQuery(
+									"UPDATE ActiveTaskBo ABO SET ABO.action=0,ABO.anchorDateId=:newAnchorDateId WHERE ABO.anchorDateId=:anchorDateId AND ABO.active=1");
+							query.setParameter("newAnchorDateId", null);
+							query.setParameter("anchorDateId", participantProperties.getAnchorDateId());
+							query.executeUpdate();
+							studySequence.setStudyExcActiveTask(false);
+						}
+						if (participantProperties.getIsUsedInResource()) {
+							query = session.createQuery(
+									"UPDATE ResourceBO RBO SET RBO.action=0,RBO.anchorDateId=:newAnchorDateId WHERE RBO.anchorDateId=:anchorDateId AND RBO.status=1");
+							query.setParameter("newAnchorDateId", null);
+							query.setParameter("anchorDateId", participantProperties.getAnchorDateId());
+							query.executeUpdate();
+							studySequence.setMiscellaneousResources(false);
+						}
+						session.saveOrUpdate(studySequence);
 					} else {
 						updateParticipantPropertyAsAnchorDate(participantProperties.getAnchorDateId(),
 								participantPropertiesBO.getShortTitle(), session);
@@ -5691,8 +5754,9 @@ public class StudyDAOImpl implements StudyDAO {
 						// Activities End
 
 					// If Consent updated flag -1 then update
-					query = session.createQuery("from ConsentBo CBO where CBO.studyId=" + studyBo.getId() + "");
-					ConsentBo consentBo = (ConsentBo) query.uniqueResult();
+					query = session.createQuery(
+							"from ConsentBo CBO where CBO.studyId=" + studyBo.getId() + " ORDER BY CBO.createdOn DESC");
+					ConsentBo consentBo = (ConsentBo) query.setMaxResults(1).uniqueResult();
 
 					if (studyVersionBo == null || studyBo.getHasConsentDraft().equals(1)) {
 						// update all consentBo to archive (live as 2)
@@ -6174,9 +6238,9 @@ public class StudyDAOImpl implements StudyDAO {
 			query.setParameter("studyId", studyBo.getId());
 			query.executeUpdate();
 
-			// update all participant properties version to 1
+			// update all participant properties version to 0
 			query = session.createQuery(
-					"UPDATE ParticipantPropertiesBO PPBO set PPBO.version=1 where PPBO.customStudyId=:studyId");
+					"UPDATE ParticipantPropertiesBO PPBO set PPBO.version=0,PPBO.live=0 where PPBO.customStudyId=:studyId");
 			query.setParameter("studyId", studyBo.getCustomStudyId());
 			query.executeUpdate();
 
@@ -6283,7 +6347,7 @@ public class StudyDAOImpl implements StudyDAO {
 			query.setParameter("studyId", studyBo.getId());
 			query.executeUpdate();
 
-			// update all participant properties version to 1
+			// update all participant properties to new customStudyId and version to 1
 			query = session.createQuery(
 					"UPDATE ParticipantPropertiesBO PPBO set PPBO.version=1,PPBO.customStudyId=:newStudyId where PPBO.customStudyId=:studyId");
 			query.setParameter("newStudyId", newStudyId);

@@ -1215,7 +1215,7 @@ function isNumber(evt, thisAttr) {
 											class="form-group dis-inline vertical-align-middle pr-md">
 											<input id="StartDate${customVar.index}" type="text"
 											count='${customVar.index}'
-											class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used?'cursor-none' : ''} "
+											class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} "
 											name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate"
 											value="${questionnaireCustomScheduleBo.frequencyStartDate}"
 											placeholder="Start Date"
@@ -1226,7 +1226,7 @@ function isNumber(evt, thisAttr) {
 											class="form-group dis-inline vertical-align-middle pr-md">
 											<input id="EndDate${customVar.index}" type="text"
 											count='${customVar.index}'
-											class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
+											class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
 											name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate"
 											value="${questionnaireCustomScheduleBo.frequencyEndDate}"
 											placeholder="End Date"
@@ -1236,7 +1236,7 @@ function isNumber(evt, thisAttr) {
 											class="form-group  dis-inline vertical-align-middle pr-md">
 											<input id="customTime${customVar.index}" type="text"
 											count='${customVar.index}'
-											class="form-control clock cusTime ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
+											class="form-control clock cusTime ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
 											name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
 											value="${questionnaireCustomScheduleBo.frequencyTime}"
 											placeholder="Time" onclick='timep(this.id);' required /> <span
@@ -1342,7 +1342,7 @@ function isNumber(evt, thisAttr) {
 										<span class="mb-sm pr-md"> <span
 											class="light-txt opacity06"> Anchor Date </span>
 										</span> <span> <select
-											class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 											count='${customVar.index}' title="Select"
 											name="questionnaireCustomScheduleBo[${customVar.index}].xDaysSign"
 											id="xSign${customVar.index}">
@@ -1354,7 +1354,7 @@ function isNumber(evt, thisAttr) {
 										</span> <span
 											class="form-group m-none dis-inline vertical-align-middle">
 											<input id="xdays${customVar.index}" type="text"
-											class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 											count='${customVar.index}' placeholder="X"
 											name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 											value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
@@ -1367,7 +1367,7 @@ function isNumber(evt, thisAttr) {
 												Anchor Date
 										</span>
 										</span> <span> <select
-											class="signDropDown selectpicker sign-box selectYSign ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="signDropDown selectpicker sign-box selectYSign ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 											count='${customVar.index}' title="Select"
 											name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign"
 											id="ySign${customVar.index}">
@@ -1379,7 +1379,7 @@ function isNumber(evt, thisAttr) {
 										</span> <span
 											class="form-group m-none dis-inline vertical-align-middle">
 											<input id="ydays${customVar.index}" type="text"
-											class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 											count='${customVar.index}' placeholder="Y"
 											name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodToDays"
 											value="${questionnaireCustomScheduleBo.timePeriodToDays}"
@@ -1392,7 +1392,7 @@ function isNumber(evt, thisAttr) {
 											class="form-group  dis-inline vertical-align-middle pr-md"
 											style="margin-bottom: -13px"> <input
 											id="manualTime${customVar.index}" type="text"
-											class="form-control clock ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
+											class="form-control clock ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 											name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
 											value="${questionnaireCustomScheduleBo.frequencyTime}"
 											placeholder="Time" required /> <span
@@ -3343,6 +3343,11 @@ function saveQuestionnaire(item, callback){
 			questionnaire.studyLifetimeEnd=null;
 		} */
 	}
+	
+	/* if(scheduletype == 'Regular'){
+		alert('hello');
+		questionnaire.anchorDateId=null;
+	} */
 	
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);

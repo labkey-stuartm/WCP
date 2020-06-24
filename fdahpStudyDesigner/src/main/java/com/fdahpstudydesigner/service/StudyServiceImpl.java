@@ -1619,7 +1619,7 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			String appId = studyBo.getAppId();
+			String appId = studyBo.getAppId().toUpperCase();
 			if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
 					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSTM001)
 					|| appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)
@@ -1634,6 +1634,7 @@ public class StudyServiceImpl implements StudyService {
 			} else {
 				studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_OTHER);
 			}
+			studyBo.setAppId(appId);
 			message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR ", e);

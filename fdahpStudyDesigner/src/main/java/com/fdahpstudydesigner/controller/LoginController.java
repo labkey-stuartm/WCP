@@ -58,7 +58,7 @@ public class LoginController {
 		String accessCode = null;
 		String password = null;
 		String errorMsg = FdahpStudyDesignerConstants.FAILURE;
-		ModelAndView mv = new ModelAndView("redirect:login.do");
+		ModelAndView mv = new ModelAndView("redirect:sessionOut.do");
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		SessionObject sesObj = null;
 		HttpSession session = null;

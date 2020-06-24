@@ -941,8 +941,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 				if (questionnaireBo.getScheduleType() != null) {
 					addQuestionnaireBo.setScheduleType(questionnaireBo.getScheduleType());
 				}
-				if (questionnaireBo.getAnchorDateId() != null) {
+				if (StringUtils.equals(questionnaireBo.getScheduleType(),
+						FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)
+						&& questionnaireBo.getAnchorDateId() != null) {
 					addQuestionnaireBo.setAnchorDateId(questionnaireBo.getAnchorDateId());
+				} else {
+					addQuestionnaireBo.setAnchorDateId(null);
 				}
 				if (questionnaireBo.getFrequency() != null && !questionnaireBo.getFrequency()
 						.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {

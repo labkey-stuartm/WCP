@@ -850,7 +850,7 @@
 							class="form-group  dis-inline vertical-align-middle pr-md">
 							<input id="StartDate${customVar.index}" type="text"
 							count='${customVar.index}'
-							class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate"
 							value="${activeTaskCustomScheduleBo.frequencyStartDate}"
 							placeholder="Start Date"
@@ -860,7 +860,7 @@
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md">
 							<input id="EndDate${customVar.index}" type="text"
 							count='${customVar.index}'
-							class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate"
 							value="${activeTaskCustomScheduleBo.frequencyEndDate}"
 							placeholder="End Date"
@@ -869,7 +869,7 @@
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md">
 							<input id="customTime${customVar.index}" type="text"
 							count='${customVar.index}'
-							class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control clock cusTime ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"
 							value="${activeTaskCustomScheduleBo.frequencyTime}"
 							placeholder="Time" onclick='timep(this.id);' required /> <span
@@ -968,7 +968,7 @@
 							class="mb-sm pr-md"> <span class="light-txt opacity06">
 								Anchor Date </span>
 						</span> <span> <select
-							class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].xDaysSign"
 							id="xSign${customVar.index}">
@@ -979,7 +979,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="xdays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave xdays daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave xdays daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="X"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 							value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
@@ -993,7 +993,7 @@
 								Date
 						</span>
 						</span> <span> <select
-							class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="signDropDown selectpicker sign-box ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							count='${customVar.index}' title="Select"
 							name="activeTaskCustomScheduleBo[${customVar.index}].yDaysSign"
 							id="ySign0">
@@ -1004,7 +1004,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="ydays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave ydays daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave ydays daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="Y"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodToDays"
 							value="${activeTaskCustomScheduleBo.timePeriodToDays}"
@@ -1017,7 +1017,7 @@
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md"
 							style="margin-bottom: -13px"> <input
 							id="manualTime${customVar.index}" type="text"
-							class="form-control remove_required clock ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+							class="form-control remove_required clock ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"
 							value="${activeTaskCustomScheduleBo.frequencyTime}"
 							placeholder="Time" required /> <span

@@ -1236,6 +1236,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			query.setMaxResults(1);
 			studyVersionBo = (StudyVersionBo) query.uniqueResult();
 
+			questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
+			if (null != questionnaireBo && null != questionnaireBo.getAnchorDateId()) {
+				anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+						questionnaireBo.getAnchorDateId());
+			}
+
 			// delete anchordate from question start
 			/*** ------------------ **/
 			boolean isChange = true;
@@ -1261,27 +1267,29 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				message = deleteQuestuionnaireInfo(studyId, questionnaireId, customStudyId, session, transaction);
 			}
 			if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-				questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
-				if (null != questionnaireBo && null != questionnaireBo.getAnchorDateId()) {
-					anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
-							questionnaireBo.getAnchorDateId());
-					if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
-							&& anchorDateTypeBo.getParticipantProperty()) {
+
+				/*
+				 * if (null != questionnaireBo && null != questionnaireBo.getAnchorDateId()) {
+				 * anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
+				 * questionnaireBo.getAnchorDateId());
+				 */
+				if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
+						&& anchorDateTypeBo.getParticipantProperty()) {
+					query = session.createQuery(
+							"select count(*) from QuestionnaireBo QBO  where QBO.studyId=:studyId and QBO.anchorDateId=:anchorDateId and QBO.active=1");
+					query.setInteger("studyId", studyId);
+					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
+					Long count = (Long) query.uniqueResult();
+					if (count < 1) {
+						System.out.println(
+								"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
 						query = session.createQuery(
-								"select count(*) from QuestionnaireBo QBO  where QBO.studyId=:studyId and QBO.anchorDateId=:anchorDateId and QBO.active=1");
-						query.setInteger("studyId", studyId);
+								"Update ParticipantPropertiesBO PBO SET PBO.isUsedInQuestionnaire = 0 where PBO.anchorDateId=:anchorDateId");
 						query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
-						Long count = (Long) query.uniqueResult();
-						if (count < 1) {
-							System.out.println(
-									"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
-							query = session.createQuery(
-									"Update ParticipantPropertiesBO PBO SET PBO.isUsedInQuestionnaire = 0 where PBO.anchorDateId=:anchorDateId");
-							query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
-							query.executeUpdate();
-						}
+						query.executeUpdate();
 					}
 				}
+				/* } */
 			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted.";
 			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY + " was deleted. (Study ID = "
