@@ -397,13 +397,21 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 				}
 				addActiveTaskeBo.setAddNewRuns(activeTaskBo.getAddNewRuns());
 				if (activeTaskBo.getFrequency() != null) {
+					ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskBo.getActiveTaskFrequenciesBo() != null
+							? activeTaskBo.getActiveTaskFrequenciesBo()
+							: null;
 					if (!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())) {
 						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
 						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
-						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+
 						if (activeTaskBo.getFrequency()
 								.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
 								&& activeTaskBo.getActiveTaskFrequenciesBo() != null) {
+
+							if (activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()) {
+								activeTaskFrequencyBo.setFrequencyDate(null);
+								activeTaskFrequencyBo.setFrequencyTime(null);
+							}
 							if (!activeTaskBo.getActiveTaskFrequenciesBo().getIsStudyLifeTime()) {
 								if (StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd())
 										&& !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())) {
@@ -411,9 +419,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 											activeTaskBo.getActiveTaskLifetimeEnd(),
 											FdahpStudyDesignerConstants.UI_SDF_DATE,
 											FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+								} else {
+									addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
 								}
+							} else {
+								addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
 							}
 						}
+						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskFrequencyBo);
 					} else {
 						if (activeTaskBo.getActiveTaskCustomScheduleBo() != null
 								&& !activeTaskBo.getActiveTaskCustomScheduleBo().isEmpty()) {
@@ -427,6 +440,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 						if (activeTaskBo.getActiveTaskFrequenciesBo() != null) {
 							if (activeTaskBo.getFrequency()
 									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
+
+								if (activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()) {
+									activeTaskFrequencyBo.setFrequencyDate(null);
+									activeTaskFrequencyBo.setFrequencyTime(null);
+								}
+
 								if (!activeTaskBo.getActiveTaskFrequenciesBo().getIsStudyLifeTime()) {
 									if (StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd())
 											&& !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())) {
@@ -434,10 +453,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 												.getFormattedDate(activeTaskBo.getActiveTaskLifetimeEnd(),
 														FdahpStudyDesignerConstants.UI_SDF_DATE,
 														FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+									} else {
+										addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
 									}
+								} else {
+									addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
 								}
 							}
-							addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+							addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskFrequencyBo);
 						}
 					}
 				}

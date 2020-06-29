@@ -1009,6 +1009,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 					}
 				}
 				if (questionnaireBo.getFrequency() != null) {
+					QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo
+							.getQuestionnairesFrequenciesBo() != null ? questionnaireBo.getQuestionnairesFrequenciesBo()
+									: null;
 					if (!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())) {
 						addQuestionnaireBo
 								.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
@@ -1025,7 +1028,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												.getFormattedDate(questionnaireBo.getStudyLifetimeStart(),
 														FdahpStudyDesignerConstants.UI_SDF_DATE,
 														FdahpStudyDesignerConstants.DB_SDF_DATE));
+									} else {
+										questionnairesFrequenciesBo.setFrequencyTime(null);
 									}
+								} else {
+									questionnairesFrequenciesBo.setFrequencyTime(null);
 								}
 								if (!questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()) {
 									if (StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd())
@@ -1037,11 +1044,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 									} else {
 										addQuestionnaireBo.setStudyLifetimeEnd(null);
 									}
+								} else {
+									addQuestionnaireBo.setStudyLifetimeEnd(null);
 								}
 							}
 						}
 						addQuestionnaireBo
-								.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
+								.setQuestionnairesFrequenciesBo(questionnairesFrequenciesBo);
 					} else {
 						if (questionnaireBo.getQuestionnaireCustomScheduleBo() != null
 								&& !questionnaireBo.getQuestionnaireCustomScheduleBo().isEmpty()) {
@@ -1064,7 +1073,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												.getFormattedDate(questionnaireBo.getStudyLifetimeStart(),
 														FdahpStudyDesignerConstants.UI_SDF_DATE,
 														FdahpStudyDesignerConstants.DB_SDF_DATE));
+									} else {
+										questionnairesFrequenciesBo.setFrequencyTime(null);
 									}
+								} else {
+									questionnairesFrequenciesBo.setFrequencyTime(null);
 								}
 								if (!questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()) {
 									if (StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd())
@@ -1073,11 +1086,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												questionnaireBo.getStudyLifetimeEnd(),
 												FdahpStudyDesignerConstants.UI_SDF_DATE,
 												FdahpStudyDesignerConstants.DB_SDF_DATE));
+									} else {
+										addQuestionnaireBo.setStudyLifetimeEnd(null);
 									}
+								} else {
+									addQuestionnaireBo.setStudyLifetimeEnd(null);
 								}
 							}
-							addQuestionnaireBo
-									.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
+							addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnairesFrequenciesBo);
 						}
 					}
 				}
