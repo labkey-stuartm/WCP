@@ -115,6 +115,9 @@ public class ConsentBo implements Serializable {
 
 	@Column(name = "version")
 	private Float version = 0f;
+	
+	@Column(name = "consent_by_LAR")
+	private String consentByLAR;
 
 	public String getAggrementOfTheConsent() {
 		return aggrementOfTheConsent;
@@ -347,6 +350,14 @@ public class ConsentBo implements Serializable {
 
 	public void setVersion(Float version) {
 		this.version = version;
+	}
+
+	public String getConsentByLAR() {
+		return consentByLAR;
+	}
+
+	public void setConsentByLAR(String consentByLAR) {
+		this.consentByLAR = consentByLAR;
 	}
 
 }

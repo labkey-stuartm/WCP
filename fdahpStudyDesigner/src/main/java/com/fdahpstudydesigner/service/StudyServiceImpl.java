@@ -1167,6 +1167,9 @@ public class StudyServiceImpl implements StudyService {
 			if (consentBo.getAggrementOfTheConsent() != null) {
 				updateConsentBo.setAggrementOfTheConsent(consentBo.getAggrementOfTheConsent());
 			}
+			if (consentBo.getConsentByLAR() != null) {
+				updateConsentBo.setConsentByLAR(consentBo.getConsentByLAR());
+			}
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj, customStudyId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);

@@ -200,21 +200,59 @@
 	                    </div>
 	                </div>
                 <div id="menu3" class="tab-pane fade">
-                    <div class="mt-xlg text-weight-semibold">The mobile app captures the following from the user as  part of Consent to the study : </div>
-                    <div class="mt-lg">
+                	<div class="mt-xlg text-weight-semibold">Consent by an LAR (Legally Authorized Representative):</div>
+						<div class="col-md-12 pt-sm">
+							<div class="text-weight-semibold">
+								Do you wish to enable functionality for consent to be provided by another person on behalf of the participant?<span><span
+									data-toggle="tooltip" data-placement="top"
+									title="This will add functionality to the consent module of the study in the mobile app, to allow the app user to provide consent on behalf of the participant, as a LAR. The study will continue to support direct consent even if this setting is enabled. The app user can choose one of two consent methods as is applicable to them, and will be guided through the rest of the consent process in the app accordingly."
+									class="ml-xs sprites_v3 filled-tooltip"></span></span>
+							</div>
+							<div class="form-group pt-sm pb-sm">
+								<span class="radio radio-info radio-inline pr-md"> <input
+									type="radio" id="inlineRadio11" value="Yes" name="consentByLAR"
+									<c:if test="${consentBo.consentByLAR eq 'Yes'}">checked</c:if>>
+									<label for="inlineRadio11">Yes</label>
+								</span> <span class="radio radio-inline"> <input type="radio"
+									id="inlineRadio22" value="No" name="consentByLAR"
+									<c:if test="${empty consentBo.consentByLAR || consentBo.consentByLAR eq 'No'}">checked</c:if>>
+									<label for="inlineRadio22">No</label>
+								</span>
+							</div>
+						</div>
+						<div class="mt-xlg text-weight-semibold">Elements of e-consent in the app:</div>
+                    <div class="">
 	                    <ul class="list-style-image">
-	                    	<li>Agreement to the content in the Consent Document <small>(250 characters max)</small><span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Text message shown to the prospect participant on the app, to confirm Review of and Agreement to the Consent Document."></span>
-			                    <div class="form-group mt-sm mb-none">
-			                        <input type="text" class="form-control" placeholder="" required  name="aggrementOfTheConsent" id="aggrementOfTheConsentId" value="${consentBo.aggrementOfTheConsent}" maxlength="250"/>
-			                        <div class="help-block with-errors red-txt"></div>
-			                    </div>
-				            </li>
-	                    	
-	                    	<li>First Name</li>
-	                    	<li>Last Name</li>
-	                    	<li>E-signature</li>
-	                    	<li>Date and Time of providing Consent</li>
-	                    </ul>
+								<li>Consent to share data with 3rd parties, if this step is
+									configured for the study using the WCP (this participant
+									preference is stored on the backend servers but not
+									included in the signed consent PDF)</li>
+								<li>Agreement to the content in the Consent Document
+									displayed. Use the field below for the confirmation popup text
+									that the user must agree to in order to proceed. (250
+									characters max)</small><span class="requiredStar">*</span><span
+									class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+									title="Text message shown to the prospect participant on the app, to confirm Review of and Agreement to the Consent Document."></span>
+									<div class="form-group mt-sm mb-none">
+										<input type="text" class="form-control" placeholder=""
+											required name="aggrementOfTheConsent"
+											id="aggrementOfTheConsentId"
+											value="${consentBo.aggrementOfTheConsent}" maxlength="250" />
+										<div class="help-block with-errors red-txt"></div>
+									</div>
+								</li>
+								<li>First name of the signer (included in the signed
+									consent PDF)</li>
+								<li>Last name of the signer (included in the signed consent
+									PDF)</li>
+								<li>E-signature (included in the signed consent PDF)</li>
+								<li>Date and time of providing consent (included in the
+									signed consent PDF)</li>
+								<li>Relationship of the signer to the patient and first
+									name and last name of the patient, in case consent is being
+									provided by an LAR (this information is also included in
+									the signed consent PDF)</li>
+							</ul>
                         <%-- <div class="mt-lg form-group">
                             <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="agreementCB" value="No" name="eConsentAgree" ${consentBo.eConsentAgree=='Yes'?'checked':''}>
@@ -620,8 +658,8 @@ $(document).ready(function(){
               		  }
                 });
        	  	},
-            <c:if test="${permission eq 'view'}">readonly:1</c:if>
-       	    <c:if test="${studyLiveStatus}">readonly:1</c:if>
+            <c:if test="${permission eq 'view' || studyLiveStatus}">readonly:1</c:if>
+       	    /* <c:if test="${studyLiveStatus}">readonly:1</c:if> */
         });
     }
     //save review and E-consent data
@@ -663,7 +701,8 @@ $(document).ready(function(){
 	    	var learn_more_text = tinymce.get('learnMoreTextId').getContent({ format: 'raw' });
 	    	learn_more_text = replaceSpecialCharacters(learn_more_text);
 	    	var allow_Permission = $('input[name="allowWithoutPermission"]:checked').val();	
-	    	var aggrement_of_theconsent = $("#aggrementOfTheConsentId").val();	
+	    	var aggrement_of_theconsent = $("#aggrementOfTheConsentId").val();
+	    	var consentByLAR_val = $('input[name=consentByLAR]:checked').val();
 	    		
 	    		
 	    	if(consentDocType == "New"){
@@ -694,6 +733,7 @@ $(document).ready(function(){
 	    	if(null != learn_more_text){consentInfo.learnMoreText = learn_more_text;}
 	    	if(null != allow_Permission){consentInfo.allowWithoutPermission = allow_Permission;}
 	    	if(null != aggrement_of_theconsent){consentInfo.aggrementOfTheConsent = aggrement_of_theconsent;}
+	    	if(null != consentByLAR_val){consentInfo.consentByLAR = consentByLAR_val;}
 	    	var data = JSON.stringify(consentInfo);
 	    	$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
