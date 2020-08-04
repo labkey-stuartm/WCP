@@ -1028,8 +1028,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												.getFormattedDate(questionnaireBo.getStudyLifetimeStart(),
 														FdahpStudyDesignerConstants.UI_SDF_DATE,
 														FdahpStudyDesignerConstants.DB_SDF_DATE));
-									} else {
-										questionnairesFrequenciesBo.setFrequencyTime(null);
 									}
 								} else {
 									questionnairesFrequenciesBo.setFrequencyTime(null);
@@ -1041,8 +1039,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												questionnaireBo.getStudyLifetimeEnd(),
 												FdahpStudyDesignerConstants.UI_SDF_DATE,
 												FdahpStudyDesignerConstants.DB_SDF_DATE));
-									} else {
-										addQuestionnaireBo.setStudyLifetimeEnd(null);
 									}
 								} else {
 									addQuestionnaireBo.setStudyLifetimeEnd(null);
@@ -1073,8 +1069,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												.getFormattedDate(questionnaireBo.getStudyLifetimeStart(),
 														FdahpStudyDesignerConstants.UI_SDF_DATE,
 														FdahpStudyDesignerConstants.DB_SDF_DATE));
-									} else {
-										questionnairesFrequenciesBo.setFrequencyTime(null);
 									}
 								} else {
 									questionnairesFrequenciesBo.setFrequencyTime(null);
@@ -1086,8 +1080,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 												questionnaireBo.getStudyLifetimeEnd(),
 												FdahpStudyDesignerConstants.UI_SDF_DATE,
 												FdahpStudyDesignerConstants.DB_SDF_DATE));
-									} else {
-										addQuestionnaireBo.setStudyLifetimeEnd(null);
 									}
 								} else {
 									addQuestionnaireBo.setStudyLifetimeEnd(null);
