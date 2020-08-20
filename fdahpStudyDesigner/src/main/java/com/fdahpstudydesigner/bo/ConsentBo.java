@@ -115,9 +115,24 @@ public class ConsentBo implements Serializable {
 
 	@Column(name = "version")
 	private Float version = 0f;
-	
+
 	@Column(name = "consent_by_LAR")
 	private String consentByLAR;
+
+	@Column(name = "additional_signature")
+	private String additionalSignature;
+
+	@Transient
+	private String[] signatures = new String[] {};
+
+	@Column(name = "signature_one")
+	private String signatureOne;
+
+	@Column(name = "signature_two")
+	private String signatureTwo;
+
+	@Column(name = "signature_three")
+	private String signatureThree;
 
 	public String getAggrementOfTheConsent() {
 		return aggrementOfTheConsent;
@@ -247,8 +262,7 @@ public class ConsentBo implements Serializable {
 		this.comprehensionTest = comprehensionTest;
 	}
 
-	public void setComprehensionTestMinimumScore(
-			Integer comprehensionTestMinimumScore) {
+	public void setComprehensionTestMinimumScore(Integer comprehensionTestMinimumScore) {
 		this.comprehensionTestMinimumScore = comprehensionTestMinimumScore;
 	}
 
@@ -360,4 +374,43 @@ public class ConsentBo implements Serializable {
 		this.consentByLAR = consentByLAR;
 	}
 
+	public String getAdditionalSignature() {
+		return additionalSignature;
+	}
+
+	public String[] getSignatures() {
+		return signatures;
+	}
+
+	public void setAdditionalSignature(String additionalSignature) {
+		this.additionalSignature = additionalSignature;
+	}
+
+	public void setSignatures(String[] signatures) {
+		this.signatures = signatures;
+	}
+
+	public String getSignatureOne() {
+		return signatureOne;
+	}
+
+	public String getSignatureTwo() {
+		return signatureTwo;
+	}
+
+	public String getSignatureThree() {
+		return signatureThree;
+	}
+
+	public void setSignatureOne(String signatureOne) {
+		this.signatureOne = signatureOne;
+	}
+
+	public void setSignatureTwo(String signatureTwo) {
+		this.signatureTwo = signatureTwo;
+	}
+
+	public void setSignatureThree(String signatureThree) {
+		this.signatureThree = signatureThree;
+	}
 }

@@ -2,6 +2,29 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<style>
+.block__devider{
+    padding: 20px 0px;
+    border-top: 1px solid #95a2ab;
+    border-bottom: 1px solid #95a2ab;
+}
+.display__none {
+	display: none !important;
+}
+.input-add-signature{
+	width: 400px;
+    margin-right: 10px;
+    height: 36px;
+    margin-top: 2px !important;
+}
+.additional-signature-option{
+	margin-bottom: 7px !important;
+}
+.btm-marg{
+	margin-bottom: 8px;
+}
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -208,7 +231,7 @@
 									title="This will add functionality to the consent module of the study in the mobile app, to allow the app user to provide consent on behalf of the participant, as a LAR. The study will continue to support direct consent even if this setting is enabled. The app user can choose one of two consent methods as is applicable to them, and will be guided through the rest of the consent process in the app accordingly."
 									class="ml-xs sprites_v3 filled-tooltip"></span></span>
 							</div>
-							<div class="form-group pt-sm pb-sm">
+							<div class="form-group pt-sm pb-none">
 								<span class="radio radio-info radio-inline pr-md"> <input
 									type="radio" id="inlineRadio11" value="Yes" name="consentByLAR"
 									<c:if test="${consentBo.consentByLAR eq 'Yes'}">checked</c:if>>
@@ -220,7 +243,93 @@
 								</span>
 							</div>
 						</div>
-						<div class="mt-xlg text-weight-semibold">Elements of e-consent in the app:</div>
+						<div class="clearfix"></div>
+						<div class="block__devider">
+						  <div class="text-weight-semibold">Additional signature lines for study staff:</div>
+						  <div class="col-md-12 pt-sm">
+							<div class="text-weight-semibold">
+								Do you wish to add signature lines to the final consent PDF to allow for study staff signatures?<span><span
+									data-toggle="tooltip" data-placement="top"
+									title="This feature will enable additional signature lines in the finalized PDF document to accommodate required study staff signatures"
+									class="ml-xs sprites_v3 filled-tooltip"></span></span>
+							</div>
+							<div class="form-group pt-sm pb-sm mb-none">
+								<span class="radio radio-info radio-inline pr-md"> <input class="addSignature"
+									type="radio" id="inlineRadio33" value="Yes" name="additionalSignatureRadio"
+									<c:if test="${consentBo.additionalSignature eq 'Yes'}">checked</c:if>>
+									<label for="inlineRadio33">Yes</label>
+								</span> <span class="radio radio-inline"> <input type="radio" class="addSignature"
+									id="inlineRadio44" value="No" name="additionalSignatureRadio"
+									<c:if test="${empty consentBo.additionalSignature || consentBo.additionalSignature eq 'No'}">checked</c:if>>
+									<label for="inlineRadio44">No</label>
+								</span>
+							</div>
+							<div class="additionalSignature" style="display: none;">
+							<div class="text-weight-semibold mb-sm">
+								Please add the appropriate title that should display next to each signature line (Up to 3 signature lines are allowed)<small>(30 characters max)</small><span><span
+									data-toggle="tooltip" data-placement="top"
+									title="Example such as Principal Investigator, Witness, Site Coordinator, etc."
+									class="ml-xs sprites_v3 filled-tooltip"></span></span>
+							</div>
+							<c:if
+								test="${fn:length(consentBo.signatures) eq 0}">
+								<div class="additional-signature-option mb-md form-group" id="0">
+									  <span
+										class="form-group m-none dis-inline vertical-align-middle">
+										<input id="signature0" type="text" 
+										class="form-control mt-sm input-add-signature"
+										count='0'
+										placeholder="Enter Professional Title"
+										name="sign0"
+										
+										value=""
+										maxlength="30"
+										data-pattern-error="Please fill out this field." required
+										onkeypress="blockSpecialChar(event,this)"/><span
+										class="help-block with-errors red-txt"></span>
+									</span><span id="addbtn0"
+										class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
+										onclick="addAdditionalSignature();">+</span><span id="deleteAncchor0"
+										class="sprites_icon delete vertical-align-middle remBtn align-span-center"
+										onclick="removeAdditionalSignature(this);"></span>
+								</div>
+							</c:if>
+							<c:if
+								test="${fn:length(consentBo.signatures) gt 0}">
+								<c:forEach
+									items="${consentBo.signatures}"
+									var="signature" varStatus="customVar">
+									<div class="additional-signature-option mb-md form-group"
+										id="${customVar.index}">
+										<span
+											class="form-group m-none dis-inline vertical-align-middle">
+											<input id="signature${customVar.index}" type="text"
+											class="form-control mt-sm input-add-signature"
+											count='${customVar.index}' placeholder="Enter Professional Title"
+											name="sign${customVar.index}"
+											value="${signature}"
+											maxlength="30" required
+											data-pattern-error="Please fill out this field." 
+											onkeypress="blockSpecialChar(event,this)"/><span
+											class="help-block with-errors red-txt"></span>
+										</span><span id="addbtn${customVar.index}"
+											class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
+											onclick="addAdditionalSignature();">+</span><span
+											id="deleteAncchor${customVar.index}"
+											class="sprites_icon delete vertical-align-middle remBtn align-span-center"
+											onclick="removeAdditionalSignature(this);"></span>
+									</div>
+								</c:forEach>
+							</c:if>
+							<div
+									style="font-size: 13px; font-weight: 600; margin-top: 10px;">Note:
+									The signature line for the staff representative will include
+									first name, last name, signature and date</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						</div>
+						<div class="mt-lg text-weight-semibold">Elements of e-consent in the app:</div>
                     <div class="">
 	                    <ul class="list-style-image">
 								<li>Consent to share data with 3rd parties, if this step is
@@ -385,6 +494,34 @@ $(document).ready(function(){
 	    $('#longDescriptionId').prop('disabled', true);
 		$('#newDivId .elaborateClass').addClass('linkDis');
 	    $('#saveId,#doneId').hide();
+	    $('.addbtn, .remBtn').css("pointer-events", "none");
+	}
+	
+	
+	$('.addSignature').change(function() {
+		var addSignatureVal = $('.addSignature:checked').val();
+		if (addSignatureVal === 'Yes') {
+			$('.additionalSignature').show();
+		} else {
+			$('.additionalSignature').hide();
+		}
+	});
+	
+	var addSignatureVal = $('.addSignature:checked').val();
+	if(addSignatureVal === 'Yes'){
+		$('.additionalSignature').show();
+	}
+	
+	if($('.additional-signature-option').length == 1){
+		$('.additionalSignature').find(".remBtn").addClass("display__none");
+	}
+	if($('.additional-signature-option').length == 2){
+		$('.additionalSignature').find(".addbtn").addClass("hide");
+		$('.additional-signature-option:last').find(".addbtn").removeClass("hide");
+		$(".additional-signature-option:first").find(".remBtn").removeClass("display__none");
+	}
+	if($('.additional-signature-option').length == 3){
+		$('.additionalSignature').find(".addbtn").addClass("hide");
 	}
 	//auto select if consent Id is empty
 	//var consentId = "${consentBo.id}";
@@ -464,6 +601,13 @@ $(document).ready(function(){
 				saveConsentReviewAndEConsentInfo("saveId");				
 			}else if(id == "doneId"){
 				var retainTxt = '${studyBo.retainParticipant}';
+				var additionalSignature_val = $('input[name=additionalSignatureRadio]:checked').val();
+				if(null != additionalSignature_val && additionalSignature_val === 'No'){
+		    		$('.additional-signature-option').each(function(){
+						var id = $(this).attr("id");
+						var signatureVal = $('#signature'+id).removeAttr('required');
+					})
+		    	}
 				if(isFromValid("#consentReviewFormId") && maxLenLearnMoreEditor()){
 					var message = "";
 					var alertType = "";
@@ -703,7 +847,20 @@ $(document).ready(function(){
 	    	var allow_Permission = $('input[name="allowWithoutPermission"]:checked').val();	
 	    	var aggrement_of_theconsent = $("#aggrementOfTheConsentId").val();
 	    	var consentByLAR_val = $('input[name=consentByLAR]:checked').val();
-	    		
+	    	var additionalSignature_val = $('input[name=additionalSignatureRadio]:checked').val();
+	    	
+	    	var customArray  = new Array();
+	    	if(null != additionalSignature_val && additionalSignature_val === 'Yes'){
+	    		$('.additional-signature-option').each(function(){
+					var id = $(this).attr("id");
+					var signatureVal = $('#signature'+id).val();
+					
+					if(signatureVal != null && signatureVal != '' && typeof signatureVal != 'undefined'){
+						customArray.push(signatureVal);
+					}
+				}) 
+	    	}
+	    	
 	    		
 	    	if(consentDocType == "New"){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
@@ -734,6 +891,8 @@ $(document).ready(function(){
 	    	if(null != allow_Permission){consentInfo.allowWithoutPermission = allow_Permission;}
 	    	if(null != aggrement_of_theconsent){consentInfo.aggrementOfTheConsent = aggrement_of_theconsent;}
 	    	if(null != consentByLAR_val){consentInfo.consentByLAR = consentByLAR_val;}
+	    	if(null != additionalSignature_val){consentInfo.additionalSignature = additionalSignature_val;}
+	    	if(null != customArray){consentInfo.signatures = customArray;}
 	    	var data = JSON.stringify(consentInfo);
 	    	$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
@@ -967,4 +1126,57 @@ function colapseUpAndDown(){
 	    $(this).parent().find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
 	  });
 }
+var customAnchorCount = 0;
+function addAdditionalSignature(){
+	customAnchorCount = parseInt($('.additional-signature-option:last').attr("id")) +1;
+	var newDateCon = "<div class='additional-signature-option mb-md form-group' id='"+customAnchorCount+"'>"
+				                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
+				                  +"<input id='signature"+customAnchorCount+"' type='text' class='form-control mt-sm input-add-signature'" 
+					              +"count='"+customAnchorCount+"' placeholder='Enter Professional Title' name='sign"+customAnchorCount+"'"
+					              +"custAttType='cust' autofocus='autofocus' maxlength='30' data-pattern-error='Please fill out this field.' onkeypress='blockSpecialChar(event,this)' required /><span class='help-block with-errors red-txt'></span>"
+					              +"</span>"
+				                  +"<span id='addbtn"+customAnchorCount+"' class='addbtn dis-inline vertical-align-middle mr-sm btm-marg' onclick='addAdditionalSignature();'>+</span>"
+								  +"<span id='deleteAncchor"+customAnchorCount+"' class='sprites_icon delete vertical-align-middle remBtn align-span-center' onclick='removeAdditionalSignature(this);'></span>"
+			                      +"</div>";
+			                   
+	$(".additional-signature-option:last").after(newDateCon);
+	$(".additional-signature-option").parents("form").validator("destroy");
+    $(".additional-signature-option").parents("form").validator();
+	if($('.additional-signature-option').length > 1){
+		$('.additionalSignature').find(".addbtn").addClass("hide");
+		$('.additional-signature-option:last').find(".addbtn").removeClass("hide");
+		$(".additional-signature-option:first").find(".remBtn").removeClass("display__none");
+	}
+	if($('.additional-signature-option').length == 3){
+		$('.additionalSignature').find(".addbtn").addClass("hide");
+	}
+ $('#'+customAnchorCount).find('input:first').focus();
+}
+
+function removeAdditionalSignature(param){
+    $(param).parents(".additional-signature-option").remove();
+    $(".additional-signature-option").parents("form").validator("destroy");
+		$(".additional-signature-option").parents("form").validator();
+		if($('.additional-signature-option').length > 1){
+			$('.additional-signature-option:last').find(".addbtn").removeClass("hide");
+		}
+		if($('.additional-signature-option').length == 1){
+			$('.additional-signature-option').find(".addbtn").removeClass("hide");
+		    $('.additional-signature-option').find('.remBtn').addClass('display__none');
+		}
+}
+
+function blockSpecialChar(e,t) {
+     var k = e.keyCode;
+	 if(!isNormalChar(k)){
+		e.preventDefault();
+		$(t).parent().find(".help-block").empty();
+		$(t).parent().find(".help-block").append('<ul class="list-unstyled"><li>Special characters are not allowed</li></ul>');
+	}
+}
+
+function isNormalChar(k){
+	 return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+}    
+
 </script>

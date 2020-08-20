@@ -436,6 +436,26 @@ public class StudyServiceImpl implements StudyService {
 		ConsentBo consentBo = null;
 		try {
 			consentBo = studyDAO.getConsentDetailsByStudyId(studyId);
+
+			if (StringUtils.isNotBlank(consentBo.getSignatureOne())
+					&& StringUtils.isNotBlank(consentBo.getSignatureTwo())
+					&& StringUtils.isNotBlank(consentBo.getSignatureThree())) {
+				String[] signatures = new String[3];
+				signatures[0] = consentBo.getSignatureOne();
+				signatures[1] = consentBo.getSignatureTwo();
+				signatures[2] = consentBo.getSignatureThree();
+				consentBo.setSignatures(signatures);
+			} else if (StringUtils.isNotBlank(consentBo.getSignatureOne())
+					&& StringUtils.isNotBlank(consentBo.getSignatureTwo())) {
+				String[] signatures = new String[2];
+				signatures[0] = consentBo.getSignatureOne();
+				signatures[1] = consentBo.getSignatureTwo();
+				consentBo.setSignatures(signatures);
+			} else if (StringUtils.isNotBlank(consentBo.getSignatureOne())) {
+				String[] signatures = new String[1];
+				signatures[0] = consentBo.getSignatureOne();
+				consentBo.setSignatures(signatures);
+			}
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getConsentDetailsByStudyId() :: ERROR", e);
 		}
@@ -1169,6 +1189,34 @@ public class StudyServiceImpl implements StudyService {
 			}
 			if (consentBo.getConsentByLAR() != null) {
 				updateConsentBo.setConsentByLAR(consentBo.getConsentByLAR());
+			}
+			if (consentBo.getAdditionalSignature() != null) {
+				updateConsentBo.setAdditionalSignature(consentBo.getAdditionalSignature());
+			}
+			if (StringUtils.equals(consentBo.getAdditionalSignature(), "Yes")) {
+				if (consentBo.getSignatures() != null && consentBo.getSignatures().length != 0) {
+					if (consentBo.getSignatures().length == 3) {
+						updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+						updateConsentBo.setSignatureTwo(consentBo.getSignatures()[1]);
+						updateConsentBo.setSignatureThree(consentBo.getSignatures()[2]);
+					} else if (consentBo.getSignatures().length == 2) {
+						updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+						updateConsentBo.setSignatureTwo(consentBo.getSignatures()[1]);
+						updateConsentBo.setSignatureThree(null);
+					} else if (consentBo.getSignatures().length == 1) {
+						updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+						updateConsentBo.setSignatureTwo(null);
+						updateConsentBo.setSignatureThree(null);
+					}
+				} else {
+					updateConsentBo.setSignatureOne(null);
+					updateConsentBo.setSignatureTwo(null);
+					updateConsentBo.setSignatureThree(null);
+				}
+			} else {
+				updateConsentBo.setSignatureOne(null);
+				updateConsentBo.setSignatureTwo(null);
+				updateConsentBo.setSignatureThree(null);
 			}
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj, customStudyId);
 		} catch (Exception e) {
