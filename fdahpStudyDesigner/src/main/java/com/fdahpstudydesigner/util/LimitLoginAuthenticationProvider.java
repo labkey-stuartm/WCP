@@ -109,8 +109,9 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
 						}
 						Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
 								null, FdahpStudyDesignerUtil.buildUserAuthority(userBO.getPermissions()));
-						if (userAttempts != null) {
-							loginDAO.resetFailAttempts(authentication.getName());
+						if (userBO != null) {
+							userBO.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+							loginDAO.updateUser(userBO);
 						}
 						return auth;
 					} else {
@@ -131,8 +132,9 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
 					if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 						loginDAO.updateToHashedPassword(userBO.getUserId(), hashedPassword, rawSalt);
 					}
-					if (userAttempts != null) {
-						loginDAO.resetFailAttempts(authentication.getName());
+					if (userBO != null) {
+						userBO.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+						loginDAO.updateUser(userBO);
 					}
 					return auth;
 				}
