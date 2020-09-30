@@ -169,7 +169,7 @@
   		</div>
         <!--container-->
         <div class="footer">
-            <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
+            <span id="copyright">Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
         </div>  
     </div> 
 </div>
@@ -185,6 +185,9 @@
 		   	//$("#sucMsg").hide("fast");
 		   	setTimeout(hideDisplayMessage, 4000);
 		}
+		var year = new Date().getFullYear();
+    	var copyRightText= 'Copyright © '+year+' FDA';
+    	document.getElementById("copyright").innerHTML = copyRightText;
 	});
 // 	 window.onload = function () {
 // 	    if (typeof history.pushState === "function") {

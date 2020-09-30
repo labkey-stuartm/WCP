@@ -137,7 +137,7 @@
         </div>
 
         <div class="footer">
-            <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+            <div><span id="copyright">Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
         </div>
              
         </div>
@@ -207,6 +207,10 @@
 				// minimum length requirement
 				length: 8
 			}); 
+			
+			var year = new Date().getFullYear();
+	    	var copyRightText= 'Copyright © '+year+' FDA';
+	    	document.getElementById("copyright").innerHTML = copyRightText;
 			
     	});
     	function hideDisplayMessage(){

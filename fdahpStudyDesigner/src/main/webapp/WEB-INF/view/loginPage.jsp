@@ -257,7 +257,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="footer">
-            <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+            <div><span id="copyright">Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
         </div>
         <!-- new login --> 
     </div>
@@ -312,6 +312,10 @@
    <script>
    		var isChanged = true;
     	$(document).ready(function(e) {
+    		
+    		var year = new Date().getFullYear();
+        	var copyRightText= 'Copyright © '+year+' FDA';
+        	document.getElementById("copyright").innerHTML = copyRightText;
 	    	// Internet Explorer 6-11
 			var isIE = /*@cc_on!@*/false || !!document.documentMode;
 			

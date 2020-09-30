@@ -2,7 +2,7 @@
     
 <div class="md-container ft_con">
      <div class="foot">
-        <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
+        <span id="copyright">Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
     </div>
 </div>
 <!-- Modal -->
@@ -50,5 +50,8 @@
     	$('#privacyId').on('click',function(){
     		$('#privacyModal').modal('show');
     	});
+    	var year = new Date().getFullYear();
+    	var copyRightText= 'Copyright © '+year+' FDA';
+    	document.getElementById("copyright").innerHTML = copyRightText;
 	});
 </script>
