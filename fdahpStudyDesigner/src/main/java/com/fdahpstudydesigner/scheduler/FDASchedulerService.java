@@ -134,8 +134,8 @@ public class FDASchedulerService {
 				}
 				genarateEmailContentMap.put("$startTime", date + " 00:00:00");
 				genarateEmailContentMap.put("$endTime", date + " 23:59:59");
-				failLogBody = FdahpStudyDesignerUtil.genarateEmailContent(
-						(String) configMap.get("mail.audit.failure.content"), genarateEmailContentMap);
+				failLogBody = FdahpStudyDesignerUtil.genarateEmailContent("mail.audit.failure.content",
+						genarateEmailContentMap);
 				EmailNotification.sendEmailNotificationToMany("mail.audit.failure.subject", failLogBody, emailAddresses,
 						null, null);
 			}
