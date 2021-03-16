@@ -1,9 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="com.fdahpstudydesigner.util.SessionObject"%>
+
+<head>
+  <meta charset="UTF-8">
+</head>
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">

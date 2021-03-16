@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -7,7 +8,7 @@
 	<head>
         
     <!-- Basic -->
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
             
     <title>FDA MSMP</title>	
@@ -113,7 +114,7 @@
                 </div>
                <div class="clearfix"></div>
                <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
+                    <span>Copyright Â© 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
               </div>
             </div>
             
@@ -179,7 +180,7 @@
           </div>
         </div> 
         <div class="footer">
-            <span id="copyright">Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
+            <span id="copyright">Copyright Â© 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
       </div>  
         <!--container-->
         </div>
@@ -300,7 +301,7 @@
    	  	 }
       	 
       	var year = new Date().getFullYear();
-    	var copyRightText= 'Copyright © '+year+' FDA';
+    	var copyRightText= 'Copyright Â© '+year+' FDA';
     	document.getElementById("copyright").innerHTML = copyRightText;
     });
     <c:if test="${param.action eq 'landing'}">

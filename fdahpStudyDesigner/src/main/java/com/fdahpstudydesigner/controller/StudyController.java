@@ -44,6 +44,7 @@ import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -4311,6 +4312,7 @@ public class StudyController {
 				if (studyBo == null) {
 					studyBo = new StudyBo();
 					studyBo.setType(FdahpStudyDesignerConstants.STUDY_TYPE_GT);
+					studyBo.setStudyLanguage(FdahpStudyDesignerConstants.STUDY_LANGUAGE_ENGLISH);
 				} else if ((studyBo != null) && StringUtils.isNotEmpty(studyBo.getCustomStudyId())) {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID,
 							studyBo.getCustomStudyId());
@@ -4342,12 +4344,17 @@ public class StudyController {
 					studyBo.setCustomStudyId("");
 					studyBo.setAppId("");
 				}
+				
+				ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
+				String[] languageList = resourceBundle.getString("languageList").split(",");
+				
 				map.addAttribute("categoryList", categoryList);
 				map.addAttribute("dataPartnerList", dataPartnerList);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				map.addAttribute("createStudyId", "true");
 				map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 				map.addAttribute("_S", sessionStudyCount);
+				map.addAttribute("languageList", languageList);
 				mav = new ModelAndView("viewBasicInfo", map);
 			}
 		} catch (Exception e) {

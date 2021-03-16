@@ -117,40 +117,36 @@ $(document)
 										}
 
 									});
-					$('input[type = text][custAttType != cust]')
-							.on(
-									'keyup',
-									function(e) {
-										var evt = (e) ? e : window.event;
-										var charCode = (evt.which) ? evt.which
-												: evt.keyCode;
-										if (charCode == 16)
-											isShift = false;
-										if (!isShift && $(this).val()) {
-											var regularExpression = /^[ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]*$/;
-											if (!regularExpression.test($(this)
-													.val())) {
-												var newVal = $(this)
-														.val()
-														.replace(
-																/[^ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]/g,
-																'');
-												e.preventDefault();
-												$(this).val(newVal);
-												$(this).parent().addClass(
-														"has-danger has-error");
-												$(this)
-														.parent()
-														.find(".help-block")
-														.empty()
-														.html(
-																"<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
-											}
-										}
-									});
+					
+					$('input[type = text][custAttType != cust]').keyup(function(e){
+						var evt = (e) ? e : window.event;
+	                    var charCode = (evt.which) ? evt.which
+	                        : evt.keyCode;
+	                    var flag=false;
+	                    if (charCode == 8 || charCode == 127){
+	                    	flag=true;
+	                    }
+						var userinput = $(this).val();
+		                var pattern = /[A-Za-z0-9-zñáéíóúü¿¡A-ZÑÁÉÍÓÚÜ_~\-!@*\[\]\;:'"\,.?<>\$%\&\(\)\s]+$/;
+		                if (!pattern.test(userinput) && !flag) {
+		                    var v = userinput.substr(0, userinput.length - 1);
+		                    $(this).val(v);							                    
+		                    $(this).parent().addClass(
+							"has-danger has-error");
+					        $(this)
+							.parent()
+							.find(".help-block")
+							.empty()
+							.html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
+		                } else {
+		                    $(this).val(userinput)
+		                }
+					})
+
 					$('input').on('drop', function() {
 						return false;
 					});
+					
 					$('input[type = text][custAttType = cust]')
 							.on(
 									'keyup',
@@ -158,9 +154,7 @@ $(document)
 										var evt = (e) ? e : window.event;
 										var charCode = (evt.which) ? evt.which
 												: evt.keyCode;
-										if (charCode == 16)
-											isShift = false;
-										if (!isShift && $(this).val()) {
+										if ($(this).val()) {
 											var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
 											if (!regularExpression.test($(this)
 													.val())) {

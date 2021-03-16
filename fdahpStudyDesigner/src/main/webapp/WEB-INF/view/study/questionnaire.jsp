@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <jsp:useBean id="date" class="java.util.Date" />
 <c:set var="tz" value="America/Los_Angeles" />
-
-<style>
+<head>
+  <meta charset="UTF-8">
+  <style>
 .cursonMove {
 	cursor: move !important;
 }
@@ -82,6 +82,8 @@
 	display: inline-block !important;
 }
 </style>
+</head>
+
 
 <script type="text/javascript">
 function isNumber(evt, thisAttr) {

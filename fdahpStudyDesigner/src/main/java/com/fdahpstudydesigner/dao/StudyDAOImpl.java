@@ -66,6 +66,7 @@ import com.fdahpstudydesigner.bo.UserPermissions;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
+import com.fdahpstudydesigner.util.SpanishLangConstants;
 
 /**
  *
@@ -4071,7 +4072,8 @@ public class StudyDAOImpl implements StudyDAO {
 						query.executeUpdate();
 
 					}
-
+					
+					dbStudyBo.setStudyLanguage(studyBo.getStudyLanguage());
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
 					dbStudyBo.setName(studyBo.getName());
 					dbStudyBo.setFullName(studyBo.getFullName());
@@ -5921,8 +5923,16 @@ public class StudyDAOImpl implements StudyDAO {
 						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
-						notificationBO
-								.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						
+						if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+								studyBo.getStudyLanguage())) {
+							notificationBO
+									.setNotificationText(SpanishLangConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						} else {
+							notificationBO.setNotificationText(
+									FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						}
+						
 						notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -5995,8 +6005,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(
-										FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO
+											.setNotificationText(SpanishLangConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								} else {
+									notificationBO.setNotificationText(
+											FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6064,8 +6082,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT
-										.replace("$customId", studyBo.getName()));
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_PAUSE_TEXT
+											.replace("$customId", studyBo.getName()));
+								} else {
+									notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT
+											.replace("$customId", studyBo.getName()));
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6092,8 +6118,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT
-										.replace("$customId", studyBo.getName()));
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_RESUME_TEXT
+											.replace("$customId", studyBo.getName()));
+								} else {
+									notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT
+											.replace("$customId", studyBo.getName()));
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6120,9 +6154,18 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO
-										.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT
-												.replace("$customId", studyBo.getName()));
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO
+									.setNotificationText(SpanishLangConstants.NOTIFICATION_DEACTIVATE_TEXT
+											.replace("$customId", studyBo.getName()));
+								} else {
+									notificationBO
+									.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT
+											.replace("$customId", studyBo.getName()));
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());

@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -5,7 +6,7 @@
 <html class="overflow-hidden" lang="en">
 	<head>
     <!-- Basic -->
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="refresh" content="1700">        
     <title>FDA MSMP</title>	
@@ -168,7 +169,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+                    <div><span>Copyright Â© 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
               </div>
              
         </div> -->
@@ -257,7 +258,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="footer">
-            <div><span id="copyright">Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
+            <div><span id="copyright">Copyright Â© 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
         </div>
         <!-- new login --> 
     </div>
@@ -314,7 +315,7 @@
     	$(document).ready(function(e) {
     		
     		var year = new Date().getFullYear();
-        	var copyRightText= 'Copyright © '+year+' FDA';
+        	var copyRightText= 'Copyright Â© '+year+' FDA';
         	document.getElementById("copyright").innerHTML = copyRightText;
 	    	// Internet Explorer 6-11
 			var isIE = /*@cc_on!@*/false || !!document.documentMode;

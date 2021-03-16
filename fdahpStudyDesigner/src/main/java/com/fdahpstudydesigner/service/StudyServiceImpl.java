@@ -35,6 +35,7 @@ import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
+import com.fdahpstudydesigner.util.SpanishLangConstants;
 
 /**
  *
@@ -436,25 +437,27 @@ public class StudyServiceImpl implements StudyService {
 		ConsentBo consentBo = null;
 		try {
 			consentBo = studyDAO.getConsentDetailsByStudyId(studyId);
-
-			if (StringUtils.isNotBlank(consentBo.getSignatureOne())
-					&& StringUtils.isNotBlank(consentBo.getSignatureTwo())
-					&& StringUtils.isNotBlank(consentBo.getSignatureThree())) {
-				String[] signatures = new String[3];
-				signatures[0] = consentBo.getSignatureOne();
-				signatures[1] = consentBo.getSignatureTwo();
-				signatures[2] = consentBo.getSignatureThree();
-				consentBo.setSignatures(signatures);
-			} else if (StringUtils.isNotBlank(consentBo.getSignatureOne())
-					&& StringUtils.isNotBlank(consentBo.getSignatureTwo())) {
-				String[] signatures = new String[2];
-				signatures[0] = consentBo.getSignatureOne();
-				signatures[1] = consentBo.getSignatureTwo();
-				consentBo.setSignatures(signatures);
-			} else if (StringUtils.isNotBlank(consentBo.getSignatureOne())) {
-				String[] signatures = new String[1];
-				signatures[0] = consentBo.getSignatureOne();
-				consentBo.setSignatures(signatures);
+			
+			if (consentBo != null) {
+				if (StringUtils.isNotBlank(consentBo.getSignatureOne())
+						&& StringUtils.isNotBlank(consentBo.getSignatureTwo())
+						&& StringUtils.isNotBlank(consentBo.getSignatureThree())) {
+					String[] signatures = new String[3];
+					signatures[0] = consentBo.getSignatureOne();
+					signatures[1] = consentBo.getSignatureTwo();
+					signatures[2] = consentBo.getSignatureThree();
+					consentBo.setSignatures(signatures);
+				} else if (StringUtils.isNotBlank(consentBo.getSignatureOne())
+						&& StringUtils.isNotBlank(consentBo.getSignatureTwo())) {
+					String[] signatures = new String[2];
+					signatures[0] = consentBo.getSignatureOne();
+					signatures[1] = consentBo.getSignatureTwo();
+					consentBo.setSignatures(signatures);
+				} else if (StringUtils.isNotBlank(consentBo.getSignatureOne())) {
+					String[] signatures = new String[1];
+					signatures[0] = consentBo.getSignatureOne();
+					consentBo.setSignatures(signatures);
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getConsentDetailsByStudyId() :: ERROR", e);
@@ -1627,8 +1630,16 @@ public class StudyServiceImpl implements StudyService {
 								innerText = "added";
 							}
 							saveNotiFlag = true;
-							notificationText = "Study Protocol information has been " + innerText + " for the study "
-									+ studyName + ". Visit the app to read it now.";
+							if(!StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH, studyBo.getStudyLanguage())) {
+								notificationText = "Study Protocol information has been " + innerText + " for the study "
+										+ studyName + ". Visit the app to read it now.";
+							}else {
+								if(StringUtils.equalsIgnoreCase("updated", innerText)) {
+									notificationText=SpanishLangConstants.STUDY_PROTOCOL_NOTIFICATION_TEXT_UPDATED.replace("$studyName", studyName);
+								}else {
+									notificationText=SpanishLangConstants.STUDY_PROTOCOL_NOTIFICATION_TEXT_ADDED.replace("$studyName", studyName);
+								}
+							}
 						}
 					}
 					notificationBO.setNotificationText(notificationText);
@@ -2022,5 +2033,4 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - findStudyPermissionBO() - Starts");
 		return studyDAO.getStudyPermissionBO(studyId, userId);
 	}
-
 }
