@@ -897,11 +897,12 @@ $(document).ready(function(){
 	    	if(null != additionalSignature_val){consentInfo.additionalSignature = additionalSignature_val;}
 	    	if(null != customArray){consentInfo.signatures = customArray;}
 	    	var data = JSON.stringify(consentInfo);
+	    	var pageName = 'consentreview';
 	    	$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
 		          type: "POST",
 		          datatype: "json",
-		          data: {consentInfo:data},
+		          data: {consentInfo:data, page:pageName},
 		          beforeSend: function(xhr, settings){
 		              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 		          },
