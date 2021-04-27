@@ -146,8 +146,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 						query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
 						Long count = (Long) query.uniqueResult();
 						if (count < 1) {
-							System.out.println(
-									"StudyActiveTasksDAOImpl.deleteActiveTask() participant prop count condition match");
 							query = session.createQuery(
 									"Update ParticipantPropertiesBO PBO SET PBO.isUsedInActiveTask = 0 where PBO.anchorDateId=:anchorDateId");
 							query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
@@ -480,8 +478,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 				query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {
-					System.out.println(
-							"StudyActiveTasksDAOImpl.saveOrUpdateActiveTask() participant prop count condition match");
 					query = session.createQuery(
 							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInActiveTask = 1 where PBO.anchorDateId=:anchorDateId");
 					query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());

@@ -581,8 +581,6 @@ public class StudyDAOImpl implements StudyDAO {
 						query.setInteger("anchorDateId", resource.getAnchorDateId());
 						Long count = (Long) query.uniqueResult();
 						if (count < 1) {
-							System.out.println(
-									"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
 							query = session.createQuery(
 									"Update ParticipantPropertiesBO PBO SET PBO.isUsedInResource = 0 where PBO.anchorDateId=:anchorDateId");
 							query.setInteger("anchorDateId", resource.getAnchorDateId());
@@ -1386,7 +1384,6 @@ public class StudyDAOImpl implements StudyDAO {
 					+ " and CIB.active=1 order by CIB.sequenceNo asc";
 			query = session.createQuery(searchQuery);
 			consentInfoList = query.list();
-			System.out.println("consentInfoList:" + consentInfoList.size());
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getConsentInfoList() - ERROR ", e);
 		} finally {
@@ -3893,7 +3890,6 @@ public class StudyDAOImpl implements StudyDAO {
 				query.setInteger("anchorDateId", resourceBO.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {
-					System.out.println("StudyDAOImpl.saveOrUpdateResource()  participant prop count condition match");
 					query = session.createQuery(
 							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInResource = 1 where PBO.anchorDateId=:anchorDateId");
 					query.setInteger("anchorDateId", resourceBO.getAnchorDateId());

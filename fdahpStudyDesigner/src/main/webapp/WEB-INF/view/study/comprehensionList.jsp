@@ -431,11 +431,12 @@ function saveConsent(type){
 		}
 		if(minScoreFlag){
 			var data = JSON.stringify(consentInfo);
+			var pageName = 'comprehenstionTest';
 			$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
 		          type: "POST",
 		          datatype: "json",
-		          data: {consentInfo:data},
+		          data: {consentInfo:data, page:pageName},
 		          beforeSend: function(xhr, settings){
 		              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 		          },

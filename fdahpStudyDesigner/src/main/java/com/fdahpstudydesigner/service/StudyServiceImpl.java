@@ -1196,18 +1196,24 @@ public class StudyServiceImpl implements StudyService {
 			if (consentBo.getAdditionalSignature() != null) {
 				updateConsentBo.setAdditionalSignature(consentBo.getAdditionalSignature());
 			}
-			if (StringUtils.equals(consentBo.getAdditionalSignature(), "Yes")) {
-				if (consentBo.getSignatures() != null && consentBo.getSignatures().length != 0) {
-					if (consentBo.getSignatures().length == 3) {
-						updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
-						updateConsentBo.setSignatureTwo(consentBo.getSignatures()[1]);
-						updateConsentBo.setSignatureThree(consentBo.getSignatures()[2]);
-					} else if (consentBo.getSignatures().length == 2) {
-						updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
-						updateConsentBo.setSignatureTwo(consentBo.getSignatures()[1]);
-						updateConsentBo.setSignatureThree(null);
-					} else if (consentBo.getSignatures().length == 1) {
-						updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+			if(consentBo.isReviewAndEconsentPage()) {
+				if (StringUtils.equals(updateConsentBo.getAdditionalSignature(), "Yes")) {
+					if (consentBo.getSignatures() != null && consentBo.getSignatures().length != 0) {
+						if (consentBo.getSignatures().length == 3) {
+							updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+							updateConsentBo.setSignatureTwo(consentBo.getSignatures()[1]);
+							updateConsentBo.setSignatureThree(consentBo.getSignatures()[2]);
+						} else if (consentBo.getSignatures().length == 2) {
+							updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+							updateConsentBo.setSignatureTwo(consentBo.getSignatures()[1]);
+							updateConsentBo.setSignatureThree(null);
+						} else if (consentBo.getSignatures().length == 1) {
+							updateConsentBo.setSignatureOne(consentBo.getSignatures()[0]);
+							updateConsentBo.setSignatureTwo(null);
+							updateConsentBo.setSignatureThree(null);
+						}
+					} else {
+						updateConsentBo.setSignatureOne(null);
 						updateConsentBo.setSignatureTwo(null);
 						updateConsentBo.setSignatureThree(null);
 					}
@@ -1216,10 +1222,6 @@ public class StudyServiceImpl implements StudyService {
 					updateConsentBo.setSignatureTwo(null);
 					updateConsentBo.setSignatureThree(null);
 				}
-			} else {
-				updateConsentBo.setSignatureOne(null);
-				updateConsentBo.setSignatureTwo(null);
-				updateConsentBo.setSignatureThree(null);
 			}
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj, customStudyId);
 		} catch (Exception e) {

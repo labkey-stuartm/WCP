@@ -671,7 +671,6 @@ public class StudyController {
 			if (!cusId.isEmpty()) {
 				flag = studyService.deleteStudyByCustomStudyId(cusId);
 				if (flag) {
-					System.out.println("deleted successfully");
 					request.getSession(false).setAttribute("sucMsg", "deleted successfully");
 				} else {
 					request.getSession(false).setAttribute("errMsg", "DB issue or study does not exist");
@@ -1088,7 +1087,6 @@ public class StudyController {
 						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
 				String permission = (String) request.getSession()
 						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION);
-				System.out.println(permission);
 				if (StringUtils.isEmpty(studyId)) {
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
 							? ""
@@ -1589,7 +1587,6 @@ public class StudyController {
 					}
 					// Getting study details by userId for notification
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
-					System.out.println(studyBo.getAppId());
 					if (!"".equals(notificationId)) {
 						// Fetching notification detail from notification table by
 						// Id.
@@ -2930,12 +2927,18 @@ public class StudyController {
 			if ((sesObj != null) && (sesObj.getStudySession() != null)
 					&& sesObj.getStudySession().contains(sessionStudyCount)) {
 				consentInfoParamName = request.getParameter("consentInfo");
+				String page = request.getParameter("page");
 				if (StringUtils.isNotEmpty(consentInfoParamName)) {
 					consentBo = mapper.readValue(consentInfoParamName, ConsentBo.class);
 					if (consentBo != null) {
 						customStudyId = (String) request.getSession()
 								.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						comprehensionTest = consentBo.getComprehensionTest();
+						if(StringUtils.equals(FdahpStudyDesignerConstants.CONESENT_REVIEW, page)) {
+							consentBo.setReviewAndEconsentPage(true);
+						}else {
+							consentBo.setReviewAndEconsentPage(false);
+						}
 						consentBo = studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj, customStudyId);
 						studyId = StringUtils.isEmpty(String.valueOf(consentBo.getStudyId())) ? ""
 								: String.valueOf(consentBo.getStudyId());
@@ -3067,7 +3070,6 @@ public class StudyController {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		ModelMap map = new ModelMap();
 		try {
-			System.out.println("StudyController.saveOrUpdateBasicInfo() ==>> " + studyBo.getResearchSponsor());
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))
