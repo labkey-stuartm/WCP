@@ -1,4 +1,4 @@
-name: Build wcp
+name: Build WCP
 on:
  pull_request:
 jobs:
