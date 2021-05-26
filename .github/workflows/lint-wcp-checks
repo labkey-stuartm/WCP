@@ -1,4 +1,4 @@
-name: lint-wcp-checks
+name: lint-WCP
 
 on:
   pull_request:
@@ -7,8 +7,8 @@ on:
 jobs:
   checkstyle_job:
     runs-on: ubuntu-latest
-  name: Checkstyle job
-  steps:
+    name: Checkstyle job
+    steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Run check style
@@ -18,4 +18,4 @@ jobs:
         reporter: 'github-pr-review'
         level: error
         workdir: ./
-        tool_name: wcp Checks
+        tool_name: wcp checks
