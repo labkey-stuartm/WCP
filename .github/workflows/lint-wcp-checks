@@ -7,11 +7,8 @@ on:
 jobs:
   checkstyle_job:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: /response-datastore/response-server-service
-    name: Checkstyle job
-    steps:
+  name: Checkstyle job
+  steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Run check style
