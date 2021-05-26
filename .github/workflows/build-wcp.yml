@@ -11,6 +11,6 @@ jobs:
       with:
         java-version: 11
     - name: Build with Maven
-      run: 
-           cd fdahpStudyDesigner
-           mvn -B package --file pom.xml
+      run: |
+          cd fdahpStudyDesigner
+          mvn -B package --file pom.xml
