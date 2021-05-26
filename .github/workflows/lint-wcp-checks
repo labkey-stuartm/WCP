@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - develop
-  paths:
-    - '/**'
-    - '.github/workflows/lint-wcp-checks.yml'
 jobs:
   checkstyle_job:
     runs-on: ubuntu-latest
