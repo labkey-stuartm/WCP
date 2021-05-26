@@ -1,4 +1,4 @@
-name: lint-WCP-checks
+name: lint-WCP
 
 on:
   pull_request:
