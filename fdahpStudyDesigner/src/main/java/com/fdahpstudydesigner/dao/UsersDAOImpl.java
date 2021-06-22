@@ -53,7 +53,6 @@ public class UsersDAOImpl implements UsersDAO {
 	 * @param userStatus
 	 * @param loginUser
 	 * @param userSession , {@link SessionObject}
-	 * @param request     , {@link HttpServletRequest}
 	 */
 	@Override
 	public String activateOrDeactivateUser(int userId, int userStatus, int loginUser, SessionObject userSession) {
@@ -84,9 +83,12 @@ public class UsersDAOImpl implements UsersDAO {
 				activityDetail = "User account  de-activated. (Account Details:- First Name = " + userBO.getFirstName()
 						+ " Last Name = " + userBO.getLastName() + ", Email =" + userBO.getUserEmail() + ")";
 			}
-			query = session
-					.createQuery(" UPDATE UserBO SET enabled = " + userStatusNew + ", modifiedOn = now(), modifiedBy = "
-							+ loginUser + ",forceLogout = " + forceLogout + " WHERE userId = " + userId);
+			query = session.createQuery(" UPDATE UserBO SET enabled = :userStatusNew, modifiedOn = now(), " +
+					"modifiedBy = :loginUser, forceLogout = :forceLogout WHERE userId = :userId");
+			query.setInteger("userStatusNew", userStatusNew);
+			query.setInteger("loginUser", loginUser);
+			query.setBoolean("forceLogout", forceLogout);
+			query.setInteger("userId", userId);
 			count = query.executeUpdate();
 			if (count > 0) {
 				auditLogDAO.saveToAuditLog(session, transaction, userSession, activity, activityDetail,
@@ -143,21 +145,21 @@ public class UsersDAOImpl implements UsersDAO {
 				updateFlag = true;
 			}
 
-			query = session.createQuery(" FROM UserBO UBO where UBO.userId = " + userId);
+			query = session.createQuery(" FROM UserBO UBO where UBO.userId = :userId");
+			query.setInteger("userId", userId);
 			userBO2 = (UserBO) query.uniqueResult();
 			if (!permissions.isEmpty()) {
 				permissionSet = new HashSet<UserPermissions>(
-						session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN (" + permissions + ")")
-								.list());
+						session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN (" + permissions + ")").list());
 				userBO2.setPermissionList(permissionSet);
-				session.update(userBO2);
 			} else {
 				userBO2.setPermissionList(null);
-				session.update(userBO2);
 			}
+			session.update(userBO2);
 
 			if (updateFlag && "".equals(selectedStudies)) {
-				query = session.createSQLQuery(" delete from study_permission where user_id =" + userId);
+				query = session.createSQLQuery(" delete from study_permission where user_id = :userId");
+				query.setInteger("userId", userId);
 				query.executeUpdate();
 			}
 
@@ -167,21 +169,24 @@ public class UsersDAOImpl implements UsersDAO {
 
 				if (updateFlag) {
 					query = session.createSQLQuery(" delete from study_permission where study_id not in ("
-							+ selectedStudies + ") and user_id =" + userId);
+							+ selectedStudies + ") and user_id = :userId");
+					query.setInteger("userId", userId);
 					query.executeUpdate();
 				}
 
 				for (int i = 0; i < selectedStudy.length; i++) {
-					query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId = " + selectedStudy[i]
-							+ " AND UBO.userId =" + userId);
+					query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId = :selectedStudy" +
+							" AND UBO.userId = :userId");
+					query.setString("selectedStudy", selectedStudy[i]);
+					query.setInteger("userId", userId);
 					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 					if (null != studyPermissionBO) {
-						studyPermissionBO.setViewPermission("1".equals(permissionValue[i]) ? true : false);
+						studyPermissionBO.setViewPermission("1".equals(permissionValue[i]));
 						session.update(studyPermissionBO);
 					} else {
 						studyPermissionBO = new StudyPermissionBO();
 						studyPermissionBO.setStudyId(Integer.parseInt(selectedStudy[i]));
-						studyPermissionBO.setViewPermission("1".equals(permissionValue[i]) ? true : false);
+						studyPermissionBO.setViewPermission("1".equals(permissionValue[i]));
 						studyPermissionBO.setUserId(userId);
 						session.save(studyPermissionBO);
 					}
@@ -225,10 +230,10 @@ public class UsersDAOImpl implements UsersDAO {
 				int count = session
 						.createSQLQuery(
 								"Update users set force_logout='Y', credentialsNonExpired=false WHERE user_id =:userId")
-						.setParameter("userId", userId).executeUpdate();
+						.setInteger("userId", userId).executeUpdate();
 				if (count > 0) {
 					session.createSQLQuery("update user_attempts set attempts = 0 WHERE email_id =:email")
-							.setParameter("email", email).executeUpdate();
+							.setString("email", email).executeUpdate();
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
 			} else {
@@ -313,7 +318,8 @@ public class UsersDAOImpl implements UsersDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createSQLQuery(
-					" SELECT UPM.permission_id FROM user_permission_mapping UPM WHERE UPM.user_id = " + userId + "");
+					" SELECT UPM.permission_id FROM user_permission_mapping UPM WHERE UPM.user_id = :userId")
+					.setInteger("userId", userId);
 			permissions = query.list();
 		} catch (Exception e) {
 			logger.error("UsersDAOImpl - getPermissionsByUserId() - ERROR", e);
@@ -369,7 +375,7 @@ public class UsersDAOImpl implements UsersDAO {
 		Query query = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" from UserBO where userEmail = '" + emailId + "'");
+			query = session.createQuery(" from UserBO where userEmail = :emailId").setString("emailId", emailId);
 			userBo = (UserBO) query.uniqueResult();
 		} catch (Exception e) {
 			logger.error("UsersDAOImpl - getSuperAdminNameByEmailId() - ERROR", e);
@@ -397,11 +403,13 @@ public class UsersDAOImpl implements UsersDAO {
 		Query query = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
+			query = session.createQuery("SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId")
+					.setInteger("userId", userId);
 			userBO = (UserBO) query.uniqueResult();
 			if (userBO != null && userBO.getRoleId() != null) {
 				String roleName = (String) session
-						.createSQLQuery("select role_name from roles where role_id=" + userBO.getRoleId())
+						.createSQLQuery("select role_name from roles where role_id= :roleId")
+						.setInteger("roleId", userBO.getRoleId())
 						.uniqueResult();
 				if (StringUtils.isNotEmpty(roleName))
 					userBO.setRoleName(roleName);
@@ -485,7 +493,8 @@ public class UsersDAOImpl implements UsersDAO {
 			query = session.createSQLQuery("Select u.user_id from users u where u.user_id in "
 					+ "(select upm.user_id from user_permission_mapping upm where upm.permission_id "
 					+ "= (select up.permission_id from user_permissions up where "
-					+ "up.permissions = 'ROLE_SUPERADMIN')) and u.user_id = " + sessionUserId + "");
+					+ "up.permissions = 'ROLE_SUPERADMIN')) and u.user_id = :userId");
+			query.setInteger("userId", sessionUserId);
 			userId = (Integer) query.uniqueResult();
 		} catch (Exception e) {
 			logger.error("UsersDAOImpl - getUserPermissionByUserId() - ERROR", e);
@@ -509,7 +518,8 @@ public class UsersDAOImpl implements UsersDAO {
 		Query query = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getUserRoleByRoleId").setInteger("roleId", roleId);
+			query = session.createQuery("SELECT RBO FROM RoleBO RBO WHERE RBO.roleId = :roleId")
+					.setInteger("roleId", roleId);
 			roleBO = (RoleBO) query.uniqueResult();
 		} catch (Exception e) {
 			logger.error("UsersDAOImpl - getUserRole() - ERROR", e);

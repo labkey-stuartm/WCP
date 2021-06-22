@@ -338,7 +338,7 @@ public class UserBO implements Serializable {
 	}
 
 	/**
-	 * @param permissions the permissions to set
+	 * @param permissionList the permissions to set
 	 */
 	public void setPermissions(Set<UserPermissions> permissionList) {
 		this.permissionList = permissionList;
