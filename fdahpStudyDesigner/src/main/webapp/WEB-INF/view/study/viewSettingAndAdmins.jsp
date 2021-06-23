@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -7,11 +7,14 @@
 <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-<style>
+<head>
+  <meta charset="UTF-8">
+  <style>
 table.dataTable thead th:last-child{
     width: 100px !important;
 }
 </style>
+</head>
        <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">

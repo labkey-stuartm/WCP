@@ -104,7 +104,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //		sesObj.setPrivacyPolicyText(masterDataBO.getPrivacyPolicyText());
 
 		if (response.isCommitted()) {
-			System.out.println("Can't redirect");
+			logger.info("Can't redirect");
 			return;
 		}
 

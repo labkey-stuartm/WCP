@@ -1,9 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<head>
+  <meta charset="UTF-8">
+</head>
 
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -23,7 +26,6 @@
 					<c:set var="isLive">${_S}isLive</c:set>
 					${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}
 				</div>
-
 
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -49,7 +51,6 @@
 		<input type="hidden" value="" id="buttonText" name="buttonText">
 		<!--  Start body tab section -->
 		<div class="right-content-body col-xs-12">
-
 			<div class="col-md-12 p-none">
 				<div class="col-md-6 pl-none">
 					<div class="gray-xs-f mb-xs">
@@ -70,21 +71,6 @@
 				</div>
 				<div class="col-md-6 pr-none">
 					<div class="gray-xs-f mb-xs">
-						Study Name <small>(50 characters max)</small><span
-							class="requiredStar"> *</span>
-					</div>
-					<div class="form-group">
-						<input type="text" class="form-control" name="name"
-							id="customStudyName" value="${fn:escapeXml(studyBo.name)}"
-							maxlength="50" required />
-						<div class="help-block with-errors red-txt"></div>
-					</div>
-				</div>
-			</div>
-			<!-- phase2a-sp1 -->
-			<div class="col-md-12 p-none">
-				<div class="col-md-6 pl-none">
-					<div class="gray-xs-f mb-xs">
 						App ID <small>(15 characters max)</small><span
 							class="requiredStar"> *</span><span><span
 							data-toggle="tooltip" data-placement="top"
@@ -102,23 +88,39 @@
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
-				<!-- 				<div class="col-md-6 pr-none"> -->
-				<!-- 					<div class="gray-xs-f mb-xs"> -->
-				<!-- 						Org ID <small>(15 characters max)</small><span -->
-				<!-- 							class="requiredStar"> *</span><span><span data-toggle="tooltip" data-placement="top" title="Enter a unique human-readable identifier corresponding to the organization that this study belongs to." class="filled-tooltip"></span></span> -->
-				<!-- 					</div> -->
-				<!-- 					<div class="form-group appIdClass"> -->
-				<!-- 						<input type="text" custAttType="cust" -->
-				<!-- 							class="form-control aq-inp orgIdCls" name="orgId" -->
-				<!-- 							id="orgId" maxlength="15" -->
-				<%-- 							value="${studyBo.orgId}" --%>
-				<%-- 							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if> --%>
-				<!-- 							required /> -->
-				<!-- 						<div class="help-block with-errors red-txt"></div> -->
-				<!-- 					</div> -->
-				<!-- 				</div> -->
+				<div class="col-md-6 pl-none">
+				<div class="gray-xs-f mb-xs">
+					Study Language<span class="requiredStar"> *</span><span><span
+							data-toggle="tooltip" data-placement="top"
+							title="Select the language that the study should be made available in on the mobile app. Ensure you create all study content in the same language."
+							class="filled-tooltip"></span></span>
+				</div>
+				<div class="form-group">
+					<select
+						class="selectpicker aq-select aq-select-form studyLanguage"
+						id="studyLanguage" name="studyLanguage" required title="Select"
+						<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language}" 
+								${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+						</c:forEach>
+					</select>
+					<div class="help-block with-errors red-txt"></div>
+				</div>
 			</div>
-			<!--phase2a sp1-->
+				<div class="col-md-6 pr-none">
+					<div class="gray-xs-f mb-xs">
+						Study Name <small>(50 characters max)</small><span
+							class="requiredStar"> *</span>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="name"
+							id="customStudyName" value="${fn:escapeXml(studyBo.name)}"
+							maxlength="50" required />
+						<div class="help-block with-errors red-txt"></div>
+					</div>
+				</div>
+			</div>
 
 			<div class="col-md-12 p-none">
 				<div class="gray-xs-f mb-xs">
@@ -158,17 +160,6 @@
 							value="${studyBo.researchSponsor}" maxlength="100" required />
 						<div class="help-block with-errors red-txt"></div>
 					</div>
-					<%-- <div class="form-group">
-						<select
-							class="selectpicker aq-select aq-select-form elaborateClass"
-							required title="Select" name="researchSponsor">
-							<c:forEach items="${researchSponserList}" var="research">
-								<option value="${research.id}"
-									${studyBo.researchSponsor eq research.id ?'selected':''}>${research.value}</option>
-							</c:forEach>
-						</select>
-						<div class="help-block with-errors red-txt"></div>
-					</div> --%>
 				</div>
 			</div>
 
@@ -424,7 +415,7 @@
     						if(parseInt(studyCount) >= 1){
     							return false;
 						    }else{
-						        $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+						        $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 				      	        if(isFromValid("#basicInfoFormId"))
 						        validateAppId('',function(valid){
 							     if(valid){
@@ -432,7 +423,7 @@
     						       if(parseInt(appCount) >= 1){
     							     return false;
 						           }else{
-									      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+									      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 				      	               	  if(isFromValid("#basicInfoFormId"))
 				      	                	var file = $('#uploadImg').val();
 				      	                    var thumbnailImageId = $('#thumbnailImageId').val();
@@ -451,7 +442,7 @@
 							    						            if(parseInt(appCount) >= 1){
 							    							         return false;
 														            }else{
-																	     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+																	     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 									      		                       	 if(isFromValid("#basicInfoFormId")){
 									      		                       		 $("#buttonText").val('completed');
 									      		                        	 $("#basicInfoFormId").submit();
@@ -479,7 +470,7 @@
 						if(parseInt(studyCount) >= 1){
 							return false;
 						}else{
-						      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+						      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 						      if(isFromValid("#basicInfoFormId"));
 						       validateAppId('',function(valid){
 							     if(valid){
@@ -487,7 +478,7 @@
     						       if(parseInt(appCount) >= 1){
     							     return false;
 						           }else{
-									     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+									     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 				                   		 if(isFromValid("#basicInfoFormId")){
 				                   			 $("#buttonText").val('completed');
 				                    	  	 $("#basicInfoFormId").submit();
@@ -531,19 +522,19 @@
                             if(null != appId && appId !='' && typeof appId != 'undefined'){
                                validateAppId('',function(valid){
 							     if(valid){
-							         $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+							         $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 			                		 $('#basicInfoFormId').validator('destroy');
 			                         $("#buttonText").val('save');
 			                         $('#basicInfoFormId').submit();
 							     }else{
-							           $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+							           $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 			                		   $('#basicInfoFormId').validator('destroy');
 			                           $("#buttonText").val('save');
 			                           $('#basicInfoFormId').submit();
 							     }
 							   });
                             }else{
-                               $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls').prop('disabled', false);
+                               $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 	                		   $('#basicInfoFormId').validator('destroy');
 	                           $("#buttonText").val('save');
 	                           $('#basicInfoFormId').submit();

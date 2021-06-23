@@ -200,6 +200,9 @@ public class StudyBo implements Serializable {
 
 	@Column(name = "test_mode_appId")
 	private String testModeAppId;
+	
+	@Column(name = "study_language")
+	private String studyLanguage;
 
 	public String getAllowRejoin() {
 		return allowRejoin;
@@ -615,5 +618,13 @@ public class StudyBo implements Serializable {
 
 	public void setTestModeAppId(String testModeAppId) {
 		this.testModeAppId = testModeAppId;
+	}
+
+	public String getStudyLanguage() {
+		return studyLanguage;
+	}
+
+	public void setStudyLanguage(String studyLanguage) {
+		this.studyLanguage = studyLanguage;
 	}
 }

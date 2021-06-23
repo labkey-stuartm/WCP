@@ -1,9 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<style>
+
+<head>
+  <meta charset="UTF-8">
+  <style>
 .block__devider{
     padding: 20px 0px;
     border-top: 1px solid #95a2ab;
@@ -25,6 +27,7 @@
 	margin-bottom: 8px;
 }
 </style>
+</head>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -894,11 +897,12 @@ $(document).ready(function(){
 	    	if(null != additionalSignature_val){consentInfo.additionalSignature = additionalSignature_val;}
 	    	if(null != customArray){consentInfo.signatures = customArray;}
 	    	var data = JSON.stringify(consentInfo);
+	    	var pageName = 'consentreview';
 	    	$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
 		          type: "POST",
 		          datatype: "json",
-		          data: {consentInfo:data},
+		          data: {consentInfo:data, page:pageName},
 		          beforeSend: function(xhr, settings){
 		              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 		          },

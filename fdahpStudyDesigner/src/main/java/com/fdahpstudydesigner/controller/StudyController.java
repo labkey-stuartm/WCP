@@ -44,6 +44,7 @@ import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -670,7 +671,6 @@ public class StudyController {
 			if (!cusId.isEmpty()) {
 				flag = studyService.deleteStudyByCustomStudyId(cusId);
 				if (flag) {
-					System.out.println("deleted successfully");
 					request.getSession(false).setAttribute("sucMsg", "deleted successfully");
 				} else {
 					request.getSession(false).setAttribute("errMsg", "DB issue or study does not exist");
@@ -1087,7 +1087,6 @@ public class StudyController {
 						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
 				String permission = (String) request.getSession()
 						.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION);
-				System.out.println(permission);
 				if (StringUtils.isEmpty(studyId)) {
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
 							? ""
@@ -1588,7 +1587,6 @@ public class StudyController {
 					}
 					// Getting study details by userId for notification
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
-					System.out.println(studyBo.getAppId());
 					if (!"".equals(notificationId)) {
 						// Fetching notification detail from notification table by
 						// Id.
@@ -2929,12 +2927,18 @@ public class StudyController {
 			if ((sesObj != null) && (sesObj.getStudySession() != null)
 					&& sesObj.getStudySession().contains(sessionStudyCount)) {
 				consentInfoParamName = request.getParameter("consentInfo");
+				String page = request.getParameter("page");
 				if (StringUtils.isNotEmpty(consentInfoParamName)) {
 					consentBo = mapper.readValue(consentInfoParamName, ConsentBo.class);
 					if (consentBo != null) {
 						customStudyId = (String) request.getSession()
 								.getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						comprehensionTest = consentBo.getComprehensionTest();
+						if(StringUtils.equals(FdahpStudyDesignerConstants.CONESENT_REVIEW, page)) {
+							consentBo.setReviewAndEconsentPage(true);
+						}else {
+							consentBo.setReviewAndEconsentPage(false);
+						}
 						consentBo = studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj, customStudyId);
 						studyId = StringUtils.isEmpty(String.valueOf(consentBo.getStudyId())) ? ""
 								: String.valueOf(consentBo.getStudyId());
@@ -3066,7 +3070,6 @@ public class StudyController {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		ModelMap map = new ModelMap();
 		try {
-			System.out.println("StudyController.saveOrUpdateBasicInfo() ==>> " + studyBo.getResearchSponsor());
 			SessionObject sesObj = (SessionObject) request.getSession()
 					.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))
@@ -4311,6 +4314,7 @@ public class StudyController {
 				if (studyBo == null) {
 					studyBo = new StudyBo();
 					studyBo.setType(FdahpStudyDesignerConstants.STUDY_TYPE_GT);
+					studyBo.setStudyLanguage(FdahpStudyDesignerConstants.STUDY_LANGUAGE_ENGLISH);
 				} else if ((studyBo != null) && StringUtils.isNotEmpty(studyBo.getCustomStudyId())) {
 					request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID,
 							studyBo.getCustomStudyId());
@@ -4342,12 +4346,17 @@ public class StudyController {
 					studyBo.setCustomStudyId("");
 					studyBo.setAppId("");
 				}
+				
+				ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
+				String[] languageList = resourceBundle.getString("languageList").split(",");
+				
 				map.addAttribute("categoryList", categoryList);
 				map.addAttribute("dataPartnerList", dataPartnerList);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				map.addAttribute("createStudyId", "true");
 				map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
 				map.addAttribute("_S", sessionStudyCount);
+				map.addAttribute("languageList", languageList);
 				mav = new ModelAndView("viewBasicInfo", map);
 			}
 		} catch (Exception e) {

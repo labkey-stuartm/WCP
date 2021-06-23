@@ -207,5 +207,5 @@ public interface StudyDAO {
 
 	public boolean validateAppId(String customStudyId, String appId, String studyType);
 
-	public StudyPermissionBO getStudyPermissionBO(int studyId, int userId);
+	public StudyPermissionBO getStudyPermissionBO(int studyId, int userId);	
 }

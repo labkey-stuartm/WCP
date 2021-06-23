@@ -1281,8 +1281,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
 					Long count = (Long) query.uniqueResult();
 					if (count < 1) {
-						System.out.println(
-								"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
 						query = session.createQuery(
 								"Update ParticipantPropertiesBO PBO SET PBO.isUsedInQuestionnaire = 0 where PBO.anchorDateId=:anchorDateId");
 						query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
@@ -3382,8 +3380,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 				query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {
-					System.out.println(
-							"StudyQuestionnaireDAOImpl.saveORUpdateQuestionnaire() participant prop count condition match");
 					query = session.createQuery(
 							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInQuestionnaire = 1 where PBO.anchorDateId=:anchorDateId");
 					query.setInteger("anchorDateId", questionnaireBo.getAnchorDateId());

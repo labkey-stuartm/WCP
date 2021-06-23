@@ -1,9 +1,11 @@
-
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page import="com.fdahpstudydesigner.util.SessionObject"%>
-<style>
+<head>
+  <meta charset="UTF-8">
+  <style>
 .cursonMove {
 	cursor: move !important;
 }
@@ -16,6 +18,7 @@
 	pointer-events: none;
 }
 </style>
+</head>
 <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
 	<form:form data-toggle="validator"

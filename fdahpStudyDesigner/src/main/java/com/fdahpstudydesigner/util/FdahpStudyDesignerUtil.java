@@ -560,15 +560,12 @@ public class FdahpStudyDesignerUtil {
 		boolean flag = false;
 		try {
 			if (sdf.parse(inputDate).before(new Date())) {
-				// System.out.println("The specified date is in the past");
 				flag = false;
 			}
 			if (sdf.parse(inputDate).after(new Date())) {
-				// System.out.println("The specified date is in the future");
 				flag = true;
 			}
 			if (sdf.parse(inputDate).equals(new Date())) {
-				// System.out.println("The specified date is now");
 				flag = true;
 			}
 		} catch (Exception e) {

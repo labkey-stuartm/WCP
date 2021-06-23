@@ -66,6 +66,7 @@ import com.fdahpstudydesigner.bo.UserPermissions;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
+import com.fdahpstudydesigner.util.SpanishLangConstants;
 
 /**
  *
@@ -580,8 +581,6 @@ public class StudyDAOImpl implements StudyDAO {
 						query.setInteger("anchorDateId", resource.getAnchorDateId());
 						Long count = (Long) query.uniqueResult();
 						if (count < 1) {
-							System.out.println(
-									"StudyQuestionnaireDAOImpl.deleteQuestuionnaireInfo() participant prop count condition match");
 							query = session.createQuery(
 									"Update ParticipantPropertiesBO PBO SET PBO.isUsedInResource = 0 where PBO.anchorDateId=:anchorDateId");
 							query.setInteger("anchorDateId", resource.getAnchorDateId());
@@ -1385,7 +1384,6 @@ public class StudyDAOImpl implements StudyDAO {
 					+ " and CIB.active=1 order by CIB.sequenceNo asc";
 			query = session.createQuery(searchQuery);
 			consentInfoList = query.list();
-			System.out.println("consentInfoList:" + consentInfoList.size());
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getConsentInfoList() - ERROR ", e);
 		} finally {
@@ -3892,7 +3890,6 @@ public class StudyDAOImpl implements StudyDAO {
 				query.setInteger("anchorDateId", resourceBO.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {
-					System.out.println("StudyDAOImpl.saveOrUpdateResource()  participant prop count condition match");
 					query = session.createQuery(
 							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInResource = 1 where PBO.anchorDateId=:anchorDateId");
 					query.setInteger("anchorDateId", resourceBO.getAnchorDateId());
@@ -4071,7 +4068,8 @@ public class StudyDAOImpl implements StudyDAO {
 						query.executeUpdate();
 
 					}
-
+					
+					dbStudyBo.setStudyLanguage(studyBo.getStudyLanguage());
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
 					dbStudyBo.setName(studyBo.getName());
 					dbStudyBo.setFullName(studyBo.getFullName());
@@ -5921,8 +5919,16 @@ public class StudyDAOImpl implements StudyDAO {
 						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
-						notificationBO
-								.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						
+						if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+								studyBo.getStudyLanguage())) {
+							notificationBO
+									.setNotificationText(SpanishLangConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						} else {
+							notificationBO.setNotificationText(
+									FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						}
+						
 						notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -5995,8 +6001,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(
-										FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO
+											.setNotificationText(SpanishLangConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								} else {
+									notificationBO.setNotificationText(
+											FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6064,8 +6078,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT
-										.replace("$customId", studyBo.getName()));
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_PAUSE_TEXT
+											.replace("$customId", studyBo.getName()));
+								} else {
+									notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT
+											.replace("$customId", studyBo.getName()));
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6092,8 +6114,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT
-										.replace("$customId", studyBo.getName()));
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_RESUME_TEXT
+											.replace("$customId", studyBo.getName()));
+								} else {
+									notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT
+											.replace("$customId", studyBo.getName()));
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6120,9 +6150,18 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO
-										.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT
-												.replace("$customId", studyBo.getName()));
+								
+								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+										studyBo.getStudyLanguage())) {
+									notificationBO
+									.setNotificationText(SpanishLangConstants.NOTIFICATION_DEACTIVATE_TEXT
+											.replace("$customId", studyBo.getName()));
+								} else {
+									notificationBO
+									.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT
+											.replace("$customId", studyBo.getName()));
+								}
+								
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());

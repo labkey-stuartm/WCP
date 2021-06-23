@@ -167,17 +167,10 @@ public class FDASchedulerService {
 					FdahpStudyDesignerConstants.UI_SDF_TIME, 1);
 			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
 			if (pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
-				System.out.println("FDASchedulerService.sendPushNotification() pushNotificationBeans size ==>> "
-						+ pushNotificationBeans.size());
 				for (PushNotificationBean p : pushNotificationBeans) {
-					System.out.println("FDASchedulerService.sendPushNotification() PushNotificationBean appid ==>> "
-							+ p.getAppId());
 					if (p.getAppId() == null) {
 						List<String> appIds = notificationService.getGatwayAppList();
 						if (!appIds.isEmpty()) {
-							System.out.println(appIds);
-							System.out.println(
-									"FDASchedulerService.sendPushNotification() total appids ==>> " + appIds.size());
 							for (String appId : appIds) {
 								PushNotificationBean pushBean = new PushNotificationBean();
 								BeanUtils.copyProperties(pushBean, p);
@@ -197,11 +190,26 @@ public class FDASchedulerService {
 				if (!pushNotificationBeans.isEmpty()) {
 					for (PushNotificationBean pushBean : pushNotificationBeans) {
 						if (pushBean.getAppId() != null) {
+							
+							if (pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
+									|| pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSTM001)
+									|| pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)
+									|| pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFHTEST)) {
+								pushBean.setOrgId(FdahpStudyDesignerConstants.ORG_ID_FDAHPH);
+							} else if (pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSIBD001)
+									|| pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSBP001)) {
+								pushBean.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CACFND);
+							} else if (pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJIA001)
+									|| pushBean.getAppId().equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJP001)) {
+								pushBean.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CARREG);
+							} else {
+								pushBean.setOrgId(FdahpStudyDesignerConstants.ORG_ID_OTHER);
+							}
+							
 							finalPushNotificationBeans.add(pushBean);
 						}
 					}
 				}
-
 				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(finalPushNotificationBeans));
 				logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA " + arrayToJson);
 				JSONObject json = new JSONObject();

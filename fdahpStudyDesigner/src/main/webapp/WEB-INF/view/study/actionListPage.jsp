@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<head>
+<meta charset="UTF-8">
 <style>
 .btns__devider {
 	display: inline-block;
@@ -12,10 +13,13 @@
 	padding-top: 30px;
 	margin-top: 20px;
 }
+
 #spec-tooltip .tooltip-inner {
-    min-width: 430px !important;
+	min-width: 430px !important;
 }
 </style>
+</head>
+
 <div class="col-sm-10 col-rc white-bg p-none">
 
 	<!--  Start top tab section-->

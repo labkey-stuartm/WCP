@@ -408,6 +408,10 @@ public class FdahpStudyDesignerConstants {
 
 	public static final String STUDY_PAUSED_ERR_MSG = "The Study ID and App ID cannot be edited when the Study is in a Paused State.";
 	public static final String STUDY_ID_APP_ID_ERR_MSG = "The Study ID and App ID must be different from the values used in the Test Mode for this study.";
+	
+	//Multiple Languages
+	public static final String STUDY_LANGUAGE_ENGLISH = "English";
+	public static final String STUDY_LANGUAGE_SPANISH = "Spanish";
 
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

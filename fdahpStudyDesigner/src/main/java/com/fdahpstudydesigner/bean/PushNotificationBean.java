@@ -19,9 +19,8 @@ public class PushNotificationBean {
 	private String notificationType = "ST";
 	
 	private String appId = "";
-
-	// private String notificationTitle =
-	// FdahpStudyDesignerUtil.getAppProperties().get("push.notification.title");
+	
+	private String orgId;
 
 	/**
 	 * @return the customStudyId
@@ -112,6 +111,14 @@ public class PushNotificationBean {
 
 	public void setAppId(String appId) {
 		this.appId = appId;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
 	}
 
 	@Override

@@ -133,6 +133,9 @@ public class ConsentBo implements Serializable {
 
 	@Column(name = "signature_three")
 	private String signatureThree;
+	
+	@Transient
+	private boolean reviewAndEconsentPage;
 
 	public String getAggrementOfTheConsent() {
 		return aggrementOfTheConsent;
@@ -412,5 +415,13 @@ public class ConsentBo implements Serializable {
 
 	public void setSignatureThree(String signatureThree) {
 		this.signatureThree = signatureThree;
+	}
+
+	public boolean isReviewAndEconsentPage() {
+		return reviewAndEconsentPage;
+	}
+
+	public void setReviewAndEconsentPage(boolean reviewAndEconsentPage) {
+		this.reviewAndEconsentPage = reviewAndEconsentPage;
 	}
 }

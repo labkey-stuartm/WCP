@@ -1,11 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <jsp:useBean id="date" class="java.util.Date" />
 <c:set var="tz" value="America/Los_Angeles" />
+
+<head>
+<meta charset="UTF-8">
 <style>
 .time-opts .addBtnDis {
 	display: none;
@@ -44,6 +46,8 @@
 	font-size: 10px !important;
 }
 </style>
+</head>
+
 <!-- <div id="schedule" class="tab-pane fade in active mt-xlg"> -->
 <div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
 <div class="pb-lg ">
