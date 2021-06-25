@@ -2,6 +2,7 @@ package com.fdahpstudydesigner.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -102,11 +103,13 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = "select count(*) from active_task a" + " where a.study_id=" + studyId
-					+ " and a.task_type_id" + " in(select c.active_task_list_id from active_task_list c"
-					+ " where a.active=1 and c.task_name in('" + FdahpStudyDesignerConstants.TOWER_OF_HANOI + "','"
-					+ FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY + "'));";
-			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			String searchQuery = "select count(*) from active_task a where a.study_id= :studyId and "
+					+ "a.task_type_id in(select c.active_task_list_id from active_task_list c "
+					+ "where a.active=1 and c.task_name in(:taskNameList));";
+			List<String> taskNameList = Arrays.asList(FdahpStudyDesignerConstants.TOWER_OF_HANOI,
+					FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY);
+			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).setInteger("studyId", studyId)
+					.setParameterList("taskNameList", taskNameList).uniqueResult();
 			if (count != null && count.intValue() > 0) {
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
@@ -137,9 +140,9 @@ public class StudyDAOImpl implements StudyDAO {
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId=" + studyId
+			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId= :studyId"
 					+ " and CTQBO.active=1 order by CTQBO.sequenceNo desc");
-			query.setMaxResults(1);
+			query.setInteger("studyId", studyId).setMaxResults(1);
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
 			if (comprehensionTestQuestionBo != null) {
 				count = comprehensionTestQuestionBo.getSequenceNo() + 1;
@@ -173,9 +176,9 @@ public class StudyDAOImpl implements StudyDAO {
 		ConsentInfoBo consentInfoBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId=" + studyId
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId= :studyId"
 					+ " and CIB.active=1 order by CIB.sequenceNo DESC");
-			query.setMaxResults(1);
+			query.setInteger("studyId", studyId).setMaxResults(1);
 			consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
 			if (consentInfoBo != null) {
 				count = consentInfoBo.getSequenceNo() + 1;
@@ -213,9 +216,9 @@ public class StudyDAOImpl implements StudyDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
-			searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId=" + studyId
+			searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId= :studyId"
 					+ " and CTQBO.active=1 order by CTQBO.sequenceNo asc";
-			comprehensionTestQuestionList = session.createQuery(searchQuery).list();
+			comprehensionTestQuestionList = session.createQuery(searchQuery).setInteger("studyId", studyId).list();
 			if (comprehensionTestQuestionList != null && !comprehensionTestQuestionList.isEmpty()) {
 				boolean isValue = false;
 				for (ComprehensionTestQuestionBo comprehensionTestQuestion : comprehensionTestQuestionList) {
@@ -286,10 +289,8 @@ public class StudyDAOImpl implements StudyDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			List<ConsentInfoBo> consentInfoList = null;
-			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId=" + studyId
-					+ " and CIB.active=1 order by CIB.sequenceNo asc";
-			// String updateQuery = ""
-			consentInfoList = session.createQuery(searchQuery).list();
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId= :studyId and CIB.active=1 order by CIB.sequenceNo asc";
+			consentInfoList = session.createQuery(searchQuery).setInteger("studyId", studyId).list();
 			if (consentInfoList != null && !consentInfoList.isEmpty()) {
 				boolean isValue = false;
 				for (ConsentInfoBo consentInfoBo : consentInfoList) {
@@ -316,10 +317,11 @@ public class StudyDAOImpl implements StudyDAO {
 					session.saveOrUpdate(studySequence);
 				}
 			}
-			String deleteQuery = "Update ConsentInfoBo CIB set CIB.active=0,CIB.modifiedBy=" + sessionObject.getUserId()
-					+ ",CIB.modifiedOn='" + FdahpStudyDesignerUtil.getCurrentDateTime() + "' where CIB.id="
-					+ consentInfoId;
-			query = session.createQuery(deleteQuery);
+			String deleteQuery = "Update ConsentInfoBo CIB set CIB.active=0,CIB.modifiedBy= :modifiedBy"
+					+ ",CIB.modifiedOn= :modifiedOn where CIB.id= :consentInfoId";
+			query = session.createQuery(deleteQuery).setInteger("modifiedBy", sessionObject.getUserId())
+					.setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime())
+					.setInteger("consentInfoId", consentInfoId);
 			count = query.executeUpdate();
 			if (count > 0) {
 				message = FdahpStudyDesignerConstants.SUCCESS;
@@ -372,7 +374,6 @@ public class StudyDAOImpl implements StudyDAO {
 		String reorderQuery;
 		EligibilityTestBo eligibilityTestBo;
 		List<EligibilityTestBo> eligibilityTestBos;
-		StringBuilder sb = null;
 		StudyBo studyBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -388,15 +389,16 @@ public class StudyDAOImpl implements StudyDAO {
 				eligibilityDeleteResult = session.getNamedQuery("EligibilityTestBo.deleteById")
 						.setInteger("eligibilityTestId", eligibilityTestId).executeUpdate();
 			}
-			sb = new StringBuilder();
-			sb.append("select id FROM EligibilityTestBo  WHERE sequenceNo > '")
-					.append(eligibilityTestBo.getSequenceNo()).append("' AND active = true AND " + "eligibilityId = '")
-					.append(eligibilityTestBo.getEligibilityId()).append("'");
-			eligibilityTestBos = session.createQuery(sb.toString()).list();
+
+			eligibilityTestBos = session.createQuery(
+					"select id FROM EligibilityTestBo  WHERE sequenceNo > :sequenceNo AND active = true AND eligibilityId = :eligibilityId")
+					.setInteger("sequenceNo", eligibilityTestBo.getSequenceNo())
+					.setInteger("eligibilityId", eligibilityTestBo.getEligibilityId()).list();
+
 			if (eligibilityDeleteResult > 0 && !eligibilityTestBos.isEmpty()) {
-				reorderQuery = "update EligibilityTestBo  set sequenceNo=sequenceNo-1 where id in " + "("
-						+ StringUtils.join(eligibilityTestBos, ",") + ")";
-				eligibilityDeleteResult = session.createQuery(reorderQuery).executeUpdate();
+				reorderQuery = "update EligibilityTestBo  set sequenceNo=sequenceNo-1 where id in (:eligibilityTestBoList)";
+				eligibilityDeleteResult = session.createQuery(reorderQuery)
+						.setParameterList("eligibilityTestBoList", eligibilityTestBos).executeUpdate();
 			}
 			if (eligibilityDeleteResult > 0) {
 				result = FdahpStudyDesignerConstants.SUCCESS;
@@ -440,7 +442,6 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		StudyBo liveStudyBo = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
-		String subQuery = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -453,22 +454,24 @@ public class StudyDAOImpl implements StudyDAO {
 
 				// once live study deleted successfully, reseting the new study
 				if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='" + customStudyId + "'")
-							.executeUpdate();
+					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id= :customStudyId")
+							.setString("customStudyId", customStudyId).executeUpdate();
+					session.createSQLQuery("DELETE FROM study_activity_version WHERE custom_study_id= :customStudyId")
+							.setString("customStudyId", customStudyId).executeUpdate();
 					session.createSQLQuery(
-							"DELETE FROM study_activity_version WHERE custom_study_id='" + customStudyId + "'")
-							.executeUpdate();
-					subQuery = "(SELECT id FROM studies WHERE custom_study_id='" + customStudyId + "')";
-					session.createSQLQuery("UPDATE active_task set is_live=0 WHERE study_id in" + subQuery)
-							.executeUpdate();
-					session.createSQLQuery("UPDATE questionnaires set is_live=0 WHERE study_id in" + subQuery)
-							.executeUpdate();
-					session.createSQLQuery("UPDATE consent set is_live=0 WHERE study_id in" + subQuery).executeUpdate();
-					session.createSQLQuery("UPDATE consent_info set is_live=0 WHERE study_id in" + subQuery)
-							.executeUpdate();
+							"UPDATE active_task set is_live=0 WHERE study_id in (SELECT id FROM studies WHERE custom_study_id= :customStudyId)")
+							.setString("customStudyId", customStudyId).executeUpdate();
 					session.createSQLQuery(
-							"UPDATE studies set is_live=0 WHERE custom_study_id ='" + customStudyId + "'")
-							.executeUpdate();
+							"UPDATE questionnaires set is_live=0 WHERE study_id in (SELECT id FROM studies WHERE custom_study_id= :customStudyId)")
+							.setString("customStudyId", customStudyId).executeUpdate();
+					session.createSQLQuery(
+							"UPDATE consent set is_live=0 WHERE study_id in (SELECT id FROM studies WHERE custom_study_id= :customStudyId)")
+							.setString("customStudyId", customStudyId).executeUpdate();
+					session.createSQLQuery(
+							"UPDATE consent_info set is_live=0 WHERE study_id in (SELECT id FROM studies WHERE custom_study_id= :customStudyId)")
+							.setString("customStudyId", customStudyId).executeUpdate();
+					session.createSQLQuery("UPDATE studies set is_live=0 WHERE custom_study_id = :customStudyId")
+							.setString("customStudyId", customStudyId).executeUpdate();
 					flag = true;
 				}
 			}
@@ -503,12 +506,10 @@ public class StudyDAOImpl implements StudyDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if (StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(pageId)) {
-				query = session
-						.createQuery("delete from StudyPageBo where studyId=" + studyId + " and pageId=" + pageId);
-				count = query.executeUpdate();
+				query = session.createQuery("delete from StudyPageBo where studyId= :studyId and pageId= :pageId");
+				count = query.setString("studyId", studyId).setString("pageId", pageId).executeUpdate();
 				if (count > 0)
 					message = FdahpStudyDesignerConstants.SUCCESS;
-
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -539,7 +540,6 @@ public class StudyDAOImpl implements StudyDAO {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int resourceCount = 0;
-		Query resourceQuery = null;
 		Query notificationQuery = null;
 		List<ResourceBO> resourceBOList = null;
 		ResourceBO resource = null;
@@ -547,9 +547,9 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			String searchQuery = "From ResourceBO RBO where RBO.studyId=" + studyId
-					+ " and RBO.status=1 order by RBO.sequenceNo asc";
-			resourceBOList = session.createQuery(searchQuery).list();
+			resourceBOList = session.createQuery(
+					"From ResourceBO RBO where RBO.studyId= :studyId and RBO.status=1 order by RBO.sequenceNo asc")
+					.setInteger("studyId", studyId).list();
 			if (resourceBOList != null && !resourceBOList.isEmpty()) {
 				boolean isValue = false;
 				for (ResourceBO resourceBO : resourceBOList) {
@@ -563,9 +563,8 @@ public class StudyDAOImpl implements StudyDAO {
 				}
 			}
 
-			String deleteQuery = " UPDATE ResourceBO RBO SET status = " + false + " WHERE id = " + resourceInfoId;
-			resourceQuery = session.createQuery(deleteQuery);
-			resourceCount = resourceQuery.executeUpdate();
+			resourceCount = session.createQuery("UPDATE ResourceBO RBO SET status = false WHERE id = :resourceInfoId")
+					.setInteger("resourceInfoId", resourceInfoId).executeUpdate();
 
 			if (!resourceVisibility && resourceCount > 0) {
 
@@ -589,9 +588,9 @@ public class StudyDAOImpl implements StudyDAO {
 					}
 				}
 
-				String deleteNotificationQuery = " UPDATE NotificationBO NBO set NBO.notificationStatus = 1 WHERE NBO.resourceId = "
-						+ resourceInfoId;
-				notificationQuery = session.createQuery(deleteNotificationQuery);
+				notificationQuery = session.createQuery(
+						"UPDATE NotificationBO NBO set NBO.notificationStatus = 1 WHERE NBO.resourceId = :resourceInfoId")
+						.setInteger("resourceInfoId", resourceInfoId);
 				notificationQuery.executeUpdate();
 			}
 			transaction.commit();
@@ -978,14 +977,11 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		int count = 1;
 		EligibilityTestBo eligibilityTestBo = null;
-		StringBuilder sb = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			sb = new StringBuilder();
-			sb.append("From EligibilityTestBo ETB where ETB.eligibilityId=").append(eligibilityId)
-					.append(" and ETB.active=1 order by ETB.sequenceNo DESC");
-			query = session.createQuery(sb.toString()).setMaxResults(1);
-			eligibilityTestBo = ((EligibilityTestBo) query.uniqueResult());
+			eligibilityTestBo = (EligibilityTestBo) session.createQuery(
+					"From EligibilityTestBo ETB where ETB.eligibilityId= :eligibilityId and ETB.active=1 order by ETB.sequenceNo DESC")
+					.setInteger("eligibilityId", eligibilityId).setMaxResults(1).uniqueResult();
 			if (eligibilityTestBo != null) {
 				count = eligibilityTestBo.getSequenceNo() + 1;
 			}
@@ -1018,13 +1014,7 @@ public class StudyDAOImpl implements StudyDAO {
 			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name "
 					+ "FROM users u,roles r WHERE r.role_id = u.role_id AND u.status = 1 "
 					+ "AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
-					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
-			/*
-			 * + "AND u.user_id IN (SELECT upm.user_id FROM user_permission_mapping upm " +
-			 * "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_MANAGE_STUDIES')) "
-			 */
-			/* + "AND u.user_id <> "+userId */
-			);
+					+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) ");
 			objList = query.list();
 			if (null != objList && !objList.isEmpty()) {
 				userList = new ArrayList<>();
@@ -1072,12 +1062,10 @@ public class StudyDAOImpl implements StudyDAO {
 			query = session
 					.createSQLQuery(" SELECT sp.user_id,u.first_name,u.last_name,sp.view_permission,sp.project_lead "
 							+ "FROM users u,study_permission sp "
-							+ "WHERE u.user_id = sp.user_id AND u.status = 1 AND sp.study_id = " + studyId
+							+ "WHERE u.user_id = sp.user_id AND u.status = 1 AND sp.study_id = :studyId"
 							+ " AND u.user_id NOT IN (SELECT upm.user_id FROM user_permission_mapping upm "
-							+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) "
-					/* + "AND u.user_id <> "+userId */
-					);
-			objList = query.list();
+							+ "WHERE upm.permission_id = (SELECT up.permission_id FROM user_permissions up WHERE up.permissions ='ROLE_SUPERADMIN')) ");
+			objList = query.setInteger("studyId", studyId).list();
 			if (null != objList && !objList.isEmpty()) {
 				studyPermissionList = new ArrayList<>();
 				for (Object[] obj : objList) {
@@ -1117,9 +1105,8 @@ public class StudyDAOImpl implements StudyDAO {
 		List<StudyBo> studyBOList = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" FROM StudyBo SBO WHERE SBO.version = 0 AND SBO.status <> '"
-					+ FdahpStudyDesignerConstants.STUDY_DEACTIVATED + "'");
-			studyBOList = query.list();
+			query = session.createQuery(" FROM StudyBo SBO WHERE SBO.version = 0 AND SBO.status <> :deActivateStatus");
+			studyBOList = query.setString("deActivateStatus", FdahpStudyDesignerConstants.STUDY_DEACTIVATED).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getAllStudyList() - ERROR ", e);
 		} finally {
@@ -1179,10 +1166,9 @@ public class StudyDAOImpl implements StudyDAO {
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class,
 					questionId);
 			if (null != comprehensionTestQuestionBo) {
-				String searchQuery = "From ComprehensionTestResponseBo CRBO where CRBO.comprehensionTestQuestionId="
-						+ comprehensionTestQuestionBo.getId();
-				query = session.createQuery(searchQuery);
-				comprehensionTestResponsList = query.list();
+				comprehensionTestResponsList = session.createQuery(
+						"From ComprehensionTestResponseBo CRBO where CRBO.comprehensionTestQuestionId= :comprehensionTestQuestionId")
+						.setInteger("comprehensionTestQuestionId", comprehensionTestQuestionBo.getId()).list();
 				comprehensionTestQuestionBo.setResponseList(comprehensionTestResponsList);
 			}
 		} catch (Exception e) {
@@ -1213,9 +1199,9 @@ public class StudyDAOImpl implements StudyDAO {
 		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId=" + studyId
-					+ " and CTQBO.active=1 order by CTQBO.sequenceNo asc");
-			comprehensionTestQuestionList = query.list();
+			comprehensionTestQuestionList = session.createQuery(
+					"From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId= :studyId and CTQBO.active=1 order by CTQBO.sequenceNo asc")
+					.setInteger("studyId", studyId).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getComprehensionTestQuestionList() - Error", e);
 		} finally {
@@ -1242,10 +1228,9 @@ public class StudyDAOImpl implements StudyDAO {
 		List<ComprehensionTestResponseBo> comprehensionTestResponseList = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session
-					.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId="
-							+ comprehensionQuestionId);
-			comprehensionTestResponseList = query.list();
+			comprehensionTestResponseList = session.createQuery(
+					"From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId= :comprehensionQuestionId")
+					.setInteger("comprehensionQuestionId", comprehensionQuestionId).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR ", e);
 		} finally {
@@ -1270,12 +1255,11 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		Session session = null;
-		Query query = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session
-					.createQuery("from ConsentBo CBO where CBO.studyId=" + studyId + " order by CBO.createdOn desc");
-			consentBo = (ConsentBo) query.setMaxResults(1).uniqueResult();
+			consentBo = (ConsentBo) session
+					.createQuery("from ConsentBo CBO where CBO.studyId= :studyId order by CBO.createdOn desc")
+					.setString("studyId", studyId).setMaxResults(1).uniqueResult();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getConsentDetailsByStudyId() :: ERROR", e);
 		} finally {
@@ -1336,13 +1320,12 @@ public class StudyDAOImpl implements StudyDAO {
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Starts");
 		Session session = null;
-		Query query = null;
 		List<ConsentInfoBo> consentInfoBoList = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId=" + studyId
-					+ " and CIBO.active=1 ORDER BY CIBO.sequenceNo ");
-			consentInfoBoList = query.list();
+			consentInfoBoList = session.createQuery(
+					"from ConsentInfoBo CIBO where CIBO.studyId= :studyId and CIBO.active=1 ORDER BY CIBO.sequenceNo ")
+					.setString("studyId", studyId).list();
 			if (null != consentInfoBoList && consentInfoBoList.size() > 0) {
 				for (ConsentInfoBo consentInfoBo : consentInfoBoList) {
 					consentInfoBo.setDisplayTitle(
@@ -1380,10 +1363,9 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId=" + studyId
-					+ " and CIB.active=1 order by CIB.sequenceNo asc";
-			query = session.createQuery(searchQuery);
-			consentInfoList = query.list();
+			consentInfoList = session.createQuery(
+					"From ConsentInfoBo CIB where CIB.studyId= :studyId and CIB.active=1 order by CIB.sequenceNo asc")
+					.setInteger("studyId", studyId).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getConsentInfoList() - ERROR ", e);
 		} finally {
@@ -1501,23 +1483,25 @@ public class StudyDAOImpl implements StudyDAO {
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo) query.uniqueResult();
 				if (studyVersionBo != null) {
-					queryString = "SELECT s.study_id FROM active_task s where s.custom_study_id='" + customStudyId
-							+ "' and is_live =1";
-					activetaskStudyId = (Integer) session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
+					activetaskStudyId = (Integer) session.createSQLQuery(
+							"SELECT s.study_id FROM active_task s where s.custom_study_id= :customStudyId and is_live =1")
+							.setString("customStudyId", customStudyId).setMaxResults(1).uniqueResult();
 
-					queryString = "SELECT s.study_id FROM questionnaires s where s.custom_study_id='" + customStudyId
-							+ "' and is_live =1";
-					questionnarieStudyId = (Integer) session.createSQLQuery(queryString).setMaxResults(1)
-							.uniqueResult();
+					questionnarieStudyId = (Integer) session.createSQLQuery(
+							"SELECT s.study_id FROM questionnaires s where s.custom_study_id= :customStudyId and is_live =1")
+							.setString("customStudyId", customStudyId).setMaxResults(1).uniqueResult();
 
-					queryString = "SELECT s.study_id FROM consent s where s.custom_study_id='" + customStudyId
-							+ "' and round(s.version, 1) =" + studyVersionBo.getConsentVersion();
-					consentStudyId = (Integer) session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
+					consentStudyId = (Integer) session.createSQLQuery(
+							"SELECT s.study_id FROM consent s where s.custom_study_id= :customStudyId and round(s.version, 1) = :version")
+							.setString("customStudyId", customStudyId)
+							.setFloat("version", studyVersionBo.getConsentVersion()).setMaxResults(1).uniqueResult();
 
 					if (consentStudyId == null) {
-						queryString = "SELECT s.study_id FROM consent_info s where s.custom_study_id='" + customStudyId
-								+ "' and round(s.version, 1) =" + studyVersionBo.getConsentVersion();
-						consentStudyId = (Integer) session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
+						consentStudyId = (Integer) session.createSQLQuery(
+								"SELECT s.study_id FROM consent_info s where s.custom_study_id= :customStudyId and round(s.version, 1) = :version")
+								.setString("customStudyId", customStudyId)
+								.setFloat("version", studyVersionBo.getConsentVersion()).setMaxResults(1)
+								.uniqueResult();
 					}
 
 					studyIdBean.setActivetaskStudyId(activetaskStudyId);
@@ -1547,13 +1531,12 @@ public class StudyDAOImpl implements StudyDAO {
 	public NotificationBO getNotificationByResourceId(Integer resourseId) {
 		logger.info("StudyDAOImpl - getNotificationByResourceId() - Starts");
 		Session session = null;
-		String queryString = null;
 		NotificationBO notificationBO = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			queryString = " FROM NotificationBO NBO WHERE NBO.resourceId = " + resourseId;
-			query = session.createQuery(queryString);
-			notificationBO = (NotificationBO) query.uniqueResult();
+			notificationBO = (NotificationBO) session
+					.createQuery("FROM NotificationBO NBO WHERE NBO.resourceId = :resourseId")
+					.setInteger("resourseId", resourseId).uniqueResult();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getNotificationByResourceId - ERROR", e);
 		} finally {
@@ -1582,8 +1565,8 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(studyId)) {
-				query = session.createQuery("from StudyPageBo where studyId=" + studyId);
-				studyPageBo = query.list();
+				studyPageBo = session.createQuery("from StudyPageBo where studyId= :studyId")
+						.setString("studyId", studyId).list();
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR ", e);
@@ -1698,10 +1681,9 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId=" + studyId
-					+ " AND RBO.status = 1 AND RBO.studyProtocol = false ORDER BY RBO.createdOn ASC ";
-			query = session.createQuery(searchQuery);
-			resourceBOList = query.list();
+			resourceBOList = session.createQuery(
+					"FROM ResourceBO RBO WHERE RBO.studyId= :studyId AND RBO.status = 1 AND RBO.studyProtocol = false ORDER BY RBO.createdOn ASC")
+					.setInteger("studyId", studyId).list();
 
 			if (resourceBOList != null && !resourceBOList.isEmpty()) {
 				int sequenceNo = 1;
@@ -1732,13 +1714,11 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - getSavedNotification() - Starts");
 		List<NotificationBO> notificationSavedList = null;
 		Session session = null;
-		String searchQuery = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId=" + studyId
-					+ " AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='Announcement' ";
-			query = session.createQuery(searchQuery);
-			notificationSavedList = query.list();
+			notificationSavedList = session.createQuery(
+					"FROM NotificationBO NBO WHERE NBO.studyId= :studyId AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='Announcement'")
+					.setInteger("studyId", studyId).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getSavedNotification() - ERROR ", e);
 		} finally {
@@ -1797,9 +1777,8 @@ public class StudyDAOImpl implements StudyDAO {
 					}
 					// To get the live version of study by passing customstudyId
 					liveStudyBo = (StudyBo) session
-							.createQuery(
-									"FROM StudyBo where customStudyId='" + studyBo.getCustomStudyId() + "' and live=1")
-							.uniqueResult();
+							.createQuery("FROM StudyBo where customStudyId= :customStudyId and live=1")
+							.setString("customStudyId", studyBo.getCustomStudyId()).uniqueResult();
 					if (liveStudyBo != null) {
 						studyBo.setLiveStudyBo(liveStudyBo);
 					}
@@ -1875,8 +1854,8 @@ public class StudyDAOImpl implements StudyDAO {
 			if (userId != null && userId != 0) {
 				query = session.createQuery(
 						"select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,user.firstName, user.lastName,p.viewPermission,s.status,s.createdOn)"
-								+ " from StudyBo s,StudyPermissionBO p, UserBO user" + " where s.id=p.studyId"
-								+ " and user.userId = s.createdBy" + " and s.version=0" + " and p.userId=:impValue"
+								+ " from StudyBo s,StudyPermissionBO p, UserBO user where s.id=p.studyId"
+								+ " and user.userId = s.createdBy and s.version=0 and p.userId=:impValue"
 								+ " order by s.createdOn desc");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, userId);
 				studyListBeans = query.list();
@@ -1889,25 +1868,16 @@ public class StudyDAOImpl implements StudyDAO {
 								&& StringUtils.isNotEmpty(bean.getResearchSponsor())) {
 							// get the Category, Research Sponsor name of the
 							// study from categoryIds
-							/*
-							 * query = session.createQuery("from ReferenceTablesBo where id in(" +
-							 * bean.getCategory() + "," + bean.getResearchSponsor() + ")");
-							 */
-							query = session
-									.createQuery("from ReferenceTablesBo where id in(" + bean.getCategory() + ")");
-							referenceTablesBos = query.list();
+							referenceTablesBos = session.createQuery("from ReferenceTablesBo where id in(:category)")
+									.setInteger("category", Integer.valueOf(bean.getCategory())).list();
 							if (referenceTablesBos != null && !referenceTablesBos.isEmpty()) {
 								bean.setCategory(referenceTablesBos.get(0).getValue());
-								/*
-								 * bean.setResearchSponsor( referenceTablesBos.size() == 2 ?
-								 * referenceTablesBos.get(1).getValue() : "");
-								 */
 							}
 						}
 						if (StringUtils.isNotEmpty(bean.getCustomStudyId())) {
-							liveStudy = (StudyBo) session.createQuery(
-									"from StudyBo where customStudyId='" + bean.getCustomStudyId() + "' and live=1")
-									.uniqueResult();
+							liveStudy = (StudyBo) session
+									.createQuery("from StudyBo where customStudyId= :customStudyId and live=1")
+									.setString("customStudyId", bean.getCustomStudyId()).uniqueResult();
 							if (liveStudy != null) {
 								bean.setLiveStudyId(liveStudy.getId());
 							} else {
@@ -1917,18 +1887,16 @@ public class StudyDAOImpl implements StudyDAO {
 						// if is there any change in study then edit with dot
 						// will come
 						if (bean.getId() != null && bean.getLiveStudyId() != null) {
-							studyBo = (StudyBo) session.createQuery("from StudyBo where id=" + bean.getId())
-									.uniqueResult();
+							studyBo = (StudyBo) session.createQuery("from StudyBo where id= :studyId")
+									.setInteger("studyId", bean.getId()).uniqueResult();
 							if (studyBo.getHasStudyDraft() == 1)
 								bean.setFlag(true);
 						}
 						// if is there any team lead in that study
 						if (bean.getId() != null) {
-							String userInfo = (String) session
-									.createQuery(
-											"SELECT  u.firstName from StudyPermissionBO s , UserBO u where s.studyId="
-													+ bean.getId() + " and s.userId=u.userId and s.projectLead=1")
-									.setMaxResults(1).uniqueResult();
+							String userInfo = (String) session.createQuery(
+									"SELECT u.firstName from StudyPermissionBO s , UserBO u where s.studyId= :studyId and s.userId=u.userId and s.projectLead=1")
+									.setInteger("studyId", bean.getId()).setMaxResults(1).uniqueResult();
 							if (StringUtils.isNotEmpty(userInfo)) {
 								bean.setProjectLeadName(userInfo);
 							} else {
@@ -1969,7 +1937,7 @@ public class StudyDAOImpl implements StudyDAO {
 			if (userId != null && userId != 0) {
 				query = session.createQuery(
 						"select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,p.viewPermission)"
-								+ " from StudyBo s,StudyPermissionBO p" + " where s.id=p.studyId" + " and s.version = 0"
+								+ " from StudyBo s,StudyPermissionBO p where s.id=p.studyId and s.version = 0"
 								+ " and p.userId=:impValue");
 				query.setParameter("impValue", userId);
 				studyListBeans = query.list();
@@ -1997,12 +1965,11 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - getStudyLiveStatusByCustomId() - Starts");
 		StudyBo studyLive = null;
 		Session session = null;
-		String searchQuery = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			searchQuery = "FROM StudyBo SBO WHERE SBO.customStudyId = '" + customStudyId + "' AND SBO.live = 1";
-			query = session.createQuery(searchQuery);
-			studyLive = (StudyBo) query.uniqueResult();
+			studyLive = (StudyBo) session
+					.createQuery("FROM StudyBo SBO WHERE SBO.customStudyId = :customStudyId AND SBO.live = 1")
+					.setString("customStudyId", customStudyId).uniqueResult();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyLiveStatusByCustomId() - ERROR ", e);
 		} finally {
@@ -2028,9 +1995,9 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(
-					" FROM ResourceBO RBO WHERE RBO.studyId=" + studyId + " AND RBO.studyProtocol = true ");
-			studyprotocol = (ResourceBO) query.uniqueResult();
+			studyprotocol = (ResourceBO) session
+					.createQuery("FROM ResourceBO RBO WHERE RBO.studyId= :studyId AND RBO.studyProtocol = true")
+					.setInteger("studyId", studyId).uniqueResult();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyProtocol() - ERROR ", e);
 		} finally {
@@ -2099,9 +2066,10 @@ public class StudyDAOImpl implements StudyDAO {
 			 * before launch
 			 **/
 			if (markCompleted.equals(FdahpStudyDesignerConstants.NOTIFICATION)) {
-				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = " + flag
-						+ " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery(
+								"UPDATE StudySequenceBo SET miscellaneousNotification = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				if (flag) {
 					activity = "Study Notifications section successfully  checked for minimum content completeness.";
 					activityDetails = "Study Notifications section successfully  checked for minimum content completeness and marked 'Completed'. (Study ID = "
@@ -2115,13 +2083,14 @@ public class StudyDAOImpl implements StudyDAO {
 					auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 							FdahpStudyDesignerConstants.DRAFT_STUDY, studyId);
 				}
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET miscellaneousResources = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery(
+								"UPDATE StudySequenceBo SET miscellaneousResources = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT)) {
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET consentEduInfo = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery("UPDATE StudySequenceBo SET consentEduInfo = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				if (flag) {
 					activity = "Study Consent section successsfully checked for minimum content completeness.";
 					activityDetails = "Consent Sections successfully checked for minimum content completeness and this ection of the Study is marked 'Completed'.  (Study ID = "
@@ -2130,19 +2099,17 @@ public class StudyDAOImpl implements StudyDAO {
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_CONSCENT, studyId);
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT_REVIEW)) {
-				query = session
-						.createQuery(" UPDATE StudySequenceBo SET eConsent = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session.createQuery("UPDATE StudySequenceBo SET eConsent = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_CONSCENT, studyId);
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CHECK_LIST)) {
-				query = session
-						.createQuery(" UPDATE StudySequenceBo SET checkList = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session.createQuery("UPDATE StudySequenceBo SET checkList = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVETASK_LIST)) {
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET studyExcActiveTask = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery("UPDATE StudySequenceBo SET studyExcActiveTask = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				if (flag) {
 					activity = "Active Tasks section successfully checked for minimum Content Completeness.";
 					activityDetails = "Active Tasks section successfully checked for minimum Content Completeness and marked 'Completed'. (Study ID = "
@@ -2151,9 +2118,10 @@ public class StudyDAOImpl implements StudyDAO {
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, studyId);
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)) {
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET studyExcQuestionnaries = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery(
+								"UPDATE StudySequenceBo SET studyExcQuestionnaries = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				if (flag) {
 					activity = "Questionnaire succesfully checked for minimum content completeness.";
 					activityDetails = "Questionnaire succesfully checked for minimum content completeness and marked 'Done'. (Study ID = "
@@ -2162,9 +2130,9 @@ public class StudyDAOImpl implements StudyDAO {
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, studyId);
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPREHENSION_TEST)) {
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET comprehensionTest = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery("UPDATE StudySequenceBo SET comprehensionTest = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				if (flag) {
 					activity = "comprehension test";
 					activityDetails = customStudyId + " -- "
@@ -2173,9 +2141,10 @@ public class StudyDAOImpl implements StudyDAO {
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_CONSCENT, studyId);
 			} else if (markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES)) {
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET participantProperties = " + flag + " WHERE studyId = " + studyId);
-				count = query.executeUpdate();
+				count = session
+						.createQuery(
+								"UPDATE StudySequenceBo SET participantProperties = :flag WHERE studyId = :studyId")
+						.setBoolean("flag", flag).setInteger("studyId", studyId).executeUpdate();
 				if (flag) {
 					activity = "Participant Properties succesfully checked for minimum content completeness.";
 					activityDetails = "Participant Properties succesfully checked for minimum content completeness and marked 'Done'. (Study ID = "
@@ -2221,42 +2190,43 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - reOrderComprehensionTestQuestion() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		Query query = null;
 		int count = 0;
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		StudySequenceBo studySequence = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			String updateQuery = "";
-			query = session.createQuery("From ComprehensionTestQuestionBo CTB where CTB.studyId=" + studyId
-					+ " and CTB.sequenceNo =" + oldOrderNumber + " and CTB.active=1");
-			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.createQuery(
+					"From ComprehensionTestQuestionBo CTB where CTB.studyId= :studyId and CTB.sequenceNo = :sequenceNo and CTB.active=1")
+					.setInteger("studyId", studyId).setInteger("sequenceNo", oldOrderNumber).uniqueResult();
 			if (comprehensionTestQuestionBo != null) {
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo-1 where CTB.studyId="
-							+ studyId + " and CTB.sequenceNo <=" + newOrderNumber + " and CTB.sequenceNo >"
-							+ oldOrderNumber + " and CTB.active=1";
-					query = session.createQuery(updateQuery);
-					count = query.executeUpdate();
+					count = session.createQuery(
+							"update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo-1 where "
+									+ "CTB.studyId= :studyId and CTB.sequenceNo <= :newSequenceNo and CTB.sequenceNo > :oldSequenceNo and CTB.active=1")
+							.setInteger("studyId", studyId).setInteger("newSequenceNo", newOrderNumber)
+							.setInteger("oldSequenceNo", oldOrderNumber).executeUpdate();
 					if (count > 0) {
-						query = session.createQuery(
-								"update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=" + newOrderNumber
-										+ " where CTB.id=" + comprehensionTestQuestionBo.getId() + " and CTB.active=1");
-						count = query.executeUpdate();
+						count = session.createQuery(
+								"update ComprehensionTestQuestionBo CTB set CTB.sequenceNo= :newSequenceNo where "
+										+ "CTB.id= :comprehensionTestQuestionId and CTB.active=1")
+								.setInteger("newSequenceNo", newOrderNumber)
+								.setInteger("comprehensionTestQuestionId", comprehensionTestQuestionBo.getId())
+								.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				} else if (oldOrderNumber > newOrderNumber) {
-					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo+1 where CTB.studyId="
-							+ studyId + " and CTB.sequenceNo >=" + newOrderNumber + " and CTB.sequenceNo <"
-							+ oldOrderNumber + " and CTB.active=1";
-					query = session.createQuery(updateQuery);
-					count = query.executeUpdate();
+					count = session.createQuery(
+							"update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo+1 where CTB.studyId= :studyId"
+									+ " and CTB.sequenceNo >= :newSequenceNo and CTB.sequenceNo < :oldSequenceNo and CTB.active=1")
+							.setInteger("studyId", studyId).setInteger("newSequenceNo", newOrderNumber)
+							.setInteger("oldSequenceNo", oldOrderNumber).executeUpdate();
 					if (count > 0) {
-						query = session.createQuery(
-								"update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=" + newOrderNumber
-										+ " where CTB.id=" + comprehensionTestQuestionBo.getId() + " and CTB.active=1");
-						count = query.executeUpdate();
+						count = session.createQuery(
+								"update ComprehensionTestQuestionBo CTB set CTB.sequenceNo= :newSequenceNo where CTB.id= :comprehensionTestQuestionId and CTB.active=1")
+								.setInteger("newSequenceNo", newOrderNumber)
+								.setInteger("comprehensionTestQuestionId", comprehensionTestQuestionBo.getId())
+								.executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
@@ -2308,33 +2278,35 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			String updateQuery = "";
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId=" + studyId + " and CIB.sequenceNo ="
-					+ oldOrderNumber + " and CIB.active=1");
-			consentInfoBo = (ConsentInfoBo) query.uniqueResult();
+			consentInfoBo = (ConsentInfoBo) session.createQuery(
+					"From ConsentInfoBo CIB where CIB.studyId= :studyId and CIB.sequenceNo = :oldOrderNumber and CIB.active=1")
+					.setInteger("studyId", studyId).setInteger("oldOrderNumber", oldOrderNumber).uniqueResult();
 			if (consentInfoBo != null) {
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="
-							+ studyId + " and CIBO.sequenceNo <=" + newOrderNumber + " and CIBO.sequenceNo >"
-							+ oldOrderNumber + " and CIBO.active=1";
-					query = session.createQuery(updateQuery);
-					count = query.executeUpdate();
+					count = session.createQuery(
+							"update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId= :studyId"
+									+ " and CIBO.sequenceNo <= :newOrderNumber and CIBO.sequenceNo > :oldOrderNumber and CIBO.active=1")
+							.setInteger("studyId", studyId).setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("oldOrderNumber", oldOrderNumber).executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo=" + newOrderNumber
-								+ " where C.id=" + consentInfoBo.getId() + " and C.active=1");
-						count = query.executeUpdate();
+						count = session.createQuery(
+								"update ConsentInfoBo C set C.sequenceNo= :newOrderNumber where C.id= :consentInfo and C.active=1")
+								.setInteger("newOrderNumber", newOrderNumber)
+								.setInteger("consentInfo", consentInfoBo.getId()).executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				} else if (oldOrderNumber > newOrderNumber) {
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where CIBO.studyId="
-							+ studyId + " and CIBO.sequenceNo >=" + newOrderNumber + " and CIBO.sequenceNo <"
-							+ oldOrderNumber + " and CIBO.active=1";
-					query = session.createQuery(updateQuery);
+					query = session.createQuery(
+							"update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo+1 where CIBO.studyId= :studyId"
+									+ " and CIBO.sequenceNo >= :newOrderNumber and CIBO.sequenceNo < :oldOrderNumber and CIBO.active=1")
+							.setInteger("studyId", studyId).setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("oldOrderNumber", oldOrderNumber);
 					count = query.executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ConsentInfoBo C set C.sequenceNo=" + newOrderNumber
-								+ " where C.id=" + consentInfoBo.getId() + " and C.active=1");
-						count = query.executeUpdate();
+						count = session.createQuery(
+								"update ConsentInfoBo C set C.sequenceNo= :newOrderNumber where C.id= :consentInfoId and C.active=1")
+								.setInteger("newOrderNumber", newOrderNumber)
+								.setInteger("consentInfoId", consentInfoBo.getId()).executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
@@ -2386,9 +2358,7 @@ public class StudyDAOImpl implements StudyDAO {
 		Query hibQuery = null;
 		int count = 0;
 		EligibilityTestBo eligibilityTest = null;
-		StringBuilder updatenewOrderQuery;
 		Transaction trans = null;
-		StringBuilder updateQuery = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
@@ -2397,28 +2367,23 @@ public class StudyDAOImpl implements StudyDAO {
 			eligibilityTest = (EligibilityTestBo) hibQuery.uniqueResult();
 			if (eligibilityTest != null) {
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = new StringBuilder();
-					updateQuery.append(
-							"UPDATE EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo-1 WHERE ETB.eligibilityId=")
-							.append(eligibilityId).append(" AND ETB.sequenceNo <=").append(newOrderNumber)
-							.append(" AND ETB.sequenceNo >").append(oldOrderNumber).append(" AND ETB.active = true");
-					hibQuery = session.createQuery(updateQuery.toString());
-					count = hibQuery.executeUpdate();
+					count = session.createQuery(
+							"UPDATE EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo-1 WHERE ETB.eligibilityId= :eligibilityId AND "
+									+ "ETB.sequenceNo <= :newOrderNumber AND ETB.sequenceNo > :oldOrderNumber AND ETB.active = true")
+							.setInteger("eligibilityId", eligibilityId).setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("oldOrderNumber", oldOrderNumber).executeUpdate();
 				} else if (oldOrderNumber > newOrderNumber) {
-					updateQuery = new StringBuilder();
-					updateQuery.append(
-							"UPDATE EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo+1 WHERE ETB.eligibilityId=")
-							.append(eligibilityId).append(" AND ETB.sequenceNo >=").append(newOrderNumber)
-							.append(" AND ETB.sequenceNo <").append(oldOrderNumber).append(" AND ETB.active = true");
-					hibQuery = session.createQuery(updateQuery.toString());
-					count = hibQuery.executeUpdate();
+					count = session.createQuery(
+							"UPDATE EligibilityTestBo ETB set ETB.sequenceNo=ETB.sequenceNo+1 WHERE ETB.eligibilityId= :eligibilityId"
+									+ " AND ETB.sequenceNo >= :newOrderNumber AND ETB.sequenceNo < :oldOrderNumber AND ETB.active = true")
+							.setInteger("eligibilityId", eligibilityId).setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("oldOrderNumber", oldOrderNumber).executeUpdate();
 				}
-				updatenewOrderQuery = new StringBuilder();
-				updatenewOrderQuery.append("UPDATE EligibilityTestBo ETB set ETB.sequenceNo=").append(newOrderNumber)
-						.append(" WHERE ETB.id=").append(eligibilityTest.getId());
 				if (count > 0) {
-					hibQuery = session.createQuery(updatenewOrderQuery.toString());
-					count = hibQuery.executeUpdate();
+					count = session.createQuery(
+							"UPDATE EligibilityTestBo ETB set ETB.sequenceNo= :newOrderNumber WHERE ETB.id= :eligibilityTestId")
+							.setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("eligibilityTestId", eligibilityTest.getId()).executeUpdate();
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
 				if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
@@ -2450,39 +2415,39 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - reOrderResourceList() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		Query query = null;
 		int count = 0;
 		ResourceBO resourceBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			String updateQuery = "";
-			query = session.createQuery("From ResourceBO RBO where RBO.studyId=" + studyId + " and RBO.sequenceNo ="
-					+ oldOrderNumber + " and RBO.status=1");
-			resourceBo = (ResourceBO) query.uniqueResult();
+			resourceBo = (ResourceBO) session.createQuery(
+					"From ResourceBO RBO where RBO.studyId= :studyId and RBO.sequenceNo = :oldOrderNumber and RBO.status=1")
+					.setInteger("studyId", studyId).setInteger("oldOrderNumber", oldOrderNumber).uniqueResult();
 			if (resourceBo != null) {
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ResourceBO RBO set RBO.sequenceNo=RBO.sequenceNo-1 where RBO.studyId="
-							+ studyId + " and RBO.sequenceNo <=" + newOrderNumber + " and RBO.sequenceNo >"
-							+ oldOrderNumber + " and RBO.status=1";
-					query = session.createQuery(updateQuery);
-					count = query.executeUpdate();
+					count = session.createQuery(
+							"update ResourceBO RBO set RBO.sequenceNo=RBO.sequenceNo-1 where RBO.studyId= :studyId"
+									+ " and RBO.sequenceNo <= :newOrderNumber and RBO.sequenceNo > :oldOrderNumber and RBO.status=1")
+							.setInteger("studyId", studyId).setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("oldOrderNumber", oldOrderNumber).executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ResourceBO RBO set RBO.sequenceNo=" + newOrderNumber
-								+ " where RBO.id=" + resourceBo.getId() + " and RBO.status=1");
-						count = query.executeUpdate();
+						count = session.createQuery(
+								"update ResourceBO RBO set RBO.sequenceNo= :newOrderNumber where RBO.id= :resourceId and RBO.status=1")
+								.setInteger("newOrderNumber", newOrderNumber)
+								.setInteger("resourceId", resourceBo.getId()).executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				} else if (oldOrderNumber > newOrderNumber) {
-					updateQuery = "update ResourceBO RBO set RBO.sequenceNo=RBO.sequenceNo+1 where RBO.studyId="
-							+ studyId + " and RBO.sequenceNo >=" + newOrderNumber + " and RBO.sequenceNo <"
-							+ oldOrderNumber + " and RBO.status=1";
-					query = session.createQuery(updateQuery);
-					count = query.executeUpdate();
+					count = session.createQuery(
+							"update ResourceBO RBO set RBO.sequenceNo=RBO.sequenceNo+1 where RBO.studyId= :studyId"
+									+ " and RBO.sequenceNo >= :newOrderNumber and RBO.sequenceNo < :oldOrderNumber and RBO.status=1")
+							.setInteger("studyId", studyId).setInteger("newOrderNumber", newOrderNumber)
+							.setInteger("oldOrderNumber", oldOrderNumber).executeUpdate();
 					if (count > 0) {
-						query = session.createQuery("update ResourceBO RBO set RBO.sequenceNo=" + newOrderNumber
-								+ " where RBO.id=" + resourceBo.getId() + " and RBO.status=1");
-						count = query.executeUpdate();
+						count = session.createQuery(
+								"update ResourceBO RBO set RBO.sequenceNo= :newOrderNumber where RBO.id= :resourceId and RBO.status=1")
+								.setInteger("newOrderNumber", newOrderNumber)
+								.setInteger("resourceId", resourceBo.getId()).executeUpdate();
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
@@ -3304,10 +3269,9 @@ public class StudyDAOImpl implements StudyDAO {
 		ResourceBO resourceBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ResourceBO RBO where RBO.studyId=" + studyId
-					+ " and RBO.studyProtocol = false and RBO.status=1 order by RBO.sequenceNo DESC");
-			query.setMaxResults(1);
-			resourceBo = ((ResourceBO) query.uniqueResult());
+			resourceBo = (ResourceBO) session.createQuery(
+					"From ResourceBO RBO where RBO.studyId= :studyId and RBO.studyProtocol = false and RBO.status=1 order by RBO.sequenceNo DESC")
+					.setInteger("studyId", studyId).setMaxResults(1).uniqueResult();
 			if (resourceBo != null) {
 				count = resourceBo.getSequenceNo() + 1;
 			}
@@ -3337,10 +3301,9 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId=" + studyId
-					+ " AND RBO.action = 0 AND RBO.status = 1 AND RBO.studyProtocol = 0";
-			query = session.createQuery(searchQuery);
-			resourceBOList = query.list();
+			resourceBOList = session.createQuery(
+					"FROM ResourceBO RBO WHERE RBO.studyId= :studyId AND RBO.action = 0 AND RBO.status = 1 AND RBO.studyProtocol = 0")
+					.setInteger("studyId", studyId).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - resourcesSaved() - ERROR ", e);
 		} finally {
@@ -3367,10 +3330,9 @@ public class StudyDAOImpl implements StudyDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId=" + studyId
-					+ " AND RBO.resourceType = 1 AND RBO.status = 1 ";
-			query = session.createQuery(searchQuery);
-			resourceList = query.list();
+			resourceList = session.createQuery(
+					"FROM ResourceBO RBO WHERE RBO.studyId= :studyId AND RBO.resourceType = 1 AND RBO.status = 1")
+					.setInteger("studyId", studyId).list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - resourcesWithAnchorDate() - ERROR ", e);
 		} finally {
@@ -3430,9 +3392,9 @@ public class StudyDAOImpl implements StudyDAO {
 			// step
 			if (consentBo != null && StringUtils.isNotEmpty(consentBo.getConsentDocType())
 					&& consentBo.getConsentDocType().equalsIgnoreCase("Auto")) {
-				query = session.createQuery(
-						" from ConsentInfoBo CIBO where CIBO.studyId=" + consentBo.getStudyId() + " and CIBO.active=1");
-				consentInfoList = query.list();
+				consentInfoList = session
+						.createQuery("from ConsentInfoBo CIBO where CIBO.studyId= :studyId and CIBO.active=1")
+						.setInteger("studyId", consentBo.getStudyId()).list();
 				if (consentInfoList != null && consentInfoList.size() > 0) {
 					for (ConsentInfoBo consentInfo : consentInfoList) {
 						content += "<span style=&#34;font-size:20px;&#34;><strong>" + consentInfo.getDisplayTitle()
@@ -3567,9 +3529,9 @@ public class StudyDAOImpl implements StudyDAO {
 			session.saveOrUpdate(comprehensionTestQuestionBo);
 			if (comprehensionTestQuestionBo.getId() != null && comprehensionTestQuestionBo.getResponseList() != null
 					&& !comprehensionTestQuestionBo.getResponseList().isEmpty()) {
-				String deleteQuery = "delete from comprehension_test_response where comprehension_test_question_id="
-						+ comprehensionTestQuestionBo.getId();
-				session.createSQLQuery(deleteQuery).executeUpdate();
+				session.createSQLQuery(
+						"delete from comprehension_test_response where comprehension_test_question_id= :comprehensionTestQuestionId")
+						.setInteger("comprehensionTestQuestionId", comprehensionTestQuestionBo.getId()).executeUpdate();
 				for (ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo
 						.getResponseList()) {
 					if (comprehensionTestResponseBo.getResponseOption() != null
@@ -3772,28 +3734,26 @@ public class StudyDAOImpl implements StudyDAO {
 				titleLength = studyPageBean.getTitle().length;
 				if (titleLength > 0) {
 					// delete the pages which are deleted from front end
-					String pageIdArr = null;
+					List<Integer> pageIdList = new ArrayList<>();
 					for (int j = 0; j < studyPageBean.getPageId().length; j++) {
 						if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[j])) {
-							if (j == 0)
-								pageIdArr = studyPageBean.getPageId()[j];
-							else
-								pageIdArr = pageIdArr + "," + studyPageBean.getPageId()[j];
+							pageIdList.add(Integer.valueOf(studyPageBean.getPageId()[j]));
 						}
 					}
-					if (pageIdArr != null)
-						session.createQuery("delete from StudyPageBo where studyId=" + studyPageBean.getStudyId()
-								+ " and pageId not in(" + pageIdArr + ")").executeUpdate();
-					else
-						session.createQuery("delete from StudyPageBo where studyId=" + studyPageBean.getStudyId())
-								.executeUpdate();
+					if (!pageIdList.isEmpty()) {
+						session.createQuery(
+								"delete from StudyPageBo where studyId= :studyId and pageId not in(:pageIdList)")
+								.setString("studyId", studyPageBean.getStudyId())
+								.setParameterList("pageIdList", pageIdList).executeUpdate();
+					} else
+						session.createQuery("delete from StudyPageBo where studyId= :studyId")
+								.setString("studyId", studyPageBean.getStudyId()).executeUpdate();
 					for (int i = 0; i < titleLength; i++) {
 						StudyPageBo studyPageBo = null;
 						if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
 							studyPageBo = (StudyPageBo) session
-									.createQuery(
-											"from StudyPageBo SPB where SPB.pageId=" + studyPageBean.getPageId()[i])
-									.uniqueResult();
+									.createQuery("from StudyPageBo SPB where SPB.pageId= :pageId")
+									.setString("pageId", studyPageBean.getPageId()[i]).uniqueResult();
 
 						if (studyPageBo == null)
 							studyPageBo = new StudyPageBo();
@@ -3962,10 +3922,9 @@ public class StudyDAOImpl implements StudyDAO {
 				session.save(studyPermissionBO);
 
 				// give permission to all super admin Start
-				query = session
-						.createSQLQuery("Select upm.user_id from user_permission_mapping upm where upm.permission_id = "
-								+ FdahpStudyDesignerConstants.ROLE_SUPERADMIN);
-				userSuperAdminList = query.list();
+				userSuperAdminList = session.createSQLQuery(
+						"Select upm.user_id from user_permission_mapping upm where upm.permission_id = :permissionId")
+						.setInteger("permissionId", FdahpStudyDesignerConstants.ROLE_SUPERADMIN).list();
 				if (userSuperAdminList != null && !userSuperAdminList.isEmpty()) {
 					for (Integer superAdminId : userSuperAdminList) {
 						if (null != userId && !userId.equals(superAdminId)) {
@@ -3998,26 +3957,6 @@ public class StudyDAOImpl implements StudyDAO {
 				dbStudyBo = (StudyBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
 						.setInteger("id", studyBo.getId()).uniqueResult();
 				if (dbStudyBo != null) {
-
-					/*
-					 * if (!dbStudyBo.getCustomStudyId().equals(studyBo.getCustomStudyId()) ||
-					 * !dbStudyBo.getAppId().equals(studyBo.getAppId())) { if
-					 * (!dbStudyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.
-					 * STUDY_PAUSED)) { updateStudyId(dbStudyBo, studyBo.getCustomStudyId(),
-					 * session); } else { throw new
-					 * Exception(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG); }
-					 * 
-					 * }
-					 */
-
-					/*
-					 * if (!dbStudyBo.getAppId().equals(studyBo.getAppId())) { if
-					 * (!dbStudyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.
-					 * STUDY_PAUSED)) { updateAppId(studyBo.getCustomStudyId(), studyBo.getAppId(),
-					 * studyBo.getOrgId(), session); } else { throw new
-					 * Exception(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG); } }
-					 */
-
 					if (dbStudyBo.getStudyMode() != null
 							&& dbStudyBo.getStudyMode().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_MODE_LIVE)) {
 						if (dbStudyBo.getTestModeStudyId().equalsIgnoreCase(studyBo.getCustomStudyId())
@@ -4040,19 +3979,19 @@ public class StudyDAOImpl implements StudyDAO {
 						// update CustomStudyId in AnchorDateTypeBo if new CustomStudyId is there
 						query = session.createQuery(
 								"Update AnchorDateTypeBo ABO SET ABO.customStudyId=:newCustomStudyId where ABO.customStudyId=:customStudyId AND ABO.studyId=:studyId");
-						query.setParameter("newCustomStudyId", studyBo.getCustomStudyId());
-						query.setParameter("customStudyId", dbStudyBo.getCustomStudyId());
-						query.setParameter("studyId", dbStudyBo.getId());
+						query.setString("newCustomStudyId", studyBo.getCustomStudyId());
+						query.setString("customStudyId", dbStudyBo.getCustomStudyId());
+						query.setInteger("studyId", dbStudyBo.getId());
 						query.executeUpdate();
 
 						// update CustomStudyId of ParticipantPropertiesBO if new CustomStudyId is there
 
 						query = session.createQuery(
 								"UPDATE ParticipantPropertiesBO PPBO set PPBO.customStudyId=:newStudyId,PPBO.appId=:appId,PPBO.orgId=:orgId where PPBO.customStudyId=:studyId");
-						query.setParameter("newStudyId", studyBo.getCustomStudyId());
-						query.setParameter("appId", studyBo.getAppId());
-						query.setParameter("orgId", studyBo.getOrgId());
-						query.setParameter("studyId", dbStudyBo.getCustomStudyId());
+						query.setString("newStudyId", studyBo.getCustomStudyId());
+						query.setString("appId", studyBo.getAppId());
+						query.setString("orgId", studyBo.getOrgId());
+						query.setString("studyId", dbStudyBo.getCustomStudyId());
 						query.executeUpdate();
 
 					}
@@ -4062,13 +4001,13 @@ public class StudyDAOImpl implements StudyDAO {
 
 						query = session.createQuery(
 								"UPDATE ParticipantPropertiesBO PPBO set PPBO.appId=:appId,PPBO.orgId=:orgId where PPBO.customStudyId=:studyId");
-						query.setParameter("appId", studyBo.getAppId());
-						query.setParameter("orgId", studyBo.getOrgId());
-						query.setParameter("studyId", studyBo.getCustomStudyId());
+						query.setString("appId", studyBo.getAppId());
+						query.setString("orgId", studyBo.getOrgId());
+						query.setString("studyId", studyBo.getCustomStudyId());
 						query.executeUpdate();
 
 					}
-					
+
 					dbStudyBo.setStudyLanguage(studyBo.getStudyLanguage());
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
 					dbStudyBo.setName(studyBo.getName());
@@ -4131,7 +4070,7 @@ public class StudyDAOImpl implements StudyDAO {
 
 	@Override
 	public ParticipantPropertiesBO saveOrUpdateParticipantProperties(ParticipantPropertiesBO participantPropertiesBO) {
-		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
+		logger.info("StudyDAOImpl - saveOrUpdateParticipantProperties() - Starts");
 		Session session = null;
 		ParticipantPropertiesBO participantProperties = null;
 		try {
@@ -4164,7 +4103,7 @@ public class StudyDAOImpl implements StudyDAO {
 							query = session.createQuery(
 									"UPDATE QuestionnaireBo QBO SET QBO.status=0,QBO.anchorDateId=:newAnchorDateId WHERE QBO.anchorDateId=:anchorDateId AND QBO.active=1");
 							query.setParameter("newAnchorDateId", null);
-							query.setParameter("anchorDateId", participantProperties.getAnchorDateId());
+							query.setInteger("anchorDateId", participantProperties.getAnchorDateId());
 							query.executeUpdate();
 							studySequence.setStudyExcQuestionnaries(false);
 						}
@@ -4172,7 +4111,7 @@ public class StudyDAOImpl implements StudyDAO {
 							query = session.createQuery(
 									"UPDATE ActiveTaskBo ABO SET ABO.action=0,ABO.anchorDateId=:newAnchorDateId WHERE ABO.anchorDateId=:anchorDateId AND ABO.active=1");
 							query.setParameter("newAnchorDateId", null);
-							query.setParameter("anchorDateId", participantProperties.getAnchorDateId());
+							query.setInteger("anchorDateId", participantProperties.getAnchorDateId());
 							query.executeUpdate();
 							studySequence.setStudyExcActiveTask(false);
 						}
@@ -4180,7 +4119,7 @@ public class StudyDAOImpl implements StudyDAO {
 							query = session.createQuery(
 									"UPDATE ResourceBO RBO SET RBO.action=0,RBO.anchorDateId=:newAnchorDateId WHERE RBO.anchorDateId=:anchorDateId AND RBO.status=1");
 							query.setParameter("newAnchorDateId", null);
-							query.setParameter("anchorDateId", participantProperties.getAnchorDateId());
+							query.setInteger("anchorDateId", participantProperties.getAnchorDateId());
 							query.executeUpdate();
 							studySequence.setMiscellaneousResources(false);
 						}
@@ -4208,13 +4147,13 @@ public class StudyDAOImpl implements StudyDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
-			logger.error("StudyDAOImpl - saveOrUpdateSubAdmin() - ERROR", e);
+			logger.error("StudyDAOImpl - saveOrUpdateParticipantProperties() - ERROR", e);
 		} finally {
 			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - saveOrUpdateSubAdmin() - Ends");
+		logger.info("StudyDAOImpl - saveOrUpdateParticipantProperties() - Ends");
 		return participantPropertiesBO;
 	}
 
@@ -4241,12 +4180,10 @@ public class StudyDAOImpl implements StudyDAO {
 	@Override
 	public void deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session) {
 		logger.info("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - Starts");
-		Query query = null;
 		try {
 			if (anchorDateId != null) {
-				query = session
-						.createQuery("UPDATE AnchorDateTypeBo set hasAnchortypeDraft=0 where id=" + anchorDateId);
-				query.executeUpdate();
+				session.createQuery("UPDATE AnchorDateTypeBo set hasAnchortypeDraft=0 where id= :anchorDateId")
+						.setInteger("anchorDateId", anchorDateId).executeUpdate();
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - deleteParticipantPropertyAsAnchorDate() - ERROR", e);
@@ -4257,12 +4194,12 @@ public class StudyDAOImpl implements StudyDAO {
 	@Override
 	public void updateParticipantPropertyAsAnchorDate(Integer anchorDateId, String anchorDateName, Session session) {
 		logger.info("StudyDAOImpl - updateParticipantPropertyAsAnchorDate() - Starts");
-		Query query = null;
 		try {
 			if (anchorDateId != null) {
-				query = session.createQuery("UPDATE AnchorDateTypeBo set hasAnchortypeDraft=1,name='" + anchorDateName
-						+ "' where id=" + anchorDateId);
-				query.executeUpdate();
+				session.createQuery(
+						"UPDATE AnchorDateTypeBo set hasAnchortypeDraft=1,name= :anchorDateName where id= :anchorDateId")
+						.setString("anchorDateName", anchorDateName).setInteger("anchorDateId", anchorDateId)
+						.executeUpdate();
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - updateParticipantPropertyAsAnchorDate() - ERROR", e);
@@ -4270,18 +4207,18 @@ public class StudyDAOImpl implements StudyDAO {
 		logger.info("StudyDAOImpl - updateParticipantPropertyAsAnchorDate() - Ends");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ParticipantPropertiesBO> getParticipantProperties(String customStudyId) {
 		logger.info("StudyDAOImpl - getParticipantProperties() - Starts");
 		Session session = null;
-		Query query = null;
 		List<ParticipantPropertiesBO> participantPropertiesBoList = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(customStudyId)) {
-				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='"
-						+ customStudyId + "' and PPBO.active=1 order by PPBO.createdDate DESC");
-				participantPropertiesBoList = query.list();
+				participantPropertiesBoList = session.createQuery(
+						"From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId = :customStudyId and PPBO.active=1 order by PPBO.createdDate DESC")
+						.setString("customStudyId", customStudyId).list();
 			}
 		} catch (Exception e) {
 			transaction.rollback();
@@ -4299,15 +4236,14 @@ public class StudyDAOImpl implements StudyDAO {
 	public ParticipantPropertiesBO getParticipantProperty(String participantPropertyId, String customStudyId) {
 		logger.info("StudyDAOImpl - getParticipantProperty() - Starts");
 		Session session = null;
-		Query query = null;
 		ParticipantPropertiesBO participantPropertiesBO = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(participantPropertyId) && StringUtils.isNotEmpty(customStudyId)) {
-				query = session
-						.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='" + customStudyId
-								+ "' and PPBO.id =" + Integer.valueOf(participantPropertyId) + " and PPBO.active=1");
-				participantPropertiesBO = (ParticipantPropertiesBO) query.uniqueResult();
+				participantPropertiesBO = (ParticipantPropertiesBO) session.createQuery(
+						"From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId = :customStudyId and PPBO.id = :participantPropertyId and PPBO.active=1")
+						.setString("customStudyId", customStudyId)
+						.setInteger("participantPropertyId", Integer.valueOf(participantPropertyId)).uniqueResult();
 			}
 		} catch (Exception e) {
 			transaction.rollback();
@@ -4336,11 +4272,12 @@ public class StudyDAOImpl implements StudyDAO {
 			participantPropertiesBO = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
 					participantPropertyId);
 			anchorDateId = participantPropertiesBO.getAnchorDateId();
-			query = session
-					.createQuery("UPDATE ParticipantPropertiesBO set status=0,completed=1,isChange=1, modifiedBy="
-							+ userId + ", modifiedDate='" + FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id="
-							+ participantPropertyId);
-			count = query.executeUpdate();
+			count = session
+					.createQuery(
+							"UPDATE ParticipantPropertiesBO set status=0,completed=1,isChange=1, modifiedBy= :userId"
+									+ ", modifiedDate= :modifiedDate where id= :participantPropertyId")
+					.setInteger("userId", userId).setString("modifiedDate", FdahpStudyDesignerUtil.getCurrentDateTime())
+					.setInteger("participantPropertyId", participantPropertyId).executeUpdate();
 			if (count > 0) {
 				if (count > 0) {
 					deleteParticipantPropertyAsAnchorDate(anchorDateId, session);
@@ -4367,7 +4304,6 @@ public class StudyDAOImpl implements StudyDAO {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
-		Query query = null;
 		ParticipantPropertiesBO participantPropertiesBO = null;
 		Integer anchorDateId = null;
 		try {
@@ -4376,10 +4312,10 @@ public class StudyDAOImpl implements StudyDAO {
 			participantPropertiesBO = (ParticipantPropertiesBO) session.get(ParticipantPropertiesBO.class,
 					participantPropertyId);
 			anchorDateId = participantPropertiesBO.getAnchorDateId();
-			query = session.createQuery(
-					"UPDATE ParticipantPropertiesBO set active=0, modifiedBy=" + userId + ", modifiedDate='"
-							+ FdahpStudyDesignerUtil.getCurrentDateTime() + "' where id=" + participantPropertyId);
-			count = query.executeUpdate();
+			count = session.createQuery(
+					"UPDATE ParticipantPropertiesBO set active=0, modifiedBy= :userId, modifiedDate= :modifiedDate where id= :participantPropertyId")
+					.setInteger("userId", userId).setString("modifiedDate", FdahpStudyDesignerUtil.getCurrentDateTime())
+					.setInteger("participantPropertyId", participantPropertyId).executeUpdate();
 			if (count > 0) {
 				deleteParticipantPropertyAsAnchorDate(anchorDateId, session);
 				message = FdahpStudyDesignerConstants.SUCCESS;
@@ -4397,6 +4333,7 @@ public class StudyDAOImpl implements StudyDAO {
 		return message;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String checkParticipantPropertyShortTitle(String shortTitle, String customStudyId) {
 		logger.info("StudyDAOImpl - checkParticipantPropertyShortTitle() - Starts");
@@ -4406,9 +4343,9 @@ public class StudyDAOImpl implements StudyDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(customStudyId) && StringUtils.isNotEmpty(shortTitle)) {
-				query = session.createQuery("From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId ='"
-						+ customStudyId + "' and PPBO.shortTitle='" + shortTitle + "'");
-				participantPropertiesBOs = query.list();
+				participantPropertiesBOs = session.createQuery(
+						"From ParticipantPropertiesBO PPBO WHERE PPBO.customStudyId = :customStudyId and PPBO.shortTitle= :shortTitle")
+						.setString("customStudyId", customStudyId).setString("shortTitle", shortTitle).list();
 				if (participantPropertiesBOs != null && !participantPropertiesBOs.isEmpty()) {
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
@@ -5919,7 +5856,7 @@ public class StudyDAOImpl implements StudyDAO {
 						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
-						
+
 						if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
 								studyBo.getStudyLanguage())) {
 							notificationBO
@@ -5928,7 +5865,7 @@ public class StudyDAOImpl implements StudyDAO {
 							notificationBO.setNotificationText(
 									FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
 						}
-						
+
 						notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6001,16 +5938,16 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								
+
 								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
 										studyBo.getStudyLanguage())) {
-									notificationBO
-											.setNotificationText(SpanishLangConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+									notificationBO.setNotificationText(
+											SpanishLangConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
 								} else {
 									notificationBO.setNotificationText(
 											FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
 								}
-								
+
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6078,16 +6015,17 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								
+
 								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
 										studyBo.getStudyLanguage())) {
 									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_PAUSE_TEXT
 											.replace("$customId", studyBo.getName()));
 								} else {
-									notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT
-											.replace("$customId", studyBo.getName()));
+									notificationBO
+											.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT
+													.replace("$customId", studyBo.getName()));
 								}
-								
+
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6114,16 +6052,17 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								
+
 								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
 										studyBo.getStudyLanguage())) {
 									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_RESUME_TEXT
 											.replace("$customId", studyBo.getName()));
 								} else {
-									notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT
-											.replace("$customId", studyBo.getName()));
+									notificationBO
+											.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT
+													.replace("$customId", studyBo.getName()));
 								}
-								
+
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -6150,18 +6089,17 @@ public class StudyDAOImpl implements StudyDAO {
 										FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								
+
 								if (StringUtils.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
 										studyBo.getStudyLanguage())) {
-									notificationBO
-									.setNotificationText(SpanishLangConstants.NOTIFICATION_DEACTIVATE_TEXT
+									notificationBO.setNotificationText(SpanishLangConstants.NOTIFICATION_DEACTIVATE_TEXT
 											.replace("$customId", studyBo.getName()));
 								} else {
-									notificationBO
-									.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT
-											.replace("$customId", studyBo.getName()));
+									notificationBO.setNotificationText(
+											FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT
+													.replace("$customId", studyBo.getName()));
 								}
-								
+
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
