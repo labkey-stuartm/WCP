@@ -7101,7 +7101,7 @@ public class StudyDAOImpl implements StudyDAO {
 			// checking in the questionnaire step anchor date is selected or not
 			searchQuery = "select count(*) from questionnaires qr where qr.anchor_date_id IS NOT NULL "
 					+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and " +
-                    "t.custom_study_id=:id and qr.custom_study_id=:id and qr.active=1";
+                    "t.custom_study_id=:id) and qr.custom_study_id=:id and qr.active=1";
 			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery)
                     .setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                     .setString("id", customStudyId)
@@ -7112,7 +7112,7 @@ public class StudyDAOImpl implements StudyDAO {
 				// activetask target anchordate
 				searchQuery = "select count(*) from active_task qr where qr.anchor_date_id IS NOT NULL "
 						+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name " +
-                        "and t.custom_study_id=:id and qr.custom_study_id=:id and qr.active=1";
+                        "and t.custom_study_id=:id) and qr.custom_study_id=:id and qr.active=1";
 				BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery)
                         .setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                         .setString("id", customStudyId)
@@ -7122,7 +7122,7 @@ public class StudyDAOImpl implements StudyDAO {
 				} else {
 					searchQuery = "select count(*) from resources qr where qr.anchor_date_id IS NOT NULL "
 							+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and " +
-                            "t.custom_study_id=:id and qr.custom_study_id=:id and qr.status=1";
+                            "t.custom_study_id=:id) and qr.custom_study_id=:id and qr.status=1";
 					BigInteger sub1Count = (BigInteger) session.createSQLQuery(searchQuery)
                             .setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                             .setString("id", customStudyId)
@@ -7133,7 +7133,7 @@ public class StudyDAOImpl implements StudyDAO {
 				}
 			}
 		} catch (Exception e) {
-
+			logger.error("EXCEPTION : ", e);
 		}
 		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollment - Ends");
 		return isExist;
@@ -7149,7 +7149,7 @@ public class StudyDAOImpl implements StudyDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			// checking in the questionnaire step anchor date is selected or not
 			searchQuery = "select count(*) from questionnaires qr where qr.anchor_date_id IS NOT NULL "
-					+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and t.custom_study_id=:customStudyId "
+					+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and t.custom_study_id=:customStudyId) "
                     + "and qr.study_id=:id and qr.active=1";
 			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery)
                     .setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
@@ -7161,7 +7161,7 @@ public class StudyDAOImpl implements StudyDAO {
 			} else {
 				// activetask target anchordate
 				searchQuery = "select count(*) from active_task qr where qr.anchor_date_id IS NOT NULL "
-						+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and t.custom_study_id=:customStudyId "
+						+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and t.custom_study_id=:customStudyId) "
                         + "and qr.study_id=:id and qr.active=1";
 				BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery)
                         .setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
@@ -7172,7 +7172,7 @@ public class StudyDAOImpl implements StudyDAO {
 					isExist = true;
 				} else {
 					searchQuery = "select count(*) from resources qr where qr.anchor_date_id IS NOT NULL "
-							+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and t.custom_study_id=:customStudyId "
+							+ "and qr.anchor_date_id=(select t.id from anchordate_type t where t.name=:name and t.custom_study_id=:customStudyId) "
                             + "and qr.study_id=:id and qr.status=1";
 					BigInteger sub1Count = (BigInteger) session.createSQLQuery(searchQuery)
                             .setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
@@ -7185,7 +7185,7 @@ public class StudyDAOImpl implements StudyDAO {
 				}
 			}
 		} catch (Exception e) {
-
+			logger.error("StudyDAOImpl - ERROR ", e);
 		}
 		logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
 		return isExist;
