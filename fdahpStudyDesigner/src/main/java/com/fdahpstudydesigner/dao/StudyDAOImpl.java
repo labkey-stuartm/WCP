@@ -4543,7 +4543,7 @@ public class StudyDAOImpl implements StudyDAO {
 									.setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
 									.executeUpdate();
 						} else {
-							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=0 where study_id=" +
+							session.createSQLQuery("UPDATE anchordate_type set has_anchortype_draft=0 where study_id=:id" +
 									" and has_anchortype_draft=1 and name=:name")
 									.setInteger("id", study.getId())
 									.setString("name", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
@@ -5905,7 +5905,7 @@ public class StudyDAOImpl implements StudyDAO {
 								+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 								+ " where a.questionnairesId=ab.id and ab.studyId=:impValue"
 								+ " and ab.frequency=:frequency and a.isLaunchStudy=1 and active=1"
-								+ " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:id");
+								+ " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:id)");
 						query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, Integer.parseInt(studyId))
 								.setString("frequency", FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
 								.setString("id", studyBo.getCustomStudyId());
@@ -5919,7 +5919,7 @@ public class StudyDAOImpl implements StudyDAO {
 						query = session.createQuery("select ab.id from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 								+ " where a.activeTaskId=ab.id and ab.studyId=:impValue and ab.frequency=:frequency" +
 								" and a.isLaunchStudy=1 and active=1 and ab.shortTitle NOT IN(SELECT shortTitle" +
-								" from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:id");
+								" from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:id)");
 						query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, Integer.parseInt(studyId))
 								.setString("frequency", FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
 								.setString("id", studyBo.getCustomStudyId());
@@ -6698,7 +6698,7 @@ public class StudyDAOImpl implements StudyDAO {
 								+ " and ab.frequency=:frequency and a.isLaunchStudy=false and"
                                 + " a.frequencyDate IS NOT NULL"
 								+ " and a.frequencyTime IS NOT NULL"
-								+ " and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:id");
+								+ " and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:id)");
 				query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId())
                         .setString("frequency", FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
                         .setString("id", studyBo.getCustomStudyId());
@@ -6722,7 +6722,7 @@ public class StudyDAOImpl implements StudyDAO {
 								+ " and ab.active IS NOT NULL and ab.active=1 and ab.studyId=:impValue"
 								+ " and ab.frequency not in (:freqList)"
 								+ " and ab.activeTaskLifetimeStart IS NOT NULL and a.frequencyTime IS NOT NULL"
-								+ " and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:id");
+								+ " and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:id)");
 				query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId())
                         .setParameterList("freqList", list)
                         .setString("id", studyBo.getCustomStudyId());
@@ -6773,7 +6773,7 @@ public class StudyDAOImpl implements StudyDAO {
 								+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 								+ " where a.questionnairesId=ab.id and ab.active=1 and ab.studyId=:impValue"
 								+ " and ab.frequency=:frequency and a.frequencyDate IS NOT NULL and a.frequencyTime IS NOT NULL"
-								+ " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:id");
+								+ " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:id)");
 				query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId())
                         .setString("frequency", FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)
                         .setString("id", studyBo.getCustomStudyId());
@@ -6797,7 +6797,7 @@ public class StudyDAOImpl implements StudyDAO {
 								+ " where a.questionnairesId=ab.id and ab.active=1 and ab.studyId=:impValue"
 								+ " and ab.frequency not in(:freqList)"
 								+ " and ab.studyLifetimeStart IS NOT NULL and a.frequencyTime IS NOT NULL"
-								+ " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:id");
+								+ " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:id)");
 				query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId())
                         .setParameterList("freqList", freqList)
                         .setString("id", studyBo.getCustomStudyId());
