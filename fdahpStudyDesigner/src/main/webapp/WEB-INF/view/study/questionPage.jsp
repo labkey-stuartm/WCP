@@ -2408,7 +2408,7 @@ $(document).ready(function(){
 		$('.useAnchorDateName').hide();
 		$("#anchorTextId").attr('required',false);
 		$("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
-	    $("#anchorTextId").parent().find(".help-block").html("");
+	    $("#anchorTextId").parent().find(".help-block").empty();
 	}
 	
 	$('#useAnchorDateId').click(function() {	
@@ -2419,7 +2419,7 @@ $(document).ready(function(){
 			$('.useAnchorDateName').hide();
 			$("#anchorTextId").attr('required',false);
 			$("#anchorTextId").parent().removeClass("has-danger").removeClass("has-error");
- 	        $("#anchorTextId").parent().find(".help-block").html("");
+ 	        $("#anchorTextId").parent().find(".help-block").empty();
 		}
 	});
 	
@@ -2479,12 +2479,14 @@ $(document).ready(function(){
 	   				  if(maxValue == ''){
 	   					$("#numericMaxValueId").parent().addClass("has-danger").addClass("has-error");
                         $("#numericMaxValueId").parent().find(".help-block").empty();
-                        $("#numericMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+                        $("#numericMaxValueId").parent().find(".help-block").append( $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                        "Please fill out this field"));
 	   				  }
 	     			  if(minValue == ''){
 	     				 $("#numericMinValueId").parent().addClass("has-danger").addClass("has-error");
                          $("#numericMinValueId").parent().find(".help-block").empty();
-                         $("#numericMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");  
+                         $("#numericMinValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                         "Please fill out this field"));  
 	     			  }
 	   				isValid = false;
 	   				$("#doneId").attr("disabled",false);
@@ -2510,22 +2512,26 @@ $(document).ready(function(){
    					if(resType == "Continuous Scale"){
    					 	$("#continuesScaleMaxDescriptionId").parent().addClass("has-danger").addClass("has-error");
                      	$("#continuesScaleMaxDescriptionId").parent().find(".help-block").empty();
-                        $("#continuesScaleMaxDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+                        $("#continuesScaleMaxDescriptionId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                        "Please fill out this field"));
                     }else{
                     	$("#scaleMaxDescriptionId").parent().addClass("has-danger").addClass("has-error");
                         $("#scaleMaxDescriptionId").parent().find(".help-block").empty();
-                        $("#scaleMaxDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
+                        $("#scaleMaxDescriptionId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                        "Please fill out this field"));
                     }
    				  }
      			  if(minValue == ''){
      				 if(resType == "Continuous Scale"){
        					 $("#continuesScaleMinDescriptionId").parent().addClass("has-danger").addClass("has-error");
                          $("#continuesScaleMinDescriptionId").parent().find(".help-block").empty();
-                         $("#continuesScaleMinDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+                         $("#continuesScaleMinDescriptionId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                         "Please fill out this field"));
                      }else{
                     	 $("#scaleMinDescriptionId").parent().addClass("has-danger").addClass("has-error");
                          $("#scaleMinDescriptionId").parent().find(".help-block").empty();
-                         $("#scaleMinDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");   
+                         $("#scaleMinDescriptionId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                         "Please fill out this field"));  
                      }  
      			  }
    				isValid = false;
@@ -2556,22 +2562,26 @@ $(document).ready(function(){
 	   					if(resType == "Continuous Scale"){
 	   					 	$("#continuesScaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
 	                     	$("#continuesScaleMaxImagePathId").parent().find(".help-block").empty();
-	                        $("#continuesScaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+	                        $("#continuesScaleMaxImagePathId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                        "Please fill out this field"));
 	                    }else{
 	                    	$("#scaleMaxImagePathId").parent().addClass("has-danger").addClass("has-error");
 	                        $("#scaleMaxImagePathId").parent().find(".help-block").empty();
-	                        $("#scaleMaxImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
+	                        $("#scaleMaxImagePathId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                        "Please fill out this field"));
 	                    }
 	   				  }
 	     			  if(minImagePath == '' && (minImageFile == '' || typeof minImageFile == 'undefined' || minImageFile == null)){
 	     				 if(resType == "Continuous Scale"){
 	       					 $("#continuesScaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
 	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").empty();
-	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+	                         $("#continuesScaleMinImagePathId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                         "Please fill out this field"));
 	                     }else{
 	                    	 $("#scaleMinImagePathId").parent().addClass("has-danger").addClass("has-error");
 	                         $("#scaleMinImagePathId").parent().find(".help-block").empty();
-	                         $("#scaleMinImagePathId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");   
+	                         $("#scaleMinImagePathId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                         "Please fill out this field"));
 	                     }  
 	     			  }
 	     			 isImageValid = false;
@@ -2824,7 +2834,8 @@ $(document).ready(function(){
 	            		$("#scaleMinValueId").val('');
 	           		    $("#scaleMinValueId").parent().addClass("has-danger").addClass("has-error");
 	                    $("#scaleMinValueId").parent().find(".help-block").empty();
-	                    $("#scaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+	                    $("#scaleMinValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                    "Please enter an integer number in the range (Min, 10000)"));
 	            	}else{
 	            		$("#scaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
 	                    $("#scaleMinValueId").parent().find(".help-block").empty();
@@ -2833,7 +2844,8 @@ $(document).ready(function(){
 	        		$("#scaleMinValueId").val('');
 	       		    $("#scaleMinValueId").parent().addClass("has-danger").addClass("has-error");
 	                $("#scaleMinValueId").parent().find(".help-block").empty();
-	                $("#scaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+	                $("#scaleMinValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "Please enter an integer number in the range (Min, 10000) "));
 	        	}
     		}
     	}else{
@@ -2845,7 +2857,8 @@ $(document).ready(function(){
             		$("#scaleMinValueId").val('');
            		    $("#scaleMinValueId").parent().addClass("has-danger").addClass("has-error");
                     $("#scaleMinValueId").parent().find(".help-block").empty();
-                    $("#scaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+                    $("#scaleMinValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                    "Please enter an integer number in the range (Min, 10000) "));
             	}	
     		}
     	}
@@ -2865,13 +2878,15 @@ $(document).ready(function(){
 	        			$("#scaleMaxValueId").val('');
 	           		    $("#scaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
 	                    $("#scaleMaxValueId").parent().find(".help-block").empty();
-	                    $("#scaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+	                    $("#scaleMaxValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                    "Please enter an integer number in the range (Min+1, 10000)"));
 	        		}
 	        	}else{
 	        		$("#scaleMaxValueId").val('');
 	       		    $("#scaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
 	                $("#scaleMaxValueId").parent().find(".help-block").empty();
-	                $("#scaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+	                $("#scaleMaxValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "Please enter an integer number in the range (Min+1, 10000) "));
 	        	}
     		}
     	}else{
@@ -2883,7 +2898,8 @@ $(document).ready(function(){
 	        		$("#scaleMaxValueId").val('');
 	       		    $("#scaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
 	                $("#scaleMaxValueId").parent().find(".help-block").empty();
-	                $("#scaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+	                $("#scaleMaxValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "Please enter an integer number in the range (Min+1, 10000) "));
 	        	}
     		}
     	}
@@ -2912,9 +2928,11 @@ $(document).ready(function(){
         	    		 $("#displayStepsCount").parent().addClass("has-danger").addClass("has-error");
         	             $("#displayStepsCount").parent().find(".help-block").empty();
         	             if(parseInt(stepsCount) < 1){
-        	            	 $("#displayStepsCount").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter  a smaller step size.</li></ul>");
+        	            	 $("#displayStepsCount").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+        	                  "Please enter  a smaller step size."));
         	             }else{
-        	            	 $("#displayStepsCount").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a larger step size.</li></ul>"); 
+        	            	 $("#displayStepsCount").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+        	                  "Please enter a larger step size."));
         	             }
         	             
     	            }
@@ -2923,7 +2941,8 @@ $(document).ready(function(){
     				 $("#scaleStepId").val('');
     	    		 $("#displayStepsCount").parent().addClass("has-danger").addClass("has-error");
     	             $("#displayStepsCount").parent().find(".help-block").empty();
-    	             $("#displayStepsCount").parent().find(".help-block").append("<ul class='list-unstyled'><li>(Max-Min) value should be exactly divisisble by the step size.</li></ul>");
+    	             $("#displayStepsCount").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+    	              "(Max-Min) value should be exactly divisisble by the step size."));
     			}
     	}
     });
@@ -2945,7 +2964,8 @@ $(document).ready(function(){
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please select a number from the following set (1,2,3,4,5,6,10,12,15,20 & 30).</li></ul>");
+             $(this).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+             "Please select a number from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."));
     	}
     });
     var dt = new Date();
@@ -2959,7 +2979,8 @@ $(document).ready(function(){
 		var durationTime = $('#timeIntervalDefaultId').val();
 		if(durationTime && durationTime == '00:00'){
 			durationFlag = false;
-			$('#timeIntervalDefaultId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
+			$('#timeIntervalDefaultId').parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "Please select a non-zero Duration value."));
 		}else{
 			durationFlag = true;
 			$('#timeIntervalDefaultId').parent().find(".help-block").empty();
@@ -2981,7 +3002,8 @@ $(document).ready(function(){
         	     
         		 $("#textScalePositionId").parent().addClass("has-danger").addClass("has-error");
                  $("#textScalePositionId").parent().find(".help-block").empty();
-                 $("#textScalePositionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices </li></ul>");
+                 $("#textScalePositionId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                 "Please enter choice from 1 to number of choices "));
         	}
     	}
     });
@@ -2998,14 +3020,16 @@ $(document).ready(function(){
 				 $("#scaleDefaultValueId").val('');
 	    		 $("#scaleDefaultValueId").parent().addClass("has-danger").addClass("has-error");
 	             $("#scaleDefaultValueId").parent().find(".help-block").empty();
-	             $("#scaleDefaultValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
+	             $("#scaleDefaultValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	              "Please enter an integer from 0 to number of steps"));
 			}
 		}else{
 			if(value != ''){
 				$("#scaleDefaultValueId").val('');
 	   		    $("#scaleDefaultValueId").parent().addClass("has-danger").addClass("has-error");
 	            $("#scaleDefaultValueId").parent().find(".help-block").empty();
-	            $("#scaleDefaultValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an step size first </li></ul>");
+	            $("#scaleDefaultValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	              "Please enter an step size first "));
 			}
 		}
     });
@@ -3021,7 +3045,8 @@ $(document).ready(function(){
 	            		$("#continuesScaleMinValueId").val('');
 	           		    $("#continuesScaleMinValueId").parent().addClass("has-danger").addClass("has-error");
 	                    $("#continuesScaleMinValueId").parent().find(".help-block").empty();
-	                    $("#continuesScaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+	                    $("#continuesScaleMinValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                    "Please enter an integer number in the range (Min, 10000)"));
 	            	}else{
 	            		
 	            		$("#continuesScaleMinValueId").parent().removeClass("has-danger").removeClass("has-error");
@@ -3031,7 +3056,8 @@ $(document).ready(function(){
 	        		$("#continuesScaleMinValueId").val('');
 	       		    $("#continuesScaleMinValueId").parent().addClass("has-danger").addClass("has-error");
 	                $("#continuesScaleMinValueId").parent().find(".help-block").empty();
-	                $("#continuesScaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+	                $("#continuesScaleMinValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "Please enter an integer number in the range (Min, 10000) "));
 	        	}
     		}
     	}else{
@@ -3043,7 +3069,8 @@ $(document).ready(function(){
             		$("#continuesScaleMinValueId").val('');
            		    $("#continuesScaleMinValueId").parent().addClass("has-danger").addClass("has-error");
                     $("#continuesScaleMinValueId").parent().find(".help-block").empty();
-                    $("#continuesScaleMinValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+                    $("#continuesScaleMinValueId").parent().find(".help-block").append( $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                    "Please enter an integer number in the range (Min, 10000) "));
             	}
     		}
     	}
@@ -3063,13 +3090,15 @@ $(document).ready(function(){
             			$("#continuesScaleMaxValueId").val('');
                		    $("#continuesScaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
                         $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
-                        $("#continuesScaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+                        $("#continuesScaleMaxValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                        "Please enter an integer number in the range (Min+1, 10000)"));
             		}
             	}else{
             		$("#continuesScaleMaxValueId").val('');
            		    $("#continuesScaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
                     $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
-                    $("#continuesScaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                    "Please enter an integer number in the range (Min+1, 10000) "));
             	}
     		}
     	}else{
@@ -3081,7 +3110,8 @@ $(document).ready(function(){
             		$("#continuesScaleMaxValueId").val('');
            		    $("#continuesScaleMaxValueId").parent().addClass("has-danger").addClass("has-error");
                     $("#continuesScaleMaxValueId").parent().find(".help-block").empty();
-                    $("#continuesScaleMaxValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+                    $("#continuesScaleMaxValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                    "Please enter an integer number in the range (Min+1, 10000) "));
             	}
     		}
     	}
@@ -3099,7 +3129,8 @@ $(document).ready(function(){
 				 $("#continuesScaleDefaultValueId").val('');
 	    		 $("#continuesScaleDefaultValueId").parent().addClass("has-danger").addClass("has-error");
 	             $("#continuesScaleDefaultValueId").parent().find(".help-block").empty();
-	             $("#continuesScaleDefaultValueId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+	             $("#continuesScaleDefaultValueId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	              "Please enter an integer between the minimum and maximum  "));
 			}
 		}
     });
@@ -3113,7 +3144,8 @@ $(document).ready(function(){
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an value number less than Maximum</li></ul>");
+                $(this).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                "Please enter an value number less than Maximum"));
         	}else{
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
@@ -3130,7 +3162,8 @@ $(document).ready(function(){
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an value number greater than Minimum</li></ul>");
+                $(this).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                "Please enter an value number greater than Minimum"));
         	}else{
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
@@ -3173,7 +3206,8 @@ $(document).ready(function(){
         if(minDate!='' && maxDate!='' && new Date(minDate) >= new Date(maxDate)){
        	    $('#maxDateId').data("DateTimePicker").clear();
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
-       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than or equal Min Date and Time</li></ul>');
+       	    $('#maxDateId').parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "Max Date and Time Should not be less than or equal Min Date and Time"));
         }else{
         	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
             $('#maxDateId').parent().find(".help-block").empty();
@@ -3192,7 +3226,8 @@ $(document).ready(function(){
         	}else{
         		$("#defaultDate").data("DateTimePicker").clear();
         		$('#defaultDate').parent().addClass("has-danger").addClass("has-error");
-           	    $('#defaultDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>Enter default date to be shown as selected as per availability of Min and Max</li></ul>');
+           	    $('#defaultDate').parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                "Enter default date to be shown as selected as per availability of Min and Max"));
         	}
         }
     });
@@ -3276,7 +3311,7 @@ $(document).ready(function(){
                 } else {
                     $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                     $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
+                    $(thisAttr).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("File incorrect."));
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
@@ -3290,7 +3325,7 @@ $(document).ready(function(){
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("File incorrect."));
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);
@@ -3449,7 +3484,7 @@ function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
 		var previousResponseType = '${questionsBo.responseType}';
 		if(Number(id) != Number(previousResponseType)){
-			 var responseType = $("#responseTypeId>option:selected").html();
+			 var responseType = $("#responseTypeId>option:selected").text();
 			 resetTheLineStatData();
 			 if(responseType != 'Boolean'){
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
@@ -3920,14 +3955,13 @@ function saveQuestionStepQuestionnaire(item,callback){
 	          beforeSend: function(xhr, settings){
 	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 	          },
-	          success:function(data){
-	        	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
+	          success:function(data){			                       
+				var message = data.message;
 				if(message == "SUCCESS"){
 					$("body").removeClass("loading");
 					$("#preShortTitleId").val(short_title);
-					var questionId = jsonobject.questionId;
-					var questionResponseId = jsonobject.questionResponseId;
+					var questionId = data.questionId;
+					var questionResponseId = data.questionResponseId;
 					
 					$("#questionId").val(questionId);
 					$("#questionResponseTypeId").val(questionResponseId);
@@ -3937,7 +3971,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 						$("#prevStatShortNameId").val(statShortName);
 					}
 					
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if (callback)
@@ -3946,11 +3980,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
 				}else{
-					var errMsg = jsonobject.errMsg;
+					var errMsg = data.errMsg;
 					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text(errMsg);
 					}else{
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
 					}
 					if (callback)
   						callback(false);
@@ -3960,7 +3994,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	          error: function(xhr, status, error) {
     			  $(item).prop('disabled', false);
     			  $('#alertMsg').show();
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
 	   }); 
@@ -3968,14 +4002,15 @@ function saveQuestionStepQuestionnaire(item,callback){
 		if(questionText == null || questionText == '' || typeof questionText =='undefined' ){
 			$('#questionTextId').validator('destroy').validator();
 			if(!$('#questionTextId')[0].checkValidity()) {
-				$("#questionTextId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+				$("#questionTextId").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	              "This is a required field."));
 				$('.questionLevel a').tab('show');
 			}
 		}
 		if(short_title == null || short_title== '' || typeof short_title =='undefined' ){
 			$('#shortTitle').validator('destroy').validator();
 			if(!$('#shortTitle')[0].checkValidity()) {
-				$("#shortTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+				$("#shortTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("This is a required field."));
 				$('.questionLevel a').tab('show');
 			}
 		}
@@ -4053,7 +4088,7 @@ function addValuePicker(){
 					"</div>";	
 	$(".value-picker:last").after(newValuePicker);
 	$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
-    $(".value-picker").parent().find(".help-block").html('');
+    $(".value-picker").parent().find(".help-block").empty();
 	$(".value-picker").parents("form").validator("destroy");
     $(".value-picker").parents("form").validator();
    
@@ -4069,7 +4104,7 @@ function removeValuePicker(param){
 		
 		$(param).parents(".value-picker").remove();
 		$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
-	    $(".value-picker").parent().find(".help-block").html('');
+	    $(".value-picker").parent().find(".help-block").empty();
 	    $(".value-picker").parents("form").validator("destroy");
 		$(".value-picker").parents("form").validator();
 		if($('.value-picker').length > 2){
@@ -4320,7 +4355,9 @@ function validateStatsShorTitle(event,callback){
                          $("#statShortNameId").val('');
                          $("#statShortNameId").parent().addClass("has-danger").addClass("has-error");
                          $("#statShortNameId").parent().find(".help-block").empty();
-                         $("#statShortNameId").parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + short_title + "' has already been used in the past.</li></ul>");
+                         $("#statShortNameId").parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                                 short_title
+                                 + " has already been used in the past."));
                          if (callback)
      						callback(false);
                          
@@ -4376,7 +4413,9 @@ function validateTheQuestionshortTitle(item,callback){
                          $(thisAttr).val('');
                          $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                          $(thisAttr).parent().find(".help-block").empty();
-                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
+                         $(thisAttr).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                                 shortTitle
+                                 + " has already been used in the past."));
                          callback(false);
                      }
                  },
@@ -4385,7 +4424,7 @@ function validateTheQuestionshortTitle(item,callback){
  		}else{
  			callback(true);
  			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
- 	        $(thisAttr).parent().find(".help-block").html("");
+ 	        $(thisAttr).parent().find(".help-block").empty();
  		}
  	}else{
  		callback(false);
@@ -4450,13 +4489,15 @@ function validateFractionDigits(item){
 				$(item).val('');
 	    		$(item).parent().addClass("has-danger").addClass("has-error");
 	            $(item).parent().find(".help-block").empty();
-	            $(item).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a value in the range (0,x).</li></ul>");
+	            $(item).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	              "Please enter a value in the range (0,x)."));
 			}
 		}else{
 			$(item).val('');
     		$(item).parent().addClass("has-danger").addClass("has-error");
             $(item).parent().find(".help-block").empty();
-            $(item).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an minimum and maximum values </li></ul>");
+            $(item).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "Please enter an minimum and maximum values "));
 		}
 	}
 }
@@ -4475,7 +4516,8 @@ function validateForUniqueValue(item,responsetype,callback){
 					$("#displayTextSclValue"+id).val('');
 		    		$("#displayTextSclValue"+id).parent().addClass("has-danger").addClass("has-error");
 		            $("#displayTextSclValue"+id).parent().find(".help-block").empty();
-		            $("#displayTextSclValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		            $("#displayTextSclValue"+id).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "The value should be unique "));
 		        }
 		        else
 		        valueArray.push(diaplay_value.toLowerCase());
@@ -4499,7 +4541,8 @@ function validateForUniqueValue(item,responsetype,callback){
 					$("#displayValPickValue"+id).val('');
 		    		$("#displayValPickValue"+id).parent().addClass("has-danger").addClass("has-error");
 		            $("#displayValPickValue"+id).parent().find(".help-block").empty();
-		            $("#displayValPickValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		            $("#displayValPickValue"+id).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "The value should be unique "));
 		            
 		        }
 		        else
@@ -4523,7 +4566,8 @@ function validateForUniqueValue(item,responsetype,callback){
 					$("#displayImageChoiceValue"+id).val('');
 		    		$("#displayImageChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
 		            $("#displayImageChoiceValue"+id).parent().find(".help-block").empty();
-		            $("#displayImageChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		            $("#displayImageChoiceValue"+id).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "The value should be unique "));
 		        }
 		        else
 		        valueArray.push(diaplay_value.toLowerCase());
@@ -4547,7 +4591,8 @@ function validateForUniqueValue(item,responsetype,callback){
 					$("#displayTextChoiceValue"+id).val('');
 		    		$("#displayTextChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
 		            $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
-		            $("#displayTextChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		            $("#displayTextChoiceValue"+id).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                "The value should be unique "));
 		        }
 		        else
 		        valueArray.push(diaplay_value.toLowerCase());
@@ -4579,7 +4624,9 @@ function validateAnchorDateText(item,callback){
  			$(thisAttr).val('');
             $(thisAttr).parent().addClass("has-danger").addClass("has-error");
             $(thisAttr).parent().find(".help-block").empty();
-            $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + anchordateText + "' has already been used in the past.</li></ul>");
+            $(thisAttr).parent().find(".help-block").append( $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                    anchordateText
+                    + " has already been used in the past."));
             callback(false);
  		}else{
  			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -4608,7 +4655,9 @@ function validateAnchorDateText(item,callback){
  	                         $(thisAttr).val('');
  	                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
  	                         $(thisAttr).parent().find(".help-block").empty();
- 	                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + anchordateText + "' has already been used in the past.</li></ul>");
+ 	                         $(thisAttr).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+ 	                                anchordateText
+ 	                               + " has already been used in the past."));
  	                         callback(false);
  	                     }
  	                 },
@@ -4618,7 +4667,7 @@ function validateAnchorDateText(item,callback){
  	}else{
  			callback(true);
  			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
- 	        $(thisAttr).parent().find(".help-block").html("");
+ 	        $(thisAttr).parent().find(".help-block").empty();
  	}
 }
 </script>

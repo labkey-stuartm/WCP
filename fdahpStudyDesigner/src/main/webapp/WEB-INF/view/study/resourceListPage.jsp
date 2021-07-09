@@ -3,8 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <head>
-  <meta charset="UTF-8">
-  <style>
+<meta charset="UTF-8">
+<style>
 .cursonMove {
 	cursor: move !important;
 }
@@ -12,6 +12,7 @@
 .sepimgClass {
 	position: relative;
 }
+
 .tool-tip {
 	display: inline-block;
 }
@@ -28,13 +29,16 @@
 	<!--  Start top tab section-->
 	<div class="right-content-head">
 		<div class="text-right">
-			<div class="black-md-f text-uppercase dis-line pull-left line34">RESOURCES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+			<div class="black-md-f text-uppercase dis-line pull-left line34">
+				RESOURCES
+				<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 			<div class="dis-line form-group mb-none mr-sm">
 				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
 			<c:if test="${empty permission}">
 				<div class="dis-line form-group mb-none">
-					<span class="tool-tip" data-toggle="tooltip" data-placement="bottom"
+					<span class="tool-tip" data-toggle="tooltip"
+						data-placement="bottom"
 						<c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if>>
 						<button type="button" class="btn btn-primary blue-btn"
 							id="markAsComp" onclick="markAsCompleted();"
@@ -53,7 +57,7 @@
 				cellspacing="0" width="100%">
 				<thead>
 					<tr>
-					<th><span class="marL10">#</span></th>
+						<th><span class="marL10">#</span></th>
 						<th>RESOURCE TITLE</th>
 						<th class="text-right"><c:if test="${empty permission}">
 								<div class="dis-line form-group mb-none mr-sm">
@@ -65,7 +69,8 @@
 
 								<div class="dis-line form-group mb-none">
 									<button type="button" id="addResourceId"
-										class="btn btn-primary blue-btn" onclick="addResource();">Add Resource</button>
+										class="btn btn-primary blue-btn" onclick="addResource();">Add
+										Resource</button>
 								</div>
 							</c:if></th>
 
@@ -73,18 +78,22 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${resourceBOList}" var="resourceInfo">
-							<tr id="row${resourceInfo.id}">
-							  <td>${resourceInfo.sequenceNo}</td>
-								<td class="wid50">${resourceInfo.title}</td>
-								<td class="wid50 text-right"><span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View"   id="viewRes"
-									onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
-									class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
-									data-toggle="tooltip" data-placement="top" title="Edit" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
-									<span
-									class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-									data-toggle="tooltip" data-placement="top" title="Delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
-								</td>
-							</tr>
+						<tr id="row${resourceInfo.id}">
+							<td>${resourceInfo.sequenceNo}</td>
+							<td class="wid50">${resourceInfo.title}</td>
+							<td class="wid50 text-right"><span
+								class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
+								data-placement="top" title="View" id="viewRes"
+								onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
+								class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+								data-toggle="tooltip" data-placement="top" title="Edit"
+								id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
+								<span
+								class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+								data-toggle="tooltip" data-placement="top" title="Delete"
+								id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+							</td>
+						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
@@ -97,7 +106,8 @@
 	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}"
 	name="resourceInfoForm" id="resourceInfoForm" method="post">
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
-	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol" value="">
+	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol"
+		value="">
 	<input type="hidden" name="actionOn" id="actionOn" value="">
 </form:form>
 <form:form
@@ -187,23 +197,22 @@ $(document).ready(function(){
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var jsonobject = eval(data);
-	         		var message = jsonobject.message;
+	         		var message = data.message;
 					if(message == "SUCCESS"){
 					    reloadResourceDataTable(jsonobject.resourceList,null);
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully.");
+						$("#alertMsg").removeClass('e-box').addClass('s-box').text("Reorder done successfully.");
 						if ($('.eighthResources').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 						   $('.eighthResources').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 						}
 					}else{
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent.");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to reorder consent.");
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
 				error: function(xhr, status, error) {
-				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 				  setTimeout(hideDisplayMessage, 4000);
 				}
 			});
@@ -244,17 +253,17 @@ function deleteResourceInfo(resourceInfoId){
 	    						$('#markAsComp').prop('disabled',false);
 	    						$('[data-toggle="tooltip"]').tooltip('destroy');
 	    					}
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully.");
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').text("Resource deleted successfully.");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
 	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource.");
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to delete resource.");
 	    					$('#alertMsg').show();
 	    	            }
 	    				setTimeout(hideDisplayMessage, 4000);
 	    			},
 	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 	    			  setTimeout(hideDisplayMessage, 4000);
 	    			}
 	    		});
@@ -275,8 +284,7 @@ function reloadData(studyId){
 	    	"${_csrf.parameterName}":"${_csrf.token}",
 	    },
 	    success: function status(data, status) {
-	    	 var jsonobject = eval(data);
-	         var message = jsonobject.message;
+	         var message = data.message;
 	         var markAsComplete = jsonobject.markAsComplete;
 	         if(message == "SUCCESS"){
 	        	 reloadResourceDataTable(jsonobject.resourceList,markAsComplete);
@@ -305,13 +313,13 @@ function  reloadResourceDataTable(resourceList,markAsComplete){
 			 }else{
 					datarow.push(obj.title);
 			 }	
-			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewResourceInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewResourceInfo("+ parseInt(obj.id) +");'></span>";
 			 if(obj.status){
-			 	actions+="<span class='sprites_icon edit-g mr-lg' onclick='editResourceInfo("+obj.id+");'></span>"
+			 	actions+="<span class='sprites_icon edit-g mr-lg' onclick='editResourceInfo("+ parseInt(obj.id) +");'></span>"
 			 }else{
-			 	actions+="<span class='sprites_icon edit-inc-draft mr-lg' onclick='editResourceInfo("+obj.id+");'></span>";
+			 	actions+="<span class='sprites_icon edit-inc-draft mr-lg' onclick='editResourceInfo("+ parseInt(obj.id) +");'></span>";
 			 }
-			 actions+="<span class='sprites_icon copy delete' onclick='deleteResourceInfo("+obj.id+");'></span>";
+			 actions+="<span class='sprites_icon copy delete' onclick='deleteResourceInfo("+ parseInt(obj.id) +");'></span>";
 			 datarow.push(actions);
 			 $('#resource_list').DataTable().row.add(datarow);
 			// $('#resource_list tr').find('td[1]').addClass("wid50");

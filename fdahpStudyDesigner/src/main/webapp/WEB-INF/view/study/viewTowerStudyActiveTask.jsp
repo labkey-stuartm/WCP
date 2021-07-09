@@ -542,7 +542,7 @@ $(document).ready(function(){
  	      $('.chartSection').show();
  	   if(frequencyType && frequencyType == 'Manually Schedule'){
  		   $('.activeaddToChartText').show();
-			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
+			   $('.activeaddToChartText').text('A max of x runs will be displayed in each view of the chart.');
  	   }
     }
 	setLineChatStatCheckedVal();
@@ -647,10 +647,12 @@ $(document).ready(function(){
  	  									  }else{
  	  										  var statId = $('.shortTitleStatCls').attr('id');
  	  						      			  if(statId && statId == 'identifierId'){
- 	  						      				$("#identifierId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+ 	  						      				$("#identifierId").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+ 	  				                            "This is a required field."));
  	  						      				//$('#identifierId').focus();
  	  						      			  }else{
- 	  											  $("#static").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>'); 
+ 	  											  $("#static").parent().addClass('has-error has-danger').find(".help-block").empty().append( $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+ 	  				                            "This is a required field."));
  	  											  //$('#static').focus();
  	  						      			  }
  	  						      			  $("#doneId").attr("disabled",false);
@@ -693,7 +695,8 @@ $(document).ready(function(){
    		 $("body").removeClass('loading');
             return false;
    	 }else if(!$('#shortTitleId')[0].checkValidity()){
-        	 $("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+        	 $("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+             "This is a required field."));
         	 showErrMsg("Please fill in all mandatory fields.");
         	 $('.contentClass a').tab('show');
             $("body").removeClass('loading');
@@ -779,7 +782,8 @@ $(document).ready(function(){
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");
-				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
+				$(this).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                "Special characters such as #^}{ are not allowed."));
 			}
 	    }
 	});
@@ -795,7 +799,8 @@ $(document).ready(function(){
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");
-				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>The characters like (< >) are not allowed.</li></ul>");
+				$(this).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                "The characters like (< >) are not allowed."));
 			}
 	    }
 	}); 
@@ -858,7 +863,9 @@ function validateShortTitleId(item,callback){
 	                         $(thisAttr).val('');
 	                         $('.shortTitleClass').parent().addClass("has-danger").addClass("has-error");
 	                         $('.shortTitleClass').parent().find(".help-block").empty();
-	                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
+	                         $(thisAttr).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                                 shortTitle
+	                                 + " has already been used in the past."));
 	                        // $('#shortTitleId').focus();
 	                         callback(false);
 	                     }
@@ -868,7 +875,7 @@ function validateShortTitleId(item,callback){
 		     }else{
 		 			callback(true);
 		 			$('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-		 	        $('.shortTitleClass').parent().find(".help-block").html("");
+		 	        $('.shortTitleClass').parent().find(".help-block").empty();
 		 	}
 	 	}else{
 	 		callback(false);
@@ -900,8 +907,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 		                   "${_csrf.parameterName}":"${_csrf.token}",
 		               },
 		               success: function emailValid(data, status) {
-		            	   var jsonobject = eval(data);
-		                   var message = jsonobject.message;
+		                   var message = data.message;
 		                   if('SUCCESS' != message){
 		                	    // $(thisAttr).validator('validate');
 		                	    // $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
@@ -916,7 +922,9 @@ function validateShortTitleStatId(event, thisAttr, callback){
 		                    	 $(thisAttr).val('');
 		                    	 $('#identifierId').parent().addClass("has-danger").addClass("has-error");
 		                    	 $('#identifierId').parent().find(".help-block").empty();
-		                    	 $('#identifierId').parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
+		                    	 $('#identifierId').parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+		                                 activeTaskAttIdVal
+		                                 + " has already been used in the past."));
 		                    	 $('#identifierId').focus();
 		                    	 showErrMsg("Please fill in all mandatory fields.");
 		      					 $('.contentClass a').tab('show');
@@ -934,7 +942,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 	    	 }else{
 		 			callback(true);
 		 			$('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-		 	        $('.shortTitleClass').parent().find(".help-block").html("");
+		 	        $('.shortTitleClass').parent().find(".help-block").empty();
 		 	}
 	     }else{
 	    	 $.ajax({
@@ -948,8 +956,7 @@ function validateShortTitleStatId(event, thisAttr, callback){
 	                   "${_csrf.parameterName}":"${_csrf.token}",
 	               },
 	               success: function emailValid(data, status) {
-	            	   var jsonobject = eval(data);
-	                   var message = jsonobject.message;
+	                   var message = data.message;
 	                   if('SUCCESS' != message){
 	                	     $(thisAttr).validator('validate');
 	                	     $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
@@ -960,7 +967,9 @@ function validateShortTitleStatId(event, thisAttr, callback){
 	                    	 $(thisAttr).val('');
 	                    	 $('.statShortTitleClass').parent().addClass("has-danger").addClass("has-error");
 	                    	 $('.statShortTitleClass').parent().find(".help-block").empty();
-	                    	 $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
+	                    	 $(thisAttr).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                                 activeTaskAttIdVal
+	                                 + " has already been used in the past."));
 	                         if (callback)
 	     						callback(false);
 	                         

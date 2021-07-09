@@ -1,98 +1,118 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <head>
-  <meta charset="UTF-8">
-  <style>
-.cursonMove{
- cursor: move !important;
+<meta charset="UTF-8">
+<style>
+.cursonMove {
+	cursor: move !important;
 }
-.sepimgClass{
- position: relative;
+
+.sepimgClass {
+	position: relative;
 }
+
 .sorting, .sorting_asc, .sorting_desc {
-    background : none !important;
+	background: none !important;
 }
+
 .tool-tip {
-  display: inline-block;
+	display: inline-block;
 }
 
 .tool-tip [disabled] {
-  pointer-events: none;
+	pointer-events: none;
 }
 </style>
 </head>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
-<!-- ============================================================== --> 
+<!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
-   <!--  Start top tab section-->
-	<div class="right-content-head">        
-       <div class="text-right">
-          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections 
-          
-          <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} <span>${not empty  sessionScope[isLive]?studyBo.studyVersionBo.consentLVersion:''}</span></div>
-          <div class="dis-line form-group mb-none mr-sm">
-              <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
-          </div>
-          <div class="dis-line form-group mb-none">
-	          <c:if test="${empty permission}">
-		          <span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
-		          <c:if test="${fn:length(consentInfoList) eq 0 }"> title="Please ensure you add one or more Consent Sections before attempting to mark this section as Complete." </c:if>
-		          <c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
-				    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
-				  </span>
-	         </c:if>
-          </div> 		  
-       </div>         
-    </div>
+	<!--  Start top tab section-->
+	<div class="right-content-head">
+		<div class="text-right">
+			<div class="black-md-f text-uppercase dis-line pull-left line34">
+				Consent Sections
+
+				<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''}
+				<span>${not empty  sessionScope[isLive]?studyBo.studyVersionBo.consentLVersion:''}</span>
+			</div>
+			<div class="dis-line form-group mb-none mr-sm">
+				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
+			</div>
+			<div class="dis-line form-group mb-none">
+				<c:if test="${empty permission}">
+					<span class="tool-tip" data-toggle="tooltip"
+						data-placement="bottom" id="helpNote"
+						<c:if test="${fn:length(consentInfoList) eq 0 }"> title="Please ensure you add one or more Consent Sections before attempting to mark this section as Complete." </c:if>
+						<c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if>>
+						<button type="button" class="btn btn-primary blue-btn"
+							id="markAsCompleteBtnId" onclick="markAsCompleted();"
+							<c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>>Mark
+							as Completed</button>
+					</span>
+				</c:if>
+			</div>
+		</div>
+	</div>
 	<!--  End  top tab section-->
-   <!--  Start body tab section -->
-   <div class="right-content-body pt-none pb-none">
-      <div>
-         <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
-            <thead>
-               <tr>
-                  <th><span class="marL10">#</span></th>
-                  <th>Consent Title</th>
-                  <th>visual step</th>
-                  <th>
-                  	 <div class="dis-line form-group mb-none">
-                  	 <c:if test="${empty permission}">
-                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">Add Consent Section</button>
-                     </c:if>
-                     </div>
-                  </th>
-               </tr>
-            </thead>
-            <tbody>
-             <c:forEach items="${consentInfoList}" var="consentInfo">
-	              <tr id="${consentInfo.id}">
-	                  <td>${consentInfo.sequenceNo}</td>
-	                  <td>${consentInfo.displayTitle}</td>
-	                  <td>${consentInfo.visualStep}</td>
-	                  <td>
-	                  	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewConsentInfo(${consentInfo.id});"></span>
-		                     <span class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editConsentInfo(${consentInfo.id});"></span>
-		                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
-	                  </td>
-	               </tr>
-             </c:forEach>
-            </tbody>
-         </table>
-      </div>
-   </div>
-   <!--  End body tab section -->
+	<!--  Start body tab section -->
+	<div class="right-content-body pt-none pb-none">
+		<div>
+			<table id="consent_list" class="display bor-none" cellspacing="0"
+				width="100%">
+				<thead>
+					<tr>
+						<th><span class="marL10">#</span></th>
+						<th>Consent Title</th>
+						<th>visual step</th>
+						<th>
+							<div class="dis-line form-group mb-none">
+								<c:if test="${empty permission}">
+									<button type="button" class="btn btn-primary blue-btn"
+										onclick="addConsentPage();">Add Consent Section</button>
+								</c:if>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${consentInfoList}" var="consentInfo">
+						<tr id="${consentInfo.id}">
+							<td>${consentInfo.sequenceNo}</td>
+							<td>${consentInfo.displayTitle}</td>
+							<td>${consentInfo.visualStep}</td>
+							<td><span class="sprites_icon preview-g mr-lg"
+								data-toggle="tooltip" data-placement="top" title="View"
+								onclick="viewConsentInfo(${consentInfo.id});"></span> <span
+								class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+								data-toggle="tooltip" data-placement="top" title="Edit"
+								onclick="editConsentInfo(${consentInfo.id});"></span> <span
+								class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+								data-toggle="tooltip" data-placement="top" title="Delete"
+								onclick="deleteConsentInfo(${consentInfo.id});"></span></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}" name="consentInfoForm" id="consentInfoForm" method="post">
-<input type="hidden" name="consentInfoId" id="consentInfoId" value="">
-<input type="hidden" name="actionType" id="actionType">
-<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}"
+	name="consentInfoForm" id="consentInfoForm" method="post">
+	<input type="hidden" name="consentInfoId" id="consentInfoId" value="">
+	<input type="hidden" name="actionType" id="actionType">
+	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do?_S=${param._S}" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
-<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+<form:form
+	action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do?_S=${param._S}"
+	name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -159,12 +179,11 @@ $(document).ready(function(){
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var jsonobject = eval(data);
-	         		var message = jsonobject.message;
+	         		var message = data.message;
 					if(message == "SUCCESS"){
 					    reloadConsentInfoDataTable(jsonobject.consentInfoList,null);
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+						$("#alertMsg").removeClass('e-box').addClass('s-box').text("Reorder done successfully");
 						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
 						   $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 						}
@@ -173,12 +192,12 @@ $(document).ready(function(){
 						}
 					}else{
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to reorder consent");
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
 				error: function(xhr, status, error) {
-				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 				  setTimeout(hideDisplayMessage, 4000);
 				}
 			});
@@ -207,7 +226,7 @@ function deleteConsentInfo(consentInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent Section deleted successfully.");
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').text("Consent Section deleted successfully.");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
 	    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
@@ -217,13 +236,13 @@ function deleteConsentInfo(consentInfoId){
 							    $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 							}
 	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to delete consent");
 	    					$('#alertMsg').show();
 	    	            }
 	    				setTimeout(hideDisplayMessage, 4000);
 	    			},
 	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 	    			  setTimeout(hideDisplayMessage, 4000);
 	    			}
 	    		});
@@ -241,8 +260,7 @@ function reloadData(studyId){
 	    	"${_csrf.parameterName}":"${_csrf.token}",
 	    },
 	    success: function status(data, status) {
-	    	 var jsonobject = eval(data);
-	         var message = jsonobject.message;
+	         var message = data.message;
 	         var markAsComplete = jsonobject.markAsComplete;
 	         if(message == "SUCCESS"){
 	        	 reloadConsentInfoDataTable(jsonobject.consentInfoList,markAsComplete);
@@ -273,13 +291,13 @@ function  reloadConsentInfoDataTable(consentInfoList,markAsComplete){
 			 }else{
 					datarow.push(obj.visualStep);
 			 }	
-			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+parseInt(obj.id)+");'></span>";
 			 if(obj.status){
-			 	actions+="<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span>"
+			 	actions+="<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+parseInt(obj.id)+");'></span>"
 			 }else{
-			 	actions+="<span class='sprites_icon edit-inc-draft mr-lg' onclick='editConsentInfo("+obj.id+");'></span>";
+			 	actions+="<span class='sprites_icon edit-inc-draft mr-lg' onclick='editConsentInfo("+parseInt(obj.id)+");'></span>";
 			 }
-			 actions+="<span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 actions+="<span class='sprites_icon copy delete' onclick='deleteConsentInfo("+parseInt(obj.id)+");'></span>";
 			 datarow.push(actions);
 			 $('#consent_list').DataTable().row.add(datarow);
 		 });
@@ -328,7 +346,7 @@ function viewConsentInfo(consentInfoId){
 }
 </script>
 
- <script>
+<script>
     // Fancy Scroll Bar
 		(function($){
 			$(window).on("load",function(){

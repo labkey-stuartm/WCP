@@ -108,12 +108,12 @@ $(document)
 													.parent()
 													.find(".help-block")
 													.empty()
-													.html(
-															"<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
+													.append($("<ul><li> </li></ul>")
+									.attr("class", "list-unstyled")
+									.text("Special characters such as #^}{ are not allowed."));
 										} else {
 											$(this).parent()
-													.find(".help-block").html(
-															"");
+													.find(".help-block").empty();
 										}
 
 									});
@@ -137,7 +137,9 @@ $(document)
 							.parent()
 							.find(".help-block")
 							.empty()
-							.html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
+							.append($("<ul><li> </li></ul>")
+							.attr("class", "list-unstyled")
+							.text("Special characters such as #^}{ are not allowed."));
 		                } else {
 		                    $(this).val(userinput)
 		                }
@@ -171,8 +173,9 @@ $(document)
 														.parent()
 														.find(".help-block")
 														.empty()
-														.html(
-																"<ul class='list-unstyled'><li>The characters like (< >) are not allowed.</li></ul>");
+														.append($("<ul><li> </li></ul>")
+							.attr("class", "list-unstyled")
+							.text("The characters like (< >) are not allowed."));
 											}
 										}
 									});
@@ -214,8 +217,9 @@ $(document)
 											$(thisAttr)
 													.parent()
 													.find(".help-block")
-													.html(
-															"<ul class='list-unstyled'><li></li></ul>");
+													.empty()
+					.append($("<ul><li> </li></ul>")
+						.attr("class", "list-unstyled"));
 											if (email !== '') {
 												$
 														.ajax({
@@ -245,8 +249,7 @@ $(document)
 																			.parent()
 																			.find(
 																					".help-block")
-																			.html(
-																					"");
+																			.empty();
 																} else {
 																	$(thisAttr)
 																			.val(
@@ -266,10 +269,9 @@ $(document)
 																			.parent()
 																			.find(
 																					".help-block")
-																			.append(
-																					"<ul class='list-unstyled'><li>'"
-																							+ email
-																							+ "' already exists.</li></ul>");
+																			.append($("<ul><li> </li></ul>")
+											.attr("class", "list-unstyled").text(email
+												+ " already exists."));
 																}
 															}
 														});
@@ -670,8 +672,7 @@ $(document)
 															password : password,
 														},
 														success : function(data) {
-															var jsonobject = data;
-															var message = jsonobject.message;
+															var message = data.message;
 															if (message == "SUCCESS") {
 																$('#email')
 																		.val('');
@@ -695,7 +696,7 @@ $(document)
 																		.addClass(
 																				'hide');
 																$("#errMsg")
-																		.html(
+																		.text(
 																				message);
 																$("#errMsg")
 																		.show(
