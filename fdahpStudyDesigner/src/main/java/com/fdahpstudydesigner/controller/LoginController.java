@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -104,6 +105,11 @@ public class LoginController {
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - appDetails() - Ends");
 		return new ModelAndView("appDetails", map);
+	}
+
+	@RequestMapping(value = "/policyPage.do", method = RequestMethod.GET)
+	public String getPolicyPage() {
+		return "websitePolicies";
 	}
 
 	/**
