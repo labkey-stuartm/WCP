@@ -362,8 +362,8 @@ public class LoginDAOImpl implements LoginDAO {
 			query = session.createSQLQuery(sb.toString());
 			userBOList = query.list();
 			if (userBOList != null && !userBOList.isEmpty()) {
-				session.createSQLQuery(
-						"Update users set status = 0 WHERE user_id in(" + StringUtils.join(userBOList, ",") + ")")
+				session.createSQLQuery("Update users set status = 0 WHERE user_id in (:userBOList)")
+						.setParameterList("userBOList", userBOList)
 						.executeUpdate();
 			}
 			transaction.commit();

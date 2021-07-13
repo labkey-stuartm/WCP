@@ -259,9 +259,10 @@ public class NotificationDAOImpl implements NotificationDAO {
 						session.save(historyBO);
 					}
 				}
-				sb = new StringBuilder("update NotificationBO NBO set NBO.notificationSent = true");
-				sb.append(" where NBO.notificationId in (").append(StringUtils.join(notificationIds, ",")).append(")");
-				session.createQuery(sb.toString()).executeUpdate();
+				session.createQuery("update NotificationBO NBO set NBO.notificationSent = true " +
+						"where NBO.notificationId in (:ids)")
+						.setParameterList("ids", notificationIds)
+						.executeUpdate();
 			}
 			trans.commit();
 		} catch (Exception e) {

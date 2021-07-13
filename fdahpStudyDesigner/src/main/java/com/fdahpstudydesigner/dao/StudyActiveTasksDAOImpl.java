@@ -126,11 +126,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							.setInteger("activeTaskId", activeTaskBo.getId()).executeUpdate();
 
 					deleteActQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId=:activeTaskId";
-					query = session.createQuery(deleteActQuery).setInteger("activeTaskId", +activeTaskBo.getId());
+					query = session.createQuery(deleteActQuery).setInteger("activeTaskId", activeTaskBo.getId());
 					query.executeUpdate();
 
 					deleteQuery = "delete ActiveTaskBo where id=:activeTaskId";
-					query = session.createQuery(deleteQuery).setInteger("activeTaskId", +activeTaskBo.getId());
+					query = session.createQuery(deleteQuery).setInteger("activeTaskId", activeTaskBo.getId());
 					result = query.executeUpdate();
 					activity = "Active Task was deleted.";
 					activityDetails = "Active Task was deleted. (Active Task Key = " + activeTaskBo.getShortTitle()
@@ -139,7 +139,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 
 				query = session
 						.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId =:studyId ")
-						.setInteger("studyId", +studyId);
+						.setInteger("studyId", studyId);
 				query.executeUpdate();
 
 				if (result > 0 && null != activeTaskBo.getAnchorDateId()) {
@@ -247,12 +247,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					if (activeTaskBo.getFrequency()
 							.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)) {
 						searchQuery = "From ActiveTaskCustomScheduleBo ATSBO where ATSBO.activeTaskId=:activeTaskId";
-						query = session.createQuery(searchQuery).setInteger("activeTaskId", +activeTaskBo.getId());
+						query = session.createQuery(searchQuery).setInteger("activeTaskId", activeTaskBo.getId());
 						List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBos = query.list();
 						activeTaskBo.setActiveTaskCustomScheduleBo(activeTaskCustomScheduleBos);
 					} else {
 						searchQuery = "From ActiveTaskFrequencyBo ATBO where ATBO.activeTaskId=:activeTaskId";
-						query = session.createQuery(searchQuery).setInteger("activeTaskId", +activeTaskBo.getId());
+						query = session.createQuery(searchQuery).setInteger("activeTaskId", activeTaskBo.getId());
 						if (activeTaskBo.getFrequency()
 								.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)) {
 							List<ActiveTaskFrequencyBo> activeTaskFrequencyBos = query.list();
@@ -321,7 +321,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createQuery(" from ActiveTaskMasterAttributeBo where taskTypeId=:activeTaskType")
-					.setInteger("activeTaskType", +Integer.parseInt(activeTaskType));
+					.setInteger("activeTaskType", Integer.parseInt(activeTaskType));
 			taskMasterAttributeBos = query.list();
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - ERROR ", e);
@@ -525,7 +525,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
 						if (!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())) {
 							String deleteQuery = "delete from active_task_custom_frequencies where active_task_id=:activeTaskId";
-							query = session.createSQLQuery(deleteQuery).setInteger("activeTaskId", activeTaskBo.getId());
+							query = session.createSQLQuery(deleteQuery).setInteger("activeTaskId",
+									activeTaskBo.getId());
 							query.executeUpdate();
 							String deleteQuery2 = "delete from active_task_frequencies where active_task_id=:activeTaskId";
 							query = session.createSQLQuery(deleteQuery2).setInteger("activeTaskId",
@@ -773,6 +774,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		List<QuestionnaireBo> questionnaireBo = null;
 		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
 		List<QuestionsBo> questionnairesStepsBo = null;
+		List<String> idArr = new ArrayList<String>();
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (studyId != null && StringUtils.isNotEmpty(activeTaskAttName)
@@ -784,7 +786,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					if (customStudyId != null && !customStudyId.isEmpty()) {
 						if (!activeTaskAttIdName.equals("static")) {
 							if (activeTaskAttIdName.contains(",")) {
-								List<String> idArr = new ArrayList<String>();
 								String[] arr;
 								arr = activeTaskAttIdName.split(",");
 								if (arr != null && arr.length > 0) {
@@ -795,7 +796,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								}
 								activeTaskAttIdName = StringUtils.join(idArr, ',');
 							}
-							subString = " and attributeValueId NOT IN(" + activeTaskAttIdName + ")";
+							subString = " and attributeValueId NOT IN(:activeTaskAttIdName)";
 						}
 						// to check chart short title exist in active task or
 						// not
@@ -803,7 +804,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								+ "(select id From StudyBo SBO WHERE customStudyId=:customStudyId )) and identifierNameStat=:activeTaskAttIdVal "
 								+ subString;
 						query = session.createQuery(queryString).setString("customStudyId", customStudyId)
-								.setString("activeTaskAttIdVal", activeTaskAttIdVal);
+								.setString("activeTaskAttIdVal", activeTaskAttIdVal)
+								.setParameterList("activeTaskAttIdName", idArr);
 						activeTaskAtrributeValuesBos = query.list();
 						if (activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()) {
 							flag = true;
@@ -837,7 +839,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					} else {
 						if (!activeTaskAttIdName.equals("static")) {
 							if (activeTaskAttIdName.contains(",")) {
-								List<String> idArr = new ArrayList<String>();
 								String[] arr;
 								arr = activeTaskAttIdName.split(",");
 								if (arr != null && arr.length > 0) {
@@ -848,7 +849,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								}
 								activeTaskAttIdName = StringUtils.join(idArr, ',');
 							}
-							subString = " and attributeValueId NOT IN(" + activeTaskAttIdName + ")";
+							subString = " and attributeValueId NOT IN(:activeTaskAttIdName) ";
 						}
 						// to check chart short title exist in active task or
 						// not
@@ -971,7 +972,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							ids.add(activeStatisticsBean.getIdname());
 					}
 					if (!ids.isEmpty()) {
-						subString = "AND attributeValueId NOT IN(" + StringUtils.join(ids, ',') + ")";
+						subString = "AND attributeValueId NOT IN(:ids)";
 					}
 				}
 				// checking each statistics data validate and get which one have
