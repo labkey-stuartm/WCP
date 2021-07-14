@@ -4542,7 +4542,8 @@ public class StudyDAOImpl implements StudyDAO {
 //						+ deleteExceptIds + ") AND sp.study_id=:id");
 				query = session.createSQLQuery(
 						" SELECT sp.user_id FROM study_permission sp WHERE sp.user_id NOT IN (:deleteExceptIds) AND sp.study_id=:id");
-				deletingUserIds = query.setInteger("id", studyBo.getId()).setString("deleteExceptIds", deleteExceptIds)
+				deletingUserIds = query.setInteger("id", studyBo.getId())
+						.setParameterList("deleteExceptIds", deleteExceptIds.split(","))
 						.list();
 				deletingUserIdsWithoutLoginUser.addAll(deletingUserIds);
 				if (deletingUserIds.contains(sesObj.getUserId())) {
@@ -4569,7 +4570,8 @@ public class StudyDAOImpl implements StudyDAO {
 //								+ deleteExceptIds + ") AND study_id =:id");
 						query = session.createSQLQuery(
 								" DELETE FROM study_permission WHERE user_id NOT IN (:deleteExceptIds) AND study_id =:id");
-						query.setInteger("id", studyBo.getId()).setString("deleteExceptIds", deleteExceptIds)
+						query.setInteger("id", studyBo.getId())
+								.setParameterList("deleteExceptIds", deleteExceptIds.split(","))
 								.executeUpdate();
 					}
 
@@ -4651,7 +4653,8 @@ public class StudyDAOImpl implements StudyDAO {
 //								+ deleteExceptIds + ") AND study_id =" + studyBo.getId());
 						query = session.createSQLQuery(
 								" DELETE FROM study_permission WHERE user_id NOT IN (:deleteExceptIds) AND study_id =:id");
-						query.setString("deleteExceptIds", deleteExceptIds).setInteger("id", studyBo.getId())
+						query.setParameterList("deleteExceptIds", deleteExceptIds.split(","))
+								.setInteger("id", studyBo.getId())
 								.executeUpdate();
 					}
 				}
@@ -4661,7 +4664,8 @@ public class StudyDAOImpl implements StudyDAO {
 //							" UPDATE users SET force_logout = 'Y' WHERE user_id IN (" + forceLogoutUserIds + ")");
 					query = session.createSQLQuery(
 							" UPDATE users SET force_logout = 'Y' WHERE user_id IN (:forceLogoutUserIds) ");
-					query.setString("forceLogoutUserIds", forceLogoutUserIds).executeUpdate();
+					query.setParameterList("forceLogoutUserIds", forceLogoutUserIds.split(","))
+							.executeUpdate();
 				}
 
 				/* admin section ends */

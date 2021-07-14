@@ -1,9 +1,6 @@
 package com.fdahpstudydesigner.dao;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -150,7 +147,9 @@ public class UsersDAOImpl implements UsersDAO {
 			userBO2 = (UserBO) query.uniqueResult();
 			if (!permissions.isEmpty()) {
 				permissionSet = new HashSet<UserPermissions>(
-						session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN (" + permissions + ")").list());
+						session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN (:permissions)")
+								.setParameterList("permissions", permissions.split(","))
+								.list());
 				userBO2.setPermissionList(permissionSet);
 			} else {
 				userBO2.setPermissionList(null);
@@ -168,9 +167,10 @@ public class UsersDAOImpl implements UsersDAO {
 				permissionValue = permissionValues.split(",");
 
 				if (updateFlag) {
-					query = session.createSQLQuery(" delete from study_permission where study_id not in ("
-							+ selectedStudies + ") and user_id = :userId");
+					query = session.createSQLQuery(" delete from study_permission where study_id not in (:selectedStudies) " +
+							"and user_id = :userId");
 					query.setInteger("userId", userId);
+					query.setParameterList("selectedStudies", selectedStudies.split(","));
 					query.executeUpdate();
 				}
 
