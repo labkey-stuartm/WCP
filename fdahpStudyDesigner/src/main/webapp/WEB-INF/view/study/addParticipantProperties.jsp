@@ -507,7 +507,7 @@
 				&& typeof shortTitle != 'undefined') {
 			$(thisAttr).parent().removeClass("has-danger").removeClass(
 					"has-error");
-			$(thisAttr).parent().find(".help-block").html("");
+			$(thisAttr).parent().find(".help-block").empty();
 			if (existedKey != shortTitle) {
 				$
 						.ajax({
@@ -530,7 +530,7 @@
 											"has-danger").removeClass(
 											"has-error");
 									$(thisAttr).parent().find(".help-block")
-											.html("");
+											.empty();
 									callback(true);
 								} else {
 									$(thisAttr).val('');
@@ -554,7 +554,7 @@
 				callback(true);
 				$(thisAttr).parent().removeClass("has-danger").removeClass(
 						"has-error");
-				$(thisAttr).parent().find(".help-block").html("");
+				$(thisAttr).parent().find(".help-block").empty();
 			}
 		} else {
 			callback(false);
