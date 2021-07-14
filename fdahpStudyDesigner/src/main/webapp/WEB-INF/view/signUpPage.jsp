@@ -484,7 +484,7 @@
 		                            if('SUCCESS' != message){
 		                                $(thisAttr).validator('validate');
 		                                $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-		                                $(thisAttr).parent().find(".help-block").html("");
+		                                $(thisAttr).parent().find(".help-block").empty();
 		                            }else{
 		                                $(thisAttr).val('');
 		                                $(thisAttr).parent().addClass("has-danger").addClass("has-error");
