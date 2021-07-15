@@ -406,7 +406,7 @@
         	      $('.chartSection').show();
         	   if(frequencyType && frequencyType == 'Manually Schedule'){
         		   $('.activeaddToChartText').show();
-    			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
+    			   $('.activeaddToChartText').text('A max of x runs will be displayed in each view of the chart.');
         	   }
            }
            var dt = new Date();

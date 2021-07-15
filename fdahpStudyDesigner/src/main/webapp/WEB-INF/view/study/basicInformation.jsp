@@ -695,7 +695,7 @@
                     if('SUCCESS' != message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                        $(thisAttr).parent().find(".help-block").html("");
+                        $(thisAttr).parent().find(".help-block").empty();
                         callback(true);
                     }else{
                         $(thisAttr).val('');
@@ -761,7 +761,7 @@ function validateAppId(item,callback){
                     if('SUCCESS' != message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                        $(thisAttr).parent().find(".help-block").html("");
+                        $(thisAttr).parent().find(".help-block").empty();
                         callback(true);
                     }else{
                         $(thisAttr).val('');

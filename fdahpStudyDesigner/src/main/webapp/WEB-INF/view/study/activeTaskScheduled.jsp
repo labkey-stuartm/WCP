@@ -3000,7 +3000,6 @@ function validateTime(dateRef, timeRef) {
 			  dt = moment(dt, "MM/DD/YYYY").toDate();
 			  if(dt < serverDate()) {
 				  $(this).parent().addClass('has-error has-danger');
-// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 				  $(this).data("DateTimePicker").clear();
 			  } else {
 				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').empty();
@@ -3013,11 +3012,10 @@ function validateTime(dateRef, timeRef) {
 					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
  					   $(this).parent().addClass('has-error has-danger');
-// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 					   if(valid)
 						   valid = false;
 					  } else {
-// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').empty();
 					  }
 				  }
 			  });  
@@ -3047,11 +3045,9 @@ function validateCustTime(dateRef, timeRef) {
 					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
 					   $(this).parent().addClass('has-error has-danger');
-//					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 					   if(valid)
 						   valid = false;
 					  } else {
-//					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 					  }
 				  }
 			  });  
