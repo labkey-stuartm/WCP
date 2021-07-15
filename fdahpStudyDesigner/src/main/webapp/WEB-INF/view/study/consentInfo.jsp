@@ -234,6 +234,7 @@ $(document).ready(function(){
     			var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
             	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
             	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
+            	elaboratedContent = $('#elaboratedRTE').text(elaboratedContent).html();
             	$("#elaborated").val(elaboratedContent);
             	$("#briefSummary").val(briefSummaryText);
             	var displayTitleText = $("#displayTitle").val();

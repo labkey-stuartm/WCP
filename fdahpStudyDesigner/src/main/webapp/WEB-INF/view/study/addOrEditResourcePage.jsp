@@ -368,11 +368,12 @@ $(document).ready(function(){
       			    },
       			    callback: function(valid) {
       			    	if (valid) {
-      			    		//console.log(1);
       			    		$('#buttonText').val('done');
+      			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
+                         	var escaped = $('#richText').text(richText).html();
+                         	tinymce.get('richText').setContent(escaped);
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
-      			    		//console.log(2);
       			    		$('#doneResourceId').prop('disabled',false);
       			    	}
       			      }
@@ -392,17 +393,21 @@ $(document).ready(function(){
       			    },
       			    callback: function(valid) {
       			    	if (valid) {
-      			    		console.log(1);
       			    		$('#buttonText').val('done');
+      			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
+                         	var escaped = $('#richText').text(richText).html();
+                         	tinymce.get('richText').setContent(escaped);
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
-      			    		console.log(2);
       			    		$('#doneResourceId').prop('disabled',false);
       			    	}
       			      }
               	   });
         	  }else{
         		  $('#buttonText').val('done');
+        		  var richText=tinymce.get('richText').getContent({ format: 'raw' });
+               	  var escaped = $('#richText').text(richText).html();
+               	  tinymce.get('richText').setContent(escaped);
    		   		  $('#resourceForm').submit(); 
         	  }
  		   }else{
@@ -469,6 +474,11 @@ $(document).ready(function(){
 	       	$('#resourceForm').validator('destroy');
 	       	$("#actionOn").val(actionOn);
 	       	$("#buttonText").val('save');
+	       	var richText=tinymce.get('richText').getContent({ format: 'raw' });
+	       	if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+	       		var escaped = $('#richText').text(richText).html();
+	         	tinymce.get('richText').setContent(escaped);
+             }
 	       	$('#resourceForm').submit();
        }
       $('#saveResourceId').prop('disabled',false);

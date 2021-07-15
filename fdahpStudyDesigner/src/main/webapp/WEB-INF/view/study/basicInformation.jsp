@@ -445,6 +445,11 @@
 														            }else{
 																	     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 									      		                       	 if(isFromValid("#basicInfoFormId")){
+
+	                                                                    	 var richText=tinymce.get('editor').getContent({ format: 'raw' });
+	                                                                       	 var escaped = $('#editor').text(richText).html();
+	                                                                       	 tinymce.get('editor').setContent(escaped);
+	                                                                    	 
 									      		                       		 $("#buttonText").val('completed');
 									      		                        	 $("#basicInfoFormId").submit();
 									      		                         }
@@ -481,6 +486,11 @@
 						           }else{
 									     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 				                   		 if(isFromValid("#basicInfoFormId")){
+
+				                   			 var richText=tinymce.get('editor').getContent({ format: 'raw' });
+                                          	 var escaped = $('#editor').text(richText).html();
+                                          	 tinymce.get('editor').setContent(escaped);
+					                   			
 				                   			 $("#buttonText").val('completed');
 				                    	  	 $("#basicInfoFormId").submit();
 				                    	 }
@@ -527,11 +537,24 @@
 							         $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 			                		 $('#basicInfoFormId').validator('destroy');
 			                         $("#buttonText").val('save');
+
+			                         var richText=tinymce.get('editor').getContent({ format: 'raw' });
+			                         if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+			                        	 var escaped = $('#editor').text(richText).html();
+	                                   	 tinymce.get('editor').setContent(escaped);
+                                      }
 			                         $('#basicInfoFormId').submit();
 							     }else{
 							           $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 			                		   $('#basicInfoFormId').validator('destroy');
 			                           $("#buttonText").val('save');
+
+			                            var richText=tinymce.get('editor').getContent({ format: 'raw' });
+			                            if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+				                        	 var escaped = $('#editor').text(richText).html();
+		                                   	 tinymce.get('editor').setContent(escaped);
+	                                      }
+			                           
 			                           $('#basicInfoFormId').submit();
 							     }
 							   });
@@ -539,6 +562,13 @@
                                $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 	                		   $('#basicInfoFormId').validator('destroy');
 	                           $("#buttonText").val('save');
+
+	                           var richText=tinymce.get('editor').getContent({ format: 'raw' });
+	                           if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+		                        	 var escaped = $('#editor').text(richText).html();
+                                 	 tinymce.get('editor').setContent(escaped);
+                                }
+	                           
 	                           $('#basicInfoFormId').submit();
                             }
                         }
