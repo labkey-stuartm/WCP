@@ -470,7 +470,7 @@ $(document).ready(function(){
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
        }else if(isValid){
-    	   	var actionOn = '${actionOn}';
+    	   	var actionOn = '${fn:escapeXml(actionOn)}';
 	       	$('#resourceForm').validator('destroy');
 	       	$("#actionOn").val(actionOn);
 	       	$("#buttonText").val('save');

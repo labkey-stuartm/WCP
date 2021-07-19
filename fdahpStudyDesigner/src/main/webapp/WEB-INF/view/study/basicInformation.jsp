@@ -61,7 +61,7 @@
 						<input type="text" custAttType="cust" autofocus="autofocus"
 							class="form-control aq-inp studyIdCls" name="customStudyId"
 							id="customStudyId" maxlength="15"
-							value="${studyBo.customStudyId}"
+							value="${fn:escapeXml(studyBo.customStudyId)}"
 							<%-- <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') && studyMode eq 'liveMode'}"> disabled</c:if> --%>
 							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
 							<%-- <c:if test="${studyMode eq 'testMode' && not empty studyBo.status && studyBo.status == 'Paused'}"> disabled</c:if> --%>
@@ -158,7 +158,7 @@
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="researchSponsor"
-							value="${studyBo.researchSponsor}" maxlength="100" required />
+							value="${fn:escapeXml(studyBo.researchSponsor)}" maxlength="100" required />
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
@@ -242,7 +242,7 @@
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" id="studyWebsiteId"
-							name="studyWebsite" value="${studyBo.studyWebsite}"
+							name="studyWebsite" value="${fn:escapeXml(studyBo.studyWebsite)}"
 							pattern="^(http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
 							title="Include http://" maxlength="100"
 							data-pattern-error="Please enter a valid URL" />
@@ -256,7 +256,7 @@
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="inboxEmailAddress"
-							value="${studyBo.inboxEmailAddress}" required maxlength="100"
+							value="${fn:escapeXml(studyBo.inboxEmailAddress)}" required maxlength="100"
 							pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
 							autocomplete="off" data-pattern-error="Email address is invalid" />
 						<div class="help-block with-errors red-txt"></div>
@@ -296,7 +296,7 @@
 					<div>
 						<div class="thumb">
 							<img
-								<c:if test="${not empty studyBo.thumbnailImage}">src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${studyBo.thumbnailImage}" </c:if>
+								<c:if test="${not empty studyBo.thumbnailImage}">src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${fn:escapeXml(studyBo.thumbnailImage)}" </c:if>
 								<c:if test="${empty studyBo.thumbnailImage}">src="/fdahpStudyDesigner/images/dummy-img.jpg" </c:if>
 								onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';"
 								class="wid100" />
@@ -344,7 +344,7 @@
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
            
-        	var studyType = '${studyBo.type}';
+        	var studyType = '${fn:escapeXml(studyBo.type)}';
             if (studyType) {
             	if(studyType === 'GT'){
             		$('.thumbDivClass').show();
@@ -679,7 +679,7 @@
   function validateStudyId(item,callback){
 	var customStudyId = $("#customStudyId").val();
 	var thisAttr= $("#customStudyId");
-	var dbcustomStudyId = '${studyBo.customStudyId}';
+	var dbcustomStudyId = '${fn:escapeXml(studyBo.customStudyId)}';
 	if(customStudyId != null && customStudyId !='' && typeof customStudyId!= 'undefined'){
 		if( dbcustomStudyId !=customStudyId){
 			$.ajax({

@@ -104,7 +104,7 @@
 					<form:hidden path="id" />
 					<form:hidden path="anchorDateId" />
 					<input type="hidden" id="actionType" name="actionType"
-						value="${actionType}">
+						value="${fn:escapeXml(actionType)}">
 					<input type="hidden" id="actionButtonType" name="actionButtonType"
 						value="">
 					<input type="hidden" id="preShortTitleId"
@@ -130,7 +130,7 @@
 								<input autofocus="autofocus" type="text" custAttType="cust"
 									<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>
 									class="form-control" id="shortTitleId"
-									value="${participantProperties.shortTitle}" maxlength="50"
+									value="${fn:escapeXml(participantProperties.shortTitle)}" maxlength="50"
 									required="required" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
