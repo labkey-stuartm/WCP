@@ -940,15 +940,19 @@ public class StudyDAOImpl implements StudyDAO {
 
 				session.createSQLQuery("DELETE FROM study_sequence WHERE study_id in" + subQuery).executeUpdate();
 				if (StringUtils.isNotEmpty(customStudyId)) {
-					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id='" + customStudyId + "'")
+					session.createSQLQuery("DELETE FROM study_version WHERE custom_study_id= :customStudyId")
+							.setString("customStudyId", customStudyId)
 							.executeUpdate();
-					session.createSQLQuery("DELETE FROM studies WHERE custom_study_id='" + customStudyId + "'")
+					session.createSQLQuery("DELETE FROM studies WHERE custom_study_id= :customStudyId")
+							.setString("customStudyId", customStudyId)
 							.executeUpdate();
-
-					session.createSQLQuery("DELETE FROM anchordate_type WHERE custom_study_id='" + customStudyId + "'")
+					session.createSQLQuery("DELETE FROM anchordate_type WHERE custom_study_id= :customStudyId")
+							.setString("customStudyId", customStudyId)
 							.executeUpdate();
 				} else {
-					session.createSQLQuery("DELETE FROM studies WHERE id in(" + studyId + ")").executeUpdate();
+					session.createSQLQuery("DELETE FROM studies WHERE id in (:studyId)")
+							.setParameterList("studyId", Arrays.asList(studyId))
+							.executeUpdate();
 				}
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
