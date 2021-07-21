@@ -1313,8 +1313,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails,
 					"StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo");
 
-			queryString = "DELETE From NotificationBO where questionnarieId=:questionnaireId"
-					+ "AND notificationSent=false";
+			queryString = "DELETE From NotificationBO where questionnarieId=:questionnaireId AND notificationSent=false";
 			session.createQuery(queryString).setInteger("questionnaireId", questionnaireId).executeUpdate();
 			transaction.commit();
 		} catch (Exception e) {
