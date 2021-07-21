@@ -148,7 +148,7 @@ public class UsersDAOImpl implements UsersDAO {
 			if (!permissions.isEmpty()) {
 				permissionSet = new HashSet<UserPermissions>(
 						session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN (:permissions)")
-								.setParameterList("permissions", permissions.split(","))
+								.setParameterList("permissions", permissions.replace("'", "").split(","))
 								.list());
 				userBO2.setPermissionList(permissionSet);
 			} else {
