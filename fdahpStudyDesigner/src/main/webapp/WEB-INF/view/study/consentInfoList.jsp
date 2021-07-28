@@ -181,7 +181,7 @@ $(document).ready(function(){
 				success: function consentInfo(data){
 	         		var message = data.message;
 					if(message == "SUCCESS"){
-					    reloadConsentInfoDataTable(jsonobject.consentInfoList,null);
+					    reloadConsentInfoDataTable(data.consentInfoList,null);
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('e-box').addClass('s-box').text("Reorder done successfully");
 						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
@@ -261,9 +261,9 @@ function reloadData(studyId){
 	    },
 	    success: function status(data, status) {
 	         var message = data.message;
-	         var markAsComplete = jsonobject.markAsComplete;
+	         var markAsComplete = data.markAsComplete;
 	         if(message == "SUCCESS"){
-	        	 reloadConsentInfoDataTable(jsonobject.consentInfoList,markAsComplete);
+	        	 reloadConsentInfoDataTable(data.consentInfoList,markAsComplete);
 	         }
 	    },
 	    error:function status(data, status) {
