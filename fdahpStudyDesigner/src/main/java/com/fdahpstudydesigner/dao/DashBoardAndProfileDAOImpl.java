@@ -1,14 +1,16 @@
 package com.fdahpstudydesigner.dao;
 
-import org.apache.log4j.Logger;
-import org.hibernate.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Repository;
-
 import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author BTC
@@ -16,7 +18,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 @Repository
 public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
 
-    private static Logger logger = Logger
+    private static final Logger logger = Logger
             .getLogger(DashBoardAndProfileDAOImpl.class);
     HibernateTemplate hibernateTemplate;
 
