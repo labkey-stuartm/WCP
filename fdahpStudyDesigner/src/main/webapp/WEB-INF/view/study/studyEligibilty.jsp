@@ -4,8 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 <head>
-  <meta charset="UTF-8">
-  <style>
+<meta charset="UTF-8">
+<style>
 .cursonMove {
 	cursor: move !important;
 }
@@ -314,8 +314,7 @@
 															},
 															success : function consentInfo(
 																	data) {
-																var jsonobject = eval(data);
-																var message = jsonobject.message;
+																var message = data.message;
 																if (message == "SUCCESS") {
 																	$(
 																			"#alertMsg")
@@ -323,7 +322,7 @@
 																					'e-box')
 																			.addClass(
 																					's-box')
-																			.html(
+																			.text(
 																					"Reorder done successfully");
 																	$(
 																			'#alertMsg')
@@ -351,7 +350,7 @@
 																					's-box')
 																			.addClass(
 																					'e-box')
-																			.html(
+																			.text(
 																					"Unable to reorder consent");
 																}
 																setTimeout(
@@ -367,7 +366,7 @@
 																				's-box')
 																		.addClass(
 																				'e-box')
-																		.html(
+																		.text(
 																				error);
 																setTimeout(
 																		hideDisplayMessage,
@@ -514,7 +513,7 @@
 																		'e-box')
 																.addClass(
 																		's-box')
-																.html(
+																.text(
 																		"Question deleted successfully");
 														$('#alertMsg').show();
 														if ($('.fifthConsent')
@@ -541,7 +540,7 @@
 																		's-box')
 																.addClass(
 																		'e-box')
-																.html(
+																.text(
 																		"Unable to delete Question");
 														$('#alertMsg').show();
 													}
@@ -554,7 +553,7 @@
 													$("#alertMsg").removeClass(
 															's-box').addClass(
 															'e-box')
-															.html(error);
+															.text(error);
 													setTimeout(
 															hideDisplayMessage,
 															4000);
@@ -583,18 +582,18 @@
 									datarow.push(' ');
 								} else {
 									datarow
-											.push("<span class='dis-ellipsis' title='"+obj.question+"'>"
-													+ obj.question + "</span>");
+											.push("<span class='dis-ellipsis' title='" + DOMPurify.sanitize(obj.question) + "'>"
+													+ DOMPurify.sanitize(obj.question) + "</span>");
 								}
-								var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="'+obj.id+'"></span> '
+								var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="' + parseInt(obj.id) + '"></span> '
 										+ '<span class="'
-										+ (obj.status ? "edit-inc"
+										+ (DOMPurify.sanitize(obj.status) ? "edit-inc"
 												: "edit-inc-draft")
 										+ ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'
-										+ obj.id
+										+ parseInt(obj.id)
 										+ '"></span>'
 										+ '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns('
-										+ obj.id + ', this);"></span>';
+										+ parseInt(obj.id) + ', this);"></span>';
 								//                  var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span>'+
 								//                  '<span class="edit-inc mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="" etid="15" data-original-title="Edit"></span>'+
 								//                  '<span class="sprites_icon copy delete  deleteIcon" data-toggle="tooltip" data-placement="top" title="" onclick="deleteEligibiltyTestQusAns('+15+', this);" data-original-title="Delete"></span>';

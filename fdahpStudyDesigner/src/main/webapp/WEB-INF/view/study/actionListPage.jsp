@@ -226,8 +226,7 @@
 				    				"${_csrf.parameterName}":"${_csrf.token}",
 				    			},
 				    			success: function switchToLiveMode(data){
-				    				var jsonobject = eval(data);
-				    				var status = jsonobject.message;
+				    				var status = data.message;
 				    				var studyMode = data.studyMode;
 				    				if(status == "SUCCESS"){
 				    					document.studyListInfoForm.action = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}";
@@ -286,11 +285,10 @@
 								"${_csrf.parameterName}" : "${_csrf.token}",
 							},
 							success : function emailValid(data, status) {
-								var jsonobject = eval(data);
-								var message = jsonobject.message;
-								var checkListMessage = jsonobject.checkListMessage;
-								var checkFailureMessage = jsonobject.checkFailureMessage;
-								var isRequiredSectionsCompleted=jsonobject.isRequiredSectionsCompleted;
+								var message = data.message;
+								var checkListMessage = data.checkListMessage;
+								var checkFailureMessage = data.checkFailureMessage;
+								var isRequiredSectionsCompleted=data.isRequiredSectionsCompleted;
 								if (message == "SUCCESS") {
 									if (checkListMessage == "Yes") {
 										showBootBoxMessage(buttonText,
@@ -344,7 +342,7 @@
 
 	}
 	function showErrMsg1(message) {
-		$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
+		$("#alertMsg").removeClass('s-box').addClass('e-box').text(message);
 		$('#alertMsg').show('10000');
 		setTimeout(hideDisplayMessage, 10000);
 	}
@@ -391,8 +389,7 @@
 							"${_csrf.parameterName}" : "${_csrf.token}",
 						},
 						success : function updateAction(data, status) {
-							var jsonobject = eval(data);
-							var message = jsonobject.message;
+							var message = data.message;
 							if (message == "SUCCESS") {
 								if (buttonText == 'deactivateId'
 										|| buttonText == 'lunchId'

@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 </head>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -368,11 +368,12 @@ $(document).ready(function(){
       			    },
       			    callback: function(valid) {
       			    	if (valid) {
-      			    		//console.log(1);
       			    		$('#buttonText').val('done');
+      			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
+                         	var escaped = $('#richText').text(richText).html();
+                         	tinymce.get('richText').setContent(escaped);
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
-      			    		//console.log(2);
       			    		$('#doneResourceId').prop('disabled',false);
       			    	}
       			      }
@@ -392,17 +393,21 @@ $(document).ready(function(){
       			    },
       			    callback: function(valid) {
       			    	if (valid) {
-      			    		console.log(1);
       			    		$('#buttonText').val('done');
+      			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
+                         	var escaped = $('#richText').text(richText).html();
+                         	tinymce.get('richText').setContent(escaped);
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
-      			    		console.log(2);
       			    		$('#doneResourceId').prop('disabled',false);
       			    	}
       			      }
               	   });
         	  }else{
         		  $('#buttonText').val('done');
+        		  var richText=tinymce.get('richText').getContent({ format: 'raw' });
+               	  var escaped = $('#richText').text(richText).html();
+               	  tinymce.get('richText').setContent(escaped);
    		   		  $('#resourceForm').submit(); 
         	  }
  		   }else{
@@ -460,15 +465,20 @@ $(document).ready(function(){
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
     	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
-    		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+    		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please fill out this field."));
     	}
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
        }else if(isValid){
-    	   	var actionOn = '${actionOn}';
+    	   	var actionOn = '${fn:escapeXml(actionOn)}';
 	       	$('#resourceForm').validator('destroy');
 	       	$("#actionOn").val(actionOn);
 	       	$("#buttonText").val('save');
+	       	var richText=tinymce.get('richText').getContent({ format: 'raw' });
+	       	if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+	       		var escaped = $('#richText').text(richText).html();
+	         	tinymce.get('richText').setContent(escaped);
+             }
 	       	$('#resourceForm').submit();
        }
       $('#saveResourceId').prop('disabled',false);
@@ -569,7 +579,8 @@ $(document).ready(function(){
 			reader = new FileReader();
 			reader.onload = function() {
 		        if ($.inArray($(thisAttr).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-		        	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+		        	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
+		            		$("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file"));
 		        	$("#delete").click();
 		        }else if($('input[type=file]').val()){
 		        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
@@ -582,12 +593,13 @@ $(document).ready(function(){
 			          $("#uploadPdf").text("Change PDF");
 			        }
 		       		$("#delete").removeClass("dis-none");
-		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
+		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").empty();
 		       		$('.pdfClass').off( "click");
 		    	}
     		};
     		reader.onerror = function() {
-    			$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+    			$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
+    	        		  $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file"));
 		        $("#delete").click();
     		}
     		reader.readAsDataURL(file)
@@ -598,7 +610,7 @@ $(document).ready(function(){
   //Deleting Uploaded pdf
     $("#delete").click(function(){
        $("#uploadPdf").text("Upload PDF");
-       $("#pdf_name").prop('title','').text(""); 
+       $("#pdf_name").prop('title','').empty();
        $(this).addClass("dis-none");
        $('input[type=file]').val('');
        $('#pdfUrl').val('');
@@ -700,7 +712,7 @@ $(document).ready(function(){
 			$('.disBtn1').removeAttr('required');
 			$('.disBtn1').selectpicker('refresh');
 			//$('[data-id="anchorDateId"]').prop('disabled', true);
-			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
+			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").empty();
 			if($('#StartDate').attr('oldStartDateVal') != ''){
 				$('#inlineRadio6').prop('checked',true);
 				$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
@@ -959,10 +971,10 @@ function chkDaysValid(clickDone){
 		if(parseInt(x) > parseInt(y)){
 			if(clickDone && isFromValid($('#ydays').parents('form')))
 				$('#ydays').focus();
-			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y days should be greater than X days."));
 			valid = false;
 		}else{
-			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
+			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").empty();
 			resetValidation($('#ydays').parents('form'));
 		}
 	}

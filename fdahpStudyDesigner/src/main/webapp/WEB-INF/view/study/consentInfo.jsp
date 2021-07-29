@@ -1,20 +1,24 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 </head>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
- <div class="col-sm-10 col-rc white-bg p-none">
+<div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form" autocomplete="off">
+	<form:form
+		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}"
+		name="consentInfoFormId" id="consentInfoFormId" method="post"
+		data-toggle="validator" role="form" autocomplete="off">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
-			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
+			<input type="hidden" id="studyId" name="studyId"
+				value="${consentInfoBo.studyId}">
 		</c:if>
 		<c:if test="${empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${studyId}">
@@ -25,87 +29,126 @@
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">
 					<span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
-						<img src="../images/icons/back-b.png" /></span>
+						<img src="../images/icons/back-b.png" />
+					</span>
 					<c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+					<c:if
+						test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set
+							var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
 				<div class="dis-line form-group mb-none">
-					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
+					<button type="button" class="btn btn-default gray-btn"
+						onclick="goToBackPage(this);">Cancel</button>
 				</div>
 				<div class="dis-line form-group mb-none">
-					<button type="button" class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm" onclick="saveConsentInfo(this);">Save</button>
+					<button type="button"
+						class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm"
+						onclick="saveConsentInfo(this);">Save</button>
 				</div>
 				<div class="dis-line form-group mb-none">
-					<button type="button" class="btn btn-primary blue-btn ConsentButtonHide" id="doneId">Done</button>
+					<button type="button"
+						class="btn btn-primary blue-btn ConsentButtonHide" id="doneId">Done</button>
 				</div>
 			</div>
 		</div>
 		<!--  End  top tab section-->
 		<!--  Start body tab section -->
 		<div class="right-content-body">
-			<div class="gray-xs-f mb-xs">Select Consent Section type <span class="requiredStar">*</span></div>
+			<div class="gray-xs-f mb-xs">
+				Select Consent Section type <span class="requiredStar">*</span>
+			</div>
 			<div class="mt-sm form-group">
-				<span class="radio radio-info radio-inline p-45"> 
-					<input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type"
-					 ${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
+				<span class="radio radio-info radio-inline p-45"> <input
+					type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack"
+					name="consentItemType" required data-error="Please choose type"
+					${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
 					<label for="inlineRadio1">ResearchKit/ResearchStack</label>
-				</span> 
-				<span class="radio radio-inline p-45"> 
-					<input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}> 
-					<label for="inlineRadio2">Custom</label>
+				</span> <span class="radio radio-inline p-45"> <input type="radio"
+					id="inlineRadio2" value="Custom" name="consentItemType" required
+					data-error="Please choose type"
+					${consentInfoBo.consentItemType=='Custom'?'checked':''}> <label
+					for="inlineRadio2">Custom</label>
 				</span>
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 			<div id="titleContainer">
-				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">
+					Title <span class="requiredStar">*</span>
+				</div>
 				<div class="col-md-5 p-none form-group elaborateClass consentTitle">
-					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId"  required data-error="Please choose one title">
+					<select class="selectpicker" id="consentItemTitleId"
+						name="consentItemTitleId" required
+						data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
-							<option value="${consentMaster.id}" ${consentInfoBo.consentItemTitleId eq consentMaster.id  ? 'selected' : ''}>${consentMaster.title}</option>
+							<option value="${consentMaster.id}"
+								${consentInfoBo.consentItemTitleId eq consentMaster.id  ? 'selected' : ''}>${consentMaster.title}</option>
 						</c:forEach>
 					</select>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
-			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
-			<textarea name="hide" id="elaboratedTemp" style="display:none;">${consentInfoBo.elaborated}</textarea>
+			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp"
+				value="${consentInfoBo.displayTitle}"> <input type="hidden"
+				id="briefSummaryTemp" name="briefSummaryTemp"
+				value="${consentInfoBo.briefSummary}">
+			<textarea name="hide" id="elaboratedTemp" style="display: none;">${consentInfoBo.elaborated}</textarea>
 			<div id="displayTitleId">
-				<div class="gray-xs-f mb-xs">Display Title  <small>(75 characters max)</small><span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">
+					Display Title <small>(75 characters max)</small><span
+						class="requiredStar">*</span>
+				</div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="75">
+					<input autofocus="autofocus" type="text" id="displayTitle"
+						class="form-control" name="displayTitle" required
+						value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="75">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div>
-				<div class="gray-xs-f mb-xs">Brief Summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">
+					Brief Summary <small>(500 characters max)</small><span
+						class="requiredStar">*</span>
+				</div>
 				<div class="form-group">
-					<textarea class="form-control" rows="7" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="7" id="briefSummary"
+						name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Elaborated Content <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">
+					Elaborated Content <span class="requiredStar">*</span>
+				</div>
 				<div class="form-group">
-					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
+					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE"
+						required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish this section to appear as a standalone Visual Step in the app prior to the full Consent Document. A Visual Step screen shows the section Title, and the Brief Summary with a link to the elaborated version of the content."></span></div>
+				<div class="gray-xs-f mb-xs">
+					Show as a visual step in the Consent Info section? <span
+						class="requiredStar">*</span><span
+						class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+						title="Choose Yes if you wish this section to appear as a standalone Visual Step in the app prior to the full Consent Document. A Visual Step screen shows the section Title, and the Brief Summary with a link to the elaborated version of the content."></span>
+				</div>
 				<div class="form-group visualStepDiv">
-					<span class="radio radio-info radio-inline p-45"> 
-						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 
-						<label for="inlineRadio3">Yes</label>
-					</span> 
-					<span class="radio radio-inline p-45"> 
-						<input class="" type="radio" id="inlineRadio4" value="No" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='No'?'checked':''}> 
-						<label for="inlineRadio4">No</label>
+					<span class="radio radio-info radio-inline p-45"> <input
+						class="" type="radio" id="inlineRadio3" value="Yes"
+						name="visualStep" required
+						data-error="Please choose one visual step"
+						${consentInfoBo.visualStep=='Yes'?'checked':''}> <label
+						for="inlineRadio3">Yes</label>
+					</span> <span class="radio radio-inline p-45"> <input class=""
+						type="radio" id="inlineRadio4" value="No" name="visualStep"
+						required data-error="Please choose one visual step"
+						${consentInfoBo.visualStep=='No'?'checked':''}> <label
+						for="inlineRadio4">No</label>
 					</span>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
@@ -191,6 +234,7 @@ $(document).ready(function(){
     			var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
             	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
             	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
+            	elaboratedContent = $('#elaboratedRTE').text(elaboratedContent).html();
             	$("#elaborated").val(elaboratedContent);
             	$("#briefSummary").val(briefSummaryText);
             	var displayTitleText = $("#displayTitle").val();
@@ -200,7 +244,8 @@ $(document).ready(function(){
         		
     		}else{
     			$('.visualStepDiv').addClass('has-error has-danger');
-    			$('.visualStepDiv').find(".help-block").empty().html('<ul class="list-unstyled"><li>Please choose one visual step</li></ul>');
+    			$('.visualStepDiv').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                "Please choose one visual step"));
     			$("#doneId").prop('disabled', false);
     		}
     	}else{
@@ -262,17 +307,16 @@ function saveConsentInfo(item){
             beforeSend: function(xhr, settings){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
             },
-            success:function(data){
-          	var jsonobject = eval(data);			                       
-    			var message = jsonobject.message;
+            success:function(data){			                       
+    			var message = data.message;
     			if(message == "SUCCESS"){
-    				var consentInfoId = jsonobject.consentInfoId;
+    				var consentInfoId = data.consentInfoId;
     				$("#id").val(consentInfoId);
-    				$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
+    				$("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
     				$(item).prop('disabled', false);
     				$('#alertMsg').show();
     			}else{
-    				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+    				$("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
     				$('#alertMsg').show();
     			}
     			setTimeout(hideDisplayMessage, 4000);
@@ -280,7 +324,7 @@ function saveConsentInfo(item){
             error: function(xhr, status, error) {
     			  $(item).prop('disabled', false);
     			  $('#alertMsg').show();
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
      	});
@@ -288,7 +332,8 @@ function saveConsentInfo(item){
 		$(item).prop('disabled', false);
 		if(valid){
 			$(".consentTitle").parent().addClass('has-error has-danger');
-			$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+			$(".consentTitle").parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "This is a required field."));
 			setTimeout(hideDisplayMessage, 4000);
 		}
 		
@@ -400,7 +445,7 @@ function initTinyMCEEditor(){
              ed.on('change', function(ed) {
            		  if(tinyMCE.get(ed.target.id).getContent() != ''){
            			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
-           	        $('#elaboratedRTE').parent().find(".help-block").html("");
+           	        $('#elaboratedRTE').parent().find(".help-block").empty();
            		  }
              });
     	  	},
@@ -416,10 +461,11 @@ function maxLenValEditor() {
 		if(isValid){
 			isValid = false;
 		}
-		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 15000 characters are allowed.</li></ul>');
+		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+        "Maximum 15000 characters are allowed."));
 	} else {
 		 $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
-	     $('#elaboratedRTE').parent().find(".help-block").html(""); 
+	     $('#elaboratedRTE').parent().find(".help-block").empty();
 	}
 	return isValid;
 }

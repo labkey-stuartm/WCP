@@ -104,7 +104,7 @@
 					<form:hidden path="id" />
 					<form:hidden path="anchorDateId" />
 					<input type="hidden" id="actionType" name="actionType"
-						value="${actionType}">
+						value="${fn:escapeXml(actionType)}">
 					<input type="hidden" id="actionButtonType" name="actionButtonType"
 						value="">
 					<input type="hidden" id="preShortTitleId"
@@ -130,7 +130,7 @@
 								<input autofocus="autofocus" type="text" custAttType="cust"
 									<c:if test="${actionType eq 'edit' && participantProperties.live eq 1}">disabled</c:if>
 									class="form-control" id="shortTitleId"
-									value="${participantProperties.shortTitle}" maxlength="50"
+									value="${fn:escapeXml(participantProperties.shortTitle)}" maxlength="50"
 									required="required" />
 								<div class="help-block with-errors red-txt"></div>
 							</div>
@@ -507,7 +507,7 @@
 				&& typeof shortTitle != 'undefined') {
 			$(thisAttr).parent().removeClass("has-danger").removeClass(
 					"has-error");
-			$(thisAttr).parent().find(".help-block").html("");
+			$(thisAttr).parent().find(".help-block").empty();
 			if (existedKey != shortTitle) {
 				$
 						.ajax({
@@ -530,7 +530,7 @@
 											"has-danger").removeClass(
 											"has-error");
 									$(thisAttr).parent().find(".help-block")
-											.html("");
+											.empty();
 									callback(true);
 								} else {
 									$(thisAttr).val('');
@@ -554,7 +554,7 @@
 				callback(true);
 				$(thisAttr).parent().removeClass("has-danger").removeClass(
 						"has-error");
-				$(thisAttr).parent().find(".help-block").html("");
+				$(thisAttr).parent().find(".help-block").empty();
 			}
 		} else {
 			callback(false);

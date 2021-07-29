@@ -1,210 +1,279 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <head>
-  <meta charset="UTF-8">
-  <style>
-.cursonMove{
- cursor: move !important;
+<meta charset="UTF-8">
+<style>
+.cursonMove {
+	cursor: move !important;
 }
+
 .tool-tip {
-  display: inline-block;
+	display: inline-block;
 }
 
 .tool-tip [disabled] {
-  pointer-events: none;
+	pointer-events: none;
 }
 </style>
 </head>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
-   <!--  Start top tab section-->
-   <div class="right-content-head">
-      <div class="text-right">
-         <div class="black-md-f dis-line pull-left line34">
-            <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
-            <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
-            <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-         </div>
-         <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
-         </div>
-         <c:if test="${actionTypeForQuestionPage ne 'view'}">
-	         <div class="dis-line form-group mb-none mr-sm">
-				<c:choose>
-					<c:when test="${not empty questionnairesStepsBo.stepId}"><button type="button" id="saveBtn" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Save</button></c:when>
-					<c:otherwise><button type="button" id="saveBtn" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Next</button></c:otherwise>
-				</c:choose>	         
-	            
-	         </div>
-	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="bottom" 
-	            <c:if test="${empty questionnairesStepsBo.stepId}"> title="Please click on Next to continue." </c:if>
-	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
-	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
-	            <c:if test="${!questionnairesStepsBo.status}">
+	<!--  Start top tab section-->
+	<div class="right-content-head">
+		<div class="text-right">
+			<div class="black-md-f dis-line pull-left line34">
+				<span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img
+					src="../images/icons/back-b.png" /></span>
+				<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
+				<c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
+				<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step <c:set
+						var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+			</div>
+			<div class="dis-line form-group mb-none mr-sm">
+				<button type="button" class="btn btn-default gray-btn"
+					onclick="goToBackPage(this);">Cancel</button>
+			</div>
+			<c:if test="${actionTypeForQuestionPage ne 'view'}">
+				<div class="dis-line form-group mb-none mr-sm">
+					<c:choose>
+						<c:when test="${not empty questionnairesStepsBo.stepId}">
+							<button type="button" id="saveBtn"
+								class="btn btn-default gray-btn" onclick="saveFormStep(this);">Save</button>
+						</c:when>
+						<c:otherwise>
+							<button type="button" id="saveBtn"
+								class="btn btn-default gray-btn" onclick="saveFormStep(this);">Next</button>
+						</c:otherwise>
+					</c:choose>
+
+				</div>
+				<div class="dis-line form-group mb-none">
+					<span class="tool-tip" id="helpNote" data-toggle="tooltip"
+						data-placement="bottom"
+						<c:if test="${empty questionnairesStepsBo.stepId}"> title="Please click on Next to continue." </c:if>
+						<c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
+	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if>
+						<c:if test="${!questionnairesStepsBo.status}">
 	             title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if>>
-	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
-	            </span>
-	         </div>
-	        
-         </c:if>
-      </div>
-   </div>
-   <!--  End  top tab section-->
-   <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do?_S=${param._S}" name="formStepId" id="formStepId" method="post" data-toggle="validator" role="form">
-   <div class="right-content-body pt-none pl-none pr-none">
-      <ul class="nav nav-tabs review-tabs gray-bg" id="formTabConstiner">
-         <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
-         <li class="formLevel"><a data-toggle="tab" href="#fla">Form-level Attributes</a></li>
-      </ul>
-      <div class="tab-content pl-xlg pr-xlg">
-         <!-- Step-level Attributes--> 
-         <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
-         <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
-         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
-         <input type="hidden" name="stepType" id="stepType" value="Form">
-         <input type="hidden" name="formId" id="formId" value="${questionnairesStepsBo.instructionFormId}">
-         <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
-         <input type="hidden" id="type" name="type" value="complete" />
-         <input type="hidden" id="questionId" name="questionId"  />
-         <input type="hidden" id="actionTypeForFormStep" name="actionTypeForFormStep"  />
-         
-         <div id="sla" class="tab-pane fade in active mt-xlg">
-            <div class="row">
-               <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span></div>
-                  <div class="form-group">
-                     <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required 
-                     maxlength="15" <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
-                     <div class="help-block with-errors red-txt"></div>
-                     <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="gray-xs-f mb-xs">Step Type</div>
-                  <div>Form Step</div>
-               </div>
-               <div class="clearfix"></div>
-               <div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If marked as Yes, it means the user can skip the entire step meaning no responses are captured from this form step. If marked No, it means the user cannot skip the step and has to answer at least one of the questions to proceed."></span></div>
-                  <div>
-                     <span class="radio radio-info radio-inline p-45">
-                     <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
-                     <label for="skiappableYes">Yes</label>
-                     </span>
-                     <span class="radio radio-inline">
-                     <input type="radio" id="skiappableNo" value="No" name="skiappable" ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
-                     <label for="skiappableNo">No</label>
-                     </span>
-                  </div>
-               </div>
-               <div class="clearfix"></div>
-               <c:if test="${questionnaireBo.branching}">
-               <div class="col-md-4 col-lg-3 p-none mt-md">
-                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The step that the user must be directed to from this step."></span></div>
-                  <div class="form-group">
-                     <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
-                        <c:forEach items="${destinationStepList}" var="destinationStep">
-				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-				        </c:forEach>
-                        <option value="0" ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>Completion Step</option>
-                     </select>
-                     <div class="help-block with-errors red-txt"></div>
-                  </div>
-               </div>
-               </c:if>
-            </div>
-         </div>
-         <!---  Form-level Attributes ---> 
-         <div id="fla" class="tab-pane fade mt-xlg">
-            <div>
-               <div class="gray-xs-f mb-xs">Make form repeatable?</div>
-               <div>
-                  <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" id="repeatableYes" value="Yes" name="repeatable"  ${questionnairesStepsBo.repeatable eq'Yes' ?'checked':''}>
-                  <label for="repeatableYes">Yes</label>
-                  </span>
-                  <span class="radio radio-inline">
-                  <input type="radio" id="repeatableNo" value="No" name="repeatable" ${empty questionnairesStepsBo.repeatable || questionnairesStepsBo.repeatable eq 'No' ?'checked':''}>
-                  <label for="repeatableNo">No</label>
-                  </span>
-               </div>
-            </div>
-            <div>
-               <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text (1 to 30 characters)</div>
-               <div class="gray-xs-f mb-xs"><small>Enter text the user should see and tap on, to repeat the form</small></div>
-               <div class="form-group mb-none col-md-4 p-none">
-                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${fn:escapeXml(questionnairesStepsBo.repeatableText)}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> maxlength="30" <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">required</c:if>/>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="row mt-lg" id="addQuestionContainer">
-               <div class="col-md-6 p-none blue-md-f mt-xs text-uppercase">
-                  Questions in the Form
-               </div>
-               <div class="col-md-6 p-none">
-                  <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">Add New Question</button>
-                  </div>
-               </div>
-               <div class="clearfix"></div>
-               <div class="mt-md mb-lg">
-                  <table id="content" class="display" cellspacing="0" width="100%">
-                  	<thead style="display: none"></thead>
-                  	 <c:forEach items="${questionnairesStepsBo.formQuestionMap}" var="entry">
-                  	 <tr>
-                        <td>
-                           <span id="${entry.key}">${entry.key}</span>
-                        </td>
-                        <td>
-                           <div>
-                              <div class="dis-ellipsis" title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
-                           </div>
-                        </td>
-                        <td>
-                           <div>
-                              <div class="text-right pos-relative">
-                              	 <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
-                              	 		<span class="sprites_v3 status-blue mr-md"></span>
-                              	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
-                              	 		<span class="sprites_v3 status-gray mr-md"></span>
-                              	 	</c:when> 
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
-                              	 		<span class="sprites_v3 calender-blue mr-md"></span>
-                              	 	</c:when>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
-                              	 		<span class="sprites_v3 calender-gray mr-md"></span>
-                              	 	</c:when>
-                              	 </c:choose>
-                                 <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
-                                 <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
-                                    <span class="sprites_icon preview-g mr-sm" onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
-                                    <span class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
-		                         	<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
-                                     <span class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
-		                         		<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"</c:if>></span>
-                                 </div>
-                              </div>
-                           </div>
-                        </td>
-                     </tr>
-                  	 </c:forEach>
-                  </table>
-               </div>
-            </div>
-         </div>
-         
-      </div>
-   </div>
-   </form:form>
+						<button type="button" class="btn btn-primary blue-btn" id="doneId"
+							<c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
+					</span>
+				</div>
+
+			</c:if>
+		</div>
+	</div>
+	<!--  End  top tab section-->
+	<!--  Start body tab section -->
+	<form:form
+		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do?_S=${param._S}"
+		name="formStepId" id="formStepId" method="post"
+		data-toggle="validator" role="form">
+		<div class="right-content-body pt-none pl-none pr-none">
+			<ul class="nav nav-tabs review-tabs gray-bg" id="formTabConstiner">
+				<li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level
+						Attributes</a></li>
+				<li class="formLevel"><a data-toggle="tab" href="#fla">Form-level
+						Attributes</a></li>
+			</ul>
+			<div class="tab-content pl-xlg pr-xlg">
+				<!-- Step-level Attributes-->
+				<input type="hidden" name="stepId" id="stepId"
+					value="${questionnairesStepsBo.stepId}"> <input
+					type="hidden" name="questionnairesId" id="questionnairesId"
+					value="${questionnaireId}"> <input type="hidden"
+					id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
+				<input type="hidden" name="stepType" id="stepType" value="Form">
+				<input type="hidden" name="formId" id="formId"
+					value="${questionnairesStepsBo.instructionFormId}"> <input
+					type="hidden" name="instructionFormId" id="instructionFormId"
+					value="${questionnairesStepsBo.instructionFormId}"> <input
+					type="hidden" id="type" name="type" value="complete" /> <input
+					type="hidden" id="questionId" name="questionId" /> <input
+					type="hidden" id="actionTypeForFormStep"
+					name="actionTypeForFormStep" />
+
+				<div id="sla" class="tab-pane fade in active mt-xlg">
+					<div class="row">
+						<div class="col-md-6 pl-none">
+							<div class="gray-xs-f mb-xs">
+								Step title or Key (1 to 15 characters) <span
+									class="requiredStar">*</span> <span
+									class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+									title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span>
+							</div>
+							<div class="form-group">
+								<input autofocus="autofocus" type="text" custAttType="cust"
+									class="form-control" name="stepShortTitle" id="stepShortTitle"
+									value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"
+									required maxlength="15"
+									<c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if> />
+								<div class="help-block with-errors red-txt"></div>
+								<input type="hidden" id="preShortTitleId"
+									value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="gray-xs-f mb-xs">Step Type</div>
+							<div>Form Step</div>
+						</div>
+						<div class="clearfix"></div>
+						<div>
+							<div class="gray-xs-f mb-xs">
+								Is this a Skippable Step?<span
+									class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+									title="If marked as Yes, it means the user can skip the entire step meaning no responses are captured from this form step. If marked No, it means the user cannot skip the step and has to answer at least one of the questions to proceed."></span>
+							</div>
+							<div>
+								<span class="radio radio-info radio-inline p-45"> <input
+									type="radio" id="skiappableYes" value="Yes" name="skiappable"
+									${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
+									<label for="skiappableYes">Yes</label>
+								</span> <span class="radio radio-inline"> <input type="radio"
+									id="skiappableNo" value="No" name="skiappable"
+									${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
+									<label for="skiappableNo">No</label>
+								</span>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<c:if test="${questionnaireBo.branching}">
+							<div class="col-md-4 col-lg-3 p-none mt-md">
+								<div class="gray-xs-f mb-xs">
+									Default Destination Step <span class="requiredStar">*</span> <span
+										class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+										title="The step that the user must be directed to from this step."></span>
+								</div>
+								<div class="form-group">
+									<select class="selectpicker" name="destinationStep"
+										id="destinationStepId"
+										value="${questionnairesStepsBo.destinationStep}" required>
+										<c:forEach items="${destinationStepList}"
+											var="destinationStep">
+											<option value="${destinationStep.stepId}"
+												${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step
+												${destinationStep.sequenceNo} :
+												${destinationStep.stepShortTitle}</option>
+										</c:forEach>
+										<option value="0"
+											${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>Completion
+											Step</option>
+									</select>
+									<div class="help-block with-errors red-txt"></div>
+								</div>
+							</div>
+						</c:if>
+					</div>
+				</div>
+				<!---  Form-level Attributes --->
+				<div id="fla" class="tab-pane fade mt-xlg">
+					<div>
+						<div class="gray-xs-f mb-xs">Make form repeatable?</div>
+						<div>
+							<span class="radio radio-info radio-inline p-45"> <input
+								type="radio" id="repeatableYes" value="Yes" name="repeatable"
+								${questionnairesStepsBo.repeatable eq'Yes' ?'checked':''}>
+								<label for="repeatableYes">Yes</label>
+							</span> <span class="radio radio-inline"> <input type="radio"
+								id="repeatableNo" value="No" name="repeatable"
+								${empty questionnairesStepsBo.repeatable || questionnairesStepsBo.repeatable eq 'No' ?'checked':''}>
+								<label for="repeatableNo">No</label>
+							</span>
+						</div>
+					</div>
+					<div>
+						<div class="gray-xs-f mb-xs mt-md">Repeatable Form Button
+							text (1 to 30 characters)</div>
+						<div class="gray-xs-f mb-xs">
+							<small>Enter text the user should see and tap on, to
+								repeat the form</small>
+						</div>
+						<div class="form-group mb-none col-md-4 p-none">
+							<input type="text" class="form-control"
+								placeholder="Eg: I have more medications to add"
+								name="repeatableText" id="repeatableText"
+								value="${fn:escapeXml(questionnairesStepsBo.repeatableText)}"
+								<c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if>
+								maxlength="30"
+								<c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">required</c:if> />
+							<div class="help-block with-errors red-txt"></div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="row mt-lg" id="addQuestionContainer">
+						<div class="col-md-6 p-none blue-md-f mt-xs text-uppercase">
+							Questions in the Form</div>
+						<div class="col-md-6 p-none">
+							<div class="dis-line form-group mb-md pull-right">
+								<button type="button"
+									class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>"
+									onclick="addNewQuestion('');" id="addQuestionId">Add
+									New Question</button>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<div class="mt-md mb-lg">
+							<table id="content" class="display" cellspacing="0" width="100%">
+								<thead style="display: none"></thead>
+								<c:forEach items="${questionnairesStepsBo.formQuestionMap}"
+									var="entry">
+									<tr>
+										<td><span id="${entry.key}">${entry.key}</span></td>
+										<td>
+											<div>
+												<div class="dis-ellipsis"
+													title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
+											</div>
+										</td>
+										<td>
+											<div>
+												<div class="text-right pos-relative">
+													<c:choose>
+														<c:when
+															test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
+															<span class="sprites_v3 status-blue mr-md"></span>
+														</c:when>
+														<c:when
+															test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
+															<span class="sprites_v3 status-gray mr-md"></span>
+														</c:when>
+														<c:when
+															test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
+															<span class="sprites_v3 calender-blue mr-md"></span>
+														</c:when>
+														<c:when
+															test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
+															<span class="sprites_v3 calender-gray mr-md"></span>
+														</c:when>
+													</c:choose>
+													<span class="ellipse" onmouseenter="ellipseHover(this);"></span>
+													<div class="ellipse-hover-icon"
+														onmouseleave="ellipseUnHover(this);">
+														<span class="sprites_icon preview-g mr-sm"
+															onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
+														<span
+															class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
+															<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
+														<span
+															class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
+															<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"</c:if>></span>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</c:forEach>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</form:form>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
@@ -244,7 +313,7 @@ $(document).ready(function(){
 	 		    		    if (!table.data().count() ) {
 	 		    		    	$("#doneId").attr("disabled",false);
 	 		      				$('#alertMsg').show();
-	 		      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 		      				$("#alertMsg").removeClass('s-box').addClass('e-box').text("Add atleast one question");
 	 		      				setTimeout(hideDisplayMessage, 4000);
 	 		      	 			$('.formLevel a').tab('show');
 	 		 	     	 	}else{
@@ -271,7 +340,7 @@ $(document).ready(function(){
 	 			 		  	     	    		 if (!table.data().count() ) {
 	 			 		  	     	    			    $("#doneId").attr("disabled",false);
 	 			 		  	     	      				$('#alertMsg').show();
-	 			 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 			 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').text("Add atleast one question");
 	 			 		  	     	      				setTimeout(hideDisplayMessage, 4000);
 	 			 		  	     	      	 			$('.formLevel a').tab('show');
 	 			 		  	     	 	     	 }
@@ -287,7 +356,7 @@ $(document).ready(function(){
 		 		  	     	    		 if (!table.data().count() ) {
 		 		  	     	    			    $("#doneId").attr("disabled",false);
 		 		  	     	      				$('#alertMsg').show();
-		 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+		 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').text("Add atleast one question");
 		 		  	     	      				setTimeout(hideDisplayMessage, 4000);
 		 		  	     	      	 			$('.formLevel a').tab('show');
 		 		  	     	 	     	 }
@@ -338,7 +407,7 @@ $(document).ready(function(){
     		 $("#repeatableText").val('');
     		 $("#repeatableText").validator('validate');
              $("#repeatableText").parent().removeClass("has-danger").removeClass("has-error");
-             $("#repeatableText").parent().find(".help-block").html("");
+             $("#repeatableText").parent().find(".help-block").empty();
     	 }
      });
      
@@ -402,18 +471,18 @@ $(document).ready(function(){
  					var status = data.message;
  					if(status == "SUCCESS"){
  						$('#alertMsg').show();
- 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+ 						$("#alertMsg").removeClass('e-box').addClass('s-box').text("Reorder done successfully");
  						if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
     						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
     					}
  					}else{
  						$('#alertMsg').show();
- 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
+ 						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to reorder consent");
  		            }
  					setTimeout(hideDisplayMessage, 4000);
  				},
  				error: function(xhr, status, error) {
- 				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+ 				  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
  				  setTimeout(hideDisplayMessage, 4000);
  				}
  			});  
@@ -505,15 +574,14 @@ function saveFormStepQuestionnaire(item,callback){
 	          beforeSend: function(xhr, settings){
 	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 	          },
-	          success:function(data){
-	        	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
+	          success:function(data){			                       
+				var message = data.message;
 				if(message == "SUCCESS"){
 					
 					$("#preShortTitleId").val(shortTitle);
 
-					var stepId = jsonobject.stepId;
-					var formId = jsonobject.formId;
+					var stepId = data.stepId;
+					var formId = data.formId;
 					
 					$("#stepId").val(stepId);
 					$("#formId").val(formId);
@@ -521,7 +589,7 @@ function saveFormStepQuestionnaire(item,callback){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
 					$("#addQuestionId").removeClass("cursor-none");
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if($("#saveBtn").text() == 'Next'){
@@ -536,11 +604,11 @@ function saveFormStepQuestionnaire(item,callback){
 					if (callback)
 						callback(true);
 				}else{
-					var errMsg = jsonobject.errMsg;
+					var errMsg = data.errMsg;
 					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text(errMsg);
 					}else{
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
 					}
 					$('#alertMsg').show();
 					if (callback)
@@ -551,7 +619,7 @@ function saveFormStepQuestionnaire(item,callback){
 	          error: function(xhr, status, error) {
     			  $(item).prop('disabled', false);
     			  $('#alertMsg').show();
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
 	   });
@@ -592,30 +660,29 @@ function deletQuestion(formId,questionId){
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
 		    			success: function deleteConsentInfo(data){
-		    				 var jsonobject = eval(data);
-		    				var status = jsonobject.message;
+		    				var status = data.message;
 		    				if(status == "SUCCESS"){
-		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').text("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
 		    					
-		    					var questionnaireSteps = jsonobject.questionnaireJsonObject;
-		    					var isDone = jsonobject.isDone;
+		    					var questionnaireSteps = data.questionnaireJsonObject;
+		    					var isDone = data.isDone;
 		    					reloadQuestionsData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
 		    				}else{
 		    					if(status == 'FAILUREanchorused'){
-		    						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Form Step Question already live anchorbased.unable to delete");
+		    						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Form Step Question already live anchorbased.unable to delete");
 		    					}else{
-		    					    $("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					    $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to delete questionnaire step");
 		    					}
 		    					$('#alertMsg').show();
 		    	            }
 		    				setTimeout(hideDisplayMessage, 4000);
 		    			},
 		    			error: function(xhr, status, error) {
-		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 		    			  setTimeout(hideDisplayMessage, 4000);
 		    			}
 		    		});
@@ -639,7 +706,7 @@ function reloadQuestionsData(questions,isDone){
 			     if(typeof value.title == "undefined"){
 			    	 datarow.push(' ');
 			     }else{
-			    	 datarow.push('<div class="dis-ellipsis">'+value.title+'</div>');
+			    	 datarow.push('<div class="dis-ellipsis">'+ DOMPurify.sanitize(value.title) +'</div>');
 			     }
 			     var dynamicAction ='<div><div class="text-right pos-relative">';
 			     if(value.responseTypeText == 'Double'  && (value.lineChart == 'Yes' || value.statData == 'Yes')){
@@ -655,11 +722,11 @@ function reloadQuestionsData(questions,isDone){
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
 					               '  <span class="sprites_icon preview-g mr-sm"></span>';
 			    if(value.status){
-			    	dynamicAction+='<span class="sprites_icon edit-g mr-sm" onclick="editQuestion('+value.questionInstructionId+');"></span>';
+			    	dynamicAction+='<span class="sprites_icon edit-g mr-sm" onclick="editQuestion(' + parseInt(value.questionInstructionId) + ');"></span>';
 			    }else{
-			    	dynamicAction+='<span class="edit-inc-draft mr-md mr-sm" onclick="editQuestion('+value.questionInstructionId+');"></span>';
+			    	dynamicAction+='<span class="edit-inc-draft mr-md mr-sm" onclick="editQuestion(' + parseInt(value.questionInstructionId) + ');"></span>';
 			    }
-			    dynamicAction+=	 '<span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
+			    dynamicAction+=	 '<span class="sprites_icon delete" onclick="deletQuestion(' + parseInt(value.stepId) + ',' + parseInt(value.questionInstructionId) + ')"></span>'+
 					              '</div>'+
 					           '</div></div>';
 				datarow.push(dynamicAction);    	 
@@ -717,7 +784,7 @@ function validateShortTitle(item,callback){
  	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-        $(thisAttr).parent().find(".help-block").html("");
+        $(thisAttr).parent().find(".help-block").empty();
  		if( existedKey !=shortTitle){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
@@ -738,13 +805,15 @@ function validateShortTitle(item,callback){
                      if('SUCCESS' != message){
                          $(thisAttr).validator('validate');
                          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                         $(thisAttr).parent().find(".help-block").html("");
+                         $(thisAttr).parent().find(".help-block").empty();
                          callback(true);
                      }else{
                          $(thisAttr).val('');
                          $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                          $(thisAttr).parent().find(".help-block").empty();
-                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
+                         $(thisAttr).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                                 shortTitle
+                                 + " has already been used in the past."));
                          callback(false);
                      }
                  },
@@ -753,7 +822,7 @@ function validateShortTitle(item,callback){
  		}else{
  			 callback(true);
  			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
- 	        $(thisAttr).parent().find(".help-block").html("");
+ 	        $(thisAttr).parent().find(".help-block").empty();
  		}
  	}else{
  		 callback(false);

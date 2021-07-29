@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 </head>
 
 <!-- ============================================================== -->
@@ -61,7 +61,7 @@
 						<input type="text" custAttType="cust" autofocus="autofocus"
 							class="form-control aq-inp studyIdCls" name="customStudyId"
 							id="customStudyId" maxlength="15"
-							value="${studyBo.customStudyId}"
+							value="${fn:escapeXml(studyBo.customStudyId)}"
 							<%-- <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') && studyMode eq 'liveMode'}"> disabled</c:if> --%>
 							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
 							<%-- <c:if test="${studyMode eq 'testMode' && not empty studyBo.status && studyBo.status == 'Paused'}"> disabled</c:if> --%>
@@ -89,25 +89,25 @@
 					</div>
 				</div>
 				<div class="col-md-6 pl-none">
-				<div class="gray-xs-f mb-xs">
-					Study Language<span class="requiredStar"> *</span><span><span
+					<div class="gray-xs-f mb-xs">
+						Study Language<span class="requiredStar"> *</span><span><span
 							data-toggle="tooltip" data-placement="top"
 							title="Select the language that the study should be made available in on the mobile app. Ensure you create all study content in the same language."
 							class="filled-tooltip"></span></span>
+					</div>
+					<div class="form-group">
+						<select
+							class="selectpicker aq-select aq-select-form studyLanguage"
+							id="studyLanguage" name="studyLanguage" required title="Select"
+							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>>
+							<c:forEach items="${languageList}" var="language">
+								<option value="${language}"
+									${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+							</c:forEach>
+						</select>
+						<div class="help-block with-errors red-txt"></div>
+					</div>
 				</div>
-				<div class="form-group">
-					<select
-						class="selectpicker aq-select aq-select-form studyLanguage"
-						id="studyLanguage" name="studyLanguage" required title="Select"
-						<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>>
-						<c:forEach items="${languageList}" var="language">
-							<option value="${language}" 
-								${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
-						</c:forEach>
-					</select>
-					<div class="help-block with-errors red-txt"></div>
-				</div>
-			</div>
 				<div class="col-md-6 pr-none">
 					<div class="gray-xs-f mb-xs">
 						Study Name <small>(50 characters max)</small><span
@@ -153,11 +153,12 @@
 				</div>
 				<div class="col-md-6 pr-none">
 					<div class="gray-xs-f mb-xs">
-						Research Sponsor <small>(100 characters max)</small><span class="requiredStar"> *</span>
+						Research Sponsor <small>(100 characters max)</small><span
+							class="requiredStar"> *</span>
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="researchSponsor"
-							value="${studyBo.researchSponsor}" maxlength="100" required />
+							value="${fn:escapeXml(studyBo.researchSponsor)}" maxlength="100" required />
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
@@ -241,7 +242,7 @@
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" id="studyWebsiteId"
-							name="studyWebsite" value="${studyBo.studyWebsite}"
+							name="studyWebsite" value="${fn:escapeXml(studyBo.studyWebsite)}"
 							pattern="^(http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
 							title="Include http://" maxlength="100"
 							data-pattern-error="Please enter a valid URL" />
@@ -255,7 +256,7 @@
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="inboxEmailAddress"
-							value="${studyBo.inboxEmailAddress}" required maxlength="100"
+							value="${fn:escapeXml(studyBo.inboxEmailAddress)}" required maxlength="100"
 							pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
 							autocomplete="off" data-pattern-error="Email address is invalid" />
 						<div class="help-block with-errors red-txt"></div>
@@ -295,7 +296,7 @@
 					<div>
 						<div class="thumb">
 							<img
-								<c:if test="${not empty studyBo.thumbnailImage}">src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${studyBo.thumbnailImage}" </c:if>
+								<c:if test="${not empty studyBo.thumbnailImage}">src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${fn:escapeXml(studyBo.thumbnailImage)}" </c:if>
 								<c:if test="${empty studyBo.thumbnailImage}">src="/fdahpStudyDesigner/images/dummy-img.jpg" </c:if>
 								onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';"
 								class="wid100" />
@@ -343,7 +344,7 @@
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
            
-        	var studyType = '${studyBo.type}';
+        	var studyType = '${fn:escapeXml(studyBo.type)}';
             if (studyType) {
             	if(studyType === 'GT'){
             		$('.thumbDivClass').show();
@@ -444,6 +445,11 @@
 														            }else{
 																	     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 									      		                       	 if(isFromValid("#basicInfoFormId")){
+
+	                                                                    	 var richText=tinymce.get('editor').getContent({ format: 'raw' });
+	                                                                       	 var escaped = $('#editor').text(richText).html();
+	                                                                       	 tinymce.get('editor').setContent(escaped);
+	                                                                    	 
 									      		                       		 $("#buttonText").val('completed');
 									      		                        	 $("#basicInfoFormId").submit();
 									      		                         }
@@ -480,6 +486,11 @@
 						           }else{
 									     $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 				                   		 if(isFromValid("#basicInfoFormId")){
+
+				                   			 var richText=tinymce.get('editor').getContent({ format: 'raw' });
+                                          	 var escaped = $('#editor').text(richText).html();
+                                          	 tinymce.get('editor').setContent(escaped);
+					                   			
 				                   			 $("#buttonText").val('completed');
 				                    	  	 $("#basicInfoFormId").submit();
 				                    	 }
@@ -515,7 +526,8 @@
 						if(parseInt(studyCount) >= 1){
 							return false;
 						}else if(!$('#customStudyName')[0].checkValidity()){
-							$("#customStudyName").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+							$("#customStudyName").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                            "This is a required field."));
                         	return false;
                         }else{
                             var appId = $('#appId').val();
@@ -525,11 +537,24 @@
 							         $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 			                		 $('#basicInfoFormId').validator('destroy');
 			                         $("#buttonText").val('save');
+
+			                         var richText=tinymce.get('editor').getContent({ format: 'raw' });
+			                         if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+			                        	 var escaped = $('#editor').text(richText).html();
+	                                   	 tinymce.get('editor').setContent(escaped);
+                                      }
 			                         $('#basicInfoFormId').submit();
 							     }else{
 							           $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 			                		   $('#basicInfoFormId').validator('destroy');
 			                           $("#buttonText").val('save');
+
+			                            var richText=tinymce.get('editor').getContent({ format: 'raw' });
+			                            if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+				                        	 var escaped = $('#editor').text(richText).html();
+		                                   	 tinymce.get('editor').setContent(escaped);
+	                                      }
+			                           
 			                           $('#basicInfoFormId').submit();
 							     }
 							   });
@@ -537,6 +562,13 @@
                                $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled', false);
 	                		   $('#basicInfoFormId').validator('destroy');
 	                           $("#buttonText").val('save');
+
+	                           var richText=tinymce.get('editor').getContent({ format: 'raw' });
+	                           if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+		                        	 var escaped = $('#editor').text(richText).html();
+                                 	 tinymce.get('editor').setContent(escaped);
+                                }
+	                           
 	                           $('#basicInfoFormId').submit();
                             }
                         }
@@ -547,7 +579,8 @@
             			}else{
             			 $('#basicInfoFormId').validator('destroy').validator();
                			 if(!$('#customStudyId')[0].checkValidity()) {
-               				 $("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+               				 $("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                             "This is a required field."));
                			     return false; 	
                			 }
             			}
@@ -595,7 +628,9 @@
 	                	$("#uploadImg").parent().find(".help-block").append('');
 	                	$('#removeUrl').css("visibility","visible");
 	                }else{
-	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
+	                	$("#uploadImg").parent().find(".help-block").empty()
+                      		.append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                          		"Please upload image as per provided guidelines."));
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                	$('#uploadImg, #thumbnailImageId').val('');
 	                	$('#removeUrl').css("visibility","hidden");
@@ -611,7 +646,9 @@
 		   	     	}
 	            };
 	            img.onerror = function() {
-	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
+	                $("#uploadImg").parent().find(".help-block").empty()
+                    .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                    "Please upload image as per provided guidelines."));
 	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                $('#uploadImg, #thumbnailImageId').val('');
@@ -642,7 +679,7 @@
   function validateStudyId(item,callback){
 	var customStudyId = $("#customStudyId").val();
 	var thisAttr= $("#customStudyId");
-	var dbcustomStudyId = '${studyBo.customStudyId}';
+	var dbcustomStudyId = '${fn:escapeXml(studyBo.customStudyId)}';
 	if(customStudyId != null && customStudyId !='' && typeof customStudyId!= 'undefined'){
 		if( dbcustomStudyId !=customStudyId){
 			$.ajax({
@@ -658,13 +695,16 @@
                     if('SUCCESS' != message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                        $(thisAttr).parent().find(".help-block").html("");
+                        $(thisAttr).parent().find(".help-block").empty();
                         callback(true);
                     }else{
                         $(thisAttr).val('');
                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                         $(thisAttr).parent().find(".help-block").empty();
-                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + customStudyId + "' has already been used in the past.</li></ul>");
+                        $(thisAttr).parent().find(".help-block").empty()
+                        .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                                customStudyId
+                                + " has already been used in the past."));
                         callback(false);
                     }
                 },
@@ -721,13 +761,16 @@ function validateAppId(item,callback){
                     if('SUCCESS' != message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                        $(thisAttr).parent().find(".help-block").html("");
+                        $(thisAttr).parent().find(".help-block").empty();
                         callback(true);
                     }else{
                         $(thisAttr).val('');
                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                         $(thisAttr).parent().find(".help-block").empty();
-                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + appId + "' has already been used in the past.</li></ul>");
+                        $(thisAttr).parent().find(".help-block").empty()
+                        .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                                appId
+                                + " has already been used in the past.</li></ul>"));
                         callback(false);
                     }
                 },

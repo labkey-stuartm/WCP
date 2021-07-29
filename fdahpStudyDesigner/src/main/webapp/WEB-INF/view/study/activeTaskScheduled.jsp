@@ -1051,9 +1051,10 @@
 		</div>
 	</div>
 </form:form>
-<div id="ongoingNoteId" class="note-center" style="display: none">Note: Activities
-	scheduled as ongoing will always be available for participants to take
-	any number of times, during the lifetime of the study</div>
+<div id="ongoingNoteId" class="note-center" style="display: none">Note:
+	Activities scheduled as ongoing will always be available for
+	participants to take any number of times, during the lifetime of the
+	study</div>
 <!-- </div> -->
 <script type="text/javascript">
 var count = 0;
@@ -1614,9 +1615,10 @@ $(document).ready(function() {
 				}
 			});
 			if(!chkVal) {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").append(
+	              	$("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","white-space:nowrap").text("Please select a time that has not been added already."));
 			} else {
-				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
+				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").empty();
 			}
 		});
 		var a = 0;
@@ -1885,7 +1887,7 @@ $(document).ready(function() {
     	if(!$("#isStudyLifeTime").is(':checked')){
     		if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefined' && scheduletype == 'AnchorDate'){
     			$("#onetimeydaysId").prop('disabled',false);
-    			$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").html("");
+    			$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").empty();
     			resetValidation($('#onetimeydaysId').parents('form'));
     		}else{
     			$("#chooseEndDate").attr("disabled",false);
@@ -2084,19 +2086,19 @@ function customStartDate(id,count){
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
-        $("#"+id).parent().find(".help-block").html("");
+        $("#"+id).parent().find(".help-block").empty();
         $("#EndDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-        $("#EndDate"+count).parent().find(".help-block").html("");
+        $("#EndDate"+count).parent().find(".help-block").empty();
         var startDate = $("#"+id).val();
         var endDate = $("#EndDate"+count).val();
         if(startDate !='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
             $("#"+id).parent().addClass("has-danger").addClass("has-error");
-       	   $("#"+id).parent().find(".help-block").html('<ul class="list-unstyled"><li>Start Date and Time Should not be greater than End Date and Time</li></ul>');
+       	   $("#"+id).parent().find(".help-block").text('<ul class="list-unstyled"><li>Start Date and Time Should not be greater than End Date and Time</li></ul>');
         }else{
      	   $("#activeTaskId").parent().removeClass("has-danger").removeClass("has-error");
-            $("#activeTaskId").parent().find(".help-block").html("");
+            $("#activeTaskId").parent().find(".help-block").empty();
             $("#EndDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-            $("#EndDate"+count).parent().find(".help-block").html("");
+            $("#EndDate"+count).parent().find(".help-block").empty();
             
         }
  });
@@ -2108,19 +2110,21 @@ function customEndDate(id,count){
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
-        $('#'+id).parent().find(".help-block").html("");
+        $('#'+id).parent().find(".help-block").empty();
         $("#StartDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-        $("#StartDate"+count).parent().find(".help-block").html("");
+        $("#StartDate"+count).parent().find(".help-block").empty();
     	var startDate = $("#StartDate"+count).val();
         var endDate = $('#'+id).val();
         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
         	$('#'+id).parent().addClass("has-danger").addClass("has-error");
-       	    $('#'+id).parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+       	 	$('#' + id).parent().find(".help-block").empty().append(
+             	$("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                       "End Date and Time Should not be less than Start Date and Time"));
         }else{
         	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
-            $('#'+id).parent().find(".help-block").html("");
+            $('#'+id).parent().find(".help-block").empty();
             $("#StartDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-            $("#StartDate"+count).parent().find(".help-block").html("");
+            $("#StartDate"+count).parent().find(".help-block").empty();
         }
     });
 }
@@ -2634,12 +2638,11 @@ function saveActiveTask(item, actType, callback){
 // 				    	        beforeSend: function(xhr, settings){
 // 				    	            xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 // 				    	        },
-// 				    	        success:function(data){
-// 				    	      	var jsonobject = eval(data);			                       
-// 				    				var message = jsonobject.message;
+// 				    	        success:function(data){			                       
+// 				    				var message = data.message;
 // 				    				if(message == "SUCCESS"){
-// 				    					var activeTaskId = jsonobject.activeTaskId;
-// 				    					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
+// 				    					var activeTaskId = data.activeTaskId;
+// 				    					var activeTaskFrequenceId = data.activeTaskFrequenceId;
 // 				    					$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
 // 				    					$("#previousFrequency").val(frequency_text);
 // 				    					if(frequency_text == 'One time'){
@@ -2682,13 +2685,12 @@ function saveActiveTask(item, actType, callback){
 			        beforeSend: function(xhr, settings){
 			            xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 			        },
-			        success:function(data){
-			      	var jsonobject = eval(data);			                       
-						var message = jsonobject.message;
-						//var errorMessage = jsonobject.errorMessage;
+			        success:function(data){			                       
+						var message = data.message;
+						//var errorMessage = data.errorMessage;
 						if(message == "SUCCESS"){
-							var activeTaskId = jsonobject.activeTaskId;
-							var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
+							var activeTaskId = data.activeTaskId;
+							var activeTaskFrequenceId = data.activeTaskFrequenceId;
 							$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
 							$("#previousFrequency").val(frequency_text);
 							if(frequency_text == 'One time'){
@@ -2731,13 +2733,12 @@ function saveActiveTask(item, actType, callback){
 		        beforeSend: function(xhr, settings){
 		            xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 		        },
-		        success:function(data){
-		      	var jsonobject = eval(data);			                       
-					var message = jsonobject.message;
-					//var errorMessage = jsonobject.errorMessage;
+		        success:function(data){		                       
+					var message = data.message;
+					//var errorMessage = data.errorMessage;
 					if(message == "SUCCESS"){
-						var activeTaskId = jsonobject.activeTaskId;
-						var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
+						var activeTaskId = data.activeTaskId;
+						var activeTaskFrequenceId = data.activeTaskFrequenceId;
 						$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
 						$("#previousFrequency").val(frequency_text);
 						if(frequency_text == 'One time'){
@@ -2804,9 +2805,12 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").removeClass('with-errors').html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass(
+            'has-error has-danger').find(".help-block").removeClass('with-errors').empty().append(
+                    $("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","font-size: 10px;").text(
+                    "Please ensure that the runs created do not have any overlapping time period."));
 		} else {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').addClass('with-errors').find(".help-block").html('');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').addClass('with-errors').find(".help-block").empty();
 		}	
 		var a = 0;
 		$('.manuallyContainer').find('.manually-option').each(function() {
@@ -2958,7 +2962,7 @@ function setFrequencyVal(flag){
     		
     		$('#lineChartId,lineChartId1,lineChartId2').val('');
     		
-    		$("#chartId,#chartId1,#chartId2").html('');
+    		$("#chartId,#chartId1,#chartId2").empty();
     		$("#chartId,#chartId1,#chartId2").attr('required', 'required').prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
     		$('.rollbackRadioClass').attr('checked', 'checked');
@@ -2980,7 +2984,7 @@ function setFrequencyVal(flag){
     		if(frequencyType == 'Manually Schedule' || frequencyType == 'Ongoing'){
     			$("#chartId,#chartId1,#chartId2").append("<option value='Run-based'>Run-based</option>");
     			$('.activeaddToChartText').show();
-    			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')
+    			$('.activeaddToChartText').text('A max of x runs will be displayed in each view of the chart.')
     		}
     	}
     	$('#chartId,#chartId1,#chartId2').selectpicker('refresh');
@@ -2996,10 +3000,9 @@ function validateTime(dateRef, timeRef) {
 			  dt = moment(dt, "MM/DD/YYYY").toDate();
 			  if(dt < serverDate()) {
 				  $(this).parent().addClass('has-error has-danger');
-// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 				  $(this).data("DateTimePicker").clear();
 			  } else {
-				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').empty();
 			  }
 			  timeRef.each(function() {
 				  if($(this).val()){
@@ -3009,11 +3012,10 @@ function validateTime(dateRef, timeRef) {
 					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
  					   $(this).parent().addClass('has-error has-danger');
-// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 					   if(valid)
 						   valid = false;
 					  } else {
-// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').empty();
 					  }
 				  }
 			  });  
@@ -3033,7 +3035,7 @@ function validateCustTime(dateRef, timeRef) {
 				  $(this).parent().addClass('has-error has-danger');
 				  $(this).data("DateTimePicker").clear();
 			  } else {
-				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').empty();
 			  }
 			  timeRef.each(function() {
 				  if($(this).val()){
@@ -3043,11 +3045,9 @@ function validateCustTime(dateRef, timeRef) {
 					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
 					   $(this).parent().addClass('has-error has-danger');
-//					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 					   if(valid)
 						   valid = false;
 					  } else {
-//					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 					  }
 				  }
 			  });  
@@ -3064,10 +3064,12 @@ function validateCustTime(dateRef, timeRef) {
 		var valid = true;
 		if(dt && (couterRef.val() !== 0)) {
 			if(moment(dt, "MM/DD/YYYY").toDate() < serverDateTime()) {
-				couterRef.parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please ensure the End Date/Time is greater than current date/time.</li></ul>');
+				couterRef.parent().addClass('has-error has-danger').find('.help-block.with-errors').empty().append(
+		            	$("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+		                "Please ensure the End Date/Time is greater than current date/time."));
 				valid = false;
 			} else {
-				couterRef.parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+				couterRef.parent().removeClass('has-error has-danger').find('.help-block.with-errors').empty();
 			}
 		}
 		return  valid;
@@ -3092,10 +3094,10 @@ function validateCustTime(dateRef, timeRef) {
 			if(parseInt(x) > parseInt(y)){
 				if(clickDone && isFromValid($('#onetimeydaysId').parents('form')))
 					$('#onetimeydaysId').focus();
-				$('#onetimeydaysId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+				$('#onetimeydaysId').parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X."));
 				valid = false;
 			}else{
-				$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").html("");
+				$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").empty();
 				resetValidation($('#onetimeydaysId').parents('form'));
 			}
 		}
@@ -3249,13 +3251,13 @@ $(document).ready(function(){
 		  if(xdayValue > ydayValue){
 		    $(this).addClass("red-border");
 		    $("#ydays"+parent_id).addClass("red-border");
-		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X."));
 		    //$("#addbtn"+parent_id).addClass("not-allowed");
 		    $(".addbtn").addClass("not-allowed");
 		  }else{		
 			$(this).removeClass("red-border");
 		    $("#ydays"+parent_id).removeClass("red-border");
-		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 		    //$("#addbtn"+parent_id).removeClass("not-allowed");
 		    $(".addbtn").removeClass("not-allowed");
 			}   
@@ -3271,26 +3273,26 @@ $(document).ready(function(){
 		  if(xdayValue < pydayValue){
 			  $(this).addClass("red-border");
 			  $("#ydays"+pre_parent).addClass("red-border");
-			  $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+			  $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Child X days should be greater than parent Y days."));
 			  //$("#addbtn"+parent_id).addClass("not-allowed");
 			  $(".addbtn").addClass("not-allowed");
 		  }else{
 			  $(this).removeClass("red-border");
 			  $("#ydays"+pre_parent).removeClass("red-border");
-			  $(this).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			  $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			  //$("#addbtn"+parent_id).addClass("not-allowed");
 			  $(".addbtn").addClass("not-allowed");
 			  if(ydayValue !== ""){
 				  if(xdayValue > ydayValue){
 					  $(this).addClass("red-border");
 					  $("#ydays"+parent_id).addClass("red-border");
-					  $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+					  $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y days should be greater than X days."));
 					  //$("#addbtn"+parent_id).addClass("not-allowed");
 					  $(".addbtn").addClass("not-allowed");
 				  }else{
 					  $(this).removeClass("red-border");
 					  $("#ydays"+parent_id).removeClass("red-border");
-					  $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 					  //$("#addbtn"+parent_id).removeClass("not-allowed");
 					  $(".addbtn").removeClass("not-allowed");
 				  }
@@ -3342,7 +3344,7 @@ $(document).ready(function(){
 			if(ydayValue < xdayValue){
 				$(this).addClass("red-border");
 			    $("#xdays"+parent_id).addClass("red-border");
-			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append( $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X."));
 			    $(this).parent().parent().siblings().removeClass("current");
 				$(this).parent().parent().addClass("current");
 				$(".current").nextAll().remove();	
@@ -3351,7 +3353,7 @@ $(document).ready(function(){
 			}else{
 				$(this).removeClass("red-border");
 			    $("#xdays"+parent_id).removeClass("red-border");
-			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			    //$("#addbtn"+parent_id).removeClass("not-allowed");
 			    $(".addbtn").removeClass("not-allowed");
 			}	
@@ -3383,13 +3385,13 @@ $(document).ready(function(){
 			if(ydayValue < xdayValue){				
 			    $("#xdays"+parent_id).addClass("red-border");
 			    $("#ydays"+parent_id).addClass("red-border");
-			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y days should be greater than X days."));
 			    //$("#addbtn"+parent_id).addClass("not-allowed");
 			    $(".addbtn").addClass("not-allowed");
 			}else{				
 			    $("#xdays"+parent_id).removeClass("red-border");			    
 			    $("#ydays"+parent_id).removeClass("red-border");
-			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			    //$("#addbtn"+parent_id).removeClass("not-allowed");
 			    $(".addbtn").removeClass("not-allowed");
 			}	
@@ -3404,13 +3406,13 @@ $(document).ready(function(){
 				  if(xdayValue < pydayValue){
 					  $(this).addClass("red-border");
 					  $("#ydays"+pre_parent).addClass("red-border");
-					  $("#xdays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+					  $("#xdays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append( $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Child X days should be greater than parent Y days."));
 					  //$("#addbtn"+parent_id).addClass("not-allowed");
 					  $(".addbtn").addClass("not-allowed");
 				  }else{
 					  $(this).removeClass("red-border");
 					  $("#ydays"+pre_parent).removeClass("red-border");
-					  $("#xdays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  $("#xdays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 					  //$("#addbtn"+parent_id).addClass("not-allowed");
 					  $(".addbtn").addClass("not-allowed");
 				  }	  

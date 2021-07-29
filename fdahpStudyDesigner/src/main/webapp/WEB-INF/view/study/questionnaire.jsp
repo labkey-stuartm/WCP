@@ -6,8 +6,8 @@
 <jsp:useBean id="date" class="java.util.Date" />
 <c:set var="tz" value="America/Los_Angeles" />
 <head>
-  <meta charset="UTF-8">
-  <style>
+<meta charset="UTF-8">
+<style>
 .cursonMove {
 	cursor: move !important;
 }
@@ -1860,29 +1860,28 @@ $(document).ready(function() {
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var jsonobject = eval(data);
-	    		    var status = jsonobject.message;
+	    		    var status = data.message;
 					
 					if(status == "SUCCESS"){
 						
 					   $('#alertMsg').show();
-					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+					   $("#alertMsg").removeClass('e-box').addClass('s-box').text("Reorder done successfully");
 					   
-					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-					   var isDone = jsonobject.isDone;
+					   var questionnaireSteps = data.questionnaireJsonObject; 
+					   var isDone = data.isDone;
    					   reloadQuestionnaireStepData(questionnaireSteps,isDone);
    					   if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 						 $('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					   }
 					}else{
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to reorder questionnaire");
 
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
 				error: function(xhr, status, error) {
-				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 				  setTimeout(hideDisplayMessage, 4000);
 				}
 			}); 
@@ -2224,9 +2223,10 @@ $(document).ready(function() {
 				}
 			});
 			if(!chkVal) {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").empty().append(
+		        	$("<ul><li> </li></ul>").attr("class","list-unstyled").text("Duplicate times cannot be set."));
 			} else {
-				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
+				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").empty();
 			}
 		});
 		var a = 0;
@@ -2598,7 +2598,7 @@ $(document).ready(function() {
     	if(!$("#isStudyLifeTime").is(':checked')){
     		if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefined' && scheduletype == 'AnchorDate'){
     			$("#onetimeydaysId").prop('disabled',false);
-    			$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").html("");
+    			$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").empty();
     			resetValidation($('#onetimeydaysId').parents('form'));
     		}else{
     			$("#chooseEndDate").attr("disabled",false);
@@ -2820,19 +2820,21 @@ function customStartDate(id,count){
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
-        $("#"+id).parent().find(".help-block").html("");
+        $("#"+id).parent().find(".help-block").empty();
         $("#EndDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-        $("#EndDate"+count).parent().find(".help-block").html("");
+        $("#EndDate"+count).parent().find(".help-block").empty();
         var startDate = $("#"+id).val();
         var endDate = $("#EndDate"+count).val();
         if(startDate !='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
             $("#"+id).parent().addClass("has-danger").addClass("has-error");
-       	   $("#"+id).parent().find(".help-block").html('<ul class="list-unstyled"><li>Start Date and Time Should not be greater than End Date and Time</li></ul>');
+       	   $("#"+id).parent().find(".help-block").empty().append(
+                   $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                   "Start Date and Time Should not be greater than End Date and Time"));
         }else{
      	   $("#id").parent().removeClass("has-danger").removeClass("has-error");
-            $("#id").parent().find(".help-block").html("");
+            $("#id").parent().find(".help-block").empty();
             $("#EndDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-            $("#EndDate"+count).parent().find(".help-block").html("");
+            $("#EndDate"+count).parent().find(".help-block").empty();
             
         }
  });
@@ -2844,19 +2846,20 @@ function customEndDate(id,count){
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
-        $('#'+id).parent().find(".help-block").html("");
+        $('#'+id).parent().find(".help-block").empty();
         $("#StartDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-        $("#StartDate"+count).parent().find(".help-block").html("");
+        $("#StartDate"+count).parent().find(".help-block").empty();
     	var startDate = $("#StartDate"+count).val();
         var endDate = $('#'+id).val();
         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
         	$('#'+id).parent().addClass("has-danger").addClass("has-error");
-       	    $('#'+id).parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+       	    $('#'+id).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "End Date and Time Should not be less than Start Date and Time"));
         }else{
         	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
-            $('#'+id).parent().find(".help-block").html("");
+            $('#'+id).parent().find(".help-block").empty();
             $("#StartDate"+count).parent().removeClass("has-danger").removeClass("has-error");
-            $("#StartDate"+count).parent().find(".help-block").html("");
+            $("#StartDate"+count).parent().find(".help-block").empty();
         }
     });
 }
@@ -3363,13 +3366,12 @@ function saveQuestionnaire(item, callback){
 	        beforeSend: function(xhr, settings){
 	            xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 	        },
-	        success:function(data){
-	      	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
+	        success:function(data){		                       
+				var message = data.message;
 				if(message == "SUCCESS"){
 					$("#preShortTitleId").val(short_title);
-					var questionnaireId = jsonobject.questionnaireId;
-					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
+					var questionnaireId = data.questionnaireId;
+					var questionnaireFrequenceId = data.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
 					$("#questionnaireId").val(questionnaireId);
 					var anchorList = "${anchorTypeList}";
@@ -3411,7 +3413,7 @@ function saveQuestionnaire(item, callback){
 						callback(true);
 				}else{
 					$("body").removeClass("loading");
-					var errMsg = jsonobject.errMsg;
+					var errMsg = data.errMsg;
 					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
 						showErrMsg(errMsg);
 					}else{
@@ -3464,9 +3466,11 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").removeClass('with-errors').html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").removeClass('with-errors').empty().append(
+	            	$("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","font-size: 10px;").text(
+	                   "Please ensure that the runs created do not have any overlapping time period."));
 		} else {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").addClass('with-errors').html('');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").addClass('with-errors').empty();
 		}	
 		var a = 0;
 		$('.manuallyContainer').find('.manually-option').each(function() {
@@ -3591,18 +3595,17 @@ function deletStep(stepId,stepType){
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
 		    			success: function deleteConsentInfo(data){
-		    				 var jsonobject = eval(data);
-		    				var status = jsonobject.message;
+		    				var status = data.message;
 		    				if(status == "SUCCESS"){
-		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').text("Questionnaire step deleted successfully");
 		    					$('#alertMsg').show();
-		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-		    					var isDone = jsonobject.isDone;
+		    					var questionnaireSteps = data.questionnaireJsonObject; 
+		    					var isDone = data.isDone;
 		    					reloadQuestionnaireStepData(questionnaireSteps,isDone);
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
-		    					var isAnchorQuestionnaire = jsonobject.isAnchorQuestionnaire;
+		    					var isAnchorQuestionnaire = data.isAnchorQuestionnaire;
 		    					if(isAnchorQuestionnaire){
 		    						$('#anchorspanId').prop('title','This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it.');
 		    						$('#anchorspanId').attr('disabled',true);
@@ -3616,16 +3619,16 @@ function deletStep(stepId,stepType){
 		    					}
 		    				}else{
 		    					if(status == 'FAILUREanchorused'){
-		    						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Questionnaire step already live anchorbased.unable to delete");
+		    						$("#alertMsg").removeClass('s-box').addClass('e-box').text("Questionnaire step already live anchorbased.unable to delete");
 		    					}else{
-		    					    $("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					    $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to delete questionnaire step");
 		    					}
 		    					$('#alertMsg').show();
 		    	            }
 		    				setTimeout(hideDisplayMessage, 4000);
 		    			},
 		    			error: function(xhr, status, error) {
-		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').text(error);
 		    			  setTimeout(hideDisplayMessage, 4000);
 		    			}
 		    		});
@@ -3646,11 +3649,11 @@ function reloadQuestionnaireStepData(questionnaire,isDone){
 				 }else{
 				   var dynamicTable = '';
 				   if(value.stepType == 'Instruction'){
-					   datarow.push('<span id="'+key+'" class="round blue-round">'+key+'</span>');			  
+					   datarow.push('<span id="' + parseInt(key) + '" class="round blue-round">' + parseInt(key) + '</span>');			  
 	      	 	   }else if(value.stepType == 'Question'){
-	      	 		   datarow.push('<span id="'+key+'" class="round green-round">'+key+'</span>');		
+	      	 		   datarow.push('<span id="' + parseInt(key) + '" class="round green-round">' + parseInt(key) + '</span>');		
 	      	 	   }else{
-		      	 		dynamicTable +='<span id="'+key+'" class="round teal-round">'+key+'</span>';
+		      	 		dynamicTable +='<span id="' + parseInt(key) + '" class="round teal-round">' + parseInt(key) + '</span>';
 	      	 			datarow.push(dynamicTable);		
 	      	 	   }
 				 }	
@@ -3660,17 +3663,17 @@ function reloadQuestionnaireStepData(questionnaire,isDone){
 			    	 var title="";
 			    	 if(value.stepType == 'Form'){
 				    	  $.each(value.fromMap, function(key, value) {
-				    		  title +='<div class="dis-ellipsis" >'+value.title+'</div><br/>';
+				    		  title +='<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div><br/>';
 				    	  });
 				      }else{
-				    	  title +='<div class="dis-ellipsis" >'+value.title+'</div>';
+				    	  title +='<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div>';
 				      }
 			    	 datarow.push(title);
 			     }
 			     if($("#branchingId").is(':checked')){
-			    	 datarow.push('<div class="destinationStep questionnaireStepClass" style="display: block;">'+value.destinationText+'</div>');
+			    	 datarow.push('<div class="destinationStep questionnaireStepClass" style="display: block;">' + DOMPurify.sanitize(value.destinationText) + '</div>');
 			     }else{
-			    	 datarow.push('<div class="destinationStep questionnaireStepClass" style="display: none;">'+value.destinationText+'</div>'); 
+			    	 datarow.push('<div class="destinationStep questionnaireStepClass" style="display: none;">' + DOMPurify.sanitize(value.destinationText) + '</div>'); 
 			     }
 			     var dynamicAction ='<div>'+
 			                  '<div class="text-right pos-relative">';
@@ -3687,13 +3690,13 @@ function reloadQuestionnaireStepData(questionnaire,isDone){
 			      }
 			      dynamicAction +='<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
-					               '  <span class="sprites_icon preview-g mr-sm" onclick="viewStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>';
+					               '  <span class="sprites_icon preview-g mr-sm" onclick="viewStep(' + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
 				  if(value.status){
-					  dynamicAction += '<span class="sprites_icon edit-g mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>';
+					  dynamicAction += '<span class="sprites_icon edit-g mr-sm" onclick="editStep(' + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
 				  }else{
-					  dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>';
+					  dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editStep(' + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
 				  }
-				  dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+				  dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep(' + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>'+
 					              '</div>'+
 					           '</div>';
 					           
@@ -3839,7 +3842,7 @@ function validateShortTitle(item,callback){
 	var customStudyId = $("#customStudyId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-        $(thisAttr).parent().find(".help-block").html("");
+        $(thisAttr).parent().find(".help-block").empty();
 		if( existedKey !=shortTitle){
 		$.ajax({
             url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do?_S=${param._S}",
@@ -3859,13 +3862,15 @@ function validateShortTitle(item,callback){
                 if('SUCCESS' != message){
                     $(thisAttr).validator('validate');
                     $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                    $(thisAttr).parent().find(".help-block").html("");
+                    $(thisAttr).parent().find(".help-block").empty();
                     callback(true);
                 }else{
                     $(thisAttr).val('');
                     $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                     $(thisAttr).parent().find(".help-block").empty();
-                    $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
+                    $(thisAttr).parent().find(".help-block").append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                            shortTitle
+                            + " has already been used in the past."));
                     callback(false);
                 }
             },
@@ -3874,7 +3879,7 @@ function validateShortTitle(item,callback){
       }else{
     	  callback(true);
     	  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-          $(thisAttr).parent().find(".help-block").html("");
+          $(thisAttr).parent().find(".help-block").empty();
       }
 	}else{
 		callback(false);
@@ -3904,13 +3909,12 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
             },
             success:  function getResponse(data){
-                var jsonobject = eval(data);
-    		    var message = jsonobject.message;
+    		    var message = data.message;
                 if('SUCCESS' != message){
                 	callback(true);
                 }else{
                 	callback(false);
-                	var questionnaireSteps = jsonobject.questionnaireJsonObject;
+                	var questionnaireSteps = data.questionnaireJsonObject;
                 	if(typeof questionnaireSteps !='undefined' && questionnaireSteps != null && questionnaireSteps!= ''){
                 		reloadQuestionnaireStepData(questionnaireSteps,null);	
                 	}
@@ -3978,10 +3982,11 @@ function chkDaysValid(clickDone){
 		if(parseInt(x) > parseInt(y)){
 			if(clickDone && isFromValid($('#onetimeydaysId').parents('form')))
 				$('#onetimeydaysId').focus();
-			$('#onetimeydaysId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			$('#onetimeydaysId').parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "Y days should be greater than X days."));
 			valid = false;
 		}else{
-			$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").html("");
+			$('#onetimeydaysId').parent().removeClass('has-error has-danger').find(".help-block").empty();
 			resetValidation($('#onetimeydaysId').parents('form'));
 		}
 	}
@@ -3989,7 +3994,7 @@ function chkDaysValid(clickDone){
 }
 function addDateAnchor(){
 	//customAnchorCount = parseInt(customAnchorCount) +1;
-	customAnchorCount = $('.manually-anchor-option').length;
+	customAnchorCount = parseInt($('.manually-anchor-option').length);
 	var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"+customAnchorCount+"'>"
 				                  +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> Anchor Date </span></span>"
 				                  +"<span class='mr-xs'><select class='signDropDown selectpicker sign-box selectXSign' count='"+customAnchorCount+"' title='Select' name='questionnaireCustomScheduleBo["+customAnchorCount+"].xDaysSign' id='xSign"+customAnchorCount+"'>"
@@ -4150,12 +4155,13 @@ $(document).ready(function(){
 		  if(xdayValue > ydayValue){		    
 		    $(this).addClass("red-border");
 		    $("#ydays"+parent_id).addClass("red-border");
-		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+		    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+            "Y days should be greater than X days."));
 		    $("#addbtn"+parent_id).addClass("not-allowed");
 		  }else{				
 			$(this).removeClass("red-border");
 		    $("#ydays"+parent_id).removeClass("red-border");
-		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+		    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 		    $("#addbtn"+parent_id).removeClass("not-allowed");
 			}   
 		}
@@ -4171,23 +4177,25 @@ $(document).ready(function(){
 		  if(xdayValue < pydayValue){
 			  $(this).addClass("red-border");
 			  $("#ydays"+pre_parent).addClass("red-border");
-			  $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+			  $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+              "Child X days should be greater than parent Y days."));
 			  $("#addbtn"+parent_id).addClass("not-allowed");
 		  }else{
 			  $(this).removeClass("red-border");
 			  $("#ydays"+pre_parent).removeClass("red-border");
-			  $(this).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			  $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			  $("#addbtn"+parent_id).addClass("not-allowed");
 			  if(ydayValue !== ""){
 				  if(xdayValue > ydayValue){
 					  $(this).addClass("red-border");
 					  $("#ydays"+parent_id).addClass("red-border");
-					  $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+					  $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	                  "Y days should be greater than X days."));
 					  $("#addbtn"+parent_id).addClass("not-allowed");
 				  }else{
 					  $(this).removeClass("red-border");
 					  $("#ydays"+parent_id).removeClass("red-border");
-					  $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 					  $("#addbtn"+parent_id).removeClass("not-allowed");
 				  }
 			  }		
@@ -4238,7 +4246,8 @@ $(document).ready(function(){
 			if(ydayValue < xdayValue){
 				$(this).addClass("red-border");
 			    $("#xdays"+parent_id).addClass("red-border");
-			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	            "Y days should be greater than X days."));
 			    $(this).parent().parent().siblings().removeClass("current");
 				$(this).parent().parent().addClass("current");
 				$(".current").nextAll().remove();	
@@ -4246,7 +4255,7 @@ $(document).ready(function(){
 			}else{
 				$(this).removeClass("red-border");
 			    $("#xdays"+parent_id).removeClass("red-border");
-			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			    $("#addbtn"+parent_id).removeClass("not-allowed");
 			}	
 			
@@ -4277,12 +4286,13 @@ $(document).ready(function(){
 			if(ydayValue < xdayValue){				
 			    $("#xdays"+parent_id).addClass("red-border");
 			    $("#ydays"+parent_id).addClass("red-border");
-			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			    $("#ydays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	            "Y days should be greater than X days."));
 			    $("#addbtn"+parent_id).addClass("not-allowed");
 			}else{				
 			    $("#xdays"+parent_id).removeClass("red-border");			    
 			    $("#ydays"+parent_id).removeClass("red-border");
-			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+			    $("#ydays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			    $("#addbtn"+parent_id).removeClass("not-allowed");
 			}	
 			
@@ -4296,12 +4306,13 @@ $(document).ready(function(){
 				  if(xdayValue < pydayValue){
 					  $(this).addClass("red-border");
 					  $("#ydays"+pre_parent).addClass("red-border");
-					  $("#xdays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Child X days should be greater than parent Y days.</li></ul>');
+					  $("#xdays"+parent_id).parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+		              "Child X days should be greater than parent Y days."));
 					  $("#addbtn"+parent_id).addClass("not-allowed");
 				  }else{
 					  $(this).removeClass("red-border");
 					  $("#ydays"+pre_parent).removeClass("red-border");
-					  $("#xdays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").html("");
+					  $("#xdays"+parent_id).parent().removeClass('has-error has-danger').find(".help-block").empty();
 					  $("#addbtn"+parent_id).addClass("not-allowed");
 				  }	  
 			}

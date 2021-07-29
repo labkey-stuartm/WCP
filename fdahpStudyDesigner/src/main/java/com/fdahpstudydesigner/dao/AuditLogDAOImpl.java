@@ -115,7 +115,7 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 
 	/**
 	 * @param session
-	 * @param sessionObject
+	 * @param transaction
 	 * @param actionType
 	 * @param studyId
 	 * @return
@@ -126,8 +126,7 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 		logger.info("AuditLogDAOImpl - updateDraftToEditedStatus() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session newSession = null;
-		String queryString;
-		String draftColumn = null;
+		String queryString = null;
 		try {
 			if (session == null) {
 				newSession = hibernateTemplate.getSessionFactory().openSession();
@@ -135,7 +134,7 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 			}
 			if (userId != null && studyId != null) {
 				if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_STUDY).equals(actionType)) {
-					draftColumn = "hasStudyDraft = 1";
+					queryString = "Update StudyBo set hasStudyDraft = 1, modifiedBy = :userId , modifiedOn = now() where id = :studyId";
 				} /*
 					 * else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY
 					 * ).equals(actionType)){ draftColumn =
@@ -143,20 +142,22 @@ public class AuditLogDAOImpl implements AuditLogDAO {
 					 */
 				else if (actionType != null
 						&& (FdahpStudyDesignerConstants.DRAFT_PARTICIPANT_PROPERTIES).equals(actionType)) {
-					draftColumn = "hasStudyDraft = 1";
+					queryString = "Update StudyBo set hasStudyDraft = 1, modifiedBy = :userId , modifiedOn = now() where id = :studyId";
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE).equals(actionType)) {
-					draftColumn = "hasQuestionnaireDraft = 1, hasStudyDraft = 1 ";
+					queryString = "Update StudyBo set hasQuestionnaireDraft = 1, hasStudyDraft = 1, modifiedBy = :userId , modifiedOn = now() where id = :studyId";
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVETASK).equals(actionType)) {
-					draftColumn = "hasActivetaskDraft = 1, hasStudyDraft = 1 ";
+					queryString = "Update StudyBo set hasActivetaskDraft = 1, hasStudyDraft = 1, modifiedBy = :userId , modifiedOn = now() where id = :studyId";
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONSCENT).equals(actionType)) {
-					draftColumn = "hasConsentDraft = 1, hasActivetaskDraft = 1, hasQuestionnaireDraft=1, hasStudyDraft = 1";
+					queryString = "Update StudyBo set hasConsentDraft = 1, hasActivetaskDraft = 1, hasQuestionnaireDraft=1, hasStudyDraft = 1, modifiedBy = :userId , modifiedOn = now() where id = :studyId";
 				}
-				queryString = "Update StudyBo set " + draftColumn + " , modifiedBy =" + userId
-						+ " , modifiedOn = now() where id =" + studyId;
 				if (newSession != null) {
-					newSession.createQuery(queryString).executeUpdate();
+					newSession.createQuery(queryString)
+							.setInteger("userId", userId)
+							.setInteger("studyId", studyId).executeUpdate();
 				} else {
-					session.createQuery(queryString).executeUpdate();
+					session.createQuery(queryString)
+							.setInteger("userId", userId)
+							.setInteger("studyId", studyId).executeUpdate();
 				}
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}

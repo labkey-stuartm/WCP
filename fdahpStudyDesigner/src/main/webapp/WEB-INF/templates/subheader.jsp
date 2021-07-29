@@ -88,13 +88,13 @@ $('.backOrCancelBtn').on('click',function(){
 	}
 });
 function showSucMsg(message) {
-	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
+	$("#alertMsg").removeClass('e-box').addClass('s-box').text(message);
 	$('#alertMsg').show('5000');
 	setTimeout(hideDisplayMessage, 5000);
 }
 
 function showErrMsg(message){
-	$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
+	$("#alertMsg").removeClass('s-box').addClass('e-box').text(message);
 	$('#alertMsg').show('5000');
 	setTimeout(hideDisplayMessage, 5000);
 }

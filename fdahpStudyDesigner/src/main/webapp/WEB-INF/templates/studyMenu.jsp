@@ -10,7 +10,7 @@
 		<ul class="menuNav">
 			<li>
 				<div class="tit_wrapper" data-toggle="tooltip" data-placement="top"
-					title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${not empty studyBo.name?studyBo.name:'Create Study'}</div>
+					title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}</div>
 				<div class="mb-lg ${empty studyBo.status?'hide':''}">
 					<span
 						class="study_status 

@@ -6,6 +6,7 @@ package com.fdahpstudydesigner.dao;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +81,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		String activity = "";
 		String activityDetails = "";
 		AnchorDateTypeBo anchorDateTypeBo = null;
+		int result = 0;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (activeTaskBo != null) {
@@ -87,9 +89,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 
 				transaction = session.beginTransaction();
 
-				queryString = "DELETE From NotificationBO where activeTaskId=" + activeTaskBo.getId()
-						+ "AND notificationSent=false";
-				session.createQuery(queryString).executeUpdate();
+				queryString = "DELETE From NotificationBO where activeTaskId=:activeId AND notificationSent=false";
+				session.createQuery(queryString).setInteger("activeId", activeTaskBo.getId()).executeUpdate();
 				query = session.getNamedQuery("getStudyByCustomStudyId").setString("customStudyId", customStudyId);
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo) query.uniqueResult();
@@ -104,36 +105,42 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					activity = "Active Task was deactivated.";
 					activityDetails = "Active Task was deactivated. (Active Task Key = " + activeTaskBo.getShortTitle()
 							+ ", Study ID = " + customStudyId + ")";
-					deleteActQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="
-							+ activeTaskBo.getId();
-					deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy=" + sesObj.getUserId()
-							+ ",modifiedDate='" + FdahpStudyDesignerUtil.getCurrentDateTime() + "',customStudyId='"
-							+ customStudyId + "' where id=" + activeTaskBo.getId();
+
+					deleteActQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId= :activeTaskId";
+					query = session.createQuery(deleteActQuery).setInteger("activeTaskId", activeTaskBo.getId());
+					query.executeUpdate();
+
+					deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy=:userId"
+							+ ",modifiedDate=:currentDateTime ,customStudyId=:customStudyId where id=:activeTaskId";
+					query = session.createQuery(deleteQuery).setInteger("userId", sesObj.getUserId())
+							.setString("currentDateTime", FdahpStudyDesignerUtil.getCurrentDateTime())
+							.setString("customStudyId", customStudyId).setInteger("activeTaskId", activeTaskBo.getId());
+					result = query.executeUpdate();
 				} else {
 					// hard delete active task before study launch
-					session.createSQLQuery(
-							"DELETE FROM active_task_frequencies WHERE active_task_id=" + activeTaskBo.getId())
-							.executeUpdate();
-					session.createSQLQuery(
-							"DELETE FROM active_task_custom_frequencies WHERE active_task_id =" + activeTaskBo.getId())
-							.executeUpdate();
+					session.createSQLQuery("DELETE FROM active_task_frequencies WHERE active_task_id=:activeTaskId")
+							.setInteger("activeTaskId", activeTaskBo.getId()).executeUpdate();
 
-					deleteActQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId=" + activeTaskBo.getId();
-					deleteQuery = "delete ActiveTaskBo where id=" + activeTaskBo.getId();
+					session.createSQLQuery(
+							"DELETE FROM active_task_custom_frequencies WHERE active_task_id =:activeTaskId")
+							.setInteger("activeTaskId", activeTaskBo.getId()).executeUpdate();
 
+					deleteActQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId=:activeTaskId";
+					query = session.createQuery(deleteActQuery).setInteger("activeTaskId", activeTaskBo.getId());
+					query.executeUpdate();
+
+					deleteQuery = "delete ActiveTaskBo where id=:activeTaskId";
+					query = session.createQuery(deleteQuery).setInteger("activeTaskId", activeTaskBo.getId());
+					result = query.executeUpdate();
 					activity = "Active Task was deleted.";
 					activityDetails = "Active Task was deleted. (Active Task Key = " + activeTaskBo.getShortTitle()
 							+ ", Study ID = " + customStudyId + ")";
 				}
-				query = session.createQuery(deleteActQuery);
-				query.executeUpdate();
 
-				query = session.createQuery(
-						" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = " + studyId);
+				query = session
+						.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId =:studyId ")
+						.setInteger("studyId", studyId);
 				query.executeUpdate();
-
-				query = session.createQuery(deleteQuery);
-				int result = (int) query.executeUpdate();
 
 				if (result > 0 && null != activeTaskBo.getAnchorDateId()) {
 					anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
@@ -191,15 +198,16 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			activeTaskBo = (ActiveTaskBo) session.get(ActiveTaskBo.class, activeTaskId);
 			if (activeTaskBo != null) {
-				query = session
-						.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId=" + activeTaskBo.getId());
+				query = session.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId=:activeTaskId")
+						.setInteger("activeTaskId", activeTaskBo.getId());
 				activeTaskAtrributeValuesBos = query.list();
 				if (StringUtils.isNotEmpty(customStudyId)) {
 					// to check duplicate short title of active task
 					BigInteger shortTitleCount = (BigInteger) session
-							.createSQLQuery("select count(*) from active_task a " + "where a.short_title='"
-									+ activeTaskBo.getShortTitle() + "' and custom_study_id='" + customStudyId
-									+ "' and a.active=1 and a.is_live=1")
+							.createSQLQuery("select count(*) from active_task a "
+									+ "where a.short_title=:title and custom_study_id=:customStudyId"
+									+ " and a.active=1 and a.is_live=1")
+							.setString("title", activeTaskBo.getShortTitle()).setString("customStudyId", customStudyId)
 							.uniqueResult();
 					if (shortTitleCount != null && shortTitleCount.intValue() > 0)
 						activeTaskBo.setIsDuplicate(shortTitleCount.intValue());
@@ -216,11 +224,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							// active task
 							BigInteger statTitleCount = (BigInteger) session
 									.createSQLQuery("select count(*) from active_task_attrtibutes_values at "
-											+ "where at.identifier_name_stat='"
-											+ activeTaskAtrributeValuesBo.getIdentifierNameStat() + "'"
+											+ "where at.identifier_name_stat=:identifierNameStat "
 											+ "and  at.active_task_id in "
-											+ "(select a.id from active_task a where a.custom_study_id='"
-											+ customStudyId + "' and a.active=1 and a.is_live=1)")
+											+ "(select a.id from active_task a where a.custom_study_id=:customStudyId"
+											+ " and a.active=1 and a.is_live=1)")
+									.setString("customStudyId", customStudyId).setString("identifierNameStat",
+											activeTaskAtrributeValuesBo.getIdentifierNameStat())
 									.uniqueResult();
 							if (statTitleCount != null && statTitleCount.intValue() > 0)
 								activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(statTitleCount.intValue());
@@ -237,14 +246,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 				if (null != activeTaskBo.getFrequency()) {
 					if (activeTaskBo.getFrequency()
 							.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)) {
-						searchQuery = "From ActiveTaskCustomScheduleBo ATSBO where ATSBO.activeTaskId="
-								+ activeTaskBo.getId();
-						query = session.createQuery(searchQuery);
+						searchQuery = "From ActiveTaskCustomScheduleBo ATSBO where ATSBO.activeTaskId=:activeTaskId";
+						query = session.createQuery(searchQuery).setInteger("activeTaskId", activeTaskBo.getId());
 						List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBos = query.list();
 						activeTaskBo.setActiveTaskCustomScheduleBo(activeTaskCustomScheduleBos);
 					} else {
-						searchQuery = "From ActiveTaskFrequencyBo ATBO where ATBO.activeTaskId=" + activeTaskBo.getId();
-						query = session.createQuery(searchQuery);
+						searchQuery = "From ActiveTaskFrequencyBo ATBO where ATBO.activeTaskId=:activeTaskId";
+						query = session.createQuery(searchQuery).setInteger("activeTaskId", activeTaskBo.getId());
 						if (activeTaskBo.getFrequency()
 								.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)) {
 							List<ActiveTaskFrequencyBo> activeTaskFrequencyBos = query.list();
@@ -312,8 +320,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(
-					" from ActiveTaskMasterAttributeBo where taskTypeId=" + Integer.parseInt(activeTaskType));
+			query = session.createQuery(" from ActiveTaskMasterAttributeBo where taskTypeId=:activeTaskType")
+					.setInteger("activeTaskType", Integer.parseInt(activeTaskType));
 			taskMasterAttributeBos = query.list();
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - ERROR ", e);
@@ -344,13 +352,15 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 
 			// to get only "Fetal Kick Counter" type of active task based on
 			// Android platform
-			if (StringUtils.isNotEmpty(platformType) && platformType.contains("A"))
-				queryString = "from ActiveTaskListBo a where a.taskName not in('"
-						+ FdahpStudyDesignerConstants.TOWER_OF_HANOI + "','"
-						+ FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY + "')";
-			else
-				queryString = "from ActiveTaskListBo";
-			query = session.createQuery(queryString);
+			if (StringUtils.isNotEmpty(platformType) && platformType.contains("A")) {
+				query = session
+						.createQuery(
+								"from ActiveTaskListBo a where a.taskName not in(:towerOfHanoi, :spatialSpanMemory)")
+						.setParameter("towerOfHanoi", FdahpStudyDesignerConstants.TOWER_OF_HANOI)
+						.setParameter("spatialSpanMemory", FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY);
+			} else {
+				query = session.createQuery("from ActiveTaskListBo");
+			}
 			activeTaskListBos = query.list();
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - ERROR ", e);
@@ -410,14 +420,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(studyId)) {
 				if (isLive) {
-					String searchQuery = "SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.customStudyId ='"
-							+ studyId + "' and ATB.live=1 order by id";
-					query = session.createQuery(searchQuery);
+					String searchQuery = "SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.customStudyId =:studyId"
+							+ " and ATB.live=1 order by id";
+					query = session.createQuery(searchQuery).setParameter("studyId", studyId);
 				} else {
 					query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId",
 							Integer.parseInt(studyId));
 				}
-
 				activeTasks = query.list();
 
 				query = session.createQuery("from ActiveTaskListBo");
@@ -473,14 +482,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 			if (null != anchorDateTypeBo && null != anchorDateTypeBo.getParticipantProperty()
 					&& anchorDateTypeBo.getParticipantProperty()) {
 				query = session.createQuery(
-						"select count(*) from ActiveTaskBo ABO  where ABO.studyId=:studyId and ABO.anchorDateId=:anchorDateId and ABO.active=1");
-				query.setInteger("studyId", activeTaskBo.getStudyId());
-				query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
+						"select count(*) from ActiveTaskBo ABO  where ABO.studyId=:studyId and ABO.anchorDateId=:anchorDateId and ABO.active=1")
+						.setInteger("studyId", activeTaskBo.getStudyId())
+						.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
 				Long count = (Long) query.uniqueResult();
 				if (count < 1) {
 					query = session.createQuery(
-							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInActiveTask = 1 where PBO.anchorDateId=:anchorDateId");
-					query.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
+							"Update ParticipantPropertiesBO PBO SET PBO.isUsedInActiveTask = 1 where PBO.anchorDateId=:anchorDateId")
+							.setInteger("anchorDateId", activeTaskBo.getAnchorDateId());
 					query.executeUpdate();
 				}
 			}
@@ -490,13 +499,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					&& activeTaskBo.getId() != null) {
 				if (activeTaskBo.getActiveTaskFrequenciesList() != null
 						&& !activeTaskBo.getActiveTaskFrequenciesList().isEmpty()) {
-					String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="
-							+ activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery);
+					String deleteQuery = "delete from active_task_custom_frequencies where active_task_id=:activeTaskId";
+					query = session.createSQLQuery(deleteQuery).setInteger("activeTaskId", activeTaskBo.getId());
 					query.executeUpdate();
-					String deleteQuery2 = "delete from active_task_frequencies where active_task_id="
-							+ activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery2);
+					String deleteQuery2 = "delete from active_task_frequencies where active_task_id=:activeTaskId";
+					query = session.createSQLQuery(deleteQuery2).setInteger("activeTaskId", activeTaskBo.getId());
 					query.executeUpdate();
 					for (ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTaskBo.getActiveTaskFrequenciesList()) {
 						if (activeTaskFrequencyBo.getFrequencyTime() != null) {
@@ -517,13 +524,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							|| activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskBo.getFrequency()
 									.equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
 						if (!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())) {
-							String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="
-									+ activeTaskBo.getId();
-							query = session.createSQLQuery(deleteQuery);
+							String deleteQuery = "delete from active_task_custom_frequencies where active_task_id=:activeTaskId";
+							query = session.createSQLQuery(deleteQuery).setInteger("activeTaskId",
+									activeTaskBo.getId());
 							query.executeUpdate();
-							String deleteQuery2 = "delete from active_task_frequencies where active_task_id="
-									+ activeTaskBo.getId();
-							query = session.createSQLQuery(deleteQuery2);
+							String deleteQuery2 = "delete from active_task_frequencies where active_task_id=:activeTaskId";
+							query = session.createSQLQuery(deleteQuery2).setInteger("activeTaskId",
+									activeTaskBo.getId());
 							query.executeUpdate();
 						}
 						if (activeTaskFrequencyBo.getActiveTaskId() == null) {
@@ -549,13 +556,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 				}
 				if (activeTaskBo.getActiveTaskCustomScheduleBo() != null
 						&& activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0) {
-					String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="
-							+ activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery);
+					String deleteQuery = "delete from active_task_custom_frequencies where active_task_id=:activeTaskId";
+					query = session.createSQLQuery(deleteQuery).setInteger("activeTaskId", activeTaskBo.getId());
 					query.executeUpdate();
-					String deleteQuery2 = "delete from active_task_frequencies where active_task_id="
-							+ activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery2);
+					String deleteQuery2 = "delete from active_task_frequencies where active_task_id=:activeTaskId";
+					query = session.createSQLQuery(deleteQuery2).setInteger("activeTaskId", activeTaskBo.getId());
 					query.executeUpdate();
 					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTaskBo
 							.getActiveTaskCustomScheduleBo()) {
@@ -684,14 +689,17 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(),
 						FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, activeTaskBo.getStudyId());
 				// Notification Purpose needed Started
-				queryString = " From StudyBo where customStudyId='" + customStudyId + "' and live=1";
-				StudyBo studyBo = (StudyBo) session.createQuery(queryString).uniqueResult();
+				queryString = " From StudyBo where customStudyId=:customStudyId and live=1";
+				StudyBo studyBo = (StudyBo) session.createQuery(queryString).setString("customStudyId", customStudyId)
+						.uniqueResult();
 				if (studyBo != null) {
-					queryString = " From StudyBo where id=" + activeTaskBo.getStudyId();
-					StudyBo draftStudyBo = (StudyBo) session.createQuery(queryString).uniqueResult();
+					queryString = " From StudyBo where id=:studyId";
+					StudyBo draftStudyBo = (StudyBo) session.createQuery(queryString)
+							.setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
 					NotificationBO notificationBO = null;
-					queryString = "From NotificationBO where activeTaskId=" + activeTaskBo.getId();
-					notificationBO = (NotificationBO) session.createQuery(queryString).uniqueResult();
+					queryString = "From NotificationBO where activeTaskId=:activeTaskId";
+					notificationBO = (NotificationBO) session.createQuery(queryString)
+							.setInteger("activeTaskId", activeTaskBo.getId()).uniqueResult();
 					if (!activeTaskBo.getScheduleType().equalsIgnoreCase("AnchorDate")) {
 						if (notificationBO == null) {
 							notificationBO = new NotificationBO();
@@ -766,6 +774,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 		List<QuestionnaireBo> questionnaireBo = null;
 		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
 		List<QuestionsBo> questionnairesStepsBo = null;
+		List<String> idArr = new ArrayList<String>();
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (studyId != null && StringUtils.isNotEmpty(activeTaskAttName)
@@ -777,7 +786,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					if (customStudyId != null && !customStudyId.isEmpty()) {
 						if (!activeTaskAttIdName.equals("static")) {
 							if (activeTaskAttIdName.contains(",")) {
-								List<String> idArr = new ArrayList<String>();
 								String[] arr;
 								arr = activeTaskAttIdName.split(",");
 								if (arr != null && arr.length > 0) {
@@ -788,24 +796,28 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								}
 								activeTaskAttIdName = StringUtils.join(idArr, ',');
 							}
-							subString = " and attributeValueId NOT IN(" + activeTaskAttIdName + ")";
+							subString = " and attributeValueId NOT IN(:activeTaskAttIdName)";
 						}
 						// to check chart short title exist in active task or
 						// not
 						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
-								+ "(select id From StudyBo SBO WHERE customStudyId='" + customStudyId
-								+ "')) and identifierNameStat='" + activeTaskAttIdVal + "'" + subString + "";
-						activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
+								+ "(select id From StudyBo SBO WHERE customStudyId=:customStudyId )) and identifierNameStat=:activeTaskAttIdVal "
+								+ subString;
+						query = session.createQuery(queryString).setString("customStudyId", customStudyId)
+								.setString("activeTaskAttIdVal", activeTaskAttIdVal)
+								.setParameterList("activeTaskAttIdName", idArr);
+						activeTaskAtrributeValuesBos = query.list();
 						if (activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()) {
 							flag = true;
 						} else {
 							// to check chart short title exist in question of
 							// questionnaire
-							queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId in(select id From StudyBo SBO WHERE customStudyId='"
-									+ customStudyId + "')) and QSBO.stepType='"
-									+ FdahpStudyDesignerConstants.QUESTION_STEP + "') and QBO.statShortName='"
-									+ activeTaskAttIdVal + "'";
-							query = session.createQuery(queryString);
+							queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId in(select id From StudyBo SBO WHERE customStudyId= :customStudyId"
+									+ ")) and QSBO.stepType=:type) and QBO.statShortName=:activeTaskAttIdVal";
+							query = session.createQuery(queryString)
+									.setString("type", FdahpStudyDesignerConstants.QUESTION_STEP)
+									.setString("customStudyId", customStudyId)
+									.setString("activeTaskAttIdVal", activeTaskAttIdVal);
 							questionnairesStepsBo = query.list();
 							if (questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()) {
 								flag = true;
@@ -813,10 +825,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								// to check chart short title exist in form
 								// question of questionnaire
 								queryString = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
-										+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id IN(select id From studies SBO WHERE custom_study_id='"
-										+ customStudyId + "') and QSBO.step_type='Form' and QBO.stat_short_name='"
-										+ activeTaskAttIdVal + "'";
-								BigInteger subCount = (BigInteger) session.createSQLQuery(queryString).uniqueResult();
+										+ " and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id IN(select id From studies SBO WHERE custom_study_id=:customStudyId"
+										+ ") and QSBO.step_type='Form' and QBO.stat_short_name=:activeTaskAttIdVal";
+								BigInteger subCount = (BigInteger) session.createSQLQuery(queryString)
+										.setString("customStudyId", customStudyId)
+										.setString("activeTaskAttIdVal", activeTaskAttIdVal).uniqueResult();
 								if (subCount != null && subCount.intValue() > 0)
 									flag = true;
 								else
@@ -826,7 +839,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					} else {
 						if (!activeTaskAttIdName.equals("static")) {
 							if (activeTaskAttIdName.contains(",")) {
-								List<String> idArr = new ArrayList<String>();
 								String[] arr;
 								arr = activeTaskAttIdName.split(",");
 								if (arr != null && arr.length > 0) {
@@ -837,23 +849,26 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								}
 								activeTaskAttIdName = StringUtils.join(idArr, ',');
 							}
-							subString = " and attributeValueId NOT IN(" + activeTaskAttIdName + ")";
+							subString = " and attributeValueId NOT IN(:activeTaskAttIdName) ";
 						}
 						// to check chart short title exist in active task or
 						// not
-						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="
-								+ studyId + ") " + "and identifierNameStat='" + activeTaskAttIdVal + "'" + subString
-								+ "";
-						activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
+						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId=:studyId)"
+								+ " and identifierNameStat=:activeTaskAttIdVal" + subString;
+						activeTaskAtrributeValuesBos = session.createQuery(queryString)
+								.setParameterList("activeTaskAttIdName", Arrays.asList(activeTaskAttIdName))
+								.setInteger("studyId", studyId).setString("activeTaskAttIdVal", activeTaskAttIdVal)
+								.list();
 						if (activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()) {
 							flag = true;
 						} else {
 							// to check chart short title exist in question of
 							// questionnaire
-							queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="
-									+ studyId + ") and QSBO.stepType='" + FdahpStudyDesignerConstants.QUESTION_STEP
-									+ "') and QBO.statShortName='" + activeTaskAttIdVal + "'";
-							query = session.createQuery(queryString);
+							queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId=:studyId"
+									+ ") and QSBO.stepType=:type) and QBO.statShortName=:activeTaskAttIdVal";
+							query = session.createQuery(queryString)
+									.setString("type", FdahpStudyDesignerConstants.QUESTION_STEP)
+									.setInteger("studyId", studyId).setString("activeTaskAttIdVal", activeTaskAttIdVal);
 							questionnairesStepsBo = query.list();
 							if (questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()) {
 								flag = true;
@@ -861,10 +876,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 								// to check chart short title exist in form
 								// question of questionnaire
 								queryString = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
-										+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id="
-										+ studyId + " and QSBO.step_type='Form' and QBO.stat_short_name='"
-										+ activeTaskAttIdVal + "'";
-								BigInteger subCount = (BigInteger) session.createSQLQuery(queryString).uniqueResult();
+										+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id=:studyId"
+										+ " and QSBO.step_type='Form' and QBO.stat_short_name=:activeTaskAttIdVal";
+								BigInteger subCount = (BigInteger) session.createSQLQuery(queryString)
+										.setInteger("studyId", studyId)
+										.setString("activeTaskAttIdVal", activeTaskAttIdVal).uniqueResult();
 								if (subCount != null && subCount.intValue() > 0)
 									flag = true;
 								else
@@ -877,17 +893,17 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 					// task and questionnaire) of study
 					if (customStudyId != null && !customStudyId.isEmpty()) {
 						// to check short title exist in active task or not
-						queryString = "from ActiveTaskBo where studyId IN (select id From StudyBo SBO WHERE customStudyId='"
-								+ customStudyId + "') and shortTitle='" + activeTaskAttIdVal + "'";
-						taskBos = session.createQuery(queryString).list();
+						queryString = "from ActiveTaskBo where studyId IN (select id From StudyBo SBO WHERE customStudyId=:customStudyId ) and shortTitle=:activeTaskAttIdVal";
+						taskBos = session.createQuery(queryString).setString("customStudyId", customStudyId)
+								.setString("activeTaskAttIdVal", activeTaskAttIdVal).list();
 						if (taskBos != null && !taskBos.isEmpty()) {
 							flag = true;
 						} else {
 							// to check short title exist in questionnaire or
 							// not
-							queryString = "From QuestionnaireBo QBO where QBO.studyId IN(select id From StudyBo SBO WHERE customStudyId='"
-									+ customStudyId + "') and QBO.shortTitle='" + activeTaskAttIdVal + "'";
-							query = session.createQuery(queryString);
+							queryString = "From QuestionnaireBo QBO where QBO.studyId IN(select id From StudyBo SBO WHERE customStudyId=:customStudyId) and QBO.shortTitle=:activeTaskAttIdVal";
+							query = session.createQuery(queryString).setString("customStudyId", customStudyId)
+									.setString("activeTaskAttIdVal", activeTaskAttIdVal);
 							questionnaireBo = query.list();
 							if (questionnaireBo != null && !questionnaireBo.isEmpty()) {
 								flag = true;
@@ -897,9 +913,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 						}
 					} else {
 						// to check short title exist in active task or not
-						queryString = "from ActiveTaskBo where studyId=" + studyId + " and shortTitle='"
-								+ activeTaskAttIdVal + "'";
-						taskBos = session.createQuery(queryString).list();
+						queryString = "from ActiveTaskBo where studyId=:studyId and shortTitle=:activeTaskAttIdVal";
+						taskBos = session.createQuery(queryString).setInteger("studyId", studyId)
+								.setString("activeTaskAttIdVal", activeTaskAttIdVal).list();
 						if (taskBos != null && !taskBos.isEmpty()) {
 							flag = true;
 						} else {
@@ -956,7 +972,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 							ids.add(activeStatisticsBean.getIdname());
 					}
 					if (!ids.isEmpty()) {
-						subString = "AND attributeValueId NOT IN(" + StringUtils.join(ids, ',') + ")";
+						subString = "AND attributeValueId NOT IN(:ids)";
 					}
 				}
 				// checking each statistics data validate and get which one have
@@ -964,10 +980,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 				for (ActiveStatisticsBean activeStatisticsBean : activeStatisticsBeans) {
 					if (!activeStatisticsBean.getDbVal().equalsIgnoreCase(activeStatisticsBean.getIdVal())) {
 						queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
-								+ "(select id From StudyBo SBO WHERE customStudyId='" + customStudyId
-								+ "')) and identifierNameStat ='" + activeStatisticsBean.getIdVal() + "' " + subString
-								+ "";
-						activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
+								+ "(select id From StudyBo SBO WHERE customStudyId=:customStudyId"
+								+ ")) and identifierNameStat =:identifierNameStat" + subString;
+						activeTaskAtrributeValuesBos = session.createQuery(queryString).setParameterList("ids", ids)
+								.setString("customStudyId", customStudyId)
+								.setString("identifierNameStat", activeStatisticsBean.getIdVal()).list();
 						if (activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()) {
 							activeStatisticsBean.setType(true);
 							break;
