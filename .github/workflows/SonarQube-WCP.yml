@@ -4,7 +4,7 @@ on:
       - sonarcubescan # or the name of your main branch
 jobs:
   build:
-    name: SonarQube-studybuilder
+    name: SonarQube-WCP
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
