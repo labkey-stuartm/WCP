@@ -96,6 +96,12 @@ public class StudyBo implements Serializable {
   @Column(name = "has_study_draft")
   private Integer hasStudyDraft = 0;
 
+  @Column(name = "multi_language_flag")
+  private String multiLanguageFlag;
+
+  @Column(name = "selected_languages")
+  private String selectedLanguages;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -624,5 +630,21 @@ public class StudyBo implements Serializable {
 
   public void setStudyLanguage(String studyLanguage) {
     this.studyLanguage = studyLanguage;
+  }
+
+  public String getMultiLanguageFlag() {
+    return multiLanguageFlag;
+  }
+
+  public void setMultiLanguageFlag(String multiLanguageFlag) {
+    this.multiLanguageFlag = multiLanguageFlag;
+  }
+
+  public String getSelectedLanguages() {
+    return selectedLanguages;
+  }
+
+  public void setSelectedLanguages(String selectedLanguages) {
+    this.selectedLanguages = selectedLanguages;
   }
 }

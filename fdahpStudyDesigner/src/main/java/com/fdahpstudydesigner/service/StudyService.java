@@ -171,7 +171,8 @@ public interface StudyService {
       SessionObject sesObj,
       String userIds,
       String permissions,
-      String projectLead);
+      String projectLead,
+      String newLanguages);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 

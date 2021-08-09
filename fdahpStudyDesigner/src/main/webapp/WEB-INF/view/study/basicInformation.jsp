@@ -27,6 +27,18 @@
 					${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}
 				</div>
 
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select
+                    	class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                    	id="studyLanguage" name="studyLanguage" required title="Select"
+                    	<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
+                    	<c:forEach items="${languageList}" var="language">
+                    		<option value="${language}"
+                    			${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+                    	</c:forEach>
+                    </select>
+				</div>
+
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 				</div>
@@ -88,33 +100,33 @@
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
-				<div class="col-md-6 pl-none">
-					<div class="gray-xs-f mb-xs">
-						Study Language<span class="requiredStar"> *</span><span><span
-							data-toggle="tooltip" data-placement="top"
-							title="Select the language that the study should be made available in on the mobile app. Ensure you create all study content in the same language."
-							class="filled-tooltip"></span></span>
-					</div>
-					<div class="form-group">
-						<select
-							class="selectpicker aq-select aq-select-form studyLanguage"
-							id="studyLanguage" name="studyLanguage" required title="Select"
-							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>>
-							<c:forEach items="${languageList}" var="language">
-								<option value="${language}"
-									${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
-							</c:forEach>
-						</select>
-						<div class="help-block with-errors red-txt"></div>
-					</div>
-				</div>
-				<div class="col-md-6 pr-none">
+<%--				<div class="col-md-6 pl-none">--%>
+<%--					<div class="gray-xs-f mb-xs">--%>
+<%--						Study Language<span class="requiredStar"> *</span><span><span--%>
+<%--							data-toggle="tooltip" data-placement="top"--%>
+<%--							title="Select the language that the study should be made available in on the mobile app. Ensure you create all study content in the same language."--%>
+<%--							class="filled-tooltip"></span></span>--%>
+<%--					</div>--%>
+<%--					<div class="form-group">--%>
+<%--						<select--%>
+<%--							class="selectpicker aq-select aq-select-form studyLanguage"--%>
+<%--							id="studyLanguage" name="studyLanguage" required title="Select"--%>
+<%--							<c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>>--%>
+<%--							<c:forEach items="${languageList}" var="language">--%>
+<%--								<option value="${language}"--%>
+<%--									${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>--%>
+<%--							</c:forEach>--%>
+<%--						</select>--%>
+<%--						<div class="help-block with-errors red-txt"></div>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+				<div class="col-md-12 p-none">
 					<div class="gray-xs-f mb-xs">
 						Study Name <small>(50 characters max)</small><span
 							class="requiredStar"> *</span>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" name="name"
+						<input type="text" class="form-control langSpecific" name="name"
 							id="customStudyName" value="${fn:escapeXml(studyBo.name)}"
 							maxlength="50" required />
 						<div class="help-block with-errors red-txt"></div>
@@ -128,7 +140,7 @@
 						class="requiredStar"> *</span>
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" name="fullName"
+					<input type="text" class="form-control langSpecific" name="fullName"
 						value="${fn:escapeXml(studyBo.fullName)}" maxlength="150" required />
 					<div class="help-block with-errors red-txt"></div>
 				</div>
@@ -157,7 +169,7 @@
 							class="requiredStar"> *</span>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" name="researchSponsor"
+						<input type="text" id="researchSponsor" class="form-control" name="researchSponsor"
 							value="${fn:escapeXml(studyBo.researchSponsor)}" maxlength="100" required />
 						<div class="help-block with-errors red-txt"></div>
 					</div>
@@ -196,7 +208,7 @@
 					</div>
 					<div class="form-group col-md-4 p-none mb-none">
 						<select class="selectpicker elaborateClass" required
-							title="Select" name="tentativeDurationWeekmonth">
+							title="Select" name="tentativeDurationWeekmonth" id="tentativeDurationWeekmonth">
 							<option value="Days"
 								${studyBo.tentativeDurationWeekmonth eq 'Days'?'selected':''}>Days</option>
 							<option value="Weeks"
@@ -217,7 +229,7 @@
 						class="requiredStar"> *</span>
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" name="studyTagLine"
+					<input type="text" class="form-control langSpecific" name="studyTagLine"
 						value="${fn:escapeXml(studyBo.studyTagLine)}" maxlength="100"
 						required />
 					<div class="help-block with-errors red-txt"></div>
@@ -229,7 +241,7 @@
 					Description<span class="requiredStar"> *</span>
 				</div>
 				<div class="form-group">
-					<textarea class="form-control" id="editor" name="description"
+					<textarea class="form-control langSpecific" id="editor" name="description"
 						required>${studyBo.description}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
@@ -780,5 +792,41 @@ function validateAppId(item,callback){
 		 callback(false);
 	}
 }
+
+		$('#studyLanguage').on('change', function () {
+			refreshAndFetchLanguageData($('#studyLanguage').val());
+		})
+
+		function refreshAndFetchLanguageData(language){
+			$.ajax({
+				url : '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}',
+				type : "GET",
+				data : {
+					language : language
+				},
+				success : function(data) {
+					if (language !== 'en') {
+						$('select, input[type!=hidden]').each(function () {
+							if (!$(this).hasClass('langSpecific')) {
+								$(this).attr('disabled', true);
+								if(this.nodeName.toLowerCase() === 'select') {
+									let id = this.id;
+									if (id !== undefined && id!=='') {
+										$('[data-id='+id+']').css('background-color', '#eee');
+										$('[data-id='+id+']').css('opacity', '1');
+									}
+								}
+							}
+						});
+						$('#removeUrl').css('pointer-events', 'none');
+					}
+					else {
+
+					}
+				}
+			});
+		}
+
+
                  
 </script>

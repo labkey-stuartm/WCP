@@ -36,6 +36,8 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyActivityVersionBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
+import com.fdahpstudydesigner.bo.StudyLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
@@ -5210,7 +5212,8 @@ public class StudyDAOImpl implements StudyDAO {
       SessionObject sesObj,
       String userIds,
       String permissions,
-      String projectLead) {
+      String projectLead,
+      String newLanguages) {
     logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -5247,7 +5250,9 @@ public class StudyDAOImpl implements StudyDAO {
           if (study != null && studySequence != null) {
             // validation of anchor date
             updateAnchordateForEnrollmentDate(study, studyBo, session, transaction);
-            // validation of anchor date
+            // saving new Languages
+            if (FdahpStudyDesignerUtil.isNotEmpty(newLanguages))
+              saveSelectedLanguages(newLanguages, study, sesObj.getUserId(), session, transaction);
             study.setPlatform(studyBo.getPlatform());
             study.setAllowRejoin(studyBo.getAllowRejoin());
             study.setEnrollingParticipants(studyBo.getEnrollingParticipants());
@@ -8445,6 +8450,29 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
     return message;
+  }
+
+  public void saveSelectedLanguages(
+      String newLanguages, StudyBo studyBo, int userId, Session session, Transaction transaction) {
+    logger.info("StudyDAOImpl - saveSelectedLanguages - Starts");
+    try {
+      String[] langArray = newLanguages.split(",");
+      if (langArray.length > 0) {
+        for (String lang : langArray) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(lang)) {
+            StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
+            studyLanguageBO.setStudyLanguagePK(new StudyLanguagePK(studyBo.getId(), lang));
+            studyLanguageBO.setCreatedBy(userId);
+            studyLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            session.saveOrUpdate(studyLanguageBO);
+          }
+        }
+      }
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveSelectedLanguages - ERROR ", e);
+    }
+    logger.info("StudyDAOImpl - saveSelectedLanguages - ends");
   }
 
   /**

@@ -24,6 +24,7 @@ table.dataTable thead th:last-child {
 		<input type="hidden" id="settingsstudyId" name="id"
 			value="${studyBo.id}">
 		<input type="hidden" id="userIds" name="userIds">
+		<input type="hidden" id="newLanguages" name="newLanguages">
 		<input type="hidden" id="permissions" name="permissions">
 		<input type="hidden" id="projectLead" name="projectLead">
 		<!--  Start top tab section-->
@@ -82,6 +83,57 @@ table.dataTable thead th:last-child {
 				</div>
 			</div>
 			<!-- End Section-->
+
+			<!-- Start Section-->
+            <div class="col-md-12 p-none">
+            	<div class="gray-xs-f mb-sm">
+            		Enable multi-language support for this study?
+            		<span>
+            		    <span data-toggle="tooltip" data-placement="top"
+            		    title="Select this option to enable multiple languages for this study other than English."
+            		    class="filled-tooltip"></span>
+                    </span>
+            	</div>
+
+            	<div class="form-group">
+            		<span class="radio radio-info radio-inline p-45">
+						<input type="radio" id="mlYes" value="Yes" name="multiLanguageFlag"
+                               <c:if test="${studyBo.multiLanguageFlag == 'Yes'}">checked</c:if>
+                        />
+						<label for="mlYes">Yes</label>
+            		</span>
+					<span class="radio radio-inline">
+						<input type="radio" id="mlNo" value="No" name="multiLanguageFlag"
+                               <c:if test="${studyBo.multiLanguageFlag == null || studyBo.multiLanguageFlag == '' || studyBo.multiLanguageFlag == 'No'}">checked</c:if>
+                        />
+            			<label for="mlNo">No</label>
+            		</span>
+            		<div class="help-block with-errors red-txt"></div>
+            	</div>
+            </div>
+            <!-- End Section-->
+
+			<div id="langSelect" style="display: none">
+				<div class="mt-md study-list mb-md addHide">
+					<select
+							class="selectpicker col-md-6 p-none changeView"
+							title="- Select and Add Languages -" id="multiple">
+						<c:forEach items="${supportedLanguages}" var="lang">
+							<option value="${lang}" id="${lang}">${lang}</option>
+						</c:forEach>
+					</select>
+					<span class="study-addbtn changeView">+</span>
+				</div>
+				<!-- Selected Language items -->
+				<div class="study-selected mt-md">
+					<c:forEach items="${selectedLanguages}" var="stdLang">
+						<input type="hidden" class="stdCls" id="${stdLang}" value="${stdLang}">
+						<span>${stdLang}<span id="span-${stdLang}" class="ablue removeLang changeView" onclick="removeLang(this.id)"> X&nbsp;&nbsp;</span></span>
+					</c:forEach>
+				</div>
+			</div><br>
+
+
 
 			<!-- Start Section-->
 			<div class="col-md-12 p-none">
@@ -663,6 +715,50 @@ function admins(){
 	$('#projectLead').val(projectLead);
 }
 
+
+// Adding selected study items
+var newSelectedLang ='';
+$(".study-addbtn").click(function(){
+
+	newSelectedLang +=  $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").text()+',';
+	$('#newLanguages').val(newSelectedLang);
+	$(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").hide();
+
+	$(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function(){
+		if($(this).text()=="- All items are already selected -"){
+			$(this).hide();
+		}
+	});
+
+	$('#multiple :selected').each(function(i, sel){
+		let selVal = $(sel).val();
+		if (selVal !== undefined && selVal !=null && selVal !== '') {
+			let selTxt = DOMPurify.sanitize($(sel).text());
+			let newDiv = "<input type='hidden' class='stdCls' id="+"'"+  selVal +"' value='" + selVal + "'>"
+					+ "<span>"+selTxt+"<span class='ablue removeLang changeView' onclick='removeLang(this.id)' id="+"'span-"+selVal+"'"+"> X&nbsp;&nbsp;</span></span>";
+			$('.study-selected').append(newDiv);
+		}
+	});
+
+	$(".selectpicker").selectpicker('val', '');
+	let tot_items = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").length;
+	let count = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style]").length;
+	if(count == tot_items){
+		$(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu").empty().append(
+				$("<li> </li>").attr("class","text-center").text("- All items are already selected -"));
+	}
+
+});
+
+$('input[name="multiLanguageFlag"]').change(function (e) {
+	if (this.value === 'No') {
+		$("#langSelect").slideUp('slow');
+	}
+	else {
+		$("#langSelect").slideDown('slow');
+	}
+})
+
 	<c:if test="${empty permission && fn:contains(permissions,5)}">
 		function addAdmin(){
 			 var userListTableRowCount = $('.checkCount').length;
@@ -791,5 +887,11 @@ function admins(){
         	$("#buttonText").val('completed');
         	$("#settingfoFormId").submit();
         }
+	}
+
+	function removeLang(langObject){
+		let targetStr = langObject.split('-')[1];
+		$('.study-selected').find('span:contains('+targetStr+')').remove();
+		$('.study-selected').find('input#'+targetStr).remove();
 	}
 </script>

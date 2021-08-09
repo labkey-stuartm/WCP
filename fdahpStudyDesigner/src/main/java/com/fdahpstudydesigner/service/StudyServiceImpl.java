@@ -1891,12 +1891,14 @@ public class StudyServiceImpl implements StudyService {
       SessionObject sesObj,
       String userIds,
       String permissions,
-      String projectLead) {
+      String projectLead,
+      String newLanguages) {
     logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
       result =
-          studyDAO.saveOrUpdateStudySettings(studyBo, sesObj, userIds, permissions, projectLead);
+          studyDAO.saveOrUpdateStudySettings(
+              studyBo, sesObj, userIds, permissions, projectLead, newLanguages);
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
     }

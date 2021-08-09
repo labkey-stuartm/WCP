@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -2871,7 +2872,6 @@ public class StudyController {
    *
    * @author BTC
    * @param request {@link HttpServletRequest}
-   * @param response {@link HttpServletResponse}
    */
   @RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
   public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
@@ -4370,6 +4370,10 @@ public class StudyController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("permissions"))
                 ? ""
                 : request.getParameter("permissions");
+        String newLanguages =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("newLanguages"))
+                ? ""
+                : request.getParameter("newLanguages");
         String projectLead =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("projectLead"))
                 ? ""
@@ -4383,7 +4387,7 @@ public class StudyController {
         studyBo.setUserId(sesObj.getUserId());
         message =
             studyService.saveOrUpdateStudySettings(
-                studyBo, sesObj, userIds, permissions, projectLead);
+                studyBo, sesObj, userIds, permissions, projectLead, newLanguages);
         request
             .getSession()
             .setAttribute(
@@ -4518,7 +4522,7 @@ public class StudyController {
    *
    * @author BTC
    * @param request , {@link HttpServletRequest}
-   * @param eligibilityBo , {@link EligibilityBo}
+   * @param eligibilityTestBo , {@link EligibilityTestBo}
    * @return {@link ModelAndView}
    */
   @RequestMapping("/adminStudies/saveOrUpdateStudyEligibiltyTestQusAns.do")
@@ -5700,6 +5704,18 @@ public class StudyController {
           map.addAttribute("studyPermissionList", studyPermissionList);
           map.addAttribute("permissions", permissions);
           map.addAttribute("user", user);
+
+          ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
+          map.addAttribute(
+              "supportedLanguages", resourceBundle.getString("languageList").split(","));
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
+
           request
               .getSession()
               .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
