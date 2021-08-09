@@ -37,6 +37,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -4374,6 +4375,10 @@ public class StudyController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("newLanguages"))
                 ? ""
                 : request.getParameter("newLanguages");
+        String deletedLanguages =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("deletedLanguages"))
+                ? ""
+                : request.getParameter("deletedLanguages");
         String projectLead =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("projectLead"))
                 ? ""
@@ -4387,7 +4392,7 @@ public class StudyController {
         studyBo.setUserId(sesObj.getUserId());
         message =
             studyService.saveOrUpdateStudySettings(
-                studyBo, sesObj, userIds, permissions, projectLead, newLanguages);
+                studyBo, sesObj, userIds, permissions, projectLead, newLanguages, deletedLanguages);
         request
             .getSession()
             .setAttribute(
@@ -5578,16 +5583,20 @@ public class StudyController {
           studyBo.setAppId("");
         }
 
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
-        String[] languageList = resourceBundle.getString("languageList").split(",");
-
         map.addAttribute("categoryList", categoryList);
         map.addAttribute("dataPartnerList", dataPartnerList);
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("createStudyId", "true");
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
         map.addAttribute("_S", sessionStudyCount);
-        map.addAttribute("languageList", languageList);
+
+        String languages = studyBo.getSelectedLanguages();
+        List<String> langList = new ArrayList<>();
+        if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+          langList = Arrays.asList(languages.split(","));
+        }
+        map.addAttribute("languageList", langList);
+
         mav = new ModelAndView("viewBasicInfo", map);
       }
     } catch (Exception e) {
@@ -5705,16 +5714,20 @@ public class StudyController {
           map.addAttribute("permissions", permissions);
           map.addAttribute("user", user);
 
-          ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
-          map.addAttribute(
-              "supportedLanguages", resourceBundle.getString("languageList").split(","));
-
           String languages = studyBo.getSelectedLanguages();
-          List<String> langList = new ArrayList<>();
+          List<String> langList = new LinkedList<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
-            langList = Arrays.asList(languages.split(","));
+            langList = new LinkedList<>(Arrays.asList(languages.split(",")));
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("selectedLanguages", langList);
+
+          ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
+          String[] supportedLang = resourceBundle.getString("languageList").split(",");
+          List<String> supportedLanguages = new ArrayList<>();
+          for (String str : supportedLang) {
+            if (!langList.contains(str) && !"English".equals(str)) supportedLanguages.add(str);
+          }
+          map.addAttribute("supportedLanguages", supportedLanguages);
 
           request
               .getSession()

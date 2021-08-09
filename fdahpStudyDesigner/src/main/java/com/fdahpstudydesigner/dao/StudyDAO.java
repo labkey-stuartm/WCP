@@ -186,7 +186,8 @@ public interface StudyDAO {
       String userIds,
       String permissions,
       String projectLead,
-      String newLanguages);
+      String newLanguages,
+      String deletedLanguages);
 
   public String saveResourceNotification(NotificationBO notificationBO, boolean notiFlag);
 

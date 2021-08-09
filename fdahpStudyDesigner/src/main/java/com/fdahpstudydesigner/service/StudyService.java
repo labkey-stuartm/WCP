@@ -172,7 +172,8 @@ public interface StudyService {
       String userIds,
       String permissions,
       String projectLead,
-      String newLanguages);
+      String newLanguages,
+      String deletedLanguages);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 

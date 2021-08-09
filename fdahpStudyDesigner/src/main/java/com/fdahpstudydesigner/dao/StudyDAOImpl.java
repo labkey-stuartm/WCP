@@ -54,6 +54,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -5213,7 +5214,8 @@ public class StudyDAOImpl implements StudyDAO {
       String userIds,
       String permissions,
       String projectLead,
-      String newLanguages) {
+      String newLanguages,
+      String deletedLanguages) {
     logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -5251,8 +5253,37 @@ public class StudyDAOImpl implements StudyDAO {
             // validation of anchor date
             updateAnchordateForEnrollmentDate(study, studyBo, session, transaction);
             // saving new Languages
-            if (FdahpStudyDesignerUtil.isNotEmpty(newLanguages))
+            if (FdahpStudyDesignerUtil.isNotEmpty(newLanguages)) {
+              study.setSelectedLanguages(
+                  FdahpStudyDesignerUtil.isNotEmpty(study.getSelectedLanguages())
+                      ? study.getSelectedLanguages().concat(newLanguages)
+                      : newLanguages);
               saveSelectedLanguages(newLanguages, study, sesObj.getUserId(), session, transaction);
+            }
+            // removing existing language
+            if (FdahpStudyDesignerUtil.isNotEmpty(deletedLanguages)) {
+              String languages =
+                  FdahpStudyDesignerUtil.isNotEmpty(study.getSelectedLanguages())
+                      ? study.getSelectedLanguages().concat(newLanguages)
+                      : newLanguages;
+              List<String> existingLanguages =
+                  new LinkedList<>(Arrays.asList(languages.split(",")));
+              String[] langToBeDeleted = deletedLanguages.split(",");
+              for (String lang : langToBeDeleted) {
+                if (FdahpStudyDesignerUtil.isNotEmpty(lang)) {
+                  existingLanguages.remove(lang);
+                }
+              }
+              StringBuilder selectedLanguages = new StringBuilder();
+              for (String lang : existingLanguages) {
+                if (FdahpStudyDesignerUtil.isNotEmpty(lang)) {
+                  selectedLanguages.append(lang).append(",");
+                }
+              }
+              study.setSelectedLanguages(selectedLanguages.toString());
+              deleteExistingLanguages(deletedLanguages, session, transaction);
+            }
+            study.setMultiLanguageFlag(studyBo.getMultiLanguageFlag());
             study.setPlatform(studyBo.getPlatform());
             study.setAllowRejoin(studyBo.getAllowRejoin());
             study.setEnrollingParticipants(studyBo.getEnrollingParticipants());
@@ -8465,6 +8496,37 @@ public class StudyDAOImpl implements StudyDAO {
             studyLanguageBO.setCreatedBy(userId);
             studyLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             session.saveOrUpdate(studyLanguageBO);
+          }
+        }
+      }
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveSelectedLanguages - ERROR ", e);
+    }
+    logger.info("StudyDAOImpl - saveSelectedLanguages - ends");
+  }
+
+  public void deleteExistingLanguages(
+      String deletedLanguage, Session session, Transaction transaction) {
+    logger.info("StudyDAOImpl - saveSelectedLanguages - Starts");
+    try {
+      String[] langArray = deletedLanguage.split(",");
+      if (langArray.length > 0) {
+        for (String lang : langArray) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(lang)) {
+            StudyLanguageBO studyLanguageBO =
+                (StudyLanguageBO)
+                    session
+                        .createQuery(
+                            "from StudyLanguageBO where studyLanguagePK.langCode=:language")
+                        .setString("language", lang)
+                        .uniqueResult();
+            if (studyLanguageBO != null) {
+              session
+                  .createSQLQuery("DELETE FROM studies_lang WHERE lang_code=:language")
+                  .setString("language", lang)
+                  .executeUpdate();
+            }
           }
         }
       }
