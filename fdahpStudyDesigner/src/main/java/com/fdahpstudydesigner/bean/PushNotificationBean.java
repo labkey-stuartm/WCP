@@ -1,131 +1,114 @@
 package com.fdahpstudydesigner.bean;
 
-/**
- * @author BTC
- *
- */
+/** @author BTC */
 public class PushNotificationBean {
 
-	private String customStudyId = "";
+  private String customStudyId = "";
 
-	private Integer notificationId = 0;
+  private Integer notificationId = 0;
 
-	private String notificationSubType = "Announcement";
+  private String notificationSubType = "Announcement";
 
-	private String notificationText = "";
+  private String notificationText = "";
 
-	private String notificationTitle = "";
+  private String notificationTitle = "";
 
-	private String notificationType = "ST";
-	
-	private String appId = "";
-	
-	private String orgId;
+  private String notificationType = "ST";
 
-	/**
-	 * @return the customStudyId
-	 */
-	public String getCustomStudyId() {
-		return customStudyId;
-	}
+  private String appId = "";
 
-	public Integer getNotificationId() {
-		return notificationId;
-	}
+  private String orgId;
 
-	/**
-	 * @return the notificationSubType
-	 */
-	public String getNotificationSubType() {
-		return notificationSubType;
-	}
+  /** @return the customStudyId */
+  public String getCustomStudyId() {
+    return customStudyId;
+  }
 
-	/**
-	 * @return the notificationText
-	 */
-	public String getNotificationText() {
-		return notificationText;
-	}
+  public Integer getNotificationId() {
+    return notificationId;
+  }
 
-	/**
-	 * @return the notificationTitle
-	 */
-	public String getNotificationTitle() {
-		return notificationTitle;
-	}
+  /** @return the notificationSubType */
+  public String getNotificationSubType() {
+    return notificationSubType;
+  }
 
-	/**
-	 * @return the notificationType
-	 */
-	public String getNotificationType() {
-		return notificationType;
-	}
+  /** @return the notificationText */
+  public String getNotificationText() {
+    return notificationText;
+  }
 
-	/**
-	 * @param customStudyId
-	 *            the customStudyId to set
-	 */
-	public void setCustomStudyId(String customStudyId) {
-		this.customStudyId = customStudyId;
-	}
+  /** @return the notificationTitle */
+  public String getNotificationTitle() {
+    return notificationTitle;
+  }
 
-	public void setNotificationId(Integer notificationId) {
-		this.notificationId = notificationId;
-	}
+  /** @return the notificationType */
+  public String getNotificationType() {
+    return notificationType;
+  }
 
-	/**
-	 * @param notificationSubType
-	 *            the notificationSubType to set
-	 */
-	public void setNotificationSubType(String notificationSubType) {
-		this.notificationSubType = notificationSubType;
-	}
+  /** @param customStudyId the customStudyId to set */
+  public void setCustomStudyId(String customStudyId) {
+    this.customStudyId = customStudyId;
+  }
 
-	/**
-	 * @param notificationText
-	 *            the notificationText to set
-	 */
-	public void setNotificationText(String notificationText) {
-		this.notificationText = notificationText;
-	}
+  public void setNotificationId(Integer notificationId) {
+    this.notificationId = notificationId;
+  }
 
-	/**
-	 * @param notificationTitle
-	 *            the notificationTitle to set
-	 */
-	public void setNotificationTitle(String notificationTitle) {
-		this.notificationTitle = notificationTitle;
-	}
+  /** @param notificationSubType the notificationSubType to set */
+  public void setNotificationSubType(String notificationSubType) {
+    this.notificationSubType = notificationSubType;
+  }
 
-	/**
-	 * @param notificationType
-	 *            the notificationType to set
-	 */
-	public void setNotificationType(String notificationType) {
-		this.notificationType = notificationType;
-	}
+  /** @param notificationText the notificationText to set */
+  public void setNotificationText(String notificationText) {
+    this.notificationText = notificationText;
+  }
 
-	public String getAppId() {
-		return appId;
-	}
+  /** @param notificationTitle the notificationTitle to set */
+  public void setNotificationTitle(String notificationTitle) {
+    this.notificationTitle = notificationTitle;
+  }
 
-	public void setAppId(String appId) {
-		this.appId = appId;
-	}
+  /** @param notificationType the notificationType to set */
+  public void setNotificationType(String notificationType) {
+    this.notificationType = notificationType;
+  }
 
-	public String getOrgId() {
-		return orgId;
-	}
+  public String getAppId() {
+    return appId;
+  }
 
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
+  public void setAppId(String appId) {
+    this.appId = appId;
+  }
 
-	@Override
-	public String toString() {
-		return "PushNotificationBean [customStudyId=" + customStudyId + ", notificationId=" + notificationId
-				+ ", notificationSubType=" + notificationSubType + ", notificationText=" + notificationText
-				+ ", notificationTitle=" + notificationTitle + ", notificationType=" + notificationType + ", appId="
-				+ appId + "]";
-	}
+  public String getOrgId() {
+    return orgId;
+  }
+
+  public void setOrgId(String orgId) {
+    this.orgId = orgId;
+  }
+
+  @Override
+  public String toString() {
+    return "PushNotificationBean [customStudyId="
+        + customStudyId
+        + ", notificationId="
+        + notificationId
+        + ", notificationSubType="
+        + notificationSubType
+        + ", notificationText="
+        + notificationText
+        + ", notificationTitle="
+        + notificationTitle
+        + ", notificationType="
+        + notificationType
+        + ", appId="
+        + appId
+        + "]";
+  }
 }

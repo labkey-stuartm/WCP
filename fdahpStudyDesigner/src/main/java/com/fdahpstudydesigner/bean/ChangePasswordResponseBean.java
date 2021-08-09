@@ -3,22 +3,22 @@ package com.fdahpstudydesigner.bean;
 import com.fdahpstudydesigner.bo.UserBO;
 
 public class ChangePasswordResponseBean {
-	private String message;
-	private UserBO user;
+  private String message;
+  private UserBO user;
 
-	public String getMessage() {
-		return message;
-	}
+  public String getMessage() {
+    return message;
+  }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
-	public UserBO getUser() {
-		return user;
-	}
+  public UserBO getUser() {
+    return user;
+  }
 
-	public void setUser(UserBO user) {
-		this.user = user;
-	}
+  public void setUser(UserBO user) {
+    this.user = user;
+  }
 }
