@@ -16,6 +16,7 @@ import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -189,6 +190,8 @@ public interface StudyDAO {
       String newLanguages,
       String deletedLanguages);
 
+  public String saveOrUpdateStudySettingsForOtherLanguages(StudyBo studyBo, String currLang);
+
   public String saveResourceNotification(NotificationBO notificationBO, boolean notiFlag);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
@@ -224,4 +227,6 @@ public interface StudyDAO {
   public boolean validateAppId(String customStudyId, String appId, String studyType);
 
   public StudyPermissionBO getStudyPermissionBO(int studyId, int userId);
+
+  public StudyLanguageBO getStudyLanguageById(int studyId, String language);
 }

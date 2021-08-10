@@ -16,6 +16,7 @@ import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -173,7 +174,8 @@ public interface StudyService {
       String permissions,
       String projectLead,
       String newLanguages,
-      String deletedLanguages);
+      String deletedLanguages,
+      String currLang);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
@@ -201,4 +203,6 @@ public interface StudyService {
   public boolean validateAppId(String customStudyId, String appId, String studyType);
 
   public StudyPermissionBO findStudyPermissionBO(int studyId, int userId);
+
+  public StudyLanguageBO getStudyLanguageById(int studyId, String language);
 }

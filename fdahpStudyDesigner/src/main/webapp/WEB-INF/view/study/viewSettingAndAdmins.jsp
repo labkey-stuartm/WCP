@@ -26,6 +26,9 @@
         <input type="hidden" id="userIds" name="userIds">
         <input type="hidden" id="newLanguages" name="newLanguages">
         <input type="hidden" id="deletedLanguages" name="deletedLanguages">
+        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="alertText" value="${alertText}">
+        <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
         <!-- Start top tab section-->
@@ -34,7 +37,7 @@
                 <div class="black-md-f text-uppercase dis-line pull-left line34">
                     SETTINGS AND ADMINS
                     <c:set var="isLive">${_S}isLive</c:set>
-                    ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                        ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
@@ -138,10 +141,10 @@
                             <option value="${lang}" id="${lang}">${lang}</option>
                         </c:forEach>
                     </select>
-                    <span class="study-addbtn changeView">+</span>
+                    <span class="study-addbtn changeView" id="addLangBtn">+</span>
                 </div>
                 <!-- Selected Language items -->
-                <div class="study-selected mt-md">
+                <div class="study-selected mt-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
                         <input type="hidden" class="stdCls" id="${stdLang}" value="${stdLang}">
                         <span>${stdLang}<span id="span-${stdLang}"
@@ -309,7 +312,7 @@
                     </div>
                     <c:if test="${empty permission && fn:contains(permissions,5)}">
                         <div class="dis-line form-group mb-none">
-                            <button type="button"
+                            <button type="button" id="addAdminButton"
                                     class="btn btn-primary blue-btn mb-sm mt-xs"
                                     onclick="addAdmin();">+ Add Admin
                             </button>
@@ -802,14 +805,19 @@
 
   });
 
-  $('input[name="multiLanguageFlag"]').trigger('change');
+  if ($('#mlYes').attr('checked') == 'checked') {
+    $("#langSelect").show();
+  } else {
+    $("#langSelect").hide();
+  }
+
   $('input[name="multiLanguageFlag"]').change(function (e) {
     if (this.value === 'No') {
       $("#langSelect").slideUp('slow');
     } else {
       $("#langSelect").slideDown('slow');
     }
-  })
+  });
 
   <c:if test="${empty permission && fn:contains(permissions,5)}">
 
@@ -969,33 +977,76 @@
   }
 
   $('#studyLanguage').on('change', function () {
-    refreshAndFetchLanguageData($('#studyLanguage').val());
+    let currLang = $('#studyLanguage').val();
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData(currLang);
   })
 
   function refreshAndFetchLanguageData(language) {
+    let allowRejoin = '${studyBo.allowRejoin}';
     $.ajax({
-      url: '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}',
+      url: '/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do?_S=${param._S}',
       type: "GET",
       data: {
         language: language
       },
-      success: function (data) {
-        if (language !== 'English') {
-          $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('langSpecific')) {
-              $(this).attr('disabled', true);
-              if (this.nodeName.toLowerCase() === 'select') {
-                let id = this.id;
-                if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').css('background-color', '#eee');
-                  $('[data-id=' + id + ']').css('opacity', '1');
+      success: function (data) { // html data
+        if (data !== null) {
+          let htmlData = document.createElement('html');
+          htmlData.innerHTML = data;
+          if (language !== 'English') {
+            $('select, input[type!=hidden]').each(function () {
+              if (!$(this).hasClass('langSpecific')) {
+                $(this).attr('disabled', true);
+                if (this.nodeName.toLowerCase() === 'select') {
+                  let id = this.id;
+                  if (id !== undefined && id !== '') {
+                    $('[data-id=' + id + ']').css('background-color', '#eee');
+                    $('[data-id=' + id + ']').css('opacity', '1');
+                  }
                 }
               }
+            });
+            if (allowRejoin !== '') {
+              if (allowRejoin === 'Yes') {
+                $('#rejoin_comment_yes').val($('input#alertText', htmlData).val().trim());
+                $('#rejoin_comment_no').empty();
+              } else {
+                $('#rejoin_comment_no').val($('input#alertText', htmlData).val().trim());
+                $('#rejoin_comment_yes').empty();
+              }
             }
-          });
-          $('#removeUrl').css('pointer-events', 'none');
-        } else {
-
+            $('#addAdminButton').attr('disabled', true);
+            $('#selectedLanguages').css('pointer-events', 'none');
+            $('#addLangBtn').css('pointer-events', 'none');
+            $('.sprites_icon').css('pointer-events', 'none');
+          } else {
+            $('select, input[type!=hidden]').each(function () {
+              if (!$(this).hasClass('langSpecific')) {
+                $(this).attr('disabled', false);
+                if (this.nodeName.toLowerCase() === 'select') {
+                  let id = this.id;
+                  if (id !== undefined && id !== '') {
+                    $('[data-id=' + id + ']').removeProp('background-color');
+                    $('[data-id=' + id + ']').removeProp('opacity');
+                  }
+                }
+              }
+            });
+            if (allowRejoin !== '') {
+              if (allowRejoin === 'Yes') {
+                $('#rejoin_comment_yes').val($('input#allowRejoinText', htmlData).val().trim());
+                $('#rejoin_comment_no').empty();
+              } else {
+                $('#rejoin_comment_no').val($('input#allowRejoinText', htmlData).val().trim());
+                $('#rejoin_comment_yes').empty();
+              }
+            }
+            $('#addAdminButton').attr('disabled', false);
+            $('#selectedLanguages').removeAttr('style');
+            $('#addLangBtn').removeAttr('style');
+            $('.sprites_icon').removeAttr('style');
+          }
         }
       }
     });

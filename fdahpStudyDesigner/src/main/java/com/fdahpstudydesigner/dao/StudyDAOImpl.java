@@ -5281,7 +5281,7 @@ public class StudyDAOImpl implements StudyDAO {
                 }
               }
               study.setSelectedLanguages(selectedLanguages.toString());
-              deleteExistingLanguages(deletedLanguages, session, transaction);
+              deleteExistingLanguages(study.getId(), deletedLanguages, session, transaction);
             }
             study.setMultiLanguageFlag(studyBo.getMultiLanguageFlag());
             study.setPlatform(studyBo.getPlatform());
@@ -5554,6 +5554,33 @@ public class StudyDAOImpl implements StudyDAO {
       }
     }
     logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Ends");
+    return result;
+  }
+
+  @Override
+  public String saveOrUpdateStudySettingsForOtherLanguages(StudyBo studyBo, String currLang) {
+    logger.info("StudyDAOImpl - saveOrUpdateStudySettingsForOtherLanguages() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      session
+          .createSQLQuery(
+              "update studies_lang set allow_rejoin_text=:alertText where study_id=:studyId and lang_code=:language")
+          .setString("alertText", studyBo.getAllowRejoinText())
+          .setInteger("studyId", studyBo.getId())
+          .setString("language", currLang)
+          .executeUpdate();
+      result = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateStudySettingsForOtherLanguages() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateStudySettingsForOtherLanguages() - Ends");
     return result;
   }
 
@@ -8507,7 +8534,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   public void deleteExistingLanguages(
-      String deletedLanguage, Session session, Transaction transaction) {
+      int studyId, String deletedLanguage, Session session, Transaction transaction) {
     logger.info("StudyDAOImpl - saveSelectedLanguages - Starts");
     try {
       String[] langArray = deletedLanguage.split(",");
@@ -8518,13 +8545,16 @@ public class StudyDAOImpl implements StudyDAO {
                 (StudyLanguageBO)
                     session
                         .createQuery(
-                            "from StudyLanguageBO where studyLanguagePK.langCode=:language")
+                            "from StudyLanguageBO where studyLanguagePK.langCode=:language and studyLanguagePK.study_id=:studyId")
                         .setString("language", lang)
+                        .setInteger("studyId", studyId)
                         .uniqueResult();
             if (studyLanguageBO != null) {
               session
-                  .createSQLQuery("DELETE FROM studies_lang WHERE lang_code=:language")
+                  .createSQLQuery(
+                      "DELETE FROM studies_lang WHERE lang_code=:language and study_id=:studyId")
                   .setString("language", lang)
+                  .setInteger("studyId", studyId)
                   .executeUpdate();
             }
           }
@@ -8613,5 +8643,41 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getStudyPermissionBO() - Ends");
     return studyPermissionBO;
+  }
+
+  /**
+   * get study details
+   *
+   * @author BTC
+   * @param studyId
+   * @param language
+   * @return studyBo, {@link StudyLanguageBO}
+   */
+  @Override
+  public StudyLanguageBO getStudyLanguageById(int studyId, String language) {
+    logger.info("StudyDAOImpl - getStudyLanguageById() - Starts");
+    Session session = null;
+    StudyLanguageBO studyBo = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (studyId != 0) {
+        studyBo =
+            (StudyLanguageBO)
+                session
+                    .createQuery(
+                        "from StudyLanguageBO where studyLanguagePK.langCode=:language and studyLanguagePK.study_id=:studyId")
+                    .setString("language", language)
+                    .setInteger("studyId", studyId)
+                    .uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudyLanguageById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudyLanguageById() - Ends");
+    return studyBo;
   }
 }

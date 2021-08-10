@@ -16,6 +16,7 @@ import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -1893,13 +1894,18 @@ public class StudyServiceImpl implements StudyService {
       String permissions,
       String projectLead,
       String newLanguages,
-      String deletedLanguages) {
+      String deletedLanguages,
+      String currLang) {
     logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      result =
-          studyDAO.saveOrUpdateStudySettings(
-              studyBo, sesObj, userIds, permissions, projectLead, newLanguages, deletedLanguages);
+      if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang)) {
+        result = studyDAO.saveOrUpdateStudySettingsForOtherLanguages(studyBo, currLang);
+      } else {
+        result =
+            studyDAO.saveOrUpdateStudySettings(
+                studyBo, sesObj, userIds, permissions, projectLead, newLanguages, deletedLanguages);
+      }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
     }
@@ -2105,5 +2111,27 @@ public class StudyServiceImpl implements StudyService {
   public StudyPermissionBO findStudyPermissionBO(int studyId, int userId) {
     logger.info("StudyServiceImpl - findStudyPermissionBO() - Starts");
     return studyDAO.getStudyPermissionBO(studyId, userId);
+  }
+
+  /**
+   * return Study details
+   *
+   * @author BTC
+   * @param studyId
+   * @param language
+   * @return {@link StudyLanguageBO}
+   * @exception Exception
+   */
+  @Override
+  public StudyLanguageBO getStudyLanguageById(int studyId, String language) {
+    logger.info("StudyServiceImpl - getStudyLanguageById() - Starts");
+    StudyLanguageBO studyLanguageBO = null;
+    try {
+      studyLanguageBO = studyDAO.getStudyLanguageById(studyId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getStudyLanguageById() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getStudyLanguageById() - Ends");
+    return studyLanguageBO;
   }
 }

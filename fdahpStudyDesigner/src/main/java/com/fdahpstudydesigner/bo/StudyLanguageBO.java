@@ -28,7 +28,7 @@ public class StudyLanguageBO implements Serializable {
   private String description;
 
   @Column(name = "allow_rejoin_text")
-  private String allow_rejoin_text;
+  private String allowRejoinText;
 
   @Column(name = "media_link")
   private String media_link;
@@ -100,12 +100,12 @@ public class StudyLanguageBO implements Serializable {
     this.description = description;
   }
 
-  public String getAllow_rejoin_text() {
-    return allow_rejoin_text;
+  public String getAllowRejoinText() {
+    return allowRejoinText;
   }
 
-  public void setAllow_rejoin_text(String allow_rejoin_text) {
-    this.allow_rejoin_text = allow_rejoin_text;
+  public void setAllowRejoinText(String allow_rejoin_text) {
+    this.allowRejoinText = allow_rejoin_text;
   }
 
   public String getMedia_link() {

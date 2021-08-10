@@ -18,6 +18,7 @@ import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
@@ -4363,6 +4364,8 @@ public class StudyController {
       if ((sesObj != null)
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
+
+        String currentLanguage = request.getParameter("currentLanguage");
         String userIds =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("userIds"))
                 ? ""
@@ -4392,7 +4395,14 @@ public class StudyController {
         studyBo.setUserId(sesObj.getUserId());
         message =
             studyService.saveOrUpdateStudySettings(
-                studyBo, sesObj, userIds, permissions, projectLead, newLanguages, deletedLanguages);
+                studyBo,
+                sesObj,
+                userIds,
+                permissions,
+                projectLead,
+                newLanguages,
+                deletedLanguages,
+                currentLanguage);
         request
             .getSession()
             .setAttribute(
@@ -5694,6 +5704,16 @@ public class StudyController {
                         sessionStudyCount + FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
         if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+
+          String currLang = request.getParameter("language");
+          StudyLanguageBO studyLanguageBO = null;
+          if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang)) {
+            studyLanguageBO =
+                studyService.getStudyLanguageById(Integer.parseInt(studyId), currLang);
+          }
+          map.addAttribute(
+              "alertText", studyLanguageBO != null ? studyLanguageBO.getAllowRejoinText() : null);
+
           /*
            * Get the active user list whom are not yet added to the particular study
            */
@@ -5713,6 +5733,7 @@ public class StudyController {
           map.addAttribute("studyPermissionList", studyPermissionList);
           map.addAttribute("permissions", permissions);
           map.addAttribute("user", user);
+          map.addAttribute("currLang", currLang);
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new LinkedList<>();
