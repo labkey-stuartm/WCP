@@ -156,6 +156,9 @@ public interface StudyDAO {
 
   public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
 
+  public String saveOrUpdateStudyForOtherLanguages(
+      StudyBo studyBo, StudyLanguageBO studyLanguageBO, int userId, String language);
+
   public ParticipantPropertiesBO saveOrUpdateParticipantProperties(
       ParticipantPropertiesBO participantPropertiesBO);
 

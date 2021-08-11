@@ -4763,6 +4763,34 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
+  public String saveOrUpdateStudyForOtherLanguages(
+      StudyBo studyBo, StudyLanguageBO studyLanguageBO, int userId, String language) {
+    logger.info("StudyDAOImpl - saveOrUpdateStudyForOtherLanguages() - Starts");
+    Session session = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      studyLanguageBO.setName(studyBo.getName());
+      studyLanguageBO.setFullName(studyBo.getFullName());
+      studyLanguageBO.setStudyTagline(studyBo.getStudyTagLine());
+      studyLanguageBO.setDescription(studyBo.getDescription());
+      session.update(studyLanguageBO);
+      transaction.commit();
+      message = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateStudyForOtherLanguages() - ERROR", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateStudyForOtherLanguages() - Ends");
+    return message;
+  }
+
+  @Override
   public ParticipantPropertiesBO saveOrUpdateParticipantProperties(
       ParticipantPropertiesBO participantPropertiesBO) {
     logger.info("StudyDAOImpl - saveOrUpdateParticipantProperties() - Starts");

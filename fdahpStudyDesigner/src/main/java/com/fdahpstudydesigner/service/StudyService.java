@@ -148,7 +148,8 @@ public interface StudyService {
 
   public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 
-  public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject);
+  public String saveOrUpdateStudy(
+      StudyBo studyBo, Integer userId, SessionObject sessionObject, String language);
 
   public ParticipantPropertiesBO saveOrUpdateParticipantProperties(
       ParticipantPropertiesBO participantPropertiesBO);

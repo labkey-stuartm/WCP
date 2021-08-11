@@ -1738,33 +1738,42 @@ public class StudyServiceImpl implements StudyService {
    * weeks/months/years, Study Tagline, Study Description, Study website, Study Type
    *
    * @author BTC
-   * @param StudyBo , {@link StudyBo}
-   * @param String , userId
+   * @param studyBo , {@link StudyBo}
    * @param sessionObject , {@link SessionObject}
    * @return {@link String}
    */
   @Override
-  public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject) {
+  public String saveOrUpdateStudy(
+      StudyBo studyBo, Integer userId, SessionObject sessionObject, String language) {
     logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
-      String appId = studyBo.getAppId().toUpperCase();
-      if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
-          || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSTM001)
-          || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)
-          || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFHTEST)) {
-        studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_FDAHPH);
-      } else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSIBD001)
-          || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSBP001)) {
-        studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CACFND);
-      } else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJIA001)
-          || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJP001)) {
-        studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CARREG);
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        StudyLanguageBO studyLanguageBO = this.getStudyLanguageById(studyBo.getId(), language);
+        if (studyLanguageBO != null) {
+          message =
+              studyDAO.saveOrUpdateStudyForOtherLanguages(
+                  studyBo, studyLanguageBO, userId, language);
+        }
       } else {
-        studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_OTHER);
+        String appId = studyBo.getAppId().toUpperCase();
+        if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
+            || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSTM001)
+            || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFH001)
+            || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_COVFHTEST)) {
+          studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_FDAHPH);
+        } else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSIBD001)
+            || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_CCFSBP001)) {
+          studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CACFND);
+        } else if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJIA001)
+            || appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_LIMITJP001)) {
+          studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_CARREG);
+        } else {
+          studyBo.setOrgId(FdahpStudyDesignerConstants.ORG_ID_OTHER);
+        }
+        studyBo.setAppId(appId);
+        message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
       }
-      studyBo.setAppId(appId);
-      message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR ", e);
     }

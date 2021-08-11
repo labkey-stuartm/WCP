@@ -3941,6 +3941,7 @@ public class StudyController {
       if ((sesObj != null)
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
+
         if (studyBo.getId() == null) {
           StudySequenceBo studySequenceBo = new StudySequenceBo();
           studySequenceBo.setBasicInfo(true);
@@ -3969,7 +3970,8 @@ public class StudyController {
           studyBo.setThumbnailImage(fileName);
         }
         studyBo.setButtonText(buttonText);
-        message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId(), sesObj);
+        String language = request.getParameter("currentLanguage");
+        message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId(), sesObj, language);
         request
             .getSession()
             .setAttribute(
@@ -5552,6 +5554,13 @@ public class StudyController {
                 .getSession()
                 .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CONSENT_ID);
           }
+          String language = request.getParameter("language");
+          StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)) {
+            studyLanguageBO =
+                studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+          }
+          map.addAttribute("studyLanguageBO", studyLanguageBO);
         }
         if (studyBo == null) {
           studyBo = new StudyBo();
@@ -5593,19 +5602,19 @@ public class StudyController {
           studyBo.setAppId("");
         }
 
-        map.addAttribute("categoryList", categoryList);
-        map.addAttribute("dataPartnerList", dataPartnerList);
-        map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
-        map.addAttribute("createStudyId", "true");
-        map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
-        map.addAttribute("_S", sessionStudyCount);
-
         String languages = studyBo.getSelectedLanguages();
         List<String> langList = new ArrayList<>();
         if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
           langList = Arrays.asList(languages.split(","));
         }
         map.addAttribute("languageList", langList);
+
+        map.addAttribute("categoryList", categoryList);
+        map.addAttribute("dataPartnerList", dataPartnerList);
+        map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+        map.addAttribute("createStudyId", "true");
+        map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+        map.addAttribute("_S", sessionStudyCount);
 
         mav = new ModelAndView("viewBasicInfo", map);
       }

@@ -19,10 +19,10 @@ public class StudyLanguageBO implements Serializable {
   private String name;
 
   @Column(name = "full_name")
-  private String full_name;
+  private String fullName;
 
   @Column(name = "study_tagline")
-  private String study_tagline;
+  private String studyTagline;
 
   @Column(name = "description")
   private String description;
@@ -31,7 +31,7 @@ public class StudyLanguageBO implements Serializable {
   private String allowRejoinText;
 
   @Column(name = "media_link")
-  private String media_link;
+  private String mediaLink;
 
   @Column(name = "instructional_text")
   private Integer instructionalText;
@@ -43,7 +43,7 @@ public class StudyLanguageBO implements Serializable {
   private Boolean correctAnswer;
 
   @Column(name = "consent_doc_content")
-  private String consent_doc_content;
+  private String consentDocContent;
 
   @Column(name = "agreement_of_consent")
   private String agreementOfConsent;
@@ -76,20 +76,20 @@ public class StudyLanguageBO implements Serializable {
     this.name = name;
   }
 
-  public String getFull_name() {
-    return full_name;
+  public String getFullName() {
+    return fullName;
   }
 
-  public void setFull_name(String full_name) {
-    this.full_name = full_name;
+  public void setFullName(String full_name) {
+    this.fullName = full_name;
   }
 
-  public String getStudy_tagline() {
-    return study_tagline;
+  public String getStudyTagline() {
+    return studyTagline;
   }
 
-  public void setStudy_tagline(String study_tagline) {
-    this.study_tagline = study_tagline;
+  public void setStudyTagline(String study_tagline) {
+    this.studyTagline = study_tagline;
   }
 
   public String getDescription() {
@@ -108,12 +108,12 @@ public class StudyLanguageBO implements Serializable {
     this.allowRejoinText = allow_rejoin_text;
   }
 
-  public String getMedia_link() {
-    return media_link;
+  public String getMediaLink() {
+    return mediaLink;
   }
 
-  public void setMedia_link(String media_link) {
-    this.media_link = media_link;
+  public void setMediaLink(String media_link) {
+    this.mediaLink = media_link;
   }
 
   public Integer getInstructionalText() {
@@ -140,12 +140,12 @@ public class StudyLanguageBO implements Serializable {
     this.correctAnswer = correctAnswer;
   }
 
-  public String getConsent_doc_content() {
-    return consent_doc_content;
+  public String getConsentDocContent() {
+    return consentDocContent;
   }
 
-  public void setConsent_doc_content(String consent_doc_content) {
-    this.consent_doc_content = consent_doc_content;
+  public void setConsentDocContent(String consent_doc_content) {
+    this.consentDocContent = consent_doc_content;
   }
 
   public String getAgreementOfConsent() {
