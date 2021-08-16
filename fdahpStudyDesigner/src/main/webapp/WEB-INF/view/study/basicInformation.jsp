@@ -861,7 +861,6 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        console.log(data);
         if (language !== 'English') {
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('langSpecific')) {
@@ -904,6 +903,4 @@
       }
     });
   }
-
-
 </script>

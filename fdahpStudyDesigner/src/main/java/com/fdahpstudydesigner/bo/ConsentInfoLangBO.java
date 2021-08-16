@@ -13,13 +13,16 @@ import javax.persistence.Table;
 public class ConsentInfoLangBO implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Integer id;
+
+  @Column(name = "lang_code")
+  private String langCode;
 
   @Column(name = "study_id")
   private Integer studyId;
 
+  // Todo to be removed @Anoop Sharma
   @Column(name = "consent_item_type")
   private String consentItemType;
 
@@ -29,6 +32,7 @@ public class ConsentInfoLangBO implements Serializable {
   @Column(name = "elaborated")
   private String elaborated;
 
+  // Todo to be removed @Anoop Sharma
   @Column(name = "visual_step")
   private String visualStep;
 
@@ -41,6 +45,7 @@ public class ConsentInfoLangBO implements Serializable {
   @Column(name = "status")
   private Boolean status;
 
+  // Todo to be removed @Anoop Sharma
   @Column(name = "consent_item_title_id")
   private Integer consentItemTitleId;
 
@@ -71,6 +76,14 @@ public class ConsentInfoLangBO implements Serializable {
 
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public String getLangCode() {
+    return langCode;
+  }
+
+  public void setLangCode(String langCode) {
+    this.langCode = langCode;
   }
 
   public Integer getStudyId() {

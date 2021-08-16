@@ -9,6 +9,7 @@ import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
@@ -1444,6 +1445,8 @@ public class StudyController {
           } else {
             consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
           }
+
+          List<ConsentInfoLangBO> consentInfoLangList = new ArrayList<>();
           if ((consentInfoList != null) && !consentInfoList.isEmpty()) {
             for (ConsentInfoBo conInfoBo : consentInfoList) {
               if (!conInfoBo.getStatus()) {
@@ -1451,12 +1454,24 @@ public class StudyController {
                 break;
               }
             }
+            String currLang = request.getParameter("language");
+            if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang))
+              consentInfoLangList =
+                  studyService.syncConsentDataInLanguageTable(consentInfoList, currLang);
           }
+          map.addAttribute("consentInfoLangList", consentInfoLangList);
           map.addAttribute("markAsComplete", markAsComplete);
           map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoList);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
 
           // get consentbo details by studyId
           if (StringUtils.isNotEmpty(consentStudyId)) {
@@ -1612,6 +1627,13 @@ public class StudyController {
           consentMasterInfoList = studyService.getConsentMasterInfoList();
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
           map.addAttribute("consentMasterInfoList", consentMasterInfoList);
           if ((consentMasterInfoList != null) && !consentMasterInfoList.isEmpty()) {
             map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoList);
@@ -1620,6 +1642,13 @@ public class StudyController {
         if ((consentInfoId != null) && !consentInfoId.isEmpty()) {
           consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
           map.addAttribute("consentInfoBo", consentInfoBo);
+
+          String language = request.getParameter("language");
+          ConsentInfoLangBO consentInfoLangBO = new ConsentInfoLangBO();
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language))
+            consentInfoLangBO =
+                studyService.getConsentInfoLangById(consentInfoBo.getId(), language);
+          map.addAttribute("consentInfoLangBO", consentInfoLangBO);
         }
         map.addAttribute("_S", sessionStudyCount);
         mav = new ModelAndView(FdahpStudyDesignerConstants.CONSENT_INFO_PAGE, map);
@@ -3680,8 +3709,9 @@ public class StudyController {
                       .getSession()
                       .getAttribute(
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+          String language = request.getParameter("language");
           addConsentInfoBo =
-              studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj, customStudyId);
+              studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj, customStudyId, language);
           if (addConsentInfoBo != null) {
             jsonobject.put(FdahpStudyDesignerConstants.CONSENT_INFO_ID, addConsentInfoBo.getId());
             message = FdahpStudyDesignerConstants.SUCCESS;
@@ -4142,8 +4172,9 @@ public class StudyController {
           customStudyId =
               (String)
                   request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+          String language = request.getParameter("currentLanguage");
           addConsentInfoBo =
-              studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj, customStudyId);
+              studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj, customStudyId, language);
           if (addConsentInfoBo != null) {
             if (consentInfoBo.getId() != null) {
               request
@@ -4158,17 +4189,15 @@ public class StudyController {
                       sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                       propMap.get("save.consent.success.message"));
             }
-            map.addAttribute("_S", sessionStudyCount);
-            mav = new ModelAndView("redirect:/adminStudies/consentListPage.do", map);
           } else {
             request
                 .getSession()
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                     "Consent not added successfully.");
-            map.addAttribute("_S", sessionStudyCount);
-            mav = new ModelAndView("redirect:/adminStudies/consentListPage.do", map);
           }
+          map.addAttribute("_S", sessionStudyCount);
+          mav = new ModelAndView("redirect:/adminStudies/consentListPage.do", map);
         }
       }
     } catch (Exception e) {

@@ -8,6 +8,7 @@ import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
@@ -1383,21 +1384,43 @@ public class StudyServiceImpl implements StudyService {
    */
   @Override
   public ConsentInfoBo saveOrUpdateConsentInfo(
-      ConsentInfoBo consentInfoBo, SessionObject sessionObject, String customStudyId) {
+      ConsentInfoBo consentInfoBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language) {
     logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Starts");
     ConsentInfoBo updateConsentInfoBo = null;
     try {
-      if (consentInfoBo != null) {
-        if (consentInfoBo.getId() != null) {
-          updateConsentInfoBo = studyDAO.getConsentInfoById(consentInfoBo.getId());
-          updateConsentInfoBo.setModifiedBy(sessionObject.getUserId());
-          updateConsentInfoBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-        } else {
-          updateConsentInfoBo = new ConsentInfoBo();
-          updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
-          updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-          updateConsentInfoBo.setActive(true);
+      if (consentInfoBo.getId() != null) {
+        updateConsentInfoBo = studyDAO.getConsentInfoById(consentInfoBo.getId());
+        updateConsentInfoBo.setModifiedBy(sessionObject.getUserId());
+        updateConsentInfoBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+      } else {
+        updateConsentInfoBo = new ConsentInfoBo();
+        updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
+        updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        updateConsentInfoBo.setActive(true);
+      }
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        ConsentInfoLangBO consentInfoLangBO =
+            studyDAO.getConsentLanguageDataById(consentInfoBo.getId(), language);
+        if (consentInfoLangBO != null) {
+          consentInfoLangBO.setModifiedBy(sessionObject.getUserId());
+          consentInfoLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          if (consentInfoBo.getBriefSummary() != null) {
+            consentInfoLangBO.setBriefSummary(
+                consentInfoBo
+                    .getBriefSummary()
+                    .replaceAll("\"", "&#34;")
+                    .replaceAll("\'", "&#39;"));
+          }
+          consentInfoLangBO.setElaborated(consentInfoBo.getElaborated());
+          consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
+          consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
+          consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
+          studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
         }
+      } else {
         if (consentInfoBo.getConsentItemType() != null) {
           updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
         }
@@ -1437,8 +1460,8 @@ public class StudyServiceImpl implements StudyService {
         }
         updateConsentInfoBo =
             studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo, sessionObject, customStudyId);
+        return updateConsentInfoBo;
       }
-
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateConsentInfo() - Error", e);
     }
@@ -2142,5 +2165,47 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getStudyLanguageById() - Ends");
     return studyLanguageBO;
+  }
+
+  @Override
+  public List<ConsentInfoLangBO> syncConsentDataInLanguageTable(
+      List<ConsentInfoBo> consentInfoList, String language) {
+    logger.info("StudyServiceImpl - syncConsentDataInLanguageTables() - Starts");
+    List<ConsentInfoLangBO> consentInfoLangBOList = null;
+    try {
+      if (consentInfoList != null && consentInfoList.size() > 0) {
+        int studyId = consentInfoList.get(0).getStudyId();
+        for (ConsentInfoBo consentInfoBo : consentInfoList) {
+          ConsentInfoLangBO consentInfoLangBO =
+              studyDAO.getConsentLanguageDataById(consentInfoBo.getId(), language);
+          if (consentInfoLangBO == null) {
+            consentInfoLangBO = new ConsentInfoLangBO();
+            consentInfoLangBO.setId(consentInfoBo.getId());
+            consentInfoLangBO.setLangCode(language);
+            consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
+            consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
+            studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
+          }
+        }
+        consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(studyId, language);
+      }
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - syncConsentDataInLanguageTables() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - syncConsentDataInLanguageTables() - Ends");
+    return consentInfoLangBOList;
+  }
+
+  @Override
+  public ConsentInfoLangBO getConsentInfoLangById(int consentInfoId, String language) {
+    logger.info("StudyServiceImpl - getConsentInfoLangById() - Starts");
+    ConsentInfoLangBO consentInfoLangBO = null;
+    try {
+      consentInfoLangBO = studyDAO.getConsentLanguageDataById(consentInfoId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getConsentInfoLangById() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getConsentInfoLangById() - Ends");
+    return consentInfoLangBO;
   }
 }

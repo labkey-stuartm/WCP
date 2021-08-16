@@ -8,6 +8,7 @@ import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
@@ -136,7 +137,10 @@ public interface StudyService {
       ComprehensionTestQuestionBo comprehensionTestQuestionBo);
 
   public ConsentInfoBo saveOrUpdateConsentInfo(
-      ConsentInfoBo consentInfoBo, SessionObject sessionObject, String customStudyId);
+      ConsentInfoBo consentInfoBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language);
 
   public Integer saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
@@ -206,4 +210,9 @@ public interface StudyService {
   public StudyPermissionBO findStudyPermissionBO(int studyId, int userId);
 
   public StudyLanguageBO getStudyLanguageById(int studyId, String language);
+
+  public List<ConsentInfoLangBO> syncConsentDataInLanguageTable(
+      List<ConsentInfoBo> consentInfoList, String language);
+
+  ConsentInfoLangBO getConsentInfoLangById(int consentInfoId, String language);
 }

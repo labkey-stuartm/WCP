@@ -15,6 +15,7 @@ import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
@@ -8707,5 +8708,79 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getStudyLanguageById() - Ends");
     return studyBo;
+  }
+
+  @Override
+  public ConsentInfoLangBO getConsentLanguageDataById(int id, String language) {
+    logger.info("StudyDAOImpl - getConsentLanguageDataById() - Starts");
+    Session session = null;
+    ConsentInfoLangBO consentInfoLangBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (id != 0) {
+        consentInfoLangBO =
+            (ConsentInfoLangBO)
+                session
+                    .createQuery("from ConsentInfoLangBO where langCode=:language and id=:id")
+                    .setString("language", language)
+                    .setInteger("id", id)
+                    .uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getConsentLanguageDataById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getConsentLanguageDataById() - Ends");
+    return consentInfoLangBO;
+  }
+
+  @Override
+  public void saveOrUpdateConsentInfoLanguageData(ConsentInfoLangBO consentInfoLangBO) {
+    logger.info("StudyDAOImpl - saveConsentInfoLanguageData() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.saveOrUpdate(consentInfoLangBO);
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveConsentInfoLanguageData() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveConsentInfoLanguageData() - Ends");
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<ConsentInfoLangBO> getConsentLangInfoByStudyId(int studyId, String language) {
+    logger.info("StudyDAOImpl - getConsentLangInfoByStudyId() - Starts");
+    Session session = null;
+    List<ConsentInfoLangBO> dataList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (studyId != 0) {
+        dataList =
+            session
+                .createQuery("from ConsentInfoLangBO where langCode=:language and studyId=:id")
+                .setString("language", language)
+                .setInteger("id", studyId)
+                .list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getConsentLangInfoByStudyId() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getConsentLangInfoByStudyId() - Ends");
+    return dataList;
   }
 }
