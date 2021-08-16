@@ -421,7 +421,6 @@
           $('#consentLangItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             $('#' + id).find('td.title').text(value.getAttribute('value'));
-            $('#' + id).find('td.visualStep').text(value.text);
           })
           $('#addConsent').attr('disabled', true);
           $('.delete').addClass('cursor-none');

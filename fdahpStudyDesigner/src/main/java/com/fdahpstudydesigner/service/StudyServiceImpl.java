@@ -2188,6 +2188,14 @@ public class StudyServiceImpl implements StudyService {
           }
         }
         consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(studyId, language);
+        for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
+          ConsentInfoBo consentInfoBo = studyDAO.getConsentInfoById(consentInfoLangBO.getId());
+          if (consentInfoBo!=null) {
+            if (!"Custom".equals(consentInfoBo.getConsentItemType())) {
+              consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
+            }
+          }
+        }
       }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - syncConsentDataInLanguageTables() - ERROR ", e);
