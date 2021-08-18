@@ -2,36 +2,54 @@ package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "comprehension_test_response_lang")
 public class ComprehensionResponseLangBo implements Serializable {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  
+  @EmbeddedId
+  private ComprehensionResponseLangPK comprehensionResponseLangPK;
 
   @Column(name = "question_id")
   private Integer questionId;
 
+  // Todo to be removed later @Anoop Sharma
   @Column(name = "correct_answer")
   private Boolean correctAnswer;
 
   @Column(name = "response_option")
   private String responseOption;
 
-  public Integer getId() {
-    return id;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumns({
+      @JoinColumn(name = "question_id", referencedColumnName = "id", insertable = false, updatable = false),
+      @JoinColumn(name = "lang_code", referencedColumnName = "lang_code", insertable = false, updatable = false)
+  })
+  private ComprehensionQuestionLangBO comprehensionQuestionLangBO;
+
+  public ComprehensionQuestionLangBO getComprehensionQuestionLangBO() {
+    return comprehensionQuestionLangBO;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
+  public void setComprehensionQuestionLangBO(
+      ComprehensionQuestionLangBO comprehensionQuestionLangBO) {
+    this.comprehensionQuestionLangBO = comprehensionQuestionLangBO;
+  }
+
+  public ComprehensionResponseLangPK getComprehensionResponseLangPK() {
+    return comprehensionResponseLangPK;
+  }
+
+  public void setComprehensionResponseLangPK(
+      ComprehensionResponseLangPK comprehensionResponseLangPK) {
+    this.comprehensionResponseLangPK = comprehensionResponseLangPK;
   }
 
   public Integer getQuestionId() {

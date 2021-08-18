@@ -1,21 +1,21 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "comprehension_test_question_lang")
 public class ComprehensionQuestionLangBO implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @EmbeddedId
+  private ComprehensionQuestionLangPK comprehensionQuestionLangPK;
 
   @Column(name = "study_id")
   private Integer studyId;
@@ -47,12 +47,25 @@ public class ComprehensionQuestionLangBO implements Serializable {
   @Column(name = "modified_on")
   private String modifiedOn;
 
-  public Integer getId() {
-    return id;
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "comprehensionQuestionLangBO")
+  private List<ComprehensionResponseLangBo> comprehensionResponseLangBoList;
+
+  public List<ComprehensionResponseLangBo> getComprehensionResponseLangBoList() {
+    return comprehensionResponseLangBoList;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
+  public void setComprehensionResponseLangBoList(
+      List<ComprehensionResponseLangBo> comprehensionResponseLangBoList) {
+    this.comprehensionResponseLangBoList = comprehensionResponseLangBoList;
+  }
+
+  public ComprehensionQuestionLangPK getComprehensionQuestionLangPK() {
+    return comprehensionQuestionLangPK;
+  }
+
+  public void setComprehensionQuestionLangPK(
+      ComprehensionQuestionLangPK comprehensionQuestionLangPK) {
+    this.comprehensionQuestionLangPK = comprehensionQuestionLangPK;
   }
 
   public Integer getStudyId() {

@@ -26,6 +26,20 @@
 						test="${not empty comprehensionQuestionBo.id && actionPage eq 'view'}">View Comprehension Test Question<c:set
 							var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
+
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select
+							class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+							id="studyLanguage" name="studyLanguage" required title="Select">
+						<option value="English" selected>English</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language}"
+								${studyBo.studyLanguage eq language ?'selected':''}>${language}
+							</option>
+						</c:forEach>
+					</select>
+				</div>
+
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn"
 						onclick="goToBackPage(this);">Cancel</button>
@@ -45,8 +59,15 @@
 		<!--  End  top tab section-->
 		<!--  Start body tab section -->
 		<div class="right-content-body pt-none pb-none">
-			<input type="hidden" id="id" name="id"
-				value="${comprehensionQuestionBo.id}">
+			<input type="hidden" id="id" name="id" value="${comprehensionQuestionBo.id}">
+			<input type="hidden" id="questionTextLang" value="${comprehensionQuestionLangBO.questionText}">
+			<select id="responseItems" style="display: none">
+				<c:forEach items="${comprehensionQuestionLangBO.comprehensionResponseLangBoList}" var="responseList">
+					<option id='${responseList.comprehensionResponseLangPK.id}' value="${responseList.responseOption}">${responseList.responseOption}</option>
+				</c:forEach>
+			</select>
+
+			<input type="hidden" id="currentLanguage" name="currentLanguage">
 			<c:if test="${not empty comprehensionQuestionBo.id}">
 				<input type="hidden" id="studyId" name="studyId"
 					value="${comprehensionQuestionBo.studyId}">
@@ -180,6 +201,7 @@
 								id="${responseBoVar.index}">
 								<div class='col-md-6 pl-none'>
 									<div class='form-group'>
+										<input type='hidden' id="responseId${responseBoVar.index}" name="responseList[${responseBoVar.index}].id" value="${responseBo.id}"/>
 										<input type='text' class='form-control'
 											name="responseList[${responseBoVar.index}].responseOption"
 											id="responseOptionId${responseBoVar.index}"
@@ -281,7 +303,7 @@
 					$(".remBtnDis").addClass("hide");
 				}
 			});
-	var ansCount = $(".ans-opts").length;
+	var ansCount = $(".ans-opts").length-1;
 	function addAns() {
 		ansCount = ansCount + 1;
 		var newAns = "<div class='ans-opts col-md-12 p-none' id='"+ansCount+"'><div class='col-md-6 pl-none'>"
@@ -323,6 +345,7 @@
 		$('#' + ansCount).find('input:first').focus();
 	}
 	function removeAns(param) {
+		ansCount = ansCount-1;
 		$(param).parents(".ans-opts").remove();
 		$(".ans-opts").parents("form").validator("destroy");
 		$(".ans-opts").parents("form").validator();
@@ -377,8 +400,10 @@
 		$('.ans-opts').each(function() {
 			var testQuestionResponse = new Object();
 			var id = $(this).attr("id");
+			let responseId = $("#responseId" + id).val();
 			var responseOption = $("#responseOptionId" + id).val();
 			var correctAnswer = $("#correctAnswerId" + id).val();
+			testQuestionResponse.id = responseId;
 			testQuestionResponse.responseOption = responseOption;
 			testQuestionResponse.correctAnswer = correctAnswer;
 			testQuestionResponse.comprehensionTestQuestionId = testQuestionId;
@@ -394,6 +419,7 @@
 		if (studyId != null && studyId != '' && typeof studyId != 'undefined'
 				&& questiontext != null && questiontext != ''
 				&& typeof questiontext != 'undefined') {
+			formData.append("language", $('#currentLanguage').val());
 			formData.append("comprehenstionQuestionInfo", JSON
 					.stringify(comprehensionTestQuestion));
 			$
@@ -514,5 +540,49 @@
 	function resetValue(item) {
 		$(item).parent().addClass("has-danger").addClass("has-error");
 		$(item).parent().find(".help-block").empty();
+	}
+
+	$('#studyLanguage').on('change', function () {
+		let currLang = $('#studyLanguage').val();
+		$('#currentLanguage').val(currLang);
+		refreshAndFetchLanguageData($('#studyLanguage').val());
+	})
+
+	function refreshAndFetchLanguageData(language) {
+		$.ajax({
+			url: '/fdahpStudyDesigner/adminStudies/comprehensionQuestionPage.do?_S=${param._S}',
+			type: "GET",
+			data: {
+				language: language,
+			},
+			success: function (data) {
+				let htmlData = document.createElement('html');
+				htmlData.innerHTML = data;
+				if (language !== 'English') {
+					$('#inlineRadio1').attr('disabled', true);
+					$('#inlineRadio2').attr('disabled', true);
+					$('.addBtnDis,.remBtnDis').addClass('cursor-none');
+					$('.unitDivParent').children('div.ans-opts').each(function(index, value) {
+						let id = 'correctAnswerId'+index;
+						$('[data-id=' + id + ']').attr('disabled', true).css('background-color', '#eee').css('opacity', '1');
+					});
+					$('#questionText').val($('#questionTextLang', htmlData).val());
+					$('#responseItems option', htmlData).each(function (index, value) {
+						$('#responseOptionId' + index).val(value.getAttribute('value'));
+					})
+				} else {
+					$('#inlineRadio1').attr('disabled', false);
+					$('#inlineRadio2').attr('disabled', false);
+					$('.addBtnDis,.remBtnDis').removeClass('cursor-none');
+					$('.unitDivParent').children('div.ans-opts').each(function(index, value) {
+						let id = 'correctAnswerId'+index;
+						let responseOptionId = 'responseOptionId'+index;
+						$('[data-id=' + id + ']').attr('disabled', false).removeAttr('style');
+						$('#'+responseOptionId).val($('#' + responseOptionId, htmlData).val());
+					});
+					$('#questionText').val($('#questionText', htmlData).val());
+				}
+			}
+		})
 	}
 </script>

@@ -11,6 +11,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -63,10 +64,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -8782,5 +8786,87 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getConsentLangInfoByStudyId() - Ends");
     return dataList;
+  }
+
+  /**
+   * Study Consent have the 0 or more comprehension test question.Each question contains the
+   * question text and answers and make correct response to the question as being ANY or ALL of the
+   * 'correct' answer options.
+   *
+   * @author BTC
+   * @param  questionId {@link ComprehensionTestQuestionBo}
+   * @return {@link ComprehensionQuestionLangBO}
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language) {
+    logger.info("StudyDAOImpl - getComprehensionQuestionLangById() - Starts");
+    ComprehensionQuestionLangBO comprehensionQuestionLangBO = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      Criteria criteria = session.createCriteria(ComprehensionQuestionLangBO.class);
+      criteria.add(Restrictions.eq("comprehensionQuestionLangPK.id", questionId))
+          .add(Restrictions.eq("comprehensionQuestionLangPK.langCode", language));
+      criteria.setFetchMode("comprehensionResponseLangBoList", FetchMode.JOIN);
+      comprehensionQuestionLangBO = (ComprehensionQuestionLangBO)criteria.uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getComprehensionQuestionLangById() - Error", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getComprehensionQuestionLangById() - Ends");
+    return comprehensionQuestionLangBO;
+  }
+
+  @Override
+  public void saveOrUpdateComprehensionQuestionLanguageData(
+      ComprehensionQuestionLangBO questionLangBO, boolean deleteExisting) {
+    logger.info("StudyDAOImpl - saveOrUpdateComprehensionQuestionLanguageData() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (deleteExisting) {
+        session
+            .createSQLQuery(
+                "delete from comprehension_test_response_lang where question_id= :question_id")
+            .setInteger("question_id", questionLangBO.getComprehensionQuestionLangPK().getId())
+            .executeUpdate();
+      } else {
+        session.saveOrUpdate(questionLangBO);
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateComprehensionQuestionLanguageData() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateComprehensionQuestionLanguageData() - Ends");
+  }
+
+  @Override
+  public void saveOrUpdateObject(Object object) {
+    logger.info("StudyDAOImpl - saveOrUpdateObject() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.saveOrUpdate(object);
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateObject() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateObject() - Ends");
   }
 }

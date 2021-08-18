@@ -4,6 +4,7 @@ import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -134,7 +135,7 @@ public interface StudyService {
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId);
 
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
-      ComprehensionTestQuestionBo comprehensionTestQuestionBo);
+      ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
 
   public ConsentInfoBo saveOrUpdateConsentInfo(
       ConsentInfoBo consentInfoBo,
@@ -215,4 +216,8 @@ public interface StudyService {
       List<ConsentInfoBo> consentInfoList, String language);
 
   ConsentInfoLangBO getConsentInfoLangById(int consentInfoId, String language);
+
+  ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language);
+
+  String syncQuestionDataInLanguageTables(ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
 }

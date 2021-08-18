@@ -6,6 +6,7 @@ import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bean.StudySessionBean;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
@@ -1241,6 +1242,7 @@ public class StudyController {
     ModelAndView mav = new ModelAndView("comprehensionQuestionPage");
     ModelMap map = new ModelMap();
     ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+    ComprehensionQuestionLangBO comprehensionQuestionLangBO = null;
     String sucMsg = "";
     String errMsg = "";
     StudyBo studyBo = null;
@@ -1325,12 +1327,31 @@ public class StudyController {
           }
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
+
           map.addAttribute("_S", sessionStudyCount);
         }
         if (StringUtils.isNotEmpty(comprehensionQuestionId)) {
           comprehensionTestQuestionBo =
               studyService.getComprehensionTestQuestionById(
                   Integer.valueOf(comprehensionQuestionId));
+
+          String language = request.getParameter("language");
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            String result = studyService.syncQuestionDataInLanguageTables(comprehensionTestQuestionBo, language);
+            if (FdahpStudyDesignerConstants.SUCCESS.equals(result)) {
+              comprehensionQuestionLangBO =
+                  studyService.getComprehensionQuestionLangById(
+                      Integer.parseInt(comprehensionQuestionId), language);
+            }
+          }
+
           request
               .getSession()
               .setAttribute(
@@ -1338,6 +1359,7 @@ public class StudyController {
                   comprehensionQuestionId);
         }
         map.addAttribute("comprehensionQuestionBo", comprehensionTestQuestionBo);
+        map.addAttribute("comprehensionQuestionLangBO", comprehensionQuestionLangBO);
         mav = new ModelAndView("comprehensionQuestionPage", map);
       }
     } catch (Exception e) {
@@ -3636,8 +3658,9 @@ public class StudyController {
               comprehensionTestQuestionBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
               comprehensionTestQuestionBo.setStatus(false);
             }
+            String language = request.getParameter("language");
             addComprehensionTestQuestionBo =
-                studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
+                studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo, language);
           }
         }
         if (addComprehensionTestQuestionBo != null) {
@@ -4101,8 +4124,9 @@ public class StudyController {
             comprehensionTestQuestionBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             comprehensionTestQuestionBo.setStatus(true);
           }
+          String language = request.getParameter("currentLanguage");
           addComprehensionTestQuestionBo =
-              studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
+              studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo, language);
           map.addAttribute("_S", sessionStudyCount);
           if (addComprehensionTestQuestionBo != null) {
             if (addComprehensionTestQuestionBo.getId() != null) {

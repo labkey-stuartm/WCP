@@ -4,6 +4,10 @@ import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangPK;
+import com.fdahpstudydesigner.bo.ComprehensionResponseLangBo;
+import com.fdahpstudydesigner.bo.ComprehensionResponseLangPK;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -27,8 +31,10 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 import com.fdahpstudydesigner.util.SpanishLangConstants;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
@@ -1309,7 +1315,7 @@ public class StudyServiceImpl implements StudyService {
    */
   @Override
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
-      ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
+      ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language) {
     logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
     ComprehensionTestQuestionBo updateComprehensionTestQuestionBo = null;
     try {
@@ -1321,49 +1327,86 @@ public class StudyServiceImpl implements StudyService {
           updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
           updateComprehensionTestQuestionBo.setActive(true);
         }
-        if (comprehensionTestQuestionBo.getStatus() != null) {
-          updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
-        }
-        if (comprehensionTestQuestionBo.getQuestionText() != null) {
-          updateComprehensionTestQuestionBo.setQuestionText(
-              comprehensionTestQuestionBo.getQuestionText());
-        }
-        if (comprehensionTestQuestionBo.getStudyId() != null) {
-          updateComprehensionTestQuestionBo.setStudyId(comprehensionTestQuestionBo.getStudyId());
-        }
-        if (comprehensionTestQuestionBo.getSequenceNo() != null) {
-          updateComprehensionTestQuestionBo.setSequenceNo(
-              comprehensionTestQuestionBo.getSequenceNo());
-        }
-        if (comprehensionTestQuestionBo.getStructureOfCorrectAns() != null) {
-          updateComprehensionTestQuestionBo.setStructureOfCorrectAns(
-              comprehensionTestQuestionBo.getStructureOfCorrectAns());
-        }
-        if (comprehensionTestQuestionBo.getCreatedOn() != null) {
-          updateComprehensionTestQuestionBo.setCreatedOn(
-              comprehensionTestQuestionBo.getCreatedOn());
-        }
-        if (comprehensionTestQuestionBo.getCreatedBy() != null) {
-          updateComprehensionTestQuestionBo.setCreatedBy(
-              comprehensionTestQuestionBo.getCreatedBy());
-        }
-        if (comprehensionTestQuestionBo.getModifiedOn() != null) {
-          updateComprehensionTestQuestionBo.setModifiedOn(
-              comprehensionTestQuestionBo.getModifiedOn());
-        }
-        if (comprehensionTestQuestionBo.getModifiedBy() != null) {
-          updateComprehensionTestQuestionBo.setModifiedBy(
-              comprehensionTestQuestionBo.getModifiedBy());
-        }
-        if (comprehensionTestQuestionBo.getResponseList() != null
-            && !comprehensionTestQuestionBo.getResponseList().isEmpty()) {
-          updateComprehensionTestQuestionBo.setResponseList(
-              comprehensionTestQuestionBo.getResponseList());
-        }
-        updateComprehensionTestQuestionBo =
-            studyDAO.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
-      }
 
+        // saving in multi language tables
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          ComprehensionQuestionLangBO comprehensionQuestionLangBO =
+              studyDAO.getComprehensionQuestionLangById(
+                  comprehensionTestQuestionBo.getId(), language);
+          if (comprehensionQuestionLangBO == null) {
+            comprehensionQuestionLangBO = new ComprehensionQuestionLangBO();
+            comprehensionQuestionLangBO.setComprehensionQuestionLangPK(
+                new ComprehensionQuestionLangPK(comprehensionTestQuestionBo.getId(), language));
+            comprehensionQuestionLangBO.setStudyId(comprehensionTestQuestionBo.getStudyId());
+            comprehensionQuestionLangBO.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
+            comprehensionQuestionLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            List<ComprehensionResponseLangBo> entityList = new LinkedList<>();
+            for (ComprehensionTestResponseBo respEntity : comprehensionTestQuestionBo.getResponseList()) {
+              ComprehensionResponseLangBo comprehensionResponseLangBo = new ComprehensionResponseLangBo();
+              comprehensionResponseLangBo.setComprehensionResponseLangPK(new ComprehensionResponseLangPK(respEntity.getId(), language));
+              comprehensionResponseLangBo.setResponseOption(respEntity.getResponseOption());
+              comprehensionResponseLangBo.setQuestionId(comprehensionQuestionLangBO.getComprehensionQuestionLangPK().getId());
+              entityList.add(comprehensionResponseLangBo);
+            }
+            comprehensionQuestionLangBO.setComprehensionResponseLangBoList(entityList);
+          } else {
+            comprehensionQuestionLangBO.setModifiedBy(comprehensionTestQuestionBo.getCreatedBy());
+            comprehensionQuestionLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            int i=0;
+            for (ComprehensionResponseLangBo comprehensionResponseLangBo :
+                comprehensionQuestionLangBO.getComprehensionResponseLangBoList()) {
+              ComprehensionTestResponseBo respEntity = comprehensionTestQuestionBo.getResponseList().get(i);
+              comprehensionResponseLangBo.setResponseOption(respEntity.getResponseOption());
+              i++;
+            }
+          }
+          comprehensionQuestionLangBO.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
+          comprehensionQuestionLangBO.setQuestionText(comprehensionTestQuestionBo.getQuestionText());
+          studyDAO.saveOrUpdateComprehensionQuestionLanguageData(comprehensionQuestionLangBO, false);
+        } else {
+          if (comprehensionTestQuestionBo.getStatus() != null) {
+            updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
+          }
+          if (comprehensionTestQuestionBo.getQuestionText() != null) {
+            updateComprehensionTestQuestionBo.setQuestionText(
+                comprehensionTestQuestionBo.getQuestionText());
+          }
+          if (comprehensionTestQuestionBo.getStudyId() != null) {
+            updateComprehensionTestQuestionBo.setStudyId(comprehensionTestQuestionBo.getStudyId());
+          }
+          if (comprehensionTestQuestionBo.getSequenceNo() != null) {
+            updateComprehensionTestQuestionBo.setSequenceNo(
+                comprehensionTestQuestionBo.getSequenceNo());
+          }
+          if (comprehensionTestQuestionBo.getStructureOfCorrectAns() != null) {
+            updateComprehensionTestQuestionBo.setStructureOfCorrectAns(
+                comprehensionTestQuestionBo.getStructureOfCorrectAns());
+          }
+          if (comprehensionTestQuestionBo.getCreatedOn() != null) {
+            updateComprehensionTestQuestionBo.setCreatedOn(
+                comprehensionTestQuestionBo.getCreatedOn());
+          }
+          if (comprehensionTestQuestionBo.getCreatedBy() != null) {
+            updateComprehensionTestQuestionBo.setCreatedBy(
+                comprehensionTestQuestionBo.getCreatedBy());
+          }
+          if (comprehensionTestQuestionBo.getModifiedOn() != null) {
+            updateComprehensionTestQuestionBo.setModifiedOn(
+                comprehensionTestQuestionBo.getModifiedOn());
+          }
+          if (comprehensionTestQuestionBo.getModifiedBy() != null) {
+            updateComprehensionTestQuestionBo.setModifiedBy(
+                comprehensionTestQuestionBo.getModifiedBy());
+          }
+          if (comprehensionTestQuestionBo.getResponseList() != null
+              && !comprehensionTestQuestionBo.getResponseList().isEmpty()) {
+            updateComprehensionTestQuestionBo.setResponseList(
+                comprehensionTestQuestionBo.getResponseList());
+          }
+          updateComprehensionTestQuestionBo =
+              studyDAO.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
+        }
+      }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - getComprehensionTestResponseList() - Error", e);
     }
@@ -2215,5 +2258,65 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getConsentInfoLangById() - Ends");
     return consentInfoLangBO;
+  }
+
+  @Override
+  public ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language) {
+    logger.info("StudyServiceImpl - getComprehensionQuestionLangById() - Starts");
+    ComprehensionQuestionLangBO comprehensionQuestionLangBO = null;
+    try {
+      comprehensionQuestionLangBO = studyDAO.getComprehensionQuestionLangById(questionId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getComprehensionQuestionLangById() - Error", e);
+    }
+    logger.info("StudyServiceImpl - getComprehensionQuestionLangById() - Ends");
+    return comprehensionQuestionLangBO;
+  }
+
+  @Override
+  public String syncQuestionDataInLanguageTables(ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language) {
+    logger.info("StudyServiceImpl - syncQuestionDataInLanguageTables() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      ComprehensionQuestionLangBO comprehensionQuestionLangBO = studyDAO.getComprehensionQuestionLangById(comprehensionTestQuestionBo.getId(), language);
+      int i=0;
+      List<ComprehensionResponseLangBo> responseLangBoList = null;
+      if (comprehensionQuestionLangBO!=null) {
+        responseLangBoList = comprehensionQuestionLangBO.getComprehensionResponseLangBoList();
+        studyDAO.saveOrUpdateComprehensionQuestionLanguageData(comprehensionQuestionLangBO, true);
+      }
+      else {
+        comprehensionQuestionLangBO = new ComprehensionQuestionLangBO();
+        comprehensionQuestionLangBO.setComprehensionQuestionLangPK(new ComprehensionQuestionLangPK(comprehensionTestQuestionBo.getId(), language));
+        comprehensionQuestionLangBO.setStudyId(comprehensionTestQuestionBo.getStudyId());
+        comprehensionQuestionLangBO.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
+        comprehensionQuestionLangBO.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
+        comprehensionQuestionLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+      }
+      // delete existing data
+      List<ComprehensionResponseLangBo> responseLangBoListNew = new ArrayList<>();
+      for (ComprehensionTestResponseBo responseBo : comprehensionTestQuestionBo.getResponseList()) {
+        ComprehensionResponseLangBo responseLangBo = new ComprehensionResponseLangBo();
+        try {
+          if (responseLangBoList != null && responseLangBoList.size() > 0) {
+            ComprehensionResponseLangBo existingResponseLangBo = responseLangBoList.get(i);
+            responseLangBo.setResponseOption(existingResponseLangBo.getResponseOption());
+          }
+        }catch (IndexOutOfBoundsException exception) {
+          logger.warn("Altered Data found in English Language");
+        }
+        responseLangBo.setComprehensionResponseLangPK(new ComprehensionResponseLangPK(responseBo.getId(), language));
+        responseLangBo.setQuestionId(comprehensionTestQuestionBo.getId());
+        responseLangBoListNew.add(responseLangBo);
+        i++;
+      }
+      comprehensionQuestionLangBO.setComprehensionResponseLangBoList(responseLangBoListNew);
+      studyDAO.saveOrUpdateObject(comprehensionQuestionLangBO);
+      result = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - syncQuestionDataInLanguageTables() - Error", e);
+    }
+    logger.info("StudyServiceImpl - syncQuestionDataInLanguageTables() - Ends");
+    return result;
   }
 }

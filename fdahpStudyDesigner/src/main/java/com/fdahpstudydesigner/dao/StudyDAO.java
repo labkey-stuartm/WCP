@@ -4,6 +4,7 @@ import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -236,4 +237,11 @@ public interface StudyDAO {
   void saveOrUpdateConsentInfoLanguageData(ConsentInfoLangBO consentInfoLangBO);
 
   List<ConsentInfoLangBO> getConsentLangInfoByStudyId(int studyId, String language);
+
+  ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language);
+
+  void saveOrUpdateComprehensionQuestionLanguageData(
+      ComprehensionQuestionLangBO comprehensionQuestionLangBO, boolean deleteExisting);
+
+  void saveOrUpdateObject(Object object);
 }
