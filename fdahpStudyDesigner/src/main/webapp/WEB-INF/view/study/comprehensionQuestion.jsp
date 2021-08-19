@@ -273,6 +273,7 @@
 				<c:if test="${actionPage eq 'view'}">
 				$('#comprehensionFormId input,textarea,select').prop(
 						'disabled', true);
+				$('#studyLanguage').attr('disabled', false);
 				$('.TestQuestionButtonHide').hide();
 				$('.addBtnDis, .remBtnDis').addClass('dis-none');
 				</c:if>
