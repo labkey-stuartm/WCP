@@ -264,5 +264,7 @@ public interface StudyDAO {
   String saveOrUpdateOverviewLanguageStudyPages(
       StudyPageBean studyPageBean, SessionObject sesObj, String language);
 
-  List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(String studyId, String language);
+  List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(int studyId, String language);
+
+  StudyPageLanguageBO getStudyPageLanguageById(int pageId, String language);
 }

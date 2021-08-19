@@ -43,6 +43,7 @@ import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
+import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
@@ -4416,7 +4417,7 @@ public class StudyDAOImpl implements StudyDAO {
                 .executeUpdate();
             session
                 .createQuery(
-                    "delete from StudyPageLanguageBO where studyId= :studyId and pageId not in(:pageIdList)")
+                    "delete from StudyPageLanguageBO spl where spl.studyId= :studyId and spl.studyPageLanguagePK.pageId not in(:pageIdList)")
                 .setString("studyId", studyPageBean.getStudyId())
                 .setParameterList("pageIdList", pageIdList)
                 .executeUpdate();
@@ -8774,7 +8775,8 @@ public class StudyDAOImpl implements StudyDAO {
         consentInfoLangBO =
             (ConsentInfoLangBO)
                 session
-                    .createQuery("from ConsentInfoLangBO where consentInfoLangPK.langCode=:language and consentInfoLangPK.id=:id")
+                    .createQuery(
+                        "from ConsentInfoLangBO where consentInfoLangPK.langCode=:language and consentInfoLangPK.id=:id")
                     .setString("language", language)
                     .setInteger("id", id)
                     .uniqueResult();
@@ -9061,7 +9063,8 @@ public class StudyDAOImpl implements StudyDAO {
                 (StudyPageLanguageBO)
                     session
                         .createQuery(
-                            "from StudyPageLanguageBO SPB where SPB.pageId=:page_id and SPB.langCode =:lang_code")
+                            "from StudyPageLanguageBO SPB where SPB.studyPageLanguagePK.pageId=:page_id "
+                                + "and SPB.studyPageLanguagePK.langCode =:lang_code")
                         .setString("page_id", studyPageBean.getPageId()[i])
                         .setString("lang_code", language)
                         .uniqueResult();
@@ -9074,8 +9077,8 @@ public class StudyDAOImpl implements StudyDAO {
             studyPageLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             studyPageLanguageBO.setCreatedBy(studyPageBean.getUserId());
           }
-          studyPageLanguageBO.setPageId(Integer.parseInt(studyPageBean.getPageId()[i]));
-          studyPageLanguageBO.setLangCode(language);
+          studyPageLanguageBO.setStudyPageLanguagePK(
+              new StudyPageLanguagePK(Integer.parseInt(studyPageBean.getPageId()[i]), language));
           studyPageLanguageBO.setStudyId(
               FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId())
                   ? 0
@@ -9105,18 +9108,18 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(
-      String studyId, String language) {
+  @SuppressWarnings("unchecked")
+  public List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(int studyId, String language) {
     logger.info("StudyDAOImpl - getOverviewStudyPagesLangDataById() - Starts");
     Session session = null;
     List<StudyPageLanguageBO> studyPageLanguageBO = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if (StringUtils.isNotEmpty(studyId)) {
+      if (studyId != 0) {
         studyPageLanguageBO =
             session
                 .createQuery("from StudyPageLanguageBO where studyId= :studyId")
-                .setString("studyId", studyId)
+                .setInteger("studyId", studyId)
                 .list();
       }
     } catch (Exception e) {
@@ -9128,5 +9131,33 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getOverviewStudyPagesLangDataById() - Ends");
     return studyPageLanguageBO;
+  }
+
+  @Override
+  public StudyPageLanguageBO getStudyPageLanguageById(int pageId, String language) {
+    logger.info("StudyDAOImpl - getStudyPageLanguageById() - Starts");
+    Session session = null;
+    StudyPageLanguageBO pageLanguageBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (pageId != 0) {
+        pageLanguageBO =
+            (StudyPageLanguageBO)
+                session
+                    .createQuery(
+                        "from StudyPageLanguageBO where studyPageLanguagePK.langCode=:language and studyPageLanguagePK.pageId=:pageId")
+                    .setString("language", language)
+                    .setInteger("pageId", pageId)
+                    .uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudyPageLanguageById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudyPageLanguageById() - Ends");
+    return pageLanguageBO;
   }
 }

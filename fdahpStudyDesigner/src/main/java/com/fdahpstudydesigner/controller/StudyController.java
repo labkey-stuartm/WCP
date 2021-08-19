@@ -2295,7 +2295,7 @@ public class StudyController {
     String errMsg = "";
     StudyPageBean studyPageBean = new StudyPageBean();
     String user = "";
-    List<StudyPageLanguageBO> studyPageLanguageBO = null;
+    List<StudyPageLanguageBO> studyPageLanguageBOS = null;
     try {
       SessionObject sesObj =
           (SessionObject)
@@ -2364,16 +2364,26 @@ public class StudyController {
           studyPageBean.setStudyId(studyBo.getId().toString());
 
           String language = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language))
-            studyPageLanguageBO = studyService.getOverviewStudyPagesLangById(studyId, language);
-          map.addAttribute("studyPageLanguageBO", studyPageLanguageBO);
+          StudyLanguageBO studyLanguageBO = null;
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            studyPageLanguageBOS =
+                studyService.getOverviewStudyPagesLangById(studyPageBos, language);
+            studyLanguageBO =
+                studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+          }
+          map.addAttribute(
+              "studyPageLanguageList",
+              studyPageLanguageBOS != null
+                  ? studyPageLanguageBOS
+                  : new ArrayList<StudyPageLanguageBO>());
+          map.addAttribute(
+              "mlMediaLink", studyLanguageBO != null ? studyLanguageBO.getMediaLink() : null);
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
           }
-
           map.addAttribute("languageList", langList);
           map.addAttribute("studyPageBos", studyPageBos);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);

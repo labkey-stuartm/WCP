@@ -234,5 +234,6 @@ public interface StudyService {
 
   EligibilityTestLangBo getEligibilityTestLangById(int eligibilityId, String language);
 
-  public List<StudyPageLanguageBO> getOverviewStudyPagesLangById(String studyId, String language);
+  List<StudyPageLanguageBO> getOverviewStudyPagesLangById(
+      List<StudyPageBo> studyPageBos, String language);
 }

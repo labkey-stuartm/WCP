@@ -2,20 +2,15 @@ package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "study_page_lang")
 public class StudyPageLanguageBO implements Serializable {
 
-  @Id
-  @Column(name = "page_id")
-  private Integer pageId;
-
-  @Column(name = "lang_code")
-  private String langCode;
+  @EmbeddedId private StudyPageLanguagePK studyPageLanguagePK;
 
   @Column(name = "study_id")
   private Integer studyId;
@@ -37,14 +32,6 @@ public class StudyPageLanguageBO implements Serializable {
 
   @Column(name = "modified_on")
   private String modifiedOn;
-
-  public Integer getPageId() {
-    return pageId;
-  }
-
-  public void setPageId(Integer pageId) {
-    this.pageId = pageId;
-  }
 
   public Integer getStudyId() {
     return studyId;
@@ -102,11 +89,11 @@ public class StudyPageLanguageBO implements Serializable {
     this.modifiedOn = modifiedOn;
   }
 
-  public String getLangCode() {
-    return langCode;
+  public StudyPageLanguagePK getStudyPageLanguagePK() {
+    return studyPageLanguagePK;
   }
 
-  public void setLangCode(String langCode) {
-    this.langCode = langCode;
+  public void setStudyPageLanguagePK(StudyPageLanguagePK studyPageLanguagePK) {
+    this.studyPageLanguagePK = studyPageLanguagePK;
   }
 }

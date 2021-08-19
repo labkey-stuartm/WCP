@@ -26,6 +26,7 @@ import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
+import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
@@ -420,10 +421,12 @@ public class StudyServiceImpl implements StudyService {
       if (questionBoList != null && !questionBoList.isEmpty()) {
         int studyId = questionBoList.get(0).getStudyId();
         for (ComprehensionTestQuestionBo questionBo : questionBoList) {
-          ComprehensionQuestionLangBO questionLangBO = studyDAO.getComprehensionQuestionLangById(questionBo.getId(), language);
-          if (questionLangBO==null) {
+          ComprehensionQuestionLangBO questionLangBO =
+              studyDAO.getComprehensionQuestionLangById(questionBo.getId(), language);
+          if (questionLangBO == null) {
             questionLangBO = new ComprehensionQuestionLangBO();
-            questionLangBO.setComprehensionQuestionLangPK(new ComprehensionQuestionLangPK(questionBo.getId(), language));
+            questionLangBO.setComprehensionQuestionLangPK(
+                new ComprehensionQuestionLangPK(questionBo.getId(), language));
             questionLangBO.setStudyId(questionBo.getStudyId());
             questionLangBO.setSequenceNo(questionBo.getSequenceNo());
             questionLangBO.setCreatedBy(questionBo.getCreatedBy());
@@ -2299,7 +2302,8 @@ public class StudyServiceImpl implements StudyService {
               studyDAO.getConsentLanguageDataById(consentInfoBo.getId(), language);
           if (consentInfoLangBO == null) {
             consentInfoLangBO = new ConsentInfoLangBO();
-            consentInfoLangBO.setConsentInfoLangPK(new ConsentInfoLangPK(consentInfoBo.getId(), language));
+            consentInfoLangBO.setConsentInfoLangPK(
+                new ConsentInfoLangPK(consentInfoBo.getId(), language));
             consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
             consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
             studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
@@ -2307,7 +2311,8 @@ public class StudyServiceImpl implements StudyService {
         }
         consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(studyId, language);
         for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
-          ConsentInfoBo consentInfoBo = studyDAO.getConsentInfoById(consentInfoLangBO.getConsentInfoLangPK().getId());
+          ConsentInfoBo consentInfoBo =
+              studyDAO.getConsentInfoById(consentInfoLangBO.getConsentInfoLangPK().getId());
           if (consentInfoBo != null) {
             if (!"Custom".equals(consentInfoBo.getConsentItemType())) {
               consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
@@ -2444,11 +2449,28 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<StudyPageLanguageBO> getOverviewStudyPagesLangById(String studyId, String language) {
+  public List<StudyPageLanguageBO> getOverviewStudyPagesLangById(
+      List<StudyPageBo> studyPageBos, String language) {
     logger.info("StudyServiceImpl - getOverviewStudyPagesLangById() - Starts");
     List<StudyPageLanguageBO> studyPageLanguageBO = null;
     try {
-      studyPageLanguageBO = studyDAO.getOverviewStudyPagesLangDataById(studyId, language);
+      if (studyPageBos != null && !studyPageBos.isEmpty()) {
+        int studyId = studyPageBos.get(0).getStudyId();
+        for (StudyPageBo studyPageBo : studyPageBos) {
+          StudyPageLanguageBO pageLanguageBO =
+              studyDAO.getStudyPageLanguageById(studyPageBo.getPageId(), language);
+          if (pageLanguageBO == null) {
+            pageLanguageBO = new StudyPageLanguageBO();
+            pageLanguageBO.setStudyPageLanguagePK(
+                new StudyPageLanguagePK(studyPageBo.getPageId(), language));
+            pageLanguageBO.setStudyId(studyPageBo.getStudyId());
+            pageLanguageBO.setCreatedBy(studyPageBo.getCreatedBy());
+            pageLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            studyDAO.saveOrUpdateObject(pageLanguageBO);
+          }
+        }
+        studyPageLanguageBO = studyDAO.getOverviewStudyPagesLangDataById(studyId, language);
+      }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - getOverviewStudyPagesLangById() - ERROR ", e);
     }
