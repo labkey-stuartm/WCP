@@ -34,7 +34,7 @@ public class StudyLanguageBO implements Serializable {
   private String mediaLink;
 
   @Column(name = "instructional_text")
-  private Integer instructionalText;
+  private String instructionalText;
 
   @Column(name = "question_text")
   private String questionText;
@@ -116,11 +116,11 @@ public class StudyLanguageBO implements Serializable {
     this.mediaLink = media_link;
   }
 
-  public Integer getInstructionalText() {
+  public String getInstructionalText() {
     return instructionalText;
   }
 
-  public void setInstructionalText(Integer instructionalText) {
+  public void setInstructionalText(String instructionalText) {
     this.instructionalText = instructionalText;
   }
 

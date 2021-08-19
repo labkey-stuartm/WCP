@@ -20,6 +20,7 @@ import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
@@ -41,6 +42,7 @@ import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
@@ -407,6 +409,7 @@ public class StudyDAOImpl implements StudyDAO {
     String result = FdahpStudyDesignerConstants.FAILURE;
     String reorderQuery;
     EligibilityTestBo eligibilityTestBo;
+    EligibilityTestLangBo eligibilityTestLangBo;
     List<EligibilityTestBo> eligibilityTestBos;
     StudyBo studyBo = null;
     try {
@@ -418,11 +421,18 @@ public class StudyDAOImpl implements StudyDAO {
                   .getNamedQuery("EligibilityTestBo.findById")
                   .setInteger("eligibilityTestId", eligibilityTestId)
                   .uniqueResult();
+      eligibilityTestLangBo =
+          (EligibilityTestLangBo)
+              session
+                  .getNamedQuery("EligibilityTestLangBo.findById")
+                  .setInteger("eligibilityTestId", eligibilityTestId)
+                  .uniqueResult();
       studyBo = this.getStudyById(String.valueOf(studyId), sessionObject.getUserId());
 
       if (null != studyBo
           && studyBo.getStatus().contains(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH)) {
         session.delete(eligibilityTestBo);
+        session.delete(eligibilityTestLangBo);
         eligibilityDeleteResult = 1;
       } else {
         eligibilityDeleteResult =
@@ -4404,11 +4414,22 @@ public class StudyDAOImpl implements StudyDAO {
                 .setString("studyId", studyPageBean.getStudyId())
                 .setParameterList("pageIdList", pageIdList)
                 .executeUpdate();
-          } else
+            session
+                .createQuery(
+                    "delete from StudyPageLanguageBO where studyId= :studyId and pageId not in(:pageIdList)")
+                .setString("studyId", studyPageBean.getStudyId())
+                .setParameterList("pageIdList", pageIdList)
+                .executeUpdate();
+          } else {
             session
                 .createQuery("delete from StudyPageBo where studyId= :studyId")
                 .setString("studyId", studyPageBean.getStudyId())
                 .executeUpdate();
+            session
+                .createQuery("delete from StudyPageLanguageBO where studyId= :studyId")
+                .setString("studyId", studyPageBean.getStudyId())
+                .executeUpdate();
+          }
           for (int i = 0; i < titleLength; i++) {
             StudyPageBo studyPageBo = null;
             if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
@@ -8898,5 +8919,214 @@ public class StudyDAOImpl implements StudyDAO {
       }
     }
     logger.info("StudyDAOImpl - saveOrUpdateObject() - Ends");
+  }
+
+  public String saveOrUpdateStudyEligibiltyForOtherLanguages(
+      EligibilityBo eligibilityBo, StudyLanguageBO studyLanguageBO, String language) {
+    logger.info("StudyDAOImpl - saveOrUpdateStudyEligibiltyForOtherLanguages() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      studyLanguageBO.setInstructionalText(eligibilityBo.getInstructionalText());
+      session.update(studyLanguageBO);
+      transaction.commit();
+      message = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateStudyEligibiltyForOtherLanguages() - ERROR", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveConsentInfoLanguageData() - Ends");
+    return message;
+  }
+
+  @Override
+  public Integer saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(
+      EligibilityTestLangBo eligibilityTestLangBo) {
+    logger.info("StudyDAOImpl - saveOrUpdateStudyEligibiltyTestQusForOtherLanguages() - Starts");
+    Session session = null;
+    Integer id = 0;
+    EligibilityTestLangBo saveEligibilityTestBo;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.saveOrUpdate(eligibilityTestLangBo);
+      id = eligibilityTestLangBo.getId();
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error(
+          "StudyDAOImpl - saveOrUpdateStudyEligibiltyTestQusForOtherLanguages() - ERROR", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateStudyEligibiltyTestQusForOtherLanguages() - Ends");
+    return id;
+  }
+
+  @Override
+  public EligibilityTestLangBo getEligibilityTestLanguageDataById(
+      int eligibilityTestId, String language) {
+    logger.info("StudyDAOImpl - getEligibilityTestLanguageDataById() - Starts");
+    Session session = null;
+    EligibilityTestLangBo eligibilityTestLangBo = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      eligibilityTestLangBo =
+          (EligibilityTestLangBo)
+              session
+                  .createQuery(
+                      "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.id=:eligibilityTestId AND ETB.langCode=:language ORDER BY ETB.sequenceNo")
+                  .setString("language", language)
+                  .setInteger("eligibilityTestId", eligibilityTestId)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getEligibilityTestLanguageDataById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getEligibilityTestLanguageDataById() - Ends");
+    return eligibilityTestLangBo;
+  }
+
+  @Override
+  public List<EligibilityTestLangBo> getEligibilityTestLangByEligibilityId(
+      int eligibilityId, String language) {
+    logger.info("StudyDAOImpl - getEligibilityTestLangByEligibilityId() - Starts");
+    Session session = null;
+    List<EligibilityTestLangBo> dataList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (eligibilityId != 0) {
+        dataList =
+            session
+                .createQuery(
+                    "from EligibilityTestLangBo where langCode=:language and eligibilityId=:id")
+                .setString("language", language)
+                .setInteger("id", eligibilityId)
+                .list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getEligibilityTestLangByEligibilityId() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getEligibilityTestLangByEligibilityId() - Ends");
+    return dataList;
+  }
+
+  @Override
+  public String saveOrUpdateOverviewLanguageStudyPages(
+      StudyPageBean studyPageBean, SessionObject sesObj, String language) {
+    logger.info("StudyDAOImpl - saveOrUpdateOverviewLanguageStudyPages() - Starts");
+    Session session = null;
+    StudyLanguageBO studyLanguageBO = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    int titleLength = 0;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (StringUtils.isNotEmpty(studyPageBean.getStudyId())) {
+        studyLanguageBO =
+            (StudyLanguageBO)
+                session
+                    .createQuery(
+                        "From StudyLanguageBO SBO WHERE SBO.studyLanguagePK.study_id=:study_id AND SBO.studyLanguagePK.langCode=:lang_code")
+                    .setInteger("study_id", Integer.parseInt(studyPageBean.getStudyId()))
+                    .setString("lang_code", language)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        if (studyLanguageBO != null) {
+          studyLanguageBO.setMediaLink(studyPageBean.getMediaLink());
+          session.update(studyLanguageBO);
+        }
+
+        titleLength = studyPageBean.getTitle().length;
+        for (int i = 0; i < titleLength; i++) {
+          StudyPageLanguageBO studyPageLanguageBO = null;
+          if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
+            studyPageLanguageBO =
+                (StudyPageLanguageBO)
+                    session
+                        .createQuery(
+                            "from StudyPageLanguageBO SPB where SPB.pageId=:page_id and SPB.langCode =:lang_code")
+                        .setString("page_id", studyPageBean.getPageId()[i])
+                        .setString("lang_code", language)
+                        .uniqueResult();
+
+          if (studyPageLanguageBO == null) studyPageLanguageBO = new StudyPageLanguageBO();
+          if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
+            studyPageLanguageBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            studyPageLanguageBO.setModifiedBy(studyPageBean.getUserId());
+          } else {
+            studyPageLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            studyPageLanguageBO.setCreatedBy(studyPageBean.getUserId());
+          }
+          studyPageLanguageBO.setPageId(Integer.parseInt(studyPageBean.getPageId()[i]));
+          studyPageLanguageBO.setLangCode(language);
+          studyPageLanguageBO.setStudyId(
+              FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId())
+                  ? 0
+                  : Integer.parseInt(studyPageBean.getStudyId()));
+          studyPageLanguageBO.setTitle(
+              FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])
+                  ? null
+                  : studyPageBean.getTitle()[i]);
+          studyPageLanguageBO.setDescription(
+              FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])
+                  ? null
+                  : studyPageBean.getDescription()[i]);
+          session.saveOrUpdate(studyPageLanguageBO);
+        }
+      }
+      transaction.commit();
+      message = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - saveOrUpdateOverviewLanguageStudyPages() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateOverviewLanguageStudyPages() - Ends");
+    return message;
+  }
+
+  @Override
+  public List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(
+      String studyId, String language) {
+    logger.info("StudyDAOImpl - getOverviewStudyPagesLangDataById() - Starts");
+    Session session = null;
+    List<StudyPageLanguageBO> studyPageLanguageBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (StringUtils.isNotEmpty(studyId)) {
+        studyPageLanguageBO =
+            session
+                .createQuery("from StudyPageLanguageBO where studyId= :studyId")
+                .setString("studyId", studyId)
+                .list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getOverviewStudyPagesLangDataById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getOverviewStudyPagesLangDataById() - Ends");
+    return studyPageLanguageBO;
   }
 }

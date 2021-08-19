@@ -22,6 +22,18 @@
 					Overview
 					<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <select
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            id="studyLanguage" name="studyLanguage" required title="Select">
+                        <option value="English" selected>English</option>
+                        <c:forEach items="${languageList}" var="language">
+                            <option value="${language}"
+                                ${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+				
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 				</div>
@@ -41,6 +53,9 @@
 		<!--  End  top tab section-->
 		<input type="hidden" value="${studyBo.id}" name="studyId" />
 		<input type="hidden" value="" id="buttonText" name="buttonText">
+		<input type="hidden" id="currentLanguage" name="currentLanguage">
+		<input type="hidden" id="mlTitle" value="${StudyPageLanguageBO.title}">
+        <input type="hidden" id="mlDescription" value="${StudyPageLanguageBO.description}">
 
 
 		<!--  Start body tab section -->
@@ -52,7 +67,7 @@
 						http://www.google.com</span>) <small>(300 characters max) </small>
 				</div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" class="form-control"
+					<input autofocus="autofocus" type="text" class="form-control langSpecific"
 						id="studyMediaLinkId" name="mediaLink"
 						value="${fn:escapeXml(studyBo.mediaLink)}" maxlength="300"
 						pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
@@ -140,7 +155,7 @@
 												class="requiredStar">*</span>
 										</div>
 										<div class="form-group">
-											<input type="text" class="form-control updateInput"
+											<input type="text" class="form-control updateInput langSpecific" id="title"
 												name="title" required maxlength="50"
 												value="${fn:escapeXml(studyBo.name)}" />
 											<div class="help-block with-errors red-txt"></div>
@@ -151,8 +166,8 @@
 											Description <small>(250 characters max) </small><span
 												class="requiredStar">*</span>
 										</div>
-										<div class="form-group elaborateClass">
-											<textarea class=" form-control updateInput" rows="5"
+										<div class="form-group elaborateClass ">
+											<textarea class=" form-control updateInput langSpecific" rows="5"
 												id="editor1" name="description" required
 												data-error="Please enter plain text of up to 250 characters max."
 												maxlength="250"></textarea>
@@ -184,7 +199,7 @@
 										</div>
 										<div class="text-right dis-inline pull-right">
 											<c:if test="${not spbSt.first}">
-												<span class="sprites_icon delete elaborateHide"></span>
+												<span class="sprites_icon delete elaborateHide" id="delete"></span>
 											</c:if>
 											<span class="ml-lg imageBg"><img class="arrow"
 												src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
@@ -239,8 +254,8 @@
 											Title <small>(50 characters max) </small><span
 												class="requiredStar">*</span>
 										</div>
-										<div class="form-group">
-											<input type="text" class="form-control updateInput"
+										<div class="form-group ">
+											<input type="text" class="form-control updateInput langSpecific"
 												name="title" value="${fn:escapeXml(studyPageBo.title)}"
 												required maxlength="50" />
 											<div class="help-block with-errors red-txt"></div>
@@ -252,7 +267,7 @@
 												class="requiredStar">*</span>
 										</div>
 										<div class="form-group elaborateClass">
-											<textarea class="form-control updateInput" rows="5"
+											<textarea class="form-control updateInput langSpecific" rows="5"
 												name="description" id="editor${spbSt.count}" required
 												data-error="Please enter plain text of up to 250 characters max."
 												maxlength="250">${studyPageBo.description}</textarea>
@@ -606,4 +621,49 @@
           reader.readAsDataURL(input.files[0]);
       }
   	}
+      //multi language feature enable      
+	$('#studyLanguage').on('change', function () {
+    let currLang = $('#studyLanguage').val();
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData($('#studyLanguage').val());
+  })
+
+  function refreshAndFetchLanguageData(language) {
+    $.ajax({
+      url: '/fdahpStudyDesigner/adminStudies/overviewStudyPages.do?_S=${param._S}',
+      type: "GET",
+      data: {
+        language: language
+      },
+      success: function (data) {
+        let htmlData = document.createElement('html');
+        htmlData.innerHTML = data;
+        if (language !== 'English') {
+          $('select, input[type!=hidden]').each(function () {
+            if (!$(this).hasClass('langSpecific')) {
+              $(this).attr('disabled', true);
+            }
+          });
+          $('#title').val($('input#mlTitle', htmlData).val());
+          $('#description').val($('input#mlDescription', htmlData).val());
+          $('#addpage').attr('disabled', true);
+          $('.removeUrl').css('pointer-events', 'none');
+          $('.delete').css('pointer-events', 'none');
+        } else {
+          $('select, input[type!=hidden]').each(function () {
+            if (!$(this).hasClass('langSpecific')) {
+              $(this).attr('disabled', false);
+            }
+          });
+          $('#title').val($('#title', htmlData).val());
+          $('#description').val($('#description', htmlData).val());
+          $('#languageList').removeAttr('style');
+          $('#addpage').attr('disabled', false);
+          $('.removeUrl').removeAttr('style');
+          $('.delete').removeAttr('style');
+        }
+      }
+    });
+  }
+
 </script>

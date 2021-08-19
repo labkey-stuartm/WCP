@@ -3,8 +3,6 @@ package com.fdahpstudydesigner.bo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,18 +11,17 @@ import javax.persistence.Table;
 public class StudyPageLanguageBO implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "page_id")
   private Integer pageId;
+
+  @Column(name = "lang_code")
+  private String langCode;
 
   @Column(name = "study_id")
   private Integer studyId;
 
   @Column(name = "title")
   private String title;
-
-  @Column(name = "image_path")
-  private String imagePath;
 
   @Column(name = "description")
   private String description;
@@ -65,14 +62,6 @@ public class StudyPageLanguageBO implements Serializable {
     this.title = title;
   }
 
-  public String getImagePath() {
-    return imagePath;
-  }
-
-  public void setImagePath(String imagePath) {
-    this.imagePath = imagePath;
-  }
-
   public String getDescription() {
     return description;
   }
@@ -111,5 +100,13 @@ public class StudyPageLanguageBO implements Serializable {
 
   public void setModifiedOn(String modifiedOn) {
     this.modifiedOn = modifiedOn;
+  }
+
+  public String getLangCode() {
+    return langCode;
+  }
+
+  public void setLangCode(String langCode) {
+    this.langCode = langCode;
   }
 }

@@ -30,6 +30,16 @@
 					Eligibility
 					<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive] ? '<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+						id="studyLanguage" name="studyLanguage" required title="Select">
+						<option value="English" selected>English</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language}"
+								${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+						</c:forEach>
+					</select>
+				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 				</div>
@@ -52,6 +62,8 @@
 		<input type="hidden" value="${eligibility.studyId}" name="studyId"
 			id="studyId" />
 		<input type="hidden" value="${eligibility.id}" name="id" />
+		<input type="hidden" id="mlInstText" value="${studyLanguageBO.instructionalText}"/>
+		<input type="hidden" id="currentLanguage" name="currentLanguage">
 		<!--  Start body tab section -->
 		<div class="right-content-body">
 			<div class="mb-xlg form-group" id="eligibilityOptDivId">
@@ -91,7 +103,7 @@
 					</div>
 					<div class="form-group elaborateClass">
 						<textarea class="form-control" rows="5" id="comment"
-							maxlength="230" required name="instructionalText">${eligibility.instructionalText}</textarea>
+							maxlength="230" required id="instructionalText" name="instructionalText">${eligibility.instructionalText}</textarea>
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
@@ -128,7 +140,7 @@
 								<td>${etQusAns.sequenceNo}</td>
 								<td><span class="dis-ellipsis"
 									title="${fn:escapeXml(etQusAns.question)}">${etQusAns.question}</span></td>
-								<td><span class="sprites_icon preview-g mr-lg viewIcon"
+								<td><span class=" preview-g mr-lg viewIcon"
 									data-toggle="tooltip" data-placement="top" title="View"
 									etId="${etQusAns.id}"></span> <span
 									class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon"
@@ -585,7 +597,7 @@
 											.push("<span class='dis-ellipsis' title='" + DOMPurify.sanitize(obj.question) + "'>"
 													+ DOMPurify.sanitize(obj.question) + "</span>");
 								}
-								var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="' + parseInt(obj.id) + '"></span> '
+								var actions = '<span class=" preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="' + parseInt(obj.id) + '"></span> '
 										+ '<span class="'
 										+ (DOMPurify.sanitize(obj.status) ? "edit-inc"
 												: "edit-inc-draft")
@@ -623,4 +635,45 @@
 			addOrEditOrViewQA("edit", $(this).attr('etId'));
 		});
 	}
+	
+	 //multi language feature enable
+    $('#studyLanguage').on('change', function () {
+    let currLang = $('#studyLanguage').val();
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData($('#studyLanguage').val());
+  })
+
+  function refreshAndFetchLanguageData(language) {
+    $.ajax({
+      url: '/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}',
+      type: "GET",
+      data: {
+        language: language
+      },
+      success: function (data) { 
+          let htmlData = document.createElement('html');
+          htmlData.innerHTML = data;
+          if (language !== 'English') {
+            $('select, input[type!=hidden]').each(function () {
+              if (!$(this).hasClass('langSpecific')) {
+                $(this).attr('disabled', true);
+              }
+            });
+            $('#instructionalText').val($('input#mlInstText', htmlData).val());
+            $('#addQaId').attr('disabled', true);
+            $('.sprites_icon').css('pointer-events', 'none');
+            
+          } else {
+            $('select, input[type!=hidden]').each(function () {
+              if (!$(this).hasClass('langSpecific')) {
+                $(this).attr('disabled', false);
+              }
+            });
+            $('#instructionalText').val($('input#instructionalText', htmlData).val());
+            $('#addQaId').attr('disabled', false);
+            $('.sprites_icon').removeAttr('style');
+        }
+      }
+    });
+  }
 </script>

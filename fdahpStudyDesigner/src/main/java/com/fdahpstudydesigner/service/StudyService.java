@@ -13,6 +13,7 @@ import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
@@ -20,6 +21,7 @@ import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -150,9 +152,11 @@ public interface StudyService {
       EligibilityTestBo eligibilityTestBo,
       Integer studyId,
       SessionObject sessionObject,
-      String customStudyId);
+      String customStudyId,
+      String language);
 
-  public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
+  public String saveOrUpdateOverviewStudyPages(
+      StudyPageBean studyPageBean, SessionObject sesObj, String language);
 
   public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 
@@ -174,7 +178,7 @@ public interface StudyService {
   public String checkParticipantPropertyShortTitle(String shortTitle, String customStudyId);
 
   public String saveOrUpdateStudyEligibilty(
-      EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
+      EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId, String language);
 
   public String saveOrUpdateStudySettings(
       StudyBo studyBo,
@@ -224,4 +228,11 @@ public interface StudyService {
 
   String syncQuestionDataInLanguageTables(
       ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
+
+  public List<EligibilityTestLangBo> syncEligibilityTestDataInLanguageTable(
+      List<EligibilityTestBo> eligibilityTestList, String language);
+
+  EligibilityTestLangBo getEligibilityTestLangById(int eligibilityId, String language);
+
+  public List<StudyPageLanguageBO> getOverviewStudyPagesLangById(String studyId, String language);
 }

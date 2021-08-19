@@ -17,6 +17,7 @@ import com.fdahpstudydesigner.bo.ConsentInfoLangPK;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
@@ -24,6 +25,7 @@ import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
@@ -1566,7 +1568,8 @@ public class StudyServiceImpl implements StudyService {
       EligibilityTestBo eligibilityTestBo,
       Integer studyId,
       SessionObject sessionObject,
-      String customStudyId) {
+      String customStudyId,
+      String language) {
     logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");
     Integer eligibilityTestId = 0;
     Integer seqCount = 0;
@@ -1576,9 +1579,25 @@ public class StudyServiceImpl implements StudyService {
           seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
           eligibilityTestBo.setSequenceNo(seqCount);
         }
-        eligibilityTestId =
-            studyDAO.saveOrUpdateEligibilityTestQusAns(
-                eligibilityTestBo, studyId, sessionObject, customStudyId);
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          EligibilityTestLangBo eligibilityTestLangBo =
+              studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
+          if (eligibilityTestLangBo != null) {
+            eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
+            eligibilityTestLangBo.setId(eligibilityTestBo.getId());
+            eligibilityTestLangBo.setQuestion(eligibilityTestBo.getQuestion());
+            eligibilityTestLangBo.setActive(true);
+            eligibilityTestLangBo.setStatus(eligibilityTestBo.getStatus());
+            eligibilityTestId =
+                studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
+          } else {
+
+          }
+        } else {
+          eligibilityTestId =
+              studyDAO.saveOrUpdateEligibilityTestQusAns(
+                  eligibilityTestBo, studyId, sessionObject, customStudyId);
+        }
       }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Error", e);
@@ -1597,7 +1616,8 @@ public class StudyServiceImpl implements StudyService {
    * @return {@link String}
    */
   @Override
-  public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj) {
+  public String saveOrUpdateOverviewStudyPages(
+      StudyPageBean studyPageBean, SessionObject sesObj, String language) {
     logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
     String message = "";
     try {
@@ -1634,7 +1654,12 @@ public class StudyServiceImpl implements StudyService {
         }
         studyPageBean.setImagePath(imagePath);
       }
-      message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        message = studyDAO.saveOrUpdateOverviewLanguageStudyPages(studyPageBean, sesObj, language);
+      } else {
+        message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
+      }
+
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR ", e);
     }
@@ -1979,11 +2004,21 @@ public class StudyServiceImpl implements StudyService {
    */
   @Override
   public String saveOrUpdateStudyEligibilty(
-      EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId) {
+      EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId, String language) {
     logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo, sesObj, customStudyId);
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        StudyLanguageBO studyLanguageBO =
+            this.getStudyLanguageById(eligibilityBo.getStudyId(), language);
+        if (studyLanguageBO != null) {
+          result =
+              studyDAO.saveOrUpdateStudyEligibiltyForOtherLanguages(
+                  eligibilityBo, studyLanguageBO, language);
+        }
+      } else {
+        result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo, sesObj, customStudyId);
+      }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
     }
@@ -2362,5 +2397,62 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - syncQuestionDataInLanguageTables() - Ends");
     return result;
+  }
+
+  @Override
+  public List<EligibilityTestLangBo> syncEligibilityTestDataInLanguageTable(
+      List<EligibilityTestBo> eligibilityTestList, String language) {
+    logger.info("StudyServiceImpl - syncConsentDataInLanguageTables() - Starts");
+    List<EligibilityTestLangBo> eligibilityTestLangBOList = null;
+    try {
+      if (eligibilityTestList != null && eligibilityTestList.size() > 0) {
+        int eligibilityId = eligibilityTestList.get(0).getEligibilityId();
+        for (EligibilityTestBo eligibilityTestBo : eligibilityTestList) {
+          EligibilityTestLangBo eligibilityTestLangBo =
+              studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
+          if (eligibilityTestLangBo == null) {
+            eligibilityTestLangBo = new EligibilityTestLangBo();
+            eligibilityTestLangBo.setId(eligibilityTestBo.getId());
+            eligibilityTestLangBo.setLangCode(language);
+            eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
+            eligibilityTestLangBo.setSequenceNo(eligibilityTestBo.getSequenceNo());
+            studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
+          }
+        }
+        eligibilityTestLangBOList =
+            studyDAO.getEligibilityTestLangByEligibilityId(eligibilityId, language);
+      }
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - syncConsentDataInLanguageTables() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - syncConsentDataInLanguageTables() - Ends");
+    return eligibilityTestLangBOList;
+  }
+
+  @Override
+  public EligibilityTestLangBo getEligibilityTestLangById(int eligibilityTestId, String language) {
+    logger.info("StudyServiceImpl - getEligibilityTestLangById() - Starts");
+    EligibilityTestLangBo eligibilityTestLangBo = null;
+    try {
+      eligibilityTestLangBo =
+          studyDAO.getEligibilityTestLanguageDataById(eligibilityTestId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getEligibilityTestLangById() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getEligibilityTestLangById() - Ends");
+    return eligibilityTestLangBo;
+  }
+
+  @Override
+  public List<StudyPageLanguageBO> getOverviewStudyPagesLangById(String studyId, String language) {
+    logger.info("StudyServiceImpl - getOverviewStudyPagesLangById() - Starts");
+    List<StudyPageLanguageBO> studyPageLanguageBO = null;
+    try {
+      studyPageLanguageBO = studyDAO.getOverviewStudyPagesLangDataById(studyId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getOverviewStudyPagesLangById() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getOverviewStudyPagesLangById() - Ends");
+    return studyPageLanguageBO;
   }
 }

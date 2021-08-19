@@ -26,6 +26,18 @@
 				</div>
 				<input type="hidden" value="${actionTypeForQuestionPage}"
 					name="actionTypeForQuestionPage">
+
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select
+						class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+						id="studyLanguage" name="studyLanguage" required title="Select">
+						<option value="English" selected>English</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language}"
+								${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+						</c:forEach>
+					</select>
+				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn"
 						onclick="goToBackPage(this);">Cancel</button>
@@ -44,7 +56,11 @@
 		<!--  Start body tab section -->
 		<div class="right-content-body">
 			<!-- form- input-->
-			<input type="hidden" id="type" name="type" value="complete" /> <input
+
+			<input type="hidden" id="mlQuestion"
+				value="${eligibilityTestLangBo.question}"> <input type="hidden"
+				id="currentLanguage" name="currentLanguage"> <input
+				type="hidden" id="type" name="type" value="complete" /> <input
 				type="hidden" name="id" value="${eligibilityTest.id}" /> <input
 				type="hidden" id="eligibilityId" name="eligibilityId"
 				value="${eligibilityId}" /> <input type="hidden" id="sequenceNo"
@@ -72,9 +88,9 @@
 				Question (1 to 250 characters)<span class="requiredStar"> *</span>
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control" required name="question"
-					id="question" value="${fn:escapeXml(eligibilityTest.question)}"
-					maxlength="250" />
+				<input type="text" class="form-control langSpecific"
+					name="question" id="question" required
+					value="${fn:escapeXml(eligibilityTest.question)}" maxlength="250" />
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 			<div class="clearfix"></div>
@@ -351,4 +367,52 @@
 		}
 
 	}
+
+	//multi language feature enable
+	$('#studyLanguage').on('change', function () {
+    let currLang = $('#studyLanguage').val();
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData($('#studyLanguage').val());
+  })
+
+  function refreshAndFetchLanguageData(language) {
+    $.ajax({
+      url: '/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}',      
+      type: "GET",
+      data: {
+        language: language
+      },
+      success: function (data) {
+        let htmlData = document.createElement('html');
+        htmlData.innerHTML = data;
+        if (language !== 'English') {
+          $('select, input[type!=hidden]').each(function () {
+            if (!$(this).hasClass('langSpecific')) {
+              $(this).attr('disabled', true);
+              if (this.nodeName.toLowerCase() === 'select') {
+            	  let title = $('[data-id="shortTitleId"]');
+                  title.attr('disabled', true);
+                  title.css('background-color', '#eee');
+                  title.css('opacity', '1');
+              }
+            }
+          });
+          $('#question').val($('#mlQuestion', htmlData).val());
+          
+        } else {
+          $('select, input[type!=hidden]').each(function () {
+            if (!$(this).hasClass('langSpecific')) {
+              $(this).attr('disabled', false);
+              if (this.nodeName.toLowerCase() === 'select') {
+            	  let title = $('[data-id="shortTitleId"]');
+                  title.attr('disabled', false);
+                  title.removeAttr('style');
+              }
+            }
+          });
+          $('#question').val($('#question', htmlData).val());
+        }
+      }
+    });
+  }
 </script>

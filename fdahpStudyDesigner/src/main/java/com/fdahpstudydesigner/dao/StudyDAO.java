@@ -13,6 +13,7 @@ import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
@@ -20,6 +21,7 @@ import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -247,4 +249,20 @@ public interface StudyDAO {
       ComprehensionQuestionLangBO comprehensionQuestionLangBO, boolean deleteExisting);
 
   void saveOrUpdateObject(Object object);
+
+  String saveOrUpdateStudyEligibiltyForOtherLanguages(
+      EligibilityBo eligibilityBo, StudyLanguageBO studyLanguageBO, String language);
+
+  Integer saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(
+      EligibilityTestLangBo eligibilityTestLangBo);
+
+  EligibilityTestLangBo getEligibilityTestLanguageDataById(int id, String language);
+
+  List<EligibilityTestLangBo> getEligibilityTestLangByEligibilityId(
+      int eligibilityId, String language);
+
+  String saveOrUpdateOverviewLanguageStudyPages(
+      StudyPageBean studyPageBean, SessionObject sesObj, String language);
+
+  List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(String studyId, String language);
 }
