@@ -8753,7 +8753,7 @@ public class StudyDAOImpl implements StudyDAO {
         consentInfoLangBO =
             (ConsentInfoLangBO)
                 session
-                    .createQuery("from ConsentInfoLangBO where langCode=:language and id=:id")
+                    .createQuery("from ConsentInfoLangBO where consentInfoLangPK.langCode=:language and consentInfoLangPK.id=:id")
                     .setString("language", language)
                     .setInteger("id", id)
                     .uniqueResult();

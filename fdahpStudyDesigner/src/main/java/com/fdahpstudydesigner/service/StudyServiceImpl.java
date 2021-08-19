@@ -13,6 +13,7 @@ import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
+import com.fdahpstudydesigner.bo.ConsentInfoLangPK;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
@@ -1472,19 +1473,22 @@ public class StudyServiceImpl implements StudyService {
         if (consentInfoLangBO != null) {
           consentInfoLangBO.setModifiedBy(sessionObject.getUserId());
           consentInfoLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-          if (consentInfoBo.getBriefSummary() != null) {
-            consentInfoLangBO.setBriefSummary(
-                consentInfoBo
-                    .getBriefSummary()
-                    .replaceAll("\"", "&#34;")
-                    .replaceAll("\'", "&#39;"));
-          }
-          consentInfoLangBO.setElaborated(consentInfoBo.getElaborated());
-          consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
-          consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
-          consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
-          studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
+        } else {
+          consentInfoLangBO = new ConsentInfoLangBO();
+          consentInfoLangBO.setConsentInfoLangPK(
+              new ConsentInfoLangPK(consentInfoBo.getId(), language));
+          consentInfoLangBO.setCreatedBy(sessionObject.getUserId());
+          consentInfoLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         }
+        if (consentInfoBo.getBriefSummary() != null) {
+          consentInfoLangBO.setBriefSummary(
+              consentInfoBo.getBriefSummary().replaceAll("\"", "&#34;").replaceAll("\'", "&#39;"));
+        }
+        consentInfoLangBO.setElaborated(consentInfoBo.getElaborated());
+        consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
+        consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
+        consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
+        studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
       } else {
         if (consentInfoBo.getConsentItemType() != null) {
           updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
@@ -2245,8 +2249,7 @@ public class StudyServiceImpl implements StudyService {
               studyDAO.getConsentLanguageDataById(consentInfoBo.getId(), language);
           if (consentInfoLangBO == null) {
             consentInfoLangBO = new ConsentInfoLangBO();
-            consentInfoLangBO.setId(consentInfoBo.getId());
-            consentInfoLangBO.setLangCode(language);
+            consentInfoLangBO.setConsentInfoLangPK(new ConsentInfoLangPK(consentInfoBo.getId(), language));
             consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
             consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
             studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
@@ -2254,7 +2257,7 @@ public class StudyServiceImpl implements StudyService {
         }
         consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(studyId, language);
         for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
-          ConsentInfoBo consentInfoBo = studyDAO.getConsentInfoById(consentInfoLangBO.getId());
+          ConsentInfoBo consentInfoBo = studyDAO.getConsentInfoById(consentInfoLangBO.getConsentInfoLangPK().getId());
           if (consentInfoBo != null) {
             if (!"Custom".equals(consentInfoBo.getConsentItemType())) {
               consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());

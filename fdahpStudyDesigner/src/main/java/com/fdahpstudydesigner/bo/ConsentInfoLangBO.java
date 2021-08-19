@@ -2,6 +2,7 @@ package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,12 +13,8 @@ import javax.persistence.Table;
 @Table(name = "consent_info_lang")
 public class ConsentInfoLangBO implements Serializable {
 
-  @Id
-  @Column(name = "id")
-  private Integer id;
-
-  @Column(name = "lang_code")
-  private String langCode;
+  @EmbeddedId
+  private ConsentInfoLangPK consentInfoLangPK;
 
   @Column(name = "study_id")
   private Integer studyId;
@@ -69,22 +66,6 @@ public class ConsentInfoLangBO implements Serializable {
 
   @Column(name = "modified_on")
   private String modifiedOn;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getLangCode() {
-    return langCode;
-  }
-
-  public void setLangCode(String langCode) {
-    this.langCode = langCode;
-  }
 
   public Integer getStudyId() {
     return studyId;
@@ -212,5 +193,13 @@ public class ConsentInfoLangBO implements Serializable {
 
   public void setModifiedOn(String modifiedOn) {
     this.modifiedOn = modifiedOn;
+  }
+
+  public ConsentInfoLangPK getConsentInfoLangPK() {
+    return consentInfoLangPK;
+  }
+
+  public void setConsentInfoLangPK(ConsentInfoLangPK consentInfoLangPK) {
+    this.consentInfoLangPK = consentInfoLangPK;
   }
 }

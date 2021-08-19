@@ -135,7 +135,7 @@
     <input type="hidden" id="currentLanguage" name="currentLanguage">
     <select id="consentLangItems">
         <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
-            <option id='lang_${consentInfoLang.id}'
+            <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
                     value="${consentInfoLang.displayTitle}">${consentInfoLang.visualStep}</option>
         </c:forEach>
     </select>
