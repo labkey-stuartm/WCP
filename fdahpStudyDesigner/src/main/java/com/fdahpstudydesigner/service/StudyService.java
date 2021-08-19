@@ -67,6 +67,9 @@ public interface StudyService {
 
   public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 
+  List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
+      Integer studyId, String language);
+
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
       Integer comprehensionQuestionId);
 
@@ -219,5 +222,6 @@ public interface StudyService {
 
   ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language);
 
-  String syncQuestionDataInLanguageTables(ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
+  String syncQuestionDataInLanguageTables(
+      ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
 }

@@ -74,6 +74,9 @@ public interface StudyDAO {
 
   List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 
+  List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
+      Integer studyId, String language);
+
   List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
       Integer comprehensionQuestionId);
 

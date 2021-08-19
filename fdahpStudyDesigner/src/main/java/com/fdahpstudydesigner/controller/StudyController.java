@@ -1204,8 +1204,29 @@ public class StudyController {
           }
           map.addAttribute("markAsComplete", markAsComplete);
           map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
+
+          String language = request.getParameter("language");
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            List<ComprehensionQuestionLangBO> questionLangBOList =
+                studyService.getComprehensionTestQuestionLangList(
+                    Integer.valueOf(studyId), language);
+            if (questionLangBOList != null && !questionLangBOList.isEmpty())
+              map.addAttribute("comprehensionQuestionLangList", questionLangBOList);
+            else
+              map.addAttribute(
+                  "comprehensionQuestionLangList", new ArrayList<ComprehensionQuestionLangBO>());
+          }
+
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
+
           // get consentId if exists for studyId
           if (consentBo != null) {
             request
@@ -1344,7 +1365,9 @@ public class StudyController {
 
           String language = request.getParameter("language");
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
-            String result = studyService.syncQuestionDataInLanguageTables(comprehensionTestQuestionBo, language);
+            String result =
+                studyService.syncQuestionDataInLanguageTables(
+                    comprehensionTestQuestionBo, language);
             if (FdahpStudyDesignerConstants.SUCCESS.equals(result)) {
               comprehensionQuestionLangBO =
                   studyService.getComprehensionQuestionLangById(
@@ -3660,7 +3683,8 @@ public class StudyController {
             }
             String language = request.getParameter("language");
             addComprehensionTestQuestionBo =
-                studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo, language);
+                studyService.saveOrUpdateComprehensionTestQuestion(
+                    comprehensionTestQuestionBo, language);
           }
         }
         if (addComprehensionTestQuestionBo != null) {
@@ -4126,7 +4150,8 @@ public class StudyController {
           }
           String language = request.getParameter("currentLanguage");
           addComprehensionTestQuestionBo =
-              studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo, language);
+              studyService.saveOrUpdateComprehensionTestQuestion(
+                  comprehensionTestQuestionBo, language);
           map.addAttribute("_S", sessionStudyCount);
           if (addComprehensionTestQuestionBo != null) {
             if (addComprehensionTestQuestionBo.getId() != null) {

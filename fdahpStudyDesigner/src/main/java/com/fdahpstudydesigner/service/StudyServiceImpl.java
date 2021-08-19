@@ -408,6 +408,21 @@ public class StudyServiceImpl implements StudyService {
     return comprehensionTestQuestionList;
   }
 
+  @Override
+  public List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
+      Integer studyId, String language) {
+    logger.info("StudyServiceImpl - getComprehensionTestQuestionLangList() - Starts");
+    List<ComprehensionQuestionLangBO> comprehensionTestQuestionList = null;
+    try {
+      comprehensionTestQuestionList =
+          studyDAO.getComprehensionTestQuestionLangList(studyId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getComprehensionTestQuestionLangList() - Error", e);
+    }
+    logger.info("StudyServiceImpl - getComprehensionTestQuestionLangList() - Starts");
+    return comprehensionTestQuestionList;
+  }
+
   /**
    * Describes the get the comprehension test question response
    *
@@ -1341,28 +1356,35 @@ public class StudyServiceImpl implements StudyService {
             comprehensionQuestionLangBO.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
             comprehensionQuestionLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             List<ComprehensionResponseLangBo> entityList = new LinkedList<>();
-            for (ComprehensionTestResponseBo respEntity : comprehensionTestQuestionBo.getResponseList()) {
-              ComprehensionResponseLangBo comprehensionResponseLangBo = new ComprehensionResponseLangBo();
-              comprehensionResponseLangBo.setComprehensionResponseLangPK(new ComprehensionResponseLangPK(respEntity.getId(), language));
+            for (ComprehensionTestResponseBo respEntity :
+                comprehensionTestQuestionBo.getResponseList()) {
+              ComprehensionResponseLangBo comprehensionResponseLangBo =
+                  new ComprehensionResponseLangBo();
+              comprehensionResponseLangBo.setComprehensionResponseLangPK(
+                  new ComprehensionResponseLangPK(respEntity.getId(), language));
               comprehensionResponseLangBo.setResponseOption(respEntity.getResponseOption());
-              comprehensionResponseLangBo.setQuestionId(comprehensionQuestionLangBO.getComprehensionQuestionLangPK().getId());
+              comprehensionResponseLangBo.setQuestionId(
+                  comprehensionQuestionLangBO.getComprehensionQuestionLangPK().getId());
               entityList.add(comprehensionResponseLangBo);
             }
             comprehensionQuestionLangBO.setComprehensionResponseLangBoList(entityList);
           } else {
             comprehensionQuestionLangBO.setModifiedBy(comprehensionTestQuestionBo.getCreatedBy());
             comprehensionQuestionLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-            int i=0;
+            int i = 0;
             for (ComprehensionResponseLangBo comprehensionResponseLangBo :
                 comprehensionQuestionLangBO.getComprehensionResponseLangBoList()) {
-              ComprehensionTestResponseBo respEntity = comprehensionTestQuestionBo.getResponseList().get(i);
+              ComprehensionTestResponseBo respEntity =
+                  comprehensionTestQuestionBo.getResponseList().get(i);
               comprehensionResponseLangBo.setResponseOption(respEntity.getResponseOption());
               i++;
             }
           }
           comprehensionQuestionLangBO.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
-          comprehensionQuestionLangBO.setQuestionText(comprehensionTestQuestionBo.getQuestionText());
-          studyDAO.saveOrUpdateComprehensionQuestionLanguageData(comprehensionQuestionLangBO, false);
+          comprehensionQuestionLangBO.setQuestionText(
+              comprehensionTestQuestionBo.getQuestionText());
+          studyDAO.saveOrUpdateComprehensionQuestionLanguageData(
+              comprehensionQuestionLangBO, false);
         } else {
           if (comprehensionTestQuestionBo.getStatus() != null) {
             updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
@@ -2233,7 +2255,7 @@ public class StudyServiceImpl implements StudyService {
         consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(studyId, language);
         for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
           ConsentInfoBo consentInfoBo = studyDAO.getConsentInfoById(consentInfoLangBO.getId());
-          if (consentInfoBo!=null) {
+          if (consentInfoBo != null) {
             if (!"Custom".equals(consentInfoBo.getConsentItemType())) {
               consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
             }
@@ -2261,7 +2283,8 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language) {
+  public ComprehensionQuestionLangBO getComprehensionQuestionLangById(
+      int questionId, String language) {
     logger.info("StudyServiceImpl - getComprehensionQuestionLangById() - Starts");
     ComprehensionQuestionLangBO comprehensionQuestionLangBO = null;
     try {
@@ -2274,20 +2297,22 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public String syncQuestionDataInLanguageTables(ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language) {
+  public String syncQuestionDataInLanguageTables(
+      ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language) {
     logger.info("StudyServiceImpl - syncQuestionDataInLanguageTables() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      ComprehensionQuestionLangBO comprehensionQuestionLangBO = studyDAO.getComprehensionQuestionLangById(comprehensionTestQuestionBo.getId(), language);
-      int i=0;
+      ComprehensionQuestionLangBO comprehensionQuestionLangBO =
+          studyDAO.getComprehensionQuestionLangById(comprehensionTestQuestionBo.getId(), language);
+      int i = 0;
       List<ComprehensionResponseLangBo> responseLangBoList = null;
-      if (comprehensionQuestionLangBO!=null) {
+      if (comprehensionQuestionLangBO != null) {
         responseLangBoList = comprehensionQuestionLangBO.getComprehensionResponseLangBoList();
         studyDAO.saveOrUpdateComprehensionQuestionLanguageData(comprehensionQuestionLangBO, true);
-      }
-      else {
+      } else {
         comprehensionQuestionLangBO = new ComprehensionQuestionLangBO();
-        comprehensionQuestionLangBO.setComprehensionQuestionLangPK(new ComprehensionQuestionLangPK(comprehensionTestQuestionBo.getId(), language));
+        comprehensionQuestionLangBO.setComprehensionQuestionLangPK(
+            new ComprehensionQuestionLangPK(comprehensionTestQuestionBo.getId(), language));
         comprehensionQuestionLangBO.setStudyId(comprehensionTestQuestionBo.getStudyId());
         comprehensionQuestionLangBO.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
         comprehensionQuestionLangBO.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
@@ -2302,10 +2327,11 @@ public class StudyServiceImpl implements StudyService {
             ComprehensionResponseLangBo existingResponseLangBo = responseLangBoList.get(i);
             responseLangBo.setResponseOption(existingResponseLangBo.getResponseOption());
           }
-        }catch (IndexOutOfBoundsException exception) {
+        } catch (IndexOutOfBoundsException exception) {
           logger.warn("Altered Data found in English Language");
         }
-        responseLangBo.setComprehensionResponseLangPK(new ComprehensionResponseLangPK(responseBo.getId(), language));
+        responseLangBo.setComprehensionResponseLangPK(
+            new ComprehensionResponseLangPK(responseBo.getId(), language));
         responseLangBo.setQuestionId(comprehensionTestQuestionBo.getId());
         responseLangBoListNew.add(responseLangBo);
         i++;

@@ -1422,6 +1422,34 @@ public class StudyDAOImpl implements StudyDAO {
     return comprehensionTestQuestionList;
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
+      Integer studyId, String language) {
+    logger.info("StudyDAOImpl - getComprehensionTestQuestionLangList() - Starts");
+    Session session = null;
+    List<ComprehensionQuestionLangBO> list = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      list =
+          session
+              .createQuery(
+                  "From ComprehensionQuestionLangBO CTQBO where CTQBO.studyId= :studyId and "
+                      + "CTQBO.comprehensionQuestionLangPK.langCode=:language order by CTQBO.sequenceNo asc")
+              .setInteger("studyId", studyId)
+              .setString("language", language)
+              .list();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getComprehensionTestQuestionLangList() - Error", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getComprehensionTestQuestionLangList() - Ends");
+    return list;
+  }
+
   /**
    * Describes the get the comprehension test question response
    *
@@ -8794,22 +8822,24 @@ public class StudyDAOImpl implements StudyDAO {
    * 'correct' answer options.
    *
    * @author BTC
-   * @param  questionId {@link ComprehensionTestQuestionBo}
+   * @param questionId {@link ComprehensionTestQuestionBo}
    * @return {@link ComprehensionQuestionLangBO}
    */
   @SuppressWarnings("unchecked")
   @Override
-  public ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language) {
+  public ComprehensionQuestionLangBO getComprehensionQuestionLangById(
+      int questionId, String language) {
     logger.info("StudyDAOImpl - getComprehensionQuestionLangById() - Starts");
     ComprehensionQuestionLangBO comprehensionQuestionLangBO = null;
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       Criteria criteria = session.createCriteria(ComprehensionQuestionLangBO.class);
-      criteria.add(Restrictions.eq("comprehensionQuestionLangPK.id", questionId))
+      criteria
+          .add(Restrictions.eq("comprehensionQuestionLangPK.id", questionId))
           .add(Restrictions.eq("comprehensionQuestionLangPK.langCode", language));
       criteria.setFetchMode("comprehensionResponseLangBoList", FetchMode.JOIN);
-      comprehensionQuestionLangBO = (ComprehensionQuestionLangBO)criteria.uniqueResult();
+      comprehensionQuestionLangBO = (ComprehensionQuestionLangBO) criteria.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getComprehensionQuestionLangById() - Error", e);
     } finally {
