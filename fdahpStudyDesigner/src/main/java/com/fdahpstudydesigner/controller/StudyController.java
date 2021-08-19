@@ -1209,7 +1209,7 @@ public class StudyController {
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
             List<ComprehensionQuestionLangBO> questionLangBOList =
                 studyService.getComprehensionTestQuestionLangList(
-                    Integer.valueOf(studyId), language);
+                    comprehensionTestQuestionList, language);
             if (questionLangBOList != null && !questionLangBOList.isEmpty())
               map.addAttribute("comprehensionQuestionLangList", questionLangBOList);
             else

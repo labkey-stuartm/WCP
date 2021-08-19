@@ -411,12 +411,27 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
-      Integer studyId, String language) {
+      List<ComprehensionTestQuestionBo> questionBoList, String language) {
     logger.info("StudyServiceImpl - getComprehensionTestQuestionLangList() - Starts");
     List<ComprehensionQuestionLangBO> comprehensionTestQuestionList = null;
     try {
-      comprehensionTestQuestionList =
-          studyDAO.getComprehensionTestQuestionLangList(studyId, language);
+      if (questionBoList != null && !questionBoList.isEmpty()) {
+        int studyId = questionBoList.get(0).getStudyId();
+        for (ComprehensionTestQuestionBo questionBo : questionBoList) {
+          ComprehensionQuestionLangBO questionLangBO = studyDAO.getComprehensionQuestionLangById(questionBo.getId(), language);
+          if (questionLangBO==null) {
+            questionLangBO = new ComprehensionQuestionLangBO();
+            questionLangBO.setComprehensionQuestionLangPK(new ComprehensionQuestionLangPK(questionBo.getId(), language));
+            questionLangBO.setStudyId(questionBo.getStudyId());
+            questionLangBO.setSequenceNo(questionBo.getSequenceNo());
+            questionLangBO.setCreatedBy(questionBo.getCreatedBy());
+            questionLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            studyDAO.saveOrUpdateComprehensionQuestionLanguageData(questionLangBO, false);
+          }
+        }
+        comprehensionTestQuestionList =
+            studyDAO.getComprehensionTestQuestionLangList(studyId, language);
+      }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - getComprehensionTestQuestionLangList() - Error", e);
     }

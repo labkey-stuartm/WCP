@@ -68,7 +68,7 @@ public interface StudyService {
   public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 
   List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
-      Integer studyId, String language);
+      List<ComprehensionTestQuestionBo> questionBoList, String language);
 
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
       Integer comprehensionQuestionId);
