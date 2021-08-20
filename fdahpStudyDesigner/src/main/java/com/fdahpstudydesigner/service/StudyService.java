@@ -229,7 +229,7 @@ public interface StudyService {
   String syncQuestionDataInLanguageTables(
       ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
 
-  public List<EligibilityTestLangBo> syncEligibilityTestDataInLanguageTable(
+  List<EligibilityTestLangBo> syncEligibilityTestDataInLanguageTable(
       List<EligibilityTestBo> eligibilityTestList, String language);
 
   EligibilityTestLangBo getEligibilityTestLangById(int eligibilityId, String language);

@@ -1,8 +1,9 @@
 package com.fdahpstudydesigner.bo;
 
+import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -12,14 +13,9 @@ import javax.persistence.Table;
     name = "EligibilityTestLangBo.findById",
     query =
         "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.id=:eligibilityTestId ORDER BY ETB.sequenceNo")
-public class EligibilityTestLangBo {
+public class EligibilityTestLangBo implements Serializable {
 
-  @Id
-  @Column(name = "id")
-  private Integer id;
-
-  @Column(name = "lang_code")
-  private String langCode;
+  @EmbeddedId private EligibilityTestLangPK eligibilityTestLangPK;
 
   @Column(name = "eligibility_id")
   private Integer eligibilityId;
@@ -36,20 +32,12 @@ public class EligibilityTestLangBo {
   @Column(name = "active")
   private Boolean active = true;
 
-  public Integer getId() {
-    return id;
+  public EligibilityTestLangPK getEligibilityTestLangPK() {
+    return eligibilityTestLangPK;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getLangCode() {
-    return langCode;
-  }
-
-  public void setLangCode(String langCode) {
-    this.langCode = langCode;
+  public void setEligibilityTestLangPK(EligibilityTestLangPK eligibilityTestLangPK) {
+    this.eligibilityTestLangPK = eligibilityTestLangPK;
   }
 
   public Integer getEligibilityId() {

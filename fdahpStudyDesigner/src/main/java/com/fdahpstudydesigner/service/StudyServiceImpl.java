@@ -18,6 +18,7 @@ import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
+import com.fdahpstudydesigner.bo.EligibilityTestLangPK;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
@@ -1575,7 +1576,7 @@ public class StudyServiceImpl implements StudyService {
       String language) {
     logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");
     Integer eligibilityTestId = 0;
-    Integer seqCount = 0;
+    int seqCount = 0;
     try {
       if (eligibilityTestBo != null) {
         if (null == eligibilityTestBo.getId()) {
@@ -1585,17 +1586,18 @@ public class StudyServiceImpl implements StudyService {
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
           EligibilityTestLangBo eligibilityTestLangBo =
               studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
-          if (eligibilityTestLangBo != null) {
-            eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
-            eligibilityTestLangBo.setId(eligibilityTestBo.getId());
-            eligibilityTestLangBo.setQuestion(eligibilityTestBo.getQuestion());
-            eligibilityTestLangBo.setActive(true);
-            eligibilityTestLangBo.setStatus(eligibilityTestBo.getStatus());
-            eligibilityTestId =
-                studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
-          } else {
-
+          if (eligibilityTestLangBo == null) {
+            eligibilityTestLangBo = new EligibilityTestLangBo();
+            eligibilityTestLangBo.setEligibilityTestLangPK(
+                new EligibilityTestLangPK(eligibilityTestBo.getId(), language));
           }
+          eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
+          eligibilityTestLangBo.setQuestion(eligibilityTestBo.getQuestion());
+          eligibilityTestLangBo.setActive(true);
+          eligibilityTestLangBo.setStatus(eligibilityTestBo.getStatus());
+          eligibilityTestId =
+              studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
+
         } else {
           eligibilityTestId =
               studyDAO.saveOrUpdateEligibilityTestQusAns(
@@ -2417,8 +2419,8 @@ public class StudyServiceImpl implements StudyService {
               studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
           if (eligibilityTestLangBo == null) {
             eligibilityTestLangBo = new EligibilityTestLangBo();
-            eligibilityTestLangBo.setId(eligibilityTestBo.getId());
-            eligibilityTestLangBo.setLangCode(language);
+            eligibilityTestLangBo.setEligibilityTestLangPK(
+                new EligibilityTestLangPK(eligibilityTestBo.getId(), language));
             eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
             eligibilityTestLangBo.setSequenceNo(eligibilityTestBo.getSequenceNo());
             studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);

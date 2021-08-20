@@ -595,7 +595,6 @@
         if (language !== 'English') {
           $('#comprehensionLangItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
-            console.log(id);
             $('#' + id).find('td.title').text(value.getAttribute('value'));
           })
           $('#addQuestionId').attr('disabled', true);

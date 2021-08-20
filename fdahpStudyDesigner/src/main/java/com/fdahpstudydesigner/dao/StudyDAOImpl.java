@@ -8958,7 +8958,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       session.saveOrUpdate(eligibilityTestLangBo);
-      id = eligibilityTestLangBo.getId();
+      id = eligibilityTestLangBo.getEligibilityTestLangPK().getId();
       transaction.commit();
     } catch (Exception e) {
       transaction.rollback();
@@ -8986,7 +8986,7 @@ public class StudyDAOImpl implements StudyDAO {
           (EligibilityTestLangBo)
               session
                   .createQuery(
-                      "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.id=:eligibilityTestId AND ETB.langCode=:language ORDER BY ETB.sequenceNo")
+                      "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.eligibilityTestLangPK.id=:eligibilityTestId AND ETB.eligibilityTestLangPK.langCode=:language ORDER BY ETB.sequenceNo")
                   .setString("language", language)
                   .setInteger("eligibilityTestId", eligibilityTestId)
                   .uniqueResult();
@@ -9002,6 +9002,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public List<EligibilityTestLangBo> getEligibilityTestLangByEligibilityId(
       int eligibilityId, String language) {
     logger.info("StudyDAOImpl - getEligibilityTestLangByEligibilityId() - Starts");
@@ -9013,7 +9014,7 @@ public class StudyDAOImpl implements StudyDAO {
         dataList =
             session
                 .createQuery(
-                    "from EligibilityTestLangBo where langCode=:language and eligibilityId=:id")
+                    "from EligibilityTestLangBo etlb where etlb.eligibilityTestLangPK.langCode=:language and etlb.eligibilityId=:id")
                 .setString("language", language)
                 .setInteger("id", eligibilityId)
                 .list();
