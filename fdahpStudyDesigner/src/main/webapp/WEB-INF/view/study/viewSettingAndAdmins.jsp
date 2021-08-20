@@ -39,17 +39,19 @@
                     <c:set var="isLive">${_S}isLive</c:set>
                         ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                    <select
-                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" required title="Select"
-                            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
-                        <option value="English" selected>English</option>
-                        <c:forEach items="${selectedLanguages}" var="language">
-                            <option value="${language}">${language}</option>
-                        </c:forEach>
-                    </select>
-                </div>
+                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                        <select
+                                class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                id="studyLanguage" name="studyLanguage" required title="Select"
+                                <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
+                            <option value="English" selected>English</option>
+                            <c:forEach items="${selectedLanguages}" var="language">
+                                <option value="${language}">${language}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
                     <button type="button" class="btn btn-default gray-btn cancelBut"
@@ -117,13 +119,13 @@
                 <div class="form-group">
             		<span class="radio radio-info radio-inline p-45">
 						<input type="radio" id="mlYes" value="Yes" name="multiLanguageFlag"
-                               <c:if test="${studyBo.multiLanguageFlag == 'Yes'}">checked</c:if>
+                               <c:if test="${studyBo.multiLanguageFlag eq true}">checked</c:if>
                         />
 						<label for="mlYes">Yes</label>
             		</span>
                     <span class="radio radio-inline">
 						<input type="radio" id="mlNo" value="No" name="multiLanguageFlag"
-                               <c:if test="${studyBo.multiLanguageFlag == null || studyBo.multiLanguageFlag == '' || studyBo.multiLanguageFlag == 'No'}">checked</c:if>
+                               <c:if test="${studyBo.multiLanguageFlag eq false}">checked</c:if>
                         />
             			<label for="mlNo">No</label>
             		</span>

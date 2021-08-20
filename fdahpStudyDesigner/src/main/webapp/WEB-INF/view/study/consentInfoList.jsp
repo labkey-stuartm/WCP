@@ -40,19 +40,21 @@
                 <span>${not empty  sessionScope[isLive]?studyBo.studyVersionBo.consentLVersion:''}</span>
             </div>
 
-            <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                <select
-                        class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                        id="studyLanguage" name="studyLanguage" required title="Select"
-                        <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
-                    <option value="English" selected>English</option>
-                    <c:forEach items="${languageList}" var="language">
-                        <option value="${language}"
-                            ${studyBo.studyLanguage eq language ?'selected':''}>${language}
-                        </option>
-                    </c:forEach>
-                </select>
-            </div>
+            <c:if test="${studyBo.multiLanguageFlag eq true}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <select
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            id="studyLanguage" name="studyLanguage" required title="Select"
+                            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
+                        <option value="English" selected>English</option>
+                        <c:forEach items="${languageList}" var="language">
+                            <option value="${language}"
+                                ${studyBo.studyLanguage eq language ?'selected':''}>${language}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </c:if>
 
             <div class="dis-line form-group mb-none mr-sm">
                 <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>

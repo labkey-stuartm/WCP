@@ -27,18 +27,20 @@
                         ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}
                 </div>
 
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                    <select
-                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" required title="Select"
-                            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
-                        <option value="English" selected>English</option>
-                        <c:forEach items="${languageList}" var="language">
-                            <option value="${language}"
-                                ${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
-                        </c:forEach>
-                    </select>
-                </div>
+                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                        <select
+                                class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                id="studyLanguage" name="studyLanguage" required title="Select"
+                                <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
+                            <option value="English" selected>English</option>
+                            <c:forEach items="${languageList}" var="language">
+                                <option value="${language}"
+                                    ${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
                     <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -68,6 +70,7 @@
         <input type="hidden" id="mlFullName" value="${studyLanguageBO.fullName}"/>
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
         <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
+        <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage">
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
@@ -177,7 +180,7 @@
                             class="requiredStar"> *</span>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="researchSponsor" class="form-control"
+                        <input type="text" id="researchSponsor" class="form-control langSpecific"
                                name="researchSponsor"
                                value="${fn:escapeXml(studyBo.researchSponsor)}" maxlength="100"
                                required/>
@@ -877,6 +880,7 @@
           $('#customStudyName').val($('input#mlName', htmlData).val());
           $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
           $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
+          $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
           $('#editor').val($('input#mlDescription', htmlData).val());
           tinymce.activeEditor.setContent($('input#mlDescription', htmlData).val());
 
@@ -896,6 +900,7 @@
           $('#customStudyName').val($('input#customStudyName', htmlData).val());
           $('input[name="fullName"]').val($('input[name="fullName"]', htmlData).val());
           $('input[name="studyTagLine"]').val($('input[name="studyTagLine"]', htmlData).val());
+          $('#researchSponsor').val($('#researchSponsor', htmlData).val());
           $('#editor').val($('#editor', htmlData).val());
           tinymce.activeEditor.setContent($('#editor', htmlData).val());
           $('#removeUrl').removeAttr('style');

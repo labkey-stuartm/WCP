@@ -27,6 +27,9 @@ public class StudyLanguageBO implements Serializable {
   @Column(name = "description")
   private String description;
 
+  @Column(name = "research_sponsor")
+  private String researchSponsor;
+
   @Column(name = "allow_rejoin_text")
   private String allowRejoinText;
 
@@ -194,5 +197,13 @@ public class StudyLanguageBO implements Serializable {
 
   public void setModifiedOn(String modifiedOn) {
     this.modifiedOn = modifiedOn;
+  }
+
+  public String getResearchSponsor() {
+    return researchSponsor;
+  }
+
+  public void setResearchSponsor(String researchSponsor) {
+    this.researchSponsor = researchSponsor;
   }
 }

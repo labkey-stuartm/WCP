@@ -13,6 +13,13 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
+
+      /* without z-index to avoid collision with multi-language dropdown */
+      .right-content-head-wo-z {
+        padding: 12px 30px;
+        position: relative;
+        border-bottom: 1px solid #ddd;
+      }
     </style>
 </head>
 <script type="text/javascript">
@@ -38,19 +45,21 @@
                     TEST
                 </div>
 
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                    <select
-                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" required title="Select"
-                            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
-                        <option value="English" selected>English</option>
-                        <c:forEach items="${languageList}" var="language">
-                            <option value="${language}"
-                                ${studyBo.studyLanguage eq language ?'selected':''}>${language}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
+                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                        <select
+                                class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                id="studyLanguage" name="studyLanguage" required title="Select"
+                                <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
+                            <option value="English" selected>English</option>
+                            <c:forEach items="${languageList}" var="language">
+                                <option value="${language}"
+                                    ${studyBo.studyLanguage eq language ?'selected':''}>${language}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
                     <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -75,7 +84,7 @@
             </div>
         </div>
         <!--  End  top tab section-->
-        <div class="right-content-head">
+        <div class="right-content-head-wo-z">
             <div class="mb-xlg" id="displayTitleId">
                 <div class="gray-xs-f mb-xs">
                     Do you need a Comprehension Test for your study? <span
@@ -591,7 +600,6 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        console.log(data);
         if (language !== 'English') {
           $('#comprehensionLangItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
