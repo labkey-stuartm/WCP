@@ -183,33 +183,33 @@ $("#rowId").addClass('lc-gray-bg');
    
    var a = document.createElement('a');
    $('.first').click(function() {
-		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}&language="+$('#currentLanguage').val();
 		document.body.appendChild(a).click();
 	});
    <c:if test="${not empty studyBo.studySequenceBo && studyBo.studySequenceBo.basicInfo}">
 	   $('.second').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do?_S=${param._S}";
+			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do?_S=${param._S}&language="+$('#currentLanguage').val();
 			document.body.appendChild(a).click();
 		});
 	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
 		   $('.third').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do?_S=${param._S}";
+				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do?_S=${param._S}&language="+$('#currentLanguage').val();
 				document.body.appendChild(a).click();
 			});
 		   $('.fourth').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}&language="+$('#currentLanguage').val();
 				document.body.appendChild(a).click();
 			});
 		   $('.fifth').click(function() {
-			   a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+			   a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="+$('#currentLanguage').val();
 				document.body.appendChild(a).click();
 			});
 			$('.fifthConsent').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="+$('#currentLanguage').val();
 				document.body.appendChild(a).click();
 			});
  			$('.fifthComre').click(function() {
- 				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}";
+ 				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}&language="+$('#currentLanguage').val();
  				document.body.appendChild(a).click();
 			});
 			$('.fifthConsentReview').click(function() {

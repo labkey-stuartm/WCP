@@ -97,7 +97,7 @@ public class StudyBo implements Serializable {
   private Integer hasStudyDraft = 0;
 
   @Column(name = "multi_language_flag")
-  private boolean multiLanguageFlag=false;
+  private Boolean multiLanguageFlag=false;
 
   @Column(name = "selected_languages")
   private String selectedLanguages;

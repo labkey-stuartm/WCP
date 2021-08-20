@@ -31,12 +31,11 @@
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                                id="studyLanguage" name="studyLanguage" required title="Select"
-                                <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
-                            <option value="English" selected>English</option>
+                                id="studyLanguage" name="studyLanguage" required title="Select">
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language}"
-                                    ${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+                                    ${currLanguage eq language ?'selected':''}>${language}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -71,7 +70,7 @@
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
         <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
-        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
             <div class="col-md-12 p-none">
@@ -377,6 +376,12 @@
     var thumbnailImageId = $('#thumbnailImageId').val();
     if (file || thumbnailImageId) {
       $('#removeUrl').css("visibility", "visible");
+    }
+
+    let currLang = $('#studyLanguage').val();
+    if (currLang!==null || currLang!=='' || currLang!=='English') {
+      $('#currentLanguage').val(currLang);
+      refreshAndFetchLanguageData(currLang);
     }
 
     <c:if test="${not empty permission}">
@@ -854,7 +859,6 @@
   })
 
   function refreshAndFetchLanguageData(language) {
-    console.log(tinymce.activeEditor.getContent());
     $.ajax({
       url: '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}',
       type: "GET",

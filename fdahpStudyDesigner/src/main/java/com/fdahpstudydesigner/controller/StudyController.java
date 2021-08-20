@@ -1218,6 +1218,7 @@ public class StudyController {
               map.addAttribute(
                   "comprehensionQuestionLangList", new ArrayList<ComprehensionQuestionLangBO>());
           }
+          map.addAttribute("currLanguage", language);
 
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
@@ -1366,6 +1367,7 @@ public class StudyController {
                   Integer.valueOf(comprehensionQuestionId));
 
           String language = request.getParameter("language");
+          map.addAttribute("currLanguage", language);
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
             String result =
                 studyService.syncQuestionDataInLanguageTables(
@@ -1505,6 +1507,7 @@ public class StudyController {
             if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang))
               consentInfoLangList =
                   studyService.syncConsentDataInLanguageTable(consentInfoList, currLang);
+            map.addAttribute("currLanguage", currLang);
           }
           map.addAttribute("consentInfoLangList", consentInfoLangList);
           map.addAttribute("markAsComplete", markAsComplete);
@@ -1695,6 +1698,7 @@ public class StudyController {
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language))
             consentInfoLangBO =
                 studyService.getConsentInfoLangById(consentInfoBo.getId(), language);
+          map.addAttribute("currLanguage", language);
           map.addAttribute("consentInfoLangBO", consentInfoLangBO);
         }
         map.addAttribute("_S", sessionStudyCount);
@@ -2371,6 +2375,7 @@ public class StudyController {
             studyLanguageBO =
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
           }
+          map.addAttribute("currLanguage", language);
           map.addAttribute(
               "studyPageLanguageList",
               studyPageLanguageBOS != null
@@ -5673,6 +5678,7 @@ public class StudyController {
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
           }
           map.addAttribute("studyLanguageBO", studyLanguageBO);
+          map.addAttribute("currLanguage", language);
         }
         if (studyBo == null) {
           studyBo = new StudyBo();
@@ -5832,6 +5838,7 @@ public class StudyController {
             studyLanguageBO =
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), currLang);
           }
+          map.addAttribute("currLanguage", currLang);
           map.addAttribute(
               "alertText", studyLanguageBO != null ? studyLanguageBO.getAllowRejoinText() : null);
 
@@ -5854,7 +5861,6 @@ public class StudyController {
           map.addAttribute("studyPermissionList", studyPermissionList);
           map.addAttribute("permissions", permissions);
           map.addAttribute("user", user);
-          map.addAttribute("currLang", currLang);
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new LinkedList<>();
@@ -6099,6 +6105,7 @@ public class StudyController {
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), currLang);
             map.addAttribute("mlInstructionalText", studyLanguageBO.getInstructionalText());
           }
+          map.addAttribute("currLanguage", currLang);
         }
 
         map.addAttribute("eligibilityTestLangList", eligibilityTestLangList);
@@ -6230,6 +6237,7 @@ public class StudyController {
               eligibilityTestLangBo =
                   studyService.getEligibilityTestLangById(eligibilityTestId, language);
             }
+            map.addAttribute("currLanguage", language);
             eligibilityTest = studyService.viewEligibilityTestQusAnsById(eligibilityTestId);
           }
 

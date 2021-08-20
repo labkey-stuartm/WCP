@@ -32,6 +32,14 @@
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
     <div class="right-content-head">
+
+        <select id="consentLangItems" style="display: none">
+            <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
+                <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
+                        value="${consentInfoLang.displayTitle}">${consentInfoLang.visualStep}</option>
+            </c:forEach>
+        </select>
+
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
                 Consent Sections
@@ -44,13 +52,11 @@
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" required title="Select"
-                            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"></c:if>>
-                        <option value="English" selected>English</option>
+                            id="studyLanguage" name="studyLanguage" required title="Select">
+                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
                         <c:forEach items="${languageList}" var="language">
                             <option value="${language}"
-                                ${studyBo.studyLanguage eq language ?'selected':''}>${language}
-                            </option>
+                                ${currLanguage eq language ?'selected':''}>${language}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -134,13 +140,7 @@
     <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
     <input type="hidden" name="actionType" id="actionType">
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
-    <input type="hidden" id="currentLanguage" name="currentLanguage">
-    <select id="consentLangItems">
-        <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
-            <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
-                    value="${consentInfoLang.displayTitle}">${consentInfoLang.visualStep}</option>
-        </c:forEach>
-    </select>
+    <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 </form:form>
 <form:form
         action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do?_S=${param._S}"
@@ -155,6 +155,12 @@
     $("#createStudyId").show();
     var viewPermission = "${permission}";
     var permission = "${permission}";
+
+    let currLang = $('#studyLanguage').val();
+    if (currLang!==null || currLang!=='' || currLang!=='English') {
+      $('#currentLanguage').val(currLang);
+      refreshAndFetchLanguageData(currLang);
+    }
 
     var reorder = true;
     if (viewPermission == 'view') {

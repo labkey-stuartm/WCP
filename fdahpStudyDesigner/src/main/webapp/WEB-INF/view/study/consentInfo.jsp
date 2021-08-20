@@ -49,11 +49,10 @@
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" selected>English</option>
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language}"
-                                    ${studyBo.studyLanguage eq language ?'selected':''}>${language}
-                                </option>
+                                    ${currLanguage eq language ?'selected':''}>${language}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -196,6 +195,12 @@
 <script type="text/javascript">
   $(document).ready(function () {
     // Fancy Scroll Bar
+
+    let currLang = $('#studyLanguage').val();
+    if (currLang!==null || currLang!=='' || currLang!=='English') {
+      $('#currentLanguage').val(currLang);
+      refreshAndFetchLanguageData(currLang);
+    }
 
     <c:if test="${actionPage eq 'view'}">
     $('#consentInfoFormId input,textarea').prop('disabled', true);
@@ -399,7 +404,7 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+          a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="+$('#studyLanguage').val();
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -534,7 +539,6 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        console.log(data);
         if (language !== 'English') {
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);

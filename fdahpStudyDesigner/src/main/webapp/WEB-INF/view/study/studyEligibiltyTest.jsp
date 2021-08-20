@@ -32,12 +32,12 @@
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
-                                class="selectpicker aq-select aq-select-form studyLanguage"
+                                class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" selected>English</option>
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language}"
-                                    ${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+                                    ${currLanguage eq language ?'selected':''}>${language}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -166,6 +166,12 @@
 
         $(".menuNav li.active").removeClass('active');
         $(".menuNav li.fourth").addClass('active');
+
+        let currLang = $('#studyLanguage').val();
+        if (currLang!==null || currLang!=='' || currLang!=='English') {
+          $('#currentLanguage').val(currLang);
+          refreshAndFetchLanguageData(currLang);
+        }
 
         <c:if test="${actionTypeForQuestionPage eq 'view'}">
         $('#studyEligibiltyTestFormId input,textarea,select')
@@ -347,7 +353,7 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
+          a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}&language="+$('#studyLanguage').val();
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);

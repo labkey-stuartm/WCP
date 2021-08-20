@@ -32,11 +32,10 @@
 						<select
 								class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
 								id="studyLanguage" name="studyLanguage" required title="Select">
-							<option value="English" selected>English</option>
+							<option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
 							<c:forEach items="${languageList}" var="language">
 								<option value="${language}"
-									${studyBo.studyLanguage eq language ?'selected':''}>${language}
-								</option>
+									${currLanguage eq language ?'selected':''}>${language}</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -279,6 +278,13 @@
 				$('.TestQuestionButtonHide').hide();
 				$('.addBtnDis, .remBtnDis').addClass('dis-none');
 				</c:if>
+
+				let currLang = $('#studyLanguage').val();
+				if (currLang!==null || currLang!=='' || currLang!=='English') {
+					$('#currentLanguage').val(currLang);
+					refreshAndFetchLanguageData(currLang);
+				}
+
 				$("#doneId").on(
 						"click",
 						function() {
@@ -378,7 +384,7 @@
 					callback : function(result) {
 						if (result) {
 							var a = document.createElement('a');
-							a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}";
+							a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}&language="+$('#studyLanguage').val();
 							document.body.appendChild(a).click();
 						} else {
 							$(item).prop('disabled', false);

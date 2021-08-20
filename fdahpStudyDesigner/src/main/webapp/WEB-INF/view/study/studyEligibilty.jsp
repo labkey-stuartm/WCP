@@ -33,12 +33,13 @@
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                        <select class="selectpicker aq-select aq-select-form studyLanguage"
+                        <select
+                                class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" selected>English</option>
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language}"
-                                    ${studyBo.studyLanguage eq language ?'selected':''}>${language}</option>
+                                    ${currLanguage eq language ?'selected':''}>${language}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -185,7 +186,8 @@
 </div>
 <form:form
         action="/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}"
-        id="viewQAFormId"></form:form>
+        id="viewQAFormId">
+</form:form>
 <script type="text/javascript">
   var viewPermission = "${permission}";
   var permission = "${permission}";
@@ -213,6 +215,12 @@
         $('#eleFormId').find('.elaborateClass').addClass(
             'linkDis');
         </c:if>
+
+        let currLang = $('#studyLanguage').val();
+        if (currLang!==null || currLang!=='' || currLang!=='English') {
+          $('#currentLanguage').val(currLang);
+          refreshAndFetchLanguageData(currLang);
+        }
 
         <c:if test="${empty eligibility.id}">
         $('#addQaId').prop('disabled', true);
@@ -497,6 +505,12 @@
     input.setAttribute('type', "hidden");
     input.setAttribute('name', 'actionTypeForQuestionPage');
     input.setAttribute('value', actionTypeForQuestionPage);
+    form.append(input);
+
+    input = document.createElement("input");
+    input.setAttribute('type', "hidden");
+    input.setAttribute('name', 'language');
+    input.setAttribute('value', $('#studyLanguage').val());
     form.append(input);
 
     input = document.createElement("input");

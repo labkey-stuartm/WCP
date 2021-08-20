@@ -8824,7 +8824,7 @@ public class StudyDAOImpl implements StudyDAO {
       if (studyId != 0) {
         dataList =
             session
-                .createQuery("from ConsentInfoLangBO where langCode=:language and studyId=:id")
+                .createQuery("from ConsentInfoLangBO cil where cil.consentInfoLangPK.langCode=:language and studyId=:id")
                 .setString("language", language)
                 .setInteger("id", studyId)
                 .list();
