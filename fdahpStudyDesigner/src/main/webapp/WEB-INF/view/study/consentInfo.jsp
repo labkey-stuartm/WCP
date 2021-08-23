@@ -49,7 +49,9 @@
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                                English
+                            </option>
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language}"
                                     ${currLanguage eq language ?'selected':''}>${language}</option>
@@ -197,7 +199,7 @@
     // Fancy Scroll Bar
 
     let currLang = $('#studyLanguage').val();
-    if (currLang!==null || currLang!=='' || currLang!=='English') {
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
       $('#currentLanguage').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }
@@ -404,7 +406,8 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="+$('#studyLanguage').val();
+          a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
+              + $('#studyLanguage').val();
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);

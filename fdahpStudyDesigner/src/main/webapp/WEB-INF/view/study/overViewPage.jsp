@@ -21,14 +21,16 @@
                 <div class="black-md-f text-uppercase dis-line pull-left line34">
                     Overview
                     <c:set var="isLive">${_S}isLive</c:set>
-                    ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                        ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                                English
+                            </option>
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language}"
                                     ${currLanguage eq language ?'selected':''}>${language}</option>
@@ -350,7 +352,7 @@
     </c:if>
 
     let currLang = $('#studyLanguage').val();
-    if (currLang!==null || currLang!=='' || currLang!=='English') {
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
       $('#currentLanguage').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }

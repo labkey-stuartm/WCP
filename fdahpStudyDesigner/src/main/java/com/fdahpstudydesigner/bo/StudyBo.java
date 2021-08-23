@@ -97,7 +97,7 @@ public class StudyBo implements Serializable {
   private Integer hasStudyDraft = 0;
 
   @Column(name = "multi_language_flag")
-  private Boolean multiLanguageFlag=false;
+  private Boolean multiLanguageFlag = false;
 
   @Column(name = "selected_languages")
   private String selectedLanguages;
@@ -632,11 +632,11 @@ public class StudyBo implements Serializable {
     this.studyLanguage = studyLanguage;
   }
 
-  public boolean getMultiLanguageFlag() {
+  public Boolean getMultiLanguageFlag() {
     return multiLanguageFlag;
   }
 
-  public void setMultiLanguageFlag(boolean multiLanguageFlag) {
+  public void setMultiLanguageFlag(Boolean multiLanguageFlag) {
     this.multiLanguageFlag = multiLanguageFlag;
   }
 

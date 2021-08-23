@@ -44,7 +44,9 @@
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>English</option>
+                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                                English
+                            </option>
                             <c:forEach items="${selectedLanguages}" var="language">
                                 <option value="${language}" ${currLanguage eq language ?'selected':''}>${language}</option>
                             </c:forEach>
@@ -124,7 +126,7 @@
             		</span>
                     <span class="radio radio-inline">
 						<input type="radio" id="mlNo" value="No" name="multiLanguageFlag"
-                               <c:if test="${studyBo.multiLanguageFlag eq false}">checked</c:if>
+                               <c:if test="${studyBo.multiLanguageFlag eq false or studyBo.multiLanguageFlag eq null}">checked</c:if>
                         />
             			<label for="mlNo">No</label>
             		</span>
@@ -511,7 +513,7 @@
     </c:if>
 
     let currLang = $('#studyLanguage').val();
-    if (currLang!==null || currLang!=='' || currLang!=='English') {
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
       $('#currentLanguage').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }
