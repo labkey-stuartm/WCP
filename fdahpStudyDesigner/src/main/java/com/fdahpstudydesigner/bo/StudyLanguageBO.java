@@ -63,6 +63,32 @@ public class StudyLanguageBO implements Serializable {
   @Column(name = "modified_on")
   private String modifiedOn;
 
+  // e-consent page columns starts
+  @Column(name = "e_consent_title")
+  private String eConsentTitle;
+
+  @Column(name = "tagline_description")
+  private String taglineDescription;
+
+  @Column(name = "short_description")
+  private String shortDescription;
+
+  @Column(name = "long_description")
+  private String longDescription;
+
+  @Column(name = "learn_more_text")
+  private String learnMoreText;
+
+  @Column(name = "signature_one")
+  private String signatureOne;
+
+  @Column(name = "signature_two")
+  private String signatureTwo;
+
+  @Column(name = "signature_three")
+  private String signatureThree;
+  // e-consent page columns ends
+
   public String getCustomStudyId() {
     return customStudyId;
   }
@@ -205,5 +231,69 @@ public class StudyLanguageBO implements Serializable {
 
   public void setResearchSponsor(String researchSponsor) {
     this.researchSponsor = researchSponsor;
+  }
+
+  public String geteConsentTitle() {
+    return eConsentTitle;
+  }
+
+  public void seteConsentTitle(String eConsentTitle) {
+    this.eConsentTitle = eConsentTitle;
+  }
+
+  public String getTaglineDescription() {
+    return taglineDescription;
+  }
+
+  public void setTaglineDescription(String taglineDescription) {
+    this.taglineDescription = taglineDescription;
+  }
+
+  public String getShortDescription() {
+    return shortDescription;
+  }
+
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
+  }
+
+  public String getLongDescription() {
+    return longDescription;
+  }
+
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
+  }
+
+  public String getLearnMoreText() {
+    return learnMoreText;
+  }
+
+  public void setLearnMoreText(String learnMoreText) {
+    this.learnMoreText = learnMoreText;
+  }
+
+  public String getSignatureOne() {
+    return signatureOne;
+  }
+
+  public void setSignatureOne(String signatureOne) {
+    this.signatureOne = signatureOne;
+  }
+
+  public String getSignatureTwo() {
+    return signatureTwo;
+  }
+
+  public void setSignatureTwo(String signatureTwo) {
+    this.signatureTwo = signatureTwo;
+  }
+
+  public String getSignatureThree() {
+    return signatureThree;
+  }
+
+  public void setSignatureThree(String signatureThree) {
+    this.signatureThree = signatureThree;
   }
 }

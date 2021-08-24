@@ -134,7 +134,7 @@ public interface StudyService {
   public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 
   public ConsentBo saveOrCompleteConsentReviewDetails(
-      ConsentBo consentBo, SessionObject sesObj, String customStudyId);
+      ConsentBo consentBo, SessionObject sesObj, String customStudyId, String language);
 
   public Integer saveOrDoneChecklist(
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId);

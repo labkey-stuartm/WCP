@@ -595,6 +595,7 @@
   }
 
   $('#studyLanguage').on('change', function () {
+    $('#currentLanguage').val($('#studyLanguage').val());
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 

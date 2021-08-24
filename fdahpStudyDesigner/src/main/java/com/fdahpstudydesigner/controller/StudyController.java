@@ -1828,6 +1828,23 @@ public class StudyController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 
+          String language = request.getParameter("language");
+          StudyLanguageBO studyLanguageBO = null;
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            studyLanguageBO =
+                studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+          }
+          map.addAttribute(
+              "studyLanguageBO", studyLanguageBO != null ? studyLanguageBO : new StudyLanguageBO());
+          map.addAttribute("currLanguage", language);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
+
           if (consentBo != null) {
             request
                 .getSession()
@@ -3860,8 +3877,10 @@ public class StudyController {
             } else {
               consentBo.setReviewAndEconsentPage(false);
             }
+            String language = request.getParameter("language");
             consentBo =
-                studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj, customStudyId);
+                studyService.saveOrCompleteConsentReviewDetails(
+                    consentBo, sesObj, customStudyId, language);
             studyId =
                 StringUtils.isEmpty(String.valueOf(consentBo.getStudyId()))
                     ? ""
