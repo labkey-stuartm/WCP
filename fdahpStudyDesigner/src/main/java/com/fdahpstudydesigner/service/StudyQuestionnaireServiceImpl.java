@@ -4,8 +4,12 @@ import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormBo;
+import com.fdahpstudydesigner.bo.FormLangBO;
+import com.fdahpstudydesigner.bo.FormLangPK;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
+import com.fdahpstudydesigner.bo.InstructionLangPK;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -746,7 +750,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    */
   @Override
   public InstructionsBo saveOrUpdateInstructionsBo(
-      InstructionsBo instructionsBo, SessionObject sessionObject, String customStudyId) {
+      InstructionsBo instructionsBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Starts");
     InstructionsBo addOrUpdateInstructionsBo = null;
     try {
@@ -759,48 +766,66 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateInstructionsBo = new InstructionsBo();
           addOrUpdateInstructionsBo.setActive(true);
         }
-        if (instructionsBo.getInstructionText() != null
-            && !instructionsBo.getInstructionText().isEmpty()) {
-          addOrUpdateInstructionsBo.setInstructionText(instructionsBo.getInstructionText());
-        }
-        if (instructionsBo.getInstructionTitle() != null
-            && !instructionsBo.getInstructionTitle().isEmpty()) {
-          addOrUpdateInstructionsBo.setInstructionTitle(instructionsBo.getInstructionTitle());
-        }
-        if (instructionsBo.getCreatedOn() != null && !instructionsBo.getCreatedOn().isEmpty()) {
-          addOrUpdateInstructionsBo.setCreatedOn(instructionsBo.getCreatedOn());
-        }
-        if (instructionsBo.getCreatedBy() != null) {
-          addOrUpdateInstructionsBo.setCreatedBy(instructionsBo.getCreatedBy());
-        }
-        if (instructionsBo.getModifiedOn() != null && !instructionsBo.getModifiedOn().isEmpty()) {
-          addOrUpdateInstructionsBo.setModifiedOn(instructionsBo.getModifiedOn());
-        }
-        if (instructionsBo.getModifiedBy() != null) {
-          addOrUpdateInstructionsBo.setModifiedBy(instructionsBo.getModifiedBy());
-        }
-        if (instructionsBo.getQuestionnaireId() != null) {
-          addOrUpdateInstructionsBo.setQuestionnaireId(instructionsBo.getQuestionnaireId());
-        }
-        if (instructionsBo.getQuestionnairesStepsBo() != null) {
-          addOrUpdateInstructionsBo.setQuestionnairesStepsBo(
-              instructionsBo.getQuestionnairesStepsBo());
-        }
-        if (instructionsBo.getType() != null && !instructionsBo.getType().isEmpty()) {
-          addOrUpdateInstructionsBo.setType(instructionsBo.getType());
-          if (instructionsBo
-              .getType()
-              .equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)) {
-            addOrUpdateInstructionsBo.setStatus(false);
-          } else if (instructionsBo
-              .getType()
-              .equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)) {
-            addOrUpdateInstructionsBo.setStatus(true);
+
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          InstructionsLangBO instructionsLangBO =
+              studyQuestionnaireDAO.getInstructionLangBo(instructionsBo.getId(), language);
+          if (instructionsLangBO == null) {
+            instructionsLangBO = new InstructionsLangBO();
+            instructionsLangBO.setInstructionLangPK(
+                new InstructionLangPK(instructionsBo.getId(), language));
+            instructionsLangBO.setCreatedBy(instructionsBo.getCreatedBy());
+            instructionsLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          } else {
+            instructionsLangBO.setModifiedBy(instructionsBo.getModifiedBy());
+            instructionsLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
+          instructionsLangBO.setInstructionTitle(instructionsBo.getInstructionTitle());
+          studyQuestionnaireDAO.saveOrUpdateObject(instructionsLangBO);
+        } else {
+          if (instructionsBo.getInstructionText() != null
+              && !instructionsBo.getInstructionText().isEmpty()) {
+            addOrUpdateInstructionsBo.setInstructionText(instructionsBo.getInstructionText());
+          }
+          if (instructionsBo.getInstructionTitle() != null
+              && !instructionsBo.getInstructionTitle().isEmpty()) {
+            addOrUpdateInstructionsBo.setInstructionTitle(instructionsBo.getInstructionTitle());
+          }
+          if (instructionsBo.getCreatedOn() != null && !instructionsBo.getCreatedOn().isEmpty()) {
+            addOrUpdateInstructionsBo.setCreatedOn(instructionsBo.getCreatedOn());
+          }
+          if (instructionsBo.getCreatedBy() != null) {
+            addOrUpdateInstructionsBo.setCreatedBy(instructionsBo.getCreatedBy());
+          }
+          if (instructionsBo.getModifiedOn() != null && !instructionsBo.getModifiedOn().isEmpty()) {
+            addOrUpdateInstructionsBo.setModifiedOn(instructionsBo.getModifiedOn());
+          }
+          if (instructionsBo.getModifiedBy() != null) {
+            addOrUpdateInstructionsBo.setModifiedBy(instructionsBo.getModifiedBy());
+          }
+          if (instructionsBo.getQuestionnaireId() != null) {
+            addOrUpdateInstructionsBo.setQuestionnaireId(instructionsBo.getQuestionnaireId());
+          }
+          if (instructionsBo.getQuestionnairesStepsBo() != null) {
+            addOrUpdateInstructionsBo.setQuestionnairesStepsBo(
+                instructionsBo.getQuestionnairesStepsBo());
+          }
+          if (instructionsBo.getType() != null && !instructionsBo.getType().isEmpty()) {
+            addOrUpdateInstructionsBo.setType(instructionsBo.getType());
+            if (instructionsBo
+                .getType()
+                .equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)) {
+              addOrUpdateInstructionsBo.setStatus(false);
+            } else if (instructionsBo
+                .getType()
+                .equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)) {
+              addOrUpdateInstructionsBo.setStatus(true);
+            }
+          }
+          addOrUpdateInstructionsBo =
+              studyQuestionnaireDAO.saveOrUpdateInstructionsBo(
+                  addOrUpdateInstructionsBo, sessionObject, customStudyId);
         }
-        addOrUpdateInstructionsBo =
-            studyQuestionnaireDAO.saveOrUpdateInstructionsBo(
-                addOrUpdateInstructionsBo, sessionObject, customStudyId);
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Error", e);
@@ -1457,5 +1482,61 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistByQuestionnaire - Starts");
     return studyQuestionnaireDAO.isAnchorDateExistByQuestionnaire(questionnaireId);
+  }
+
+  @Override
+  public InstructionsLangBO getInstructionLangBO(int instructionId, String language) {
+    logger.info("StudyQuestionnaireServiceImpl - getInstructionLangBO - Starts");
+    InstructionsLangBO instructionsBo = null;
+    try {
+      instructionsBo = studyQuestionnaireDAO.getInstructionLangBo(instructionId, language);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getInstructionLangBO - ERROR ", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - getInstructionLangBO - Ends");
+    return instructionsBo;
+  }
+
+  @Override
+  public FormLangBO getFormLangBO(int formId, String language) {
+    logger.info("StudyQuestionnaireServiceImpl - getFormLangBO - Starts");
+    FormLangBO formLangBO = null;
+    try {
+      formLangBO = studyQuestionnaireDAO.getFormLangBo(formId, language);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getFormLangBO - ERROR ", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - getFormLangBO - Ends");
+    return formLangBO;
+  }
+
+  @Override
+  public String saveOrUpdateFormStepForOtherLanguages(
+      QuestionnairesStepsBo questionnairesStepsBo, String language) {
+    logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFormStepForOtherLanguages - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      FormLangBO formLangBO =
+          studyQuestionnaireDAO.getFormLangBo(
+              questionnairesStepsBo.getInstructionFormId(), language);
+      if (formLangBO == null) {
+        formLangBO = new FormLangBO();
+        formLangBO.setFormLangPK(
+            new FormLangPK(questionnairesStepsBo.getInstructionFormId(), language));
+        formLangBO.setCreatedBy(questionnairesStepsBo.getCreatedBy());
+        formLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+      } else {
+        formLangBO.setModifiedBy(questionnairesStepsBo.getCreatedBy());
+        formLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+      }
+      formLangBO.setRepeatableText(questionnairesStepsBo.getRepeatableText());
+      studyQuestionnaireDAO.saveOrUpdateObject(formLangBO);
+      result = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      logger.error(
+          "StudyQuestionnaireServiceImpl - saveOrUpdateFormStepForOtherLanguages - ERROR ", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFormStepForOtherLanguages - Ends");
+    return result;
   }
 }

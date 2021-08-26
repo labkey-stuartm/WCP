@@ -2,8 +2,10 @@ package com.fdahpstudydesigner.dao;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
+import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -135,4 +137,10 @@ public interface StudyQuestionnaireDAO {
       Integer questionId,
       String stepType,
       boolean isChange);
+
+  void saveOrUpdateObject(Object object);
+
+  InstructionsLangBO getInstructionLangBo(int instructionId, String language);
+
+  FormLangBO getFormLangBo(int formId, String language);
 }

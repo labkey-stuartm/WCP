@@ -4,8 +4,10 @@ package com.fdahpstudydesigner.service;
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
+import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
@@ -95,7 +97,10 @@ public interface StudyQuestionnaireService {
       QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId);
 
   public InstructionsBo saveOrUpdateInstructionsBo(
-      InstructionsBo instructionsBo, SessionObject sessionObject, String customStudyId);
+      InstructionsBo instructionsBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language);
 
   public QuestionsBo saveOrUpdateQuestion(
       QuestionsBo questionsBo, SessionObject sesObj, String customStudyId);
@@ -124,4 +129,11 @@ public interface StudyQuestionnaireService {
   public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 
   public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
+
+  InstructionsLangBO getInstructionLangBO(int instructionId, String language);
+
+  FormLangBO getFormLangBO(int formId, String language);
+
+  String saveOrUpdateFormStepForOtherLanguages(
+      QuestionnairesStepsBo questionnairesStepsBo, String language);
 }

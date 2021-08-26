@@ -4,8 +4,10 @@ import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
+import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
@@ -21,6 +23,7 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -598,7 +601,15 @@ public class StudyQuestionnaireController {
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
         }
+        String language = request.getParameter("language");
+        map.addAttribute("currLanguage", language);
         if (StringUtils.isEmpty(formId)) {
           formId = (String) request.getSession().getAttribute(sessionStudyCount + "formId");
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
@@ -651,6 +662,10 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
+
+          FormLangBO formLangBO =
+              studyQuestionnaireService.getFormLangBO(Integer.parseInt(formId), language);
+          map.addAttribute("formLangBO", formLangBO);
         }
 
         map.addAttribute(
@@ -1036,7 +1051,16 @@ public class StudyQuestionnaireController {
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
         }
+        String language = request.getParameter("language");
+        map.addAttribute("currLanguage", language);
         if (StringUtils.isEmpty(instructionId)) {
           instructionId =
               (String) request.getSession().getAttribute(sessionStudyCount + "instructionId");
@@ -1081,6 +1105,11 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("instructionsBo", instructionsBo);
           request.getSession().setAttribute(sessionStudyCount + "instructionId", instructionId);
+
+          InstructionsLangBO instructionsLangBO =
+              studyQuestionnaireService.getInstructionLangBO(
+                  Integer.parseInt(instructionId), language);
+          map.addAttribute("instructionsLangBO", instructionsLangBO);
         }
         map.addAttribute("questionnaireId", questionnaireId);
         map.addAttribute("_S", sessionStudyCount);
@@ -1754,27 +1783,42 @@ public class StudyQuestionnaireController {
               questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
               questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             }
-            addQuestionnairesStepsBo =
-                studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
-                    questionnairesStepsBo, sesObj, customStudyId);
-          }
-        }
-        if (addQuestionnairesStepsBo != null) {
-          jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
-          jsonobject.put("formId", addQuestionnairesStepsBo.getInstructionFormId());
-          message = FdahpStudyDesignerConstants.SUCCESS;
-          String studyId =
-              (String)
-                  request
-                      .getSession()
-                      .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-          if (StringUtils.isNotEmpty(studyId)) {
-            studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+            String language = request.getParameter("language");
+            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+              questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
+              String result =
+                  studyQuestionnaireService.saveOrUpdateFormStepForOtherLanguages(
+                      questionnairesStepsBo, language);
+              if (!FdahpStudyDesignerConstants.SUCCESS.equals(result)) {
+                logger.error("Error while saving Form Data");
+              } else {
+                jsonobject.put("stepId", questionnairesStepsBo.getStepId());
+                jsonobject.put("formId", questionnairesStepsBo.getInstructionFormId());
+                message = FdahpStudyDesignerConstants.SUCCESS;
+              }
+            } else {
+              addQuestionnairesStepsBo =
+                  studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
+                      questionnairesStepsBo, sesObj, customStudyId);
+              if (addQuestionnairesStepsBo != null) {
+                jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
+                jsonobject.put("formId", addQuestionnairesStepsBo.getInstructionFormId());
+                message = FdahpStudyDesignerConstants.SUCCESS;
+                String studyId =
+                    (String)
+                        request
+                            .getSession()
+                            .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+                if (StringUtils.isNotEmpty(studyId)) {
+                  studyService.markAsCompleted(
+                      Integer.parseInt(studyId),
+                      FdahpStudyDesignerConstants.QUESTIONNAIRE,
+                      false,
+                      sesObj,
+                      customStudyId);
+                }
+              }
+            }
           }
         }
       }
@@ -1848,9 +1892,10 @@ public class StudyQuestionnaireController {
                 instructionsBo.getQuestionnairesStepsBo().setCreatedBy(sesObj.getUserId());
               }
             }
+            String language = request.getParameter("language");
             addInstructionsBo =
                 studyQuestionnaireService.saveOrUpdateInstructionsBo(
-                    instructionsBo, sesObj, customStudyId);
+                    instructionsBo, sesObj, customStudyId, language);
           }
         }
         if (addInstructionsBo != null) {
@@ -2019,47 +2064,73 @@ public class StudyQuestionnaireController {
             questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
             questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
-          addQuestionnairesStepsBo =
-              studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
-                  questionnairesStepsBo, sesObj, customStudyId);
-        }
-        if (addQuestionnairesStepsBo != null) {
-          String studyId =
-              (String)
-                  request
-                      .getSession()
-                      .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-          if (StringUtils.isNotEmpty(studyId)) {
-            studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
-          }
-          if (questionnairesStepsBo.getStepId() != null) {
-            request
-                .getSession()
-                .setAttribute(
-                    sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
-                    "Form Step updated successfully.");
+          String language = request.getParameter("language");
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
+            String result =
+                studyQuestionnaireService.saveOrUpdateFormStepForOtherLanguages(
+                    questionnairesStepsBo, language);
+            if (FdahpStudyDesignerConstants.SUCCESS.equals(result)) {
+              request
+                  .getSession()
+                  .setAttribute(
+                      sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+                      "Form Step updated successfully.");
+              map.addAttribute("_S", sessionStudyCount);
+              mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
+            } else {
+              request
+                  .getSession()
+                  .setAttribute(
+                      sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
+                      "Form not added successfully.");
+              map.addAttribute("_S", sessionStudyCount);
+              mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
+              logger.error("Error while saving Form Data");
+            }
           } else {
-            request
-                .getSession()
-                .setAttribute(
-                    sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
-                    "Form Step added successfully.");
+            addQuestionnairesStepsBo =
+                studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
+                    questionnairesStepsBo, sesObj, customStudyId);
+            if (addQuestionnairesStepsBo != null) {
+              String studyId =
+                  (String)
+                      request
+                          .getSession()
+                          .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+              if (StringUtils.isNotEmpty(studyId)) {
+                studyService.markAsCompleted(
+                    Integer.parseInt(studyId),
+                    FdahpStudyDesignerConstants.QUESTIONNAIRE,
+                    false,
+                    sesObj,
+                    customStudyId);
+              }
+              if (questionnairesStepsBo.getStepId() != null) {
+                request
+                    .getSession()
+                    .setAttribute(
+                        sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+                        "Form Step updated successfully.");
+              } else {
+                request
+                    .getSession()
+                    .setAttribute(
+                        sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+                        "Form Step added successfully.");
+              }
+              map.addAttribute("_S", sessionStudyCount);
+              mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
+            } else {
+              request
+                  .getSession()
+                  .setAttribute(
+                      sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
+                      "Form not added successfully.");
+              map.addAttribute("_S", sessionStudyCount);
+              mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
+            }
           }
-          map.addAttribute("_S", sessionStudyCount);
-          mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
-        } else {
-          request
-              .getSession()
-              .setAttribute(
-                  sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
-                  "Form not added successfully.");
-          map.addAttribute("_S", sessionStudyCount);
-          mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
         }
       }
     } catch (Exception e) {
@@ -2124,9 +2195,10 @@ public class StudyQuestionnaireController {
               instructionsBo.getQuestionnairesStepsBo().setCreatedBy(sesObj.getUserId());
             }
           }
+          String language = request.getParameter("language");
           addInstructionsBo =
               studyQuestionnaireService.saveOrUpdateInstructionsBo(
-                  instructionsBo, sesObj, customStudyId);
+                  instructionsBo, sesObj, customStudyId, language);
         }
         if (addInstructionsBo != null) {
           String studyId =

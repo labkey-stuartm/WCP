@@ -6,9 +6,11 @@ import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormBo;
+import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
@@ -5385,5 +5387,67 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     }
     logger.info("StudyQuestionnaireDAOImpl - updateAnchordateInQuestionnaire - Ends");
     return message;
+  }
+
+  @Override
+  public void saveOrUpdateObject(Object object) {
+    logger.info("StudyDAOImpl - saveOrUpdateObject() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.saveOrUpdate(object);
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateObject() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateObject() - Ends");
+  }
+
+  @Override
+  public InstructionsLangBO getInstructionLangBo(int instructionId, String language) {
+    logger.info("StudyQuestionnaireDAOImpl - getInstructionLangBo - Starts");
+    InstructionsLangBO instructionsLangBO = null;
+    try {
+      Session session = hibernateTemplate.getSessionFactory().openSession();
+      instructionsLangBO =
+          (InstructionsLangBO)
+              session
+                  .createQuery(
+                      "from InstructionsLangBO where instructionLangPK.langCode=:language and instructionLangPK.id=:id")
+                  .setString("language", language)
+                  .setInteger("id", instructionId)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getInstructionLangBo - Error : ", e);
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getInstructionLangBo - Ends");
+    return instructionsLangBO;
+  }
+
+  @Override
+  public FormLangBO getFormLangBo(int formId, String language) {
+    logger.info("StudyQuestionnaireDAOImpl - getFormLangBo - Starts");
+    FormLangBO formLangBO = null;
+    try {
+      Session session = hibernateTemplate.getSessionFactory().openSession();
+      formLangBO =
+          (FormLangBO)
+              session
+                  .createQuery(
+                      "from FormLangBO where formLangPK.langCode=:language and formLangPK.formId=:id")
+                  .setString("language", language)
+                  .setInteger("id", formId)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getFormLangBo - Error : ", e);
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getFormLangBo - Ends");
+    return formLangBO;
   }
 }
