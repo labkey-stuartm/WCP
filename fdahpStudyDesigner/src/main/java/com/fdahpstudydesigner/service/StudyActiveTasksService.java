@@ -3,6 +3,7 @@ package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskLangBO;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
@@ -30,7 +31,10 @@ public interface StudyActiveTasksService {
   public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId, Boolean isLive);
 
   public ActiveTaskBo saveOrUpdateActiveTask(
-      ActiveTaskBo activeTaskBo, SessionObject sessionObject, String customStudyId);
+      ActiveTaskBo activeTaskBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language);
 
   public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo, String customStudyId);
 
@@ -43,4 +47,9 @@ public interface StudyActiveTasksService {
 
   public List<ActiveStatisticsBean> validateActiveTaskStatIds(
       String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans);
+
+  ActiveTaskLangBO getActiveTaskLangById(Integer activeTaskId, String language);
+
+  List<ActiveTaskLangBO> getActiveTaskLangByStudyId(
+      List<ActiveTaskBo> activeTaskBos, int studyId, String language);
 }

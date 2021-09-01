@@ -6,6 +6,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
+import com.fdahpstudydesigner.bo.ActiveTaskLangBO;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
@@ -306,7 +307,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
               activeTaskBo.setActiveTaskFrequenciesList(activeTaskFrequencyBos);
             } else {
               ActiveTaskFrequencyBo activeTaskFrequencyBo =
-                  (ActiveTaskFrequencyBo) query.uniqueResult();
+                  (ActiveTaskFrequencyBo) query.setMaxResults(1).uniqueResult();
               activeTaskBo.setActiveTaskFrequenciesBo(activeTaskFrequencyBo);
             }
           }
@@ -1178,5 +1179,102 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
     }
     logger.info("StudyActiveTasksDAOImpl - validateActiveTaskStatIds() - Ends");
     return activeStatisticsBeans;
+  }
+
+  @Override
+  public ActiveTaskLangBO getActiveTaskLangById(int id, String language) {
+    logger.info("StudyActiveTasksDAOImpl - getActiveTaskLangById() - Starts");
+    Session session = null;
+    ActiveTaskLangBO activeTaskLangBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      activeTaskLangBO =
+          (ActiveTaskLangBO)
+              session
+                  .createQuery(
+                      "from ActiveTaskLangBO where activeTaskLangPK.id=:id "
+                          + "and activeTaskLangPK.langCode=:language")
+                  .setInteger("id", id)
+                  .setString("language", language)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyActiveTasksDAOImpl - getActiveTaskLangById() - ERROR", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyActiveTasksDAOImpl - getActiveTaskLangById() - Ends");
+    return activeTaskLangBO;
+  }
+
+  @Override
+  public void saveOrUpdateObject(Object object) {
+    logger.info("StudyDAOImpl - saveOrUpdateObject() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.saveOrUpdate(object);
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveOrUpdateObject() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveOrUpdateObject() - Ends");
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<ActiveTaskLangBO> getActiveTaskLangByStudyId(int studyId, String language) {
+    logger.info("StudyActiveTasksDAOImpl - getActiveTaskLangByStudyId() - Starts");
+    Session session = null;
+    List<ActiveTaskLangBO> activeTaskLangBOList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      activeTaskLangBOList =
+          session
+              .createQuery(
+                  "from ActiveTaskLangBO where studyId=:id "
+                      + "and activeTaskLangPK.langCode=:language")
+              .setInteger("id", studyId)
+              .setString("language", language)
+              .list();
+    } catch (Exception e) {
+      logger.error("StudyActiveTasksDAOImpl - getActiveTaskLangByStudyId() - ERROR", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyActiveTasksDAOImpl - getActiveTaskLangByStudyId() - Ends");
+    return activeTaskLangBOList;
+  }
+
+  @Override
+  public String deleteActiveTaskLang(int id) {
+    logger.info("StudyActiveTasksDAOImpl - deleteActiveTaskLang() - Starts");
+    Session session = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      session
+          .createQuery("delete from ActiveTaskLangBO where activeTaskLangPK.id=:id")
+          .setInteger("id", id)
+          .executeUpdate();
+      message = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      logger.error("StudyActiveTasksDAOImpl - deleteActiveTaskLang() - ERROR", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyActiveTasksDAOImpl - deleteActiveTaskLang() - Ends");
+    return message;
   }
 }

@@ -5,6 +5,8 @@ import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
+import com.fdahpstudydesigner.bo.ActiveTaskLangBO;
+import com.fdahpstudydesigner.bo.ActiveTaskLangPK;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
@@ -50,6 +52,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
       activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId, customStudyId);
       if (activeTaskBo != null) {
         message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo, sesObj, customStudyId);
+        if (FdahpStudyDesignerConstants.SUCCESS.equals(message))
+          message = studyActiveTasksDAO.deleteActiveTaskLang(activeTaskBo.getId());
       }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - deleteActiveTask() - Error", e);
@@ -276,11 +280,15 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
    */
   @Override
   public ActiveTaskBo saveOrUpdateActiveTask(
-      ActiveTaskBo activeTaskBo, SessionObject sessionObject, String customStudyId) {
+      ActiveTaskBo activeTaskBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language) {
     logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Starts");
     ActiveTaskBo updateActiveTaskBo = null;
     try {
       if (activeTaskBo != null) {
+
         if (activeTaskBo.getId() != null) {
           updateActiveTaskBo =
               studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
@@ -309,32 +317,88 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
                   : activeTaskBo.getInstruction());
           updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
         }
-        updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
-        updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
-        updateActiveTaskBo.setDisplayName(
-            StringUtils.isEmpty(activeTaskBo.getDisplayName())
-                ? ""
-                : activeTaskBo.getDisplayName());
-        updateActiveTaskBo.setShortTitle(
-            StringUtils.isEmpty(activeTaskBo.getShortTitle()) ? "" : activeTaskBo.getShortTitle());
-        updateActiveTaskBo.setInstruction(
-            StringUtils.isEmpty(activeTaskBo.getInstruction())
-                ? ""
-                : activeTaskBo.getInstruction());
-        updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
-        updateActiveTaskBo.setAction(activeTaskBo.isAction());
-        updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
-        if (activeTaskBo
-            .getButtonText()
-            .equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)) {
-          updateActiveTaskBo.setIsChange(1);
+
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          ActiveTaskLangBO activeTaskLangBO =
+              studyActiveTasksDAO.getActiveTaskLangById(activeTaskBo.getId(), language);
+          if (activeTaskLangBO == null) {
+            activeTaskLangBO = new ActiveTaskLangBO();
+            activeTaskLangBO.setActiveTaskLangPK(
+                new ActiveTaskLangPK(activeTaskBo.getId(), language));
+            activeTaskLangBO.setCreatedBy(sessionObject.getUserId());
+            activeTaskLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            activeTaskLangBO.setStudyId(activeTaskBo.getStudyId());
+          } else {
+            activeTaskLangBO.setModifiedBy(sessionObject.getUserId());
+            activeTaskLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          }
+          activeTaskLangBO.setDisplayName(activeTaskBo.getDisplayName());
+          activeTaskLangBO.setInstruction(activeTaskBo.getInstruction());
+
+          if (activeTaskBo.getTaskTypeId() == 3) {
+            if (activeTaskBo.getTaskAttributeValueBos() != null
+                && activeTaskBo.getTaskAttributeValueBos().size() == 10) {
+              activeTaskLangBO.setStatName(
+                  activeTaskBo.getTaskAttributeValueBos().get(7).getDisplayNameStat());
+              activeTaskLangBO.setStatName2(
+                  activeTaskBo.getTaskAttributeValueBos().get(8).getDisplayNameStat());
+              activeTaskLangBO.setStatName3(
+                  activeTaskBo.getTaskAttributeValueBos().get(9).getDisplayNameStat());
+              activeTaskLangBO.setChartTitle(
+                  activeTaskBo.getTaskAttributeValueBos().get(7).getTitleChat());
+              activeTaskLangBO.setChartTitle2(
+                  activeTaskBo.getTaskAttributeValueBos().get(8).getTitleChat());
+              activeTaskLangBO.setChartTitle3(
+                  activeTaskBo.getTaskAttributeValueBos().get(9).getTitleChat());
+            }
+          } else if (activeTaskBo.getTaskTypeId() == 2) {
+            if (activeTaskBo.getTaskAttributeValueBos() != null
+                && activeTaskBo.getTaskAttributeValueBos().size() == 2) {
+              activeTaskLangBO.setStatName(
+                  activeTaskBo.getTaskAttributeValueBos().get(1).getDisplayNameStat());
+              activeTaskLangBO.setChartTitle(
+                  activeTaskBo.getTaskAttributeValueBos().get(1).getTitleChat());
+            }
+          } else {
+            if (activeTaskBo.getTaskAttributeValueBos() != null
+                && activeTaskBo.getTaskAttributeValueBos().size() == 3) {
+              activeTaskLangBO.setStatName(
+                  activeTaskBo.getTaskAttributeValueBos().get(2).getDisplayNameStat());
+              activeTaskLangBO.setChartTitle(
+                  activeTaskBo.getTaskAttributeValueBos().get(2).getTitleChat());
+            }
+          }
+          studyActiveTasksDAO.saveOrUpdateObject(activeTaskLangBO);
         } else {
-          updateActiveTaskBo.setIsChange(0);
+          updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+          updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
+          updateActiveTaskBo.setDisplayName(
+              StringUtils.isEmpty(activeTaskBo.getDisplayName())
+                  ? ""
+                  : activeTaskBo.getDisplayName());
+          updateActiveTaskBo.setShortTitle(
+              StringUtils.isEmpty(activeTaskBo.getShortTitle())
+                  ? ""
+                  : activeTaskBo.getShortTitle());
+          updateActiveTaskBo.setInstruction(
+              StringUtils.isEmpty(activeTaskBo.getInstruction())
+                  ? ""
+                  : activeTaskBo.getInstruction());
+          updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
+          updateActiveTaskBo.setAction(activeTaskBo.isAction());
+          updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
+          if (activeTaskBo
+              .getButtonText()
+              .equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)) {
+            updateActiveTaskBo.setIsChange(1);
+          } else {
+            updateActiveTaskBo.setIsChange(0);
+          }
+          updateActiveTaskBo.setActive(1);
+          updateActiveTaskBo =
+              studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(
+                  updateActiveTaskBo, sessionObject, customStudyId);
         }
-        updateActiveTaskBo.setActive(1);
-        updateActiveTaskBo =
-            studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(
-                updateActiveTaskBo, sessionObject, customStudyId);
       }
     } catch (Exception e) {
       logger.error("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Error", e);
@@ -575,5 +639,47 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
     }
     logger.info("StudyActiveTasksServiceImpl - validateActiveTaskStatIds() - Ends");
     return statisticsBeans;
+  }
+
+  @Override
+  public ActiveTaskLangBO getActiveTaskLangById(Integer activeTaskId, String language) {
+    logger.info("StudyActiveTasksServiceImpl - getActiveTaskLangById() - Starts");
+    ActiveTaskLangBO activeTaskLangBO = null;
+    try {
+      activeTaskLangBO = studyActiveTasksDAO.getActiveTaskLangById(activeTaskId, language);
+    } catch (Exception e) {
+      logger.error("StudyActiveTasksServiceImpl - getActiveTaskLangById() - ERROR ", e);
+    }
+    logger.info("StudyActiveTasksServiceImpl - getActiveTaskLangById() - Ends");
+    return activeTaskLangBO;
+  }
+
+  @Override
+  public List<ActiveTaskLangBO> getActiveTaskLangByStudyId(
+      List<ActiveTaskBo> activeTaskBos, int studyId, String language) {
+    logger.info("StudyActiveTasksServiceImpl - getActiveTaskLangByStudyId() - Starts");
+    List<ActiveTaskLangBO> activeTaskLangBOList = null;
+    try {
+      if (activeTaskBos != null && activeTaskBos.size() > 0) {
+        for (ActiveTaskBo activeTaskBo : activeTaskBos) {
+          ActiveTaskLangBO activeTaskLangBO =
+              studyActiveTasksDAO.getActiveTaskLangById(activeTaskBo.getId(), language);
+          if (activeTaskLangBO == null) {
+            activeTaskLangBO = new ActiveTaskLangBO();
+            activeTaskLangBO.setActiveTaskLangPK(
+                new ActiveTaskLangPK(activeTaskBo.getId(), language));
+            activeTaskLangBO.setStudyId(studyId);
+            activeTaskLangBO.setCreatedBy(activeTaskBo.getCreatedBy());
+            activeTaskLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            studyActiveTasksDAO.saveOrUpdateObject(activeTaskLangBO);
+          }
+        }
+      }
+      activeTaskLangBOList = studyActiveTasksDAO.getActiveTaskLangByStudyId(studyId, language);
+    } catch (Exception e) {
+      logger.error("StudyActiveTasksServiceImpl - getActiveTaskLangByStudyId() - ERROR ", e);
+    }
+    logger.info("StudyActiveTasksServiceImpl - getActiveTaskLangByStudyId() - Ends");
+    return activeTaskLangBOList;
   }
 }

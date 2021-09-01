@@ -3,10 +3,12 @@ package com.fdahpstudydesigner.dao;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskLangBO;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
+import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
 
@@ -43,4 +45,12 @@ public interface StudyActiveTasksDAO {
 
   public List<ActiveStatisticsBean> validateActiveTaskStatIds(
       String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans);
+
+  ActiveTaskLangBO getActiveTaskLangById(int id, String language);
+
+  List<ActiveTaskLangBO> getActiveTaskLangByStudyId(int studyId, String language);
+
+  void saveOrUpdateObject(Object object);
+
+  String deleteActiveTaskLang(int id);
 }

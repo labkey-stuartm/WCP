@@ -3,6 +3,7 @@ package com.fdahpstudydesigner.controller;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskLangBO;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
@@ -18,6 +19,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +163,7 @@ public class StudyActiveTasksController {
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         if (!activeTaskInfoId.isEmpty() && !studyId.isEmpty()) {
+          String language = request.getParameter("language");
           message =
               studyActiveTasksService.deleteActiveTask(
                   Integer.valueOf(activeTaskInfoId),
@@ -315,11 +318,25 @@ public class StudyActiveTasksController {
         }
         map.addAttribute("activeTaskListBos", activeTaskListBos);
         map.addAttribute("studyBo", studyBo);
+
+        String language = request.getParameter("language");
+        ActiveTaskLangBO activeTaskLangBO = null;
+        if (FdahpStudyDesignerUtil.isNotEmpty(language)
+            && !"English".equals(language)
+            && FdahpStudyDesignerUtil.isNotEmpty(activeTaskInfoId)) {
+          activeTaskLangBO =
+              studyActiveTasksService.getActiveTaskLangById(
+                  Integer.parseInt(activeTaskInfoId), language);
+        }
+        map.addAttribute(
+            "activeTaskLangBO",
+            activeTaskLangBO != null ? activeTaskLangBO : new ActiveTaskLangBO());
         if (StringUtils.isNotEmpty(activeTaskInfoId)) {
           activeTaskBo =
               studyActiveTasksService.getActiveTaskById(
                   Integer.parseInt(activeTaskInfoId), studyBo.getCustomStudyId());
           typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
+
         } else {
           activeTaskBo = new ActiveTaskBo();
           activeTaskBo.setStudyId(Integer.parseInt(studyId));
@@ -509,8 +526,10 @@ public class StudyActiveTasksController {
                       .getSession()
                       .getAttribute(
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+          String language = request.getParameter("language");
           addActiveTaskBo =
-              studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj, customStudyId);
+              studyActiveTasksService.saveOrUpdateActiveTask(
+                  activeTaskBo, sesObj, customStudyId, language);
           map.addAttribute("_S", sessionStudyCount);
           if (addActiveTaskBo != null) {
             if (addActiveTaskBo.getId() != null) {
@@ -872,17 +891,33 @@ public class StudyActiveTasksController {
           } else {
             map.addAttribute("actionPage", "addEdit");
           }
+
+          String language = request.getParameter("language");
+          map.addAttribute("currLanguage", language);
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-          if (studyBo != null)
+          if (studyBo != null) {
             activeTaskListBos =
                 studyActiveTasksService.getAllActiveTaskTypes(studyBo.getPlatform());
+            String languages = studyBo.getSelectedLanguages();
+            List<String> langList = new ArrayList<>();
+            if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+              langList = Arrays.asList(languages.split(","));
+            }
+            map.addAttribute("languageList", langList);
+          }
           map.addAttribute("activeTaskListBos", activeTaskListBos);
           map.addAttribute("studyBo", studyBo);
+
           if (StringUtils.isNotEmpty(activeTaskInfoId)) {
             activeTaskBo =
                 studyActiveTasksService.getActiveTaskById(
                     Integer.parseInt(activeTaskInfoId), studyBo.getCustomStudyId());
             map.addAttribute("activeTaskBo", activeTaskBo);
+
+            ActiveTaskLangBO activeTaskLangBO =
+                studyActiveTasksService.getActiveTaskLangById(
+                    Integer.parseInt(activeTaskInfoId), language);
+            map.addAttribute("activeTaskLangBO", activeTaskLangBO);
           }
           mav = new ModelAndView("viewStudyActiveTask", map);
         } else {
@@ -1082,8 +1117,18 @@ public class StudyActiveTasksController {
         }
         String permission =
             (String) request.getSession().getAttribute(sessionStudyCount + "permission");
+
+        String language = request.getParameter("language");
+        map.addAttribute("currLanguage", language);
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
           // Added for live version Start
           String isLive =
               (String)
@@ -1106,6 +1151,13 @@ public class StudyActiveTasksController {
                     studyBo.getCustomStudyId(), true);
           } else {
             activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId, false);
+          }
+
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            List<ActiveTaskLangBO> activeTaskLangBOS =
+                studyActiveTasksService.getActiveTaskLangByStudyId(
+                    activeTasks, Integer.parseInt(studyId), language);
+            map.addAttribute("activeTaskLangBOS", activeTaskLangBOS);
           }
           boolean markAsComplete = true;
           actMsg =

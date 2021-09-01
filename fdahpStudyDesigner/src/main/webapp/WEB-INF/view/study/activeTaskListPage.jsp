@@ -29,7 +29,23 @@
             <div class="right-content-head">        
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS </div>
-                    
+
+                    <c:if test="${studyBo.multiLanguageFlag eq true}">
+                        <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                            <select
+                                    class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                    id="studyLanguage" name="studyLanguage" required title="Select">
+                                <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                                    English
+                                </option>
+                                <c:forEach items="${languageList}" var="language">
+                                    <option value="${language}"
+                                        ${currLanguage eq language ?'selected':''}>${language}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </c:if>
+
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
@@ -64,7 +80,7 @@
                                 <th>
                                     <div class="dis-line form-group mb-none">
                                          <c:if test="${empty permission}">
-                                         <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">Add Active Task</button>
+                                         <button type="button" class="btn btn-primary blue-btn" id="addBtn" onclick="addActiveTaskPage();">Add Active Task</button>
                                          </c:if>
                                      </div>
                                 </th>
@@ -74,7 +90,7 @@
                           <c:forEach items="${activeTasks}" var="activeTasksInfo">
 		             	    <tr id="row${activeTasksInfo.id}">
 		             	      <td style="display: none;">${activeTasksInfo.createdDate}</td>
-			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(activeTasksInfo.displayName)}">${activeTasksInfo.displayName}</div></td>
+			                  <td class="title"><div class="dis-ellipsis pr-100" title="${fn:escapeXml(activeTasksInfo.displayName)}">${activeTasksInfo.displayName}</div></td>
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency  == 'Manually Schedule' ? 'Custom Schedule' : activeTasksInfo.frequency}</td>
 			                  <td>
@@ -99,6 +115,13 @@
 <input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
+    <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+    <select id="activeTaskLangItems" style="display: none">
+        <c:forEach items="${activeTaskLangBOS}" var="activeTaskLang">
+            <option id='${activeTaskLang.activeTaskLangPK.id}'
+                    value="${activeTaskLang.displayName}">${activeTaskLang.displayName}</option>
+        </c:forEach>
+    </select>
 </form:form> 
 <form:form action="/fdahpStudyDesigner/adminStudies/activeTAskMarkAsCompleted.do?_S=${param._S}" name="completeInfoForm" id="completeInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
@@ -110,6 +133,12 @@ $(document).ready(function(){
 	        $('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
 			$(".seventhTask").addClass('active');
+
+  let currLang = $('#studyLanguage').val();
+  if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData(currLang);
+  }
 	
             // Fancy Scroll Bar
            /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
@@ -170,6 +199,7 @@ function deleteTaskInfo(activeTaskInfoId){
 		    			datatype: "json",
 		    			data:{
 		    				activeTaskInfoId: activeTaskInfoId,
+                          language : $('#studyLanguage').val(),
 		    				studyId : '${sessionScope[studyId]}',
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
@@ -216,6 +246,41 @@ function deleteTaskInfo(activeTaskInfoId){
 }
 function markAsCompleted(){
 		$("#completeInfoForm").submit();
+}
+
+$('#studyLanguage').on('change', function () {
+  let currLang = $('#studyLanguage').val();
+  $('#currentLanguage').val(currLang);
+  refreshAndFetchLanguageData($('#studyLanguage').val());
+})
+
+function refreshAndFetchLanguageData(language) {
+  $.ajax({
+    url: '/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}',
+    type: "GET",
+    data: {
+      language: language
+    },
+    success: function (data) {
+      let htmlData = document.createElement('html');
+      htmlData.innerHTML = data;
+      if (language !== 'English') {
+        $('#activeTaskLangItems option', htmlData).each(function (index, value) {
+          let id = 'row'+value.getAttribute('id');
+          $('#' + id).find('td.title').text(value.getAttribute('value'));
+        });
+        $('#addBtn').attr('disabled', true);
+        $('.delete').addClass('cursor-none');
+      } else {
+        $('tbody tr', htmlData).each(function (index, value) {
+          let id = value.getAttribute('id');
+          $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+        });
+        $('#addBtn').attr('disabled', false);
+        $('.delete').removeClass('cursor-none');
+      }
+    }
+  });
 }
 </script>     
         

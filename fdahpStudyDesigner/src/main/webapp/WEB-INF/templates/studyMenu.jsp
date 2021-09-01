@@ -236,7 +236,9 @@
 
     });
     $('.seventhTask').click(function () {
-      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
+          + $(
+              '#currentLanguage').val();
       document.body.appendChild(a).click();
     });
 
