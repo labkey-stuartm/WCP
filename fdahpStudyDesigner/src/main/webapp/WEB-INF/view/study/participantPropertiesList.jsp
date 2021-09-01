@@ -26,6 +26,23 @@
 		<div class="text-right">
 			<div class="black-md-f text-uppercase dis-line pull-left line34">Participant
 				Properties</div>
+
+			<c:if test="${studyBo.multiLanguageFlag eq true}">
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select
+							class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+							id="studyLanguage" name="studyLanguage" required title="Select">
+						<option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+							English
+						</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language}"
+								${currLanguage eq language ?'selected':''}>${language}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</c:if>
+
 			<div class="dis-line form-group mb-none">
 				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
@@ -57,7 +74,7 @@
 						<th>DATA TYPE</th>
 						<th><c:if test="${empty permission}">
 								<div class="dis-line form-group mb-none">
-									<button type="button" class="btn btn-primary blue-btn"
+									<button type="button" id="addButton" class="btn btn-primary blue-btn"
 										onclick="addParticipantProperties();">+ Add Property</button>
 								</div>
 							</c:if></th>
@@ -111,6 +128,7 @@
 	<input type="hidden" name="participantPropertyId"
 		id="participantPropertyId" value="">
 	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+	<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 </form:form>
 <script>
 	$(document).ready(function() {
@@ -125,6 +143,12 @@
 				$(".col-rc").css("height", "auto");
 			}
 		});
+
+		let currLang = $('#studyLanguage').val();
+		if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
+			$('#currentLanguage').val(currLang);
+			refreshAndFetchLanguageData(currLang);
+		}
 		
 		$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.sixth").addClass('active');
@@ -193,5 +217,30 @@
 	function markAsCompleted(){
 		document.editParticipantProperties.action="/fdahpStudyDesigner/adminStudies/participantPropertiesMarkAsCompleted.do?_S=${param._S}";	 
 		document.editParticipantProperties.submit();
+	}
+
+	$('#studyLanguage').on('change', function () {
+		let currLang = $('#studyLanguage').val();
+		$('#currentLanguage').val(currLang);
+		refreshAndFetchLanguageData($('#studyLanguage').val());
+	})
+
+	function refreshAndFetchLanguageData(language) {
+		$.ajax({
+			url: '/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}',
+			type: "GET",
+			data: {
+				language: language
+			},
+			success: function (data) {
+				let htmlData = document.createElement('html');
+				htmlData.innerHTML = data;
+				if (language !== 'English') {
+					$('#addButton').attr('disabled', true);
+				} else {
+					$('#addButton').attr('disabled', false);
+				}
+			}
+		});
 	}
 </script>

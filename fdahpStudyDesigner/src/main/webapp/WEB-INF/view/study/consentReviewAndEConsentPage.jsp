@@ -56,7 +56,7 @@
                value="${consentBo}">
         <input type="hidden" id="typeOfCensent" name="typeOfCensent"
                value="${consentBo.consentDocType}">
-        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
         <input type="hidden" id="mlTitleId" value="${studyLanguageBO.eConsentTitle}">
         <input type="hidden" id="mlTagline" value="${studyLanguageBO.taglineDescription}">
         <input type="hidden" id="mlShortDesc" value="${studyLanguageBO.shortDescription}">
@@ -75,7 +75,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">
                         Review and E-Consent Steps
                         <c:set var="isLive">${_S}isLive</c:set>
-                        ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                            ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                     <c:if test="${studyBo.multiLanguageFlag eq true}">
                         <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
@@ -782,6 +782,7 @@
       }
     });
     /* var isChek = "
+
     ${consentBo.consentDocType}";
 	if(isChek != null && isChek !='' && typeof isChek !=undefined){
 		if(isChek == 'New'){
@@ -999,6 +1000,7 @@
 
       /* tinymce.get('newDocumentDivId').setContent('');
       tinymce.get('newDocumentDivId').setContent('
+
       ${consentBo.consentDocContent}'); */
     }
 
@@ -1517,7 +1519,9 @@
             $('#learnMoreTextId').val($('#learnMoreTextId', htmlData).val());
             tinymce.get('learnMoreTextId').setContent($('#learnMoreTextId', htmlData).val());
           }
-          tinymce.get('newDocumentDivId').setContent($('#newDocumentDivId', htmlData).val());
+          let editor = tinymce.get('newDocumentDivId');
+          if (editor !== undefined && editor !== null)
+            editor.setContent($('#newDocumentDivId', htmlData).val());
           $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
           $('#aggrementOfTheConsentId').val($('#aggrementOfTheConsentId', htmlData).val());
           $('#signature0').val($('#signature0', htmlData).val());

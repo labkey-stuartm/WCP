@@ -161,13 +161,6 @@
         $(".sixthTask").addClass('active');
         actionPageView();
 
-        let currLang = $('#studyLanguage').val();
-        if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
-            !== 'English') {
-          $('#currentLanguage').val(currLang);
-          refreshAndFetchLanguageData(currLang);
-        }
-
         var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
         var activeTaskInfoId = '${activeTaskBo.id}';
         if (!activeTaskInfoId) {
@@ -342,6 +335,14 @@
           }
         });
 
+        let currLang = $('#studyLanguage').val();
+        if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
+            !== 'English') {
+          $('#currentLanguage').val(currLang);
+          setTimeout(function () {
+            refreshAndFetchLanguageData(currLang);
+          }, 600);
+        }
       });
 
   function goToBackPage(item) {
@@ -363,7 +364,8 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
+          a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
+              + $('#studyLanguage').val();
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -373,7 +375,8 @@
     </c:if>
     <c:if test="${actionPage eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
+    a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
+        + $('#studyLanguage').val();
     document.body.appendChild(a).click();
     </c:if>
   }

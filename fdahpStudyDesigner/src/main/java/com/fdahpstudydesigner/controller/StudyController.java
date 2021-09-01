@@ -2432,6 +2432,7 @@ public class StudyController {
     ModelMap map = null;
     String customStudyId = "";
     List<ParticipantPropertiesBO> propertiesList = null;
+    List<String> langList = new ArrayList<>();
     StudyBo studyBo = null;
     String permission = "";
     boolean markAsComplete = true;
@@ -2481,9 +2482,16 @@ public class StudyController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           actMsg = studyService.validateParticipantPropertyComplete(customStudyId);
           if (!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) markAsComplete = false;
+          String languages = studyBo.getSelectedLanguages();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
         }
       }
       map = new ModelMap();
+      String language = request.getParameter("language");
+      map.addAttribute("currLanguage", language);
+      map.addAttribute("languageList", langList);
       map.addAttribute("participantPropertiesList", propertiesList);
       map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
       map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
@@ -2702,6 +2710,7 @@ public class StudyController {
     ParticipantPropertiesBO participantPropertiesBO = null;
     String permission = "";
     StudyBo studyBo = null;
+    List<String> langList = new ArrayList<>();
     try {
       SessionObject sesObj =
           (SessionObject)
@@ -2744,6 +2753,10 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+          String languages = studyBo.getSelectedLanguages();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
         }
         participantPropertyId = request.getParameter("participantPropertyId");
         if (StringUtils.isNotEmpty(participantPropertyId)
@@ -2757,7 +2770,9 @@ public class StudyController {
       String[] dataType = resourceBundle.getString("participant.property.datatype").split(",");
       String[] dataSource = resourceBundle.getString("participant.property.datasource").split(",");
       map = new ModelMap();
+      map.addAttribute("languageList", langList);
       map.addAttribute("participantProperties", participantPropertiesBO);
+      map.addAttribute("currLanguage", request.getParameter("language"));
       map.addAttribute("dataType", dataType);
       map.addAttribute("dataSource", dataSource);
       map.addAttribute("actionType", actionType);
