@@ -26,6 +26,22 @@
 		<div class="text-right">
 			<div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES</div>
 
+			<c:if test="${studyBo.multiLanguageFlag eq true}">
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select
+							class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+							id="studyLanguage" name="studyLanguage" required title="Select">
+						<option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+							English
+						</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language}"
+								${currLanguage eq language ?'selected':''}>${language}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</c:if>
+
 			<div class="dis-line form-group mb-none">
 				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
@@ -64,7 +80,7 @@
 						<th><c:if test="${empty permission}">
 								<div class="dis-line form-group mb-none">
 									<button type="button" class="btn btn-primary blue-btn"
-										onclick="addQuestionnaires();">Add Questionnaire</button>
+										id="addButton" onclick="addQuestionnaires();">Add Questionnaire</button>
 								</div>
 							</c:if></th>
 					</tr>
@@ -108,6 +124,7 @@
 	<input type="hidden" name="questionnaireId" id="questionnaireId"
 		value="">
 	<input type="hidden" name="actionType" id="actionType">
+	<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script>
@@ -115,6 +132,12 @@ $(document).ready(function(){
 			$('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
 			$(".seventhQuestionnaires").addClass('active');
+
+	let currLang = $('#studyLanguage').val();
+	if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
+		$('#currentLanguage').val(currLang);
+		refreshAndFetchLanguageData(currLang);
+	}
 	
              $('#questionnaire_list').DataTable( {
                  "paging":   true,
@@ -277,5 +300,30 @@ $(document).ready(function(){
 		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 
 		document.questionnaireInfoForm.submit();
 	}
+
+$('#studyLanguage').on('change', function () {
+	let currLang = $('#studyLanguage').val();
+	$('#currentLanguage').val(currLang);
+	refreshAndFetchLanguageData($('#studyLanguage').val());
+})
+
+function refreshAndFetchLanguageData(language) {
+	$.ajax({
+		url: '/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}',
+		type: "GET",
+		data: {
+			language: language
+		},
+		success: function () {
+			if (language !== 'English') {
+				$('#addButton').attr('disabled', true);
+				$('.delete ').addClass('cursor-none');
+			} else {
+				$('#addButton').attr('disabled', false);
+				$('.delete ').removeClass('cursor-none');
+			}
+		}
+	});
+}
 </script>
 

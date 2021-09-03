@@ -16,7 +16,7 @@ public class InstructionsLangBO implements Serializable {
   private String instructionTitle;
 
   @Column(name = "questionnaire_id")
-  private String questionnaireId;
+  private Integer questionnaireId;
 
   @Column(name = "active")
   private Boolean active;
@@ -49,11 +49,11 @@ public class InstructionsLangBO implements Serializable {
     this.instructionTitle = instructionTitle;
   }
 
-  public String getQuestionnaireId() {
+  public Integer getQuestionnaireId() {
     return questionnaireId;
   }
 
-  public void setQuestionnaireId(String questionnaireId) {
+  public void setQuestionnaireId(Integer questionnaireId) {
     this.questionnaireId = questionnaireId;
   }
 

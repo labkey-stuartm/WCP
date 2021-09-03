@@ -8,12 +8,14 @@ import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
+import com.fdahpstudydesigner.bo.QuestionLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 
 /** @author BTC */
@@ -114,7 +116,8 @@ public interface StudyQuestionnaireService {
   public QuestionnairesStepsBo saveOrUpdateQuestionStep(
       QuestionnairesStepsBo questionnairesStepsBo,
       SessionObject sessionObject,
-      String customStudyId);
+      String customStudyId,
+      String language);
 
   public String validateLineChartSchedule(Integer questionnaireId, String frequency);
 
@@ -134,6 +137,14 @@ public interface StudyQuestionnaireService {
 
   FormLangBO getFormLangBO(int formId, String language);
 
+  QuestionLangBO getQuestionLangBO(int id, String language);
+
   String saveOrUpdateFormStepForOtherLanguages(
       QuestionnairesStepsBo questionnairesStepsBo, String language);
+
+  List<String> syncAndGetLangData(
+      Map<Integer, QuestionnaireStepBean> qTreeMap,
+      int questionnaireId,
+      String language,
+      int userId);
 }

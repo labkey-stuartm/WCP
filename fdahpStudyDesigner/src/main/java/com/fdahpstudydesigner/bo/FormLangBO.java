@@ -13,6 +13,9 @@ public class FormLangBO implements Serializable {
   @EmbeddedId
   private FormLangPK formLangPK;
 
+  @Column(name = "questionnaire_id")
+  private Integer questionnaireId;
+
   @Column(name = "repeatable_text")
   private String repeatableText;
 
@@ -85,5 +88,13 @@ public class FormLangBO implements Serializable {
 
   public void setRepeatableText(String repeatableText) {
     this.repeatableText = repeatableText;
+  }
+
+  public Integer getQuestionnaireId() {
+    return questionnaireId;
+  }
+
+  public void setQuestionnaireId(Integer questionnaireId) {
+    this.questionnaireId = questionnaireId;
   }
 }

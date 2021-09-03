@@ -233,7 +233,9 @@
       document.body.appendChild(a).click();
     });
     $('.seventh , .seventhQuestionnaires').click(function () {
-      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}&language="
+          + $(
+              '#studyLanguage').val();
       document.body.appendChild(a).click();
 
     });

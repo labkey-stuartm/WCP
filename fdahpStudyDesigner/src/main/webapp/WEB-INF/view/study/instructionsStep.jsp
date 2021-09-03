@@ -26,7 +26,7 @@
                     <c:if test="${actionTypeForQuestionPage == 'add'}">Add Instruction Step</c:if>
                 </div>
 
-                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
@@ -379,7 +379,8 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
+          a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
+              + $('#studyLanguage').val();
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -389,7 +390,8 @@
     </c:if>
     <c:if test="${actionTypeForQuestionPage eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
+    a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
+        + $('#studyLanguage').val();
     document.body.appendChild(a).click();
     </c:if>
   }

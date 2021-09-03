@@ -13,6 +13,7 @@ import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
+import com.fdahpstudydesigner.bo.QuestionLangBO;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
@@ -5449,5 +5450,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     }
     logger.info("StudyQuestionnaireDAOImpl - getFormLangBo - Ends");
     return formLangBO;
+  }
+
+  @Override
+  public QuestionLangBO getQuestionLangBo(int id, String language) {
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionLangBo - Starts");
+    QuestionLangBO questionLangBO = null;
+    try {
+      Session session = hibernateTemplate.getSessionFactory().openSession();
+      questionLangBO =
+          (QuestionLangBO)
+              session
+                  .createQuery(
+                      "from QuestionLangBO where questionLangPK.langCode=:language and questionLangPK.id=:id")
+                  .setString("language", language)
+                  .setInteger("id", id)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getQuestionLangBo - Error : ", e);
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionLangBo - Ends");
+    return questionLangBO;
   }
 }

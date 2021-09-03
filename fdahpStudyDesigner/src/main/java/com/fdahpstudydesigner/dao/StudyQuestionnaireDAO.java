@@ -7,6 +7,7 @@ import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
+import com.fdahpstudydesigner.bo.QuestionLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
@@ -143,4 +144,6 @@ public interface StudyQuestionnaireDAO {
   InstructionsLangBO getInstructionLangBo(int instructionId, String language);
 
   FormLangBO getFormLangBo(int formId, String language);
+
+  QuestionLangBO getQuestionLangBo(int id, String language);
 }
