@@ -2644,7 +2644,6 @@
                                             <input type="text"
                                                    class="form-control lang-specific TextChoiceRequired"
                                                    name="questionReponseTypeBo.otherText"
-                                                   id="otherText"
                                                    value="${questionnairesStepsBo.questionReponseTypeBo.otherText}"
                                                    maxlength="100">
                                             <div class="help-block with-errors red-txt"></div>
@@ -2658,7 +2657,7 @@
                                         <div class="form-group mb-none">
                                             <input type="text"
                                                    class="form-control TextChoiceRequired"
-                                                   name="questionReponseTypeBo.otherValue" id=""
+                                                   name="questionReponseTypeBo.otherValue"
                                                    value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}"
                                                    maxlength="100">
                                             <div class="help-block with-errors red-txt"></div>
@@ -2670,8 +2669,7 @@
                                         </div>
                                         <div class="form-group">
                                             <select name="questionReponseTypeBo.otherExclusive"
-                                                    id=""
-                                                    title="select"
+                                                    title="select" id="otherExclusive"
                                                     data-error="Please choose one option"
                                                     class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>"
                                                     <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>
@@ -2723,7 +2721,6 @@
                                             <div class="form-group">
 													<textarea class="form-control"
                                                               name="questionReponseTypeBo.otherDescription"
-                                                              id=""
                                                               maxlength="150">${questionnairesStepsBo.questionReponseTypeBo.otherDescription}</textarea>
                                             </div>
                                         </div>
@@ -2759,7 +2756,6 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control"
                                                    name="questionReponseTypeBo.otherPlaceholderText"
-                                                   id=""
                                                    value="${questionnairesStepsBo.questionReponseTypeBo.otherPlaceholderText}"
                                                    maxlength="50"/>
                                         </div>
@@ -5456,7 +5452,6 @@
           questionReponseTypeBo.minDescription = mindescrption;
           questionReponseTypeBo.maxDescription = maxdescription;
           questionReponseTypeBo.step = step;
-
           questionReponseTypeBo.minImage = minImagePath;
           questionReponseTypeBo.maxImage = maxImagePath;
           questionReponseTypeBo.formulaBasedLogic = formula_based_logic;
@@ -5659,7 +5654,14 @@
             questionSubResponseType.exclusive = exclusioveText;
             questionSubResponseType.description = display_description;
             questionSubResponseArray.push(questionSubResponseType);
-
+            questionReponseTypeBo.otherType = $('[name="questionReponseTypeBo.otherType"]:checked').val();
+            questionReponseTypeBo.otherText = $('[name="questionReponseTypeBo.otherText"]').val();
+            questionReponseTypeBo.otherValue = $('[name="questionReponseTypeBo.otherValue"]').val();
+            questionReponseTypeBo.otherExclusive = $('[name="questionReponseTypeBo.otherExclusive"]').val();
+            questionReponseTypeBo.otherDescription = $('[name="questionReponseTypeBo.otherDescription"]').val();
+            questionReponseTypeBo.otherPlaceholderText = $('[name="questionReponseTypeBo.otherPlaceholderText"]').val();
+            questionReponseTypeBo.otherIncludeText = $('[name="questionReponseTypeBo.otherIncludeText"]:checked').val();
+            questionReponseTypeBo.otherParticipantFill = $('[name="questionReponseTypeBo.otherParticipantFill"]').val();
           });
           questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
         } else if (resType == "Image Choice") {
@@ -7368,10 +7370,11 @@
             let htmlData = document.createElement('html');
             htmlData.innerHTML = data;
             console.log(data);
+            let responseTypeId = $('[data-id="responseTypeId"]');
             if (language !== 'English') {
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData').attr(
                   'disabled', true);
-              $('[data-id="responseTypeId"]').addClass('ml-disabled').attr('disabled', true);
+              responseTypeId.addClass('ml-disabled').attr('disabled', true);
               if ($('#allowHealthKit').prop('checked') === true) {
                 $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled').attr('disabled', true);
               }
@@ -7381,18 +7384,21 @@
                 $('[data-id="statFormula"]').addClass('ml-disabled').attr('disabled', true);
               }
 
+              if (responseTypeId.text().trim() === 'Date') {
+                $('#anchorTextId, #useAnchorDateId').attr('disabled', true);
+              }
+
               $('[name="questionReponseTypeBo.vertical"]').attr('disabled', true);
-              let responseType = $('[data-id="responseTypeId"]').text().trim();
+              let responseType = responseTypeId.text().trim();
               if (responseType !== '' && responseType !== 'Select') {
                 $('#' + responseType.replaceAll(' ', '')).find(
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
                     $(this).attr('disabled', true);
-                    if (this.nodeName.toLowerCase() === 'select') {
+                    if (this.nodeName!==undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
-                        $('[data-id=' + id + ']').css('background-color',
-                            '#eee').css('opacity', '1');
+                        $('[data-id=' + id + ']').addClass('ml-disabled');
                       }
                     }
                   }
@@ -7434,7 +7440,7 @@
                     className = '.image-choice';
                   else if (respType === '6') {
                     className = '.text-choice';
-                    $('#otherText').val('');
+                    $('[name="questionReponseTypeBo.otherText"]').val('');
                   }
                   let i = 0;
                   let displayText = $('#mlDisplayText', htmlData).val();
@@ -7494,7 +7500,7 @@
                     className = '.image-choice';
                   else if (respType === '6') {
                     className = '.text-choice';
-                    $('#otherText').val($('#mlOtherText', htmlData).val());
+                    $('[name="questionReponseTypeBo.otherText"]').val($('#mlOtherText', htmlData).val());
                   }
                   let i = 0;
                   let displayText = $('#mlDisplayText', htmlData).val();
@@ -7518,6 +7524,10 @@
                     id = 'textPlaceholderId';
                     $('#validationExceptTextId').val($('#mlExceptText', htmlData).val());
                     $('#invalidMessageId').val($('#mlInvalidMessage', htmlData).val());
+                    if ($("#validationConditionId").val()==='') {
+                      $('#validationExceptTextId').val('');
+                      $('[data-id="validationConditionId"]').addClass('disabled');
+                    }
                   } else if (respType === '12') {
                     id = 'placeholderId';
                   } else if (respType === '14') {
@@ -7530,7 +7540,7 @@
             } else {   // for English Language
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData').attr(
                   'disabled', false);
-              $('[data-id="responseTypeId"]').removeClass('ml-disabled').attr('disabled', false);
+              responseTypeId.removeClass('ml-disabled').attr('disabled', false);
               if ($('#allowHealthKit').prop('checked') === true) {
                 $('[data-id="healthkitDatatypeId"]').removeClass('ml-disabled').attr('disabled',
                     false);
@@ -7541,18 +7551,23 @@
                 $('[data-id="statFormula"]').removeClass('ml-disabled').attr('disabled', false);
               }
 
+              if (responseTypeId.text().trim() === 'Date') {
+                $('#anchorTextId, #useAnchorDateId').attr('disabled', false);
+              }
+
               // validationExceptTextId if this has property disabled do not enable
               $('[name="questionReponseTypeBo.vertical"]').attr('disabled', false);
-              let responseType = $('[data-id="responseTypeId"]').text().trim();
+              let responseType = responseTypeId.text().trim();
               if (responseType !== '' && responseType !== 'Select') {
                 $('#' + responseType.replaceAll(' ', '')).find(
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
                     $(this).attr('disabled', false);
-                    if (this.nodeName.toLowerCase() === 'select') {
+                    console.log(this, this.nodeName);
+                    if (this.nodeName!== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
-                        $('[data-id=' + id + ']').removeAttr('style');
+                        $('[data-id=' + id + ']').removeClass('ml-disabled');
                       }
                     }
                   }
@@ -7590,7 +7605,7 @@
                   className = '.image-choice';
                 else if (respType === '6') {
                   className = '.text-choice';
-                  $('#otherText').val($('#otherText', htmlData).val());
+                  $('[name="questionReponseTypeBo.otherText"]').val($('[name="questionReponseTypeBo.otherText"]', htmlData).val());
                 }
                 $(className).find('input.lang-specific').each(function (index, ele) {
                   let id = ele.getAttribute('id');
@@ -7605,6 +7620,7 @@
                   id = 'textPlaceholderId';
                   $('#validationExceptTextId').val($('#validationExceptTextId', htmlData).val());
                   $('#invalidMessageId').val($('#invalidMessageId', htmlData).val());
+                  $('[data-id="validationConditionId"]').removeClass('disabled');
                 } else if (respType === '12') {
                   id = 'placeholderId';
                 } else if (respType === '14') {
