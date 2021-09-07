@@ -73,7 +73,7 @@
                 type="hidden" name="questionnairesStepsBo.stepId" id="stepId"
                 value="${instructionsBo.questionnairesStepsBo.stepId}">
             <input type="hidden" id="mlTitle" value="${instructionsLangBO.instructionTitle}">
-            <input type="hidden" id="currentLanguage" name="language">
+            <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
             <div class="col-md-6 pl-none">
                 <div class="gray-xs-f mb-xs">
                     Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span

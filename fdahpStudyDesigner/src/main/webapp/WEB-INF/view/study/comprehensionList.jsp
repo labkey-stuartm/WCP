@@ -547,7 +547,7 @@
           url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
           type: "POST",
           datatype: "json",
-          data: {consentInfo: data, page: pageName},
+          data: {consentInfo: data, page: pageName, language:$('#studyLanguage').val()},
           beforeSend: function (xhr, settings) {
             xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
           },

@@ -46,6 +46,7 @@ import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPermissions;
@@ -8180,6 +8181,12 @@ public class StudyDAOImpl implements StudyDAO {
             else studyActivityFlag = true;
           }
 
+          // validating mark as completed for multiple languages
+          message = validateCompletionStatusFromLangTables(Integer.parseInt(studyId), false);
+          if (!FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+            return message;
+          }
+
           // 2-enrollment validation
           if (studyActivityFlag
               && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants())
@@ -8225,6 +8232,11 @@ public class StudyDAOImpl implements StudyDAO {
               return message;
             }
           }
+          // validating mark as completed for multiple languages
+          message = validateCompletionStatusFromLangTables(Integer.parseInt(studyId), true);
+          if (!FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+            return message;
+          }
         }
       } else {
         message = "Action is missing";
@@ -8238,6 +8250,66 @@ public class StudyDAOImpl implements StudyDAO {
       }
     }
     logger.info("StudyDAOImpl - validateStudyAction() - Ends");
+    return message;
+  }
+
+  @SuppressWarnings("unchecked")
+  private String validateCompletionStatusFromLangTables(int studyId, boolean publishFlag) {
+    logger.info("StudyDAOImpl - validateCompletionStatusFromLangTables() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session=null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      List<StudySequenceLangBO> langBOList = session.createQuery("from StudySequenceLangBO  where studySequenceLangPK.studyId=:id")
+          .setInteger("id", studyId).list();
+      for (StudySequenceLangBO studySequenceLangBO : langBOList) {
+        if (!studySequenceLangBO.isBasicInfo()) {
+          message = FdahpStudyDesignerConstants.BASICINFO_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isSettingAdmins()) {
+          message = FdahpStudyDesignerConstants.SETTING_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isOverView()) {
+          message = FdahpStudyDesignerConstants.OVERVIEW_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isEligibility() && !publishFlag) {
+          message = FdahpStudyDesignerConstants.ELIGIBILITY_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isConsentEduInfo()) {
+          message = FdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isComprehensionTest() && !publishFlag) {
+          message = FdahpStudyDesignerConstants.COMPREHENSIONTEST_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.iseConsent()) {
+          message = FdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isStudyExcQuestionnaries()) {
+          message = FdahpStudyDesignerConstants.STUDYEXCQUESTIONNARIES_ERROR_MSG;
+          return message;
+        } else if (!studySequenceLangBO.isStudyExcActiveTask()) {
+          message = FdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
+          return message;
+//        } else if (!studySequenceLangBO.isMiscellaneousResources()) {
+//          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG;
+//          return message;
+//        } else if (!studySequenceLangBO.isCheckList()) {
+//          message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG;
+//          return message;
+        } else if (!studySequenceLangBO.getParticipantProperties()) {
+          message = FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES_ERROR_MSG;
+          return message;
+        }
+      }
+      message = FdahpStudyDesignerConstants.SUCCESS;
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - validateCompletionStatusFromLangTables() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - validateCompletionStatusFromLangTables() - Ends");
     return message;
   }
 
@@ -9161,5 +9233,33 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getStudyPageLanguageById() - Ends");
     return pageLanguageBO;
+  }
+
+  @Override
+  public StudySequenceLangBO getStudySequenceLangBO(int studyId, String language) {
+    logger.info("StudyDAOImpl - getStudySequenceLangBO() - Starts");
+    Session session = null;
+    StudySequenceLangBO studySequenceLangBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (studyId != 0) {
+        studySequenceLangBO =
+            (StudySequenceLangBO)
+                session
+                    .createQuery(
+                        "from StudySequenceLangBO where studySequenceLangPK.langCode=:language and studySequenceLangPK.studyId=:id")
+                    .setString("language", language)
+                    .setInteger("id", studyId)
+                    .uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudySequenceLangBO() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudySequenceLangBO() - Ends");
+    return studySequenceLangBO;
   }
 }

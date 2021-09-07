@@ -245,7 +245,9 @@ function deleteTaskInfo(activeTaskInfoId){
 	$('#delTask').removeClass('cursor-none');
 }
 function markAsCompleted(){
-		$("#completeInfoForm").submit();
+  let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
+  $('#completeInfoForm').append(input);
+  $("#completeInfoForm").submit();
 }
 
 $('#studyLanguage').on('change', function () {

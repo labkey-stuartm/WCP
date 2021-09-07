@@ -60,7 +60,7 @@
         <!-- End top tab section-->
         <input type="hidden" value="${studyBo.id}" name="studyId"/>
         <input type="hidden" value="" id="buttonText" name="buttonText">
-        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="mlMediaLink" value="${mlMediaLink}"/>
         <select id="overviewPages" style="display: none">
             <c:forEach items="${studyPageLanguageList}" var="overviewPage">

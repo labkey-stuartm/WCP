@@ -26,7 +26,7 @@
         <input type="hidden" id="userIds" name="userIds">
         <input type="hidden" id="newLanguages" name="newLanguages">
         <input type="hidden" id="deletedLanguages" name="deletedLanguages">
-        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="alertText" value="${alertText}">
         <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">

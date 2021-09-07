@@ -143,7 +143,7 @@
                 value="${questionnaireId}"> <input type="hidden"
                                                    id="questionnaireShortId"
                                                    value="${questionnaireBo.shortTitle}">
-            <input type="hidden" id="currentLanguage" name="language">
+            <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 
                 <%--				ml data fields--%>
             <input type="hidden" id="mlQuestion" value="${questionLangBO.question}">

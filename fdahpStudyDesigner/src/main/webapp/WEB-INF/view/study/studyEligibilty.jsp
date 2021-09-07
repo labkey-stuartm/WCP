@@ -71,7 +71,7 @@
                id="studyId"/>
         <input type="hidden" value="${eligibility.id}" name="id"/>
         <input type="hidden" id="mlInstText" value="${mlInstructionalText}"/>
-        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <select id="eligibilityItems" style="display: none">
             <c:forEach items="${eligibilityTestLangList}" var="eligibilityLang">
                 <option id='lang_${eligibilityLang.eligibilityTestLangPK.id}'

@@ -389,6 +389,8 @@
       $('#markAsCompleteBtnId').prop('disabled', true);
       $('[data-toggle="tooltip"]').tooltip();
     } else {
+      let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
+      $('#comprehensionInfoForm').append(input);
       $("#comprehensionInfoForm").submit();
     }
   }

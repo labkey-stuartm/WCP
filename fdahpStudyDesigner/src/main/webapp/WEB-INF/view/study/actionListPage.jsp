@@ -181,6 +181,7 @@
 	name="actionInfoForm" id="actionInfoForm" method="post">
 	<input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
 	<input type="hidden" name="buttonText" id="buttonText" value="" />
+	<input type="hidden" name="language" id="studyLanguage" value="${currLanguage}" />
 </form:form>
 <form:form
 	action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}"

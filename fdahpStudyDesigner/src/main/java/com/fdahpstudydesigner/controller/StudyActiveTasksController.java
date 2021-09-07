@@ -94,12 +94,13 @@ public class StudyActiveTasksController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.ACTIVETASK_LIST,
                 sesObj,
-                customStudyId);
+                customStudyId, language);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request

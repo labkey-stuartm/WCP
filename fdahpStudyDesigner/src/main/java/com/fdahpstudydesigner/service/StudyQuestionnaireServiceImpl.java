@@ -1267,9 +1267,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     try {
       QuestionsBo addQuestionsBo = null;
       if (questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null) {
-        int id = questionnairesStepsBo.getQuestionsBo().getId();
+        Integer id = questionnairesStepsBo.getQuestionsBo().getId();
 
-        if (id != 0) {
+        if (id != null) {
           addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(id, null, customStudyId);
           if (questionnairesStepsBo.getModifiedOn() != null) {
             addQuestionsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());

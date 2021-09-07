@@ -111,7 +111,7 @@
                                                        id="questionnaireShortId"
                                                        value="${questionnaireBo.shortTitle}">
                 <input type="hidden" name="stepType" id="stepType" value="Form">
-                <input type="hidden" id="currentLanguage" name="language">
+                <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
                 <input type="hidden" id="mlText" value="${formLangBO.repeatableText}">
                 <input type="hidden" name="formId" id="formId"
                        value="${questionnairesStepsBo.instructionFormId}"> <input

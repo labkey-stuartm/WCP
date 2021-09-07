@@ -176,6 +176,7 @@ public class StudyController {
           map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
           map.addAttribute("liveStudyBo", liveStudyBo);
           map.addAttribute("studyPermissionBO", studyPermissionBO);
+          map.addAttribute("currLanguage", request.getParameter("language"));
           mav = new ModelAndView("actionList", map);
         } else {
           return new ModelAndView("redirect:/adminStudies/studyList.do");
@@ -378,12 +379,14 @@ public class StudyController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.COMPREHENSION_TEST,
                 sesObj,
-                customStudyId);
+                customStudyId,
+                language);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
@@ -452,12 +455,14 @@ public class StudyController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.CONESENT,
                 sesObj,
-                customStudyId);
+                customStudyId,
+                language);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
               .getSession()
@@ -527,12 +532,14 @@ public class StudyController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.CONESENT_REVIEW,
                 sesObj,
-                customStudyId);
+                customStudyId,
+                language);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
@@ -2269,9 +2276,10 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         // markCompleted in param specify that notification to update it
         // as completed in table StudySequenceBo
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
-                Integer.parseInt(studyId), markCompleted, sesObj, customStudyId);
+                Integer.parseInt(studyId), markCompleted, sesObj, customStudyId, language);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
@@ -2975,12 +2983,14 @@ public class StudyController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES,
                 sesObj,
-                customStudyId);
+                customStudyId,
+                language);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
               .getSession()
@@ -3048,12 +3058,14 @@ public class StudyController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.QUESTIONNAIRE,
                 sesObj,
-                customStudyId);
+                customStudyId,
+                language);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
               .getSession()
@@ -3645,12 +3657,14 @@ public class StudyController {
         }
         map.addAttribute("_S", sessionStudyCount);
         if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+          String language = request.getParameter("language");
           message =
               studyService.markAsCompleted(
                   Integer.parseInt(studyId),
                   FdahpStudyDesignerConstants.RESOURCE,
                   sesObj,
-                  customStudyId);
+                  customStudyId,
+                  language);
           if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
             request
                 .getSession()

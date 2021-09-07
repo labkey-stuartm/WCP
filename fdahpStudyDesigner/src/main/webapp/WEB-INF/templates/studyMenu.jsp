@@ -267,7 +267,8 @@
     });
     $('.tenth').click(function () {
       $('.tenth').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}&language="
+          + $('#studyLanguage').val();
       document.body.appendChild(a).click();
     });
     </c:if>

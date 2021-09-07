@@ -77,7 +77,7 @@
                 </c:forEach>
             </select>
 
-            <input type="hidden" id="currentLanguage" name="currentLanguage">
+            <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
             <c:if test="${not empty comprehensionQuestionBo.id}">
                 <input type="hidden" id="studyId" name="studyId"
                        value="${comprehensionQuestionBo.studyId}">

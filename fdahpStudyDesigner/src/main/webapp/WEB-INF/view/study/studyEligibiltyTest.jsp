@@ -68,7 +68,7 @@
             <!-- form- input-->
 
             <input type="hidden" id="mlQuestion" value="${eligibilityTestLangBo.question}">
-            <input type="hidden" id="currentLanguage" name="currentLanguage">
+            <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
             <input type="hidden" id="type" name="type" value="complete"/>
             <input type="hidden" name="id" id="id" value="${eligibilityTest.id}"/>
             <input type="hidden" id="eligibilityId" name="eligibilityId" value="${eligibilityId}"/>

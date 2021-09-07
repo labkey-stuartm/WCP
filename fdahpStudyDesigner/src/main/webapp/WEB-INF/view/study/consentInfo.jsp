@@ -25,7 +25,7 @@
         </c:if>
         <input type="hidden" id="elaborated" name="elaborated" value=""/>
         <input type="hidden" id="type" name="type" value="complete"/>
-        <input type="hidden" id="currentLanguage" name="currentLanguage">
+        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="briefSummaryLang" value="${consentInfoLangBO.briefSummary}">
         <input type="hidden" id="elaboratedLang" value="${consentInfoLangBO.elaborated}">
         <input type="hidden" id="displayTitleLang" value="${consentInfoLangBO.displayTitle}">
