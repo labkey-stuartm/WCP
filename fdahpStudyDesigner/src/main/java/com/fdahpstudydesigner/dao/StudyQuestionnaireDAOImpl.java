@@ -19,6 +19,7 @@ import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
+import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
 import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
@@ -1533,6 +1534,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             (AnchorDateTypeBo)
                 session.get(AnchorDateTypeBo.class, questionnaireBo.getAnchorDateId());
       }
+
+      // deleting from language table
+      session
+          .createQuery("delete from QuestionnaireLangBO where questionnaireLangPK.id=:id")
+          .setInteger("id", questionnaireId)
+          .executeUpdate();
 
       // delete anchordate from question start
       /** * ------------------ * */
@@ -5471,5 +5478,51 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     }
     logger.info("StudyQuestionnaireDAOImpl - getQuestionLangBo - Ends");
     return questionLangBO;
+  }
+
+  @Override
+  public QuestionnaireLangBO getQuestionnaireLangById(Integer questionnaireId, String language) {
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangById - Starts");
+    QuestionnaireLangBO questionnaireLangBO = null;
+    try {
+      if (questionnaireId != null) {
+        Session session = hibernateTemplate.getSessionFactory().openSession();
+        questionnaireLangBO =
+            (QuestionnaireLangBO)
+                session
+                    .createQuery(
+                        "from QuestionnaireLangBO where questionnaireLangPK.langCode=:language and questionnaireLangPK.id=:id")
+                    .setString("language", language)
+                    .setInteger("id", questionnaireId)
+                    .uniqueResult();
+      } else return null;
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireLangById - Error : ", e);
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangById - Ends");
+    return questionnaireLangBO;
+  }
+
+  @Override
+  public void deleteQuestionStep(int id, String language) {
+    logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireLang - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session
+          .createQuery(
+              "delete from QuestionnaireLangBO where questionnaireLangPK.id=:id and questionnaireLangPK.langCode=:language")
+          .setInteger("id", id)
+          .setString("language", language)
+          .executeUpdate();
+      transaction.commit();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteQuestionnaireLang - Error : ", e);
+      transaction.rollback();
+    } finally {
+      session.close();
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireLang - Ends");
   }
 }

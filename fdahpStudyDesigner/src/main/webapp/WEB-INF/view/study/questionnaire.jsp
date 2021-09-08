@@ -122,7 +122,7 @@
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" required title="Select">
-                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'undefined') or (currLanguage eq 'English')) ?'selected':''}>
                             English
                         </option>
                         <c:forEach items="${languageList}" var="language">
@@ -192,6 +192,7 @@
                     <input type="hidden" name="type" id="type" value="content">
                     <input type="hidden" name="id" id="id"
                            value="${questionnaireBo.id}">
+                    <input type="hidden" id="mlTitle" value="${questionnaireLangBo.title}">
                     <input type="hidden" name="status" id="status" value="true">
                     <input type="hidden" name="questionnaireId" id="questionnaireId"
                            value="${questionnaireBo.id}">
@@ -3549,7 +3550,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do?_S=${param._S}",
         type: "POST",
         datatype: "json",
-        data: {questionnaireScheduleInfo: data},
+        data: {questionnaireScheduleInfo: data, language: $('#studyLanguage').val()},
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
@@ -4629,13 +4630,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       data: {
         language: language
       },
-      success: function () {
+      success: function (data) {
+        let htmlData = document.createElement('html');
+        htmlData.innerHTML = data;
         if (language !== 'English') {
-          $('#shortTitleId, #titleId, #branchingId').attr('disabled', true);
+          $('#shortTitleId, #branchingId').attr('disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
+          $('#titleId').val($('#mlTitle', htmlData).val());
         } else {
-          $('#shortTitleId, #titleId, #branchingId').attr('disabled', false);
+          $('#shortTitleId, #branchingId').attr('disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');
+          $('#titleId').val($('#titleId', htmlData).val());
         }
       }
     });
