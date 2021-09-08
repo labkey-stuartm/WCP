@@ -906,10 +906,14 @@ public class StudyQuestionnaireController {
           }
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
           map.addAttribute("formId", formId);
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);

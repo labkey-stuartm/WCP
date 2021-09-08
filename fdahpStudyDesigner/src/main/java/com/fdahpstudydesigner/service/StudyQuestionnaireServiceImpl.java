@@ -1632,7 +1632,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       if (formLangBO == null) {
         formLangBO = new FormLangBO();
         formLangBO.setFormLangPK(
-            new FormLangPK(questionnairesStepsBo.getInstructionFormId(), language));
+            new FormLangPK(questionnairesStepsBo.getStepId(), language));
         formLangBO.setQuestionnaireId(questionnairesStepsBo.getQuestionnairesId());
         formLangBO.setCreatedBy(questionnairesStepsBo.getCreatedBy());
         formLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());

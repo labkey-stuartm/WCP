@@ -2625,7 +2625,7 @@ public class StudyController {
     String customStudyId = "";
     String permission = "";
     String actionType = "", actionButtonType = "";
-    List<String> langList = new ArrayList<>();
+    Map<String, String> langMap = new HashMap<>();
     try {
       SessionObject sesObj =
           (SessionObject)
@@ -2695,8 +2695,12 @@ public class StudyController {
           if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
             studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
             String languages = studyBo.getSelectedLanguages();
+            List<String> langList = new ArrayList<>();
             if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
               langList = Arrays.asList(languages.split(","));
+              for (String string : langList) {
+                langMap.put(string, MultiLanguageCodes.getValue(string));
+              }
             }
           }
           if (null != studyBo) {
@@ -2721,7 +2725,7 @@ public class StudyController {
         String[] dataSource =
             resourceBundle.getString("participant.property.datasource").split(",");
         map = new ModelMap();
-        map.addAttribute("languageList", langList);
+        map.addAttribute("languageList", langMap);
         map.addAttribute("participantProperties", participantPropertiesBO);
         map.addAttribute("dataType", dataType);
         map.addAttribute("dataSource", dataSource);
