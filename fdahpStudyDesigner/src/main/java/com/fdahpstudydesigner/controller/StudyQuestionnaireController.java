@@ -887,6 +887,7 @@ public class StudyQuestionnaireController {
                   questionnaireBo.getShortTitle(),
                   studyBo.getCustomStudyId(),
                   questionnaireBo.getId());
+
           if (questionId != null && !questionId.isEmpty()) {
             questionsBo =
                 studyQuestionnaireService.getQuestionsById(
@@ -903,6 +904,12 @@ public class StudyQuestionnaireController {
               map.addAttribute("destinationStepList", destionationStepList);
             }
           }
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+          }
+          map.addAttribute("languageList", langList);
           map.addAttribute("formId", formId);
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);

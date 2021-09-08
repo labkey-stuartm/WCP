@@ -801,6 +801,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             instructionsLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
           instructionsLangBO.setInstructionTitle(instructionsBo.getInstructionTitle());
+          instructionsLangBO.setInstructionText(instructionsBo.getInstructionText());
           studyQuestionnaireDAO.saveOrUpdateObject(instructionsLangBO);
         } else {
           if (instructionsBo.getInstructionText() != null

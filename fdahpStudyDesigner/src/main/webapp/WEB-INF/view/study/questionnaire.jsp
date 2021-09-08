@@ -4630,15 +4630,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       data: {
         language: language
       },
-      success: function (data) {
+       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        if (language !== 'en') {
-          $('#shortTitleId, #branchingId').attr('disabled', true);
+        if (language !== 'en') { 
+          $('#shortTitleId, #titleId, #branchingId').attr('disabled', true);
+          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
         } else {
-          $('#shortTitleId, #branchingId').attr('disabled', false);
+          $('#shortTitleId, #titleId, #branchingId').attr('disabled', false);
+          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());
         }

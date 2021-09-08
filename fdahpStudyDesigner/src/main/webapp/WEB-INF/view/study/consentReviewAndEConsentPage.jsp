@@ -220,8 +220,9 @@
                                         will be shared)<span class="requiredStar">*</span>
                                     </div>
                                     <div class="form-group">
-                                        <textarea id="learnMoreTextId" name="learnMoreText"
-                                                  required>${consentBo.learnMoreText}</textarea>
+                                        <textarea class="form-control requiredClass" 
+                                        			id="learnMoreTextId" name="learnMoreText"
+                                                  <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.learnMoreText}</textarea>
                                         <div class="help-block with-errors red-txt"></div>
                                     </div>
                                 </div>
@@ -1486,7 +1487,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          $('[name="shareDataPermissions"], #inlineRadio1, [name="consentByLAR"],' +
+          $('[name="shareDataPermissions"], #inlineRadio1, #inlineRadio2, [name="consentByLAR"],' +
               ' [name="additionalSignatureRadio"]').attr('disabled', true);
           $('.addbtn, .remBtn').addClass('cursor-none');
           if ($('#shareDataPermissionsYes').prop('checked') === true) {
@@ -1508,7 +1509,7 @@
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
         } else {
-          $('[name="shareDataPermissions"], #inlineRadio1, [name="consentByLAR"],' +
+          $('[name="shareDataPermissions"], #inlineRadio1,#inlineRadio2, [name="consentByLAR"],' +
               ' [name="additionalSignatureRadio"]').attr('disabled', false);
           $('.addbtn, .remBtn').removeClass('cursor-none');
           if ($('#shareDataPermissionsYes').prop('checked') === true) {

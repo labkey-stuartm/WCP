@@ -2625,6 +2625,7 @@ public class StudyController {
     String customStudyId = "";
     String permission = "";
     String actionType = "", actionButtonType = "";
+    List<String> langList = new ArrayList<>();
     try {
       SessionObject sesObj =
           (SessionObject)
@@ -2693,6 +2694,10 @@ public class StudyController {
           }
           if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
             studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+            String languages = studyBo.getSelectedLanguages();
+            if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+              langList = Arrays.asList(languages.split(","));
+            }
           }
           if (null != studyBo) {
             participantPropertiesBO.setAppId(studyBo.getAppId());
@@ -2716,6 +2721,7 @@ public class StudyController {
         String[] dataSource =
             resourceBundle.getString("participant.property.datasource").split(",");
         map = new ModelMap();
+        map.addAttribute("languageList", langList);
         map.addAttribute("participantProperties", participantPropertiesBO);
         map.addAttribute("dataType", dataType);
         map.addAttribute("dataSource", dataSource);
@@ -6194,9 +6200,10 @@ public class StudyController {
           }
           String currLang = request.getParameter("language");
           if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
+            StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
             eligibilityTestLangList =
                 studyService.syncEligibilityTestDataInLanguageTable(eligibilityTestList, currLang);
-            StudyLanguageBO studyLanguageBO =
+            studyLanguageBO =
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), currLang);
             map.addAttribute("mlInstructionalText", studyLanguageBO.getInstructionalText());
           }

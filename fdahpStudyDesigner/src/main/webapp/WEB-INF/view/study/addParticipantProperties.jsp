@@ -683,7 +683,7 @@
       url: '/fdahpStudyDesigner/adminStudies/editParticipantProperties.do?_S=${param._S}',
       type: "GET",
       data: {
-        language: language,
+        language: language,	
         participantPropertyId: $('#participantId').val()
       },
       success: function (data) {
@@ -691,15 +691,17 @@
         htmlData.innerHTML = data;
         if ($('#actionType').val() === 'edit') {
           if (language !== 'en') {
-            $('#shortTitleId, #propertyName, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
+            $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
+
                 'disabled', true);
             $('[data-id="dataSource"], [data-id="dataType"]').css(
                 'background-color',
                 '#eee').css('opacity', '1').addClass('cursor-none');
+            $('#saveId, #doneId').addClass('cursor-none');
           } else {
-            $('#shortTitleId, #propertyName, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
+            $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
                 'disabled', false);
-            $('[data-id="dataSource"], [data-id="dataType"]').removeAttr(
+            $('[data-id="dataSource"], [data-id="dataType"], #saveId, #doneId').removeAttr(
                 'style').removeClass('cursor-none');
           }
         }

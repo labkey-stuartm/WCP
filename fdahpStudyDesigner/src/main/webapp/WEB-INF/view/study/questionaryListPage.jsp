@@ -328,23 +328,25 @@
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
-  function refreshAndFetchLanguageData(language) {
-    $.ajax({
-      url: '/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}',
-      type: "GET",
-      data: {
-        language: language
-      },
-      success: function () {
-        if (language !== 'en') {
-          $('#addButton').attr('disabled', true);
-          $('.delete ').addClass('cursor-none');
-        } else {
-          $('#addButton').attr('disabled', false);
-          $('.delete ').removeClass('cursor-none');
-        }
-      }
-    });
-  }
+function refreshAndFetchLanguageData(language) {
+	$.ajax({
+		url: '/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}',
+		type: "GET",
+		data: {
+			language: language
+		},
+		success: function () {
+			if (language !== 'en') {
+				$('#addButton').attr('disabled', true);
+				$('.delete ').addClass('cursor-none');
+				$('.copy ').addClass('cursor-none');
+			} else {
+				$('#addButton').attr('disabled', false);
+				$('.delete ').removeClass('cursor-none');
+				$('.copy ').removeClass('cursor-none');
+			}
+		}
+	});
+}
 </script>
 

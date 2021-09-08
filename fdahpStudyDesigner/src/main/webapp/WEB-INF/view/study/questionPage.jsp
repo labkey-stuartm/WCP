@@ -65,6 +65,22 @@ function isNumberKey(evt)
 						var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				<c:if test="${actionTypeForFormStep == 'add'}">Add Question</c:if>
 			</div>
+			
+			<c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <select
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            id="studyLanguage" name="studyLanguage" required title="Select">
+                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                            English
+                        </option>
+                        <c:forEach items="${languageList}" var="language">
+                            <option value="${language}"
+                                ${currLanguage eq language ?'selected':''}>${language}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </c:if>
 			<div class="dis-line form-group mb-none mr-sm">
 				<button type="button" class="btn btn-default gray-btn"
 					onclick="goToBackPage(this);">Cancel</button>
@@ -4670,4 +4686,54 @@ function validateAnchorDateText(item,callback){
  	        $(thisAttr).parent().find(".help-block").empty();
  	}
 }
+$('#studyLanguage').on('change', function () {
+    let currLang = $('#studyLanguage').val();
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData($('#studyLanguage').val());
+  })
+
+  function refreshAndFetchLanguageData(language) {
+    $.ajax({
+      url: '/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}',
+      type: "GET",
+      data: {
+        language: language,
+      },
+      success: function (data) {
+        let htmlData = document.createElement('html');
+        htmlData.innerHTML = data;
+        if (language !== 'English') {
+          $('#shortTitle, #skiappableYes, #skiappableNo, #questionTextId, #responseTypeId, #useAnchorDateId, #anchorTextId').attr(
+              'disabled', true);
+          $('#allowHealthKit, #healthkitDatatypeId, #addLineChart, #lineChartTimeRangeId, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId, #useStasticData, #statShortNameId').attr(
+                  'disabled', true);
+          $('#statDisplayNameId, #statDisplayUnitsId, #statTypeId, #statFormula, #vertical, #horizontal, #scaleMinValueId, #scaleMaxValueId, #scaleMinDescriptionId, #scaleMaxDescriptionId').attr(
+                  'disabled', true);
+          $('#displayStepsCount, #scaleStepId, #scaleDefaultValueId, #continuesScaleMinValueId, #continuesScaleMaxValueId, #continuesScaleDefaultValueId, #continuesScaleFractionDigitsId, #continuesScaleMinDescriptionId, #continuesScaleMaxDescriptionId').attr(
+                  'disabled', true);
+          $('#useCurrentLocationYes, #useCurrentLocationNo, #placeholderId, #multipleLinesYes, #multipleLinesNo, #textPlaceholderId, #textmaxLengthId, #validationConditionId, #validationCharactersId').attr(
+                  'disabled', true);
+          $('#invalidMessageId, #measurementSystemLocal, #measurementSystemMetric, #measurementSystemUS, #heightPlaceholderId').attr(
+                  'disabled', true);
+          $('#timeIntervalStepId, #timeIntervalDefaultId, #styleDecimal, #styleInteger, #numericUnitId, #numericPlaceholderId, #numericMinValueId, #numericMaxValueId').attr(
+                  'disabled', true);
+        } else {
+          $('#shortTitle, #skiappableYes, #skiappableNo, #questionTextId, #responseTypeId, #useAnchorDateId, #anchorTextId').attr(
+              'disabled', false);
+          $('#allowHealthKit, #healthkitDatatypeId, #addLineChart, #lineChartTimeRangeId, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId, #useStasticData, #statShortNameId').attr(
+                  'disabled', false);
+          $('#statDisplayNameId, #statDisplayUnitsId, #statTypeId, #statFormula, #vertical, #horizontal, #scaleMinValueId, #scaleMaxValueId, #scaleMinDescriptionId, #scaleMaxDescriptionId').attr(
+                  'disabled', false);
+          $('#displayStepsCount, #scaleStepId, #scaleDefaultValueId, #continuesScaleMinValueId, #continuesScaleMaxValueId, #continuesScaleDefaultValueId, #continuesScaleFractionDigitsId, #continuesScaleMinDescriptionId, #continuesScaleMaxDescriptionId').attr(
+                  'disabled', false);
+          $('#useCurrentLocationYes, #useCurrentLocationNo, #placeholderId, #multipleLinesYes, #multipleLinesNo, #textPlaceholderId, #textmaxLengthId, #validationConditionId, #validationCharactersId').attr(
+                  'disabled', false);
+          $('#invalidMessageId, #measurementSystemLocal, #measurementSystemMetric, #measurementSystemUS, #heightPlaceholderId').attr(
+                  'disabled', false);
+          $('#timeIntervalStepId, #timeIntervalDefaultId, #styleDecimal, #styleInteger, #numericUnitId, #numericPlaceholderId, #numericMinValueId, #numericMaxValueId').attr(
+                  'disabled', false);
+        }
+      }
+    })
+  }
 </script>

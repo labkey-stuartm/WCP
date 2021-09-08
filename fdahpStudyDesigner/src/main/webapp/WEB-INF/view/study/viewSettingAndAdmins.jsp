@@ -137,9 +137,9 @@
 
             <div id="langSelect" style="display: none">
                 <div class="mt-md study-list mb-md addHide">
-                    <select
+                    <select 
                             class="selectpicker col-md-6 p-none changeView"
-                            title="- Select and Add Languages -" id="multiple">
+                            title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
                             <option value="${lang.key}" id="${lang.key}">${lang.value}</option>
                         </c:forEach>
@@ -149,8 +149,8 @@
                 <!-- Selected Language items -->
                 <div class="study-selected mt-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
-                        <input type="hidden" class="stdCls" id="${stdLang.key}" value="${stdLang.key}">
-                        <span id="span-${stdLang.key}">${stdLang.value}<span id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
+                      <input type="hidden" class="stdCls" id="${stdLang.key}" value="${stdLang.key}">
+                        <span id="span-${stdLang.key}">${stdLang.value}<span <c:if test="${not empty studyBo.liveStudyBo}">disabled</c:if> id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
                                               onclick="removeLang(this.id)"> X&nbsp;&nbsp;</span></span>
                     </c:forEach>
                 </div>
@@ -1027,6 +1027,8 @@
             $('#selectedLanguages').css('pointer-events', 'none');
             $('#addLangBtn').css('pointer-events', 'none');
             $('.sprites_icon').css('pointer-events', 'none');
+            
+            $('[data-id="multiple"]').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
           } else {
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
@@ -1053,6 +1055,8 @@
             $('#selectedLanguages').removeAttr('style');
             $('#addLangBtn').removeAttr('style');
             $('.sprites_icon').removeAttr('style');
+            
+            $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
           }
         }
       }
