@@ -917,7 +917,7 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - markAsCompleted() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudySequenceLangBO studySequenceLangBO =
             studyDAO.getStudySequenceLangBO(studyId, language);
         if (studySequenceLangBO == null) {
@@ -1158,7 +1158,7 @@ public class StudyServiceImpl implements StudyService {
         updateConsentBo.setStudyId(consentBo.getStudyId());
       }
 
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(consentBo.getStudyId(), language);
         if (studySequenceLangBO == null) {
           studySequenceLangBO = new StudySequenceLangBO();
@@ -1444,7 +1444,7 @@ public class StudyServiceImpl implements StudyService {
         }
 
         // saving in multi language tables
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           ComprehensionQuestionLangBO comprehensionQuestionLangBO =
               studyDAO.getComprehensionQuestionLangById(
                   comprehensionTestQuestionBo.getId(), language);
@@ -1566,7 +1566,7 @@ public class StudyServiceImpl implements StudyService {
         updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         updateConsentInfoBo.setActive(true);
       }
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         ConsentInfoLangBO consentInfoLangBO =
             studyDAO.getConsentLanguageDataById(consentInfoBo.getId(), language);
         if (consentInfoLangBO != null) {
@@ -1661,7 +1661,7 @@ public class StudyServiceImpl implements StudyService {
           seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
           eligibilityTestBo.setSequenceNo(seqCount);
         }
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           EligibilityTestLangBo eligibilityTestLangBo =
               studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
           if (eligibilityTestLangBo == null) {
@@ -1737,7 +1737,7 @@ public class StudyServiceImpl implements StudyService {
         }
         studyPageBean.setImagePath(imagePath);
       }
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         message = studyDAO.saveOrUpdateOverviewLanguageStudyPages(studyPageBean, sesObj, language);
         StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(Integer.parseInt(studyPageBean.getStudyId()), language);
         if (studySequenceLangBO == null) {
@@ -1973,7 +1973,7 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudyLanguageBO studyLanguageBO = this.getStudyLanguageById(studyBo.getId(), language);
         if (studyLanguageBO != null) {
           message =
@@ -2111,7 +2111,7 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudyLanguageBO studyLanguageBO =
             this.getStudyLanguageById(eligibilityBo.getStudyId(), language);
         if (studyLanguageBO != null) {
@@ -2164,7 +2164,7 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
         result = studyDAO.saveOrUpdateStudySettingsForOtherLanguages(studyBo, currLang);
         StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(studyBo.getId(), currLang);
         if (studySequenceLangBO == null) {

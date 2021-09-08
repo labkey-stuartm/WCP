@@ -15,6 +15,7 @@ import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
+import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
@@ -1215,7 +1216,7 @@ public class StudyController {
           map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
 
           String language = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             List<ComprehensionQuestionLangBO> questionLangBOList =
                 studyService.getComprehensionTestQuestionLangList(
                     comprehensionTestQuestionList, language);
@@ -1232,10 +1233,14 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
 
           // get consentId if exists for studyId
           if (consentBo != null) {
@@ -1361,10 +1366,14 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
 
           map.addAttribute("_S", sessionStudyCount);
         }
@@ -1375,7 +1384,7 @@ public class StudyController {
 
           String language = request.getParameter("language");
           map.addAttribute("currLanguage", language);
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             String result =
                 studyService.syncQuestionDataInLanguageTables(
                     comprehensionTestQuestionBo, language);
@@ -1511,7 +1520,7 @@ public class StudyController {
               }
             }
             String currLang = request.getParameter("language");
-            if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang))
+            if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang))
               consentInfoLangList =
                   studyService.syncConsentDataInLanguageTable(consentInfoList, currLang);
             map.addAttribute("currLanguage", currLang);
@@ -1525,10 +1534,14 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
 
           // get consentbo details by studyId
           if (StringUtils.isNotEmpty(consentStudyId)) {
@@ -1687,10 +1700,14 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
           map.addAttribute("consentMasterInfoList", consentMasterInfoList);
           if ((consentMasterInfoList != null) && !consentMasterInfoList.isEmpty()) {
             map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoList);
@@ -1702,7 +1719,7 @@ public class StudyController {
 
           String language = request.getParameter("language");
           ConsentInfoLangBO consentInfoLangBO = new ConsentInfoLangBO();
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language))
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language))
             consentInfoLangBO =
                 studyService.getConsentInfoLangById(consentInfoBo.getId(), language);
           map.addAttribute("currLanguage", language);
@@ -1837,7 +1854,7 @@ public class StudyController {
 
           String language = request.getParameter("language");
           StudyLanguageBO studyLanguageBO = null;
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             studyLanguageBO =
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
           }
@@ -1847,10 +1864,14 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
 
           if (consentBo != null) {
             request
@@ -2394,7 +2415,7 @@ public class StudyController {
 
           String language = request.getParameter("language");
           StudyLanguageBO studyLanguageBO = null;
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             studyPageLanguageBOS =
                 studyService.getOverviewStudyPagesLangById(studyPageBos, language);
             studyLanguageBO =
@@ -2411,10 +2432,14 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
           map.addAttribute("studyPageBos", studyPageBos);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           map.addAttribute("studyPageBean", studyPageBean);
@@ -2440,7 +2465,7 @@ public class StudyController {
     ModelMap map = null;
     String customStudyId = "";
     List<ParticipantPropertiesBO> propertiesList = null;
-    List<String> langList = new ArrayList<>();
+    Map<String, String> langMap = new HashMap<>();
     StudyBo studyBo = null;
     String permission = "";
     boolean markAsComplete = true;
@@ -2492,14 +2517,17 @@ public class StudyController {
           if (!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) markAsComplete = false;
           String languages = studyBo.getSelectedLanguages();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
-            langList = Arrays.asList(languages.split(","));
+            List<String> langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
         }
       }
       map = new ModelMap();
       String language = request.getParameter("language");
       map.addAttribute("currLanguage", language);
-      map.addAttribute("languageList", langList);
+      map.addAttribute("languageList", langMap);
       map.addAttribute("participantPropertiesList", propertiesList);
       map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
       map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
@@ -2718,7 +2746,7 @@ public class StudyController {
     ParticipantPropertiesBO participantPropertiesBO = null;
     String permission = "";
     StudyBo studyBo = null;
-    List<String> langList = new ArrayList<>();
+    Map<String, String> langMap = new HashMap<>();
     try {
       SessionObject sesObj =
           (SessionObject)
@@ -2762,8 +2790,12 @@ public class StudyController {
         if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
         }
         participantPropertyId = request.getParameter("participantPropertyId");
@@ -2778,7 +2810,7 @@ public class StudyController {
       String[] dataType = resourceBundle.getString("participant.property.datatype").split(",");
       String[] dataSource = resourceBundle.getString("participant.property.datasource").split(",");
       map = new ModelMap();
-      map.addAttribute("languageList", langList);
+      map.addAttribute("languageList", langMap);
       map.addAttribute("participantProperties", participantPropertiesBO);
       map.addAttribute("currLanguage", request.getParameter("language"));
       map.addAttribute("dataType", dataType);
@@ -5770,10 +5802,14 @@ public class StudyController {
 
         String languages = studyBo.getSelectedLanguages();
         List<String> langList = new ArrayList<>();
+        Map<String, String> langMap = new HashMap<>();
         if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
           langList = Arrays.asList(languages.split(","));
+          for (String string : langList) {
+            langMap.put(string, MultiLanguageCodes.getValue(string));
+          }
         }
-        map.addAttribute("languageList", langList);
+        map.addAttribute("languageList", langMap);
 
         map.addAttribute("categoryList", categoryList);
         map.addAttribute("dataPartnerList", dataPartnerList);
@@ -5881,8 +5917,9 @@ public class StudyController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 
           String currLang = request.getParameter("language");
+          if ("undefined".equals(currLang)) currLang = null;
           StudyLanguageBO studyLanguageBO = null;
-          if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
             studyLanguageBO =
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), currLang);
           }
@@ -5912,18 +5949,23 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new LinkedList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
-            langList = new LinkedList<>(Arrays.asList(languages.split(",")));
+            langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("selectedLanguages", langList);
+          map.addAttribute("selectedLanguages", langMap);
 
           ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
           String[] supportedLang = resourceBundle.getString("languageList").split(",");
-          List<String> supportedLanguages = new ArrayList<>();
+          langMap = new HashMap<>();
           for (String str : supportedLang) {
-            if (!langList.contains(str) && !"English".equals(str)) supportedLanguages.add(str);
+            if (!langList.contains(str) && !"en".equals(str))
+              langMap.put(str, MultiLanguageCodes.getValue(str));
           }
-          map.addAttribute("supportedLanguages", supportedLanguages);
+          map.addAttribute("supportedLanguages", langMap);
 
           request
               .getSession()
@@ -6119,14 +6161,19 @@ public class StudyController {
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 
-          List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (studyBo != null) {
             String languages = studyBo.getSelectedLanguages();
+            List<String> langList = new ArrayList<>();
+
             if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
               langList = Arrays.asList(languages.split(","));
+              for (String string : langList) {
+                langMap.put(string, MultiLanguageCodes.getValue(string));
+              }
             }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
 
           eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
           liveStudyBo = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());
@@ -6146,7 +6193,7 @@ public class StudyController {
                 studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
           }
           String currLang = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
             eligibilityTestLangList =
                 studyService.syncEligibilityTestDataInLanguageTable(eligibilityTestList, currLang);
             StudyLanguageBO studyLanguageBO =
@@ -6281,7 +6328,7 @@ public class StudyController {
         if (StringUtils.isNotBlank(studyId) && StringUtils.isNotBlank(actionTypeForQuestionPage)) {
           if (eligibilityTestId != null) {
             String language = request.getParameter("language");
-            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
               eligibilityTestLangBo =
                   studyService.getEligibilityTestLangById(eligibilityTestId, language);
             }
@@ -6291,12 +6338,15 @@ public class StudyController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-
+          map.addAttribute("languageList", langMap);
           map.addAttribute("eligibilityTestLangBo", eligibilityTestLangBo);
-          map.addAttribute("languageList", langList);
           map.addAttribute("eligibilityTest", eligibilityTest);
           map.addAttribute("eligibilityId", eligibilityId);
           map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);

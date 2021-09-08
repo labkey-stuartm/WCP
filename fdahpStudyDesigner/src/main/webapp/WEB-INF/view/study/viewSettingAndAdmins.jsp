@@ -43,12 +43,12 @@
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                                id="studyLanguage" name="studyLanguage" required title="Select">
-                            <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                                id="studyLanguage" name="studyLanguage" title="Select">
+                            <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'en')) ?'selected':''}>
                                 English
                             </option>
                             <c:forEach items="${selectedLanguages}" var="language">
-                                <option value="${language}" ${currLanguage eq language ?'selected':''}>${language}</option>
+                                <option value="${language.key}" ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -141,7 +141,7 @@
                             class="selectpicker col-md-6 p-none changeView"
                             title="- Select and Add Languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
-                            <option value="${lang}" id="${lang}">${lang}</option>
+                            <option value="${lang.key}" id="${lang.key}">${lang.value}</option>
                         </c:forEach>
                     </select>
                     <span class="study-addbtn changeView" id="addLangBtn">+</span>
@@ -149,9 +149,8 @@
                 <!-- Selected Language items -->
                 <div class="study-selected mt-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
-                        <input type="hidden" class="stdCls" id="${stdLang}" value="${stdLang}">
-                        <span>${stdLang}<span id="span-${stdLang}"
-                                              class="ablue removeLang changeView"
+                        <input type="hidden" class="stdCls" id="${stdLang.key}" value="${stdLang.key}">
+                        <span id="span-${stdLang.key}">${stdLang.value}<span id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
                                               onclick="removeLang(this.id)"> X&nbsp;&nbsp;</span></span>
                     </c:forEach>
                 </div>
@@ -513,7 +512,7 @@
     </c:if>
 
     let currLang = $('#studyLanguage').val();
-    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
       $('#currentLanguage').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }
@@ -780,11 +779,9 @@
   var newSelectedLang = '';
   $(".study-addbtn").click(function () {
 
-    newSelectedLang += $(
-        ".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").text() + ',';
+    newSelectedLang += $("#langSelect").find('option:selected').val(); + ',';
     $('#newLanguages').val(newSelectedLang);
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").hide();
-
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function () {
       if ($(this).text() == "- All items are already selected -") {
         $(this).hide();
@@ -797,9 +794,9 @@
         let selTxt = DOMPurify.sanitize($(sel).text());
         let newDiv = "<input type='hidden' class='stdCls' id=" + "'" + selVal + "' value='" + selVal
             + "'>"
-            + "<span>" + selTxt
-            + "<span class='ablue removeLang changeView' onclick='removeLang(this.id)' id="
-            + "'span-" + selVal + "'" + "> X&nbsp;&nbsp;</span></span>";
+            + "<span id='span-" + selVal + "'>" + selTxt
+            + "<span id='innerSpan-"+selVal+"'class='ablue removeLang changeView' onclick='removeLang(this.id)'"
+            + "> X&nbsp;&nbsp;</span></span>";
         $('.study-selected').append(newDiv);
       }
     });
@@ -977,10 +974,11 @@
 
   function removeLang(langObject) {
     let targetStr = langObject.split('-')[1];
+    debugger
     if (targetStr !== undefined || targetStr !== '') {
       removedLanguages += targetStr + ',';
       $('#deletedLanguages').val(removedLanguages);
-      $('.study-selected').find('span:contains(' + targetStr + ')').remove();
+      $('.study-selected').find('span#span-' + targetStr).remove();
       $('.study-selected').find('input#' + targetStr).remove();
     }
   }
@@ -1003,7 +1001,7 @@
         if (data !== null) {
           let htmlData = document.createElement('html');
           htmlData.innerHTML = data;
-          if (language !== 'English') {
+          if (language !== 'en') {
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
                 $(this).attr('disabled', true);

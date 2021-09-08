@@ -21,7 +21,7 @@
     <!--  Start top tab section-->
     <div class="right-content-head">
 
-        <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+<%--        <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">--%>
         <%--		multilanguage data--%>
         <input type="hidden" id="mlDisplayText" value="${activeTaskLangBO.displayName}">
         <input type="hidden" id="mlInstructions" value="${activeTaskLangBO.instruction}">
@@ -79,13 +79,13 @@
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage lang-specific"
-                            id="studyLanguage" name="studyLanguage" required title="Select">
-                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                            id="studyLanguage" name="studyLanguage" title="Select">
+                        <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                             English
                         </option>
                         <c:forEach items="${languageList}" var="language">
-                            <option value="${language}"
-                                ${currLanguage eq language ?'selected':''}>${language}</option>
+                            <option value="${language.key}"
+                                ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -337,7 +337,7 @@
 
         let currLang = $('#studyLanguage').val();
         if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
-            !== 'English') {
+            !== 'en') {
           $('#currentLanguage').val(currLang);
           setTimeout(function () {
             refreshAndFetchLanguageData(currLang);
@@ -406,7 +406,7 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        if (language !== 'English') {
+        if (language !== 'en') {
           $('.remBtnDis, .addBtnDis').addClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('lang-specific')) {

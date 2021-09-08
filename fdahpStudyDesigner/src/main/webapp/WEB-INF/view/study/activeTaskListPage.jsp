@@ -34,13 +34,13 @@
                         <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                             <select
                                     class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                                    id="studyLanguage" name="studyLanguage" required title="Select">
-                                <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                                    id="studyLanguage" name="studyLanguage" title="Select">
+                                <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                                     English
                                 </option>
                                 <c:forEach items="${languageList}" var="language">
-                                    <option value="${language}"
-                                        ${currLanguage eq language ?'selected':''}>${language}</option>
+                                    <option value="${language.key}"
+                                        ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -135,7 +135,7 @@ $(document).ready(function(){
 			$(".seventhTask").addClass('active');
 
   let currLang = $('#studyLanguage').val();
-  if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
+  if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
     $('#currentLanguage').val(currLang);
     refreshAndFetchLanguageData(currLang);
   }
@@ -266,7 +266,7 @@ function refreshAndFetchLanguageData(language) {
     success: function (data) {
       let htmlData = document.createElement('html');
       htmlData.innerHTML = data;
-      if (language !== 'English') {
+      if (language !== 'en') {
         $('#activeTaskLangItems option', htmlData).each(function (index, value) {
           let id = 'row'+value.getAttribute('id');
           $('#' + id).find('td.title').text(value.getAttribute('value'));

@@ -86,13 +86,13 @@
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" required title="Select">
-                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                            id="studyLanguage" name="studyLanguage" title="Select">
+                        <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                             English
                         </option>
                         <c:forEach items="${languageList}" var="language">
-                            <option value="${language}"
-                                ${currLanguage eq language ?'selected':''}>${language}</option>
+                            <option value="${language.key}"
+                                ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -3767,7 +3767,7 @@
 
         let currLang = $('#studyLanguage').val();
         if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
-            !== 'English') {
+            !== 'en') {
           $('#currentLanguage').val(currLang);
           refreshAndFetchLanguageData(currLang);
         }
@@ -5654,14 +5654,20 @@
             questionSubResponseType.exclusive = exclusioveText;
             questionSubResponseType.description = display_description;
             questionSubResponseArray.push(questionSubResponseType);
-            questionReponseTypeBo.otherType = $('[name="questionReponseTypeBo.otherType"]:checked').val();
+            questionReponseTypeBo.otherType = $(
+                '[name="questionReponseTypeBo.otherType"]:checked').val();
             questionReponseTypeBo.otherText = $('[name="questionReponseTypeBo.otherText"]').val();
             questionReponseTypeBo.otherValue = $('[name="questionReponseTypeBo.otherValue"]').val();
-            questionReponseTypeBo.otherExclusive = $('[name="questionReponseTypeBo.otherExclusive"]').val();
-            questionReponseTypeBo.otherDescription = $('[name="questionReponseTypeBo.otherDescription"]').val();
-            questionReponseTypeBo.otherPlaceholderText = $('[name="questionReponseTypeBo.otherPlaceholderText"]').val();
-            questionReponseTypeBo.otherIncludeText = $('[name="questionReponseTypeBo.otherIncludeText"]:checked').val();
-            questionReponseTypeBo.otherParticipantFill = $('[name="questionReponseTypeBo.otherParticipantFill"]').val();
+            questionReponseTypeBo.otherExclusive = $(
+                '[name="questionReponseTypeBo.otherExclusive"]').val();
+            questionReponseTypeBo.otherDescription = $(
+                '[name="questionReponseTypeBo.otherDescription"]').val();
+            questionReponseTypeBo.otherPlaceholderText = $(
+                '[name="questionReponseTypeBo.otherPlaceholderText"]').val();
+            questionReponseTypeBo.otherIncludeText = $(
+                '[name="questionReponseTypeBo.otherIncludeText"]:checked').val();
+            questionReponseTypeBo.otherParticipantFill = $(
+                '[name="questionReponseTypeBo.otherParticipantFill"]').val();
           });
           questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
         } else if (resType == "Image Choice") {
@@ -7371,7 +7377,7 @@
             htmlData.innerHTML = data;
             console.log(data);
             let responseTypeId = $('[data-id="responseTypeId"]');
-            if (language !== 'English') {
+            if (language !== 'en') {
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData').attr(
                   'disabled', true);
               responseTypeId.addClass('ml-disabled').attr('disabled', true);
@@ -7395,7 +7401,7 @@
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
                     $(this).attr('disabled', true);
-                    if (this.nodeName!==undefined && this.nodeName.toLowerCase() === 'select') {
+                    if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
                         $('[data-id=' + id + ']').addClass('ml-disabled');
@@ -7500,7 +7506,8 @@
                     className = '.image-choice';
                   else if (respType === '6') {
                     className = '.text-choice';
-                    $('[name="questionReponseTypeBo.otherText"]').val($('#mlOtherText', htmlData).val());
+                    $('[name="questionReponseTypeBo.otherText"]').val(
+                        $('#mlOtherText', htmlData).val());
                   }
                   let i = 0;
                   let displayText = $('#mlDisplayText', htmlData).val();
@@ -7524,7 +7531,7 @@
                     id = 'textPlaceholderId';
                     $('#validationExceptTextId').val($('#mlExceptText', htmlData).val());
                     $('#invalidMessageId').val($('#mlInvalidMessage', htmlData).val());
-                    if ($("#validationConditionId").val()==='') {
+                    if ($("#validationConditionId").val() === '') {
                       $('#validationExceptTextId').val('');
                       $('[data-id="validationConditionId"]').addClass('disabled');
                     }
@@ -7564,7 +7571,7 @@
                   if (!$(this).hasClass('lang-specific')) {
                     $(this).attr('disabled', false);
                     console.log(this, this.nodeName);
-                    if (this.nodeName!== undefined && this.nodeName.toLowerCase() === 'select') {
+                    if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
                         $('[data-id=' + id + ']').removeClass('ml-disabled');
@@ -7605,7 +7612,8 @@
                   className = '.image-choice';
                 else if (respType === '6') {
                   className = '.text-choice';
-                  $('[name="questionReponseTypeBo.otherText"]').val($('[name="questionReponseTypeBo.otherText"]', htmlData).val());
+                  $('[name="questionReponseTypeBo.otherText"]').val(
+                      $('[name="questionReponseTypeBo.otherText"]', htmlData).val());
                 }
                 $(className).find('input.lang-specific').each(function (index, ele) {
                   let id = ele.getAttribute('id');

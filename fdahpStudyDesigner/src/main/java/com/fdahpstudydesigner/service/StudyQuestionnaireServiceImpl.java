@@ -787,7 +787,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateInstructionsBo.setActive(true);
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           InstructionsLangBO instructionsLangBO =
               studyQuestionnaireDAO.getInstructionLangBo(instructionsBo.getId(), language);
           if (instructionsLangBO == null) {
@@ -1047,7 +1047,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionnaireBo.setActive(true);
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           QuestionnaireLangBO questionnaireLangBO =
               studyQuestionnaireDAO.getQuestionnaireLangById(questionnaireBo.getId(), language);
 
@@ -1327,7 +1327,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionsBo.setActive(true);
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           QuestionLangBO questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
           if (questionLangBO == null) {
             questionLangBO = new QuestionLangBO();
