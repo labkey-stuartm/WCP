@@ -318,7 +318,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
           updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           ActiveTaskLangBO activeTaskLangBO =
               studyActiveTasksDAO.getActiveTaskLangById(activeTaskBo.getId(), language);
           if (activeTaskLangBO == null) {

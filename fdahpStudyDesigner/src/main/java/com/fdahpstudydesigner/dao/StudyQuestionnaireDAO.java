@@ -10,6 +10,7 @@ import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
 import com.fdahpstudydesigner.bo.QuestionLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
@@ -146,4 +147,8 @@ public interface StudyQuestionnaireDAO {
   FormLangBO getFormLangBo(int formId, String language);
 
   QuestionLangBO getQuestionLangBo(int id, String language);
+
+  QuestionnaireLangBO getQuestionnaireLangById(Integer questionnaireId, String language);
+
+  void deleteQuestionStep(int id, String language);
 }

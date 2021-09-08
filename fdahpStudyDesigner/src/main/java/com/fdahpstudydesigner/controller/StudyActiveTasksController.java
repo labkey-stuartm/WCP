@@ -8,6 +8,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
+import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
@@ -94,12 +95,14 @@ public class StudyActiveTasksController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         message =
             studyService.markAsCompleted(
                 Integer.parseInt(studyId),
                 FdahpStudyDesignerConstants.ACTIVETASK_LIST,
                 sesObj,
-                customStudyId);
+                customStudyId,
+                language);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
@@ -322,7 +325,7 @@ public class StudyActiveTasksController {
         String language = request.getParameter("language");
         ActiveTaskLangBO activeTaskLangBO = null;
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
-            && !"English".equals(language)
+            && !"en".equals(language)
             && FdahpStudyDesignerUtil.isNotEmpty(activeTaskInfoId)) {
           activeTaskLangBO =
               studyActiveTasksService.getActiveTaskLangById(
@@ -900,10 +903,14 @@ public class StudyActiveTasksController {
                 studyActiveTasksService.getAllActiveTaskTypes(studyBo.getPlatform());
             String languages = studyBo.getSelectedLanguages();
             List<String> langList = new ArrayList<>();
+            Map<String, String> langMap = new HashMap<>();
             if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
               langList = Arrays.asList(languages.split(","));
+              for (String string : langList) {
+                langMap.put(string, MultiLanguageCodes.getValue(string));
+              }
             }
-            map.addAttribute("languageList", langList);
+            map.addAttribute("languageList", langMap);
           }
           map.addAttribute("activeTaskListBos", activeTaskListBos);
           map.addAttribute("studyBo", studyBo);
@@ -1125,10 +1132,14 @@ public class StudyActiveTasksController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
           // Added for live version Start
           String isLive =
               (String)
@@ -1153,7 +1164,7 @@ public class StudyActiveTasksController {
             activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId, false);
           }
 
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             List<ActiveTaskLangBO> activeTaskLangBOS =
                 studyActiveTasksService.getActiveTaskLangByStudyId(
                     activeTasks, Integer.parseInt(studyId), language);

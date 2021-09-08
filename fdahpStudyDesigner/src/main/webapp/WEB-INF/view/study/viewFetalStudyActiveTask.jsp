@@ -14,7 +14,7 @@
     <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
     <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
     <input type="hidden" value="" id="buttonText" name="buttonText">
-    <input type="hidden" id="currentLanguage" name="language">
+    <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
     <input type="hidden" id="mlDisplayText" value="${activeTaskLangBO.displayName}">
     <input type="hidden" id="mlInstructions" value="${activeTaskLangBO.instruction}">
     <input type="hidden" id="mlChartTitle" value="${activeTaskLangBO.chartTitle}">

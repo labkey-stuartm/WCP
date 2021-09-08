@@ -11,6 +11,7 @@ import com.fdahpstudydesigner.bo.InstructionsLangBO;
 import com.fdahpstudydesigner.bo.QuestionLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -66,6 +67,8 @@ public interface StudyQuestionnaireService {
 
   public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
 
+  QuestionnaireLangBO getQuestionnaireLangById(int questionnaireId, String language);
+
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
       Integer questionnaireId, Integer sequenceNo);
 
@@ -108,7 +111,10 @@ public interface StudyQuestionnaireService {
       QuestionsBo questionsBo, SessionObject sesObj, String customStudyId);
 
   public QuestionnaireBo saveOrUpdateQuestionnaire(
-      QuestionnaireBo questionnaireBo, SessionObject sessionObject, String customStudyId);
+      QuestionnaireBo questionnaireBo,
+      SessionObject sessionObject,
+      String customStudyId,
+      String language);
 
   public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(
       QuestionnaireBo questionnaireBo, SessionObject sessionObject, String customStudyId);

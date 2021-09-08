@@ -23,6 +23,7 @@ import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.HashMap;
@@ -267,4 +268,6 @@ public interface StudyDAO {
   List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(int studyId, String language);
 
   StudyPageLanguageBO getStudyPageLanguageById(int pageId, String language);
+
+  StudySequenceLangBO getStudySequenceLangBO(int studyId, String language);
 }

@@ -121,13 +121,13 @@
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" required title="Select">
-                        <option value="English" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'English')) ?'selected':''}>
+                            id="studyLanguage" name="studyLanguage" title="Select">
+                        <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                             English
                         </option>
                         <c:forEach items="${languageList}" var="language">
-                            <option value="${language}"
-                                ${currLanguage eq language ?'selected':''}>${language}</option>
+                            <option value="${language.key}"
+                                ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -192,6 +192,7 @@
                     <input type="hidden" name="type" id="type" value="content">
                     <input type="hidden" name="id" id="id"
                            value="${questionnaireBo.id}">
+                    <input type="hidden" id="mlTitle" value="${questionnaireLangBo.title}">
                     <input type="hidden" name="status" id="status" value="true">
                     <input type="hidden" name="questionnaireId" id="questionnaireId"
                            value="${questionnaireBo.id}">
@@ -1670,7 +1671,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
 
     let currLang = $('#studyLanguage').val();
-    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'English') {
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
       $('#currentLanguage').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }
@@ -3549,7 +3550,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do?_S=${param._S}",
         type: "POST",
         datatype: "json",
-        data: {questionnaireScheduleInfo: data},
+        data: {questionnaireScheduleInfo: data, language: $('#studyLanguage').val()},
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
@@ -4629,15 +4630,19 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       data: {
         language: language
       },
-      success: function () {
-        if (language !== 'English') {
+       success: function (data) {
+        let htmlData = document.createElement('html');
+        htmlData.innerHTML = data;
+        if (language !== 'en') { 
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', true);
           $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
+          $('#titleId').val($('#mlTitle', htmlData).val());
         } else {
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', false);
           $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');
+          $('#titleId').val($('#titleId', htmlData).val());
         }
       }
     });

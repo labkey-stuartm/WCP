@@ -113,7 +113,7 @@ public interface StudyService {
       int studyId, String markCompleted, Boolean flag, SessionObject sesObj, String customStudyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, SessionObject sesObj, String customStudyId);
+      int studyId, String markCompleted, SessionObject sesObj, String customStudyId, String language);
 
   public String reOrderComprehensionTestQuestion(
       Integer studyId, int oldOrderNumber, int newOrderNumber);

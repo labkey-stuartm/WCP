@@ -16,7 +16,7 @@
            value="${activeTaskBo.taskTypeId}">
     <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
     <input type="hidden" value="" id="buttonText" name="buttonText">
-    <input type="hidden" id="currentLanguage" name="language">
+    <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
     <input type="hidden" value="${actionPage}" id="actionPage"
            name="actionPage">
     <input type="hidden" value="${currentPage}" id="currentPageId"

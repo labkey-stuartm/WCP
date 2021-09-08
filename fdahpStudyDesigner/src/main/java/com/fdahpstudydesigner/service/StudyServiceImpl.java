@@ -29,6 +29,8 @@ import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
+import com.fdahpstudydesigner.bo.StudySequenceLangPK;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
@@ -911,11 +913,31 @@ public class StudyServiceImpl implements StudyService {
    */
   @Override
   public String markAsCompleted(
-      int studyId, String markCompleted, SessionObject sesObj, String customStudyId) {
+      int studyId, String markCompleted, SessionObject sesObj, String customStudyId, String language) {
     logger.info("StudyServiceImpl - markAsCompleted() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
-      message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj, customStudyId);
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+        StudySequenceLangBO studySequenceLangBO =
+            studyDAO.getStudySequenceLangBO(studyId, language);
+        if (studySequenceLangBO == null) {
+          studySequenceLangBO = new StudySequenceLangBO();
+          studySequenceLangBO.setStudySequenceLangPK(
+              new StudySequenceLangPK(studyId, language));
+        }
+        if (FdahpStudyDesignerConstants.CONESENT.equals(markCompleted))
+          studySequenceLangBO.setConsentEduInfo(true);
+        else if (FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES.equals(markCompleted))
+          studySequenceLangBO.setParticipantProperties(true);
+        else if (FdahpStudyDesignerConstants.QUESTIONNAIRE.equals(markCompleted))
+          studySequenceLangBO.setStudyExcQuestionnaries(true);
+        else if (FdahpStudyDesignerConstants.ACTIVETASK_LIST.equals(markCompleted))
+          studySequenceLangBO.setStudyExcActiveTask(true);
+        studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        message = FdahpStudyDesignerConstants.SUCCESS;
+      } else {
+        message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj, customStudyId);
+      }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - markAsCompleted() - Error", e);
     }
@@ -1136,37 +1158,61 @@ public class StudyServiceImpl implements StudyService {
         updateConsentBo.setStudyId(consentBo.getStudyId());
       }
 
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+        StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(consentBo.getStudyId(), language);
+        if (studySequenceLangBO == null) {
+          studySequenceLangBO = new StudySequenceLangBO();
+          studySequenceLangBO.setStudySequenceLangPK(
+              new StudySequenceLangPK(consentBo.getStudyId(), language));
+        }
+        if (consentBo.isReviewAndEconsentPage()) {
         StudyLanguageBO studyLanguageBO =
             studyDAO.getStudyLanguageById(consentBo.getStudyId(), language);
-        if (studyLanguageBO != null) {
-          studyLanguageBO.seteConsentTitle(consentBo.getTitle());
-          studyLanguageBO.setTaglineDescription(consentBo.getTaglineDescription());
-          studyLanguageBO.setShortDescription(consentBo.getShortDescription());
-          studyLanguageBO.setLongDescription(consentBo.getLongDescription());
-          studyLanguageBO.setLearnMoreText(consentBo.getLearnMoreText());
-          studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
-          studyLanguageBO.setAgreementOfConsent(consentBo.getAggrementOfTheConsent());
-          if (consentBo.getSignatures() != null && consentBo.getSignatures().length != 0) {
-            if (consentBo.getSignatures().length == 3) {
-              studyLanguageBO.setSignatureOne(consentBo.getSignatures()[0]);
-              studyLanguageBO.setSignatureTwo(consentBo.getSignatures()[1]);
-              studyLanguageBO.setSignatureThree(consentBo.getSignatures()[2]);
-            } else if (consentBo.getSignatures().length == 2) {
-              studyLanguageBO.setSignatureOne(consentBo.getSignatures()[0]);
-              studyLanguageBO.setSignatureTwo(consentBo.getSignatures()[1]);
-              studyLanguageBO.setSignatureThree(null);
-            } else if (consentBo.getSignatures().length == 1) {
-              studyLanguageBO.setSignatureOne(consentBo.getSignatures()[0]);
+          if (studyLanguageBO != null) {
+            if (consentBo.getTitle() != null)
+              studyLanguageBO.seteConsentTitle(consentBo.getTitle());
+            if (consentBo.getTaglineDescription() != null)
+              studyLanguageBO.setTaglineDescription(consentBo.getTaglineDescription());
+            if (consentBo.getShortDescription() != null)
+              studyLanguageBO.setShortDescription(consentBo.getShortDescription());
+            if (consentBo.getLongDescription() != null)
+              studyLanguageBO.setLongDescription(consentBo.getLongDescription());
+            if (consentBo.getLearnMoreText() != null)
+              studyLanguageBO.setLearnMoreText(consentBo.getLearnMoreText());
+            if (consentBo.getConsentDocContent() != null)
+              studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
+            if (consentBo.getAggrementOfTheConsent() != null)
+              studyLanguageBO.setAgreementOfConsent(consentBo.getAggrementOfTheConsent());
+            if (consentBo.getSignatures() != null && consentBo.getSignatures().length != 0) {
+              if (consentBo.getSignatures().length == 3) {
+                studyLanguageBO.setSignatureOne(consentBo.getSignatures()[0]);
+                studyLanguageBO.setSignatureTwo(consentBo.getSignatures()[1]);
+                studyLanguageBO.setSignatureThree(consentBo.getSignatures()[2]);
+              } else if (consentBo.getSignatures().length == 2) {
+                studyLanguageBO.setSignatureOne(consentBo.getSignatures()[0]);
+                studyLanguageBO.setSignatureTwo(consentBo.getSignatures()[1]);
+                studyLanguageBO.setSignatureThree(null);
+              } else if (consentBo.getSignatures().length == 1) {
+                studyLanguageBO.setSignatureOne(consentBo.getSignatures()[0]);
+                studyLanguageBO.setSignatureTwo(null);
+                studyLanguageBO.setSignatureThree(null);
+              }
+            } else {
+              studyLanguageBO.setSignatureOne(null);
               studyLanguageBO.setSignatureTwo(null);
               studyLanguageBO.setSignatureThree(null);
             }
-          } else {
-            studyLanguageBO.setSignatureOne(null);
-            studyLanguageBO.setSignatureTwo(null);
-            studyLanguageBO.setSignatureThree(null);
+            studyDAO.saveOrUpdateObject(studyLanguageBO);
+            studySequenceLangBO.seteConsent(
+                FdahpStudyDesignerUtil.isNotEmpty(consentBo.getType()) &&
+                    FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(consentBo.getType()));
+            studyDAO.saveOrUpdateObject(studySequenceLangBO);
           }
-          studyDAO.saveOrUpdateObject(studyLanguageBO);
+        } else {
+          studySequenceLangBO.setComprehensionTest(
+              FdahpStudyDesignerUtil.isNotEmpty(consentBo.getComprehensionTest()) &&
+                  "done".equals(consentBo.getComprehensionTest()));
+          studyDAO.saveOrUpdateObject(studySequenceLangBO);
         }
       } else {
         if (consentBo.getNeedComprehensionTest() != null) {
@@ -1398,7 +1444,7 @@ public class StudyServiceImpl implements StudyService {
         }
 
         // saving in multi language tables
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           ComprehensionQuestionLangBO comprehensionQuestionLangBO =
               studyDAO.getComprehensionQuestionLangById(
                   comprehensionTestQuestionBo.getId(), language);
@@ -1520,7 +1566,7 @@ public class StudyServiceImpl implements StudyService {
         updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         updateConsentInfoBo.setActive(true);
       }
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         ConsentInfoLangBO consentInfoLangBO =
             studyDAO.getConsentLanguageDataById(consentInfoBo.getId(), language);
         if (consentInfoLangBO != null) {
@@ -1615,7 +1661,7 @@ public class StudyServiceImpl implements StudyService {
           seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
           eligibilityTestBo.setSequenceNo(seqCount);
         }
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           EligibilityTestLangBo eligibilityTestLangBo =
               studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
           if (eligibilityTestLangBo == null) {
@@ -1691,8 +1737,18 @@ public class StudyServiceImpl implements StudyService {
         }
         studyPageBean.setImagePath(imagePath);
       }
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         message = studyDAO.saveOrUpdateOverviewLanguageStudyPages(studyPageBean, sesObj, language);
+        StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(Integer.parseInt(studyPageBean.getStudyId()), language);
+        if (studySequenceLangBO == null) {
+          studySequenceLangBO = new StudySequenceLangBO();
+          studySequenceLangBO.setStudySequenceLangPK(
+              new StudySequenceLangPK(Integer.parseInt(studyPageBean.getStudyId()), language));
+        }
+        studySequenceLangBO.setOverView(
+            FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getActionType()) &&
+                FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyPageBean.getActionType()));
+        studyDAO.saveOrUpdateObject(studySequenceLangBO);
       } else {
         message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
       }
@@ -1917,12 +1973,22 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudyLanguageBO studyLanguageBO = this.getStudyLanguageById(studyBo.getId(), language);
         if (studyLanguageBO != null) {
           message =
               studyDAO.saveOrUpdateStudyForOtherLanguages(
                   studyBo, studyLanguageBO, userId, language);
+          StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(studyBo.getId(), language);
+          if (studySequenceLangBO == null) {
+            studySequenceLangBO = new StudySequenceLangBO();
+            studySequenceLangBO.setStudySequenceLangPK(
+                new StudySequenceLangPK(studyBo.getId(), language));
+          }
+          studySequenceLangBO.setBasicInfo(
+              FdahpStudyDesignerUtil.isNotEmpty(studyBo.getButtonText()) &&
+                  FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
+          studyDAO.saveOrUpdateObject(studySequenceLangBO);
         }
       } else {
         String appId = studyBo.getAppId().toUpperCase();
@@ -2045,13 +2111,24 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - saveOrUpdateStudyEligibilty() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudyLanguageBO studyLanguageBO =
             this.getStudyLanguageById(eligibilityBo.getStudyId(), language);
         if (studyLanguageBO != null) {
           result =
               studyDAO.saveOrUpdateStudyEligibiltyForOtherLanguages(
                   eligibilityBo, studyLanguageBO, language);
+
+          StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(eligibilityBo.getStudyId(), language);
+          if (studySequenceLangBO == null) {
+            studySequenceLangBO = new StudySequenceLangBO();
+            studySequenceLangBO.setStudySequenceLangPK(
+                new StudySequenceLangPK(eligibilityBo.getStudyId(), language));
+          }
+          studySequenceLangBO.setEligibility(
+              FdahpStudyDesignerUtil.isNotEmpty(eligibilityBo.getActionType()) &&
+                  "mark".equals(eligibilityBo.getActionType()));
+          studyDAO.saveOrUpdateObject(studySequenceLangBO);
         }
       } else {
         result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo, sesObj, customStudyId);
@@ -2087,8 +2164,18 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"English".equals(currLang)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
         result = studyDAO.saveOrUpdateStudySettingsForOtherLanguages(studyBo, currLang);
+        StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(studyBo.getId(), currLang);
+        if (studySequenceLangBO == null) {
+          studySequenceLangBO = new StudySequenceLangBO();
+          studySequenceLangBO.setStudySequenceLangPK(
+              new StudySequenceLangPK(studyBo.getId(), currLang));
+        }
+        studySequenceLangBO.setSettingAdmins(
+            FdahpStudyDesignerUtil.isNotEmpty(studyBo.getButtonText()) &&
+                FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
+        studyDAO.saveOrUpdateObject(studySequenceLangBO);
       } else {
         result =
             studyDAO.saveOrUpdateStudySettings(

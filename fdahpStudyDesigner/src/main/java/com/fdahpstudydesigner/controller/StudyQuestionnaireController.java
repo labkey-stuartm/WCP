@@ -8,10 +8,12 @@ import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
+import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.QuestionLangBO;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
@@ -404,7 +406,7 @@ public class StudyQuestionnaireController {
               questionnaireBo.setStatus(false);
               questionnaireBo.setType(FdahpStudyDesignerConstants.CONTENT);
               studyQuestionnaireService.saveOrUpdateQuestionnaire(
-                  questionnaireBo, sesObj, customStudyId);
+                  questionnaireBo, sesObj, customStudyId, null);
               qTreeMap =
                   studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
               questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
@@ -604,10 +606,14 @@ public class StudyQuestionnaireController {
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
@@ -1062,10 +1068,14 @@ public class StudyQuestionnaireController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
@@ -1240,10 +1250,14 @@ public class StudyQuestionnaireController {
 
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
@@ -1311,6 +1325,16 @@ public class StudyQuestionnaireController {
             map.addAttribute("actionType", "view");
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
+
+          QuestionnaireLangBO questionnaireLangBO = null;
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+            questionnaireLangBO =
+                studyQuestionnaireService.getQuestionnaireLangById(
+                    Integer.parseInt(questionnaireId), language);
+          }
+          map.addAttribute(
+              "questionnaireLangBo",
+              questionnaireLangBO != null ? questionnaireLangBO : new QuestionnaireLangBO());
           map.addAttribute("permission", permission);
           map.addAttribute("qTreeMap", qTreeMap);
           map.addAttribute("questionnaireBo", questionnaireBo);
@@ -1477,10 +1501,14 @@ public class StudyQuestionnaireController {
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
-          map.addAttribute("languageList", langList);
+          map.addAttribute("languageList", langMap);
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
@@ -1819,7 +1847,7 @@ public class StudyQuestionnaireController {
               questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             }
             String language = request.getParameter("language");
-            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
               questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
               String result =
                   studyQuestionnaireService.saveOrUpdateFormStepForOtherLanguages(
@@ -2100,7 +2128,7 @@ public class StudyQuestionnaireController {
             questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
           String language = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
             String result =
                 studyQuestionnaireService.saveOrUpdateFormStepForOtherLanguages(
@@ -2330,9 +2358,10 @@ public class StudyQuestionnaireController {
             questionnaireBo.setStatus(true);
             questionnaireBo.setIsChange(1);
           }
+          String language = request.getParameter("language");
           addQuestionnaireBo =
               studyQuestionnaireService.saveOrUpdateQuestionnaire(
-                  questionnaireBo, sesObj, customStudyId);
+                  questionnaireBo, sesObj, customStudyId, language);
           if (addQuestionnaireBo != null) {
             if (questionnaireBo.getId() != null) {
               request
@@ -2460,7 +2489,7 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("_S", sessionStudyCount);
           mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
-        } else if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        } else if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           request
               .getSession()
               .setAttribute(
@@ -2675,9 +2704,10 @@ public class StudyQuestionnaireController {
                         .getSession()
                         .getAttribute(
                             sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+            String language = request.getParameter("language");
             updateQuestionnaireBo =
                 studyQuestionnaireService.saveOrUpdateQuestionnaire(
-                    questionnaireBo, sesObj, customStudyId);
+                    questionnaireBo, sesObj, customStudyId, language);
             if (updateQuestionnaireBo != null) {
               jsonobject.put("questionnaireId", updateQuestionnaireBo.getId());
               if (updateQuestionnaireBo.getQuestionnairesFrequenciesBo() != null) {
@@ -2830,7 +2860,7 @@ public class StudyQuestionnaireController {
                 addQuestionnairesStepsBo.getQuestionReponseTypeBo().getQuestionsResponseTypeId());
           }
           message = FdahpStudyDesignerConstants.SUCCESS;
-        } else if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"English".equals(language)) {
+        } else if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           if (questionnairesStepsBo != null) {
             jsonobject.put("stepId", questionnairesStepsBo.getStepId());
             String studyId =
@@ -3420,7 +3450,7 @@ public class StudyQuestionnaireController {
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         }
         // Added for live version End
-        List<String> langList = new ArrayList<>();
+        Map<String, String> langMap = new HashMap<>();
         if (StringUtils.isNotEmpty(studyId)) {
           request.getSession().removeAttribute(sessionStudyCount + "actionType");
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -3453,13 +3483,18 @@ public class StudyQuestionnaireController {
           }
 
           String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
           if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
             langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
           }
+          map.addAttribute("languageList", langMap);
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
-        map.addAttribute("languageList", langList);
+        map.addAttribute("languageList", langMap);
         map.addAttribute("permission", permission);
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("questionnaires", questionnaires);
