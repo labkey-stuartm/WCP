@@ -73,6 +73,7 @@
                 type="hidden" name="questionnairesStepsBo.stepId" id="stepId"
                 value="${instructionsBo.questionnairesStepsBo.stepId}">
             <input type="hidden" id="mlTitle" value="${instructionsLangBO.instructionTitle}">
+            <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language">
             <div class="col-md-6 pl-none">
                 <div class="gray-xs-f mb-xs">
@@ -413,11 +414,13 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'English') {
-          $('#shortTitleId, #instructionText').attr('disabled', true);
+          $('#shortTitleId, #destinationStepId').attr('disabled', true);
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
+          $('#instructionText').val($('#mlText', htmlData).val());
         } else {
-          $('#shortTitleId, #instructionText').attr('disabled', false);
+          $('#shortTitleId, #destinationStepId').attr('disabled', false);
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
+          $('#instructionText').val($('#instructionText', htmlData).val());
         }
       }
     })

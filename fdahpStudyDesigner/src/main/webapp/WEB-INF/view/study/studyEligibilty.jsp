@@ -698,7 +698,7 @@
         htmlData.innerHTML = data;
         if (language !== 'English') {
           $('#comment').val($('#mlInstText', htmlData).val());
-          $('#addQaId').attr('disabled', true);
+          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', true);
           $('.sprites_icon').css('pointer-events', 'none');
           $('#eligibilityItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
@@ -706,7 +706,7 @@
           })
         } else {
           $('#comment').val($('#comment', htmlData).val());
-          $('#addQaId').attr('disabled', false);
+          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);
           $('.sprites_icon').removeAttr('style');
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id');

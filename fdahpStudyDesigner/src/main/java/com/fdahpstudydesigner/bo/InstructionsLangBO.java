@@ -15,6 +15,9 @@ public class InstructionsLangBO implements Serializable {
   @Column(name = "instruction_title", length = 250)
   private String instructionTitle;
 
+  @Column(name = "instruction_text", length = 2500)
+  private String instructionText;
+
   @Column(name = "questionnaire_id")
   private Integer questionnaireId;
 
@@ -95,5 +98,13 @@ public class InstructionsLangBO implements Serializable {
 
   public void setModifiedOn(String modifiedOn) {
     this.modifiedOn = modifiedOn;
+  }
+
+  public String getInstructionText() {
+    return instructionText;
+  }
+
+  public void setInstructionText(String instructionText) {
+    this.instructionText = instructionText;
   }
 }

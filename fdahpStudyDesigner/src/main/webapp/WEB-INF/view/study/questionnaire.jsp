@@ -4632,9 +4632,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       success: function () {
         if (language !== 'English') {
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', true);
+          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
         } else {
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', false);
+          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');
         }
       }

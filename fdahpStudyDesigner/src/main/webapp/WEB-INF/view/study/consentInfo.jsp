@@ -550,15 +550,14 @@
           $('.visualStepDiv').attr('disabled', true);
           $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
+          $('#displayTitle').val($('#displayTitleLang', htmlData).val());
           tinymce.activeEditor.setContent($('#elaboratedLang', htmlData).val());
           if ($('#inlineRadio1').prop('checked') === true) {
             let title = $('[data-id="consentItemTitleId"]');
             title.attr('disabled', true);
             title.css('background-color', '#eee');
             title.css('opacity', '1');
-            $('#displayTitle').attr('disabled', true);
           } else {
-            $('#displayTitle').attr('disabled', false);
             $('#displayTitle').val($('#displayTitleLang', htmlData).val());
           }
         } else {

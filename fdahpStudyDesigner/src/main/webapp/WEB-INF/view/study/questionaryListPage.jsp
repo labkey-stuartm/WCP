@@ -318,9 +318,11 @@ function refreshAndFetchLanguageData(language) {
 			if (language !== 'English') {
 				$('#addButton').attr('disabled', true);
 				$('.delete ').addClass('cursor-none');
+				$('.copy ').addClass('cursor-none');
 			} else {
 				$('#addButton').attr('disabled', false);
 				$('.delete ').removeClass('cursor-none');
+				$('.copy ').removeClass('cursor-none');
 			}
 		}
 	});
