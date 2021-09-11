@@ -29,7 +29,7 @@
                 <input type="hidden" value="${actionTypeForQuestionPage}"
                        name="actionTypeForQuestionPage" id="actionTypeForQuestionPage">
 
-                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
@@ -74,6 +74,8 @@
             <input type="hidden" id="eligibilityId" name="eligibilityId" value="${eligibilityId}"/>
             <input type="hidden" id="sequenceNo" name="sequenceNo"
                    value="${eligibilityTest.sequenceNo}"/>
+            <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+            <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                 <%-- <input type="hidden" id="lastEligibilityOptId" name="lastEligibilityOpt" value="${lastEligibilityOpt}" /> --%>
             <div class=" col-lg-4 col-md-5 pl-none">
                 <div class="gray-xs-f mb-xs">
@@ -413,6 +415,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId').attr('disabled', true);
           $('[data-id="resYesOptId"]').attr('disabled', true).css('background-color', '#eee').css(
               'opacity', '1');
@@ -420,6 +423,7 @@
               'opacity', '1');
           $('#question').val($('#mlQuestion', htmlData).val());
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId').attr('disabled', false);
           $('[data-id="resYesOptId"]').attr('disabled', false).removeAttr('style');
           $('[data-id="resNoOptId"]').attr('disabled', false).removeAttr('style');

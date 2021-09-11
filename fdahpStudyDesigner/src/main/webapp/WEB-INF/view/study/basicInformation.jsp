@@ -871,6 +871,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('langSpecific')) {
               $(this).attr('disabled', true);
@@ -893,6 +894,7 @@
           $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
           $('#uploadImgbtn').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('langSpecific')) {
               $(this).attr('disabled', false);

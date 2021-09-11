@@ -67,6 +67,8 @@
         <!-- Start body tab section -->
         <div class="right-content-body pt-none pb-none">
             <input type="hidden" id="id" name="id" value="${comprehensionQuestionBo.id}">
+            <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+            <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
             <input type="hidden" id="questionTextLang"
                    value="${comprehensionQuestionLangBO.questionText}">
             <select id="responseItems" style="display: none">
@@ -602,6 +604,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);
           $('.addBtnDis,.remBtnDis').addClass('cursor-none');
@@ -615,6 +618,7 @@
             $('#responseOptionId' + index).val(value.getAttribute('value'));
           })
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#inlineRadio1').attr('disabled', false);
           $('#inlineRadio2').attr('disabled', false);
           $('.addBtnDis,.remBtnDis').removeClass('cursor-none');

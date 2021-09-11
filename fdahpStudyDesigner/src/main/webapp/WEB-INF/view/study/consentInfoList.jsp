@@ -141,6 +141,8 @@
         name="consentInfoForm" id="consentInfoForm" method="post">
     <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
     <input type="hidden" name="actionType" id="actionType">
+    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 </form:form>
@@ -430,6 +432,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#consentLangItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             $('#' + id).find('td.title').text(value.getAttribute('value'));
@@ -437,6 +440,7 @@
           $('#addConsent').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id');
             $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());

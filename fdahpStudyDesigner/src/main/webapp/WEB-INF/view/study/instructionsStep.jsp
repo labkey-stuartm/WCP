@@ -65,6 +65,8 @@
         <div class="right-content-body">
             <!-- form- input-->
             <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
+            <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+            <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
             <input type="hidden" name="questionnaireId" id="questionnaireId"
                    value="${questionnaireId}"> <input type="hidden"
                                                       id="questionnaireShortId"
@@ -414,10 +416,12 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, #destinationStepId').attr('disabled', true);
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
           $('#instructionText').val($('#mlText', htmlData).val());
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId, #destinationStepId').attr('disabled', false);
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());

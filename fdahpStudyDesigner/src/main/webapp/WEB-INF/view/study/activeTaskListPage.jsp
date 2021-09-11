@@ -115,6 +115,8 @@
 <input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
+    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
     <select id="activeTaskLangItems" style="display: none">
         <c:forEach items="${activeTaskLangBOS}" var="activeTaskLang">
@@ -267,6 +269,7 @@ function refreshAndFetchLanguageData(language) {
       let htmlData = document.createElement('html');
       htmlData.innerHTML = data;
       if (language !== 'en') {
+        $('.tit_wrapper').text($('#mlName', htmlData).val());
         $('#activeTaskLangItems option', htmlData).each(function (index, value) {
           let id = 'row'+value.getAttribute('id');
           $('#' + id).find('td.title').text(value.getAttribute('value'));
@@ -274,6 +277,7 @@ function refreshAndFetchLanguageData(language) {
         $('#addBtn').attr('disabled', true);
         $('.delete').addClass('cursor-none');
       } else {
+        $('.tit_wrapper').text($('#customStudyName', htmlData).val());
         $('tbody tr', htmlData).each(function (index, value) {
           let id = value.getAttribute('id');
           $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());

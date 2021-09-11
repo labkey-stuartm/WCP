@@ -202,6 +202,8 @@
                            value="${studyBo.customStudyId}">
                     <input type="hidden" name="instructionId" id="instructionId"
                            value="">
+                    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                     <input type="hidden" name="formId" id="formId" value="">
                     <input type="hidden" name="questionId" id="questionId" value="">
                     <!-- <input type="hidden" id="actionType" name="actionType"> -->
@@ -4633,12 +4635,14 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
        success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        if (language !== 'en') { 
+        if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', true);
           $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', false);
           $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr('disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');

@@ -23,11 +23,14 @@
         <input type="hidden" name="buttonText" id="buttonText">
         <input type="hidden" id="settingsstudyId" name="id"
                value="${studyBo.id}">
+
         <input type="hidden" id="userIds" name="userIds">
         <input type="hidden" id="newLanguages" name="newLanguages">
         <input type="hidden" id="deletedLanguages" name="deletedLanguages">
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
-        <input type="hidden" id="alertText" value="${alertText}">
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+        <input type="hidden" id="alertText" value="${studyLanguageBO.allowRejoinText}">
         <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
@@ -141,7 +144,7 @@
                             class="selectpicker col-md-6 p-none changeView"
                             title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
-                            <option value="${lang.key}" id="${lang.key}">${lang.value}</option>
+                            <option class="langOption" value="${lang.key}" id="${lang.key}">${lang.value}</option>
                         </c:forEach>
                     </select>
                     <span class="study-addbtn changeView" id="addLangBtn">+</span>
@@ -778,8 +781,11 @@
   // Adding selected study items
   var newSelectedLang = '';
   $(".study-addbtn").click(function () {
-
-    newSelectedLang += $("#langSelect").find('option:selected').val(); + ',';
+    let selLang = $("#langSelect").find('option:selected').val();
+    if (selLang==='') {
+      return false;
+    }
+    newSelectedLang += selLang + ',';
     $('#newLanguages').val(newSelectedLang);
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").hide();
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function () {
@@ -801,7 +807,7 @@
       }
     });
 
-    $(".selectpicker").selectpicker('val', '');
+    $("#multiple").selectpicker('val', '');
     let tot_items = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").length;
     let count = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style]").length;
     if (count == tot_items) {
@@ -974,7 +980,6 @@
 
   function removeLang(langObject) {
     let targetStr = langObject.split('-')[1];
-    debugger
     if (targetStr !== undefined || targetStr !== '') {
       removedLanguages += targetStr + ',';
       $('#deletedLanguages').val(removedLanguages);
@@ -1002,6 +1007,7 @@
           let htmlData = document.createElement('html');
           htmlData.innerHTML = data;
           if (language !== 'en') {
+            $('.tit_wrapper').text($('#mlName', htmlData).val());
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
                 $(this).attr('disabled', true);
@@ -1030,6 +1036,7 @@
             
             $('[data-id="multiple"]').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
           } else {
+            $('.tit_wrapper').text($('#customStudyName', htmlData).val());
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
                 $(this).attr('disabled', false);

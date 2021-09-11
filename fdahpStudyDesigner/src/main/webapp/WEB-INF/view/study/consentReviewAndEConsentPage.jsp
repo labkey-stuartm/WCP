@@ -42,6 +42,8 @@
             name="cancelConsentReviewFormId" id="cancelConsentReviewFormId"
             method="POST" role="form">
         <input type="hidden" id="studyId" name="studyId" value="${studyId}">
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <input type="hidden" id="consentId" name="consentId"
                value="${consentBo.id}">
     </form:form>
@@ -1487,6 +1489,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('[name="shareDataPermissions"], #inlineRadio1, #inlineRadio2, [name="consentByLAR"],' +
               ' [name="additionalSignatureRadio"]').attr('disabled', true);
           $('.addbtn, .remBtn').addClass('cursor-none');
@@ -1509,6 +1512,7 @@
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('[name="shareDataPermissions"], #inlineRadio1,#inlineRadio2, [name="consentByLAR"],' +
               ' [name="additionalSignatureRadio"]').attr('disabled', false);
           $('.addbtn, .remBtn').removeClass('cursor-none');

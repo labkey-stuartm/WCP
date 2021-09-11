@@ -166,6 +166,8 @@
                 </div>
                 <input type="hidden" name="consentId" id="consentId"
                        value="${consentBo.id}"/>
+                <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
             </div>
         </div>
         <!--  End body tab section -->
@@ -610,6 +612,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#comprehensionLangItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             $('#' + id).find('td.title').text(value.getAttribute('value'));
@@ -618,6 +621,7 @@
           $('#comprehensionTestMinimumScore').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id');
             $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());

@@ -16,6 +16,8 @@
             name="consentInfoFormId" id="consentInfoFormId" method="post"
             data-toggle="validator" role="form" autocomplete="off">
         <input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <c:if test="${not empty consentInfoBo.id}">
             <input type="hidden" id="studyId" name="studyId"
                    value="${consentInfoBo.studyId}">
@@ -543,6 +545,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);
           $('#inlineRadio3').attr('disabled', true);
@@ -561,6 +564,7 @@
             $('#displayTitle').val($('#displayTitleLang', htmlData).val());
           }
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#inlineRadio1').attr('disabled', false);
           $('#inlineRadio2').attr('disabled', false);
           $('#inlineRadio3').attr('disabled', false);

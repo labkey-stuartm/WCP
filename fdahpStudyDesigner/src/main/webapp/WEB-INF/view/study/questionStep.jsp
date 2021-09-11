@@ -144,7 +144,8 @@
                                                    id="questionnaireShortId"
                                                    value="${questionnaireBo.shortTitle}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
-
+            <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+            <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                 <%--				ml data fields--%>
             <input type="hidden" id="mlQuestion" value="${questionLangBO.question}">
             <input type="hidden" id="mlDescription" value="${questionLangBO.description}">
@@ -7378,6 +7379,7 @@
             console.log(data);
             let responseTypeId = $('[data-id="responseTypeId"]');
             if (language !== 'en') {
+              $('.tit_wrapper').text($('#mlName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData').attr(
                   'disabled', true);
               responseTypeId.addClass('ml-disabled').attr('disabled', true);
@@ -7545,6 +7547,7 @@
               }
 
             } else {   // for English Language
+              $('.tit_wrapper').text($('#customStudyName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData').attr(
                   'disabled', false);
               responseTypeId.removeClass('ml-disabled').attr('disabled', false);

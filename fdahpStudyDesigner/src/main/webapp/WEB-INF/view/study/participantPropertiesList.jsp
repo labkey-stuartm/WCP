@@ -115,6 +115,8 @@
         method="post">
     <input type="hidden" name="participantPropertiesId"
            id="participantPropertiesId" value="">
+    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <input type="hidden" name="actionType" value="add">
 </form:form>
 
@@ -238,8 +240,10 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addButton').attr('disabled', true);
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addButton').attr('disabled', false);
         }
       }

@@ -9,8 +9,24 @@
     <div class="left-content-container">
         <ul class="menuNav">
             <li>
-                <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"
-                     title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}</div>
+<%--                <c:choose>--%>
+<%--                    <c:when test="${studyBo.multiLanguageFlag eq true && currLanguage != null && currLanguage != '' && currLanguage != 'en'}">--%>
+<%--                        <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"--%>
+<%--                             title="${fn:escapeXml(not empty studyLanguageBO.name?studyLanguageBO.name:'Study Name')}">--%>
+<%--                                ${fn:escapeXml(not empty studyLanguageBO.name?studyLanguageBO.name:'Study Name')}--%>
+<%--                        </div>--%>
+<%--                    </c:when>--%>
+<%--                    <c:otherwise>--%>
+<%--                        <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"--%>
+<%--                             title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">--%>
+<%--                                ${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}--%>
+<%--                        </div>--%>
+<%--                    </c:otherwise>--%>
+<%--                </c:choose>--%>
+    <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"
+         title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">
+        ${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}
+    </div>
                 <div class="mb-lg ${empty studyBo.status?'hide':''}">
 					<span
                             class="study_status

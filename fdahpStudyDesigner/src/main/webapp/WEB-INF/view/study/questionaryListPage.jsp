@@ -21,6 +21,8 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <input type="hidden" name="studyId" value="${studyBo.id}" id="studyId">
+    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
@@ -335,12 +337,16 @@ function refreshAndFetchLanguageData(language) {
 		data: {
 			language: language
 		},
-		success: function () {
+		success: function (data) {
+          let htmlData = document.createElement('html');
+          htmlData.innerHTML = data;
 			if (language !== 'en') {
+              $('.tit_wrapper').text($('#mlName', htmlData).val());
 				$('#addButton').attr('disabled', true);
 				$('.delete ').addClass('cursor-none');
 				$('.copy ').addClass('cursor-none');
 			} else {
+              $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 				$('#addButton').attr('disabled', false);
 				$('.delete ').removeClass('cursor-none');
 				$('.copy ').removeClass('cursor-none');

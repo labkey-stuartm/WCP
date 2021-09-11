@@ -118,6 +118,8 @@
                         modelAttribute="participantProperties" method="post">
                     <input type="hidden" name="${csrf.parameterName}"
                            value="${csrf.token}">
+                    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                     <form:hidden path="id"/>
                     <form:hidden path="anchorDateId"/>
                     <input type="hidden" id="actionType" name="actionType"
@@ -691,6 +693,7 @@
         htmlData.innerHTML = data;
         if ($('#actionType').val() === 'edit') {
           if (language !== 'en') {
+            $('.tit_wrapper').text($('#mlName', htmlData).val());
             $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
 
                 'disabled', true);
@@ -699,6 +702,7 @@
                 '#eee').css('opacity', '1').addClass('cursor-none');
             $('#saveId, #doneId').addClass('cursor-none');
           } else {
+            $('.tit_wrapper').text($('#customStudyName', htmlData).val());
             $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
                 'disabled', false);
             $('[data-id="dataSource"], [data-id="dataType"], #saveId, #doneId').removeAttr(

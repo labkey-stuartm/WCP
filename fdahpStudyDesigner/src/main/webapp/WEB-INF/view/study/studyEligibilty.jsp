@@ -72,6 +72,8 @@
         <input type="hidden" value="${eligibility.id}" name="id"/>
         <input type="hidden" id="mlInstText" value="${mlInstructionalText}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <select id="eligibilityItems" style="display: none">
             <c:forEach items="${eligibilityTestLangList}" var="eligibilityLang">
                 <option id='lang_${eligibilityLang.eligibilityTestLangPK.id}'
@@ -249,6 +251,7 @@
         initActions();
         $('.submitEle').click(
             function (e) {
+              debugger
               e.preventDefault();
               $('#actTy').remove();
               $('<input />').attr('type', 'hidden').attr(
@@ -259,6 +262,7 @@
                 $('#eleFormId').validator('destroy');
                 if (${liveStatus}) {
                   var eligibilityVal = $("input[name='eligibilityMechanism']:checked").val();
+                  debugger
                   if (eligibilityVal == 1) {
                     $("#inlineRadio1").prop("disabled", false);
                   } else if (eligibilityVal == 2) {
@@ -697,21 +701,33 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          $('#comment').val($('#mlInstText', htmlData).val());
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', true);
           $('.sprites_icon').css('pointer-events', 'none');
           $('#eligibilityItems option', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             $('#' + id).find('td.title').text(value.getAttribute('value'));
           })
+          if ($('#inlineRadio3').prop('checked')===true) {
+            $('#comment').removeAttr('required')
+          }
+          else {
+            $('#comment').val($('#mlInstText', htmlData).val());
+          }
         } else {
-          $('#comment').val($('#comment', htmlData).val());
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);
           $('.sprites_icon').removeAttr('style');
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id');
             $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
           });
+          if ($('#inlineRadio3').prop('checked')===true) {
+            $('#comment').removeAttr('required')
+          }
+          else {
+            $('#comment').val($('#comment', htmlData).val());
+          }
         }
       }
     });

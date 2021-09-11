@@ -31,6 +31,8 @@
         <input type="hidden" id="mlDisplayStat2" value="${activeTaskLangBO.statName2}">
         <input type="hidden" id="mlChartTitle3" value="${activeTaskLangBO.chartTitle3}">
         <input type="hidden" id="mlDisplayStat3" value="${activeTaskLangBO.statName3}">
+    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
 
         <%--		 english data--%>
         <input type="hidden" id="enDisplayText" value="${fn:escapeXml(activeTaskBo.displayName)}">
@@ -407,6 +409,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('.remBtnDis, .addBtnDis').addClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('lang-specific')) {
@@ -451,6 +454,7 @@
               $('#displayStat').val($('#mlDisplayStat', htmlData).val());
           }
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('.remBtnDis, .addBtnDis').removeClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('langSpecific')) {

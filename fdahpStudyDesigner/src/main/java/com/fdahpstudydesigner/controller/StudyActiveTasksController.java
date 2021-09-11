@@ -11,6 +11,7 @@ import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
@@ -896,6 +897,9 @@ public class StudyActiveTasksController {
           }
 
           String language = request.getParameter("language");
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            this.setStudyLangData(studyId, language, map);
+          }
           map.addAttribute("currLanguage", language);
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           if (studyBo != null) {
@@ -1126,6 +1130,9 @@ public class StudyActiveTasksController {
             (String) request.getSession().getAttribute(sessionStudyCount + "permission");
 
         String language = request.getParameter("language");
+        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+          this.setStudyLangData(studyId, language, map);
+        }
         map.addAttribute("currLanguage", language);
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -1169,6 +1176,12 @@ public class StudyActiveTasksController {
                 studyActiveTasksService.getActiveTaskLangByStudyId(
                     activeTasks, Integer.parseInt(studyId), language);
             map.addAttribute("activeTaskLangBOS", activeTaskLangBOS);
+            StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
+            if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+              studyLanguageBO =
+                  studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+            }
+            map.addAttribute("studyLanguageBO", studyLanguageBO);
           }
           boolean markAsComplete = true;
           actMsg =
@@ -1189,5 +1202,14 @@ public class StudyActiveTasksController {
     }
     logger.info("StudyActiveTasksController - viewStudyActiveTasks - Ends");
     return mav;
+  }
+
+  private void setStudyLangData(String studyId, String language, ModelMap map) {
+    StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
+    if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+      studyLanguageBO =
+          studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+    }
+    map.addAttribute("studyLanguageBO", studyLanguageBO);
   }
 }

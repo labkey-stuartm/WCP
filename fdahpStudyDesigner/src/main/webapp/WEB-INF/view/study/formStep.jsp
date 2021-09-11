@@ -105,7 +105,10 @@
             <div class="tab-content pl-xlg pr-xlg">
                 <!-- Step-level Attributes-->
                 <input type="hidden" name="stepId" id="stepId"
-                       value="${questionnairesStepsBo.stepId}"> <input
+                       value="${questionnairesStepsBo.stepId}">
+                <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+                <input
                     type="hidden" name="questionnairesId" id="questionnairesId"
                     value="${questionnaireId}"> <input type="hidden"
                                                        id="questionnaireShortId"
@@ -963,12 +966,14 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(
               'disabled', true);
           if ($('#repeatableYes').prop('checked') === true) {
             $('#repeatableText').val($('#mlText', htmlData).val());
           }
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(
               'disabled', false);
           $('#repeatableText').val($('#repeatableText', htmlData).val());

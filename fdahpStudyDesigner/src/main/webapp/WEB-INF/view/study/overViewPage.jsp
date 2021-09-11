@@ -59,6 +59,8 @@
         </div>
         <!-- End top tab section-->
         <input type="hidden" value="${studyBo.id}" name="studyId"/>
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <input type="hidden" value="" id="buttonText" name="buttonText">
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="mlMediaLink" value="${mlMediaLink}"/>
@@ -245,6 +247,7 @@
                                                               src="/fdahpStudyDesigner/images/icons/tooltip.png"
                                                               data-original-title="<span class='font24'>.</span></span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span>
 												<span class="requiredStar"> *</span>
+                                        </span>
                                         </div>
                                         <div>
                                             <div class="thumb">
@@ -586,9 +589,12 @@
         var file = $(this).find('input[type=file]').val();
         var thumbnailImageId = $(this).find('input[type=file]').parent().find(
             'input[name="imagePath"]').val();
+        console.log(file, thumbnailImageId)
         if (file || thumbnailImageId) {
           $(this).find('input[type=file]').removeAttr('required');
         } else {
+          $(this).find('input[type=file]')
+          console.log(this);
           formValid = false;
         }
       });
@@ -713,6 +719,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addpage').attr('disabled', true);
           $('.removeUrl').addClass('cursor-none');
           $('.delete').addClass('cursor-none');
@@ -720,21 +727,40 @@
           $('#studyMediaLinkId').val($('#mlMediaLink', htmlData).val());
           $('#overviewPages option', htmlData).each(function (index, value) {
             index += 1;
+            console.log(index)
             $('#title' + index).val(value.getAttribute('id'));
             $('#studyCount' + index).text(value.getAttribute('id'));
             $('#description' + index).val(value.getAttribute('value'));
           });
+
+          $('#accordion').find('.panel-default').each(function (index) {
+            let page = $(this).find('[data-imageid="'+(index+1)+'"]');
+            if (page !== undefined) {
+              page.removeAttr('required');
+            }
+          })
+
+
         } else {
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addpage').attr('disabled', false);
           $('.removeUrl').removeClass('cursor-none');
           $('.delete').removeClass('cursor-none');
           $('.uploadImgbtn').removeClass('cursor-none');
           $('.panel-default', htmlData).each(function (index, value) {
             index += 1;
+            console.log(index);
             $('#title' + index).val($('#title' + index, value).val());
             $('#studyCount' + index).text($('#title' + index, value).val());
             $('#description' + index).val($('#description' + index, value).val());
           });
+
+          $('#accordion').find('.panel-default').each(function (index) {
+            let page = $(this).find('[data-imageid="'+(index+1)+'"]');
+            if (page !== undefined) {
+              page.attr('required');
+            }
+          })
         }
       }
     });

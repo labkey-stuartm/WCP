@@ -5338,19 +5338,16 @@ public class StudyDAOImpl implements StudyDAO {
             // validation of anchor date
             updateAnchordateForEnrollmentDate(study, studyBo, session, transaction);
             // saving new Languages
+            String languages =
+                FdahpStudyDesignerUtil.isNotEmpty(study.getSelectedLanguages())
+                    ? study.getSelectedLanguages().concat(newLanguages)
+                    : newLanguages;
             if (FdahpStudyDesignerUtil.isNotEmpty(newLanguages)) {
-              study.setSelectedLanguages(
-                  FdahpStudyDesignerUtil.isNotEmpty(study.getSelectedLanguages())
-                      ? study.getSelectedLanguages().concat(newLanguages)
-                      : newLanguages);
+              study.setSelectedLanguages(languages);
               saveSelectedLanguages(newLanguages, study, sesObj.getUserId(), session, transaction);
             }
             // removing existing language
             if (FdahpStudyDesignerUtil.isNotEmpty(deletedLanguages)) {
-              String languages =
-                  FdahpStudyDesignerUtil.isNotEmpty(study.getSelectedLanguages())
-                      ? study.getSelectedLanguages().concat(newLanguages)
-                      : newLanguages;
               List<String> existingLanguages =
                   new LinkedList<>(Arrays.asList(languages.split(",")));
               String[] langToBeDeleted = deletedLanguages.split(",");
