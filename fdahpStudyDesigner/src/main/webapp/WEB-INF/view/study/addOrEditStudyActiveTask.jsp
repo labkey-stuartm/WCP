@@ -160,7 +160,7 @@
         var changeTabSchedule = true;
 
         $(".menuNav li.active").removeClass('active');
-        $(".sixthTask").addClass('active');
+        $(".seventhTask").addClass('active');
         actionPageView();
 
         var typeOfActiveTask = '${activeTaskBo.taskTypeId}';

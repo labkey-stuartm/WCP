@@ -226,8 +226,8 @@ function deleteTaskInfo(activeTaskInfoId){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').text("ActiveTask deleted successfully");
 		    					$('#alertMsg').show();
 		    					/* reloadData(studyId); */
-		    					if($('.sixthTask').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-		    						$('.sixthTask').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					if($('.seventhTask').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.seventhTask').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 		    					}
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to delete resource");

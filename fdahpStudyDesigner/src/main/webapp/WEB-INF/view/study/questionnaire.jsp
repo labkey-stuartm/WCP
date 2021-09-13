@@ -1699,7 +1699,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 
     $('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li.active").removeClass('active');
-    $(".sixthQuestionnaires").addClass('active');
+    $(".seventhQuestionnaires").addClass('active');
 
     $(".scheduleQusClass").click(function () {
       if ($("#schedule2").prop("checked")) {
@@ -1994,9 +1994,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               var questionnaireSteps = data.questionnaireJsonObject;
               var isDone = data.isDone;
               reloadQuestionnaireStepData(questionnaireSteps, isDone);
-              if ($('.sixthQuestionnaires').find('span').hasClass(
+              if ($('.seventhQuestionnaires').find('span').hasClass(
                   'sprites-icons-2 tick pull-right mt-xs')) {
-                $('.sixthQuestionnaires').find('span').removeClass(
+                $('.seventhQuestionnaires').find('span').removeClass(
                     'sprites-icons-2 tick pull-right mt-xs');
               }
             } else {
@@ -3590,9 +3590,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             } else if (frequency_text == 'Monthly') {
               $("#monthFreId").val(questionnaireFrequenceId);
             }
-            if ($('.sixthQuestionnaires').find('span').hasClass(
+            if ($('.seventhQuestionnaires').find('span').hasClass(
                 'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.sixthQuestionnaires').find('span').removeClass(
+              $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
             }
             $("#stepContainer").show();
@@ -3814,9 +3814,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                   var questionnaireSteps = data.questionnaireJsonObject;
                   var isDone = data.isDone;
                   reloadQuestionnaireStepData(questionnaireSteps, isDone);
-                  if ($('.sixthQuestionnaires').find('span').hasClass(
+                  if ($('.seventhQuestionnaires').find('span').hasClass(
                       'sprites-icons-2 tick pull-right mt-xs')) {
-                    $('.sixthQuestionnaires').find('span').removeClass(
+                    $('.seventhQuestionnaires').find('span').removeClass(
                         'sprites-icons-2 tick pull-right mt-xs');
                   }
                   var isAnchorQuestionnaire = data.isAnchorQuestionnaire;

@@ -234,9 +234,9 @@
                   $('#alertMsg').show();
                   var questionnaireList = data.questionnaireList;
                   reloadDataTabel(questionnaireList);
-                  if ($('.sixthQuestionnaires').find('span').hasClass(
+                  if ($('.seventhQuestionnaires').find('span').hasClass(
                       'sprites-icons-2 tick pull-right mt-xs')) {
-                    $('.sixthQuestionnaires').find('span').removeClass(
+                    $('.seventhQuestionnaires').find('span').removeClass(
                         'sprites-icons-2 tick pull-right mt-xs');
                   }
                   if (!markAsComplete) {
