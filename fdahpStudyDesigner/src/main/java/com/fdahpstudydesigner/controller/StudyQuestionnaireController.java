@@ -2036,6 +2036,7 @@ public class StudyQuestionnaireController {
           StringUtils.isNumeric(request.getParameter("_S"))
               ? Integer.parseInt(request.getParameter("_S"))
               : 0;
+      String language = request.getParameter("language");
       if (sesObj != null
           && sesObj.getStudySession() != null
           && sesObj.getStudySession().contains(sessionStudyCount)) {
@@ -2083,6 +2084,7 @@ public class StudyQuestionnaireController {
                 customStudyId);
           }
           map.addAttribute("_S", sessionStudyCount);
+          map.addAttribute("language", language);
           mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
         } else {
           request
@@ -2158,6 +2160,7 @@ public class StudyQuestionnaireController {
                       sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                       "Form Step updated successfully.");
               map.addAttribute("_S", sessionStudyCount);
+              map.addAttribute("language", language);
               mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
             } else {
               request
@@ -2255,6 +2258,7 @@ public class StudyQuestionnaireController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String language = request.getParameter("language");
         if (instructionsBo != null) {
           if (instructionsBo.getId() != null) {
             instructionsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2276,7 +2280,6 @@ public class StudyQuestionnaireController {
               instructionsBo.getQuestionnairesStepsBo().setCreatedBy(sesObj.getUserId());
             }
           }
-          String language = request.getParameter("language");
           addInstructionsBo =
               studyQuestionnaireService.saveOrUpdateInstructionsBo(
                   instructionsBo, sesObj, customStudyId, language);
@@ -2309,6 +2312,7 @@ public class StudyQuestionnaireController {
                     FdahpStudyDesignerConstants.INSTRUCTION_ADDED_SUCCESSFULLY);
           }
           map.addAttribute("_S", sessionStudyCount);
+          map.addAttribute("language", language);
           mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
         } else {
           request
@@ -2514,6 +2518,7 @@ public class StudyQuestionnaireController {
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                   "Question Step updated successfully.");
           map.addAttribute("_S", sessionStudyCount);
+          map.addAttribute("language", language);
           mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
         } else {
           request

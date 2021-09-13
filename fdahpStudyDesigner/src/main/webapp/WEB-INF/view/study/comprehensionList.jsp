@@ -562,7 +562,7 @@
               $("#addQuestionId").attr("disabled", false);
               $("#addHelpNote").hide();
               if (type != "save") {
-                document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}";
+                document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+$('#studyLanguage').val();
                 document.comprehensionInfoForm.submit();
               } else {
                 $("body").removeClass("loading");

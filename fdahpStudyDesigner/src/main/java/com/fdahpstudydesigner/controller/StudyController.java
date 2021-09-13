@@ -395,6 +395,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                   propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+          map.put("language", language);
           mav = new ModelAndView("redirect:consentReview.do", map);
         } else {
           request
@@ -471,6 +472,7 @@ public class StudyController {
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                   propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
           map.addAttribute("_S", sessionStudyCount);
+          map.put("language", language);
           mav = new ModelAndView("redirect:comprehensionQuestionList.do", map);
         } else {
           request
@@ -548,6 +550,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                   propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+          map.put("language", language);
           mav = new ModelAndView("redirect:participantPropertiesPage.do", map);
         } else {
           request
@@ -3062,6 +3065,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                   propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+          map.put("language", language);
           map.addAttribute("_S", sessionStudyCount);
           mav = new ModelAndView("redirect:viewStudyQuestionnaires.do", map);
         } else {
@@ -3138,6 +3142,7 @@ public class StudyController {
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                   propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
           map.addAttribute("_S", sessionStudyCount);
+          map.put("language", language);
           mav = new ModelAndView("redirect:viewStudyActiveTasks.do", map);
         } else {
           request
@@ -3736,6 +3741,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+            map.put("language", language);
             mav = new ModelAndView("redirect:viewStudyNotificationList.do", map);
           } else {
             request
@@ -4212,6 +4218,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+            map.addAttribute("language", language);
             return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
           } else {
             request
@@ -4647,6 +4654,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+            map.addAttribute("language", currentLanguage);
             return new ModelAndView("redirect:overviewStudyPages.do", map);
           } else {
             request
@@ -4697,6 +4705,7 @@ public class StudyController {
           StringUtils.isNumeric(request.getParameter("_S"))
               ? Integer.parseInt(request.getParameter("_S"))
               : 0;
+      String language = request.getParameter("currentLanguage");
       if ((sesObj != null)
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
@@ -4715,7 +4724,6 @@ public class StudyController {
                       .getAttribute(
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 
-          String language = request.getParameter("currentLanguage");
           result =
               studyService.saveOrUpdateStudyEligibilty(
                   eligibilityBo, sesObj, customStudyId, language);
@@ -4741,6 +4749,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+            map.put("language", language);
             mav = new ModelAndView("redirect:consentListPage.do", map);
           }
         } else {
@@ -4795,6 +4804,7 @@ public class StudyController {
           StringUtils.isNotBlank(request.getParameter("actionTypeForQuestionPage"))
               ? request.getParameter("actionTypeForQuestionPage")
               : "";
+      String language = request.getParameter("currentLanguage");
       if ((sesObj != null)
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
@@ -4805,8 +4815,6 @@ public class StudyController {
                       .getSession()
                       .getAttribute(
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
-
-          String language = request.getParameter("currentLanguage");
           result =
               studyService.saveOrUpdateEligibilityTestQusAns(
                   eligibilityTestBo, Integer.parseInt(studyId), sesObj, customStudyId, language);
@@ -4839,6 +4847,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+            map.put("language", language);
             mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
           }
         } else {
@@ -5128,6 +5137,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+            map.addAttribute("language", language);
             return new ModelAndView("redirect:viewStudyEligibilty.do", map);
           } else {
             request

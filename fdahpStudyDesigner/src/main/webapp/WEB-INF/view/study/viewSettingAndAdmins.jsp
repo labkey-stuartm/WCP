@@ -706,6 +706,14 @@
     setAllowRejoinText();
     admins() //Pradyumn
     var isAnchorForEnrollmentDraft = '${isAnchorForEnrollmentDraft}';
+    if ($('#mlYes').prop('checked') === true && $('#selectedLanguages').children().length === 0) {
+      bootbox.alert({
+        closeButton: false,
+        message: 'Please select atleast one language for enabling multi language support for this study.',
+      });
+      $('#completedId').removeAttr('disabled');
+      return false;
+    }
     if (buttonText === 'save') {
       $('#settingfoFormId').validator('destroy');
       $("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
