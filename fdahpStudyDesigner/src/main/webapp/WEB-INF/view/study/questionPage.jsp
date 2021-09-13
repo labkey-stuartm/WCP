@@ -4702,7 +4702,7 @@ $('#studyLanguage').on('change', function () {
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        if (language !== 'English') {
+        if (language !== 'en') {
           $('#shortTitle, #skiappableYes, #skiappableNo, #questionTextId, #responseTypeId, #useAnchorDateId, #anchorTextId').attr(
               'disabled', true);
           $('#allowHealthKit, #healthkitDatatypeId, #addLineChart, #lineChartTimeRangeId, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId, #useStasticData, #statShortNameId').attr(

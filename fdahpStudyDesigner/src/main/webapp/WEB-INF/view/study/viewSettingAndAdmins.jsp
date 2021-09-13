@@ -153,7 +153,8 @@
                 <div class="study-selected mt-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
                       <input type="hidden" class="stdCls" id="${stdLang.key}" value="${stdLang.key}">
-                        <span id="span-${stdLang.key}">${stdLang.value}<span <c:if test="${not empty studyBo.liveStudyBo}">disabled</c:if> id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
+                        <span id="span-${stdLang.key}">${stdLang.value}<span <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if> 
+                        					  id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
                                               onclick="removeLang(this.id)"> X&nbsp;&nbsp;</span></span>
                     </c:forEach>
                 </div>
