@@ -13,6 +13,10 @@
       table.dataTable thead th:last-child {
         width: 100px !important;
       }
+
+      .mlselect {
+        text-transform: none;
+      }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
@@ -141,7 +145,7 @@
             <div id="langSelect" style="display: none">
                 <div class="mt-md study-list mb-md addHide">
                     <select 
-                            class="selectpicker col-md-6 p-none changeView"
+                            class="selectpicker col-md-6 aq-select aq-select-form mlselect"
                             title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
                             <option class="langOption" value="${lang.key}" id="${lang.key}">${lang.value}</option>
@@ -155,7 +159,7 @@
                       <input type="hidden" class="stdCls" id="${stdLang.key}" value="${stdLang.key}">
                         <span id="span-${stdLang.key}">${stdLang.value}<span <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if> 
                         					  id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
-                                              onclick="removeLang(this.id)"> X&nbsp;&nbsp;</span></span>
+                                              onclick="removeLang(this.id, '${stdLang.value}')"> X&nbsp;&nbsp;</span></span>
                     </c:forEach>
                 </div>
             </div>
@@ -810,7 +814,7 @@
         let newDiv = "<input type='hidden' class='stdCls' id=" + "'" + selVal + "' value='" + selVal
             + "'>"
             + "<span id='span-" + selVal + "'>" + selTxt
-            + "<span id='innerSpan-"+selVal+"'class='ablue removeLang changeView' onclick='removeLang(this.id)'"
+            + "<span id='innerSpan-"+selVal+"'class='ablue removeLang changeView' onclick='removeLang(this.id,'"+selVal+"')'"
             + "> X&nbsp;&nbsp;</span></span>";
         $('.study-selected').append(newDiv);
       }
@@ -987,13 +991,16 @@
 
   var removedLanguages = '';
 
-  function removeLang(langObject) {
+  function removeLang(langObject, fullName) {
+    debugger;
     let targetStr = langObject.split('-')[1];
     if (targetStr !== undefined || targetStr !== '') {
       removedLanguages += targetStr + ',';
       $('#deletedLanguages').val(removedLanguages);
       $('.study-selected').find('span#span-' + targetStr).remove();
       $('.study-selected').find('input#' + targetStr).remove();
+      let optionString = "<option class='langOption' id='"+targetStr+"' value='"+targetStr+"'>"+fullName+"</option>"
+      $('#multiple').append(optionString);
     }
   }
 
@@ -1017,6 +1024,7 @@
           htmlData.innerHTML = data;
           if (language !== 'en') {
             $('.tit_wrapper').text($('#mlName', htmlData).val());
+            updateCompletionTicks(htmlData);
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
                 $(this).attr('disabled', true);
@@ -1045,6 +1053,7 @@
             
             $('[data-id="multiple"]').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
           } else {
+            updateCompletionTicksForEnglish();
             $('.tit_wrapper').text($('#customStudyName', htmlData).val());
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {

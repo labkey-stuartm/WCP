@@ -693,6 +693,7 @@
         htmlData.innerHTML = data;
         if ($('#actionType').val() === 'edit') {
           if (language !== 'en') {
+            updateCompletionTicks(htmlData);
             $('.tit_wrapper').text($('#mlName', htmlData).val());
             $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
 
@@ -702,6 +703,7 @@
                 '#eee').css('opacity', '1').addClass('cursor-none');
             $('#saveId, #doneId').addClass('cursor-none');
           } else {
+            updateCompletionTicksForEnglish();
             $('.tit_wrapper').text($('#customStudyName', htmlData).val());
             $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
                 'disabled', false);

@@ -24,6 +24,7 @@ import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesDraftBO;
@@ -8288,10 +8289,10 @@ public class StudyDAOImpl implements StudyDAO {
           message = FdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
           return message;
 //        } else if (!studySequenceLangBO.isMiscellaneousResources()) {
-//          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG;
+//          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG+suffix;
 //          return message;
 //        } else if (!studySequenceLangBO.isCheckList()) {
-//          message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG;
+//          message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG+suffix;
 //          return message;
         } else if (!studySequenceLangBO.getParticipantProperties()) {
           message = FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES_ERROR_MSG;
@@ -9189,8 +9190,9 @@ public class StudyDAOImpl implements StudyDAO {
       if (studyId != 0) {
         studyPageLanguageBO =
             session
-                .createQuery("from StudyPageLanguageBO where studyId= :studyId")
+                .createQuery("from StudyPageLanguageBO where studyId= :studyId and studyPageLanguagePK.langCode=:lang")
                 .setInteger("studyId", studyId)
+                .setString("lang", language)
                 .list();
       }
     } catch (Exception e) {

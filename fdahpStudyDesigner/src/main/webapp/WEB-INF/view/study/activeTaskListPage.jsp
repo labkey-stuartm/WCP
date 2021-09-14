@@ -269,6 +269,7 @@ function refreshAndFetchLanguageData(language) {
       let htmlData = document.createElement('html');
       htmlData.innerHTML = data;
       if (language !== 'en') {
+        updateCompletionTicks(htmlData);
         $('.tit_wrapper').text($('#mlName', htmlData).val());
         $('#activeTaskLangItems option', htmlData).each(function (index, value) {
           let id = 'row'+value.getAttribute('id');
@@ -277,6 +278,7 @@ function refreshAndFetchLanguageData(language) {
         $('#addBtn').attr('disabled', true);
         $('.delete').addClass('cursor-none');
       } else {
+        updateCompletionTicksForEnglish();
         $('.tit_wrapper').text($('#customStudyName', htmlData).val());
         $('tbody tr', htmlData).each(function (index, value) {
           let id = value.getAttribute('id');

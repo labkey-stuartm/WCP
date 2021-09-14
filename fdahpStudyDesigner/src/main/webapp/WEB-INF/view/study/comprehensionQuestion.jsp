@@ -604,6 +604,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);
@@ -618,6 +619,7 @@
             $('#responseOptionId' + index).val(value.getAttribute('value'));
           })
         } else {
+          updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#inlineRadio1').attr('disabled', false);
           $('#inlineRadio2').attr('disabled', false);

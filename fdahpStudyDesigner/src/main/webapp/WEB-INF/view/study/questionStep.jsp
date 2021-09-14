@@ -7379,6 +7379,7 @@
             console.log(data);
             let responseTypeId = $('[data-id="responseTypeId"]');
             if (language !== 'en') {
+              updateCompletionTicks(htmlData);
               $('.tit_wrapper').text($('#mlName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
 				 'disabled', true);
@@ -7548,6 +7549,7 @@
               }
 
             } else {   // for English Language
+              updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
                   'disabled', false);

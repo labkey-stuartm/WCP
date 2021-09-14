@@ -415,6 +415,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId').attr('disabled', true);
           $('[data-id="resYesOptId"]').attr('disabled', true).css('background-color', '#eee').css(
@@ -423,6 +424,7 @@
               'opacity', '1');
           $('#question').val($('#mlQuestion', htmlData).val());
         } else {
+          updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId').attr('disabled', false);
           $('[data-id="resYesOptId"]').attr('disabled', false).removeAttr('style');

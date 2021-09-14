@@ -46,7 +46,7 @@
                     </c:if>
                 </div>
 
-                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                <c:if test="${studyBo.multiLanguageFlag eq true and not empty consentInfoBo.id}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
@@ -545,6 +545,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);
@@ -564,6 +565,7 @@
             $('#displayTitle').val($('#displayTitleLang', htmlData).val());
           }
         } else {
+          updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#inlineRadio1').attr('disabled', false);
           $('#inlineRadio2').attr('disabled', false);

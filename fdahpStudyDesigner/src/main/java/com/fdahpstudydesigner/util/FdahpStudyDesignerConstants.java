@@ -65,10 +65,10 @@ public class FdahpStudyDesignerConstants {
 
   public static final String ANDROID = "A";
   public static final String APPLICATION_JSON = "application/json";
-  public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as Completed";
+  public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as completed for the languages selected";
   public static final String BUTTON_TEXT = "buttonText";
   public static final String CHECK_LIST = "checkList";
-  public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as Completed";
+  public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as completed for the languages selected";
   public static final String CHKREFRESHFLAG = "chkRefreshflag";
   public static final String COMPLETE_STUDY_SUCCESS_MESSAGE = "complete.study.success.message";
 
@@ -78,13 +78,13 @@ public class FdahpStudyDesignerConstants {
 
   public static final String COMPREHENSION_TEST = "comprehenstionTest";
   public static final String COMPREHENSIONTEST_ERROR_MSG =
-      "Required sections are not marked as Completed";
+      "Required sections are not marked as completed for the languages selected";
   public static final String CONESENT = "consent";
 
   public static final String PARTICIPANT_PROPERTIES = "participantProperties";
   public static final String DRAFT_PARTICIPANT_PROPERTIES = "draftParticipantProperties";
   public static final String PARTICIPANT_PROPERTIES_ERROR_MSG =
-      "Required sections are not marked as Completed";
+      "Required sections are not marked as completed for the languages selected";
 
   public static final String CONESENT_REVIEW = "consentreview";
   public static final String CONSENT_ID = "consentId";
@@ -98,7 +98,7 @@ public class FdahpStudyDesignerConstants {
   // Consent related constants
   public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
   public static final String CONSENTEDUINFO_ERROR_MSG =
-      "Required sections are not marked as Completed";
+      "Required sections are not marked as completed for the languages selected";
   public static final String CONTENT = "content";
   public static final String COPY_STUDY = "copy";
   public static final String COPY_STUDY_FAILURE_MSG =
@@ -136,10 +136,10 @@ public class FdahpStudyDesignerConstants {
   // Update version draft update flag
   public static final String DRAFT_STUDY = "draftStudy";
 
-  public static final String ECONSENT_ERROR_MSG = "Required sections are not marked as Completed";
+  public static final String ECONSENT_ERROR_MSG = "Required sections are not marked as completed for the languages selected";
   public static final String EDIT_PAGE = "EDIT_PAGE";
   public static final String ELIGIBILITY_ERROR_MSG =
-      "Required sections are not marked as Completed";
+      "Required sections are not marked as completed for the languages selected";
 
   public static final String ELIGIBILITY_ID = "eligibilityId";
 
@@ -257,7 +257,7 @@ public class FdahpStudyDesignerConstants {
   public static final String NOTIFICATIONID = "notificationId";
   public static final String NUMBERS = "numbers";
   public static final String OLD_ORDER_NUMBER = "oldOrderNumber";
-  public static final String OVERVIEW_ERROR_MSG = "Required sections are not marked as Completed";
+  public static final String OVERVIEW_ERROR_MSG = "Required sections are not marked as completed for the languages selected";
 
   public static final String OVERVIEW_STUDY_PAGE = "overviewStudyPage";
   public static final String PASS_FAIL_ACTIVITY_DEATILS_MESSAGE = "Password invalid";
@@ -315,7 +315,7 @@ public class FdahpStudyDesignerConstants {
       "One or more of the study Resources has a period of visibility with a start date that has already expired. Please correct the date and try again.";
   public static final String RESOURCE_INFO_ID = "resourceInfoId";
   public static final String RESOURCEPDFFILES = "studyResources";
-  public static final String RESOURCES_ERROR_MSG = "Required sections are not marked as Completed";
+  public static final String RESOURCES_ERROR_MSG = "Required sections are not marked as completed for the languages selected";
   public static final String RESUME_CHECKLIST_ERROR_MSG =
       "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Resume the paused study?";
   public static final Integer ROLE_CREATE_MANAGE_STUDIES = 8;
@@ -353,7 +353,7 @@ public class FdahpStudyDesignerConstants {
 
   public static final String SERVER_TIME_ZONE = "America/New_York";
   public static final String SESSION_OBJECT = "sessionObject";
-  public static final String SETTING_ERROR_MSG = "Required sections are not marked as Completed";
+  public static final String SETTING_ERROR_MSG = "Required sections are not marked as completed for the languages selected";
   public static final String SHORT_NAME_STATISTIC = "identifierNameStat";
   // Active task attribute name
   public static final String SHORT_TITLE = "shortTitle";
@@ -392,9 +392,9 @@ public class FdahpStudyDesignerConstants {
 
   public static final String STUDY_TYPE_SD = "SD"; // study type standalone
   public static final String STUDYEXCACTIVETASK_ERROR_MSG =
-      "Required sections are not marked as Completed";
+      "Required sections are not marked as completed for the languages selected";
   public static final String STUDYEXCQUESTIONNARIES_ERROR_MSG =
-      "Required sections are not marked as Completed";
+      "Required sections are not marked as completed for the languages selected";
   public static final String STUDYLEVEL = "Study level";
   public static final String SUC_MSG = "sucMsg";
   public static final String SUCCESS = "SUCCESS";

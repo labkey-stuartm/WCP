@@ -280,7 +280,7 @@
                                                             type="hidden" class="imagePathCls"
                                                             name="imagePath"
                                                             value="${studyPageBo.imagePath}"/>
-                                                    <div class="help-block with-errors red-txt wid180"></div>
+                                                    <div class="help-block with-errors red-txt wid180 imageError"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -589,13 +589,13 @@
         var file = $(this).find('input[type=file]').val();
         var thumbnailImageId = $(this).find('input[type=file]').parent().find(
             'input[name="imagePath"]').val();
-        console.log(file, thumbnailImageId)
         if (file || thumbnailImageId) {
           $(this).find('input[type=file]').removeAttr('required');
         } else {
-          $(this).find('input[type=file]')
-          console.log(this);
-          formValid = false;
+          let lang = $('#studyLanguage').val();
+          if (lang=== undefined && lang==='' && lang==='en') {
+            formValid = false;
+          }
         }
       });
       if ((!isFromValid($(this).parents('form')))) {
@@ -719,6 +719,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addpage').attr('disabled', true);
           $('.removeUrl').addClass('cursor-none');
@@ -727,21 +728,14 @@
           $('#studyMediaLinkId').val($('#mlMediaLink', htmlData).val());
           $('#overviewPages option', htmlData).each(function (index, value) {
             index += 1;
-            console.log(index)
             $('#title' + index).val(value.getAttribute('id'));
             $('#studyCount' + index).text(value.getAttribute('id'));
             $('#description' + index).val(value.getAttribute('value'));
           });
-
-          $('#accordion').find('.panel-default').each(function (index) {
-            let page = $(this).find('[data-imageid="'+(index+1)+'"]');
-            if (page !== undefined) {
-              page.removeAttr('required');
-            }
-          })
-
-
+          $('[name="multipartFiles"]').prop('required', false);
+          $('.imageError').empty();
         } else {
+          updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addpage').attr('disabled', false);
           $('.removeUrl').removeClass('cursor-none');
@@ -749,18 +743,11 @@
           $('.uploadImgbtn').removeClass('cursor-none');
           $('.panel-default', htmlData).each(function (index, value) {
             index += 1;
-            console.log(index);
             $('#title' + index).val($('#title' + index, value).val());
             $('#studyCount' + index).text($('#title' + index, value).val());
             $('#description' + index).val($('#description' + index, value).val());
           });
-
-          $('#accordion').find('.panel-default').each(function (index) {
-            let page = $(this).find('[data-imageid="'+(index+1)+'"]');
-            if (page !== undefined) {
-              page.attr('required');
-            }
-          })
+          $('[name="multipartFiles"]').prop('required', true);
         }
       }
     });

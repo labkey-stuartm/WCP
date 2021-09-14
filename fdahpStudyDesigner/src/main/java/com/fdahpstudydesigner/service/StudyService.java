@@ -23,6 +23,7 @@ import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
@@ -218,6 +219,8 @@ public interface StudyService {
   public StudyPermissionBO findStudyPermissionBO(int studyId, int userId);
 
   public StudyLanguageBO getStudyLanguageById(int studyId, String language);
+
+  StudySequenceLangBO getStudySequenceById(int studyId, String language);
 
   public List<ConsentInfoLangBO> syncConsentDataInLanguageTable(
       List<ConsentInfoBo> consentInfoList, String language);

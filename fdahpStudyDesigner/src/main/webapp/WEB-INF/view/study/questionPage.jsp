@@ -4703,6 +4703,7 @@ $('#studyLanguage').on('change', function () {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+			updateCompletionTicks(htmlData);
           $('#shortTitle, #skiappableYes, #skiappableNo, #questionTextId, #responseTypeId, #useAnchorDateId, #anchorTextId').attr(
               'disabled', true);
           $('#allowHealthKit, #healthkitDatatypeId, #addLineChart, #lineChartTimeRangeId, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId, #useStasticData, #statShortNameId').attr(
@@ -4718,6 +4719,7 @@ $('#studyLanguage').on('change', function () {
           $('#timeIntervalStepId, #timeIntervalDefaultId, #styleDecimal, #styleInteger, #numericUnitId, #numericPlaceholderId, #numericMinValueId, #numericMaxValueId').attr(
                   'disabled', true);
         } else {
+			updateCompletionTicksForEnglish();
           $('#shortTitle, #skiappableYes, #skiappableNo, #questionTextId, #responseTypeId, #useAnchorDateId, #anchorTextId').attr(
               'disabled', false);
           $('#allowHealthKit, #healthkitDatatypeId, #addLineChart, #lineChartTimeRangeId, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId, #useStasticData, #statShortNameId').attr(

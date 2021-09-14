@@ -966,6 +966,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(
               'disabled', true);
@@ -973,6 +974,7 @@
             $('#repeatableText').val($('#mlText', htmlData).val());
           }
         } else {
+          updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(
               'disabled', false);

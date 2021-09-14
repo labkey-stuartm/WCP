@@ -72,7 +72,7 @@
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
         <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
-        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
+        <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
             <div class="col-md-12 p-none">
@@ -872,6 +872,7 @@
         htmlData.innerHTML = data;
         if (language !== 'en') {
           $('.tit_wrapper').text($('#mlName', htmlData).val());
+          updateCompletionTicks(htmlData);
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('langSpecific')) {
               $(this).attr('disabled', true);
@@ -895,6 +896,7 @@
           $('#uploadImgbtn').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
         } else {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+          updateCompletionTicksForEnglish();
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('langSpecific')) {
               $(this).attr('disabled', false);

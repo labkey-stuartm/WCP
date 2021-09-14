@@ -2411,6 +2411,19 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
+  public StudySequenceLangBO getStudySequenceById(int studyId, String language) {
+    logger.info("StudyServiceImpl - getStudySequenceById() - Starts");
+    StudySequenceLangBO studySequenceLangBO = null;
+    try {
+      studySequenceLangBO = studyDAO.getStudySequenceLangBO(studyId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getStudySequenceById() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getStudySequenceById() - Ends");
+    return studySequenceLangBO;
+  }
+
+  @Override
   public List<ConsentInfoLangBO> syncConsentDataInLanguageTable(
       List<ConsentInfoBo> consentInfoList, String language) {
     logger.info("StudyServiceImpl - syncConsentDataInLanguageTables() - Starts");

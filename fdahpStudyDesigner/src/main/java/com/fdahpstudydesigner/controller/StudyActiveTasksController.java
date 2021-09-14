@@ -1176,12 +1176,9 @@ public class StudyActiveTasksController {
                 studyActiveTasksService.getActiveTaskLangByStudyId(
                     activeTasks, Integer.parseInt(studyId), language);
             map.addAttribute("activeTaskLangBOS", activeTaskLangBOS);
-            StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
-            if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
-              studyLanguageBO =
-                  studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+              this.setStudyLangData(studyId, language, map);
             }
-            map.addAttribute("studyLanguageBO", studyLanguageBO);
           }
           boolean markAsComplete = true;
           actMsg =

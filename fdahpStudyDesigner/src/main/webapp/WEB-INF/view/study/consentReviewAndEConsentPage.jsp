@@ -1489,6 +1489,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('[name="shareDataPermissions"], #inlineRadio1, #inlineRadio2, [name="consentByLAR"],' +
               ' [name="additionalSignatureRadio"]').attr('disabled', true);
@@ -1512,6 +1513,7 @@
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
         } else {
+          updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('[name="shareDataPermissions"], #inlineRadio1,#inlineRadio2, [name="consentByLAR"],' +
               ' [name="additionalSignatureRadio"]').attr('disabled', false);

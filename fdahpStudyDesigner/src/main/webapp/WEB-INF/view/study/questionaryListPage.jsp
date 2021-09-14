@@ -341,11 +341,13 @@ function refreshAndFetchLanguageData(language) {
           let htmlData = document.createElement('html');
           htmlData.innerHTML = data;
 			if (language !== 'en') {
+              updateCompletionTicks(htmlData);
               $('.tit_wrapper').text($('#mlName', htmlData).val());
 				$('#addButton').attr('disabled', true);
 				$('.delete ').addClass('cursor-none');
 				$('.copy ').addClass('cursor-none');
 			} else {
+              updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 				$('#addButton').attr('disabled', false);
 				$('.delete ').removeClass('cursor-none');
