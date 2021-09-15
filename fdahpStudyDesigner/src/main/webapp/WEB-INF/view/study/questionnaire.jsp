@@ -59,6 +59,11 @@
         vertical-align: top;
       }
 
+      .sorting_disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+
       /* .delete{
 	background-position: -113px -63px ;
 	width: 17px;
@@ -4636,6 +4641,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', true);
@@ -4643,6 +4649,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
         } else {
+          $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId, #titleId, #branchingId').attr('disabled', false);

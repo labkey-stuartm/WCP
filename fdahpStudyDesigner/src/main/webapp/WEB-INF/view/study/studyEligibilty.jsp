@@ -17,6 +17,11 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
+
+      .sorting_disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -218,6 +223,7 @@
             true);
         $('#eleFormId').find('.elaborateClass').addClass(
             'linkDis');
+        $('#studyLanguage').removeAttr('disabled');
         </c:if>
 
         let currLang = $('#studyLanguage').val();
@@ -701,6 +707,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', true);
@@ -716,6 +723,7 @@
             $('#comment').val($('#mlInstText', htmlData).val());
           }
         } else {
+          $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);

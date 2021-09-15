@@ -379,6 +379,7 @@
     $('#overViewFormId input,textarea,select').prop('disabled', true);
     $('.uploadImgbtn').prop('disabled', true);
     $('.elaborateHide').css('visibility', 'hidden');
+    $('#studyLanguage').removeAttr('disabled');
     </c:if>
     $("[data-toggle=tooltip]").tooltip();
     var countId = ${fn:length(studyPageBos)+ 2};

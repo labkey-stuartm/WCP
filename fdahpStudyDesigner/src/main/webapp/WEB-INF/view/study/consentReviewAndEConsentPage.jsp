@@ -711,6 +711,7 @@
       $('#newDivId .elaborateClass').addClass('linkDis');
       $('#saveId,#doneId').hide();
       $('.addbtn, .remBtn').css("pointer-events", "none");
+      $('#studyLanguage').removeAttr('disabled');
     }
 
     $('.addSignature').change(function () {

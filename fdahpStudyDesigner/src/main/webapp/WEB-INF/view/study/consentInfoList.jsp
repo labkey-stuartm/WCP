@@ -24,6 +24,11 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
+
+      .sorting_disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -331,6 +336,7 @@
 
   function reloadConsentInfoDataTable(consentInfoList, markAsComplete) {
     $('#consent_list').DataTable().clear();
+    let idList = [];
     if (typeof consentInfoList != 'undefined' && consentInfoList != null && consentInfoList.length
         > 0) {
       $.each(consentInfoList, function (i, obj) {
@@ -363,6 +369,7 @@
             obj.id) + ");'></span>";
         datarow.push(actions);
         $('#consent_list').DataTable().row.add(datarow);
+        idList.push(obj.id);
       });
       if (typeof markAsComplete != 'undefined' && markAsComplete != null && markAsComplete) {
         $("#markAsCompleteBtnId").attr("disabled", false);
@@ -374,6 +381,7 @@
       $('#helpNote').attr('data-original-title',
           'Please ensure you add one or more Consent Sections before attempting to mark this section as Complete.');
     }
+    updateClassName(idList);
   }
 
   function addConsentPage() {
@@ -415,6 +423,13 @@
     }
   }
 
+  function updateClassName(idList) {
+    $('tr.odd,.even').each(function (index) {
+      $(this).attr('id', idList[index])
+      $(this).find('td:eq(1)').attr('class', 'title');
+    })
+  }
+
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);
@@ -432,6 +447,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#consentLangItems option', htmlData).each(function (index, value) {
@@ -441,6 +457,7 @@
           $('#addConsent').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
+          $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('tbody tr', htmlData).each(function (index, value) {

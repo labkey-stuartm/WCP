@@ -317,11 +317,11 @@
 									}
 								} else {
 									if (buttonText == 'publishId') {
-										messageText = "To publish a study as an Upcoming study, the  Basic Information, Settings, Overview and Consent sections need to be marked as Completed indicating you have finished adding all mandatory and sufficient content in those sections to give mobile app users a fair idea about the upcoming study. Please complete these sections and try again.";
+										messageText = "To publish a study as an Upcoming study, the Basic Information, Settings, Overview and Consent sections for the language selected need to be marked as completed indicating you have finished adding all mandatory and sufficient content in those sections to give mobile app users a fair idea about the upcoming study. Please complete these sections and try again.";
 									} else if (buttonText == 'lunchId') {
-										messageText = "Launching to a study requires that all sections be marked as completed for the languages selected indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
+										messageText = "Launching to a study requires that all sections be marked as completed for the language selected indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
 									} else if (buttonText == 'updatesId') {
-										messageText = "Publish Updates to a study requires that all sections be marked as Completed indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
+										messageText = "Publish Updates to a study requires that all sections be marked as completed indicating that you have finished adding all mandatory and intended content in the section for the language selected. Please complete all the sections  for the language selected and try again.";
 									}
 									bootbox.confirm(message, function(result) {
 										if(!isRequiredSectionsCompleted){

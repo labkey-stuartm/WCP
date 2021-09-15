@@ -17,6 +17,11 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
+
+      .sorting_disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
     </style>
 </head>
 <!-- Start right Content here -->
@@ -966,6 +971,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(
@@ -974,6 +980,7 @@
             $('#repeatableText').val($('#mlText', htmlData).val());
           }
         } else {
+          $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(

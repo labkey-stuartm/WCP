@@ -14,6 +14,11 @@
         pointer-events: none;
       }
 
+      .sorting_disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+
       /* without z-index to avoid collision with multi-language dropdown */
       .right-content-head-wo-z {
         padding: 12px 30px;
@@ -214,6 +219,7 @@
     $('#comprehensionInfoForm input,textarea,select').prop('disabled', true);
     $('.TestQuestionButtonHide').hide();
     $('.addBtnDis, .remBtnDis').addClass('dis-none');
+    $('#studyLanguage').removeAttr('disabled');
     </c:if>
     $('input[name="needComprehensionTest"]').change(function () {
       var val = $(this).val();
@@ -612,6 +618,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#comprehensionLangItems option', htmlData).each(function (index, value) {
@@ -622,6 +629,7 @@
           $('#comprehensionTestMinimumScore').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
+          $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('tbody tr', htmlData).each(function (index, value) {

@@ -391,6 +391,7 @@
     $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
     $('.elaborateHide').css('visibility', 'hidden');
     $('.imageButtonDis').prop('disabled', true);
+    $('#studyLanguage').removeAttr('disabled');
     </c:if>
 
     var studyType = '${fn:escapeXml(studyBo.type)}';

@@ -302,6 +302,7 @@
         $('#studyLanguage').attr('disabled', false);
         $('.TestQuestionButtonHide').hide();
         $('.addBtnDis, .remBtnDis').addClass('dis-none');
+        $('#studyLanguage').removeAttr('disabled');
         </c:if>
 
         let currLang = $('#studyLanguage').val();
