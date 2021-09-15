@@ -55,6 +55,19 @@
                 </div>
             </c:if>
 
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                </div>
+            </c:if>
+
             <div class="dis-line form-group mb-none mr-sm">
                 <button type="button" class="btn btn-default gray-btn"
                         onclick="goToBackPage(this);">Cancel
@@ -114,10 +127,10 @@
                 <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
                 <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                 <input
-                    type="hidden" name="questionnairesId" id="questionnairesId"
-                    value="${questionnaireId}"> <input type="hidden"
-                                                       id="questionnaireShortId"
-                                                       value="${questionnaireBo.shortTitle}">
+                        type="hidden" name="questionnairesId" id="questionnairesId"
+                        value="${questionnaireId}"> <input type="hidden"
+                                                           id="questionnaireShortId"
+                                                           value="${questionnaireBo.shortTitle}">
                 <input type="hidden" name="stepType" id="stepType" value="Form">
                 <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
                 <input type="hidden" id="mlText" value="${formLangBO.repeatableText}">

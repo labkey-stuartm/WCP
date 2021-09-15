@@ -222,9 +222,9 @@
                                         will be shared)<span class="requiredStar">*</span>
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control requiredClass" 
-                                        			id="learnMoreTextId" name="learnMoreText"
-                                                  <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.learnMoreText}</textarea>
+                                        <textarea class="form-control requiredClass"
+                                                  id="learnMoreTextId" name="learnMoreText"
+                                                <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.learnMoreText}</textarea>
                                         <div class="help-block with-errors red-txt"></div>
                                     </div>
                                 </div>
@@ -787,6 +787,7 @@
     });
     /* var isChek = "
 
+
     ${consentBo.consentDocType}";
 	if(isChek != null && isChek !='' && typeof isChek !=undefined){
 		if(isChek == 'New'){
@@ -975,6 +976,30 @@
       // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     }
 
+    function autoCreateConsentDocumentInOtherLanguages() {
+      var consentDocumentDivContent = "";
+      $("#autoConsentDocumentDivId").empty();
+      if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
+          && "${consentInfoLangList}"
+          !== undefined) {
+        if ($("#inlineRadio1").is(":checked")) {
+          <c:forEach items="${consentInfoLangList}" varStatus="i" var="consentInfo">
+          consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+              + "${consentInfo.displayTitle}"
+              + "</strong></span><br/>"
+              + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+              + "${consentInfo.elaborated}"
+              + "</span><br/>";
+          </c:forEach>
+
+        }
+      }
+      $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
+      $("#newDocumentDivId").val('');
+      //apply custom scroll bar to the auto consent document type
+      // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+    }
+
     //createNewConsentDocument
     function createNewConsentDocument() {
       tinymce.init({
@@ -1004,6 +1029,7 @@
 
       /* tinymce.get('newDocumentDivId').setContent('');
       tinymce.get('newDocumentDivId').setContent('
+
 
       ${consentBo.consentDocContent}'); */
     }
@@ -1196,7 +1222,8 @@
             }
             if (item == "doneId") {
               var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="+$('#studyLanguage').val();
+              a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="
+                  + $('#studyLanguage').val();
               document.body.appendChild(a).click();
             } else {
               $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
@@ -1513,6 +1540,26 @@
           $('#signature0').val($('#mlSignature0', htmlData).val());
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
+          if ($("#inlineRadio1").is(":checked")) {
+            var consentDocumentDivContent = "";
+            $("#autoConsentDocumentDivId").empty();
+            if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
+                && "${consentInfoLangList}"
+                !== undefined) {
+              if ($("#inlineRadio1").is(":checked")) {
+                <c:forEach items="${consentInfoLangList}" varStatus="i" var="consentInfo">
+                consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+                    + "${consentInfo.displayTitle}"
+                    + "</strong></span><br/>"
+                    + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+                    + "${consentInfo.elaborated}"
+                    + "</span><br/>";
+                </c:forEach>
+              }
+            }
+            $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
+            $("#newDocumentDivId").val('');
+          }
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -1535,6 +1582,25 @@
           $('#signature0').val($('#signature0', htmlData).val());
           $('#signature1').val($('#signature1', htmlData).val());
           $('#signature2').val($('#signature2', htmlData).val());
+          if ($("#inlineRadio1").is(":checked")) {
+            var consentDocumentDivContent = "";
+            $("#autoConsentDocumentDivId").empty();
+            if (null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}"
+                !== undefined) {
+              if ($("#inlineRadio1").is(":checked")) {
+                <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
+                consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+                    + "${consentInfo.displayTitle}"
+                    + "</strong></span><br/>"
+                    + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+                    + "${consentInfo.elaborated}"
+                    + "</span><br/>";
+                </c:forEach>
+              }
+            }
+            $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
+            $("#newDocumentDivId").val('');
+          }
         }
       }
     })

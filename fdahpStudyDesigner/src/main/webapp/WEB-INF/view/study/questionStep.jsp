@@ -98,6 +98,19 @@
                 </div>
             </c:if>
 
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                </div>
+            </c:if>
+
             <div class="dis-line form-group mb-none mr-sm">
                 <button type="button" class="btn btn-default gray-btn"
                         onclick="goToBackPage(this);">Cancel
@@ -7376,13 +7389,12 @@
           success: function (data) {
             let htmlData = document.createElement('html');
             htmlData.innerHTML = data;
-            console.log(data);
             let responseTypeId = $('[data-id="responseTypeId"]');
             if (language !== 'en') {
               updateCompletionTicks(htmlData);
               $('.tit_wrapper').text($('#mlName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
-				 'disabled', true);
+                  'disabled', true);
               $('#trailId, #removeUrl').addClass('cursor-none');
               responseTypeId.addClass('ml-disabled').attr('disabled', true);
               if ($('#allowHealthKit').prop('checked') === true) {

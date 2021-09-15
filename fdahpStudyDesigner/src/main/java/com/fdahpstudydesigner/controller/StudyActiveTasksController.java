@@ -547,6 +547,7 @@ public class StudyActiveTasksController {
               request
                   .getSession()
                   .setAttribute(sessionStudyCount + "sucMsg", "Active task updated successfully.");
+              map.addAttribute("language", language);
               return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
 
             } else {
@@ -555,6 +556,7 @@ public class StudyActiveTasksController {
                   .setAttribute(
                       sessionStudyCount + "sucMsg", propMap.get("save.study.success.message"));
               request.getSession().setAttribute(sessionStudyCount + "currentPage", currentPage);
+              map.addAttribute("language", language);
               return new ModelAndView(
                   "redirect:/adminStudies/viewActiveTask.do" + "#" + currentPage, map);
             }
@@ -564,6 +566,7 @@ public class StudyActiveTasksController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                     "Task not added successfully.");
+            map.addAttribute("language", language);
             mav =
                 new ModelAndView(
                     "redirect:/adminStudies/viewStudyActiveTasks.do" + "#" + currentPage, map);
@@ -897,7 +900,8 @@ public class StudyActiveTasksController {
           }
 
           String language = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
@@ -1130,7 +1134,8 @@ public class StudyActiveTasksController {
             (String) request.getSession().getAttribute(sessionStudyCount + "permission");
 
         String language = request.getParameter("language");
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language)
+            && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
           this.setStudyLangData(studyId, language, map);
         }
         map.addAttribute("currLanguage", language);
@@ -1176,7 +1181,8 @@ public class StudyActiveTasksController {
                 studyActiveTasksService.getActiveTaskLangByStudyId(
                     activeTasks, Integer.parseInt(studyId), language);
             map.addAttribute("activeTaskLangBOS", activeTaskLangBOS);
-            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            if (FdahpStudyDesignerUtil.isNotEmpty(language)
+                && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
               this.setStudyLangData(studyId, language, map);
             }
           }
@@ -1204,8 +1210,7 @@ public class StudyActiveTasksController {
   private void setStudyLangData(String studyId, String language, ModelMap map) {
     StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
     if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
-      studyLanguageBO =
-          studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+      studyLanguageBO = studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
     }
     map.addAttribute("studyLanguageBO", studyLanguageBO);
   }

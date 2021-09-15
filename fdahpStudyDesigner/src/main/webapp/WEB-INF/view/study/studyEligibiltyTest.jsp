@@ -45,6 +45,19 @@
                     </div>
                 </c:if>
 
+                <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                    </div>
+                </c:if>
+
                 <div class="dis-line form-group mb-none mr-sm">
                     <button type="button" class="btn btn-default gray-btn"
                             onclick="goToBackPage(this);">Cancel
@@ -68,7 +81,8 @@
             <!-- form- input-->
 
             <input type="hidden" id="mlQuestion" value="${eligibilityTestLangBo.question}">
-            <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
+            <input type="hidden" id="currentLanguage" name="currentLanguage"
+                   value="${currLanguage}">
             <input type="hidden" id="type" name="type" value="complete"/>
             <input type="hidden" name="id" id="id" value="${eligibilityTest.id}"/>
             <input type="hidden" id="eligibilityId" name="eligibilityId" value="${eligibilityId}"/>

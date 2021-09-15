@@ -108,7 +108,7 @@ public interface StudyQuestionnaireService {
       String language);
 
   public QuestionsBo saveOrUpdateQuestion(
-      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId);
+      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId, String language);
 
   public QuestionnaireBo saveOrUpdateQuestionnaire(
       QuestionnaireBo questionnaireBo,

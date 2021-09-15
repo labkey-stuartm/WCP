@@ -28,7 +28,7 @@
                     </c:if>
                 </div>
 
-                <c:if test="${studyBo.multiLanguageFlag eq true}">
+                <c:if test="${studyBo.multiLanguageFlag eq true and not empty comprehensionQuestionBo.id}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
@@ -41,6 +41,19 @@
                                     ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                             </c:forEach>
                         </select>
+                    </div>
+                </c:if>
+
+                <c:if test="${studyBo.multiLanguageFlag eq true and empty comprehensionQuestionBo.id}">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
                     </div>
                 </c:if>
 
@@ -79,7 +92,8 @@
                 </c:forEach>
             </select>
 
-            <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
+            <input type="hidden" id="currentLanguage" name="currentLanguage"
+                   value="${currLanguage}">
             <c:if test="${not empty comprehensionQuestionBo.id}">
                 <input type="hidden" id="studyId" name="studyId"
                        value="${comprehensionQuestionBo.studyId}">

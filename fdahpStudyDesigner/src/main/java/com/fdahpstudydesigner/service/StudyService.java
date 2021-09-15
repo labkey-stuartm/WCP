@@ -114,7 +114,11 @@ public interface StudyService {
       int studyId, String markCompleted, Boolean flag, SessionObject sesObj, String customStudyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, SessionObject sesObj, String customStudyId, String language);
+      int studyId,
+      String markCompleted,
+      SessionObject sesObj,
+      String customStudyId,
+      String language);
 
   public String reOrderComprehensionTestQuestion(
       Integer studyId, int oldOrderNumber, int newOrderNumber);
@@ -226,6 +230,8 @@ public interface StudyService {
       List<ConsentInfoBo> consentInfoList, String language);
 
   ConsentInfoLangBO getConsentInfoLangById(int consentInfoId, String language);
+
+  List<ConsentInfoLangBO> getConsentInfoLangByStudyId(int studyId, String language);
 
   ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language);
 

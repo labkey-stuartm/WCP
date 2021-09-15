@@ -85,6 +85,19 @@
                 </div>
             </c:if>
 
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                </div>
+            </c:if>
+
             <div class="dis-line form-group mb-none mr-sm">
                 <button type="button" class="btn btn-default gray-btn"
                         onclick="goToBackPage(this);">Cancel
@@ -119,7 +132,8 @@
                     <input type="hidden" name="${csrf.parameterName}"
                            value="${csrf.token}">
                     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
-                    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+                    <input type="hidden" id="customStudyName"
+                           value="${fn:escapeXml(studyBo.name)}"/>
                     <form:hidden path="id"/>
                     <form:hidden path="anchorDateId"/>
                     <input type="hidden" id="actionType" name="actionType"
@@ -429,6 +443,7 @@
       });
     }
     /* if(
+
     ${actionType eq 'edit' && participantProperties.live eq 1}){
 			$("#shortTitleId").prop('disabled', true);
 			$("#inlineRadio1").prop('disabled', true);
@@ -438,6 +453,7 @@
 			$("#inlineCheckbox1").prop('disabled', true);
 		}  */
     /* if(
+
     ${actionType eq 'edit' && participantProperties.live eq 1}){
 			$("#shortTitleId").addClass('not-allowed')
 			$("#inlineRadio1").addClass('not-allowed')
@@ -685,7 +701,7 @@
       url: '/fdahpStudyDesigner/adminStudies/editParticipantProperties.do?_S=${param._S}',
       type: "GET",
       data: {
-        language: language,	
+        language: language,
         participantPropertyId: $('#participantId').val()
       },
       success: function (data) {
@@ -696,7 +712,6 @@
             updateCompletionTicks(htmlData);
             $('.tit_wrapper').text($('#mlName', htmlData).val());
             $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
-
                 'disabled', true);
             $('[data-id="dataSource"], [data-id="dataType"]').css(
                 'background-color',

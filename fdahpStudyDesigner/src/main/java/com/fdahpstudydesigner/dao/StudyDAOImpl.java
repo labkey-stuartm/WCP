@@ -5367,6 +5367,9 @@ public class StudyDAOImpl implements StudyDAO {
               deleteExistingLanguages(study.getId(), deletedLanguages, session, transaction);
             }
             study.setMultiLanguageFlag(studyBo.getMultiLanguageFlag());
+            if (!studyBo.getMultiLanguageFlag().equals(true)) {
+              study.setSelectedLanguages(null);
+            }
             study.setPlatform(studyBo.getPlatform());
             study.setAllowRejoin(studyBo.getAllowRejoin());
             study.setEnrollingParticipants(studyBo.getEnrollingParticipants());
@@ -8255,11 +8258,14 @@ public class StudyDAOImpl implements StudyDAO {
   private String validateCompletionStatusFromLangTables(int studyId, boolean publishFlag) {
     logger.info("StudyDAOImpl - validateCompletionStatusFromLangTables() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
-    Session session=null;
+    Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      List<StudySequenceLangBO> langBOList = session.createQuery("from StudySequenceLangBO  where studySequenceLangPK.studyId=:id")
-          .setInteger("id", studyId).list();
+      List<StudySequenceLangBO> langBOList =
+          session
+              .createQuery("from StudySequenceLangBO  where studySequenceLangPK.studyId=:id")
+              .setInteger("id", studyId)
+              .list();
       for (StudySequenceLangBO studySequenceLangBO : langBOList) {
         if (!studySequenceLangBO.isBasicInfo()) {
           message = FdahpStudyDesignerConstants.BASICINFO_ERROR_MSG;
@@ -8288,12 +8294,12 @@ public class StudyDAOImpl implements StudyDAO {
         } else if (!studySequenceLangBO.isStudyExcActiveTask()) {
           message = FdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
           return message;
-//        } else if (!studySequenceLangBO.isMiscellaneousResources()) {
-//          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG+suffix;
-//          return message;
-//        } else if (!studySequenceLangBO.isCheckList()) {
-//          message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG+suffix;
-//          return message;
+          //        } else if (!studySequenceLangBO.isMiscellaneousResources()) {
+          //          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG+suffix;
+          //          return message;
+          //        } else if (!studySequenceLangBO.isCheckList()) {
+          //          message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG+suffix;
+          //          return message;
         } else if (!studySequenceLangBO.getParticipantProperties()) {
           message = FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES_ERROR_MSG;
           return message;
@@ -8894,7 +8900,8 @@ public class StudyDAOImpl implements StudyDAO {
       if (studyId != 0) {
         dataList =
             session
-                .createQuery("from ConsentInfoLangBO cil where cil.consentInfoLangPK.langCode=:language and studyId=:id")
+                .createQuery(
+                    "from ConsentInfoLangBO cil where cil.consentInfoLangPK.langCode=:language and studyId=:id")
                 .setString("language", language)
                 .setInteger("id", studyId)
                 .list();
@@ -9190,7 +9197,8 @@ public class StudyDAOImpl implements StudyDAO {
       if (studyId != 0) {
         studyPageLanguageBO =
             session
-                .createQuery("from StudyPageLanguageBO where studyId= :studyId and studyPageLanguagePK.langCode=:lang")
+                .createQuery(
+                    "from StudyPageLanguageBO where studyId= :studyId and studyPageLanguagePK.langCode=:lang")
                 .setInteger("studyId", studyId)
                 .setString("lang", language)
                 .list();

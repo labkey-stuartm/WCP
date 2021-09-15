@@ -21,7 +21,7 @@
     <!--  Start top tab section-->
     <div class="right-content-head">
 
-<%--        <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">--%>
+        <%--        <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">--%>
         <%--		multilanguage data--%>
         <input type="hidden" id="mlDisplayText" value="${activeTaskLangBO.displayName}">
         <input type="hidden" id="mlInstructions" value="${activeTaskLangBO.instruction}">
@@ -31,8 +31,8 @@
         <input type="hidden" id="mlDisplayStat2" value="${activeTaskLangBO.statName2}">
         <input type="hidden" id="mlChartTitle3" value="${activeTaskLangBO.chartTitle3}">
         <input type="hidden" id="mlDisplayStat3" value="${activeTaskLangBO.statName3}">
-    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
-    <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
 
         <%--		 english data--%>
         <input type="hidden" id="enDisplayText" value="${fn:escapeXml(activeTaskBo.displayName)}">
@@ -90,6 +90,19 @@
                                 ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
                         </c:forEach>
                     </select>
+                </div>
+            </c:if>
+
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionPage == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
                 </div>
             </c:if>
 
