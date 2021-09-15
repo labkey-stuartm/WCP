@@ -21,6 +21,12 @@
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
     <form:form
+            action="/fdahpStudyDesigner/adminStudies/removeSelectedLanguage.do?_S=${param._S}"
+            id="removeLangFormId">
+        <input type="hidden" id="deletedLanguage" name="deletedLanguage"/>
+        <input type="hidden" name="studyId" value="${studyBo.id}">
+    </form:form>
+    <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}"
             data-toggle="validator" role="form" id="settingfoFormId" method="post"
             autocomplete="off">
@@ -144,22 +150,30 @@
 
             <div id="langSelect" style="display: none">
                 <div class="mt-md study-list mb-md addHide">
-                    <select 
+                    <select
                             class="selectpicker col-md-6 aq-select aq-select-form mlselect"
                             title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
-                            <option class="langOption" value="${lang.key}" id="${lang.key}">${lang.value}</option>
+                            <option class="langOption" value="${lang.key}"
+                                    id="${lang.key}">${lang.value}</option>
                         </c:forEach>
+                        <c:if test="${supportedLanguages.size() eq 0}">
+                            <option style="text-align: center; color: #000000" disabled>- All items
+                                are already selected -
+                            </option>
+                        </c:if>
                     </select>
                     <span class="study-addbtn changeView" id="addLangBtn">+</span>
                 </div>
                 <!-- Selected Language items -->
                 <div class="study-selected mt-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
-                      <input type="hidden" class="stdCls" id="${stdLang.key}" value="${stdLang.key}">
-                        <span id="span-${stdLang.key}">${stdLang.value}<span <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if> 
-                        					  id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
-                                              onclick="removeLang(this.id, '${stdLang.value}')"> X&nbsp;&nbsp;</span></span>
+                        <input type="hidden" class="stdCls" id="${stdLang.key}"
+                               value="${stdLang.key}">
+                        <span id="span-${stdLang.key}">${stdLang.value}<span <c:if
+                                test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
+                                id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
+                                onclick="removeLang(this.id, '${stdLang.value}')"> X&nbsp;&nbsp;</span></span>
                     </c:forEach>
                 </div>
             </div>
@@ -525,6 +539,10 @@
       refreshAndFetchLanguageData(currLang);
     }
 
+    $(document).on('click', '.removeLangNew', function () {
+      removeLang(this.id, 'new');
+    })
+
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#adminsId').hide();
@@ -581,6 +599,7 @@
     <c:if test="${(not empty permission) || (sessionObject.role eq 'Org-level Admin')}">
     $('#settingfoFormId input,textarea,select').prop('disabled', true);
     $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
+    $('#studyLanguage').removeAttr('disabled');
     </c:if>
 
     <c:if test="${!fn:contains(permissions,5)}">
@@ -795,14 +814,14 @@
   var newSelectedLang = '';
   $(".study-addbtn").click(function () {
     let selLang = $("#langSelect").find('option:selected').val();
-    if (selLang==='') {
+    if (selLang === '') {
       return false;
     }
     newSelectedLang += selLang + ',';
     $('#newLanguages').val(newSelectedLang);
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").hide();
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function () {
-      if ($(this).text() == "- All items are already selected -") {
+      if ($(this).text() === "- All items are already selected -") {
         $(this).hide();
       }
     });
@@ -814,7 +833,7 @@
         let newDiv = "<input type='hidden' class='stdCls' id=" + "'" + selVal + "' value='" + selVal
             + "'>"
             + "<span id='span-" + selVal + "'>" + selTxt
-            + "<span id='innerSpan-"+selVal+"'class='ablue removeLang changeView' onclick='removeLang(this.id,'"+selVal+"')'"
+            + "<span id='innerSpan-" + selVal + "' class='ablue removeLangNew changeView'"
             + "> X&nbsp;&nbsp;</span></span>";
         $('.study-selected').append(newDiv);
       }
@@ -823,13 +842,12 @@
     $("#multiple").selectpicker('val', '');
     let tot_items = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").length;
     let count = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style]").length;
-    if (count == tot_items) {
+    if (count === tot_items) {
       $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu").empty().append(
           $("<li> </li>").attr("class", "text-center").text("- All items are already selected -"));
     }
 
   });
-
   if ($('#mlYes').attr('checked') == 'checked') {
     $("#langSelect").show();
   } else {
@@ -992,16 +1010,33 @@
   var removedLanguages = '';
 
   function removeLang(langObject, fullName) {
-    debugger;
-    let targetStr = langObject.split('-')[1];
-    if (targetStr !== undefined || targetStr !== '') {
-      removedLanguages += targetStr + ',';
-      $('#deletedLanguages').val(removedLanguages);
-      $('.study-selected').find('span#span-' + targetStr).remove();
-      $('.study-selected').find('input#' + targetStr).remove();
-      let optionString = "<option class='langOption' id='"+targetStr+"' value='"+targetStr+"'>"+fullName+"</option>"
-      $('#multiple').append(optionString);
+    if (fullName === 'new') {
+      let text = $('#' + langObject).parent().text();
+      if (text !== undefined) {
+        fullName = text.split(' ')[0];
+      }
     }
+    let message = 'This will remove all study content created in ' + fullName;
+    bootbox
+    .confirm({
+      closeButton: false,
+      message: message,
+      buttons: {
+        'cancel': {
+          label: 'Cancel',
+        },
+        'confirm': {
+          label: 'OK',
+        },
+      },
+      callback: function (result) {
+        if (result) {
+          let targetStr = langObject.split('-')[1];
+          $('#deletedLanguage').val(targetStr);
+          $('#removeLangFormId').submit();
+        }
+      }
+    });
   }
 
   $('#studyLanguage').on('change', function () {
@@ -1050,8 +1085,9 @@
             $('#selectedLanguages').css('pointer-events', 'none');
             $('#addLangBtn').css('pointer-events', 'none');
             $('.sprites_icon').css('pointer-events', 'none');
-            
-            $('[data-id="multiple"]').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
+
+            $('[data-id="multiple"]').css('background-color', '#eee').css('opacity', '1').addClass(
+                'cursor-none');
           } else {
             updateCompletionTicksForEnglish();
             $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -1080,7 +1116,7 @@
             $('#selectedLanguages').removeAttr('style');
             $('#addLangBtn').removeAttr('style');
             $('.sprites_icon').removeAttr('style');
-            
+
             $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
           }
         }

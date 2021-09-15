@@ -20,6 +20,9 @@ public class EligibilityTestLangBo implements Serializable {
   @Column(name = "eligibility_id")
   private Integer eligibilityId;
 
+  @Column(name = "study_id")
+  private Integer studyId;
+
   @Column(name = "question")
   private String question;
 
@@ -78,5 +81,13 @@ public class EligibilityTestLangBo implements Serializable {
 
   public void setActive(Boolean active) {
     this.active = active;
+  }
+
+  public Integer getStudyId() {
+    return studyId;
+  }
+
+  public void setStudyId(Integer studyId) {
+    this.studyId = studyId;
   }
 }

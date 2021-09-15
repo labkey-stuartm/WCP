@@ -2130,6 +2130,35 @@ public class StudyDAOImpl implements StudyDAO {
     return studyBo;
   }
 
+  @Override
+  public StudyBo getStudyBoById(String studyId) {
+    logger.info("StudyDAOImpl - getStudyBoById() - Starts");
+    Session session = null;
+    StudyBo studyBo = null;
+    StudySequenceBo studySequenceBo = null;
+    StudyPermissionBO permissionBO = null;
+    StudyVersionBo studyVersionBo = null;
+    StudyBo liveStudyBo = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (StringUtils.isNotEmpty(studyId)) {
+        studyBo =
+            (StudyBo)
+                session
+                    .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
+                    .setInteger("id", Integer.parseInt(studyId))
+                    .uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudyBoById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudyBoById() - Ends");
+    return studyBo;
+  }
   /**
    * return eligibility based on user's Study Id
    *
@@ -9268,5 +9297,137 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getStudySequenceLangBO() - Ends");
     return studySequenceLangBO;
+  }
+
+  @Override
+  public String deleteAllLanguageData(int studyId, String language) {
+    logger.info("StudyDAOImpl - deleteAllLanguageData() - Starts");
+    Session session = null;
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (studyId != 0) {
+
+        session
+            .createQuery(
+                "delete from ActiveTaskLangBO where activeTaskLangPK.langCode=:lang and studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        List<ComprehensionQuestionLangBO> questionList =
+            session
+                .createQuery(
+                    "from ComprehensionQuestionLangBO where comprehensionQuestionLangPK.langCode=:lang and studyId=:id")
+                .setString("lang", language)
+                .setInteger("id", studyId)
+                .list();
+
+        session
+            .createQuery(
+                "delete from ComprehensionQuestionLangBO where comprehensionQuestionLangPK.langCode=:lang and studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        List<Integer> questionIdList = new ArrayList<>();
+        for (ComprehensionQuestionLangBO questionLangBO : questionList) {
+          questionIdList.add(questionLangBO.getComprehensionQuestionLangPK().getId());
+        }
+        session
+            .createQuery(
+                "delete from ComprehensionResponseLangBo where comprehensionResponseLangPK.langCode=:lang and questionId in (:questionIdList)")
+            .setString("lang", language)
+            .setParameterList("questionIdList", questionIdList)
+            .executeUpdate();
+
+        session
+            .createQuery(
+                "delete from ConsentInfoLangBO where consentInfoLangPK.langCode=:lang and studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        session
+            .createQuery(
+                "delete from EligibilityTestLangBo where eligibilityTestLangPK.langCode=:lang and studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        List<Integer> questionnaireIdList =
+            session
+                .createSQLQuery(
+                    "select id from questionnaires_lang "
+                        + "where study_id=:id and lang_code=lang;")
+                .setInteger("id", studyId)
+                .setString("lang", language)
+                .list();
+
+        session
+            .createQuery(
+                "delete from QuestionnaireLangBO where questionnaireLangPK.langCode=:lang and studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        for (Integer questionnaireId : questionnaireIdList) {
+          session
+              .createQuery(
+                  "delete from InstructionsLangBO where instructionLangPK.langCode=:lang and questionnaireId=:id")
+              .setString("lang", language)
+              .setInteger("id", questionnaireId)
+              .executeUpdate();
+
+          session
+              .createQuery(
+                  "delete from FormLangBO where formLangPK.langCode=:lang and questionnaireId=:id")
+              .setString("lang", language)
+              .setInteger("id", questionnaireId)
+              .executeUpdate();
+
+          session
+              .createQuery(
+                  "delete from QuestionLangBO where questionLangPK.langCode=:lang and questionnaireId=:id")
+              .setString("lang", language)
+              .setInteger("id", questionnaireId)
+              .executeUpdate();
+        }
+
+        session
+            .createQuery(
+                "delete from StudyLanguageBO where studyLanguagePK.langCode=:lang and studyLanguagePK.study_id=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        session
+            .createQuery(
+                "delete from StudyPageLanguageBO where studyPageLanguagePK.langCode=:lang and studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        session
+            .createQuery(
+                "delete from StudySequenceLangBO where studySequenceLangPK.langCode=:lang and studySequenceLangPK.studyId=:id")
+            .setString("lang", language)
+            .setInteger("id", studyId)
+            .executeUpdate();
+
+        transaction.commit();
+        result = FdahpStudyDesignerConstants.SUCCESS;
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - deleteAllLanguageData() - ERROR ", e);
+      transaction.rollback();
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - deleteAllLanguageData() - Ends");
+    return result;
   }
 }

@@ -4669,6 +4669,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
+            map.addAttribute("language", currentLanguage);
             return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
           }
         } else {
@@ -4677,6 +4678,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                   "Error in set Setting and Admins.");
+          map.addAttribute("language", currentLanguage);
           return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
         }
       }
@@ -5968,7 +5970,6 @@ public class StudyController {
 
           String currLang = request.getParameter("language");
           if ("undefined".equals(currLang)) currLang = null;
-          StudyLanguageBO studyLanguageBO = null;
           if (FdahpStudyDesignerUtil.isNotEmpty(currLang)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(currLang)) {
             this.setStudyLangData(studyId, currLang, map);
@@ -6243,7 +6244,8 @@ public class StudyController {
           if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
             StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
             eligibilityTestLangList =
-                studyService.syncEligibilityTestDataInLanguageTable(eligibilityTestList, currLang);
+                studyService.syncEligibilityTestDataInLanguageTable(
+                    eligibilityTestList, currLang, studyId);
             studyLanguageBO =
                 studyService.getStudyLanguageById(Integer.parseInt(studyId), currLang);
             map.addAttribute(
@@ -6597,5 +6599,67 @@ public class StudyController {
     }
     map.addAttribute("studyLanguageBO", studyLanguageBO);
     map.addAttribute("sequenceLangBO", studySequenceLangBO);
+  }
+
+  @RequestMapping("/adminStudies/removeSelectedLanguage.do")
+  public ModelAndView removeSelectedLanguage(HttpServletRequest request, StudyBo studyBo) {
+    logger.info("StudyController - removeSelectedLanguage - Starts");
+    ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
+    String message;
+    ModelMap map = new ModelMap();
+    try {
+      SessionObject sesObj =
+          (SessionObject)
+              request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+
+      String studyId =
+          FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+              ? ""
+              : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+      Integer sessionStudyCount =
+          StringUtils.isNumeric(request.getParameter("_S"))
+              ? Integer.parseInt(request.getParameter("_S"))
+              : 0;
+      if ((sesObj != null)
+          && (sesObj.getStudySession() != null)
+          && sesObj.getStudySession().contains(sessionStudyCount)) {
+
+        String currentLanguage = request.getParameter("currentLanguage");
+        String deletedLanguage =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("deletedLanguage"))
+                ? ""
+                : request.getParameter("deletedLanguage");
+        studyBo.setUserId(sesObj.getUserId());
+        message = studyService.removeExistingLanguageAndData(studyId, sesObj, deletedLanguage);
+        request
+            .getSession()
+            .setAttribute(
+                sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId() + "");
+        map.addAttribute("_S", sessionStudyCount);
+        if (FdahpStudyDesignerConstants.SUCCESS.equals(message)
+            || FdahpStudyDesignerConstants.WARNING.equals(message)) {
+          if (FdahpStudyDesignerConstants.WARNING.equals(message)) {
+            request
+                .getSession()
+                .setAttribute(
+                    sessionStudyCount + FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER,
+                    FdahpStudyDesignerConstants.LOGOUT_LOGIN_USER);
+          }
+        } else {
+          request
+              .getSession()
+              .setAttribute(
+                  sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
+                  "Error in set Setting and Admins.");
+        }
+        map.addAttribute("language", currentLanguage);
+        map.addAttribute("studyId", studyId);
+        return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
+      }
+    } catch (Exception e) {
+      logger.error("StudyController - removeSelectedLanguage - ERROR", e);
+    }
+    logger.info("StudyController - removeSelectedLanguage - Ends");
+    return mav;
   }
 }

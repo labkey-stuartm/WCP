@@ -195,6 +195,9 @@ public interface StudyService {
       String deletedLanguages,
       String currLang);
 
+  String removeExistingLanguageAndData(
+      String studyId, SessionObject sesObj, String langToBeDeleted);
+
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
   public String switchStudyToLiveMode(String studyId);
@@ -239,7 +242,7 @@ public interface StudyService {
       ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language);
 
   List<EligibilityTestLangBo> syncEligibilityTestDataInLanguageTable(
-      List<EligibilityTestBo> eligibilityTestList, String language);
+      List<EligibilityTestBo> eligibilityTestList, String language, String studyId);
 
   EligibilityTestLangBo getEligibilityTestLangById(int eligibilityId, String language);
 

@@ -19,6 +19,7 @@ import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
@@ -3616,9 +3617,12 @@ public class StudyQuestionnaireController {
 
   private void setStudyLangData(String studyId, String language, ModelMap map) {
     StudyLanguageBO studyLanguageBO = new StudyLanguageBO();
+    StudySequenceLangBO studySequenceLangBO = new StudySequenceLangBO();
     if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
       studyLanguageBO = studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+      studySequenceLangBO = studyService.getStudySequenceById(Integer.parseInt(studyId), language);
     }
     map.addAttribute("studyLanguageBO", studyLanguageBO);
+    map.addAttribute("sequenceLangBO", studySequenceLangBO);
   }
 }

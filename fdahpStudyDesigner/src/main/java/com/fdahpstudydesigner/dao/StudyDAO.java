@@ -270,4 +270,8 @@ public interface StudyDAO {
   StudyPageLanguageBO getStudyPageLanguageById(int pageId, String language);
 
   StudySequenceLangBO getStudySequenceLangBO(int studyId, String language);
+
+  String deleteAllLanguageData(int id, String language);
+
+  StudyBo getStudyBoById(String studyId);
 }

@@ -2197,6 +2197,45 @@ public class StudyServiceImpl implements StudyService {
     return result;
   }
 
+  @Override
+  public String removeExistingLanguageAndData(
+      String studyId, SessionObject sesObj, String langToBeDeleted) {
+    logger.info("StudyServiceImpl - removeExistingLanguageAndData() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      StudyBo existingStudy = studyDAO.getStudyBoById(studyId);
+      if (existingStudy != null && FdahpStudyDesignerUtil.isNotEmpty(langToBeDeleted)) {
+        String selectedLanguages = existingStudy.getSelectedLanguages();
+        if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)
+            && selectedLanguages.contains(langToBeDeleted)) {
+          String[] languages = selectedLanguages.split(",");
+          List<String> updatedLang = new LinkedList<>();
+          for (String lang : languages) {
+            if (!lang.equals(langToBeDeleted)) {
+              updatedLang.add(lang);
+            }
+          }
+          StringBuilder updatedLangString = new StringBuilder();
+          for (String lang : updatedLang) {
+            updatedLangString.append(lang).append(',');
+          }
+          existingStudy.setSelectedLanguages(updatedLangString.toString());
+          studyDAO.saveOrUpdateObject(existingStudy);
+          result = FdahpStudyDesignerConstants.SUCCESS;
+
+          //          Todo to be uncommented Later @Anoop Sharma
+          // delete all study data
+          //          result = studyDAO.deleteAllLanguageData(Integer.parseInt(studyId),
+          // langToBeDeleted);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - removeExistingLanguageAndData() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - removeExistingLanguageAndData() - Ends");
+    return result;
+  }
+
   /**
    * Setting DI
    *
@@ -2553,7 +2592,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public List<EligibilityTestLangBo> syncEligibilityTestDataInLanguageTable(
-      List<EligibilityTestBo> eligibilityTestList, String language) {
+      List<EligibilityTestBo> eligibilityTestList, String language, String studyId) {
     logger.info("StudyServiceImpl - syncConsentDataInLanguageTables() - Starts");
     List<EligibilityTestLangBo> eligibilityTestLangBOList = null;
     try {
@@ -2567,6 +2606,8 @@ public class StudyServiceImpl implements StudyService {
             eligibilityTestLangBo.setEligibilityTestLangPK(
                 new EligibilityTestLangPK(eligibilityTestBo.getId(), language));
             eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
+            eligibilityTestLangBo.setStudyId(
+                FdahpStudyDesignerUtil.isNotEmpty(studyId) ? Integer.parseInt(studyId) : null);
             eligibilityTestLangBo.setSequenceNo(eligibilityTestBo.getSequenceNo());
             studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
           }
