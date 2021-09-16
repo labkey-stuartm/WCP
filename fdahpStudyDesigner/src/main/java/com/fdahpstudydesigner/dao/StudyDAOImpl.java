@@ -9300,6 +9300,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public String deleteAllLanguageData(int studyId, String language) {
     logger.info("StudyDAOImpl - deleteAllLanguageData() - Starts");
     Session session = null;
@@ -9324,22 +9325,25 @@ public class StudyDAOImpl implements StudyDAO {
                 .setInteger("id", studyId)
                 .list();
 
+        List<Integer> questionIdList = new ArrayList<>();
+        for (ComprehensionQuestionLangBO questionLangBO : questionList) {
+          questionIdList.add(questionLangBO.getComprehensionQuestionLangPK().getId());
+        }
+
+        if (questionIdList.size() > 0) {
+          session
+              .createQuery(
+                  "delete from ComprehensionResponseLangBo where comprehensionResponseLangPK.langCode=:lang and questionId in (:questionIdList)")
+              .setString("lang", language)
+              .setParameterList("questionIdList", questionIdList)
+              .executeUpdate();
+        }
+
         session
             .createQuery(
                 "delete from ComprehensionQuestionLangBO where comprehensionQuestionLangPK.langCode=:lang and studyId=:id")
             .setString("lang", language)
             .setInteger("id", studyId)
-            .executeUpdate();
-
-        List<Integer> questionIdList = new ArrayList<>();
-        for (ComprehensionQuestionLangBO questionLangBO : questionList) {
-          questionIdList.add(questionLangBO.getComprehensionQuestionLangPK().getId());
-        }
-        session
-            .createQuery(
-                "delete from ComprehensionResponseLangBo where comprehensionResponseLangPK.langCode=:lang and questionId in (:questionIdList)")
-            .setString("lang", language)
-            .setParameterList("questionIdList", questionIdList)
             .executeUpdate();
 
         session
@@ -9360,7 +9364,7 @@ public class StudyDAOImpl implements StudyDAO {
             session
                 .createSQLQuery(
                     "select id from questionnaires_lang "
-                        + "where study_id=:id and lang_code=lang;")
+                        + "where study_id=:id and lang_code=:lang")
                 .setInteger("id", studyId)
                 .setString("lang", language)
                 .list();
@@ -9372,27 +9376,29 @@ public class StudyDAOImpl implements StudyDAO {
             .setInteger("id", studyId)
             .executeUpdate();
 
-        for (Integer questionnaireId : questionnaireIdList) {
-          session
-              .createQuery(
-                  "delete from InstructionsLangBO where instructionLangPK.langCode=:lang and questionnaireId=:id")
-              .setString("lang", language)
-              .setInteger("id", questionnaireId)
-              .executeUpdate();
+        if (questionnaireIdList != null && questionnaireIdList.size() > 0) {
+          for (Integer questionnaireId : questionnaireIdList) {
+            session
+                .createQuery(
+                    "delete from InstructionsLangBO where instructionLangPK.langCode=:lang and questionnaireId=:id")
+                .setString("lang", language)
+                .setInteger("id", questionnaireId)
+                .executeUpdate();
 
-          session
-              .createQuery(
-                  "delete from FormLangBO where formLangPK.langCode=:lang and questionnaireId=:id")
-              .setString("lang", language)
-              .setInteger("id", questionnaireId)
-              .executeUpdate();
+            session
+                .createQuery(
+                    "delete from FormLangBO where formLangPK.langCode=:lang and questionnaireId=:id")
+                .setString("lang", language)
+                .setInteger("id", questionnaireId)
+                .executeUpdate();
 
-          session
-              .createQuery(
-                  "delete from QuestionLangBO where questionLangPK.langCode=:lang and questionnaireId=:id")
-              .setString("lang", language)
-              .setInteger("id", questionnaireId)
-              .executeUpdate();
+            session
+                .createQuery(
+                    "delete from QuestionLangBO where questionLangPK.langCode=:lang and questionnaireId=:id")
+                .setString("lang", language)
+                .setInteger("id", questionnaireId)
+                .executeUpdate();
+          }
         }
 
         session

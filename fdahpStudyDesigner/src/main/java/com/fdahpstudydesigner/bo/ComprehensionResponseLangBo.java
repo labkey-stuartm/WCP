@@ -13,24 +13,27 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "comprehension_test_response_lang")
 public class ComprehensionResponseLangBo implements Serializable {
-  
-  @EmbeddedId
-  private ComprehensionResponseLangPK comprehensionResponseLangPK;
+
+  @EmbeddedId private ComprehensionResponseLangPK comprehensionResponseLangPK;
 
   @Column(name = "question_id")
   private Integer questionId;
-
-  // Todo to be removed later @Anoop Sharma
-  @Column(name = "correct_answer")
-  private Boolean correctAnswer;
 
   @Column(name = "response_option")
   private String responseOption;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumns({
-      @JoinColumn(name = "question_id", referencedColumnName = "id", insertable = false, updatable = false),
-      @JoinColumn(name = "lang_code", referencedColumnName = "lang_code", insertable = false, updatable = false)
+    @JoinColumn(
+        name = "question_id",
+        referencedColumnName = "id",
+        insertable = false,
+        updatable = false),
+    @JoinColumn(
+        name = "lang_code",
+        referencedColumnName = "lang_code",
+        insertable = false,
+        updatable = false)
   })
   private ComprehensionQuestionLangBO comprehensionQuestionLangBO;
 
@@ -58,14 +61,6 @@ public class ComprehensionResponseLangBo implements Serializable {
 
   public void setQuestionId(Integer questionId) {
     this.questionId = questionId;
-  }
-
-  public Boolean getCorrectAnswer() {
-    return correctAnswer;
-  }
-
-  public void setCorrectAnswer(Boolean correctAnswer) {
-    this.correctAnswer = correctAnswer;
   }
 
   public String getResponseOption() {

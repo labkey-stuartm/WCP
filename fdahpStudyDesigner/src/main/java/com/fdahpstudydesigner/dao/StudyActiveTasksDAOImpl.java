@@ -924,20 +924,30 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
                 }
                 activeTaskAttIdName = StringUtils.join(idArr, ',');
               }
-              subString = " and attributeValueId NOT IN(:activeTaskAttIdName)";
+              subString = " and attributeValueId NOT IN (:activeTaskAttIdName)";
+              queryString =
+                  "from ActiveTaskAtrributeValuesBo where activeTaskId in (select id from ActiveTaskBo where studyId IN "
+                      + "(select id From StudyBo SBO WHERE customStudyId=:customStudyId )) and identifierNameStat=:activeTaskAttIdVal "
+                      + subString;
+              query =
+                  session
+                      .createQuery(queryString)
+                      .setString("customStudyId", customStudyId)
+                      .setString("activeTaskAttIdVal", activeTaskAttIdVal)
+                      .setParameterList("activeTaskAttIdName", idArr);
             }
             // to check chart short title exist in active task or
             // not
-            queryString =
-                "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
-                    + "(select id From StudyBo SBO WHERE customStudyId=:customStudyId )) and identifierNameStat=:activeTaskAttIdVal "
-                    + subString;
-            query =
-                session
-                    .createQuery(queryString)
-                    .setString("customStudyId", customStudyId)
-                    .setString("activeTaskAttIdVal", activeTaskAttIdVal)
-                    .setParameterList("activeTaskAttIdName", idArr);
+            else {
+              queryString =
+                  "from ActiveTaskAtrributeValuesBo where activeTaskId in (select id from ActiveTaskBo where studyId IN "
+                      + "(select id From StudyBo SBO WHERE customStudyId=:customStudyId )) and identifierNameStat=:activeTaskAttIdVal ";
+              query =
+                  session
+                      .createQuery(queryString)
+                      .setString("customStudyId", customStudyId)
+                      .setString("activeTaskAttIdVal", activeTaskAttIdVal);
+            }
             activeTaskAtrributeValuesBos = query.list();
             if (activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()) {
               flag = true;

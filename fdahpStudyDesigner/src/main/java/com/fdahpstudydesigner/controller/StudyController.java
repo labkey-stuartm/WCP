@@ -1863,17 +1863,13 @@ public class StudyController {
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 
           String language = request.getParameter("language");
-          StudyLanguageBO studyLanguageBO = null;
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
-            studyLanguageBO =
-                studyService.getStudyLanguageById(Integer.parseInt(studyId), language);
+            this.setStudyLangData(studyId, language, map);
             List<ConsentInfoLangBO> consentInfoLangBOList =
                 studyService.getConsentInfoLangByStudyId(Integer.parseInt(studyId), language);
             map.addAttribute(
                 "consentInfoLangList", consentInfoLangBOList != null ? consentInfoLangBOList : "");
           }
-          map.addAttribute(
-              "studyLanguageBO", studyLanguageBO != null ? studyLanguageBO : new StudyLanguageBO());
           map.addAttribute("currLanguage", language);
 
           String languages = studyBo.getSelectedLanguages();
@@ -4324,11 +4320,13 @@ public class StudyController {
                       sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                       propMap.get("save.comprehensiontest.success.message"));
             }
+            map.addAttribute("language", language);
             return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do", map);
           } else {
             request
                 .getSession()
                 .setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Unable to add Question added.");
+            map.addAttribute("language", language);
             return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do", map);
           }
         }
@@ -6633,8 +6631,7 @@ public class StudyController {
         message = studyService.removeExistingLanguageAndData(studyId, sesObj, deletedLanguage);
         request
             .getSession()
-            .setAttribute(
-                sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyId + "");
+            .setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyId + "");
         map.addAttribute("_S", sessionStudyCount);
         if (FdahpStudyDesignerConstants.SUCCESS.equals(message)
             || FdahpStudyDesignerConstants.WARNING.equals(message)) {
