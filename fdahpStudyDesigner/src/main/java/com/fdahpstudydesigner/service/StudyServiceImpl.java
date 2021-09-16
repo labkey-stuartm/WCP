@@ -2221,13 +2221,12 @@ public class StudyServiceImpl implements StudyService {
           }
           existingStudy.setSelectedLanguages(updatedLangString.toString());
           studyDAO.saveOrUpdateObject(existingStudy);
-          result = FdahpStudyDesignerConstants.SUCCESS;
-
           //          Todo to be uncommented Later @Anoop Sharma
           // delete all study data
           //          result = studyDAO.deleteAllLanguageData(Integer.parseInt(studyId),
           // langToBeDeleted);
         }
+        result = FdahpStudyDesignerConstants.SUCCESS;
       }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - removeExistingLanguageAndData() - ERROR ", e);

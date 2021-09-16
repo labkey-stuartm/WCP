@@ -6634,7 +6634,7 @@ public class StudyController {
         request
             .getSession()
             .setAttribute(
-                sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId() + "");
+                sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyId + "");
         map.addAttribute("_S", sessionStudyCount);
         if (FdahpStudyDesignerConstants.SUCCESS.equals(message)
             || FdahpStudyDesignerConstants.WARNING.equals(message)) {
