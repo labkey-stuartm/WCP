@@ -1,211 +1,277 @@
 package com.fdahpstudydesigner.dao;
 
-import java.util.HashMap;
-/**
- *
- * @author BTC
- *
- */
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
+import java.util.HashMap;
+/** @author BTC */
+import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public interface StudyDAO {
 
-	public String checkActiveTaskTypeValidation(Integer studyId);
+  String checkActiveTaskTypeValidation(Integer studyId);
 
-	public int comprehensionTestQuestionOrder(Integer studyId);
+  int comprehensionTestQuestionOrder(Integer studyId);
 
-	public int consentInfoOrder(Integer studyId);
+  int consentInfoOrder(Integer studyId);
 
-	public String deleteComprehensionTestQuestion(Integer questionId, Integer studyId, SessionObject sessionObject);
+  String deleteComprehensionTestQuestion(
+      Integer questionId, Integer studyId, SessionObject sessionObject);
 
-	public String deleteConsentInfo(Integer consentInfoId, Integer studyId, SessionObject sessionObject,
-			String customStudyId);
+  String deleteConsentInfo(
+      Integer consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId);
 
-	public String deleteEligibilityTestQusAnsById(Integer eligibilityTestId, Integer studyId,
-			SessionObject sessionObject, String customStudyId);
+  String deleteEligibilityTestQusAnsById(
+      Integer eligibilityTestId,
+      Integer studyId,
+      SessionObject sessionObject,
+      String customStudyId);
 
-	public boolean deleteLiveStudy(String customStudyId);
+  boolean deleteLiveStudy(String customStudyId);
 
-	public String deleteOverviewStudyPageById(String studyId, String pageId);
+  String deleteOverviewStudyPageById(String studyId, String pageId);
 
-	public String deleteResourceInfo(Integer resourceInfoId, boolean resourceVisibility, int studyId);
+  String deleteResourceInfo(Integer resourceInfoId, boolean resourceVisibility, int studyId);
 
-	public boolean deleteStudyByCustomStudyId(String customStudyId);
+  boolean deleteStudyByCustomStudyId(String customStudyId);
 
-	public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction, String studyId,
-			String customStudyId);
+  String deleteStudyByIdOrCustomstudyId(
+      Session session, Transaction transaction, String studyId, String customStudyId);
 
-	public int eligibilityTestOrderCount(Integer eligibilityId);
+  int eligibilityTestOrderCount(Integer eligibilityId);
 
-	public List<UserBO> getActiveNonAddedUserList(Integer studyId, Integer userId);
+  List<UserBO> getActiveNonAddedUserList(Integer studyId, Integer userId);
 
-	public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId, Integer userId);
+  List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId, Integer userId);
 
-	public List<StudyBo> getAllStudyList();
+  List<StudyBo> getAllStudyList();
 
-	public Checklist getchecklistInfo(Integer studyId);
+  Checklist getchecklistInfo(Integer studyId);
 
-	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
+  ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
 
-	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
+  List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 
-	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(Integer comprehensionQuestionId);
+  List<ComprehensionQuestionLangBO> getComprehensionTestQuestionLangList(
+      Integer studyId, String language);
 
-	public ConsentBo getConsentDetailsByStudyId(String studyId);
+  List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
+      Integer comprehensionQuestionId);
 
-	public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
+  ConsentBo getConsentDetailsByStudyId(String studyId);
 
-	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
+  ConsentInfoBo getConsentInfoById(Integer consentInfoId);
 
-	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
+  List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
-	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
+  List<ConsentInfoBo> getConsentInfoList(Integer studyId);
 
-	public StudyIdBean getLiveVersion(String customStudyId);
+  List<ConsentMasterInfoBo> getConsentMasterInfoList();
 
-	public NotificationBO getNotificationByResourceId(Integer resourseId);
+  StudyIdBean getLiveVersion(String customStudyId);
 
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
+  NotificationBO getNotificationByResourceId(Integer resourseId);
 
-	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
+  List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
 
-	public ResourceBO getResourceInfo(Integer resourceInfoId);
+  HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
-	public List<ResourceBO> getResourceList(Integer studyId);
+  ResourceBO getResourceInfo(Integer resourceInfoId);
 
-	public List<NotificationBO> getSavedNotification(Integer studyId);
+  List<ResourceBO> getResourceList(Integer studyId);
 
-	public StudyBo getStudyById(String studyId, Integer userId);
+  List<NotificationBO> getSavedNotification(Integer studyId);
 
-	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
+  StudyBo getStudyById(String studyId, Integer userId);
 
-	public List<StudyListBean> getStudyList(Integer userId);
+  EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 
-	public List<StudyListBean> getStudyListByUserId(Integer userId);
+  List<StudyListBean> getStudyList(Integer userId);
 
-	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
+  List<StudyListBean> getStudyListByUserId(Integer userId);
 
-	public ResourceBO getStudyProtocol(Integer studyId);
+  StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
-	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj,
-			String customStudyId);
+  ResourceBO getStudyProtocol(Integer studyId);
 
-	public String reOrderComprehensionTestQuestion(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  String markAsCompleted(
+      int studyId, String markCompleted, boolean flag, SessionObject sesObj, String customStudyId);
 
-	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  String reOrderComprehensionTestQuestion(Integer studyId, int oldOrderNumber, int newOrderNumber);
 
-	public String reorderEligibilityTestQusAns(Integer eligibilityId, int oldOrderNumber, int newOrderNumber,
-			Integer studyId);
+  String reOrderConsentInfoList(Integer studyId, int oldOrderNumber, int newOrderNumber);
 
-	public String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  String reorderEligibilityTestQusAns(
+      Integer eligibilityId, int oldOrderNumber, int newOrderNumber, Integer studyId);
 
-	public boolean resetDraftStudyByCustomStudyId(String customStudyId, String action, SessionObject sesObj);
+  String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber);
 
-	public int resourceOrder(Integer studyId);
+  boolean resetDraftStudyByCustomStudyId(String customStudyId, String action, SessionObject sesObj);
 
-	public List<ResourceBO> resourcesSaved(Integer studyId);
+  int resourceOrder(Integer studyId);
 
-	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
+  List<ResourceBO> resourcesSaved(Integer studyId);
 
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,
-			String customStudyId);
+  List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 
-	public Integer saveOrDoneChecklist(Checklist checklist);
+  ConsentBo saveOrCompleteConsentReviewDetails(
+      ConsentBo consentBo, SessionObject sesObj, String customStudyId);
 
-	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
-			ComprehensionTestQuestionBo comprehensionTestQuestionBo);
+  Integer saveOrDoneChecklist(Checklist checklist);
 
-	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj,
-			String customStudyId);
+  ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
+      ComprehensionTestQuestionBo comprehensionTestQuestionBo);
 
-	public Integer saveOrUpdateEligibilityTestQusAns(EligibilityTestBo eligibilityTestBo, Integer studyId,
-			SessionObject sessionObject, String customStudyId);
+  ConsentInfoBo saveOrUpdateConsentInfo(
+      ConsentInfoBo consentInfoBo, SessionObject sesObj, String customStudyId);
 
-	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
+  Integer saveOrUpdateEligibilityTestQusAns(
+      EligibilityTestBo eligibilityTestBo,
+      Integer studyId,
+      SessionObject sessionObject,
+      String customStudyId);
 
-	public Integer saveOrUpdateResource(ResourceBO resourceBO);
+  String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 
-	public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
+  Integer saveOrUpdateResource(ResourceBO resourceBO);
 
-	public ParticipantPropertiesBO saveOrUpdateParticipantProperties(ParticipantPropertiesBO participantPropertiesBO);
+  String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
 
-	public Integer addAnchorDate(int studyId, String customStudyId, String anchorDateName, Session session);
+  String saveOrUpdateStudyForOtherLanguages(
+      StudyBo studyBo, StudyLanguageBO studyLanguageBO, int userId, String language);
 
-	public void updateParticipantPropertyAsAnchorDate(Integer anchorDateId, String anchorDateName, Session session);
+  ParticipantPropertiesBO saveOrUpdateParticipantProperties(
+      ParticipantPropertiesBO participantPropertiesBO);
 
-	public void deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session);
+  Integer addAnchorDate(int studyId, String customStudyId, String anchorDateName, Session session);
 
-	public List<ParticipantPropertiesBO> getParticipantProperties(String customStudyId);
+  void updateParticipantPropertyAsAnchorDate(
+      Integer anchorDateId, String anchorDateName, Session session);
 
-	public ParticipantPropertiesBO getParticipantProperty(String participantPropertyId, String customStudyId);
+  void deleteParticipantPropertyAsAnchorDate(Integer anchorDateId, Session session);
 
-	public String deactivateParticipantProperty(int participantPropertyId, int userId);
+  List<ParticipantPropertiesBO> getParticipantProperties(String customStudyId);
 
-	public String deleteParticipantProperty(int participantPropertyId, int userId);
+  ParticipantPropertiesBO getParticipantProperty(
+      String participantPropertyId, String customStudyId);
 
-	public String checkParticipantPropertyShortTitle(String shortTitle, String customStudyId);
+  String deactivateParticipantProperty(int participantPropertyId, int userId);
 
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
+  String deleteParticipantProperty(int participantPropertyId, int userId);
 
-	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj, String userIds, String permissions,
-			String projectLead);
+  String checkParticipantPropertyShortTitle(String shortTitle, String customStudyId);
 
-	public String saveResourceNotification(NotificationBO notificationBO, boolean notiFlag);
+  String saveOrUpdateStudyEligibilty(
+      EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
 
-	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
+  String saveOrUpdateStudySettings(
+      StudyBo studyBo,
+      SessionObject sesObj,
+      String userIds,
+      String permissions,
+      String projectLead,
+      String newLanguages,
+      String deletedLanguages);
 
-	public String switchStudyToLiveMode(String studyId);
+  String saveOrUpdateStudySettingsForOtherLanguages(StudyBo studyBo, String currLang);
 
-	public void updateStudyId(StudyBo studyBo, String newStudyId, Session session);
+  String saveResourceNotification(NotificationBO notificationBO, boolean notiFlag);
 
-	public void updateAppId(String customStudyId, String appId, String orgId, Session session);
+  String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
-	public String validateActivityComplete(String studyId, String action);
+  String switchStudyToLiveMode(String studyId);
 
-	public String validateParticipantPropertyComplete(String customStudyId);
+  void updateStudyId(StudyBo studyBo, String newStudyId, Session session);
 
-	public String validateEligibilityTestKey(Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
+  void updateAppId(String customStudyId, String appId, String orgId, Session session);
 
-	public String validateStudyAction(String studyId, String buttonText);
+  String validateActivityComplete(String studyId, String action);
 
-	public boolean validateStudyId(String studyId);
+  String validateParticipantPropertyComplete(String customStudyId);
 
-	public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
+  String validateEligibilityTestKey(
+      Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
 
-	public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
+  String validateStudyAction(String studyId, String buttonText);
 
-	public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+  boolean validateStudyId(String studyId);
 
-	public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+  List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
 
-	public String updateAnchordateForEnrollmentDate(StudyBo oldStudyBo, StudyBo updatedStudyBo, Session session,
-			Transaction transaction);
+  EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 
-	public boolean validateAppId(String customStudyId, String appId, String studyType);
+  Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
 
-	public StudyPermissionBO getStudyPermissionBO(int studyId, int userId);	
+  Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+
+  String updateAnchordateForEnrollmentDate(
+      StudyBo oldStudyBo, StudyBo updatedStudyBo, Session session, Transaction transaction);
+
+  boolean validateAppId(String customStudyId, String appId, String studyType);
+
+  StudyPermissionBO getStudyPermissionBO(int studyId, int userId);
+
+  StudyLanguageBO getStudyLanguageById(int studyId, String language);
+
+  ConsentInfoLangBO getConsentLanguageDataById(int id, String language);
+
+  void saveOrUpdateConsentInfoLanguageData(ConsentInfoLangBO consentInfoLangBO);
+
+  List<ConsentInfoLangBO> getConsentLangInfoByStudyId(int studyId, String language);
+
+  ComprehensionQuestionLangBO getComprehensionQuestionLangById(int questionId, String language);
+
+  void saveOrUpdateComprehensionQuestionLanguageData(
+      ComprehensionQuestionLangBO comprehensionQuestionLangBO, boolean deleteExisting);
+
+  void saveOrUpdateObject(Object object);
+
+  String saveOrUpdateStudyEligibiltyForOtherLanguages(
+      EligibilityBo eligibilityBo, StudyLanguageBO studyLanguageBO, String language);
+
+  Integer saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(
+      EligibilityTestLangBo eligibilityTestLangBo);
+
+  EligibilityTestLangBo getEligibilityTestLanguageDataById(int id, String language);
+
+  List<EligibilityTestLangBo> getEligibilityTestLangByEligibilityId(
+      int eligibilityId, String language);
+
+  String saveOrUpdateOverviewLanguageStudyPages(
+      StudyPageBean studyPageBean, SessionObject sesObj, String language);
+
+  List<StudyPageLanguageBO> getOverviewStudyPagesLangDataById(int studyId, String language);
+
+  StudyPageLanguageBO getStudyPageLanguageById(int pageId, String language);
+
+  StudySequenceLangBO getStudySequenceLangBO(int studyId, String language);
+
+  String deleteAllLanguageData(int id, String language);
+
+  StudyBo getStudyBoById(String studyId);
 }
