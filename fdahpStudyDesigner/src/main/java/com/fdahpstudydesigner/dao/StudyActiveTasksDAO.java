@@ -8,7 +8,6 @@ import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
-import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
 
