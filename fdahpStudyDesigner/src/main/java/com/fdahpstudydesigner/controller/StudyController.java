@@ -4228,17 +4228,20 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
+            map.addAttribute("language", language);
             return new ModelAndView("redirect:viewBasicInfo.do", map);
           }
         } else if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG)) {
           request
               .getSession()
               .setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG, message);
+          map.addAttribute("language", language);
           return new ModelAndView("redirect:viewBasicInfo.do", map);
         } else if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ID_APP_ID_ERR_MSG)) {
           request
               .getSession()
               .setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG, message);
+          map.addAttribute("language", language);
           return new ModelAndView("redirect:viewBasicInfo.do", map);
         } else {
           request
@@ -4246,6 +4249,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                   "Error in set BasicInfo.");
+          map.addAttribute("language", language);
           return new ModelAndView("redirect:viewBasicInfo.do", map);
         }
       }
@@ -4749,6 +4753,7 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
+            map.put("language", language);
             mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
           } else {
             request
@@ -4765,6 +4770,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                   "Error in set Eligibility.");
+          map.put("language", language);
           mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
         }
       }
@@ -4847,6 +4853,7 @@ public class StudyController {
                 .getSession()
                 .setAttribute(
                     sessionStudyCount + "eligibilityId", eligibilityTestBo.getEligibilityId());
+            map.put("language", language);
             mav = new ModelAndView("redirect:viewStudyEligibiltyTestQusAns.do", map);
           } else {
             request
@@ -4863,6 +4870,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                   "Error in set Eligibility Questions.");
+          map.put("language", language);
           mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
         }
       }
@@ -6627,8 +6635,14 @@ public class StudyController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("deletedLanguage"))
                 ? ""
                 : request.getParameter("deletedLanguage");
+        String newLanguages =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("newLanguages"))
+                ? ""
+                : request.getParameter("newLanguages");
         studyBo.setUserId(sesObj.getUserId());
-        message = studyService.removeExistingLanguageAndData(studyId, sesObj, deletedLanguage);
+        message =
+            studyService.removeExistingLanguageAndData(
+                studyId, sesObj, deletedLanguage, newLanguages, sesObj.getUserId());
         request
             .getSession()
             .setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyId + "");

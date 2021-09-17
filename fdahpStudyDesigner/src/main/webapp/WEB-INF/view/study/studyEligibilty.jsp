@@ -257,7 +257,6 @@
         initActions();
         $('.submitEle').click(
             function (e) {
-              debugger
               e.preventDefault();
               $('#actTy').remove();
               $('<input />').attr('type', 'hidden').attr(
@@ -268,7 +267,6 @@
                 $('#eleFormId').validator('destroy');
                 if (${liveStatus}) {
                   var eligibilityVal = $("input[name='eligibilityMechanism']:checked").val();
-                  debugger
                   if (eligibilityVal == 1) {
                     $("#inlineRadio1").prop("disabled", false);
                   } else if (eligibilityVal == 2) {
@@ -716,10 +714,9 @@
             let id = value.getAttribute('id').split('_')[1];
             $('#' + id).find('td.title').text(value.getAttribute('value'));
           })
-          if ($('#inlineRadio3').prop('checked')===true) {
+          if ($('#inlineRadio3').prop('checked') === true) {
             $('#comment').removeAttr('required')
-          }
-          else {
+          } else {
             $('#comment').val($('#mlInstText', htmlData).val());
           }
         } else {
@@ -732,10 +729,9 @@
             let id = value.getAttribute('id');
             $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
           });
-          if ($('#inlineRadio3').prop('checked')===true) {
+          if ($('#inlineRadio3').prop('checked') === true) {
             $('#comment').removeAttr('required')
-          }
-          else {
+          } else {
             $('#comment').val($('#comment', htmlData).val());
           }
         }

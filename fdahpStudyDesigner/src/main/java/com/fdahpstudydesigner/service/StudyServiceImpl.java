@@ -25,10 +25,12 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
+import com.fdahpstudydesigner.bo.StudyLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.bo.StudySequenceLangPK;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -1981,22 +1983,28 @@ public class StudyServiceImpl implements StudyService {
     try {
       if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         StudyLanguageBO studyLanguageBO = this.getStudyLanguageById(studyBo.getId(), language);
-        if (studyLanguageBO != null) {
-          message =
-              studyDAO.saveOrUpdateStudyForOtherLanguages(
-                  studyBo, studyLanguageBO, userId, language);
-          StudySequenceLangBO studySequenceLangBO =
-              studyDAO.getStudySequenceLangBO(studyBo.getId(), language);
-          if (studySequenceLangBO == null) {
-            studySequenceLangBO = new StudySequenceLangBO();
-            studySequenceLangBO.setStudySequenceLangPK(
-                new StudySequenceLangPK(studyBo.getId(), language));
-          }
-          studySequenceLangBO.setBasicInfo(
-              FdahpStudyDesignerUtil.isNotEmpty(studyBo.getButtonText())
-                  && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
-          studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        if (studyLanguageBO == null) {
+          studyLanguageBO = new StudyLanguageBO();
+          studyLanguageBO.setStudyLanguagePK(new StudyLanguagePK(studyBo.getId(), language));
+          studyLanguageBO.setCreatedBy(userId);
+          studyLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        } else {
+          studyLanguageBO.setModifiedBy(userId);
+          studyLanguageBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         }
+        message =
+            studyDAO.saveOrUpdateStudyForOtherLanguages(studyBo, studyLanguageBO, userId, language);
+        StudySequenceLangBO studySequenceLangBO =
+            studyDAO.getStudySequenceLangBO(studyBo.getId(), language);
+        if (studySequenceLangBO == null) {
+          studySequenceLangBO = new StudySequenceLangBO();
+          studySequenceLangBO.setStudySequenceLangPK(
+              new StudySequenceLangPK(studyBo.getId(), language));
+        }
+        studySequenceLangBO.setBasicInfo(
+            FdahpStudyDesignerUtil.isNotEmpty(studyBo.getButtonText())
+                && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
+        studyDAO.saveOrUpdateObject(studySequenceLangBO);
       } else {
         String appId = studyBo.getAppId().toUpperCase();
         if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
@@ -2186,6 +2194,27 @@ public class StudyServiceImpl implements StudyService {
                 && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
       } else {
+        if (StringUtils.isNotBlank(newLanguages)) {
+          String[] langArray = newLanguages.split(",");
+          for (String lang : langArray) {
+            StudyLanguageBO studyLanguageBO = studyDAO.getStudyLanguageById(studyBo.getId(), lang);
+            if (studyLanguageBO == null) {
+              studyLanguageBO = new StudyLanguageBO();
+              studyLanguageBO.setStudyLanguagePK(new StudyLanguagePK(studyBo.getId(), lang));
+              studyLanguageBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+              studyLanguageBO.setCreatedBy(studyBo.getCreatedBy());
+              studyDAO.saveOrUpdateObject(studyLanguageBO);
+            }
+            StudySequenceLangBO studySequenceLangBO =
+                studyDAO.getStudySequenceLangBO(studyBo.getId(), lang);
+            if (studySequenceLangBO == null) {
+              studySequenceLangBO = new StudySequenceLangBO();
+              studySequenceLangBO.setStudySequenceLangPK(
+                  new StudySequenceLangPK(studyBo.getId(), lang));
+              studyDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
+        }
         result =
             studyDAO.saveOrUpdateStudySettings(
                 studyBo, sesObj, userIds, permissions, projectLead, newLanguages, deletedLanguages);
@@ -2199,13 +2228,23 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String removeExistingLanguageAndData(
-      String studyId, SessionObject sesObj, String langToBeDeleted) {
+      String studyId,
+      SessionObject sesObj,
+      String langToBeDeleted,
+      String newLanguages,
+      int userId) {
     logger.info("StudyServiceImpl - removeExistingLanguageAndData() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      StudyBo existingStudy = studyDAO.getStudyBoById(studyId);
+      StudyBo existingStudy = studyDAO.getStudyById(studyId, userId);
       if (existingStudy != null && FdahpStudyDesignerUtil.isNotEmpty(langToBeDeleted)) {
-        String selectedLanguages = existingStudy.getSelectedLanguages();
+        String selectedLanguages =
+            (existingStudy.getSelectedLanguages() != null
+                    ? existingStudy.getSelectedLanguages()
+                    : "")
+                .concat(newLanguages);
+        existingStudy.setSelectedLanguages(selectedLanguages);
+        existingStudy.setMultiLanguageFlag(true);
         if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)
             && selectedLanguages.contains(langToBeDeleted)) {
           String[] languages = selectedLanguages.split(",");
@@ -2220,6 +2259,11 @@ public class StudyServiceImpl implements StudyService {
             updatedLangString.append(lang).append(',');
           }
           existingStudy.setSelectedLanguages(updatedLangString.toString());
+          StudySequenceBo studySequenceBo = existingStudy.getStudySequenceBo();
+          if (studySequenceBo != null) {
+            studySequenceBo.setSettingAdmins(false);
+            studyDAO.saveOrUpdateObject(studySequenceBo);
+          }
           studyDAO.saveOrUpdateObject(existingStudy);
           result = studyDAO.deleteAllLanguageData(Integer.parseInt(studyId), langToBeDeleted);
         }

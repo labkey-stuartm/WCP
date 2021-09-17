@@ -1683,6 +1683,18 @@
             'A max of x runs will be displayed in each view of the chart.');
       }
     }
+
+    let currLang = $('#studyLanguage').val();
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
+        !== 'en') {
+      $('#currentLanguage').val(currLang);
+      setTimeout(function () {
+        refreshAndFetchLanguageData(currLang);
+      }, 600);
+    } else {
+      $('#currentLanguage').val('en');
+    }
+
     $('#initialspanId').blur(function () {
       var value = $(this).val();
       $(this).parent().removeClass("has-danger").removeClass("has-error");

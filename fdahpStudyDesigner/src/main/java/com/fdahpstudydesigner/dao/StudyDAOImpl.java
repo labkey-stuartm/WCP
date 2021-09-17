@@ -4862,7 +4862,7 @@ public class StudyDAOImpl implements StudyDAO {
       studyLanguageBO.setStudyTagline(studyBo.getStudyTagLine());
       studyLanguageBO.setDescription(studyBo.getDescription());
       studyLanguageBO.setResearchSponsor(studyBo.getResearchSponsor());
-      session.update(studyLanguageBO);
+      session.saveOrUpdate(studyLanguageBO);
       transaction.commit();
       message = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {

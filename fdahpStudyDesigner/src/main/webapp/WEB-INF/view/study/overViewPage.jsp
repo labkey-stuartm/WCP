@@ -340,6 +340,7 @@
 
 <script>
 
+  var totalSavedPages = ${studyPageBos.size()};
   $(document).ready(function () {
 
     <c:if test="${user eq 'logout_login_user'}">
@@ -594,7 +595,7 @@
           $(this).find('input[type=file]').removeAttr('required');
         } else {
           let lang = $('#studyLanguage').val();
-          if (lang=== undefined && lang==='' && lang==='en') {
+          if (lang === undefined && lang === '' && lang === 'en') {
             formValid = false;
           }
         }
@@ -720,6 +721,10 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
+          $('.panel-default').each(function (index) {
+            if ((index + 1) > totalSavedPages)
+              this.remove();
+          })
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addpage').attr('disabled', true);

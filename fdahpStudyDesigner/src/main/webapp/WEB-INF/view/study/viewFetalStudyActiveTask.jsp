@@ -613,6 +613,17 @@
           }
         });
 
+        let currLang = $('#studyLanguage').val();
+        if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
+            !== 'en') {
+          $('#currentLanguage').val(currLang);
+          setTimeout(function () {
+            refreshAndFetchLanguageData(currLang);
+          }, 600);
+        } else {
+          $('#currentLanguage').val('en');
+        }
+
         function validateTime() {
           var durationTime = $('#inputClockId').val();
           if (!durationTime) {

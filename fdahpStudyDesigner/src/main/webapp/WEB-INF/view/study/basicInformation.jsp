@@ -29,9 +29,9 @@
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                        <select 
+                        <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                            id="studyLanguage" name="studyLanguage" title="Select">
+                                id="studyLanguage" name="studyLanguage" title="Select">
                             <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'en')) ?'selected':''}>
                                 English
                             </option>
@@ -891,10 +891,14 @@
           $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
           $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
           $('#editor').val($('input#mlDescription', htmlData).val());
-          tinymce.activeEditor.setContent($('input#mlDescription', htmlData).val());
+          let tinyMce = tinymce.activeEditor;
+          if (tinyMce !== undefined)
+            tinyMce.setContent($('input#mlDescription', htmlData).val());
           $('#removeUrl').css('pointer-events', 'none');
-          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
-          $('#uploadImgbtn').css('background-color','#eee').css('opacity', '1').addClass('cursor-none');
+          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
+              'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
+          $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
+              'cursor-none');
         } else {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           updateCompletionTicksForEnglish();
@@ -916,7 +920,8 @@
           $('#editor').val($('#editor', htmlData).val());
           tinymce.activeEditor.setContent($('#editor', htmlData).val());
           $('#removeUrl').removeAttr('style');
-          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr('style').removeClass('cursor-none');
+          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
+              'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
         }
       }

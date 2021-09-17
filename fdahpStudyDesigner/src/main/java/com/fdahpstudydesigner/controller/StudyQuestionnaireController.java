@@ -826,6 +826,8 @@ public class StudyQuestionnaireController {
                   : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
           request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
         }
+        String language = request.getParameter("language");
+        map.addAttribute("currLanguage", language);
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           boolean isExists =
@@ -894,7 +896,6 @@ public class StudyQuestionnaireController {
                   studyBo.getCustomStudyId(),
                   questionnaireBo.getId());
 
-          String language = request.getParameter("language");
           if (questionId != null && !questionId.isEmpty()) {
             questionsBo =
                 studyQuestionnaireService.getQuestionsById(

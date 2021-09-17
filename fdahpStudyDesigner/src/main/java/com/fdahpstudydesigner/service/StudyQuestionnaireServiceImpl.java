@@ -886,8 +886,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionsBo.setActive(true);
         }
 
-        int id = questionsBo.getId();
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+          Integer id = questionsBo.getId();
           QuestionLangBO questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
           if (questionLangBO == null) {
             questionLangBO = new QuestionLangBO();

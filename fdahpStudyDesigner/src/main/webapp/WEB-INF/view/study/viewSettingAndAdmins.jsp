@@ -24,6 +24,7 @@
             action="/fdahpStudyDesigner/adminStudies/removeSelectedLanguage.do?_S=${param._S}"
             id="removeLangFormId">
         <input type="hidden" id="deletedLanguage" name="deletedLanguage"/>
+        <input type="hidden" id="newSelLanguages" name="newLanguages">
         <input type="hidden" name="studyId" value="${studyBo.id}">
     </form:form>
     <form:form
@@ -149,7 +150,7 @@
             <!-- End Section-->
 
             <div id="langSelect" style="display: none">
-                <div class="mt-md study-list mb-md addHide">
+                <div class="mt-md study-list mb-md addHide" style="margin-left: -15px;">
                     <select
                             class="selectpicker col-md-6 aq-select aq-select-form mlselect"
                             title="- Select and add languages -" id="multiple">
@@ -1033,6 +1034,7 @@
         if (result) {
           let targetStr = langObject.split('-')[1];
           $('#deletedLanguage').val(targetStr);
+          $('#newSelLanguages').val(newSelectedLang)
           $('#removeLangFormId').submit();
         }
       }

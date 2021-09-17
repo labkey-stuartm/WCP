@@ -2619,6 +2619,12 @@
 <script type="text/javascript">
   $(document).ready(function () {
 
+    let currLang = $('#studyLanguage').val();
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+      $('#currentLanguage').val(currLang);
+      refreshAndFetchLanguageData(currLang);
+    }
+
     if ($('#useAnchorDateId').is(':checked')) {
       $("#anchorTextId").attr('required', true);
     } else {

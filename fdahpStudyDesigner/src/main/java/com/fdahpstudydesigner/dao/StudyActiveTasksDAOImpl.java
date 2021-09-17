@@ -1157,18 +1157,31 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
         // duplicate value
         for (ActiveStatisticsBean activeStatisticsBean : activeStatisticsBeans) {
           if (!activeStatisticsBean.getDbVal().equalsIgnoreCase(activeStatisticsBean.getIdVal())) {
-            queryString =
-                "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
-                    + "(select id From StudyBo SBO WHERE customStudyId=:customStudyId"
-                    + ")) and identifierNameStat =:identifierNameStat"
-                    + subString;
-            activeTaskAtrributeValuesBos =
-                session
-                    .createQuery(queryString)
-                    .setParameterList("ids", ids)
-                    .setString("customStudyId", customStudyId)
-                    .setString("identifierNameStat", activeStatisticsBean.getIdVal())
-                    .list();
+            if (FdahpStudyDesignerUtil.isNotEmpty(subString)) {
+              queryString =
+                  "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
+                      + "(select id From StudyBo SBO WHERE customStudyId=:customStudyId"
+                      + ")) and identifierNameStat =:identifierNameStat"
+                      + subString;
+              activeTaskAtrributeValuesBos =
+                  session
+                      .createQuery(queryString)
+                      .setParameterList("ids", ids)
+                      .setString("customStudyId", customStudyId)
+                      .setString("identifierNameStat", activeStatisticsBean.getIdVal())
+                      .list();
+            } else {
+              queryString =
+                  "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN "
+                      + "(select id From StudyBo SBO WHERE customStudyId=:customStudyId"
+                      + ")) and identifierNameStat =:identifierNameStat";
+              activeTaskAtrributeValuesBos =
+                  session
+                      .createQuery(queryString)
+                      .setString("customStudyId", customStudyId)
+                      .setString("identifierNameStat", activeStatisticsBean.getIdVal())
+                      .list();
+            }
             if (activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()) {
               activeStatisticsBean.setType(true);
               break;

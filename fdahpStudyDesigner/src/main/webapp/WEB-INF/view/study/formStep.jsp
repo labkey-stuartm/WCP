@@ -22,6 +22,13 @@
         pointer-events: none;
         cursor: not-allowed;
       }
+
+      .ml-disabled {
+        background-color: #eee !important;
+        opacity: 1;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
     </style>
 </head>
 <!-- Start right Content here -->
@@ -973,6 +980,8 @@
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
+  var isBranching = ${questionnaireBo.branching};
+
   function refreshAndFetchLanguageData(language) {
     $.ajax({
       url: '/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}',
@@ -992,6 +1001,10 @@
           if ($('#repeatableYes').prop('checked') === true) {
             $('#repeatableText').val($('#mlText', htmlData).val());
           }
+          if (isBranching) {
+            $('[data-id="destinationStepId"]').addClass("ml-disabled");
+          }
+          $('.delete').addClass('cursor-none');
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
@@ -999,6 +1012,10 @@
           $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').attr(
               'disabled', false);
           $('#repeatableText').val($('#repeatableText', htmlData).val());
+          if (isBranching) {
+            $('[data-id="destinationStepId"]').removeClass("ml-disabled");
+          }
+          $('.delete').removeClass('cursor-none');
         }
       }
     })

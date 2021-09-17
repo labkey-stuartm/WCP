@@ -20,8 +20,6 @@
 
     <!--  Start top tab section-->
     <div class="right-content-head">
-
-        <%--        <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">--%>
         <%--		multilanguage data--%>
         <input type="hidden" id="mlDisplayText" value="${activeTaskLangBO.displayName}">
         <input type="hidden" id="mlInstructions" value="${activeTaskLangBO.instruction}">
@@ -349,15 +347,6 @@
             $('.nav-tabs a:first').tab('show');
           }
         });
-
-        let currLang = $('#studyLanguage').val();
-        if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
-            !== 'en') {
-          $('#currentLanguage').val(currLang);
-          setTimeout(function () {
-            refreshAndFetchLanguageData(currLang);
-          }, 600);
-        }
       });
 
   function goToBackPage(item) {

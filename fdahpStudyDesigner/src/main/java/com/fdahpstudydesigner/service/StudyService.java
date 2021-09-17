@@ -196,7 +196,11 @@ public interface StudyService {
       String currLang);
 
   String removeExistingLanguageAndData(
-      String studyId, SessionObject sesObj, String langToBeDeleted);
+      String studyId,
+      SessionObject sesObj,
+      String langToBeDeleted,
+      String newLanguages,
+      int userId);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 

@@ -9,45 +9,55 @@
     <div class="left-content-container">
         <ul class="menuNav">
             <li>
-<%--                <c:choose>--%>
-<%--                    <c:when test="${studyBo.multiLanguageFlag eq true && currLanguage != null && currLanguage != '' && currLanguage != 'en'}">--%>
-<%--                        <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"--%>
-<%--                             title="${fn:escapeXml(not empty studyLanguageBO.name?studyLanguageBO.name:'Study Name')}">--%>
-<%--                                ${fn:escapeXml(not empty studyLanguageBO.name?studyLanguageBO.name:'Study Name')}--%>
-<%--                        </div>--%>
-<%--                    </c:when>--%>
-<%--                    <c:otherwise>--%>
-<%--                        <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"--%>
-<%--                             title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">--%>
-<%--                                ${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}--%>
-<%--                        </div>--%>
-<%--                    </c:otherwise>--%>
-<%--                </c:choose>--%>
-    <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"
-         title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">
-        ${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}
-    </div>
-    <input type="hidden" id="mlBasicInfo" value="${sequenceLangBO.basicInfo}"/>
-    <input type="hidden" id="mlCompre" value="${sequenceLangBO.comprehensionTest}"/>
-    <input type="hidden" id="mlConsentEduInfo" value="${sequenceLangBO.consentEduInfo}"/>
-    <input type="hidden" id="mlConsent" value="${sequenceLangBO.eConsent}"/>
-    <input type="hidden" id="mlEligibility" value="${sequenceLangBO.eligibility}"/>
-    <input type="hidden" id="mlOverview" value="${sequenceLangBO.overView}"/>
-    <input type="hidden" id="mlSettings" value="${sequenceLangBO.settingAdmins}"/>
-    <input type="hidden" id="mlActiveTask" value="${sequenceLangBO.studyExcActiveTask}"/>
-    <input type="hidden" id="mlQuestionnaire" value="${sequenceLangBO.studyExcQuestionnaries}"/>
-    <input type="hidden" id="mlParticipantProp" value="${sequenceLangBO.participantProperties}"/>
-<%--    for english language--%>
-    <input id="basicInfo" type="hidden" value="${studyBo.studySequenceBo.basicInfo}">
-    <input id="settings" type="hidden" value="${studyBo.studySequenceBo.settingAdmins}">
-    <input id="overview" type="hidden" value="${studyBo.studySequenceBo.overView}">
-    <input id="eligibility" type="hidden" value="${studyBo.studySequenceBo.eligibility}">
-    <input id="consentEduInfo" type="hidden" value="${studyBo.studySequenceBo.consentEduInfo}">
-    <input id="comprehensionTest" type="hidden" value="${studyBo.studySequenceBo.comprehensionTest}">
-    <input id="eConsent" type="hidden" value="${studyBo.studySequenceBo.eConsent}">
-    <input id="participantProperties" type="hidden" value="${studyBo.studySequenceBo.participantProperties}">
-    <input id="studyExcQuestionnaries" type="hidden" value="${studyBo.studySequenceBo.studyExcQuestionnaries}">
-    <input id="studyExcActiveTask" type="hidden" value="${studyBo.studySequenceBo.studyExcActiveTask}">
+                <%--                <c:choose>--%>
+                <%--                    <c:when test="${studyBo.multiLanguageFlag eq true && currLanguage != null && currLanguage != '' && currLanguage != 'en'}">--%>
+                <%--                        <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"--%>
+                <%--                             title="${fn:escapeXml(not empty studyLanguageBO.name?studyLanguageBO.name:'Study Name')}">--%>
+                <%--                                ${fn:escapeXml(not empty studyLanguageBO.name?studyLanguageBO.name:'Study Name')}--%>
+                <%--                        </div>--%>
+                <%--                    </c:when>--%>
+                <%--                    <c:otherwise>--%>
+                <%--                        <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"--%>
+                <%--                             title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">--%>
+                <%--                                ${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}--%>
+                <%--                        </div>--%>
+                <%--                    </c:otherwise>--%>
+                <%--                </c:choose>--%>
+                <div class="tit_wrapper" data-toggle="tooltip" data-placement="top"
+                     title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">
+                    ${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}
+                </div>
+                <input type="hidden" id="mlBasicInfo" value="${sequenceLangBO.basicInfo}"/>
+                <input type="hidden" id="mlCompre" value="${sequenceLangBO.comprehensionTest}"/>
+                <input type="hidden" id="mlConsentEduInfo"
+                       value="${sequenceLangBO.consentEduInfo}"/>
+                <input type="hidden" id="mlConsent" value="${sequenceLangBO.eConsent}"/>
+                <input type="hidden" id="mlEligibility" value="${sequenceLangBO.eligibility}"/>
+                <input type="hidden" id="mlOverview" value="${sequenceLangBO.overView}"/>
+                <input type="hidden" id="mlSettings" value="${sequenceLangBO.settingAdmins}"/>
+                <input type="hidden" id="mlActiveTask"
+                       value="${sequenceLangBO.studyExcActiveTask}"/>
+                <input type="hidden" id="mlQuestionnaire"
+                       value="${sequenceLangBO.studyExcQuestionnaries}"/>
+                <input type="hidden" id="mlParticipantProp"
+                       value="${sequenceLangBO.participantProperties}"/>
+                <%--    for english language--%>
+                <input id="basicInfo" type="hidden" value="${studyBo.studySequenceBo.basicInfo}">
+                <input id="settings" type="hidden" value="${studyBo.studySequenceBo.settingAdmins}">
+                <input id="overview" type="hidden" value="${studyBo.studySequenceBo.overView}">
+                <input id="eligibility" type="hidden"
+                       value="${studyBo.studySequenceBo.eligibility}">
+                <input id="consentEduInfo" type="hidden"
+                       value="${studyBo.studySequenceBo.consentEduInfo}">
+                <input id="comprehensionTest" type="hidden"
+                       value="${studyBo.studySequenceBo.comprehensionTest}">
+                <input id="eConsent" type="hidden" value="${studyBo.studySequenceBo.eConsent}">
+                <input id="participantProperties" type="hidden"
+                       value="${studyBo.studySequenceBo.participantProperties}">
+                <input id="studyExcQuestionnaries" type="hidden"
+                       value="${studyBo.studySequenceBo.studyExcQuestionnaries}">
+                <input id="studyExcActiveTask" type="hidden"
+                       value="${studyBo.studySequenceBo.studyExcActiveTask}">
 
                 <div class="mb-lg ${empty studyBo.status?'hide':''}">
 					<span
@@ -360,42 +370,40 @@
     $(".slideUp.active").ScrollTo();
   }
 
-  function updateCompletionTicks (htmlData) {
+  function updateCompletionTicks(htmlData) {
     updateTicksByClassName(htmlData, '#mlBasicInfo', '.first');
     updateTicksByClassName(htmlData, '#mlSettings', '.second');
     updateTicksByClassName(htmlData, '#mlOverview', '.third');
     updateTicksByClassName(htmlData, '#mlEligibility', '.fourth');
-    updateTicksByClassName(htmlData, '#mlConsent', '.fifthConsent');
+    updateTicksByClassName(htmlData, '#mlConsent', '.fifthConsentReview');
     updateTicksByClassName(htmlData, '#mlCompre', '.fifthComre');
-    updateTicksByClassName(htmlData, '#mlConsentEduInfo', '.fifthConsentReview');
+    updateTicksByClassName(htmlData, '#mlConsentEduInfo', '.fifthConsent');
     updateTicksByClassName(htmlData, '#mlParticipantProp', '.sixth');
     updateTicksByClassName(htmlData, '#mlQuestionnaire', '.seventhQuestionnaires');
     updateTicksByClassName(htmlData, '#mlActiveTask', '.seventhTask');
     if ($('#mlConsent', htmlData).val() === 'true' && $('#mlCompre', htmlData).val() === 'true'
         && $('#mlConsentEduInfo', htmlData).val() === 'true') {
       let fifth = $('.fifth');
-      if (fifth.find('span').length===0) {
+      if (fifth.find('span').length === 0) {
         fifth.append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    }
-    else $('.fifth').find('span').remove();
+    } else $('.fifth').find('span').remove();
 
-    if ($('#mlQuestionnaire', htmlData).val() === 'true' && $('#mlActiveTask', htmlData).val() === 'true') {
+    if ($('#mlQuestionnaire', htmlData).val() === 'true' && $('#mlActiveTask', htmlData).val()
+        === 'true') {
       let seventh = $('.seventh');
-      if (seventh.find('span').length===0) {
+      if (seventh.find('span').length === 0) {
         seventh.append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    }
-    else $('.seventh').find('span').remove();
+    } else $('.seventh').find('span').remove();
   }
 
   function updateTicksByClassName(htmlData, id, className) {
     if ($(id, htmlData).val() === 'true') {
-      if ($(className).find('span').length===0) {
+      if ($(className).find('span').length === 0) {
         $(className).append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    }
-    else
+    } else
       $(className).find('span').remove();
   }
 
@@ -414,28 +422,26 @@
     if ($('#consentEduInfo').val() === 'true' && $('#comprehensionTest').val() === 'true'
         && $('#eConsent').val() === 'true') {
       let fifth = $('.fifth');
-      if (fifth.find('span').length===0) {
+      if (fifth.find('span').length === 0) {
         fifth.append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    }
-    else $('.fifth').find('span').remove();
+    } else $('.fifth').find('span').remove();
 
-    if ($('#studyExcQuestionnaries').val() === 'true' && $('#studyExcActiveTask').val() === 'true') {
+    if ($('#studyExcQuestionnaries').val() === 'true' && $('#studyExcActiveTask').val()
+        === 'true') {
       let seventh = $('.seventh');
-      if (seventh.find('span').length===0) {
+      if (seventh.find('span').length === 0) {
         seventh.append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    }
-    else $('.seventh').find('span').remove();
+    } else $('.seventh').find('span').remove();
   }
 
   function updateEnglishTicksByClassName(id, className) {
     if ($(id).val() === 'true') {
-      if ($(className).find('span').length===0) {
+      if ($(className).find('span').length === 0) {
         $(className).append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    }
-    else
+    } else
       $(className).find('span').remove();
   }
 </script>
