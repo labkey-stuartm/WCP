@@ -4,17 +4,13 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "consent_info_lang")
 public class ConsentInfoLangBO implements Serializable {
 
-  @EmbeddedId
-  private ConsentInfoLangPK consentInfoLangPK;
+  @EmbeddedId private ConsentInfoLangPK consentInfoLangPK;
 
   @Column(name = "study_id")
   private Integer studyId;

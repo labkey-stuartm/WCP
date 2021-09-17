@@ -18,9 +18,7 @@ public class ComprehensionQuestionLangPK implements Serializable {
     this.langCode = langCode;
   }
 
-  public ComprehensionQuestionLangPK() {
-
-  }
+  public ComprehensionQuestionLangPK() {}
 
   public Integer getId() {
     return id;

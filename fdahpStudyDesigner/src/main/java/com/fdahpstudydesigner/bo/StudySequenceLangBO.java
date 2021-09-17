@@ -11,8 +11,7 @@ import org.hibernate.annotations.Type;
 @Table(name = "study_sequence_lang")
 public class StudySequenceLangBO implements Serializable {
 
-  @EmbeddedId
-  private StudySequenceLangPK studySequenceLangPK;
+  @EmbeddedId private StudySequenceLangPK studySequenceLangPK;
 
   @Column(name = "actions")
   @Type(type = "yes_no")

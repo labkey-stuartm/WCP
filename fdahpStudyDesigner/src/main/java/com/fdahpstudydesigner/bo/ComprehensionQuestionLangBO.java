@@ -14,8 +14,7 @@ import javax.persistence.Table;
 @Table(name = "comprehension_test_question_lang")
 public class ComprehensionQuestionLangBO implements Serializable {
 
-  @EmbeddedId
-  private ComprehensionQuestionLangPK comprehensionQuestionLangPK;
+  @EmbeddedId private ComprehensionQuestionLangPK comprehensionQuestionLangPK;
 
   @Column(name = "study_id")
   private Integer studyId;
@@ -47,7 +46,10 @@ public class ComprehensionQuestionLangBO implements Serializable {
   @Column(name = "modified_on")
   private String modifiedOn;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "comprehensionQuestionLangBO")
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      mappedBy = "comprehensionQuestionLangBO")
   private List<ComprehensionResponseLangBo> comprehensionResponseLangBoList;
 
   public List<ComprehensionResponseLangBo> getComprehensionResponseLangBoList() {

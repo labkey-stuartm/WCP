@@ -18,9 +18,7 @@ public class StudySequenceLangPK implements Serializable {
     this.langCode = langCode;
   }
 
-  public StudySequenceLangPK() {
-
-  }
+  public StudySequenceLangPK() {}
 
   public Integer getStudyId() {
     return studyId;
