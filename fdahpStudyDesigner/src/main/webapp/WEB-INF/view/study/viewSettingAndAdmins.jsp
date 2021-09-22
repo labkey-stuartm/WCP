@@ -14,8 +14,28 @@
         width: 100px !important;
       }
 
-      .mlselect {
-        text-transform: none;
+      .text-normal > button > .filter-option{
+        text-transform: inherit !important;
+      }
+
+      .langSpecific{
+        position: relative;
+      }
+
+      .langSpecific > button::before{
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button{
+        padding-left: 30px;
       }
     </style>
 </head>
@@ -152,7 +172,7 @@
             <div id="langSelect" style="display: none">
                 <div class="mt-md study-list mb-md addHide" style="margin-left: -15px;">
                     <select
-                            class="selectpicker col-md-6 aq-select aq-select-form mlselect"
+                            class="selectpicker col-md-6 aq-select aq-select-form text-normal"
                             title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
                             <option class="langOption" value="${lang.key}"
