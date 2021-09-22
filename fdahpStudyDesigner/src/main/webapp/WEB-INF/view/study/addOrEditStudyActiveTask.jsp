@@ -12,6 +12,26 @@
     cursor: not-allowed;
     pointer-events: none;
   }
+  
+  .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -78,7 +98,7 @@
             <c:if test="${studyBo.multiLanguageFlag eq true and actionPage != 'add'}">
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
-                            class="selectpicker aq-select aq-select-form studyLanguage lang-specific"
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
                         <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                             English
@@ -96,7 +116,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -415,7 +435,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('.remBtnDis, .addBtnDis').addClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('lang-specific')) {
+            if (!$(this).hasClass('langSpecific')) {
               $(this).attr('disabled', true);
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;

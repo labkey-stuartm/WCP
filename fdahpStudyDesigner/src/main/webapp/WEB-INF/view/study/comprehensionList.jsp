@@ -25,6 +25,26 @@
         position: relative;
         border-bottom: 1px solid #ddd;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 <script type="text/javascript">
@@ -625,7 +645,7 @@
             let id = value.getAttribute('id').split('_')[1];
             $('#' + id).find('td.title').text(value.getAttribute('value'));
           })
-          $('#addQuestionId').attr('disabled', true);
+          $('#addQuestionId, #comprehensionTestYes, #comprehensionTestNo').attr('disabled', true);
           $('#comprehensionTestMinimumScore').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
@@ -638,7 +658,7 @@
             $('#' + id).find('td.visualStep').text(
                 $('#' + id, htmlData).find('td.visualStep').text());
           });
-          $('#addQuestionId').attr('disabled', false);
+          $('#addQuestionId , #comprehensionTestYes, #comprehensionTestNo').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
           $('#comprehensionTestMinimumScore').attr('disabled', false);
         }
