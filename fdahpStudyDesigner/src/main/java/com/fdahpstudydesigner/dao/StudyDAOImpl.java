@@ -37,6 +37,7 @@ import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.ResourcesLangBO;
 import com.fdahpstudydesigner.bo.StudyActivityVersionBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
@@ -9299,6 +9300,34 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
+  public ResourcesLangBO getResourceLangBO(int id, String language) {
+    logger.info("StudyDAOImpl - getResourceLangBO() - Starts");
+    Session session = null;
+    ResourcesLangBO resourcesLangBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (id != 0) {
+        resourcesLangBO =
+            (ResourcesLangBO)
+                session
+                    .createQuery(
+                        "from ResourcesLangBO where resourcesLangPK.langCode=:language and resourcesLangPK.id=:id")
+                    .setString("language", language)
+                    .setInteger("id", id)
+                    .uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getResourceLangBO() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getResourceLangBO() - Ends");
+    return resourcesLangBO;
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public String deleteAllLanguageData(int studyId, String language) {
     logger.info("StudyDAOImpl - deleteAllLanguageData() - Starts");
@@ -9434,5 +9463,33 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - deleteAllLanguageData() - Ends");
     return result;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<ResourcesLangBO> getResourcesLangList(int studyId, String language) {
+    logger.info("StudyDAOImpl - getResourcesLangList() - Starts");
+    Session session = null;
+    List<ResourcesLangBO> resourcesLangBOList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (studyId != 0) {
+        resourcesLangBOList =
+            session
+                .createQuery(
+                    "from ResourcesLangBO where studyId= :studyId and resourcesLangPK.langCode=:lang")
+                .setInteger("studyId", studyId)
+                .setString("lang", language)
+                .list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getResourcesLangList() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getResourcesLangList() - Ends");
+    return resourcesLangBOList;
   }
 }

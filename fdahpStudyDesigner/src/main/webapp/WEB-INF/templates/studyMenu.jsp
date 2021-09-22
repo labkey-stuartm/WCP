@@ -300,12 +300,14 @@
     });
     $('.eighthResources').click(function () {
       $('.eighthResources').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}&language=" + $(
+          '#studyLanguage').val();
       document.body.appendChild(a).click();
     });
     $('.eigthNotification').click(function () {
       $('.eigthNotification').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}&language=" + $(
+          '#studyLanguage').val();
       document.body.appendChild(a).click();
     });
     $('.nine').click(function () {

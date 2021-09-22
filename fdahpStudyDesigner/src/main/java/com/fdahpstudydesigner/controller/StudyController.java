@@ -21,6 +21,7 @@ import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.ResourcesLangBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
@@ -297,6 +298,7 @@ public class StudyController {
                   : request.getParameter(FdahpStudyDesignerConstants.ACTION_ON);
         }
         map.addAttribute("_S", sessionStudyCount);
+        String language = request.getParameter("language");
         if (!FdahpStudyDesignerUtil.isEmpty(action)) {
           if (!("").equals(resourceInfoId)) {
             resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
@@ -317,11 +319,29 @@ public class StudyController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           map.addAttribute("resourceBO", resourceBO);
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            map.addAttribute(
+                "resourceLangBO", studyService.getResourceLangInfo(resourceInfoId, language));
+            this.setStudyLangData(studyId, language, map);
+          }
           map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON, action);
           if ((studyBo != null) && !studyBo.getCustomStudyId().isEmpty()) {
             anchorTypeList =
                 studyQuestionnaireService.getAnchorTypesByStudyId(studyBo.getCustomStudyId());
+            String languages = studyBo.getSelectedLanguages();
+            List<String> langList = new ArrayList<>();
+            Map<String, String> langMap = new HashMap<>();
+            if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+              langList = Arrays.asList(languages.split(","));
+              for (String string : langList) {
+                langMap.put(string, MultiLanguageCodes.getValue(string));
+              }
+            }
+            map.addAttribute("languageList", langMap);
           }
+          map.addAttribute("currLanguage", language);
+
           map.addAttribute("anchorTypeList", anchorTypeList);
           request
               .getSession()
@@ -1993,6 +2013,7 @@ public class StudyController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION);
+        String language = request.getParameter("language");
         if (StringUtils.isNotEmpty(studyId)) {
           resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
           studyProtocolResourceBO = studyService.getStudyProtocol(Integer.valueOf(studyId));
@@ -2002,6 +2023,24 @@ public class StudyController {
           map.addAttribute("resourceBOList", resourceBOList);
           map.addAttribute("resourcesSavedList", resourcesSavedList);
           map.addAttribute("studyProtocolResourceBO", studyProtocolResourceBO);
+
+          String languages = studyBo.getSelectedLanguages();
+          List<String> langList = new ArrayList<>();
+          Map<String, String> langMap = new HashMap<>();
+          if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+            langList = Arrays.asList(languages.split(","));
+            for (String string : langList) {
+              langMap.put(string, MultiLanguageCodes.getValue(string));
+            }
+          }
+          map.addAttribute("languageList", langMap);
+
+          map.addAttribute("currLanguage", language);
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            this.setStudyLangData(studyId, language, map);
+            List<ResourcesLangBO> resourcesLangBOList = studyService.syncAndGetResourceLangList(resourceBOList, Integer.parseInt(studyId), language);
+            map.addAttribute("resourceLangBOList", resourcesLangBOList);
+          }
         }
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
         map.addAttribute("_S", sessionStudyCount);
@@ -4474,6 +4513,7 @@ public class StudyController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceTypeParm"))
                 ? ""
                 : request.getParameter("resourceTypeParm");
+        String language = request.getParameter("language");
         if (resourceBO != null) {
           if (!("").equals(buttonText)) {
             if (("save").equalsIgnoreCase(buttonText)) {
@@ -4502,7 +4542,7 @@ public class StudyController {
             int order = studyService.resourceOrder(resourceBO.getStudyId());
             resourceBO.setSequenceNo(order);
           }
-          resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);
+          resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj, language);
         }
         if (!resourseId.equals(0)) {
           if ((resourceBO != null) && (resourceBO.getId() == null)) {
@@ -4550,6 +4590,7 @@ public class StudyController {
           }
         }
         map.addAttribute("_S", sessionStudyCount);
+        map.addAttribute("language", language);
         if (("save").equalsIgnoreCase(buttonText)) {
           request
               .getSession()

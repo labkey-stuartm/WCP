@@ -20,6 +20,26 @@
 .tool-tip [disabled] {
 	pointer-events: none;
 }
+
+.langSpecific{
+	position: relative;
+}
+
+.langSpecific > button::before{
+	content: '';
+	display: block;
+	background-image: url("../images/global_icon.png");
+	width: 16px;
+	height: 14px;
+	position: absolute;
+	top: 9px;
+	left: 9px;
+	background-repeat: no-repeat;
+}
+
+.langSpecific > button{
+	padding-left: 30px;
+}
 </style>
 </head>
 <!-- ============================================================== -->
@@ -32,6 +52,23 @@
 			<div class="black-md-f text-uppercase dis-line pull-left line34">
 				RESOURCES
 				<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+
+			<c:if test="${studyBo.multiLanguageFlag eq true}">
+				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<select
+							class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+							id="studyLanguage" name="studyLanguage" title="Select">
+						<option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+							English
+						</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language.key}"
+								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</c:if>
+
 			<div class="dis-line form-group mb-none mr-sm">
 				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
@@ -61,10 +98,13 @@
 						<th>RESOURCE TITLE</th>
 						<th class="text-right"><c:if test="${empty permission}">
 								<div class="dis-line form-group mb-none mr-sm">
-									<button type="button" id="studyProtocolId"
-										class="btn btn-primary blue-btn"
-										onclick="addStudyProtocol(${studyProtocolResourceBO.id});">
+
+									<span id="studyProSpan" class="tool-tip" data-toggle="tooltip" data-placement="bottom">
+										<button type="button" id="studyProtocolId"
+												class="btn btn-primary blue-btn"
+												onclick="addStudyProtocol(${studyProtocolResourceBO.id});">
 										Study Protocol</button>
+									</span>
 								</div>
 
 								<div class="dis-line form-group mb-none">
@@ -80,7 +120,7 @@
 					<c:forEach items="${resourceBOList}" var="resourceInfo">
 						<tr id="row${resourceInfo.id}">
 							<td>${resourceInfo.sequenceNo}</td>
-							<td class="wid50">${resourceInfo.title}</td>
+							<td class="wid50 title">${resourceInfo.title}</td>
 							<td class="wid50 text-right"><span
 								class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
 								data-placement="top" title="View" id="viewRes"
@@ -108,6 +148,7 @@
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol"
 		value="">
+	<input type="hidden" name="language" value="${currLanguage}">
 	<input type="hidden" name="actionOn" id="actionOn" value="">
 </form:form>
 <form:form
@@ -115,6 +156,15 @@
 	name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm"
 	method="post">
 	<input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
+	<input type="hidden" name="language" value="${currLanguage}">
+	<input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+	<input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+	<select id="resourceLangBOList" style="display: none">
+		<c:forEach items="${resourceLangBOList}" var="resourceLang">
+			<option id='${resourceLang.resourcesLangPK.id}'
+					value="${resourceLang.title}">${resourceLang.title}</option>
+		</c:forEach>
+	</select>
 </form:form>
 <script type="text/javascript">
 var dataTable;
@@ -146,7 +196,13 @@ $(document).ready(function(){
 // 	    "lengthChange": false, 
 // 	    "searching": false, 
 // 	});
-	
+
+	let currLang = $('#studyLanguage').val();
+	if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+		$('[name="language"]').val(currLang);
+		refreshAndFetchLanguageData(currLang);
+	}
+
 	var dataTable = $('#resource_list').DataTable( {
 	    "paging":false,
 	    "info": false,
@@ -298,6 +354,7 @@ function reloadData(studyId){
 
 function  reloadResourceDataTable(resourceList,markAsComplete){
 	 $('#resource_list').DataTable().clear();
+	let idList = [];
 	 if (typeof resourceList != 'undefined' && resourceList != null && resourceList.length >0){
 		 $.each(resourceList, function(i, obj) {
 			 var datarow = [];
@@ -323,7 +380,7 @@ function  reloadResourceDataTable(resourceList,markAsComplete){
 			 datarow.push(actions);
 			 $('#resource_list').DataTable().row.add(datarow);
 			// $('#resource_list tr').find('td[1]').addClass("wid50");
-			 
+				 idList.push(obj.id);
 			 }
 		 });
 		 if(typeof markAsComplete !='undefined' && markAsComplete != null && markAsComplete){
@@ -339,6 +396,14 @@ function  reloadResourceDataTable(resourceList,markAsComplete){
 		 $('#resource_list').DataTable().draw();
 		 //$('#helpNote').attr('data-original-title', 'Please ensure you add one or more Resource Sections before attempting to mark this section as Complete.');
 	 }
+	updateClassName(idList);
+}
+
+function updateClassName(idList) {
+	$('tr.odd,.even').each(function (index) {
+		$(this).attr('id', 'row'+idList[index])
+		$(this).find('td:eq(1)').attr('class', 'wid50 title');
+	})
 }
 
 function addStudyProtocol(studyProResId){
@@ -385,5 +450,52 @@ function markAsCompleted(){
 
 function hideDisplayMessage(){
 	$('#alertMsg').hide();
+}
+
+$('#studyLanguage').on('change', function () {
+	let currLang = $('#studyLanguage').val();
+	$('[name="language"]').val(currLang);
+	refreshAndFetchLanguageData($('#studyLanguage').val());
+})
+
+function refreshAndFetchLanguageData(language) {
+	let studyProExist = '${studyProtocolResourceBO.id}';
+	$.ajax({
+		url: '/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}',
+		type: "GET",
+		data: {
+			language: language
+		},
+		success: function (data) {
+			let htmlData = document.createElement('html');
+			htmlData.innerHTML = data;
+			if (language !== 'en') {
+				updateCompletionTicks(htmlData);
+				$('.tit_wrapper').text($('#mlName', htmlData).val());
+				$('#addResourceId').attr('disabled', true);
+				$('.delete, .sorting_1').addClass('cursor-none');
+				$('#resourceLangBOList option', htmlData).each(function (index, value) {
+					let id = 'row' + value.getAttribute('id');
+					console.log(id, value.getAttribute('value'))
+					$('#' + id).find('td.title').text(value.getAttribute('value'));
+				});
+				if(studyProExist == null || studyProExist === '' || typeof studyProExist ==='undefined') {
+					$('#studyProtocolId').prop('disabled', true);
+				} else {
+					$('#studyProtocolId').prop('disabled', false);
+				}
+			} else {
+				updateCompletionTicksForEnglish();
+				$('.tit_wrapper').text($('#customStudyName', htmlData).val());
+				$('#addResourceId').attr('disabled', false);
+				$('.delete, .sorting_1').removeClass('cursor-none');
+				$('#studyProtocolId').prop('disabled', false);
+				$('tbody tr', htmlData).each(function (index, value) {
+					let id = value.getAttribute('id');
+					$('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+				});
+			}
+		}
+	});
 }
 </script>

@@ -18,6 +18,7 @@ import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.ResourcesLangBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
@@ -271,7 +272,11 @@ public interface StudyDAO {
 
   StudySequenceLangBO getStudySequenceLangBO(int studyId, String language);
 
+  ResourcesLangBO getResourceLangBO(int id, String language);
+
   String deleteAllLanguageData(int id, String language);
 
   StudyBo getStudyBoById(String studyId);
+
+  List<ResourcesLangBO> getResourcesLangList(int studyId, String language);
 }

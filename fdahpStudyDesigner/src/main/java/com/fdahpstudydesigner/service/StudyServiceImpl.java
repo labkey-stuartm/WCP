@@ -19,10 +19,13 @@ import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
 import com.fdahpstudydesigner.bo.EligibilityTestLangPK;
+import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.ResourcesLangBO;
+import com.fdahpstudydesigner.bo.ResourcesLangPK;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyLanguagePK;
@@ -732,6 +735,36 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getResourceList() - Ends");
     return resourceBOList;
+  }
+
+  @Override
+  public List<ResourcesLangBO> syncAndGetResourceLangList(List<ResourceBO> resourceBOList, Integer studyId, String language) {
+    logger.info("StudyServiceImpl - getResourceLangList() - Starts");
+    List<ResourcesLangBO> resourcesLangBOList = null;
+    try {
+      if (resourceBOList!=null && resourceBOList.size()>0) {
+        for (ResourceBO resourceBO : resourceBOList) {
+          ResourcesLangBO resourcesLangBO =
+              studyDAO.getResourceLangBO(resourceBO.getId(), language);
+          if (resourcesLangBO == null) {
+            resourcesLangBO = new ResourcesLangBO();
+            resourcesLangBO.setResourcesLangPK(
+                new ResourcesLangPK(resourceBO.getId(), language));
+            resourcesLangBO.setStudyId(resourceBO.getStudyId());
+            resourcesLangBO.setSequenceNo(resourceBO.getSequenceNo());
+            resourcesLangBO.setTextOrPdf(false);
+            resourcesLangBO.setCreatedBy(resourceBO.getCreatedBy());
+            resourcesLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            studyDAO.saveOrUpdateObject(resourcesLangBO);
+          }
+        }
+      }
+      resourcesLangBOList = studyDAO.getResourcesLangList(studyId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getResourceLangList() - Error", e);
+    }
+    logger.info("StudyServiceImpl - getResourceLangList() - Ends");
+    return resourcesLangBOList;
   }
 
   /**
@@ -1776,7 +1809,7 @@ public class StudyServiceImpl implements StudyService {
    * @return resource Id
    */
   @Override
-  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
+  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj, String language) {
     logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
     Integer resourseId = 0;
     ResourceBO resourceBO2 = null;
@@ -1786,8 +1819,8 @@ public class StudyServiceImpl implements StudyService {
     StudyBo studyBo = null;
     String activity = "";
     String activityDetails = "";
-    Boolean saveNotiFlag = false;
-    Boolean updateResource = false;
+    boolean saveNotiFlag = false;
+    boolean updateResource = false;
     try {
       studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(), sesObj.getUserId());
       if (null == resourceBO.getId()) {
@@ -1803,158 +1836,199 @@ public class StudyServiceImpl implements StudyService {
         resourceBO2.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         updateResource = true;
       }
-      if (!resourceBO.isAction()) {
-        activity = "Resource content saved.";
-        activityDetails =
-            "Resource content saved. (Study ID = "
-                + studyBo.getCustomStudyId()
-                + ", Resource Display Title = "
-                + resourceBO.getTitle()
-                + ").";
-      } else {
-        activity = "Resource successfully checked for minimum content  completeness.";
-        activityDetails =
-            "Resource successfully checked for minimum content completeness and marked 'Done'. (Study ID = "
-                + studyBo.getCustomStudyId()
-                + ", Resource Display Title = "
-                + resourceBO.getTitle()
-                + ").";
-      }
-      resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
-      resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-      resourceBO2.setRichText(
-          null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
-      if (resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()) {
-        file =
-            FdahpStudyDesignerUtil.getStandardFileName(
-                    FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()),
-                    sesObj.getFirstName(),
-                    sesObj.getLastName())
-                .replaceAll("\\W+", "_");
-        fileName =
-            FdahpStudyDesignerUtil.uploadImageFile(
-                resourceBO.getPdfFile(), file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
-        resourceBO2.setPdfUrl(fileName);
-        resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
-      } else {
-        resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
-        resourceBO2.setPdfName(resourceBO.getPdfName());
-      }
-      resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
-      resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
-      resourceBO2.setAnchorDateId(resourceBO.getAnchorDateId());
-      resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
-      resourceBO2.setResourceType(resourceBO.isResourceType());
-      resourceBO2.setResourceText(
-          null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
-      resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
-      resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-      resourceBO2.setStartDate(
-          FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())
-              ? String.valueOf(
-                  FdahpStudyDesignerUtil.getFormattedDate(
-                      resourceBO.getStartDate(),
-                      FdahpStudyDesignerConstants.UI_SDF_DATE,
-                      FdahpStudyDesignerConstants.DB_SDF_DATE))
-              : null);
-      resourceBO2.setEndDate(
-          FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())
-              ? String.valueOf(
-                  FdahpStudyDesignerUtil.getFormattedDate(
-                      resourceBO.getEndDate(),
-                      FdahpStudyDesignerConstants.UI_SDF_DATE,
-                      FdahpStudyDesignerConstants.DB_SDF_DATE))
-              : null);
-      resourceBO2.setAction(resourceBO.isAction());
-      resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
-      resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 
-      if (!resourseId.equals(0)) {
-        auditLogDAO.saveToAuditLog(
-            null,
-            null,
-            sesObj,
-            activity,
-            activityDetails,
-            "AuditLogDAOImpl - saveOrUpdateResource()");
-        if (!resourceBO2.isStudyProtocol()) {
-          studyDAO.markAsCompleted(
-              resourceBO2.getStudyId(),
-              FdahpStudyDesignerConstants.RESOURCE,
-              false,
-              sesObj,
-              studyBo.getCustomStudyId());
+      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+        ResourcesLangBO resourcesLangBO = studyDAO.getResourceLangBO(resourceBO2.getId(), language);
+        if (resourcesLangBO==null) {
+          resourcesLangBO = new ResourcesLangBO();
+          resourcesLangBO.setResourcesLangPK(new ResourcesLangPK(resourceBO2.getId(), language));
+          resourcesLangBO.setCreatedBy(sesObj.getUserId());
+          resourcesLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         }
-        if (resourceBO.isAction()) {
-          notificationBO = studyDAO.getNotificationByResourceId(resourseId);
-          String notificationText = "";
-          boolean notiFlag = false;
-          if (null == notificationBO) {
-            notificationBO = new NotificationBO();
-            notificationBO.setStudyId(resourceBO2.getStudyId());
-            notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-            if (StringUtils.isNotEmpty(studyBo.getAppId()))
-              notificationBO.setAppId(studyBo.getAppId());
-            notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-            notificationBO.setNotificationSubType(
-                FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
-            notificationBO.setNotificationScheduleType(
-                FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
-            notificationBO.setResourceId(resourceBO2.getId());
-            notificationBO.setNotificationStatus(false);
-            notificationBO.setCreatedBy(sesObj.getUserId());
-            notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-          } else {
-            notiFlag = true;
-            notificationBO.setModifiedBy(sesObj.getUserId());
-            notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-          }
+        else {
+          resourcesLangBO.setModifiedBy(sesObj.getUserId());
+          resourcesLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        }
+        resourcesLangBO.setSequenceNo(resourceBO2.getSequenceNo());
+        resourcesLangBO.setStudyId(resourceBO2.getStudyId());
+        resourcesLangBO.setResourceText(resourceBO.getResourceText());
+        resourcesLangBO.setRichText(resourceBO.getRichText());
+        resourcesLangBO.setTitle(resourceBO.getTitle());
+        resourcesLangBO.setTextOrPdf(resourceBO.isTextOrPdf());
+        if (resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()) {
+          file =
+              FdahpStudyDesignerUtil.getStandardFileName(
+                      FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()),
+                      sesObj.getFirstName(),
+                      sesObj.getLastName())
+                  .replaceAll("\\W+", "_");
+          fileName =
+              FdahpStudyDesignerUtil.uploadImageFile(
+                  resourceBO.getPdfFile(), file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
+          resourcesLangBO.setPdfUrl(fileName);
+          resourcesLangBO.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
+        } else {
+          resourcesLangBO.setPdfUrl(resourceBO.getPdfUrl());
+          resourcesLangBO.setPdfName(resourceBO.getPdfName());
+        }
+        studyDAO.saveOrUpdateObject(resourcesLangBO);
+        resourseId = resourcesLangBO.getResourcesLangPK().getId();
+      } else {
+
+        if (!resourceBO.isAction()) {
+          activity = "Resource content saved.";
+          activityDetails =
+              "Resource content saved. (Study ID = "
+                  + studyBo.getCustomStudyId()
+                  + ", Resource Display Title = "
+                  + resourceBO.getTitle()
+                  + ").";
+        } else {
+          activity = "Resource successfully checked for minimum content  completeness.";
+          activityDetails =
+              "Resource successfully checked for minimum content completeness and marked 'Done'. (Study ID = "
+                  + studyBo.getCustomStudyId()
+                  + ", Resource Display Title = "
+                  + resourceBO.getTitle()
+                  + ").";
+        }
+        resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
+        resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
+        resourceBO2.setRichText(
+            null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
+        if (resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()) {
+          file =
+              FdahpStudyDesignerUtil.getStandardFileName(
+                      FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()),
+                      sesObj.getFirstName(),
+                      sesObj.getLastName())
+                  .replaceAll("\\W+", "_");
+          fileName =
+              FdahpStudyDesignerUtil.uploadImageFile(
+                  resourceBO.getPdfFile(), file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
+          resourceBO2.setPdfUrl(fileName);
+          resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
+        } else {
+          resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+          resourceBO2.setPdfName(resourceBO.getPdfName());
+        }
+        resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
+        resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
+        resourceBO2.setAnchorDateId(resourceBO.getAnchorDateId());
+        resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
+        resourceBO2.setResourceType(resourceBO.isResourceType());
+        resourceBO2.setResourceText(
+            null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
+        resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
+        resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+        resourceBO2.setStartDate(
+            FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())
+                ? String.valueOf(
+                    FdahpStudyDesignerUtil.getFormattedDate(
+                        resourceBO.getStartDate(),
+                        FdahpStudyDesignerConstants.UI_SDF_DATE,
+                        FdahpStudyDesignerConstants.DB_SDF_DATE))
+                : null);
+        resourceBO2.setEndDate(
+            FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())
+                ? String.valueOf(
+                    FdahpStudyDesignerUtil.getFormattedDate(
+                        resourceBO.getEndDate(),
+                        FdahpStudyDesignerConstants.UI_SDF_DATE,
+                        FdahpStudyDesignerConstants.DB_SDF_DATE))
+                : null);
+        resourceBO2.setAction(resourceBO.isAction());
+        resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
+        resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
+
+        if (!resourseId.equals(0)) {
+          auditLogDAO.saveToAuditLog(
+              null,
+              null,
+              sesObj,
+              activity,
+              activityDetails,
+              "AuditLogDAOImpl - saveOrUpdateResource()");
           if (!resourceBO2.isStudyProtocol()) {
-            saveNotiFlag = true;
-            notificationText = resourceBO2.getResourceText();
-          } else {
-            if (studyBo.getLiveStudyBo() != null) {
-              String studyName = studyBo.getName();
-              String innerText;
-              if (notiFlag || (!notiFlag && updateResource)) {
-                innerText = "updated";
-              } else {
-                innerText = "added";
-              }
+            studyDAO.markAsCompleted(
+                resourceBO2.getStudyId(),
+                FdahpStudyDesignerConstants.RESOURCE,
+                false,
+                sesObj,
+                studyBo.getCustomStudyId());
+          }
+          if (resourceBO.isAction()) {
+            notificationBO = studyDAO.getNotificationByResourceId(resourseId);
+            String notificationText = "";
+            boolean notiFlag = false;
+            if (null == notificationBO) {
+              notificationBO = new NotificationBO();
+              notificationBO.setStudyId(resourceBO2.getStudyId());
+              notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+              if (StringUtils.isNotEmpty(studyBo.getAppId()))
+                notificationBO.setAppId(studyBo.getAppId());
+              notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+              notificationBO.setNotificationSubType(
+                  FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
+              notificationBO.setNotificationScheduleType(
+                  FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+              notificationBO.setResourceId(resourceBO2.getId());
+              notificationBO.setNotificationStatus(false);
+              notificationBO.setCreatedBy(sesObj.getUserId());
+              notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            } else {
+              notiFlag = true;
+              notificationBO.setModifiedBy(sesObj.getUserId());
+              notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            }
+            if (!resourceBO2.isStudyProtocol()) {
               saveNotiFlag = true;
-              if (!StringUtils.equalsIgnoreCase(
-                  FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH, studyBo.getStudyLanguage())) {
-                notificationText =
-                    "Study Protocol information has been "
-                        + innerText
-                        + " for the study "
-                        + studyName
-                        + ". Visit the app to read it now.";
-              } else {
-                if (StringUtils.equalsIgnoreCase("updated", innerText)) {
-                  notificationText =
-                      SpanishLangConstants.STUDY_PROTOCOL_NOTIFICATION_TEXT_UPDATED.replace(
-                          "$studyName", studyName);
+              notificationText = resourceBO2.getResourceText();
+            } else {
+              if (studyBo.getLiveStudyBo() != null) {
+                String studyName = studyBo.getName();
+                String innerText;
+                if (notiFlag || (!notiFlag && updateResource)) {
+                  innerText = "updated";
                 } else {
+                  innerText = "added";
+                }
+                saveNotiFlag = true;
+                if (!StringUtils.equalsIgnoreCase(
+                    FdahpStudyDesignerConstants.STUDY_LANGUAGE_SPANISH,
+                    studyBo.getStudyLanguage())) {
                   notificationText =
-                      SpanishLangConstants.STUDY_PROTOCOL_NOTIFICATION_TEXT_ADDED.replace(
-                          "$studyName", studyName);
+                      "Study Protocol information has been "
+                          + innerText
+                          + " for the study "
+                          + studyName
+                          + ". Visit the app to read it now.";
+                } else {
+                  if (StringUtils.equalsIgnoreCase("updated", innerText)) {
+                    notificationText =
+                        SpanishLangConstants.STUDY_PROTOCOL_NOTIFICATION_TEXT_UPDATED.replace(
+                            "$studyName", studyName);
+                  } else {
+                    notificationText =
+                        SpanishLangConstants.STUDY_PROTOCOL_NOTIFICATION_TEXT_ADDED.replace(
+                            "$studyName", studyName);
+                  }
                 }
               }
             }
-          }
-          notificationBO.setNotificationText(notificationText);
-          if (resourceBO2.isResourceType()) {
-            notificationBO.setAnchorDate(true);
-            notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
-          } else {
-            notificationBO.setAnchorDate(false);
-            notificationBO.setxDays(null);
-          }
-          notificationBO.setScheduleDate(null);
-          notificationBO.setScheduleTime(null);
-          if (saveNotiFlag) {
-            studyDAO.saveResourceNotification(notificationBO, notiFlag);
+            notificationBO.setNotificationText(notificationText);
+            if (resourceBO2.isResourceType()) {
+              notificationBO.setAnchorDate(true);
+              notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
+            } else {
+              notificationBO.setAnchorDate(false);
+              notificationBO.setxDays(null);
+            }
+            notificationBO.setScheduleDate(null);
+            notificationBO.setScheduleTime(null);
+            if (saveNotiFlag) {
+              studyDAO.saveResourceNotification(notificationBO, notiFlag);
+            }
           }
         }
       }
@@ -2704,5 +2778,19 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getOverviewStudyPagesLangById() - Ends");
     return studyPageLanguageBO;
+  }
+
+  @Override
+  public ResourcesLangBO getResourceLangInfo(String resourceInfoId, String language) {
+    logger.info("StudyServiceImpl - getResourceLangInfo() - Starts");
+    ResourcesLangBO resourcesLangBO = null;
+    try {
+      resourcesLangBO =
+              studyDAO.getResourceLangBO(Integer.parseInt(resourceInfoId), language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getResourceLangInfo() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getResourceLangInfo() - Ends");
+    return resourcesLangBO;
   }
 }

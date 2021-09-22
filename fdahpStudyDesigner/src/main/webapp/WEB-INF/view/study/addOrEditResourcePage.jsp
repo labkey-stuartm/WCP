@@ -6,6 +6,34 @@
 <head>
 <meta charset="UTF-8">
 </head>
+<style>
+  .ml-disabled {
+    background-color: #eee !important;
+    opacity: 1;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .langSpecific{
+	  position: relative;
+  }
+
+  .langSpecific > button::before{
+	  content: '';
+	  display: block;
+	  background-image: url("../images/global_icon.png");
+	  width: 16px;
+	  height: 14px;
+	  position: absolute;
+	  top: 9px;
+	  left: 9px;
+	  background-repeat: no-repeat;
+  }
+
+  .langSpecific > button{
+	  padding-left: 30px;
+  }
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -15,6 +43,16 @@
 		data-toggle="validator" id="resourceForm" role="form" method="post"
 		autocomplete="off" enctype="multipart/form-data">
 		<!--  Start top tab section-->
+		<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+		<input type="hidden" id="mlTitle" value="${resourceLangBO.title}">
+		<input type="hidden" id="mlRichText" value="${resourceLangBO.richText}">
+		<input type="hidden" id="mlResourceText" value="${resourceLangBO.resourceText}">
+		<input type="hidden" id="mlPdfName" value="${resourceLangBO.pdfName}">
+		<input type="hidden" id="mlPdfUrl" value="${resourceLangBO.pdfUrl}">
+		<input type="hidden" id="mlTextOrPdf" value="${resourceLangBO.textOrPdf}">
+		<input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+		<input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+
 		<div class="right-content-head">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">
@@ -32,6 +70,35 @@
 						<c:if test="${actionOn eq 'edit'}">Edit Study Protocol</c:if>
 					</c:if>
 				</div>
+
+				<c:if test="${studyBo.multiLanguageFlag eq true and actionOn != 'add'}">
+					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+						<select
+								class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+								id="studyLanguage" name="studyLanguage" title="Select">
+							<option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+								English
+							</option>
+							<c:forEach items="${languageList}" var="language">
+								<option value="${language.key}"
+									${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</c:if>
+
+				<c:if test="${studyBo.multiLanguageFlag eq true and actionOn == 'add'}">
+					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+						  data-placement="bottom"
+						  title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage"
+								title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+					</div>
+				</c:if>
 
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button"
@@ -320,6 +387,7 @@
 <form:form
 	action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}"
 	name="resourceListForm" id="resourceListForm" method="post">
+	<input type="hidden" name="language" value="${currLanguage}">
 </form:form>
 <form:form action="/fdahpStudyDesigner/downloadPdf.do?_S=${param._S}"
 	id="pdfDownloadFormId" method="post" target="_blank">
@@ -545,6 +613,12 @@ $(document).ready(function(){
      	  },
      	 <c:if test="${actionOn eq 'view'}">readonly:1</c:if>
     });
+	}
+
+	let currLang = $('#studyLanguage').val();
+	if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+		$('[name="language"]').val(currLang);
+		refreshAndFetchLanguageData(currLang);
 	}
   
     //Toggling Rich richText and Upload Button    
@@ -923,6 +997,7 @@ $(document).ready(function(){
 	
 	<c:if test="${actionOn eq 'view'}">
 	 	$('#resourceForm input,textarea,select').prop('disabled', true);
+	 	$('#studyLanguage').prop('disabled', false);
     	$('.viewAct').hide();
 	</c:if>
 	
@@ -987,4 +1062,115 @@ function toJSDate( dateTime ) {
     return new Date(date[2], (date[0]-1), date[1]);
 }
 </c:if>
+
+$('#studyLanguage').on('change', function () {
+  let currLang = $('#studyLanguage').val();
+  $('[name="language"]').val(currLang);
+  refreshAndFetchLanguageData($('#studyLanguage').val());
+})
+
+function refreshAndFetchLanguageData(language) {
+	let action = '${actionOn}';
+	let textOrPdfEn = '${resourceBO.textOrPdf}';
+	let isStudyProtocol = '${isstudyProtocol}';
+  $.ajax({
+    url: '/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}',
+    type: "GET",
+    data: {
+		language: language,
+		resourceInfoId:$('[name="id"]').val(),
+		actionOn : action
+    },
+    success: function (data) {
+      let htmlData = document.createElement('html');
+      htmlData.innerHTML = data;
+        if (language !== 'en') {
+          updateCompletionTicks(htmlData);
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
+          let param = $('[name="resourceVisibilityParam"]');
+          param.attr('disabled', true);
+          if (param.prop('checked')===true) {
+            $('#inlineRadio5, #inlineRadio6').attr('disabled', true);
+            if($('#inlineRadio5').prop('checked')===true) {
+              $('[data-id="anchorDateId"]').addClass('ml-disabled');
+              $('#xdays, #ydays, #inlineRadio6').attr('disabled', true);
+            }
+            else if($('#inlineRadio6').prop('checked')===true) {
+              $('#StartDate, #EndDate').attr('disabled', true);
+            }
+          }
+          // setting data
+			if (isStudyProtocol !== 'isstudyProtocol') {
+				$('#resourceTitle').val($('#mlTitle', htmlData).val());
+			}
+			$('#comment').val($('#mlResourceText', htmlData).val());
+			let textOrPdf = $('#mlTextOrPdf', htmlData).val();
+			let richText = $('#mlRichText', htmlData).val();
+			if (richText===undefined)
+				richText = '';
+			$('#richText').val(richText);
+			if (tinymce.get('richText')!==null)
+				tinymce.get('richText').setContent(richText);
+
+			if (textOrPdf==='false') {
+				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
+				$('.pdfDiv').hide();
+				$('#richEditor').removeClass('dis-none');
+				$('#inlineRadio1').prop('checked', true);
+
+				$('#inlineRadio1').prop('checked', true);
+			}
+			else if (textOrPdf==='true') {
+				$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
+				$('.pdfDiv').show();
+				$('#richEditor').addClass('dis-none');
+				$('#inlineRadio2').prop('checked', true);
+				$('#pdf_name').text($('#mlPdfName', htmlData).val());
+				$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
+				$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
+			}
+        } else {
+          updateCompletionTicksForEnglish();
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+          let param = $('[name="resourceVisibilityParam"]');
+          param.attr('disabled', false);
+          if (param.prop('checked')===true) {
+            $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
+            if($('#inlineRadio5').prop('checked')===true) {
+              $('[data-id="anchorDateId"]').removeClass('ml-disabled');
+              $('#xdays, #ydays, #inlineRadio6').attr('disabled', false);
+            }
+            else if($('#inlineRadio6').prop('checked')===true) {
+              $('#StartDate, #EndDate').attr('disabled', false);
+            }
+          }
+			// setting data
+			if (isStudyProtocol !== 'isstudyProtocol') {
+				$('#resourceTitle').val($('#resourceTitle', htmlData).val());
+			}
+			$('#comment').val($('#comment', htmlData).val());
+			let richText = $('#richText', htmlData).val();
+			if (richText===undefined) richText = '';
+			$('#richText').val(richText);
+			if (tinymce.get('richText')!==null)
+				tinymce.get('richText').setContent(richText);
+			if (textOrPdfEn==='false') {
+				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
+				$('.pdfDiv').hide();
+				$('#richEditor').removeClass('dis-none');
+				$('#inlineRadio1').prop('checked', true);
+			}
+			else if (textOrPdfEn==='true') {
+				$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
+				$('.pdfDiv').show();
+				$('#richEditor').addClass('dis-none');
+				$('#inlineRadio2').prop('checked', true);
+				$('#pdf_name').text($('#pdf_name', htmlData).text());
+				$('#pdfUrl').val($('#pdfUrl', htmlData).val());
+				$('[name="fileName"]').val($('#pdfUrl', htmlData).val());
+			}
+        }
+    }
+  });
+}
 </script>
