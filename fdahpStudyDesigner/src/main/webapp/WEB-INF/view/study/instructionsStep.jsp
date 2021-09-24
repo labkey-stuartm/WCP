@@ -461,6 +461,10 @@
           $('#shortTitleId, #destinationStepId').attr('disabled', false);
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
+          
+          <c:if test="${actionTypeForQuestionPage == 'view'}">
+          $('#basicInfoFormId input,textarea ').prop('disabled', true);
+          </c:if>
         }
       }
     })

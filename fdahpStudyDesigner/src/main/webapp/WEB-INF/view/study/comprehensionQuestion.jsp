@@ -331,6 +331,10 @@
 <script type="text/javascript">
   $(document).ready(
       function () {
+    	  $(".menuNav li").removeClass('active');
+    	  $(".fifthComre").addClass('active');
+    	  $("#createStudyId").show();
+    	    
         <c:if test="${actionPage eq 'view'}">
         $('#comprehensionFormId input,textarea,select').prop(
             'disabled', true);
@@ -667,6 +671,11 @@
             $('#' + responseOptionId).val($('#' + responseOptionId, htmlData).val());
           });
           $('#questionText').val($('#questionText', htmlData).val());
+          
+          <c:if test="${actionPage eq 'view'}">
+          $('#comprehensionFormId input,textarea').prop('disabled', true);
+          $('.remBtnDis').addClass('cursor-none');
+          </c:if>
         }
       }
     })

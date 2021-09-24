@@ -754,6 +754,9 @@
           } else {
             $('#comment').val($('#comment', htmlData).val());
           }
+          if (viewPermission == 'view') {
+          	$('#eleFormId input,textarea').prop('disabled',true);
+          }
         }
       }
     });

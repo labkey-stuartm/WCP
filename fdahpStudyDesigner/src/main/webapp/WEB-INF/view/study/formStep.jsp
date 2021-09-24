@@ -1036,6 +1036,11 @@
             $('[data-id="destinationStepId"]').removeClass("ml-disabled");
           }
           $('.delete').removeClass('cursor-none');
+          
+          <c:if test="${actionTypeForQuestionPage == 'view'}">        
+   			 $('#formStepId input[type="text"]').prop('disabled', true);
+   			 $('#formStepId input[type="radio"]').prop('disabled', true);
+          </c:if>
         }
       }
     })

@@ -1140,6 +1140,10 @@
             $('.sprites_icon').removeAttr('style');
 
             $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
+            
+            <c:if test="${not perm.viewPermission}">
+            $('#settingfoFormId input,textarea').prop('disabled', true);
+            </c:if>
           }
         }
       }

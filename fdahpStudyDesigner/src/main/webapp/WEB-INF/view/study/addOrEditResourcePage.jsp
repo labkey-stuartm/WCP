@@ -1169,6 +1169,9 @@ function refreshAndFetchLanguageData(language) {
 				$('#pdfUrl').val($('#pdfUrl', htmlData).val());
 				$('[name="fileName"]').val($('#pdfUrl', htmlData).val());
 			}
+			<c:if test="${actionOn eq 'view'}">
+		 	$('#resourceForm input,textarea').prop('disabled', true);
+			</c:if>
         }
     }
   });

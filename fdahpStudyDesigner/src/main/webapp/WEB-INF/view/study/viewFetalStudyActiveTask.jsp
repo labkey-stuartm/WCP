@@ -46,7 +46,7 @@
         </div>
         <div>
             <div class="form-group">
-                <input type="text" class="form-control lang-specific" id="displayName"
+                <input type="text" class="form-control langSpecific" id="displayName"
                        name="displayName" value="${fn:escapeXml(activeTaskBo.displayName)}"
                        maxlength="150" required/>
                 <div class="help-block with-errors red-txt"></div>
@@ -57,7 +57,7 @@
     <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span
             class="requiredStar"> *</span></div>
     <div class="form-group">
-        <textarea class="form-control lang-specific" rows="5" id="comment" name="instruction"
+        <textarea class="form-control langSpecific" rows="5" id="comment" name="instruction"
                   maxlength="150" required>${activeTaskBo.instruction}</textarea>
         <div class="help-block with-errors red-txt"></div>
     </div>
@@ -400,7 +400,7 @@
                             <div class="add_notify_option">
                                 <div class="form-group">
                                     <input type="text"
-                                           class="form-control requireClass lang-specific"
+                                           class="form-control requireClass langSpecific"
                                            id="lineChartId"
                                            name="taskAttributeValueBos[2].titleChat" maxlength="30"
                                            value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>
@@ -446,7 +446,7 @@
                             Activity Over 6 Months) <small> (50 characters max)</small><span
                                     class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control requireClass lang-specific"
+                            <input type="text" class="form-control requireClass langSpecific"
                                    id="displayStat" name="taskAttributeValueBos[2].displayNameStat"
                                    maxlength="50"
                                    value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>
@@ -460,7 +460,7 @@
                             characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="add_notify_option">
                             <div class="form-group">
-                                <input type="text" class="form-control requireClass"
+                                <input type="text" class="form-control requireClass langSpecific"
                                        name="taskAttributeValueBos[2].displayUnitStat"
                                        maxlength="15"
                                        value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>

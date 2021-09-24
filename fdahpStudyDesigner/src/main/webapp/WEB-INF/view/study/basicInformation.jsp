@@ -944,6 +944,11 @@
           $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
+          
+          <c:if test="${studyBo.viewPermission }">
+          $('#basicInfoFormId input,textarea').prop('disabled', true);
+          $('#removeUrl').css('pointer-events', 'none');
+          </c:if>
         }
       }
     });

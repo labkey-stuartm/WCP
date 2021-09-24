@@ -371,7 +371,11 @@ function refreshAndFetchLanguageData(language) {
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 				$('#addButton').attr('disabled', false);
 				$('.delete ').removeClass('cursor-none');
-				$('.copy ').removeClass('cursor-none');
+				$('.copy ').removeClass('cursor-none');	
+				
+				<c:if test="${not empty permission}">
+				$('.delete, .copy').addClass('cursor-none');
+				</c:if>
 			}
 		}
 	});

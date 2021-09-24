@@ -5378,6 +5378,9 @@
               $('#useStasticData').prop('disabled', true);
             }
           }
+          <c:if test="${actionTypeForFormStep == 'view'}">
+          $('#questionStepId input,textarea ').prop('disabled', true);
+          </c:if>
         }
       }
     });

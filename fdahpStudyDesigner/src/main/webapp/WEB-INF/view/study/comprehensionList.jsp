@@ -661,6 +661,11 @@
           $('#addQuestionId , #comprehensionTestYes, #comprehensionTestNo').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
           $('#comprehensionTestMinimumScore').attr('disabled', false);
+          
+          <c:if test="${permission eq 'view'}">
+          $('#comprehensionInfoForm input,textarea').prop('disabled', true);
+          $('.delete').addClass('cursor-none');
+          </c:if>
         }
       }
     });

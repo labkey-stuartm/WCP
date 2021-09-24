@@ -494,6 +494,9 @@ function refreshAndFetchLanguageData(language) {
 					let id = value.getAttribute('id');
 					$('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
 				});
+				<c:if test="${not empty permission}">
+				$('.delete').addClass('cursor-none');
+				</c:if>
 			}
 		}
 	});

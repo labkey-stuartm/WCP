@@ -776,6 +776,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       String language) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Starts");
     InstructionsBo addOrUpdateInstructionsBo = null;
+    InstructionsLangBO instructionsLangBO = null;
     try {
       if (null != instructionsBo) {
         if (instructionsBo.getId() != null) {
@@ -788,8 +789,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
-          InstructionsLangBO instructionsLangBO =
-              studyQuestionnaireDAO.getInstructionLangBo(instructionsBo.getId(), language);
+          if (instructionsBo.getId() != null) {
+            instructionsLangBO =
+                studyQuestionnaireDAO.getInstructionLangBo(instructionsBo.getId(), language);
+          }
           if (instructionsLangBO == null) {
             instructionsLangBO = new InstructionsLangBO();
             instructionsLangBO.setInstructionLangPK(

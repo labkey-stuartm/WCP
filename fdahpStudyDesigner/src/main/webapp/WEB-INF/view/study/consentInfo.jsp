@@ -614,6 +614,10 @@
           $('#elaboratedRTE').val($('#elaboratedRTE', htmlData).val());
           $('#displayTitle').val($('#displayTitle', htmlData).val());
           tinymce.activeEditor.setContent($('#elaboratedRTE', htmlData).val());
+          
+          <c:if test="${actionPage eq 'view'}">
+          $('#consentInfoFormId input,textarea').prop('disabled', true);
+          </c:if>
         }
       }
     })

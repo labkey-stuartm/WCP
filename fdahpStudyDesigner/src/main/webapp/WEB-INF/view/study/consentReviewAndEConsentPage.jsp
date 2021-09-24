@@ -1621,6 +1621,10 @@
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
           }
+          if ('${permission}' == 'view') {
+              $('input[name="consentDocType"]').attr('disabled', 'disabled');
+              $('#consentReviewFormId input').prop('disabled', true);
+          }
         }
       }
     })

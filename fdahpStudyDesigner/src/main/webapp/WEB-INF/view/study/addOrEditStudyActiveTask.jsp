@@ -529,6 +529,9 @@
             if ($(id2).prop('checked') === true)
               $('#displayStat').val($(id4, htmlData).val());
           }
+          <c:if test="${actionPage eq 'view'}">
+          $(document).find('input,textarea').prop('disabled', true);
+          </c:if>
         }
       }
     })

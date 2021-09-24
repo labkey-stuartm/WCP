@@ -7675,6 +7675,9 @@
                 }
                 $('#' + id).val($('#' + id, htmlData).val());
               }
+              <c:if test="${actionTypeForQuestionPage == 'view'}">
+              $('#questionStepId input,textarea ').prop('disabled', true);              
+              </c:if>
             }
           }
         })

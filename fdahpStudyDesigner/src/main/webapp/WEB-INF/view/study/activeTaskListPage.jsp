@@ -332,6 +332,10 @@
           });
           $('#addBtn').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
+          
+          <c:if test="${not empty permission}">
+          $('#delTask').addClass('cursor-none');
+          </c:if>
         }
       }
     });

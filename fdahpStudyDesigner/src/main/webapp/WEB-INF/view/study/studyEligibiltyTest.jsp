@@ -465,6 +465,9 @@
           $('[data-id="resYesOptId"]').attr('disabled', false).removeAttr('style');
           $('[data-id="resNoOptId"]').attr('disabled', false).removeAttr('style');
           $('#question').val($('#question', htmlData).val());
+          <c:if test="${actionTypeForQuestionPage eq 'view'}">
+          $('#studyEligibiltyTestFormId input,textarea').prop('disabled', true);  
+          </c:if>
         }
       }
     });

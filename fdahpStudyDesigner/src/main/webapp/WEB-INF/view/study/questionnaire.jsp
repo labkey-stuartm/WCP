@@ -4692,6 +4692,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               'disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());
+          
+          <c:if test="${actionType == 'view'}">
+          $(".blue-bg, .green-bg, .skyblue-bg").addClass('cursor-none');
+          $('#branchingId').attr('disabled', true);
+          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr(
+                  'disabled', true);
+          </c:if>
         }
       }
     });

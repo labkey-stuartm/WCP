@@ -488,6 +488,10 @@
           });
           $('#addConsent').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
+          
+          if ('${permission}' == 'view') {
+        	  $('.delete').addClass('cursor-none');
+          }
         }
       }
     });
