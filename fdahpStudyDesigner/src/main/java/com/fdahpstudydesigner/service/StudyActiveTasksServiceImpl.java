@@ -350,6 +350,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
                   activeTaskBo.getTaskAttributeValueBos().get(8).getTitleChat());
               activeTaskLangBO.setChartTitle3(
                   activeTaskBo.getTaskAttributeValueBos().get(9).getTitleChat());
+              activeTaskLangBO.setDisplayUnitStat(
+                  activeTaskBo.getTaskAttributeValueBos().get(7).getDisplayUnitStat());
+              activeTaskLangBO.setDisplayUnitStat2(
+                  activeTaskBo.getTaskAttributeValueBos().get(8).getDisplayUnitStat());
+              activeTaskLangBO.setDisplayUnitStat3(
+                  activeTaskBo.getTaskAttributeValueBos().get(9).getDisplayUnitStat());
             }
           } else if (activeTaskBo.getTaskTypeId() == 2) {
             if (activeTaskBo.getTaskAttributeValueBos() != null
@@ -358,6 +364,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
                   activeTaskBo.getTaskAttributeValueBos().get(1).getDisplayNameStat());
               activeTaskLangBO.setChartTitle(
                   activeTaskBo.getTaskAttributeValueBos().get(1).getTitleChat());
+              activeTaskLangBO.setDisplayUnitStat(
+                  activeTaskBo.getTaskAttributeValueBos().get(1).getDisplayUnitStat());
             }
           } else {
             if (activeTaskBo.getTaskAttributeValueBos() != null
@@ -366,6 +374,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
                   activeTaskBo.getTaskAttributeValueBos().get(2).getDisplayNameStat());
               activeTaskLangBO.setChartTitle(
                   activeTaskBo.getTaskAttributeValueBos().get(2).getTitleChat());
+              activeTaskLangBO.setDisplayUnitStat(
+                  activeTaskBo.getTaskAttributeValueBos().get(2).getDisplayUnitStat());
             }
           }
           studyActiveTasksDAO.saveOrUpdateObject(activeTaskLangBO);

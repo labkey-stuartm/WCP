@@ -1355,6 +1355,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       String language) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
     QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
+    QuestionLangBO questionLangBO = null;
     try {
       QuestionsBo addQuestionsBo = null;
       if (questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null) {
@@ -1380,7 +1381,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
-          QuestionLangBO questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
+          if (id != null) {
+            questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
+          }
           if (questionLangBO == null) {
             questionLangBO = new QuestionLangBO();
             questionLangBO.setQuestionLangPK(new QuestionLangPK(id, language));
@@ -1408,6 +1411,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             questionLangBO.setMaxDescription(questionReponseTypeBo.getMaxDescription());
             questionLangBO.setMinDescription(questionReponseTypeBo.getMinDescription());
             questionLangBO.setPlaceholderText(questionReponseTypeBo.getPlaceholder());
+            questionLangBO.setUnit(questionReponseTypeBo.getUnit());
             questionLangBO.setInvalidMessage(questionReponseTypeBo.getInvalidMessage());
             questionLangBO.setExceptText(questionReponseTypeBo.getValidationExceptText());
             questionLangBO.setOtherText(questionReponseTypeBo.getOtherText());
