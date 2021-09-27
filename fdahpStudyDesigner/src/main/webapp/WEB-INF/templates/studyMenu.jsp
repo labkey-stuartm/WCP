@@ -41,6 +41,10 @@
                        value="${sequenceLangBO.studyExcQuestionnaries}"/>
                 <input type="hidden" id="mlParticipantProp"
                        value="${sequenceLangBO.participantProperties}"/>
+                <input type="hidden" id="mlResources"
+                       value="${sequenceLangBO.miscellaneousResources}"/>
+                <input type="hidden" id="mlNotification"
+                       value="${sequenceLangBO.miscellaneousNotification}"/>
                 <%--    for english language--%>
                 <input id="basicInfo" type="hidden" value="${studyBo.studySequenceBo.basicInfo}">
                 <input id="settings" type="hidden" value="${studyBo.studySequenceBo.settingAdmins}">
@@ -58,6 +62,10 @@
                        value="${studyBo.studySequenceBo.studyExcQuestionnaries}">
                 <input id="studyExcActiveTask" type="hidden"
                        value="${studyBo.studySequenceBo.studyExcActiveTask}">
+                <input id="resources" type="hidden"
+                       value="${studyBo.studySequenceBo.miscellaneousResources}">
+                <input id="notification" type="hidden"
+                       value="${studyBo.studySequenceBo.miscellaneousNotification}">
 
                 <div class="mb-lg ${empty studyBo.status?'hide':''}">
 					<span
@@ -306,8 +314,9 @@
     });
     $('.eigthNotification').click(function () {
       $('.eigthNotification').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}&language=" + $(
-          '#studyLanguage').val();
+      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}&language="
+          + $(
+              '#studyLanguage').val();
       document.body.appendChild(a).click();
     });
     $('.nine').click(function () {
@@ -383,6 +392,8 @@
     updateTicksByClassName(htmlData, '#mlParticipantProp', '.sixth');
     updateTicksByClassName(htmlData, '#mlQuestionnaire', '.seventhQuestionnaires');
     updateTicksByClassName(htmlData, '#mlActiveTask', '.seventhTask');
+    updateTicksByClassName(htmlData, '#mlResources', '.eighthResources');
+    updateTicksByClassName(htmlData, '#mlNotification', '.eigthNotification');
     if ($('#mlConsent', htmlData).val() === 'true' && $('#mlCompre', htmlData).val() === 'true'
         && $('#mlConsentEduInfo', htmlData).val() === 'true') {
       let fifth = $('.fifth');
@@ -420,6 +431,8 @@
     updateEnglishTicksByClassName('#participantProperties', '.sixth');
     updateEnglishTicksByClassName('#studyExcQuestionnaries', '.seventhQuestionnaires');
     updateEnglishTicksByClassName('#studyExcActiveTask', '.seventhTask');
+    updateEnglishTicksByClassName('#resources', '.eighthResources');
+    updateEnglishTicksByClassName('#notification', '.eigthNotification');
 
     if ($('#consentEduInfo').val() === 'true' && $('#comprehensionTest').val() === 'true'
         && $('#eConsent').val() === 'true') {

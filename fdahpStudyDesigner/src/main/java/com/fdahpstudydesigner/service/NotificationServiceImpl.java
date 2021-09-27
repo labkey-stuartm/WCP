@@ -1,7 +1,13 @@
 package com.fdahpstudydesigner.service;
 
+import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
+import com.fdahpstudydesigner.bo.ConsentInfoLangPK;
+import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
+import com.fdahpstudydesigner.bo.NotificationLangBO;
+import com.fdahpstudydesigner.bo.NotificationLangPK;
 import com.fdahpstudydesigner.dao.NotificationDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -147,6 +153,35 @@ public class NotificationServiceImpl implements NotificationService {
     return notificationList;
   }
 
+  @Override
+  public List<NotificationLangBO> getNotificationLangList(
+      int studyId, String langCode, List<NotificationBO> notificationBOList, int userId) {
+    logger.info("NotificationServiceImpl - getNotificationLangList() - Starts");
+    List<NotificationLangBO> notificationList = null;
+    try {
+      if (notificationBOList != null && notificationBOList.size() > 0) {
+        for (NotificationBO notificationBO : notificationBOList) {
+          NotificationLangBO notificationLangBO =
+              notificationDAO.getNotificationLang(notificationBO.getNotificationId(), langCode);
+          if (notificationLangBO == null) {
+            notificationLangBO = new NotificationLangBO();
+            notificationLangBO.setNotificationLangPK(
+                new NotificationLangPK(notificationBO.getNotificationId(), langCode));
+            notificationLangBO.setStudyId(notificationBO.getStudyId());
+            notificationLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            notificationLangBO.setCreatedBy(userId);
+            studyDAO.saveOrUpdateObject(notificationLangBO);
+          }
+        }
+        notificationList = notificationDAO.getNotificationLangList(studyId, langCode);
+      }
+    } catch (Exception e) {
+      logger.error("NotificationServiceImpl - getNotificationLangList() - ERROR ", e);
+    }
+    logger.info("NotificationServiceImpl - getNotificationLangList() - Ends , e");
+    return notificationList;
+  }
+
   /**
    * This method is used to save/update/resend of study/global notification
    *
@@ -165,22 +200,44 @@ public class NotificationServiceImpl implements NotificationService {
       String notificationType,
       String buttonType,
       SessionObject sessionObject,
-      String customStudyId) {
+      String customStudyId,
+      String language) {
     logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
     int notificationId = 0;
     try {
       if (notificationBO != null) {
-        notificationId =
-            notificationDAO.saveOrUpdateOrResendNotification(
-                notificationBO, notificationType, buttonType, sessionObject);
-        if (notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)
-            && notificationId != 0) {
-          studyDAO.markAsCompleted(
-              notificationBO.getStudyId(),
-              FdahpStudyDesignerConstants.NOTIFICATION,
-              false,
-              sessionObject,
-              customStudyId);
+        if (FdahpStudyDesignerUtil.isNotEmpty(language)
+            && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+          NotificationLangBO notificationLangBO =
+              notificationDAO.getNotificationLang(notificationBO.getNotificationId(), language);
+          if (notificationLangBO == null) {
+            notificationLangBO = new NotificationLangBO();
+            notificationLangBO.setNotificationLangPK(
+                new NotificationLangPK(notificationBO.getNotificationId(), language));
+            notificationLangBO.setStudyId(notificationBO.getStudyId());
+            notificationLangBO.setCreatedBy(notificationBO.getCreatedBy());
+            notificationLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            notificationLangBO.setNotificationStatus(true);
+          } else {
+            notificationLangBO.setModifiedBy(notificationBO.getCreatedBy());
+            notificationLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          }
+          notificationLangBO.setNotificationText(notificationBO.getNotificationText());
+          studyDAO.saveOrUpdateObject(notificationLangBO);
+          notificationId = notificationBO.getNotificationId();
+        } else {
+          notificationId =
+              notificationDAO.saveOrUpdateOrResendNotification(
+                  notificationBO, notificationType, buttonType, sessionObject);
+          if (notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)
+              && notificationId != 0) {
+            studyDAO.markAsCompleted(
+                notificationBO.getStudyId(),
+                FdahpStudyDesignerConstants.NOTIFICATION,
+                false,
+                sessionObject,
+                customStudyId);
+          }
         }
       }
     } catch (Exception e) {
@@ -200,5 +257,18 @@ public class NotificationServiceImpl implements NotificationService {
     List<String> gatewayAppList = new ArrayList<>(new HashSet(notificationDAO.getGatwayAppList()));
     logger.info("NotificationServiceImpl - saveOrUpdateNotification - Ends");
     return gatewayAppList;
+  }
+
+  @Override
+  public NotificationLangBO getNotificationLang(int notificationId, String lang) {
+    logger.info("NotificationServiceImpl - getNotificationLang - Starts");
+    NotificationLangBO notificationBO = null;
+    try {
+      notificationBO = notificationDAO.getNotificationLang(notificationId, lang);
+    } catch (Exception e) {
+      logger.error("NotificationServiceImpl - getNotificationLang - ERROR", e);
+    }
+    logger.info("NotificationServiceImpl - getNotificationLang - Ends");
+    return notificationBO;
   }
 }

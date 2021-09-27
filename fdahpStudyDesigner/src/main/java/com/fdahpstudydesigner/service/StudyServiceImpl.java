@@ -738,18 +738,18 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<ResourcesLangBO> syncAndGetResourceLangList(List<ResourceBO> resourceBOList, Integer studyId, String language) {
+  public List<ResourcesLangBO> syncAndGetResourceLangList(
+      List<ResourceBO> resourceBOList, Integer studyId, String language) {
     logger.info("StudyServiceImpl - getResourceLangList() - Starts");
     List<ResourcesLangBO> resourcesLangBOList = null;
     try {
-      if (resourceBOList!=null && resourceBOList.size()>0) {
+      if (resourceBOList != null && resourceBOList.size() > 0) {
         for (ResourceBO resourceBO : resourceBOList) {
           ResourcesLangBO resourcesLangBO =
               studyDAO.getResourceLangBO(resourceBO.getId(), language);
           if (resourcesLangBO == null) {
             resourcesLangBO = new ResourcesLangBO();
-            resourcesLangBO.setResourcesLangPK(
-                new ResourcesLangPK(resourceBO.getId(), language));
+            resourcesLangBO.setResourcesLangPK(new ResourcesLangPK(resourceBO.getId(), language));
             resourcesLangBO.setStudyId(resourceBO.getStudyId());
             resourcesLangBO.setSequenceNo(resourceBO.getSequenceNo());
             resourcesLangBO.setTextOrPdf(false);
@@ -971,6 +971,14 @@ public class StudyServiceImpl implements StudyService {
           studySequenceLangBO.setStudyExcQuestionnaries(true);
         else if (FdahpStudyDesignerConstants.ACTIVETASK_LIST.equals(markCompleted))
           studySequenceLangBO.setStudyExcActiveTask(true);
+        else if (FdahpStudyDesignerConstants.NOTIFICATION.equals(markCompleted))
+          studySequenceLangBO.setMiscellaneousNotification(true);
+        else if (FdahpStudyDesignerConstants.COMPREHENSION_TEST.equals(markCompleted))
+          studySequenceLangBO.setComprehensionTest(true);
+        else if (FdahpStudyDesignerConstants.CONESENT_REVIEW.equals(markCompleted))
+          studySequenceLangBO.seteConsent(true);
+        else if (FdahpStudyDesignerConstants.RESOURCE.equals(markCompleted))
+          studySequenceLangBO.setMiscellaneousResources(true);
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
         message = FdahpStudyDesignerConstants.SUCCESS;
       } else {
@@ -1809,7 +1817,8 @@ public class StudyServiceImpl implements StudyService {
    * @return resource Id
    */
   @Override
-  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj, String language) {
+  public Integer saveOrUpdateResource(
+      ResourceBO resourceBO, SessionObject sesObj, String language) {
     logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
     Integer resourseId = 0;
     ResourceBO resourceBO2 = null;
@@ -1837,15 +1846,15 @@ public class StudyServiceImpl implements StudyService {
         updateResource = true;
       }
 
-      if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+      if (FdahpStudyDesignerUtil.isNotEmpty(language)
+          && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
         ResourcesLangBO resourcesLangBO = studyDAO.getResourceLangBO(resourceBO2.getId(), language);
-        if (resourcesLangBO==null) {
+        if (resourcesLangBO == null) {
           resourcesLangBO = new ResourcesLangBO();
           resourcesLangBO.setResourcesLangPK(new ResourcesLangPK(resourceBO2.getId(), language));
           resourcesLangBO.setCreatedBy(sesObj.getUserId());
           resourcesLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-        }
-        else {
+        } else {
           resourcesLangBO.setModifiedBy(sesObj.getUserId());
           resourcesLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         }
@@ -2785,8 +2794,7 @@ public class StudyServiceImpl implements StudyService {
     logger.info("StudyServiceImpl - getResourceLangInfo() - Starts");
     ResourcesLangBO resourcesLangBO = null;
     try {
-      resourcesLangBO =
-              studyDAO.getResourceLangBO(Integer.parseInt(resourceInfoId), language);
+      resourcesLangBO = studyDAO.getResourceLangBO(Integer.parseInt(resourceInfoId), language);
     } catch (Exception e) {
       logger.error("StudyServiceImpl - getResourceLangInfo() - ERROR ", e);
     }
