@@ -5103,7 +5103,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
               'disabled', true);
-          $('#trailId, #removeUrl').addClass('cursor-none');
+          $('#trailId, .removeImageId').addClass('cursor-none');
           responseTypeId.addClass('ml-disabled').attr('disabled', true);
           if ($('#allowHealthKit').prop('checked') === true) {
             $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled').attr('disabled', true);
@@ -5273,7 +5273,7 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
               'disabled', false);
-          $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
+          $('#trailId, .removeImageId').removeAttr('style').removeClass('cursor-none');
           responseTypeId.removeClass('ml-disabled').attr('disabled', false);
           if ($('#allowHealthKit').prop('checked') === true) {
             $('[data-id="healthkitDatatypeId"]').removeClass('ml-disabled').attr('disabled',
