@@ -1415,21 +1415,30 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             questionLangBO.setInvalidMessage(questionReponseTypeBo.getInvalidMessage());
             questionLangBO.setExceptText(questionReponseTypeBo.getValidationExceptText());
             questionLangBO.setOtherText(questionReponseTypeBo.getOtherText());
+            questionLangBO.setOtherPlaceholderText(questionReponseTypeBo.getOtherPlaceholderText());
+            questionLangBO.setOtherDescription(questionReponseTypeBo.getOtherDescription());
           }
 
           StringBuilder displayText = new StringBuilder();
+          StringBuilder description = new StringBuilder();
           if (questionnairesStepsBo.getQuestionResponseSubTypeList() != null
               && questionnairesStepsBo.getQuestionResponseSubTypeList().size() > 0) {
             int size = questionnairesStepsBo.getQuestionResponseSubTypeList().size();
             int i = 0;
             for (QuestionResponseSubTypeBo subTypeBo :
                 questionnairesStepsBo.getQuestionResponseSubTypeList()) {
-              if (i == size - 1) displayText.append(subTypeBo.getText());
-              else displayText.append(subTypeBo.getText()).append("|");
+              if (i == size - 1) {
+                displayText.append(subTypeBo.getText());
+                description.append(subTypeBo.getDescription());
+              } else {
+                displayText.append(subTypeBo.getText()).append("|");
+                description.append(subTypeBo.getDescription()).append("|");
+              }
               i++;
             }
           }
           questionLangBO.setDisplayText(displayText.toString());
+          questionLangBO.setTextChoiceDescription(description.toString());
           studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
         } else {
           if (questionnairesStepsBo.getQuestionsBo().getQuestion() != null) {

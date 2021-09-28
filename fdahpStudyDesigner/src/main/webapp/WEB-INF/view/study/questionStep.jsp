@@ -194,6 +194,9 @@
 					type="hidden" id="mlDisplayText"
 					value="${questionLangBO.displayText}"> <input type="hidden"
 					id="mlPlaceholderText" value="${questionLangBO.placeholderText}">
+				<input
+					type="hidden" id="mlTextChoiceDescription"
+					value="${questionLangBO.textChoiceDescription}">
 					<input type="hidden"
 					id="mlUnit" value="${questionLangBO.unit}">
 				<input type="hidden" id="mlInvalidMessage"
@@ -204,6 +207,10 @@
 					type="hidden" id="mlResponseTypeId"
 					value="${questionLangBO.responseTypeId}"> <input
 					type="hidden" id="mlOtherText" value="${questionLangBO.otherText}">
+				<input
+					type="hidden" id="mlOtherDescription" value="${questionLangBO.otherDescription}">
+				<input
+					type="hidden" id="mlOtherPlaceholderText" value="${questionLangBO.otherPlaceholderText}">
 
 				<input type="hidden" name="stepType" id="stepType" value="Question">
 				<input type="hidden" name="instructionFormId" id="instructionFormId"
@@ -2295,7 +2302,7 @@
 														<div class="gray-xs-f mb-xs">Description(1 to 150
 															characters)</div>
 														<div class="form-group">
-															<textarea class="form-control"
+															<textarea class="form-control lang-specific"
 																name="questionResponseSubTypeList[${subtype.index}].description"
 																id="displayTextChoiceDescription${subtype.index}"
 																value="${fn:escapeXml(questionResponseSubType.description)}"
@@ -2397,7 +2404,7 @@
 													<div class="gray-xs-f mb-xs">Description(1 to 150
 														characters)</div>
 													<div class="form-group">
-														<textarea type="text" class="form-control"
+														<textarea type="text" class="form-control lang-specific"
 															name="questionResponseSubTypeList[0].description"
 															id="displayTextChoiceDescription0"
 															value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
@@ -2495,7 +2502,7 @@
 													<div class="gray-xs-f mb-xs">Description(1 to 150
 														characters)</div>
 													<div class="form-group">
-														<textarea type="text" class="form-control"
+														<textarea type="text" class="form-control lang-specific"
 															name="questionResponseSubTypeList[1].description"
 															id="displayTextChoiceDescription1"
 															value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}"
@@ -2601,7 +2608,7 @@
 												<div class="gray-xs-f mb-xs">Description(1 to 150
 													characters)</div>
 												<div class="form-group">
-													<textarea class="form-control"
+													<textarea class="form-control lang-specific"
 														name="questionReponseTypeBo.otherDescription"
 														maxlength="150">${questionnairesStepsBo.questionReponseTypeBo.otherDescription}</textarea>
 												</div>
@@ -2633,7 +2640,7 @@
 											<div class="gray-xs-f mb-xs pr-md">Place holder text
 												for the text field</div>
 											<div class="form-group">
-												<input type="text" class="form-control"
+												<input type="text" class="form-control lang-specific"
 													name="questionReponseTypeBo.otherPlaceholderText"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherPlaceholderText}"
 													maxlength="50" />
@@ -7213,12 +7220,17 @@
                   else if (respType === '6') {
                     className = '.text-choice';
                     $('[name="questionReponseTypeBo.otherText"]').val('');
+                    $('[name="questionReponseTypeBo.otherDescription"]').val('');
+                    $('[name="questionReponseTypeBo.otherPlaceholderText"]').val('');
                   }
                   let i = 0;
                   let displayText = $('#mlDisplayText', htmlData).val();
+                  let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
                   let dispArray = [];
-                  if (displayText !== '') {
+                  let txtDescriptionArray = [];
+                  if (displayText !== '' || textChoiceDescription !== '') {
                     dispArray = displayText.split('|');
+                    txtDescriptionArray = textChoiceDescription.split('|');
                   }
                   $(className).find('input.lang-specific').each(function (index, ele) {
                     let id = ele.getAttribute('id');
@@ -7274,18 +7286,28 @@
                     className = '.text-choice';
                     $('[name="questionReponseTypeBo.otherText"]').val(
                         $('#mlOtherText', htmlData).val());
+                    $('[name="questionReponseTypeBo.otherDescription"]').val(
+                            $('#mlOtherText', htmlData).val());
+                    $('[name="questionReponseTypeBo.otherPlaceholderText"]').val(
+                            $('#mlOtherText', htmlData).val());
                   }
                   let i = 0;
                   let displayText = $('#mlDisplayText', htmlData).val();
+                  let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
                   let dispArray = [];
-                  if (displayText !== '') {
+                  let txtDescriptionArray = [];
+                  if (displayText !== '' || textChoiceDescription !== '') {
                     dispArray = displayText.split('|');
+                    txtDescriptionArray = textChoiceDescription.split('|');
                   }
                   $(className).find('input.lang-specific').each(function (index, ele) {
                     let value = (dispArray[i] !== undefined && dispArray[i] != null
                         && dispArray[i] !== '') ? dispArray[i] : '';
+                    let txtValue = (txtDescriptionArray[i] !== undefined && txtDescriptionArray[i] != null
+                                && txtDescriptionArray[i] !== '') ? txtDescriptionArray[i] : '';
                     let id = ele.getAttribute('id');
                     $('#' + id).val(value);
+                    $('#' + id).val(txtValue);
                     i++;
                   });
                 } else if (respType === '8' || respType === '11' || respType === '12'
@@ -7386,6 +7408,10 @@
                   className = '.text-choice';
                   $('[name="questionReponseTypeBo.otherText"]').val(
                       $('[name="questionReponseTypeBo.otherText"]', htmlData).val());
+                  $('[name="questionReponseTypeBo.otherDescription"]').val(
+                          $('[name="questionReponseTypeBo.otherDescription"]', htmlData).val());
+                  $('[name="questionReponseTypeBo.otherPlaceholderText"]').val(
+                          $('[name="questionReponseTypeBo.otherPlaceholderText"]', htmlData).val());
                 }
                 $(className).find('input.lang-specific').each(function (index, ele) {
                   let id = ele.getAttribute('id');
