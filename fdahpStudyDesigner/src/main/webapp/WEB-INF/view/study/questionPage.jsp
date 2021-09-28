@@ -4305,9 +4305,9 @@
             $('#alertMsg').show();
             if (callback)
               callback(true);
-            if ($('.sixthQuestionnaires').find('span').hasClass(
+            if ($('.seventhQuestionnaires').find('span').hasClass(
                 'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.sixthQuestionnaires').find('span').removeClass(
+              $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
             }
           } else {

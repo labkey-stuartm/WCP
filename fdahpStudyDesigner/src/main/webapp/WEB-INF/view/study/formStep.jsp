@@ -574,9 +574,9 @@
               $('#alertMsg').show();
               $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                   "Reorder done successfully");
-              if ($('.sixthQuestionnaires').find('span').hasClass(
+              if ($('.seventhQuestionnaires').find('span').hasClass(
                   'sprites-icons-2 tick pull-right mt-xs')) {
-                $('.sixthQuestionnaires').find('span').removeClass(
+                $('.seventhQuestionnaires').find('span').removeClass(
                     'sprites-icons-2 tick pull-right mt-xs');
               }
             } else {
@@ -696,9 +696,9 @@
 
             $("#stepId").val(stepId);
             $("#formId").val(formId);
-            if ($('.sixthQuestionnaires').find('span').hasClass(
+            if ($('.seventhQuestionnaires').find('span').hasClass(
                 'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.sixthQuestionnaires').find('span').removeClass(
+              $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
             }
             $("#addQuestionId").removeClass("cursor-none");
@@ -786,9 +786,9 @@
                   var questionnaireSteps = data.questionnaireJsonObject;
                   var isDone = data.isDone;
                   reloadQuestionsData(questionnaireSteps, isDone);
-                  if ($('.sixthQuestionnaires').find('span').hasClass(
+                  if ($('.seventhQuestionnaires').find('span').hasClass(
                       'sprites-icons-2 tick pull-right mt-xs')) {
-                    $('.sixthQuestionnaires').find('span').removeClass(
+                    $('.seventhQuestionnaires').find('span').removeClass(
                         'sprites-icons-2 tick pull-right mt-xs');
                   }
                 } else {

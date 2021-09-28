@@ -361,11 +361,11 @@
             $(item).prop('disabled', false);
             $("#saveId").attr("disabled", false);
             $('#alertMsg').show();
-            if ($('.sixthQuestionnaires')
+            if ($('.seventhQuestionnaires')
             .find('span')
             .hasClass(
                 'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.sixthQuestionnaires')
+              $('.seventhQuestionnaires')
               .find('span')
               .removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');

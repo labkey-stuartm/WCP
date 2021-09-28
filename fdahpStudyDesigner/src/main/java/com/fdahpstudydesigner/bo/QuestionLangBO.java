@@ -57,6 +57,9 @@ public class QuestionLangBO implements Serializable {
   @Column(name = "placeholder_text")
   private String placeholderText;
 
+  @Column(name = "unit")
+  private String unit;
+
   @Column(name = "invalid_message")
   private String invalidMessage;
 
@@ -238,5 +241,13 @@ public class QuestionLangBO implements Serializable {
 
   public void setResponseTypeId(Integer responseTypeId) {
     this.responseTypeId = responseTypeId;
+  }
+
+  public String getUnit() {
+    return unit;
+  }
+
+  public void setUnit(String unit) {
+    this.unit = unit;
   }
 }
