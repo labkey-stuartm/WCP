@@ -29,26 +29,26 @@
         cursor: not-allowed;
         pointer-events: none;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
     </style>
 </head>
 <!-- Start right Content here -->
@@ -391,7 +391,7 @@
     }
 
     $(".menuNav li.active").removeClass('active');
-    $(".sixthQuestionnaires").addClass('active');
+    $(".seventhQuestionnaires").addClass('active');
     var question = "${Question}";
 
     if (question != null && question != '' && typeof question != 'undefined' && question == 'Yes') {
@@ -1036,10 +1036,10 @@
             $('[data-id="destinationStepId"]').removeClass("ml-disabled");
           }
           $('.delete').removeClass('cursor-none');
-          
-          <c:if test="${actionTypeForQuestionPage == 'view'}">        
-   			 $('#formStepId input[type="text"]').prop('disabled', true);
-   			 $('#formStepId input[type="radio"]').prop('disabled', true);
+
+          <c:if test="${actionTypeForQuestionPage == 'view'}">
+          $('#formStepId input[type="text"]').prop('disabled', true);
+          $('#formStepId input[type="radio"]').prop('disabled', true);
           </c:if>
         }
       }

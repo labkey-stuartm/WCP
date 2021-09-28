@@ -30,26 +30,26 @@
       .btm-marg {
         margin-bottom: 8px;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -66,6 +66,12 @@
         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <input type="hidden" id="consentId" name="consentId"
                value="${consentBo.id}">
+        <select id="consentLangItems" style="display: none">
+            <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
+                <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
+                        value="${consentInfoLang.displayTitle}">${consentInfoLang.elaborated}</option>
+            </c:forEach>
+        </select>
     </form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}"
@@ -808,6 +814,7 @@
     /* var isChek = "
 
 
+
     ${consentBo.consentDocType}";
 	if(isChek != null && isChek !='' && typeof isChek !=undefined){
 		if(isChek == 'New'){
@@ -996,30 +1003,6 @@
       // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     }
 
-    function autoCreateConsentDocumentInOtherLanguages() {
-      var consentDocumentDivContent = "";
-      $("#autoConsentDocumentDivId").empty();
-      if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
-          && "${consentInfoLangList}"
-          !== undefined) {
-        if ($("#inlineRadio1").is(":checked")) {
-          <c:forEach items="${consentInfoLangList}" varStatus="i" var="consentInfo">
-          consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
-              + "${consentInfo.displayTitle}"
-              + "</strong></span><br/>"
-              + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-              + "${consentInfo.elaborated}"
-              + "</span><br/>";
-          </c:forEach>
-
-        }
-      }
-      $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
-      $("#newDocumentDivId").val('');
-      //apply custom scroll bar to the auto consent document type
-      // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-    }
-
     //createNewConsentDocument
     function createNewConsentDocument() {
       tinymce.init({
@@ -1049,6 +1032,7 @@
 
       /* tinymce.get('newDocumentDivId').setContent('');
       tinymce.get('newDocumentDivId').setContent('
+
 
 
       ${consentBo.consentDocContent}'); */
@@ -1561,21 +1545,19 @@
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
           if ($("#inlineRadio1").is(":checked")) {
-            var consentDocumentDivContent = "";
+            let consentDocumentDivContent = "";
             $("#autoConsentDocumentDivId").empty();
             if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
                 && "${consentInfoLangList}"
                 !== undefined) {
-              if ($("#inlineRadio1").is(":checked")) {
-                <c:forEach items="${consentInfoLangList}" varStatus="i" var="consentInfo">
+              $('#consentLangItems option', htmlData).each(function (index, value) {
                 consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
-                    + "${consentInfo.displayTitle}"
+                    + value.getAttribute('value')
                     + "</strong></span><br/>"
                     + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-                    + "${consentInfo.elaborated}"
+                    + value.text
                     + "</span><br/>";
-                </c:forEach>
-              }
+              })
             }
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
@@ -1607,23 +1589,21 @@
             $("#autoConsentDocumentDivId").empty();
             if (null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}"
                 !== undefined) {
-              if ($("#inlineRadio1").is(":checked")) {
-                <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-                consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
-                    + "${consentInfo.displayTitle}"
-                    + "</strong></span><br/>"
-                    + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-                    + "${consentInfo.elaborated}"
-                    + "</span><br/>";
-                </c:forEach>
-              }
+              <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
+              consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+                  + "${consentInfo.displayTitle}"
+                  + "</strong></span><br/>"
+                  + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+                  + "${consentInfo.elaborated}"
+                  + "</span><br/>";
+              </c:forEach>
             }
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
           }
           if ('${permission}' == 'view') {
-              $('input[name="consentDocType"]').attr('disabled', 'disabled');
-              $('#consentReviewFormId input').prop('disabled', true);
+            $('input[name="consentDocType"]').attr('disabled', 'disabled');
+            $('#consentReviewFormId input').prop('disabled', true);
           }
         }
       }

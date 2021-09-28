@@ -6,11 +6,11 @@
     <meta charset="UTF-8">
 </head>
 <style>
-  .langSpecific{
+  .langSpecific {
     position: relative;
   }
 
-  .langSpecific > button::before{
+  .langSpecific > button::before {
     content: '';
     display: block;
     background-image: url("../images/global_icon.png");
@@ -22,7 +22,7 @@
     background-repeat: no-repeat;
   }
 
-  .langSpecific > button{
+  .langSpecific > button {
     padding-left: 30px;
   }
 </style>
@@ -205,7 +205,7 @@
     }
 
     $(".menuNav li.active").removeClass('active');
-    $(".sixthQuestionnaires").addClass('active');
+    $(".seventhQuestionnaires").addClass('active');
     $("#shortTitleId").blur(function () {
       validateShortTitle('', function (val) {
       });
@@ -461,7 +461,7 @@
           $('#shortTitleId, #destinationStepId').attr('disabled', false);
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
-          
+
           <c:if test="${actionTypeForQuestionPage == 'view'}">
           $('#basicInfoFormId input,textarea ').prop('disabled', true);
           </c:if>

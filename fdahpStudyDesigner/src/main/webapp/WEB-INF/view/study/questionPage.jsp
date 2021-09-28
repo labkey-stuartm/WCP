@@ -25,26 +25,26 @@
         cursor: not-allowed;
         pointer-events: none;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
     </style>
 </head>
 <script type="text/javascript">
@@ -2679,7 +2679,7 @@
     </c:if>
 
     $(".menuNav li.active").removeClass('active');
-    $(".sixthQuestionnaires").addClass('active');
+    $(".seventhQuestionnaires").addClass('active');
     $("#doneId").click(function () {
       $("#doneId").attr("disabled", true);
       var isValid = true;
@@ -4371,7 +4371,8 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}";
+          a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + $(
+              '#studyLanguage').val();
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -4381,7 +4382,8 @@
     </c:if>
     <c:if test="${actionTypeForFormStep eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}";
+    a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + $(
+        '#studyLanguage').val();
     document.body.appendChild(a).click();
     </c:if>
   }

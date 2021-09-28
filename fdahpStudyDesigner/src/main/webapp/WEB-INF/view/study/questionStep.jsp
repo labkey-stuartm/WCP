@@ -31,26 +31,26 @@
         cursor: not-allowed;
         pointer-events: none;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
     </style>
 </head>
 <script type="text/javascript">
@@ -3904,7 +3904,7 @@
           $('.ImageChoiceContainer').find(".remBtnDis").addClass("hide");
         }
         $(".menuNav li.active").removeClass('active');
-        $(".sixthQuestionnaires").addClass('active');
+        $(".seventhQuestionnaires").addClass('active');
         $("#doneId").click(function () {
           $("#doneId").attr("disabled", true);
           var isValid = true;
@@ -7676,7 +7676,7 @@
                 $('#' + id).val($('#' + id, htmlData).val());
               }
               <c:if test="${actionTypeForQuestionPage == 'view'}">
-              $('#questionStepId input,textarea ').prop('disabled', true);              
+              $('#questionStepId input,textarea ').prop('disabled', true);
               </c:if>
             }
           }
