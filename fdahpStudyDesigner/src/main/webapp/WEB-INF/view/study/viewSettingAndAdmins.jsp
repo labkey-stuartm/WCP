@@ -46,6 +46,7 @@
         <input type="hidden" id="deletedLanguage" name="deletedLanguage"/>
         <input type="hidden" id="newSelLanguages" name="newLanguages">
         <input type="hidden" name="studyId" value="${studyBo.id}">
+        <input type="hidden" id="mlFlag" name="mlFlag"/>
     </form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}"
@@ -194,7 +195,7 @@
                         <span id="span-${stdLang.key}">${stdLang.value}<span <c:if
                                 test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
                                 id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
-                                onclick="removeLang(this.id, '${stdLang.value}')"> X&nbsp;&nbsp;</span></span>
+                                onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;</span></span>
                     </c:forEach>
                 </div>
             </div>
@@ -554,7 +555,8 @@
     });
     </c:if>
     <c:if
-    test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> 
+    test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
+    $('[name="multiLanguageFlag"]').prop('disabled', true);
     $('.removeLang').addClass('cursor-none');
     </c:if>
     let currLang = $('#studyLanguage').val();
@@ -564,7 +566,7 @@
     }
 
     $(document).on('click', '.removeLangNew', function () {
-      removeLang(this.id, 'new');
+      removeLang(this.id, 'new', '');
     })
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -880,6 +882,26 @@
 
   $('input[name="multiLanguageFlag"]').change(function (e) {
     if (this.value === 'No') {
+      let message = '';
+      let languages = '';
+      let allLang = $('#selectedLanguages').find('span.removeLang');
+      let size = allLang.length;
+      allLang.each(function (index){
+        let langName = $(this).parent().text().split(' ')[0];
+        if (message==='') {
+          message=langName;
+        } else {
+          if (index === size-1) {
+            message += (' and '+langName);
+          } else {
+            message += (', '+langName);
+          }
+        }
+        languages === '' ? languages=this.id.split('-')[1] : languages += (','+this.id.split('-')[1]);
+      })
+      if (languages!=='') {
+        removeLang('', message, languages);
+      }
       $("#langSelect").slideUp('slow');
     } else {
       $("#langSelect").slideDown('slow');
@@ -1033,7 +1055,7 @@
 
   var removedLanguages = '';
 
-  function removeLang(langObject, fullName) {
+  function removeLang(langObject, fullName, allLang) {
     if (fullName === 'new') {
       let text = $('#' + langObject).parent().text();
       if (text !== undefined) {
@@ -1055,10 +1077,19 @@
       },
       callback: function (result) {
         if (result) {
-          let targetStr = langObject.split('-')[1];
-          $('#deletedLanguage').val(targetStr);
+          if (langObject==='') {
+            $('#mlFlag').val('Y');
+            $('#deletedLanguage').val(allLang);
+          } else {
+            let targetStr = langObject.split('-')[1];
+            $('#deletedLanguage').val(targetStr);
+          }
           $('#newSelLanguages').val(newSelectedLang)
           $('#removeLangFormId').submit();
+        } else {
+          if (langObject==='') {
+            $('#mlYes').prop('checked', true).change();
+          }
         }
       }
     });

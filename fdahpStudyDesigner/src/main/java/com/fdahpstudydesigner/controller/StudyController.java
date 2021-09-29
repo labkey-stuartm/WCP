@@ -6736,10 +6736,14 @@ public class StudyController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("newLanguages"))
                 ? ""
                 : request.getParameter("newLanguages");
+        String mlFlag =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("mlFlag"))
+                ? ""
+                : request.getParameter("mlFlag");
         studyBo.setUserId(sesObj.getUserId());
         message =
             studyService.removeExistingLanguageAndData(
-                studyId, sesObj, deletedLanguage, newLanguages, sesObj.getUserId());
+                studyId, sesObj, deletedLanguage, newLanguages, mlFlag);
         request
             .getSession()
             .setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyId + "");

@@ -5918,7 +5918,7 @@
             +
             "<div class='gray-xs-f mb-xs'>Description(1 to 150 characters) </div>" +
             "<div class='form-group'>" +
-            "   <textarea type='text' class='form-control' name='questionResponseSubTypeList["
+            "   <textarea type='text' class='form-control lang-specific' name='questionResponseSubTypeList["
             + choiceCount + "].description' id='displayTextChoiceDescription" + choiceCount
             + "'  maxlength='150'></textarea>" +
             "</div>" +
@@ -7217,21 +7217,19 @@
                     className = '.value-picker';
                   else if (respType === '5')
                     className = '.image-choice';
-                  else if (respType === '6') {
-                    className = '.text-choice';
-                    $('[name="questionReponseTypeBo.otherText"]').val('');
-                    $('[name="questionReponseTypeBo.otherDescription"]').val('');
-                    $('[name="questionReponseTypeBo.otherPlaceholderText"]').val('');
-                  }
+				  else if (respType === '6') {
+					  className = '.text-choice';
+					  $('[name="questionReponseTypeBo.otherText"]').val('');
+					  $('[name="questionReponseTypeBo.otherDescription"]').val('');
+					  $('[name="questionReponseTypeBo.otherPlaceholderText"]').val('');
+					  let i=0;
+					  $(className).find('textarea.lang-specific').each(function (index, ele) {
+						  let id = ele.getAttribute('id');
+						  $('#' + id).val('');
+						  i++;
+					  });
+				  }
                   let i = 0;
-                  let displayText = $('#mlDisplayText', htmlData).val();
-                  let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
-                  let dispArray = [];
-                  let txtDescriptionArray = [];
-                  if (displayText !== '' || textChoiceDescription !== '') {
-                    dispArray = displayText.split('|');
-                    txtDescriptionArray = textChoiceDescription.split('|');
-                  }
                   $(className).find('input.lang-specific').each(function (index, ele) {
                     let id = ele.getAttribute('id');
                     $('#' + id).val('');
@@ -7287,27 +7285,35 @@
                     $('[name="questionReponseTypeBo.otherText"]').val(
                         $('#mlOtherText', htmlData).val());
                     $('[name="questionReponseTypeBo.otherDescription"]').val(
-                            $('#mlOtherText', htmlData).val());
+                            $('#mlOtherDescription', htmlData).val());
                     $('[name="questionReponseTypeBo.otherPlaceholderText"]').val(
-                            $('#mlOtherText', htmlData).val());
+                            $('#mlOtherPlaceholderText', htmlData).val());
+
+                    let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
+					let txtDescriptionArray = [];
+					if (textChoiceDescription !== '') {
+						txtDescriptionArray = textChoiceDescription.split('|');
+					}
+					let i=0;
+					$(className).find('textarea.lang-specific').each(function (index, ele) {
+						let txtValue = (txtDescriptionArray[i] !== undefined && txtDescriptionArray[i] != null
+								&& txtDescriptionArray[i] !== '') ? txtDescriptionArray[i] : '';
+						let id = ele.getAttribute('id');
+						$('#' + id).val(txtValue);
+						i++;
+					});
                   }
                   let i = 0;
                   let displayText = $('#mlDisplayText', htmlData).val();
-                  let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
                   let dispArray = [];
-                  let txtDescriptionArray = [];
-                  if (displayText !== '' || textChoiceDescription !== '') {
+                  if (displayText !== '') {
                     dispArray = displayText.split('|');
-                    txtDescriptionArray = textChoiceDescription.split('|');
                   }
                   $(className).find('input.lang-specific').each(function (index, ele) {
                     let value = (dispArray[i] !== undefined && dispArray[i] != null
                         && dispArray[i] !== '') ? dispArray[i] : '';
-                    let txtValue = (txtDescriptionArray[i] !== undefined && txtDescriptionArray[i] != null
-                                && txtDescriptionArray[i] !== '') ? txtDescriptionArray[i] : '';
                     let id = ele.getAttribute('id');
                     $('#' + id).val(value);
-                    $('#' + id).val(txtValue);
                     i++;
                   });
                 } else if (respType === '8' || respType === '11' || respType === '12'
@@ -7412,6 +7418,10 @@
                           $('[name="questionReponseTypeBo.otherDescription"]', htmlData).val());
                   $('[name="questionReponseTypeBo.otherPlaceholderText"]').val(
                           $('[name="questionReponseTypeBo.otherPlaceholderText"]', htmlData).val());
+					$(className).find('textarea.lang-specific').each(function (index, ele) {
+						let id = ele.getAttribute('id');
+						$('#' + id).val($('#' + id, htmlData).val());
+					});
                 }
                 $(className).find('input.lang-specific').each(function (index, ele) {
                   let id = ele.getAttribute('id');

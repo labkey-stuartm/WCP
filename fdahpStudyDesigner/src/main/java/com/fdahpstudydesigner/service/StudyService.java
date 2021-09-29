@@ -203,7 +203,7 @@ public interface StudyService {
       SessionObject sesObj,
       String langToBeDeleted,
       String newLanguages,
-      int userId);
+      String mlFlag);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 

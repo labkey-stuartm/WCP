@@ -2315,42 +2315,55 @@ public class StudyServiceImpl implements StudyService {
       SessionObject sesObj,
       String langToBeDeleted,
       String newLanguages,
-      int userId) {
+      String mlFlag) {
     logger.info("StudyServiceImpl - removeExistingLanguageAndData() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      StudyBo existingStudy = studyDAO.getStudyById(studyId, userId);
-      if (existingStudy != null && FdahpStudyDesignerUtil.isNotEmpty(langToBeDeleted)) {
-        String selectedLanguages =
-            (existingStudy.getSelectedLanguages() != null
-                    ? existingStudy.getSelectedLanguages()
-                    : "")
-                .concat(newLanguages);
-        existingStudy.setSelectedLanguages(selectedLanguages);
-        existingStudy.setMultiLanguageFlag(true);
-        if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)
-            && selectedLanguages.contains(langToBeDeleted)) {
-          String[] languages = selectedLanguages.split(",");
-          List<String> updatedLang = new LinkedList<>();
-          for (String lang : languages) {
-            if (!lang.equals(langToBeDeleted)) {
-              updatedLang.add(lang);
-            }
+      StudyBo existingStudy = studyDAO.getStudyById(studyId, sesObj.getUserId());
+      StudySequenceBo studySequenceBo = existingStudy.getStudySequenceBo();
+      if (studySequenceBo != null) {
+        studySequenceBo.setSettingAdmins(false);
+        studyDAO.saveOrUpdateObject(studySequenceBo);
+      }
+      if (FdahpStudyDesignerUtil.isNotEmpty(mlFlag) && "Y".equals(mlFlag)) {
+        String selectedLanguages = existingStudy.getSelectedLanguages();
+        if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)) {
+          for (String lang : selectedLanguages.split(",")) {
+            result = studyDAO.deleteAllLanguageData(Integer.parseInt(studyId), lang);
           }
-          StringBuilder updatedLangString = new StringBuilder();
-          for (String lang : updatedLang) {
-            updatedLangString.append(lang).append(',');
-          }
-          existingStudy.setSelectedLanguages(updatedLangString.toString());
-          StudySequenceBo studySequenceBo = existingStudy.getStudySequenceBo();
-          if (studySequenceBo != null) {
-            studySequenceBo.setSettingAdmins(false);
-            studyDAO.saveOrUpdateObject(studySequenceBo);
-          }
-          studyDAO.saveOrUpdateObject(existingStudy);
-          result = studyDAO.deleteAllLanguageData(Integer.parseInt(studyId), langToBeDeleted);
         }
+        existingStudy.setSelectedLanguages(null);
+        existingStudy.setMultiLanguageFlag(false);
+        studyDAO.saveOrUpdateObject(existingStudy);
         result = FdahpStudyDesignerConstants.SUCCESS;
+      } else {
+        if (FdahpStudyDesignerUtil.isNotEmpty(langToBeDeleted)) {
+          String selectedLanguages =
+              (existingStudy.getSelectedLanguages() != null
+                  ? existingStudy.getSelectedLanguages()
+                  : "")
+                  .concat(newLanguages);
+          existingStudy.setSelectedLanguages(selectedLanguages);
+          existingStudy.setMultiLanguageFlag(true);
+          if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)
+              && selectedLanguages.contains(langToBeDeleted)) {
+            String[] languages = selectedLanguages.split(",");
+            List<String> updatedLang = new LinkedList<>();
+            for (String lang : languages) {
+              if (!lang.equals(langToBeDeleted)) {
+                updatedLang.add(lang);
+              }
+            }
+            StringBuilder updatedLangString = new StringBuilder();
+            for (String lang : updatedLang) {
+              updatedLangString.append(lang).append(',');
+            }
+            existingStudy.setSelectedLanguages(updatedLangString.toString());
+            studyDAO.saveOrUpdateObject(existingStudy);
+            result = studyDAO.deleteAllLanguageData(Integer.parseInt(studyId), langToBeDeleted);
+          }
+          result = FdahpStudyDesignerConstants.SUCCESS;
+        }
       }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - removeExistingLanguageAndData() - ERROR ", e);
