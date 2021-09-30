@@ -1879,7 +1879,9 @@ public class StudyQuestionnaireController {
               questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             }
             String language = request.getParameter("language");
-            if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+            if (FdahpStudyDesignerUtil.isNotEmpty(language)
+                && !"en".equals(language)
+                && !"undefined".equals(language)) {
               questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
               String result =
                   studyQuestionnaireService.saveOrUpdateFormStepForOtherLanguages(
@@ -2163,7 +2165,9 @@ public class StudyQuestionnaireController {
             questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
           String language = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !"en".equals(language)
+              && !"undefined".equals(language)) {
             questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
             String result =
                 studyQuestionnaireService.saveOrUpdateFormStepForOtherLanguages(

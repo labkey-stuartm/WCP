@@ -788,7 +788,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateInstructionsBo.setActive(true);
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language)
+            && !"en".equals(language)
+            && !"undefined".equals(language)) {
           if (instructionsBo.getId() != null) {
             instructionsLangBO =
                 studyQuestionnaireDAO.getInstructionLangBo(instructionsBo.getId(), language);
@@ -878,6 +880,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     QuestionsBo addQuestionsBo = null;
     String activitydetails = "";
     String activity = "";
+    QuestionLangBO questionLangBO = null;
     try {
       if (null != questionsBo) {
 
@@ -889,9 +892,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionsBo.setActive(true);
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language)
+            && !"en".equals(language)
+            && !"undefined".equals(language)) {
           Integer id = questionsBo.getId();
-          QuestionLangBO questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
+          if (id != null) {
+            questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
+          }
           if (questionLangBO == null) {
             questionLangBO = new QuestionLangBO();
             questionLangBO.setQuestionLangPK(new QuestionLangPK(id, language));
@@ -1380,7 +1387,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionsBo.setActive(true);
         }
 
-        if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
+        if (FdahpStudyDesignerUtil.isNotEmpty(language)
+            && !"en".equals(language)
+            && !"undefined".equals(language)) {
           if (id != null) {
             questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
           }
