@@ -945,7 +945,7 @@
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
           
-          <c:if test="${studyBo.viewPermission }">
+          <c:if test="${permission == 'view' }">
           $('#basicInfoFormId input,textarea').prop('disabled', true);
           $('#removeUrl').css('pointer-events', 'none');
           </c:if>

@@ -1174,7 +1174,7 @@
 
             $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
             
-            <c:if test="${not perm.viewPermission}">
+            <c:if test="${permission == 'view'}">
             $('#settingfoFormId input,textarea').prop('disabled', true);
             </c:if>
           }
