@@ -12,7 +12,7 @@
     position: relative;
   }
 
-  .langSpecific > button::before{
+  .studyLanguage > button::before{
     content: '';
     display: block;
     background-image: url("../images/global_icon.png");
@@ -24,7 +24,7 @@
     background-repeat: no-repeat;
   }
 
-  .langSpecific > button{
+  .studyLanguage > button{
     padding-left: 30px;
   }
 </style>
@@ -93,6 +93,7 @@
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
         <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
+        <input type="hidden" id="mlCategory" value="${studyLanguageBO.category}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
@@ -186,7 +187,7 @@
                     </div>
                     <div class="form-group">
                         <select
-                                class="selectpicker aq-select aq-select-form elaborateClass"
+                                class="selectpicker aq-select aq-select-form elaborateClass langSpecific"
                                 id="category" name="category" required title="Select">
                             <c:forEach items="${categoryList}" var="category">
                                 <option value="${category.id}"
@@ -911,12 +912,14 @@
           $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
           $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
           $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
+          $('#category').val($('#mlCategory', htmlData).val()).change();
           $('#editor').val($('input#mlDescription', htmlData).val());
           let tinyMce = tinymce.activeEditor;
-          if (tinyMce !== undefined)
+          if (tinyMce !== undefined) {
             tinyMce.setContent($('input#mlDescription', htmlData).val());
+          }
           $('#removeUrl').css('pointer-events', 'none');
-          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
+          $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
               'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
           $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
               'cursor-none');
@@ -938,10 +941,11 @@
           $('input[name="fullName"]').val($('input[name="fullName"]', htmlData).val());
           $('input[name="studyTagLine"]').val($('input[name="studyTagLine"]', htmlData).val());
           $('#researchSponsor').val($('#researchSponsor', htmlData).val());
+          $('#category').val($('#category', htmlData).val()).change();
           $('#editor').val($('#editor', htmlData).val());
           tinymce.activeEditor.setContent($('#editor', htmlData).val());
           $('#removeUrl').removeAttr('style');
-          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
+          $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
           

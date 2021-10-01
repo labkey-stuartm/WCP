@@ -460,7 +460,7 @@
                                                        class="form-control mt-sm input-add-signature"
                                                        count='0'
                                                        placeholder="Enter Professional Title"
-                                                       name="sign0" value=""
+                                                       name="signature0" value=""
                                                        maxlength="30"
                                                        data-pattern-error="Please fill out this field."
                                                        required
@@ -486,7 +486,7 @@
                                                            class="form-control mt-sm input-add-signature"
                                                            count='${customVar.index}'
                                                            placeholder="Enter Professional Title"
-                                                           name="sign${customVar.index}"
+                                                           name="signature${customVar.index}"
                                                            value="${signature}"
                                                            maxlength="30" required
                                                            data-pattern-error="Please fill out this field."
@@ -1541,6 +1541,7 @@
           if (editor2 !== null)
             editor2.setContent($('#mlConsentDocContent', htmlData).val());
           $('#aggrementOfTheConsentId').val($('#mlAgreement', htmlData).val());
+          $('.input-add-signature').val('');
           $('#signature0').val($('#mlSignature0', htmlData).val());
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
@@ -1581,9 +1582,9 @@
             editor.setContent($('#newDocumentDivId', htmlData).val());
           $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
           $('#aggrementOfTheConsentId').val($('#aggrementOfTheConsentId', htmlData).val());
-          $('#signature0').val($('#signature0', htmlData).val());
-          $('#signature1').val($('#signature1', htmlData).val());
-          $('#signature2').val($('#signature2', htmlData).val());
+          $('.input-add-signature').each(function(index) {
+            $(this).val($('.input-add-signature', htmlData)[index].getAttribute('value'));
+          })
           if ($("#inlineRadio1").is(":checked")) {
             var consentDocumentDivContent = "";
             $("#autoConsentDocumentDivId").empty();

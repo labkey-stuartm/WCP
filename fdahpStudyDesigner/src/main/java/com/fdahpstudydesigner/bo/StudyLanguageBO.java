@@ -30,6 +30,9 @@ public class StudyLanguageBO implements Serializable {
   @Column(name = "research_sponsor")
   private String researchSponsor;
 
+  @Column(name = "category")
+  private String category;
+
   @Column(name = "allow_rejoin_text")
   private String allowRejoinText;
 
@@ -295,5 +298,13 @@ public class StudyLanguageBO implements Serializable {
 
   public void setSignatureThree(String signatureThree) {
     this.signatureThree = signatureThree;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 }
