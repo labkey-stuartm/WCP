@@ -921,6 +921,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             questionLangBO.setMaxDescription(questionReponseTypeBo.getMaxDescription());
             questionLangBO.setMinDescription(questionReponseTypeBo.getMinDescription());
             questionLangBO.setPlaceholderText(questionReponseTypeBo.getPlaceholder());
+            questionLangBO.setUnit(questionReponseTypeBo.getUnit());
             questionLangBO.setInvalidMessage(questionReponseTypeBo.getInvalidMessage());
             questionLangBO.setExceptText(questionReponseTypeBo.getValidationExceptText());
             questionLangBO.setOtherText(questionReponseTypeBo.getOtherText());

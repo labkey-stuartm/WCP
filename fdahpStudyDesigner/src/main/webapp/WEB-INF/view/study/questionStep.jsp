@@ -7240,6 +7240,7 @@
                   let id = '';
                   if (respType === '8') {
                     id = 'numericPlaceholderId';
+                    $('#numericUnitId').val('');
                   } else if (respType === '11') {
                     id = 'textPlaceholderId';
                     $('#validationExceptTextId').val('');
@@ -7321,6 +7322,7 @@
                   let id = '';
                   if (respType === '8') {
                     id = 'numericPlaceholderId';
+                    $('#numericUnitId').val($('#mlUnit', htmlData).val());
                   } else if (respType === '11') {
                     id = 'textPlaceholderId';
                     $('#validationExceptTextId').val($('#mlExceptText', htmlData).val());
@@ -7334,8 +7336,7 @@
                   } else if (respType === '14') {
                     id = 'heightPlaceholderId';
                   }
-                  $('#' + id).val($('#mlPlaceholderText', htmlData).val());
-                  $('#numericUnitId').val($('#mlUnit', htmlData).val());
+                  $('#' + id).val($('#mlPlaceholderText', htmlData).val());                  
                 }
               }
 
