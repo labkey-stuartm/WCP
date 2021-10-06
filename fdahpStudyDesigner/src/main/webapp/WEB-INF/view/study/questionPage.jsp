@@ -5109,6 +5109,11 @@
           if ($('#allowHealthKit').prop('checked') === true) {
             $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled').attr('disabled', true);
           }
+          if ($('#addLineChart').prop('checked') === true) {
+              $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled',
+                  true);
+              $('#allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
+            }
           if ($('#useStasticData').prop('checked') === true) {
             $('#statShortNameId').attr('disabled', true);
             $('[data-id="statTypeId"]').addClass('ml-disabled').attr('disabled', true);
@@ -5140,6 +5145,7 @@
           // setting ml data
           $('#questionTextId').val($('#mlQuestion', htmlData).val());
           $('#descriptionId').val($('#mlDescription', htmlData).val());
+          $('#chartTitleId').val($('#mlChartTitle', htmlData).val());
           let previousResponseType = $('#mlResponseTypeId', htmlData).val();
 
           // if response type mismatches
@@ -5282,6 +5288,11 @@
             $('[data-id="healthkitDatatypeId"]').removeClass('ml-disabled').attr('disabled',
                 false);
           }
+          if ($('#addLineChart').prop('checked') === true) {
+              $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled',
+                  false);
+              $('#allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
+            }
           if ($('#useStasticData').prop('checked') === true) {
             $('#statShortNameId').attr('disabled', false);
             $('[data-id="statTypeId"]').removeClass('ml-disabled').attr('disabled', false);
@@ -5316,6 +5327,7 @@
           $('#descriptionId').val($('#descriptionId', htmlData).val());
           $('#statDisplayNameId').val($('#statDisplayNameId', htmlData).val());
           $('#statDisplayUnitsId').val($('#statDisplayUnitsId', htmlData).val());
+          $('#chartTitleId').val($('#chartTitleId', htmlData).val());
 
           let respType = $('#responseTypeId').val();
           if (respType === '1' || respType === '2') {

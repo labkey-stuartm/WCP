@@ -207,6 +207,7 @@
 					type="hidden" id="mlResponseTypeId"
 					value="${questionLangBO.responseTypeId}"> <input
 					type="hidden" id="mlOtherText" value="${questionLangBO.otherText}">
+				 <input type="hidden" id="mlChartTitle" value="${questionLangBO.chartTitle}">
 				<input
 					type="hidden" id="mlOtherDescription" value="${questionLangBO.otherDescription}">
 				<input
@@ -7150,7 +7151,7 @@
               $('.tit_wrapper').text($('#mlName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId').attr(
                   'disabled', true);
-              $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId').attr('disabled', true);
+              $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
               $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
               $('#trailId, #removeUrl').addClass('cursor-none');
               responseTypeId.addClass('ml-disabled').attr('disabled', true);
@@ -7188,6 +7189,7 @@
               // setting ml data
               $('#questionTextId').val($('#mlQuestion', htmlData).val());
               $('#descriptionId').val($('#mlDescription', htmlData).val());
+              $('#chartTitleId').val($('#mlChartTitle', htmlData).val());
               let previousResponseType = $('#mlResponseTypeId', htmlData).val();
 
               // if response type mismatches
@@ -7345,7 +7347,7 @@
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId').attr(
                   'disabled', false);
-              $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, #chartTitleId').attr('disabled', false);
+              $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
               $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', false);
               $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
               responseTypeId.removeClass('ml-disabled').attr('disabled', false);
@@ -7388,6 +7390,7 @@
               $('#descriptionId').val($('#descriptionId', htmlData).val());
               $('#statDisplayNameId').val($('#statDisplayNameId', htmlData).val());
               $('#statDisplayUnitsId').val($('#statDisplayUnitsId', htmlData).val());
+              $('#chartTitleId').val($('#chartTitleId', htmlData).val());
 
               let respType = $('#responseTypeId').val();
               if (respType === '1' || respType === '2') {
