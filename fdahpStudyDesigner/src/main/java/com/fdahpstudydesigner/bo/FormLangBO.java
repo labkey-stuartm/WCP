@@ -19,7 +19,10 @@ public class FormLangBO implements Serializable {
   private String repeatableText;
 
   @Column(name = "active")
-  private Boolean active;
+  private Boolean active=true;
+
+  @Column(name = "status")
+  private Boolean status = false;
 
   @Column(name = "created_by")
   private Integer createdBy;
@@ -95,5 +98,13 @@ public class FormLangBO implements Serializable {
 
   public void setQuestionnaireId(Integer questionnaireId) {
     this.questionnaireId = questionnaireId;
+  }
+
+  public Boolean getStatus() {
+    return status;
+  }
+
+  public void setStatus(Boolean status) {
+    this.status = status;
   }
 }

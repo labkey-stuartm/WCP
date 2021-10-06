@@ -15,6 +15,9 @@ public class QuestionLangBO implements Serializable {
   @Column(name = "questionnaire_id")
   private Integer questionnaireId;
 
+  @Column(name = "form_id")
+  private Integer formId;
+
   @Column(name = "question")
   private String question;
 
@@ -40,10 +43,10 @@ public class QuestionLangBO implements Serializable {
   private Integer modifiedBy;
 
   @Column(name = "active")
-  private Boolean active;
+  private Boolean active = true;
 
   @Column(name = "status")
-  private Boolean status;
+  private Boolean status= false;
 
   @Column(name = "min_desc")
   private String minDescription;
@@ -282,5 +285,13 @@ public class QuestionLangBO implements Serializable {
 
   public void setTextChoiceDescription(String textChoiceDescription) {
     this.textChoiceDescription = textChoiceDescription;
+  }
+
+  public Integer getFormId() {
+    return formId;
+  }
+
+  public void setFormId(Integer formId) {
+    this.formId = formId;
   }
 }

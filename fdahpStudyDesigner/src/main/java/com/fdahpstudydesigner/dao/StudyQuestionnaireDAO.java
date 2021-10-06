@@ -150,5 +150,13 @@ public interface StudyQuestionnaireDAO {
 
   QuestionnaireLangBO getQuestionnaireLangById(Integer questionnaireId, String language);
 
+  List<QuestionnaireLangBO> getQuestionnaireLangByStudyId(Integer studyId, String language);
+
+  List<QuestionLangBO> getQuestionLangByQuestionnaireId(Integer questionnaireId, String language);
+
+  List<FormLangBO> getFormLangByQuestionnaireId(Integer questionnaireId, String language);
+
+  List<InstructionsLangBO> getInstructionLangByQuestionnaireId(Integer questionnaireId, String language);
+
   void deleteQuestionStep(int id, String language);
 }

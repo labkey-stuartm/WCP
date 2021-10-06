@@ -1284,10 +1284,6 @@ public class StudyQuestionnaireController {
           map.addAttribute("languageList", langMap);
         }
         String language = request.getParameter("language");
-        if (FdahpStudyDesignerUtil.isNotEmpty(language)
-            && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-          this.setStudyLangData(studyId, language, map);
-        }
         map.addAttribute("currLanguage", language);
         if (StringUtils.isEmpty(questionnaireId)) {
           questionnaireId =
@@ -1338,12 +1334,6 @@ public class StudyQuestionnaireController {
                     sesObj,
                     customStudyId);
               }
-
-              //              Todo @Anoop Sharma to be done later if required
-              //              List<String> stepTextList =
-              // studyQuestionnaireService.syncAndGetLangData(qTreeMap,
-              // Integer.parseInt(questionnaireId), language, sesObj.getUserId());
-              //              map.addAttribute("stepTextList", stepTextList);
             }
           }
           if ("edit".equals(actionType)) {
@@ -1367,6 +1357,19 @@ public class StudyQuestionnaireController {
           map.addAttribute("qTreeMap", qTreeMap);
           map.addAttribute("questionnaireBo", questionnaireBo);
           request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
+
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            this.setStudyLangData(studyId, language, map);
+            studyQuestionnaireService.syncAndGetLangData(qTreeMap,
+                Integer.parseInt(questionnaireId), language, sesObj.getUserId());
+            List<QuestionLangBO> questionLangBOList = studyQuestionnaireService.getQuestionLangByQuestionnaireId(Integer.parseInt(questionnaireId), language);
+            map.addAttribute("questionLangBOList", questionLangBOList);
+            List<FormLangBO> formLangList = studyQuestionnaireService.getFormLangByQuestionnaireId(Integer.parseInt(questionnaireId), language);
+            map.addAttribute("formLangList", formLangList);
+            List<InstructionsLangBO> instructionsLangBOList = studyQuestionnaireService.getInstructionLangByQuestionnaireId(Integer.parseInt(questionnaireId), language);
+            map.addAttribute("instructionsLangBOList", instructionsLangBOList);
+          }
 
           boolean isAnchorQuestionnaire =
               studyQuestionnaireService.isAnchorDateExistByQuestionnaire(
@@ -3540,6 +3543,10 @@ public class StudyQuestionnaireController {
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
             && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
           this.setStudyLangData(studyId, language, map);
+          List<QuestionnaireLangBO> questionnaireLangBOS =
+              studyQuestionnaireService.syncAndGetQuestionnaireLangList(
+                  questionnaires, Integer.parseInt(studyId), language);
+          map.addAttribute("questionnaireLangBOS", questionnaireLangBOS);
         }
         map.addAttribute("currLanguage", language);
         map.addAttribute("languageList", langMap);

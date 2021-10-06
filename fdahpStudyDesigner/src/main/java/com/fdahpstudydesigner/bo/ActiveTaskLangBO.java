@@ -64,7 +64,7 @@ public class ActiveTaskLangBO implements Serializable {
   private Boolean active = true;
 
   @Column(name = "status")
-  private Boolean status;
+  private Boolean status = false;
 
   public ActiveTaskLangPK getActiveTaskLangPK() {
     return activeTaskLangPK;

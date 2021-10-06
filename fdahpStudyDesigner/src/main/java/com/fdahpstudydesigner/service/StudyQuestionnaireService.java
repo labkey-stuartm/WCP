@@ -153,4 +153,12 @@ public interface StudyQuestionnaireService {
       int questionnaireId,
       String language,
       int userId);
+
+  List<QuestionnaireLangBO> syncAndGetQuestionnaireLangList(List<QuestionnaireBo> boList, Integer studyId, String language);
+
+  List<QuestionLangBO> getQuestionLangByQuestionnaireId(int questionnaireId, String language);
+
+  List<FormLangBO> getFormLangByQuestionnaireId(int questionnaireId, String language);
+
+  List<InstructionsLangBO> getInstructionLangByQuestionnaireId(int questionnaireId, String language);
 }

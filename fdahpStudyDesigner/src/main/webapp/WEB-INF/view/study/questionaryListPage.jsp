@@ -43,6 +43,12 @@
     <input type="hidden" name="studyId" value="${studyBo.id}" id="studyId">
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+    <select id="questionnaireLangBOS" style="display: none">
+        <c:forEach items="${questionnaireLangBOS}" var="questionnaireLang">
+            <option id='${questionnaireLang.questionnaireLangPK.id}' status="${questionnaireLang.status}"
+                    value="${questionnaireLang.title}">${questionnaireLang.title}</option>
+        </c:forEach>
+    </select>
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
@@ -109,9 +115,9 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${questionnaires}" var="questionnaryInfo">
-                    <tr>
+                    <tr id="row${questionnaryInfo.id}" status="${questionnaryInfo.status}">
                         <td>${questionnaryInfo.createdDate}</td>
-                        <td>
+                        <td class="title">
                             <div class="dis-ellipsis pr-100"
                                  title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div>
                         </td>
@@ -120,7 +126,7 @@
                                 class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                                 data-placement="top" title="View"
                                 onclick="viewQuestionnaires(${questionnaryInfo.id});"></span> <span
-                                class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                                 data-toggle="tooltip" data-placement="top" title="Edit"
                                 onclick="editQuestionnaires(${questionnaryInfo.id});"></span> <span
                                 class="sprites_icon copy  mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>"
@@ -316,10 +322,10 @@
         var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewQuestionnaires("
             + parseInt(obj.id) + ");'></span>";
         if (obj.status) {
-          actionDiv += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
+          actionDiv += "<span class='sprites_icon edit-inc editIcon mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
               + parseInt(obj.id) + ");'></span>";
         } else {
-          actionDiv += "<span class='edit-inc-draft mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
+          actionDiv += "<span class='edit-inc-draft editIcon mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
               + parseInt(obj.id) + ");'></span>";
         }
         actionDiv += "<span class='sprites_icon copy  mr-lg' data-toggle='tooltip' data-placement='top' title='Copy' onclick='copyQuestionnaire("
@@ -366,6 +372,28 @@ function refreshAndFetchLanguageData(language) {
 				$('#addButton').attr('disabled', true);
 				$('.delete ').addClass('cursor-none');
 				$('.copy ').addClass('cursor-none');
+              $('#questionnaireLangBOS option', htmlData).each(function (index, value) {
+                let id = '#row' + value.getAttribute('id');
+                $(id).find('td.title').text(value.getAttribute('value'));
+                if (value.getAttribute('status')==="true") {
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc')) {
+                    edit.addClass('edit-inc');
+                  }
+                  if (edit.hasClass('edit-inc-draft')) {
+                    edit.removeClass('edit-inc-draft');
+                  }
+                }
+                else {
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc-draft')) {
+                    edit.addClass('edit-inc-draft');
+                  }
+                  if (edit.hasClass('edit-inc')) {
+                    edit.removeClass('edit-inc');
+                  }
+                }
+              });
 			} else {
               updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -376,6 +404,29 @@ function refreshAndFetchLanguageData(language) {
 				<c:if test="${not empty permission}">
 				$('.delete, .copy').addClass('cursor-none');
 				</c:if>
+
+              $('tbody tr', htmlData).each(function (index, value) {
+                let id = '#'+value.getAttribute('id');
+                $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+                if (value.getAttribute('status')==="true") {
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc')) {
+                    edit.addClass('edit-inc');
+                  }
+                  if (edit.hasClass('edit-inc-draft')) {
+                    edit.removeClass('edit-inc-draft');
+                  }
+                }
+                else {
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc-draft')) {
+                    edit.addClass('edit-inc-draft');
+                  }
+                  if (edit.hasClass('edit-inc')) {
+                    edit.removeClass('edit-inc');
+                  }
+                }
+              });
 			}
 		}
 	});

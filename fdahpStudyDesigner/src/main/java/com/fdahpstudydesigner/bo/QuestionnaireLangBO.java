@@ -30,6 +30,12 @@ public class QuestionnaireLangBO implements Serializable {
   @Column(name = "modified_on")
   private String modifiedOn;
 
+  @Column(name = "active")
+  private Boolean active;
+
+  @Column(name = "status")
+  private Boolean status;
+
   public QuestionnaireLangPK getQuestionnaireLangPK() {
     return questionnaireLangPK;
   }
@@ -84,5 +90,21 @@ public class QuestionnaireLangBO implements Serializable {
 
   public void setModifiedOn(String modifiedOn) {
     this.modifiedOn = modifiedOn;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
+
+  public Boolean getStatus() {
+    return status;
+  }
+
+  public void setStatus(Boolean status) {
+    this.status = status;
   }
 }

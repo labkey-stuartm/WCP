@@ -177,6 +177,7 @@
             <input type="hidden" id="mlMinDesc" value="${questionLangBO.minDescription}">
             <input type="hidden" id="mlMaxDesc" value="${questionLangBO.maxDescription}">
             <input type="hidden" id="mlDisplayText" value="${questionLangBO.displayText}">
+            <input type="hidden" id="mlTextChoiceDescription" value="${questionLangBO.textChoiceDescription}">
             <input type="hidden" id="mlPlaceholderText" value="${questionLangBO.placeholderText}">
             <input type="hidden" id="mlNumericUnitId" value="${questionLangBO.unit}">
             <input type="hidden" id="mlInvalidMessage" value="${questionLangBO.invalidMessage}">
@@ -2033,7 +2034,7 @@
                                             </div>
                                             <div class="form-group mb-none">
                                                 <input type="text"
-                                                       class="form-control TextChoiceRequired"
+                                                       class="form-control TextChoiceRequired lang-specific"
                                                        name="questionResponseSubTypeList[${subtype.index}].text"
                                                        id="displayTextChoiceText${subtype.index}"
                                                        value="${fn:escapeXml(questionResponseSubType.text)}"
@@ -2088,7 +2089,7 @@
                                                     characters)
                                                 </div>
                                                 <div class="form-group">
-														<textarea class="form-control"
+														<textarea class="form-control lang-specific"
                                                                   name="questionResponseSubTypeList[${subtype.index}].description"
                                                                   id="displayTextChoiceDescription${subtype.index}"
                                                                   value="${fn:escapeXml(questionResponseSubType.description)}"
@@ -2116,7 +2117,7 @@
                                         </div>
                                         <div class="form-group mb-none">
                                             <input type="text"
-                                                   class="form-control TextChoiceRequired"
+                                                   class="form-control TextChoiceRequired lang-specific"
                                                    name="questionResponseSubTypeList[0].text"
                                                    id="displayTextChoiceText0"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}"
@@ -2168,7 +2169,7 @@
                                                     class="requiredStar">*</span>
                                             </div>
                                             <div class="form-group">
-													<textarea class="form-control"
+													<textarea class="form-control lang-specific"
                                                               name="questionResponseSubTypeList[0].description"
                                                               id="displayTextChoiceDescription0"
                                                               value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
@@ -2192,9 +2193,9 @@
                                         </div>
                                         <div class="form-group mb-none">
                                             <input type="text"
-                                                   class="form-control TextChoiceRequired"
+                                                   class="form-control TextChoiceRequired lang-specific"
                                                    name="questionResponseSubTypeList[1].text"
-                                                   id="displayTextChoiceText0"
+                                                   id="displayTextChoiceText1"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}"
                                                    maxlength="100">
                                             <div class="help-block with-errors red-txt"></div>
@@ -2209,7 +2210,7 @@
                                             <input type="text"
                                                    class="form-control TextChoiceRequired textChoiceVal"
                                                    name="questionResponseSubTypeList[1].value"
-                                                   id="displayTextChoiceValue0"
+                                                   id="displayTextChoiceValue1"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}"
                                                    maxlength="100">
                                             <div class="help-block with-errors red-txt"></div>
@@ -2244,7 +2245,7 @@
                                                     class="requiredStar">*</span>
                                             </div>
                                             <div class="form-group">
-													<textarea class="form-control"
+													<textarea class="form-control lang-specific"
                                                               name="questionResponseSubTypeList[1].description"
                                                               id="displayTextChoiceDescription1"
                                                               value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}"
@@ -4544,17 +4545,15 @@
     }
   }
 
-  var choiceCount = $('.text-choice').length;
-
   function addTextChoice() {
-    choiceCount = choiceCount + 1;
+    let choiceCount = $('.text-choice').length;
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<div class='text-choice mt-xlg' id='" + choiceCount + "'>" +
         "<div class='col-md-3 pl-none'>" +
         "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group mb-none'>" +
-        "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["
+        "   <input type='text' class='form-control TextChoiceRequired lang-specific' name='questionResponseSubTypeList["
         + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
         + "'  maxlength='100' required>" +
         "      <div class='help-block with-errors red-txt'></div>" +
@@ -4595,7 +4594,7 @@
         "   <div class='gray-xs-f mb-xs'>Description(1 to 150 characters) <span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group'>					     " +
-        "      <textarea class='form-control' name='questionResponseSubTypeList[" + choiceCount
+        "      <textarea class='form-control lang-specific' name='questionResponseSubTypeList[" + choiceCount
         + "].description' id='displayTextChoiceDescription" + choiceCount
         + "' maxlength='150'></textarea>" +
         "   </div>" +
@@ -5097,7 +5096,6 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        console.log(data);
         let responseTypeId = $('[data-id="responseTypeId"]');
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
@@ -5171,15 +5169,9 @@
                 className = '.image-choice';
               else if (respType === '6') {
                 className = '.text-choice';
-                $('[name="questionReponseTypeBo.otherText"]').val('');
               }
               let i = 0;
-              let displayText = $('#mlDisplayText', htmlData).val();
-              let dispArray = [];
-              if (displayText !== '') {
-                dispArray = displayText.split('|');
-              }
-              $(className).find('input.lang-specific').each(function (index, ele) {
+              $(className).find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
                 let id = ele.getAttribute('id');
                 $('#' + id).val('');
                 i++;
@@ -5232,8 +5224,19 @@
                 className = '.image-choice';
               else if (respType === '6') {
                 className = '.text-choice';
-                $('[name="questionReponseTypeBo.otherText"]').val(
-                    $('#mlOtherText', htmlData).val());
+                let desc = $('#mlTextChoiceDescription', htmlData).val();
+                let descArray = [];
+                if (desc !== '') {
+                  descArray = desc.split('|');
+                }
+                let j=0;
+                $('.text-choice').find('textarea.lang-specific').each(function (index, ele) {
+                  let value = (descArray[j] !== undefined && descArray[j] != null
+                      && descArray[j] !== '') ? descArray[j] : '';
+                  let id = ele.getAttribute('id');
+                  $('#' + id).val(value);
+                  j++;
+                });
               }
               let i = 0;
               let displayText = $('#mlDisplayText', htmlData).val();
@@ -5344,10 +5347,8 @@
               className = '.image-choice';
             else if (respType === '6') {
               className = '.text-choice';
-              $('[name="questionReponseTypeBo.otherText"]').val(
-                  $('[name="questionReponseTypeBo.otherText"]', htmlData).val());
             }
-            $(className).find('input.lang-specific').each(function (index, ele) {
+            $(className).find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
               let id = ele.getAttribute('id');
               $('#' + id).val($('#' + id, htmlData).val());
               $('#' + id).text($('#' + id, htmlData).val());
