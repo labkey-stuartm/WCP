@@ -121,14 +121,14 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${resourceBOList}" var="resourceInfo">
-                    <tr id="row${resourceInfo.id}">
+                    <tr id="row${resourceInfo.id}" status="${resourceInfo.action}">
                         <td>${resourceInfo.sequenceNo}</td>
                         <td class="wid50 title">${resourceInfo.title}</td>
                         <td class="wid50 text-right"><span
                                 class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                                 data-placement="top" title="View" id="viewRes"
                                 onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
-                                class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                                 data-toggle="tooltip" data-placement="top" title="Edit"
                                 id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
                             <span
@@ -165,7 +165,7 @@
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <select id="resourceLangBOList" style="display: none">
         <c:forEach items="${resourceLangBOList}" var="resourceLang">
-            <option id='${resourceLang.resourcesLangPK.id}'
+            <option id='${resourceLang.resourcesLangPK.id}' status="${resourceLang.action}"
                     value="${resourceLang.title}">${resourceLang.title}</option>
         </c:forEach>
     </select>
@@ -382,10 +382,10 @@
           var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewResourceInfo("
               + parseInt(obj.id) + ");'></span>";
           if (obj.status) {
-            actions += "<span class='sprites_icon edit-g mr-lg' onclick='editResourceInfo("
+            actions += "<span class='sprites_icon edit-inc editIcon mr-lg' onclick='editResourceInfo("
                 + parseInt(obj.id) + ");'></span>"
           } else {
-            actions += "<span class='sprites_icon edit-inc-draft mr-lg' onclick='editResourceInfo("
+            actions += "<span class='sprites_icon edit-inc-draft editIcon mr-lg' onclick='editResourceInfo("
                 + parseInt(obj.id) + ");'></span>";
           }
           actions += "<span class='sprites_icon copy delete' onclick='deleteResourceInfo("
@@ -488,8 +488,26 @@
           $('#addResourceId').attr('disabled', true);
           $('.delete, .sorting_1').addClass('cursor-none');
           $('#resourceLangBOList option', htmlData).each(function (index, value) {
-            let id = 'row' + value.getAttribute('id');
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#row' + value.getAttribute('id');
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
           if (studyProExist == null || studyProExist === '' || typeof studyProExist
               === 'undefined') {
@@ -504,8 +522,26 @@
           $('.delete, .sorting_1').removeClass('cursor-none');
           $('#studyProtocolId').prop('disabled', false);
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
           <c:if test="${not empty permission}">
           $('.delete').addClass('cursor-none');

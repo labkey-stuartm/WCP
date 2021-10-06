@@ -321,7 +321,8 @@
     });
     $('.nine').click(function () {
       $('.nine').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}&language="
+          + $('#studyLanguage').val();
       document.body.appendChild(a).click();
     });
     $('.tenth').click(function () {

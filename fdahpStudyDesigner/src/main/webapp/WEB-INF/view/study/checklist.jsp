@@ -13,6 +13,7 @@
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrDoneChecklist.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" id="checklistForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <input type="hidden" name="checklistId" value="${checklist.checklistId}">
             <input type="hidden" id="actionBut" name="actionBut">
+            <input type="hidden" name="language" id="studyLanguage" value="${currLanguage}" />
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">

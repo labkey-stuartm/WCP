@@ -60,6 +60,12 @@ public class ActiveTaskLangBO implements Serializable {
   @Column(name = "display_units_stat3")
   private String displayUnitStat3;
 
+  @Column(name = "active")
+  private Boolean active = true;
+
+  @Column(name = "status")
+  private Boolean status;
+
   public ActiveTaskLangPK getActiveTaskLangPK() {
     return activeTaskLangPK;
   }
@@ -194,5 +200,21 @@ public class ActiveTaskLangBO implements Serializable {
 
   public void setDisplayUnitStat3(String displayUnitStat3) {
     this.displayUnitStat3 = displayUnitStat3;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
+
+  public Boolean getStatus() {
+    return status;
+  }
+
+  public void setStatus(Boolean status) {
+    this.status = status;
   }
 }

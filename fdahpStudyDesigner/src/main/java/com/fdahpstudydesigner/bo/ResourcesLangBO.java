@@ -49,6 +49,12 @@ public class ResourcesLangBO implements Serializable {
   @Column(name = "modified_on")
   private String modifiedOn;
 
+  @Column(name = "status", length = 1)
+  private Boolean status;
+
+  @Column(name = "action", length = 1)
+  private Boolean action;
+
   public ResourcesLangPK getResourcesLangPK() {
     return resourcesLangPK;
   }
@@ -151,5 +157,21 @@ public class ResourcesLangBO implements Serializable {
 
   public void setTextOrPdf(Boolean textOrPdf) {
     this.textOrPdf = textOrPdf;
+  }
+
+  public Boolean getStatus() {
+    return status;
+  }
+
+  public void setStatus(Boolean status) {
+    this.status = status;
+  }
+
+  public Boolean getAction() {
+    return action;
+  }
+
+  public void setAction(Boolean action) {
+    this.action = action;
   }
 }

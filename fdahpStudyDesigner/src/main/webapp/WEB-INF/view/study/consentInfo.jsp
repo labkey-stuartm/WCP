@@ -589,7 +589,10 @@
           $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
           $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          tinymce.activeEditor.setContent($('#elaboratedLang', htmlData).val());
+          let editor = tinymce.activeEditor;
+          if (editor!==undefined) {
+            editor.setContent($('#elaboratedLang', htmlData).val());
+          }
           if ($('#inlineRadio1').prop('checked') === true) {
             let title = $('[data-id="consentItemTitleId"]');
             title.attr('disabled', true);
@@ -613,7 +616,10 @@
           $('#briefSummary').val($('#briefSummary', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedRTE', htmlData).val());
           $('#displayTitle').val($('#displayTitle', htmlData).val());
-          tinymce.activeEditor.setContent($('#elaboratedRTE', htmlData).val());
+          let editor = tinymce.activeEditor;
+          if (editor!==undefined) {
+            editor.setContent($('#elaboratedRTE', htmlData).val());
+          }
           
           <c:if test="${actionPage eq 'view'}">
           $('#consentInfoFormId input,textarea').prop('disabled', true);

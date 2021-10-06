@@ -264,6 +264,17 @@ public class StudyDAOImpl implements StudyDAO {
         comprehensionTestQuestionBo.setModifiedBy(sessionObject.getUserId());
         comprehensionTestQuestionBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         session.saveOrUpdate(comprehensionTestQuestionBo);
+
+        List<ComprehensionQuestionLangBO> comprehensionQuestionLangBOList = session
+            .createQuery("from ComprehensionQuestionLangBO where comprehensionQuestionLangPK.id=:id").setInteger("id", questionId).list();
+        if (comprehensionQuestionLangBOList != null && comprehensionQuestionLangBOList.size() > 0) {
+          for (ComprehensionQuestionLangBO comprehensionQuestionLangBO :
+              comprehensionQuestionLangBOList) {
+            comprehensionQuestionLangBO.setActive(false);
+            session.update(comprehensionQuestionLangBO);
+          }
+        }
+
         message = FdahpStudyDesignerConstants.SUCCESS;
         if (comprehensionTestQuestionBo.getStudyId() != null) {
           studySequence =
@@ -360,6 +371,19 @@ public class StudyDAOImpl implements StudyDAO {
               .setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime())
               .setInteger("consentInfoId", consentInfoId);
       count = query.executeUpdate();
+
+      if (count > 0) {
+        query =
+            session
+                .createQuery(
+                    "Update ConsentInfoLangBO CIB set CIB.active=0,CIB.modifiedBy= :modifiedBy"
+                        + ",CIB.modifiedOn= :modifiedOn where CIB.consentInfoLangPK.id= :consentInfoId")
+                .setInteger("modifiedBy", sessionObject.getUserId())
+                .setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime())
+                .setInteger("consentInfoId", consentInfoId);
+        count = query.executeUpdate();
+      }
+
       if (count > 0) {
         message = FdahpStudyDesignerConstants.SUCCESS;
       }
@@ -447,6 +471,12 @@ public class StudyDAOImpl implements StudyDAO {
         eligibilityDeleteResult =
             session
                 .getNamedQuery("EligibilityTestBo.deleteById")
+                .setInteger("eligibilityTestId", eligibilityTestId)
+                .executeUpdate();
+
+        eligibilityDeleteResult =
+            session
+                .getNamedQuery("EligibilityTestLangBo.deleteById")
                 .setInteger("eligibilityTestId", eligibilityTestId)
                 .executeUpdate();
       }
@@ -669,6 +699,20 @@ public class StudyDAOImpl implements StudyDAO {
               .createQuery("UPDATE ResourceBO RBO SET status = false WHERE id = :resourceInfoId")
               .setInteger("resourceInfoId", resourceInfoId)
               .executeUpdate();
+
+      List<ResourcesLangBO> resourcesLangBOList = session
+          .createQuery(
+              "From ResourcesLangBO RBO where RBO.resourcesLangPK.id= :id and RBO.status=true order by RBO.sequenceNo asc")
+          .setInteger("id", resourceInfoId)
+          .list();
+
+      if (resourcesLangBOList != null && resourcesLangBOList.size() > 0) {
+        for (ResourcesLangBO resourcesLangBO : resourcesLangBOList) {
+          resourcesLangBO.setStatus(false);
+          resourcesLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          session.update(resourcesLangBO);
+        }
+      }
 
       if (!resourceVisibility && resourceCount > 0) {
 
@@ -8495,10 +8539,10 @@ public class StudyDAOImpl implements StudyDAO {
         } else if (!studySequenceLangBO.iseConsent()) {
           message = FdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
           return message;
-        } else if (!studySequenceLangBO.isStudyExcQuestionnaries()) {
+        } else if (!studySequenceLangBO.isStudyExcQuestionnaries()  && !publishFlag) {
           message = FdahpStudyDesignerConstants.STUDYEXCQUESTIONNARIES_ERROR_MSG;
           return message;
-        } else if (!studySequenceLangBO.isStudyExcActiveTask()) {
+        } else if (!studySequenceLangBO.isStudyExcActiveTask()  && !publishFlag) {
           message = FdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
           return message;
           //        } else if (!studySequenceLangBO.isMiscellaneousResources()) {
@@ -8507,7 +8551,7 @@ public class StudyDAOImpl implements StudyDAO {
           //        } else if (!studySequenceLangBO.isCheckList()) {
           //          message = FdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG+suffix;
           //          return message;
-        } else if (!studySequenceLangBO.getParticipantProperties()) {
+        } else if (!studySequenceLangBO.getParticipantProperties()  && !publishFlag) {
           message = FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES_ERROR_MSG;
           return message;
         }
@@ -9060,7 +9104,7 @@ public class StudyDAOImpl implements StudyDAO {
             (ConsentInfoLangBO)
                 session
                     .createQuery(
-                        "from ConsentInfoLangBO where consentInfoLangPK.langCode=:language and consentInfoLangPK.id=:id")
+                        "from ConsentInfoLangBO where active=true and consentInfoLangPK.langCode=:language and consentInfoLangPK.id=:id")
                     .setString("language", language)
                     .setInteger("id", id)
                     .uniqueResult();
@@ -9108,7 +9152,7 @@ public class StudyDAOImpl implements StudyDAO {
         dataList =
             session
                 .createQuery(
-                    "from ConsentInfoLangBO cil where cil.consentInfoLangPK.langCode=:language and studyId=:id")
+                    "from ConsentInfoLangBO cil where cil.active=true and cil.consentInfoLangPK.langCode=:language and studyId=:id")
                 .setString("language", language)
                 .setInteger("id", studyId)
                 .list();
@@ -9145,7 +9189,8 @@ public class StudyDAOImpl implements StudyDAO {
       Criteria criteria = session.createCriteria(ComprehensionQuestionLangBO.class);
       criteria
           .add(Restrictions.eq("comprehensionQuestionLangPK.id", questionId))
-          .add(Restrictions.eq("comprehensionQuestionLangPK.langCode", language));
+          .add(Restrictions.eq("comprehensionQuestionLangPK.langCode", language))
+          .add(Restrictions.eq("active", true));
       criteria.setFetchMode("comprehensionResponseLangBoList", FetchMode.JOIN);
       comprehensionQuestionLangBO = (ComprehensionQuestionLangBO) criteria.uniqueResult();
     } catch (Exception e) {
@@ -9288,20 +9333,20 @@ public class StudyDAOImpl implements StudyDAO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<EligibilityTestLangBo> getEligibilityTestLangByEligibilityId(
-      int eligibilityId, String language) {
+  public List<EligibilityTestLangBo> getEligibilityTestLangByStudyId(
+      int studyId, String language) {
     logger.info("StudyDAOImpl - getEligibilityTestLangByEligibilityId() - Starts");
     Session session = null;
     List<EligibilityTestLangBo> dataList = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if (eligibilityId != 0) {
+      if (studyId != 0) {
         dataList =
             session
                 .createQuery(
-                    "from EligibilityTestLangBo etlb where etlb.eligibilityTestLangPK.langCode=:language and etlb.eligibilityId=:id")
+                    "from EligibilityTestLangBo etlb where etlb.active=true and etlb.eligibilityTestLangPK.langCode=:language and etlb.studyId=:id")
                 .setString("language", language)
-                .setInteger("id", eligibilityId)
+                .setInteger("id", studyId)
                 .list();
       }
     } catch (Exception e) {
@@ -9655,7 +9700,7 @@ public class StudyDAOImpl implements StudyDAO {
         resourcesLangBOList =
             session
                 .createQuery(
-                    "from ResourcesLangBO where studyId= :studyId and resourcesLangPK.langCode=:lang")
+                    "from ResourcesLangBO where studyId= :studyId and resourcesLangPK.langCode=:lang and status=true")
                 .setInteger("studyId", studyId)
                 .setString("lang", language)
                 .list();

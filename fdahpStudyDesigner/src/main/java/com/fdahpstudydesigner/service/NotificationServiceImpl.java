@@ -170,6 +170,7 @@ public class NotificationServiceImpl implements NotificationService {
             notificationLangBO.setStudyId(notificationBO.getStudyId());
             notificationLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             notificationLangBO.setCreatedBy(userId);
+            notificationLangBO.setNotificationStatus(true);
             studyDAO.saveOrUpdateObject(notificationLangBO);
           }
         }
@@ -223,6 +224,7 @@ public class NotificationServiceImpl implements NotificationService {
             notificationLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
           notificationLangBO.setNotificationText(notificationBO.getNotificationText());
+          notificationLangBO.setNotificationAction(notificationBO.isNotificationAction());
           studyDAO.saveOrUpdateObject(notificationLangBO);
           notificationId = notificationBO.getNotificationId();
         } else {

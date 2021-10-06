@@ -33,6 +33,12 @@ public class NotificationLangBO implements Serializable {
   @Column(name = "notification_status", length = 1)
   private Boolean notificationStatus = false;
 
+  @Column(name = "is_active")
+  private Boolean isActive = true;
+
+  @Column(name = "notification_action", length = 1)
+  private boolean notificationAction;
+
   public NotificationLangPK getNotificationLangPK() {
     return notificationLangPK;
   }
@@ -95,5 +101,21 @@ public class NotificationLangBO implements Serializable {
 
   public void setNotificationStatus(Boolean notificationStatus) {
     this.notificationStatus = notificationStatus;
+  }
+
+  public Boolean getActive() {
+    return isActive;
+  }
+
+  public void setActive(Boolean active) {
+    isActive = active;
+  }
+
+  public boolean isNotificationAction() {
+    return notificationAction;
+  }
+
+  public void setNotificationAction(boolean notificationAction) {
+    this.notificationAction = notificationAction;
   }
 }

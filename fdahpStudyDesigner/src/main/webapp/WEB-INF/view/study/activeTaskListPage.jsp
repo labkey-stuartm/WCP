@@ -111,7 +111,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${activeTasks}" var="activeTasksInfo">
-                    <tr id="row${activeTasksInfo.id}">
+                    <tr id="row${activeTasksInfo.id}" status="${activeTasksInfo.action}">
                         <td style="display: none;">${activeTasksInfo.createdDate}</td>
                         <td class="title">
                             <div class="dis-ellipsis pr-100"
@@ -123,7 +123,7 @@
                             <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                                   data-placement="top" title="View"
                                   onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
-                            <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                            <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                                   data-toggle="tooltip" data-placement="top" title="Edit"
                                   id="editTask"
                                   onclick="editTaskInfo(${activeTasksInfo.id});"></span>
@@ -153,7 +153,7 @@
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
     <select id="activeTaskLangItems" style="display: none">
         <c:forEach items="${activeTaskLangBOS}" var="activeTaskLang">
-            <option id='${activeTaskLang.activeTaskLangPK.id}'
+            <option id='${activeTaskLang.activeTaskLangPK.id}' status="${activeTaskLang.status}"
                     value="${activeTaskLang.displayName}">${activeTaskLang.displayName}</option>
         </c:forEach>
     </select>
@@ -318,8 +318,26 @@
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#activeTaskLangItems option', htmlData).each(function (index, value) {
-            let id = 'row' + value.getAttribute('id');
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#row' + value.getAttribute('id');
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
           $('#addBtn').attr('disabled', true);
           $('.delete').addClass('cursor-none');
@@ -327,8 +345,26 @@
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
           $('#addBtn').attr('disabled', false);
           $('.delete').removeClass('cursor-none');

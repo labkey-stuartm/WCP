@@ -102,7 +102,7 @@
         <select id="eligibilityItems" style="display: none">
             <c:forEach items="${eligibilityTestLangList}" var="eligibilityLang">
                 <option id='lang_${eligibilityLang.eligibilityTestLangPK.id}'
-                        value="${eligibilityLang.question}">${eligibilityLang.question}</option>
+                      status="${eligibilityLang.status}"  value="${eligibilityLang.question}">${eligibilityLang.question}</option>
             </c:forEach>
         </select>
         <!-- Start body tab section -->
@@ -184,17 +184,19 @@
                     <tbody>
                     <c:set value="true" var="chkDone"/>
                     <c:forEach items="${eligibilityTestList}" var="etQusAns">
-                        <tr id="${etQusAns.id}">
+                        <tr id="${etQusAns.id}" status="${etQusAns.status}">
                             <td>${etQusAns.sequenceNo}</td>
                             <td class="title"><span class="dis-ellipsis"
                                                     title="${fn:escapeXml(etQusAns.question)}">${etQusAns.question}</span>
                             </td>
                             <td><span class=" preview-g mr-lg viewIcon"
                                       data-toggle="tooltip" data-placement="top" title="View"
-                                      etId="${etQusAns.id}"></span> <span
+                                      etId="${etQusAns.id}"></span>
+                                <span
                                     class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon"
                                     data-toggle="tooltip" data-placement="top" title="Edit"
-                                    etId='${etQusAns.id}'></span> <span
+                                    etId='${etQusAns.id}'></span>
+                                <span
                                     class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteIcon"
                                     data-toggle="tooltip" data-placement="top" title="Delete"
                                     onclick="deleteEligibiltyTestQusAns('${etQusAns.id}', this);"></span>
@@ -731,11 +733,29 @@
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', true);
           $('.sprites_icon').css('pointer-events', 'none');
           $('#eligibilityItems option', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id').split('_')[1];
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#'+value.getAttribute('id').split('_')[1];
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           })
           if ($('#inlineRadio3').prop('checked') === true) {
-            $('#comment').removeAttr('required')
+            $('#comment').removeAttr('required');
           } else {
             $('#comment').val($('#mlInstText', htmlData).val());
           }
@@ -746,8 +766,27 @@
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);
           $('.sprites_icon').removeAttr('style');
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            let status = value.getAttribute('status');
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
           if ($('#inlineRadio3').prop('checked') === true) {
             $('#comment').removeAttr('required')

@@ -96,7 +96,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${notificationList}" var="studyNotification">
-                    <tr id="${studyNotification.notificationId}">
+                    <tr id="${studyNotification.notificationId}" status="${studyNotification.notificationAction}">
                         <td width="60%" class="title">
                             <div class="dis-ellipsis"
                                  title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div>
@@ -115,7 +115,7 @@
                                       title="Resend"></span>
                             </c:if>
                             <c:if test="${not studyNotification.notificationSent}">
-                                <span class="${studyNotification.notificationDone?'edit-inc':'edit-inc-draft'} mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                <span class="${studyNotification.notificationDone?'edit-inc':'edit-inc-draft'} editIcon mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>"
                                       actionType="edit"
                                       notificationId="${studyNotification.notificationId}"
                                       data-toggle="tooltip" data-placement="top"
@@ -148,7 +148,7 @@
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <select id="notificationBOList" style="display: none">
         <c:forEach items="${notificationBOList}" var="notificationLang">
-            <option id='${notificationLang.notificationLangPK.notificationId}'
+            <option id='${notificationLang.notificationLangPK.notificationId}' status="${notificationLang.notificationAction}"
                     value="${notificationLang.notificationText}">${notificationLang.notificationText}</option>
         </c:forEach>
     </select>
@@ -230,8 +230,28 @@
           $('#addBtn').attr('disabled', true);
           $('.copy').addClass('cursor-none');
           $('#notificationBOList option', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#'+value.getAttribute('id');
+            let abc= value.getAttribute('value');
+            debugger
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
         } else {
           updateCompletionTicksForEnglish();
@@ -239,8 +259,26 @@
           $('#addBtn').attr('disabled', false);
           $('.copy').removeClass('cursor-none');
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
         }
       }

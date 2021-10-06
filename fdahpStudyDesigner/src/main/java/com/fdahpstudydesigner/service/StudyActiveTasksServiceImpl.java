@@ -332,6 +332,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
             activeTaskLangBO.setModifiedBy(sessionObject.getUserId());
             activeTaskLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           }
+          activeTaskLangBO.setStatus(FdahpStudyDesignerConstants.COMPLETED_BUTTON
+              .equals(activeTaskBo.getButtonText()));
           activeTaskLangBO.setDisplayName(activeTaskBo.getDisplayName());
           activeTaskLangBO.setInstruction(activeTaskBo.getInstruction());
 
@@ -679,6 +681,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
             activeTaskLangBO.setActiveTaskLangPK(
                 new ActiveTaskLangPK(activeTaskBo.getId(), language));
             activeTaskLangBO.setStudyId(studyId);
+            activeTaskLangBO.setStatus(false);
             activeTaskLangBO.setCreatedBy(activeTaskBo.getCreatedBy());
             activeTaskLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             studyActiveTasksDAO.saveOrUpdateObject(activeTaskLangBO);

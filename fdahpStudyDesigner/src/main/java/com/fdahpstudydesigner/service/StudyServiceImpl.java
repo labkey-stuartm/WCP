@@ -753,6 +753,8 @@ public class StudyServiceImpl implements StudyService {
             resourcesLangBO.setStudyId(resourceBO.getStudyId());
             resourcesLangBO.setSequenceNo(resourceBO.getSequenceNo());
             resourcesLangBO.setTextOrPdf(false);
+            resourcesLangBO.setAction(false);
+            resourcesLangBO.setStatus(true);
             resourcesLangBO.setCreatedBy(resourceBO.getCreatedBy());
             resourcesLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             studyDAO.saveOrUpdateObject(resourcesLangBO);
@@ -1527,6 +1529,7 @@ public class StudyServiceImpl implements StudyService {
               i++;
             }
           }
+          comprehensionQuestionLangBO.setStatus(comprehensionTestQuestionBo.getStatus());
           comprehensionQuestionLangBO.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
           comprehensionQuestionLangBO.setQuestionText(
               comprehensionTestQuestionBo.getQuestionText());
@@ -1623,6 +1626,7 @@ public class StudyServiceImpl implements StudyService {
           consentInfoLangBO = new ConsentInfoLangBO();
           consentInfoLangBO.setConsentInfoLangPK(
               new ConsentInfoLangPK(consentInfoBo.getId(), language));
+          consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
           consentInfoLangBO.setCreatedBy(sessionObject.getUserId());
           consentInfoLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         }
@@ -1632,8 +1636,9 @@ public class StudyServiceImpl implements StudyService {
         }
         consentInfoLangBO.setElaborated(consentInfoBo.getElaborated());
         consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
-        consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
         consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
+        consentInfoLangBO.setStatus(
+            FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(consentInfoBo.getType()));
         studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
       } else {
         if (consentInfoBo.getConsentItemType() != null) {
@@ -1715,14 +1720,15 @@ public class StudyServiceImpl implements StudyService {
             eligibilityTestLangBo = new EligibilityTestLangBo();
             eligibilityTestLangBo.setEligibilityTestLangPK(
                 new EligibilityTestLangPK(eligibilityTestBo.getId(), language));
+            eligibilityTestLangBo.setStudyId(studyId);
           }
+          eligibilityTestLangBo.setStatus(
+              !FdahpStudyDesignerConstants.ACTION_TYPE_SAVE.equals(eligibilityTestBo.getType()));
           eligibilityTestLangBo.setEligibilityId(eligibilityTestBo.getEligibilityId());
           eligibilityTestLangBo.setQuestion(eligibilityTestBo.getQuestion());
           eligibilityTestLangBo.setActive(true);
-          eligibilityTestLangBo.setStatus(eligibilityTestBo.getStatus());
           eligibilityTestId =
               studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
-
         } else {
           eligibilityTestId =
               studyDAO.saveOrUpdateEligibilityTestQusAns(
@@ -1863,6 +1869,7 @@ public class StudyServiceImpl implements StudyService {
         resourcesLangBO.setResourceText(resourceBO.getResourceText());
         resourcesLangBO.setRichText(resourceBO.getRichText());
         resourcesLangBO.setTitle(resourceBO.getTitle());
+        resourcesLangBO.setAction(resourceBO.isAction());
         resourcesLangBO.setTextOrPdf(resourceBO.isTextOrPdf());
         if (resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()) {
           file =
@@ -2624,6 +2631,7 @@ public class StudyServiceImpl implements StudyService {
                 new ConsentInfoLangPK(consentInfoBo.getId(), language));
             consentInfoLangBO.setStudyId(consentInfoBo.getStudyId());
             consentInfoLangBO.setSequenceNo(consentInfoBo.getSequenceNo());
+            consentInfoLangBO.setStatus(false);
             studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
           }
         }
@@ -2693,6 +2701,7 @@ public class StudyServiceImpl implements StudyService {
         comprehensionQuestionLangBO = new ComprehensionQuestionLangBO();
         comprehensionQuestionLangBO.setComprehensionQuestionLangPK(
             new ComprehensionQuestionLangPK(comprehensionTestQuestionBo.getId(), language));
+        comprehensionQuestionLangBO.setStatus(false);
         comprehensionQuestionLangBO.setStudyId(comprehensionTestQuestionBo.getStudyId());
         comprehensionQuestionLangBO.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
         comprehensionQuestionLangBO.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
@@ -2749,7 +2758,7 @@ public class StudyServiceImpl implements StudyService {
           }
         }
         eligibilityTestLangBOList =
-            studyDAO.getEligibilityTestLangByEligibilityId(eligibilityId, language);
+            studyDAO.getEligibilityTestLangByStudyId(Integer.parseInt(studyId), language);
       }
     } catch (Exception e) {
       logger.error("StudyServiceImpl - syncConsentDataInLanguageTables() - ERROR ", e);

@@ -1114,6 +1114,7 @@ public class StudyController {
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("checklist", checklist);
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+        map.addAttribute("currLanguage", request.getParameter("language"));
         mav = new ModelAndView("checklist", map);
       }
     } catch (Exception e) {
@@ -5142,6 +5143,7 @@ public class StudyController {
           }
         }
         map.addAttribute("_S", sessionStudyCount);
+        map.addAttribute("language", language);
         if ("save".equalsIgnoreCase(buttonType)
             && !FdahpStudyDesignerConstants.ADDORCOPY.equals(actionPage)) {
           request
@@ -5157,7 +5159,6 @@ public class StudyController {
               .getSession()
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ACTION_TYPE, "edit" + "");
-          map.addAttribute("language", language);
           mav = new ModelAndView("redirect:getStudyNotification.do", map);
         } else if ("save".equalsIgnoreCase(buttonType)
             && FdahpStudyDesignerConstants.ADDORCOPY.equals(actionPage)) {
@@ -5175,6 +5176,7 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ACTION_TYPE,
                   FdahpStudyDesignerConstants.ADDORCOPY + "");
+
           mav = new ModelAndView("redirect:getStudyNotification.do", map);
         } else {
           mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do", map);

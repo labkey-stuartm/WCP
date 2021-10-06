@@ -448,7 +448,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('.remBtnDis, .addBtnDis').addClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('langSpecific')) {
+            if (!$(this).hasClass('lang-specific')) {
               $(this).attr('disabled', true);
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
@@ -502,7 +502,7 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('.remBtnDis, .addBtnDis').removeClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('langSpecific')) {
+            if (!$(this).hasClass('lang-specific')) {
               $(this).attr('disabled', false);
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
