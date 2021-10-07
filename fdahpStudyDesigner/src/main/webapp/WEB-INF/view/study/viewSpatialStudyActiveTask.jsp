@@ -1190,7 +1190,7 @@
                                                     class="requiredStar"> *</span></div>
                                         <div class="add_notify_option">
                                             <div class="form-group">
-                                                <input type="text" class="form-control requireClass"
+                                                <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat4"
                                                        name="taskAttributeValueBos[7].displayUnitStat"
                                                        maxlength="15"
                                                        value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
@@ -1394,7 +1394,7 @@
                                     </div>
                                     <div class="add_notify_option">
                                         <div class="form-group">
-                                            <input type="text" class="form-control requireClass"
+                                            <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat5"
                                                    name="taskAttributeValueBos[8].displayUnitStat"
                                                    maxlength="15"
                                                    value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
@@ -1596,7 +1596,7 @@
                                     </div>
                                     <div class="add_notify_option">
                                         <div class="form-group">
-                                            <input type="text" class="form-control requireClass"
+                                            <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat6"
                                                    name="taskAttributeValueBos[9].displayUnitStat"
                                                    maxlength="15"
                                                    value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>

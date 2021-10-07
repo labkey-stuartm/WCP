@@ -5573,6 +5573,29 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @Override
   @SuppressWarnings("unchecked")
+  public List<QuestionLangBO> getQuestionLangByFormId(int questionnaireId, int formId, String language) {
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Starts");
+    List<QuestionLangBO> questionLangBOList = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      questionLangBOList = session
+          .createQuery(
+              "from QuestionLangBO where questionnaireId=:id and questionLangPK.langCode=:language and active=true and formId=:formId")
+          .setInteger("id", questionnaireId)
+          .setString("language", language)
+          .setInteger("formId", formId)
+          .list();
+      session.close();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Error : ", e);
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Ends");
+    return questionLangBOList;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
   public List<FormLangBO> getFormLangByQuestionnaireId(Integer questionnaireId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getFormLangByQuestionnaireId - Starts");
     List<FormLangBO> formLangBOS = null;

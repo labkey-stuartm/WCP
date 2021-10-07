@@ -4705,7 +4705,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               'disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
-
+          let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             let type = value.getAttribute('type');
@@ -4724,6 +4724,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     }
                   }
                   else {
+                    mark=false;
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc-draft')) {
                       edit.addClass('edit-inc-draft');
@@ -4750,6 +4751,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     }
                   }
                   else {
+                    mark=false;
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc-draft')) {
                       edit.addClass('edit-inc-draft');
@@ -4775,6 +4777,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     }
                   }
                   else {
+                    mark=false;
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc-draft')) {
                       edit.addClass('edit-inc-draft');
@@ -4798,7 +4801,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               })
             }
           });
-
+          if (!mark) {
+            $('#doneId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
@@ -4815,7 +4824,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr(
                   'disabled', true);
           </c:if>
-
+          let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             if (value.getAttribute('status')==="true") {
@@ -4828,6 +4837,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               }
             }
             else {
+              mark=false;
               let edit = $('#row_'+id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -4847,6 +4857,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               });
             }
           });
+          if (!mark) {
+            $('#doneId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
         }
       }
     });

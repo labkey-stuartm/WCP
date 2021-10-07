@@ -1106,18 +1106,18 @@ function refreshAndFetchLanguageData(language) {
 			$('#comment').val($('#mlResourceText', htmlData).val());
 			let textOrPdf = $('#mlTextOrPdf', htmlData).val();
 			let richText = $('#mlRichText', htmlData).val();
-			if (richText===undefined)
+			if (richText===undefined) {
 				richText = '';
+			}
 			$('#richText').val(richText);
-			if (tinymce.get('richText')!==null)
+			if (tinymce.get('richText')!==undefined && tinymce.get('richText')!==null) {
 				tinymce.get('richText').setContent(richText);
+			}
 
 			if (textOrPdf==='false') {
 				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
 				$('.pdfDiv').hide();
 				$('#richEditor').removeClass('dis-none');
-				$('#inlineRadio1').prop('checked', true);
-
 				$('#inlineRadio1').prop('checked', true);
 			}
 			else if (textOrPdf==='true') {
@@ -1150,10 +1150,11 @@ function refreshAndFetchLanguageData(language) {
 			}
 			$('#comment').val($('#comment', htmlData).val());
 			let richText = $('#richText', htmlData).val();
-			if (richText===undefined) richText = '';
+			if (richText===undefined) {richText = '';}
 			$('#richText').val(richText);
-			if (tinymce.get('richText')!==null)
+			if (tinymce.get('richText')!==null) {
 				tinymce.get('richText').setContent(richText);
+			}
 			if (textOrPdfEn==='false') {
 				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
 				$('.pdfDiv').hide();

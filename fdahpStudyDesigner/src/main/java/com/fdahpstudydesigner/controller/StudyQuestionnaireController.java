@@ -671,12 +671,14 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
-
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             FormLangBO formLangBO =
                 studyQuestionnaireService.getFormLangBO(Integer.parseInt(formId), language);
             map.addAttribute("formLangBO", formLangBO);
+            List<QuestionLangBO> questionLangBOList = studyQuestionnaireService
+                .syncAndGetQuestionLangByFormId(questionnairesStepsBo, Integer.parseInt(questionnaireId), Integer.parseInt(formId), language);
+            map.addAttribute("questionLangBOList", questionLangBOList);
             this.setStudyLangData(studyId, language, map);
           }
         }

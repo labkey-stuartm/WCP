@@ -948,6 +948,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               i++;
             }
           }
+          questionLangBO.setStatus(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType()));
           questionLangBO.setDisplayText(displayText.toString());
           questionLangBO.setTextChoiceDescription(description.toString());
           studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
@@ -1861,6 +1862,46 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       logger.error("StudyServiceImpl - getQuestionLangByQuestionnaireId() - Error", e);
     }
     logger.info("StudyServiceImpl - getQuestionLangByQuestionnaireId() - Ends");
+    return questionLangBOS;
+  }
+
+  @Override
+  public List<QuestionLangBO> syncAndGetQuestionLangByFormId(QuestionnairesStepsBo questionnairesStepsBo, int questionnaireId, int formId, String language) {
+    logger.info("StudyServiceImpl - getQuestionLangByFormId() - Starts");
+    List<QuestionLangBO> questionLangBOS = null;
+    try {
+
+      FormLangBO formLangBO =
+          studyQuestionnaireDAO.getFormLangBo(questionnairesStepsBo.getStepId(), language);
+      if (formLangBO == null) {
+        formLangBO = new FormLangBO();
+        formLangBO.setFormLangPK(new FormLangPK(questionnairesStepsBo.getStepId(), language));
+        formLangBO.setQuestionnaireId(questionnaireId);
+        formLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        formLangBO.setCreatedBy(questionnairesStepsBo.getCreatedBy());
+        studyQuestionnaireDAO.saveOrUpdateObject(formLangBO);
+      }
+
+      if (questionnairesStepsBo.getFormQuestionMap()!=null) {
+        for (QuestionnaireStepBean questionnaireStepBean : questionnairesStepsBo.getFormQuestionMap().values()) {
+          QuestionLangBO questionLangBO =
+              studyQuestionnaireDAO.getQuestionLangBo(questionnaireStepBean.getQuestionInstructionId(), language);
+          if (questionLangBO==null) {
+            questionLangBO = new QuestionLangBO();
+            questionLangBO.setQuestionLangPK(new QuestionLangPK(questionnaireStepBean.getQuestionInstructionId(), language));
+            questionLangBO.setQuestionnaireId(questionnaireId);
+            questionLangBO.setFormId(questionnaireStepBean.getStepId());
+            questionLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            questionLangBO.setCreatedBy(questionnairesStepsBo.getCreatedBy());
+            studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
+          }
+        }
+      }
+      questionLangBOS = studyQuestionnaireDAO.getQuestionLangByFormId(questionnaireId, formId, language);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getQuestionLangByFormId() - Error", e);
+    }
+    logger.info("StudyServiceImpl - getQuestionLangByFormId() - Ends");
     return questionLangBOS;
   }
 

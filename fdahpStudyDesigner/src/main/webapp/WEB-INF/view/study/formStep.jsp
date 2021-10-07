@@ -169,6 +169,12 @@
                     type="hidden" id="questionId" name="questionId"/> <input
                     type="hidden" id="actionTypeForFormStep"
                     name="actionTypeForFormStep"/>
+                <select id="questionLangBOList" style="display: none">
+                    <c:forEach items="${questionLangBOList}" var="questionLang">
+                        <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
+                                value="${questionLang.question}">${questionLang.question}</option>
+                    </c:forEach>
+                </select>
 
                 <div id="sla" class="tab-pane fade in active mt-xlg">
                     <div class="row">
@@ -309,9 +315,9 @@
                                 <thead style="display: none"></thead>
                                 <c:forEach items="${questionnairesStepsBo.formQuestionMap}"
                                            var="entry">
-                                    <tr>
+                                    <tr id="row${entry.value.questionInstructionId}" status="${entry.value.status}">
                                         <td><span id="${entry.key}">${entry.key}</span></td>
-                                        <td>
+                                        <td class="title">
                                             <div>
                                                 <div class="dis-ellipsis"
                                                      title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
@@ -345,7 +351,7 @@
 														<span class="sprites_icon preview-g mr-sm"
                                                               onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
                                                         <span
-                                                                class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
+                                                                class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
                                                                 <c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
                                                         <span
                                                                 class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
@@ -847,10 +853,10 @@
             '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">' +
             '  <span class="sprites_icon preview-g mr-sm"></span>';
         if (value.status) {
-          dynamicAction += '<span class="sprites_icon edit-g mr-sm" onclick="editQuestion('
+          dynamicAction += '<span class="sprites_icon edit-inc editIcon mr-sm" onclick="editQuestion('
               + parseInt(value.questionInstructionId) + ');"></span>';
         } else {
-          dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editQuestion('
+          dynamicAction += '<span class="edit-inc-draft editIcon mr-md mr-sm" onclick="editQuestion('
               + parseInt(value.questionInstructionId) + ');"></span>';
         }
         dynamicAction += '<span class="sprites_icon delete" onclick="deletQuestion(' + parseInt(
@@ -1025,6 +1031,37 @@
             $('[data-id="destinationStepId"]').addClass("ml-disabled");
           }
           $('.delete').addClass('cursor-none');
+          let mark=true;
+          $('#questionLangBOList option', htmlData).each(function (index, value) {
+            let id = '#row' + value.getAttribute('id');
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              mark=false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
+          });
+          if (!mark) {
+            $('#doneId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
@@ -1041,6 +1078,37 @@
           $('#formStepId input[type="text"]').prop('disabled', true);
           $('#formStepId input[type="radio"]').prop('disabled', true);
           </c:if>
+          let mark=true;
+          $('tbody tr', htmlData).each(function (index, value) {
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              mark=false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
+          });
+          if (!mark) {
+            $('#doneId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
         }
       }
     })

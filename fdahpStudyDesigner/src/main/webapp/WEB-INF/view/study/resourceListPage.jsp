@@ -75,7 +75,7 @@
             </div>
             <c:if test="${empty permission}">
                 <div class="dis-line form-group mb-none">
-					<span class="tool-tip" data-toggle="tooltip"
+					<span class="tool-tip" data-toggle="tooltip" id="helpNote"
                           data-placement="bottom"
                           <c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if>>
 						<button type="button" class="btn btn-primary blue-btn"
@@ -487,6 +487,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addResourceId').attr('disabled', true);
           $('.delete, .sorting_1').addClass('cursor-none');
+          let mark=true;
           $('#resourceLangBOList option', htmlData).each(function (index, value) {
             let id = '#row' + value.getAttribute('id');
             $(id).find('td.title').text(value.getAttribute('value'));
@@ -500,6 +501,7 @@
               }
             }
             else {
+              mark=false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -509,6 +511,13 @@
               }
             }
           });
+          if (!mark) {
+            $('#markAsComp').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
           if (studyProExist == null || studyProExist === '' || typeof studyProExist
               === 'undefined') {
             $('#studyProtocolId').prop('disabled', true);
@@ -521,6 +530,7 @@
           $('#addResourceId').attr('disabled', false);
           $('.delete, .sorting_1').removeClass('cursor-none');
           $('#studyProtocolId').prop('disabled', false);
+          let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
@@ -534,6 +544,7 @@
               }
             }
             else {
+              mark=false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -543,6 +554,13 @@
               }
             }
           });
+          if (!mark) {
+            $('#markAsComp').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
           <c:if test="${not empty permission}">
           $('.delete').addClass('cursor-none');
           </c:if>

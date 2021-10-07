@@ -372,6 +372,7 @@ function refreshAndFetchLanguageData(language) {
 				$('#addButton').attr('disabled', true);
 				$('.delete ').addClass('cursor-none');
 				$('.copy ').addClass('cursor-none');
+				let mark =true;
               $('#questionnaireLangBOS option', htmlData).each(function (index, value) {
                 let id = '#row' + value.getAttribute('id');
                 $(id).find('td.title').text(value.getAttribute('value'));
@@ -385,6 +386,7 @@ function refreshAndFetchLanguageData(language) {
                   }
                 }
                 else {
+                  mark =false;
                   let edit = $(id).find('span.editIcon');
                   if (!edit.hasClass('edit-inc-draft')) {
                     edit.addClass('edit-inc-draft');
@@ -394,6 +396,13 @@ function refreshAndFetchLanguageData(language) {
                   }
                 }
               });
+              if (!mark) {
+                $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+                $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+              } else {
+                $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+                $('#markAsTooltipId').removeAttr('data-original-title');
+              }
 			} else {
               updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -404,7 +413,7 @@ function refreshAndFetchLanguageData(language) {
 				<c:if test="${not empty permission}">
 				$('.delete, .copy').addClass('cursor-none');
 				</c:if>
-
+              let mark=true;
               $('tbody tr', htmlData).each(function (index, value) {
                 let id = '#'+value.getAttribute('id');
                 $(id).find('td.title').text($(id, htmlData).find('td.title').text());
@@ -418,6 +427,7 @@ function refreshAndFetchLanguageData(language) {
                   }
                 }
                 else {
+                  mark=false;
                   let edit = $(id).find('span.editIcon');
                   if (!edit.hasClass('edit-inc-draft')) {
                     edit.addClass('edit-inc-draft');
@@ -427,6 +437,13 @@ function refreshAndFetchLanguageData(language) {
                   }
                 }
               });
+              if (!mark) {
+                $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+                $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+              } else {
+                $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+                $('#markAsTooltipId').removeAttr('data-original-title');
+              }
 			}
 		}
 	});

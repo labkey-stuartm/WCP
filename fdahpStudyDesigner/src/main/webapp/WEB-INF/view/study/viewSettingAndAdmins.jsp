@@ -555,8 +555,10 @@
     </c:if>
     <c:if
     test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
-    $('[name="multiLanguageFlag"]').prop('disabled', true);
-    $('.removeLang').addClass('cursor-none');
+    if ($('#mlYes').prop('checked')===true) {
+      $('[name="multiLanguageFlag"]').prop('disabled', true);
+      $('.removeLang').addClass('cursor-none');
+    }
     </c:if>
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {

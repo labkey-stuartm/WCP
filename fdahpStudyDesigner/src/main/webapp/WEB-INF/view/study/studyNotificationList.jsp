@@ -59,7 +59,7 @@
                 <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
             </div>
             <c:if test="${empty permission}">
-                <div class="dis-line form-group mb-none"
+                <div class="dis-line form-group mb-none" id="helpNote"
                      <c:if test="${not empty notificationSavedList}">data-toggle="tooltip"
                      data-placement="bottom"
                      title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
@@ -146,8 +146,8 @@
     <input type="hidden" name="language" value="${currLanguage}">
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
-    <select id="notificationBOList" style="display: none">
-        <c:forEach items="${notificationBOList}" var="notificationLang">
+    <select id="notificationLangBOList" style="display: none">
+        <c:forEach items="${notificationLangBOList}" var="notificationLang">
             <option id='${notificationLang.notificationLangPK.notificationId}' status="${notificationLang.notificationAction}"
                     value="${notificationLang.notificationText}">${notificationLang.notificationText}</option>
         </c:forEach>
@@ -229,10 +229,9 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addBtn').attr('disabled', true);
           $('.copy').addClass('cursor-none');
-          $('#notificationBOList option', htmlData).each(function (index, value) {
+          let mark=true;
+          $('#notificationLangBOList option', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');
-            let abc= value.getAttribute('value');
-            debugger
             $(id).find('td.title').text(value.getAttribute('value'));
             if (value.getAttribute('status')==="true") {
               let edit = $(id).find('span.editIcon');
@@ -244,6 +243,9 @@
               }
             }
             else {
+              if ($(id).find('span.editIcon').length>0) {
+                mark=false;
+              }
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -253,11 +255,27 @@
               }
             }
           });
+          if (!mark) {
+            let markComplete = $('.markCompleted');
+            markComplete.prop('disabled', true);
+            if (!markComplete.hasClass('linkDis')) {
+              markComplete.addClass('linkDis')
+            }
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            let markComplete = $('.markCompleted');
+            markComplete.prop('disabled', false);
+            if (markComplete.hasClass('linkDis')) {
+              markComplete.removeClass('linkDis')
+            }
+            $('#helpNote').removeAttr('data-original-title');
+          }
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addBtn').attr('disabled', false);
           $('.copy').removeClass('cursor-none');
+          let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
@@ -271,6 +289,9 @@
               }
             }
             else {
+              if ($(id).find('span.editIcon').length>0) {
+                mark=false;
+              }
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -280,6 +301,21 @@
               }
             }
           });
+          if (!mark) {
+            let markComplete = $('.markCompleted');
+            markComplete.prop('disabled', true);
+            if (!markComplete.hasClass('linkDis')) {
+              markComplete.addClass('linkDis')
+            }
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            let markComplete = $('.markCompleted');
+            markComplete.prop('disabled', false);
+            if (markComplete.hasClass('linkDis')) {
+              markComplete.removeClass('linkDis')
+            }
+            $('#helpNote').removeAttr('data-original-title');
+          }
         }
       }
     });

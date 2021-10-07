@@ -158,6 +158,8 @@ public interface StudyQuestionnaireService {
 
   List<QuestionLangBO> getQuestionLangByQuestionnaireId(int questionnaireId, String language);
 
+  List<QuestionLangBO> syncAndGetQuestionLangByFormId(QuestionnairesStepsBo questionnairesStepsBo, int questionnaireId, int formId, String language);
+
   List<FormLangBO> getFormLangByQuestionnaireId(int questionnaireId, String language);
 
   List<InstructionsLangBO> getInstructionLangByQuestionnaireId(int questionnaireId, String language);

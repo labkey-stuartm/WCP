@@ -13,11 +13,11 @@
     pointer-events: none;
   }
   
-  .langSpecific{
+  .globe{
     	position: relative;
   	  }
 
-  	  .langSpecific > button::before{
+  	  .globe > button::before{
     	content: '';
     	display: block;
     	background-image: url("../images/global_icon.png");
@@ -29,7 +29,7 @@
     	background-repeat: no-repeat;
   	  }
 
-  	  .langSpecific > button{
+  	  .globe > button{
         padding-left: 30px;
   	  }
 </style>
@@ -85,7 +85,7 @@
                    value="${activeTaskBo.taskAttributeValueBos[8].titleChat}">
             <input type="hidden" id="enSpatialDisplayStat2"
                    value="${activeTaskBo.taskAttributeValueBos[8].displayNameStat}">
-            <input type="hidden" id="enenSpatialDisplayUnitStat2"
+            <input type="hidden" id="enSpatialDisplayUnitStat2"
                    value="${activeTaskBo.taskAttributeValueBos[8].displayUnitStat}">
             <input type="hidden" id="enSpatialTitleChart3"
                    value="${activeTaskBo.taskAttributeValueBos[9].titleChat}">
@@ -111,7 +111,7 @@
             <c:if test="${studyBo.multiLanguageFlag eq true and actionPage != 'add'}">
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
-                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            class="selectpicker aq-select aq-select-form studyLanguage globe lang-specific"
                             id="studyLanguage" name="studyLanguage" title="Select">
                         <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                             English
@@ -129,7 +129,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+						<select class="selectpicker aq-select aq-select-form studyLanguage globe lang-specific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>

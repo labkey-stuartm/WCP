@@ -732,6 +732,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', true);
           $('.sprites_icon').css('pointer-events', 'none');
+          let readyForComplete = true;
           $('#eligibilityItems option', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id').split('_')[1];
             $(id).find('td.title').text(value.getAttribute('value'));
@@ -745,6 +746,7 @@
               }
             }
             else {
+              readyForComplete = false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -754,6 +756,13 @@
               }
             }
           })
+          if (!readyForComplete) {
+            $('#doneBut').addClass('cursor-none').prop('disabled', true);
+            $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneBut').removeClass('cursor-none').prop('disabled', false);
+            $('#spancomId').removeAttr('data-original-title');
+          }
           if ($('#inlineRadio3').prop('checked') === true) {
             $('#comment').removeAttr('required');
           } else {
@@ -765,6 +774,7 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);
           $('.sprites_icon').removeAttr('style');
+          let mark = true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
@@ -779,6 +789,7 @@
               }
             }
             else {
+              mark=false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -788,6 +799,15 @@
               }
             }
           });
+
+          if (!mark) {
+            $('#doneBut').addClass('cursor-none').prop('disabled', true);
+            $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneBut').removeClass('cursor-none').prop('disabled', false);
+            $('#spancomId').removeAttr('data-original-title');
+          }
+
           if ($('#inlineRadio3').prop('checked') === true) {
             $('#comment').removeAttr('required')
           } else {

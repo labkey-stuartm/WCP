@@ -8536,7 +8536,7 @@ public class StudyDAOImpl implements StudyDAO {
         } else if (!studySequenceLangBO.isComprehensionTest() && !publishFlag) {
           message = FdahpStudyDesignerConstants.COMPREHENSIONTEST_ERROR_MSG;
           return message;
-        } else if (!studySequenceLangBO.iseConsent()) {
+        } else if (!studySequenceLangBO.iseConsent() && !publishFlag) {
           message = FdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
           return message;
         } else if (!studySequenceLangBO.isStudyExcQuestionnaries()  && !publishFlag) {

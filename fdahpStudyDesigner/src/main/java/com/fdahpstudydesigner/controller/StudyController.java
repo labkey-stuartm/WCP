@@ -6628,7 +6628,7 @@ public class StudyController {
                     language,
                     notificationList,
                     sessionObject.getUserId());
-            map.addAttribute("notificationBOList", notificationLangBOList);
+            map.addAttribute("notificationLangBOList", notificationLangBOList);
           }
         }
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);

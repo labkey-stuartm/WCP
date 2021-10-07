@@ -641,6 +641,7 @@
           $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
+          let mark = true;
           $('#comprehensionLangItems option', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id').split('_')[1];
             $(id).find('td.title').text(value.getAttribute('value'));
@@ -654,6 +655,7 @@
               }
             }
             else {
+              mark = false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -663,6 +665,14 @@
               }
             }
           })
+
+          if (!mark) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
           $('#addQuestionId, #comprehensionTestYes, #comprehensionTestNo').attr('disabled', true);
           $('#comprehensionTestMinimumScore').attr('disabled', true);
           $('.delete').addClass('cursor-none');
@@ -670,6 +680,7 @@
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+          let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
@@ -683,6 +694,7 @@
               }
             }
             else {
+              mark=false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -692,6 +704,13 @@
               }
             }
           });
+          if (!mark) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
           $('#addQuestionId , #comprehensionTestYes, #comprehensionTestNo').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
           $('#comprehensionTestMinimumScore').attr('disabled', false);
