@@ -12,6 +12,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
@@ -33,6 +34,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
   private static Logger logger = Logger.getLogger(StudyActiveTasksServiceImpl.class);
 
   @Autowired private StudyActiveTasksDAO studyActiveTasksDAO;
+
+  @Autowired private StudyService studyService;
 
   /**
    * deleting of Active task in Study
@@ -381,6 +384,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
             }
           }
           studyActiveTasksDAO.saveOrUpdateObject(activeTaskLangBO);
+          StudySequenceLangBO studySequenceLangBO = studyService.getStudySequenceById(activeTaskBo.getStudyId(), language);
+          if (studySequenceLangBO!=null) {
+            if (!FdahpStudyDesignerConstants.COMPLETED_BUTTON
+                .equals(activeTaskBo.getButtonText())) {
+              studySequenceLangBO.setStudyExcActiveTask(false);
+              studyActiveTasksDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
         } else {
           updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
           updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());

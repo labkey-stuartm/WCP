@@ -394,6 +394,7 @@
         success: function (data) {
           var message = data.message;
           if (message == "SUCCESS") {
+            $('.fifthConsent').find('span').remove();
             var consentInfoId = data.consentInfoId;
             $("#id").val(consentInfoId);
             $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
@@ -579,7 +580,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          updateCompletionTicks(htmlData);
+          updateCompletionTicks(data);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);

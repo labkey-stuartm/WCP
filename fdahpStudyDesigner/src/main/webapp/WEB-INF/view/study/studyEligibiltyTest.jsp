@@ -258,8 +258,7 @@
                   });
             });
         $("#saveId")
-        .click(
-            function () {
+        .click(function () {
               $(this).prop("disabled", true);
               validateShortTitle(
                   "#shortTitleId",
@@ -308,6 +307,7 @@
                       return false;
                     }
                   });
+          $('.fourth').find('span').remove();
             });
       });
 

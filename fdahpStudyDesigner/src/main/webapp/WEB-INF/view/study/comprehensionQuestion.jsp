@@ -537,6 +537,7 @@
             }
           }
           setTimeout(hideDisplayMessage, 4000);
+          $('.fifthComre').find('span').remove();
         },
         error: function (xhr, status, error) {
           $(item).prop('disabled', false);

@@ -1535,6 +1535,14 @@ public class StudyServiceImpl implements StudyService {
               comprehensionTestQuestionBo.getQuestionText());
           studyDAO.saveOrUpdateComprehensionQuestionLanguageData(
               comprehensionQuestionLangBO, false);
+
+          StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(comprehensionTestQuestionBo.getStudyId(), language);
+          if (studySequenceLangBO!=null) {
+            if (!comprehensionTestQuestionBo.getStatus()) {
+              studySequenceLangBO.setComprehensionTest(false);
+              studyDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
         } else {
           if (comprehensionTestQuestionBo.getStatus() != null) {
             updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
@@ -1639,6 +1647,13 @@ public class StudyServiceImpl implements StudyService {
         consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
         consentInfoLangBO.setStatus(
             FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(consentInfoBo.getType()));
+        StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(consentInfoBo.getStudyId(), language);
+        if (studySequenceLangBO!=null) {
+          if (!FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(consentInfoBo.getType())) {
+            studySequenceLangBO.setConsentEduInfo(false);
+            studyDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
+        }
         studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
       } else {
         if (consentInfoBo.getConsentItemType() != null) {
@@ -1729,6 +1744,14 @@ public class StudyServiceImpl implements StudyService {
           eligibilityTestLangBo.setActive(true);
           eligibilityTestId =
               studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
+
+          StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(studyId, language);
+          if (studySequenceLangBO!=null) {
+            if (!FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(eligibilityTestBo.getType())) {
+              studySequenceLangBO.setEligibility(false);
+              studyDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
         } else {
           eligibilityTestId =
               studyDAO.saveOrUpdateEligibilityTestQusAns(

@@ -171,9 +171,9 @@
             <!-- End Section-->
 
             <div id="langSelect" style="display: none">
-                <div class="mt-md study-list mb-md addHide" style="margin-left: -15px;">
+                <div class="mt-md study-list mb-md addHide" >
                     <select
-                            class="selectpicker col-md-6 aq-select aq-select-form text-normal"
+                            class="selectpicker col-md-6 pl-none pr-none aq-select aq-select-form text-normal"
                             title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
                             <option class="langOption" value="${lang.key}"
