@@ -501,6 +501,7 @@
             $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');
           }
+          $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
           $('#addConsent').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
@@ -540,6 +541,7 @@
             $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');
           }
+          $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
           $('#addConsent').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
           

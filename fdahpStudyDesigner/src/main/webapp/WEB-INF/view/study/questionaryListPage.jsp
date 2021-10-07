@@ -370,6 +370,7 @@ function refreshAndFetchLanguageData(language) {
               updateCompletionTicks(htmlData);
               $('.tit_wrapper').text($('#mlName', htmlData).val());
 				$('#addButton').attr('disabled', true);
+				$('.sorting').css('pointer-events', 'none');
 				$('.delete ').addClass('cursor-none');
 				$('.copy ').addClass('cursor-none');
 				let mark =true;
@@ -409,7 +410,7 @@ function refreshAndFetchLanguageData(language) {
 				$('#addButton').attr('disabled', false);
 				$('.delete ').removeClass('cursor-none');
 				$('.copy ').removeClass('cursor-none');	
-				
+				$('.sorting').removeAttr('style');
 				<c:if test="${not empty permission}">
 				$('.delete, .copy').addClass('cursor-none');
 				</c:if>

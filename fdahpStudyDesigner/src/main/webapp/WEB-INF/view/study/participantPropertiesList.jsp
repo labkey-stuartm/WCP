@@ -263,10 +263,12 @@
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addButton').attr('disabled', true);
+          $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addButton').attr('disabled', false);
+          $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
         }
       }
     });

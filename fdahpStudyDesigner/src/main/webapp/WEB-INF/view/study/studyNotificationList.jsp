@@ -229,6 +229,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addBtn').attr('disabled', true);
           $('.copy').addClass('cursor-none');
+          $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
           let mark=true;
           $('#notificationLangBOList option', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');
@@ -275,6 +276,7 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addBtn').attr('disabled', false);
           $('.copy').removeClass('cursor-none');
+          $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
           let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
             let id = '#'+value.getAttribute('id');

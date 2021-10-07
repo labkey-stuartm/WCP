@@ -349,6 +349,7 @@
             $('#spancomId').removeAttr('data-original-title');
           }
           $('#addBtn').attr('disabled', true);
+          $('.sorting').css('pointer-events', 'none');
           $('.delete').addClass('cursor-none');
         } else {
           updateCompletionTicksForEnglish();
@@ -385,6 +386,7 @@
             $('#spancomId').removeAttr('data-original-title');
           }
           $('#addBtn').attr('disabled', false);
+          $('.sorting').removeAttr('style');
           $('.delete').removeClass('cursor-none');
           
           <c:if test="${not empty permission}">

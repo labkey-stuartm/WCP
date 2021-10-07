@@ -676,6 +676,7 @@
           $('#addQuestionId, #comprehensionTestYes, #comprehensionTestNo').attr('disabled', true);
           $('#comprehensionTestMinimumScore').attr('disabled', true);
           $('.delete').addClass('cursor-none');
+          $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
@@ -714,6 +715,7 @@
           $('#addQuestionId , #comprehensionTestYes, #comprehensionTestNo').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
           $('#comprehensionTestMinimumScore').attr('disabled', false);
+          $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
           
           <c:if test="${permission eq 'view'}">
           $('#comprehensionInfoForm input,textarea').prop('disabled', true);
