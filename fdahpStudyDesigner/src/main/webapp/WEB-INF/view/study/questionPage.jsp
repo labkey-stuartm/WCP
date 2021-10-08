@@ -4373,8 +4373,8 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + $(
-              '#studyLanguage').val();
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -4384,8 +4384,8 @@
     </c:if>
     <c:if test="${actionTypeForFormStep eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + $(
-        '#studyLanguage').val();
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+    a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + lang;
     document.body.appendChild(a).click();
     </c:if>
   }

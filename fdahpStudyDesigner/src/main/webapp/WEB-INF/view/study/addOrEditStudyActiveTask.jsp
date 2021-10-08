@@ -284,9 +284,10 @@
 
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           $(".changeContent").load(
               "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}&language="
-              + $('#studyLanguage').val(), {
+              + lang, {
                 noncache: new Date().getTime(),
                 typeOfActiveTask: typeOfActiveTask,
                 activeTaskInfoId: activeTaskInfoId,
@@ -401,8 +402,9 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -412,8 +414,9 @@
     </c:if>
     <c:if test="${actionPage eq 'view'}">
     var a = document.createElement('a');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
-        + $('#studyLanguage').val();
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }

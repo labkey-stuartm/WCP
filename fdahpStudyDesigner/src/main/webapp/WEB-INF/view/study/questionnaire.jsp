@@ -4067,20 +4067,21 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 
   function viewStep(stepId, stepType) {
     $("#actionTypeForQuestionPage").val('view');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     if (stepType == 'Instruction') {
       $("#instructionId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/instructionsStep.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.contentFormId.submit();
     } else if (stepType == 'Form') {
       $("#formId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.contentFormId.submit();
     } else if (stepType == 'Question') {
       $("#questionId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.contentFormId.submit();
     }
   }
@@ -4102,8 +4103,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -4113,8 +4115,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     </c:if>
     <c:if test="${actionType eq 'view'}">
     var a = document.createElement('a');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}&language="
-        + $('#studyLanguage').val();
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }

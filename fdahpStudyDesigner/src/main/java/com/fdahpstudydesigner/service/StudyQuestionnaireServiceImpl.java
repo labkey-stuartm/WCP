@@ -24,6 +24,7 @@ import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -48,6 +49,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   @Autowired private AuditLogDAO auditLogDAO;
 
   @Autowired private StudyQuestionnaireDAO studyQuestionnaireDAO;
+
+  @Autowired private StudyService studyService;
 
   /**
    * From step have a one or more question.Each question have the short title field this will be
@@ -773,7 +776,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       InstructionsBo instructionsBo,
       SessionObject sessionObject,
       String customStudyId,
-      String language) {
+      String language,
+      String studyId) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Starts");
     InstructionsBo addOrUpdateInstructionsBo = null;
     InstructionsLangBO instructionsLangBO = null;
@@ -808,6 +812,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           instructionsLangBO.setStatus(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(instructionsBo.getType()));
           instructionsLangBO.setInstructionTitle(instructionsBo.getInstructionTitle());
           instructionsLangBO.setInstructionText(instructionsBo.getInstructionText());
+          if (StringUtils.isNotBlank(studyId)) {
+            StudySequenceLangBO studySequenceLangBO =
+                studyService.getStudySequenceById(Integer.parseInt(studyId), language);
+            if (studySequenceLangBO != null) {
+              studySequenceLangBO.setStudyExcQuestionnaries(false);
+              studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
           studyQuestionnaireDAO.saveOrUpdateObject(instructionsLangBO);
         } else {
           if (instructionsBo.getInstructionText() != null
@@ -876,7 +888,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    */
   @Override
   public QuestionsBo saveOrUpdateQuestion(
-      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId, String language) {
+      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId, String language, String studyId) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Starts");
     QuestionsBo addQuestionsBo = null;
     String activitydetails = "";
@@ -952,6 +964,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           questionLangBO.setDisplayText(displayText.toString());
           questionLangBO.setTextChoiceDescription(description.toString());
           studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
+          if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+            StudySequenceLangBO studySequenceLangBO = studyService.getStudySequenceById(Integer.parseInt(studyId), language);
+            if (studySequenceLangBO!=null) {
+              studySequenceLangBO.setStudyExcQuestionnaries(false);
+              studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
+
         } else {
           if (questionsBo.getShortTitle() != null) {
             addQuestionsBo.setShortTitle(questionsBo.getShortTitle());
@@ -1149,6 +1169,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           questionnaireLangBO.setStatus(questionnaireBo.getStatus());
           questionnaireLangBO.setTitle(questionnaireBo.getTitle());
           studyQuestionnaireDAO.saveOrUpdateObject(questionnaireLangBO);
+
+          StudySequenceLangBO studySequenceLangBO = studyService.getStudySequenceById(questionnaireBo.getStudyId(), language);
+          if (studySequenceLangBO!=null) {
+            if (questionnaireBo.getStatus()) {
+              studySequenceLangBO.setStudyExcQuestionnaries(false);
+              studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
 
         } else {
           if (questionnaireBo.getStudyId() != null) {
@@ -1385,7 +1413,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       QuestionnairesStepsBo questionnairesStepsBo,
       SessionObject sessionObject,
       String customStudyId,
-      String language) {
+      String language,
+      String studyId) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
     QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
     QuestionLangBO questionLangBO = null;
@@ -1476,6 +1505,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           questionLangBO.setTextChoiceDescription(description.toString());
           questionLangBO.setStatus(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionnairesStepsBo.getType()));
           studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
+
+          if (StringUtils.isNotBlank(studyId)) {
+            StudySequenceLangBO studySequenceLangBO =
+                studyService.getStudySequenceById(Integer.parseInt(studyId), language);
+            if (studySequenceLangBO != null) {
+              studySequenceLangBO.setStudyExcQuestionnaries(false);
+              studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
         } else {
           if (questionnairesStepsBo.getQuestionsBo().getQuestion() != null) {
             addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
@@ -1722,7 +1760,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String saveOrUpdateFormStepForOtherLanguages(
-      QuestionnairesStepsBo questionnairesStepsBo, String language) {
+      QuestionnairesStepsBo questionnairesStepsBo, String language, String studyId) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFormStepForOtherLanguages - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -1743,6 +1781,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       formLangBO.setRepeatableText(questionnairesStepsBo.getRepeatableText());
       formLangBO.setStatus(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionnairesStepsBo.getType()));
       studyQuestionnaireDAO.saveOrUpdateObject(formLangBO);
+
+      if (FdahpStudyDesignerUtil.isNotEmpty(studyId)) {
+        StudySequenceLangBO studySequenceLangBO =
+            studyService.getStudySequenceById(Integer.parseInt(studyId), language);
+        if (studySequenceLangBO != null) {
+          studySequenceLangBO.setStudyExcQuestionnaries(false);
+          studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
+        }
+      }
       result = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {
       logger.error(

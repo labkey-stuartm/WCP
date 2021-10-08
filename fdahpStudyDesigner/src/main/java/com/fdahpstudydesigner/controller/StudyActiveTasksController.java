@@ -106,6 +106,7 @@ public class StudyActiveTasksController {
                 customStudyId,
                 language);
         map.addAttribute("_S", sessionStudyCount);
+        map.addAttribute("language", language);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
               .getSession()

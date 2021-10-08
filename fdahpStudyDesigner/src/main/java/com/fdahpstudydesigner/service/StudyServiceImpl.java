@@ -1911,6 +1911,15 @@ public class StudyServiceImpl implements StudyService {
           resourcesLangBO.setPdfName(resourceBO.getPdfName());
         }
         studyDAO.saveOrUpdateObject(resourcesLangBO);
+
+        StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(resourceBO.getStudyId(), language);
+        if (studySequenceLangBO!=null) {
+          if (!resourceBO.isAction()) {
+            studySequenceLangBO.setMiscellaneousResources(false);
+            studyDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
+        }
+
         resourseId = resourcesLangBO.getResourcesLangPK().getId();
       } else {
 

@@ -105,10 +105,11 @@ public interface StudyQuestionnaireService {
       InstructionsBo instructionsBo,
       SessionObject sessionObject,
       String customStudyId,
-      String language);
+      String language,
+      String studyId);
 
   public QuestionsBo saveOrUpdateQuestion(
-      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId, String language);
+      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId, String language, String studyId);
 
   public QuestionnaireBo saveOrUpdateQuestionnaire(
       QuestionnaireBo questionnaireBo,
@@ -123,7 +124,8 @@ public interface StudyQuestionnaireService {
       QuestionnairesStepsBo questionnairesStepsBo,
       SessionObject sessionObject,
       String customStudyId,
-      String language);
+      String language,
+      String studyId);
 
   public String validateLineChartSchedule(Integer questionnaireId, String frequency);
 
@@ -146,7 +148,7 @@ public interface StudyQuestionnaireService {
   QuestionLangBO getQuestionLangBO(int id, String language);
 
   String saveOrUpdateFormStepForOtherLanguages(
-      QuestionnairesStepsBo questionnairesStepsBo, String language);
+      QuestionnairesStepsBo questionnairesStepsBo, String language, String studyId);
 
   List<String> syncAndGetLangData(
       Map<Integer, QuestionnaireStepBean> qTreeMap,

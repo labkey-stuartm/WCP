@@ -588,7 +588,8 @@
               $("#addQuestionId").attr("disabled", false);
               $("#addHelpNote").hide();
               if (type != "save") {
-                document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+$('#studyLanguage').val();
+                let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+lang;
                 document.comprehensionInfoForm.submit();
               } else {
                 $("body").removeClass("loading");

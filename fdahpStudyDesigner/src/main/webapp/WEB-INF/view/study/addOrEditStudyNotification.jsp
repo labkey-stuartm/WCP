@@ -457,12 +457,14 @@
                 	  		if(result){
                 	  			$('#saveStudyId').prop('disabled',true);
               					$('#studyNotificationFormId').submit();
+              					$('.eigthNotification').find('span').remove();
                 	  		}
                 	  	  });
       				} else if($('#inlineRadio1').prop('checked')){
         			  if(validateTime()){
         				  $('#saveStudyId').prop('disabled',true);
         				  $('#studyNotificationFormId').submit();
+						  $('.eigthNotification').find('span').remove();
       	  			}
         		  }
               }else{

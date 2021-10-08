@@ -1226,8 +1226,9 @@
             }
             if (item == "doneId") {
               var a = document.createElement('a');
+              let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
               a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="
-                  + $('#studyLanguage').val();
+                  + lang;
               document.body.appendChild(a).click();
             } else {
               $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");

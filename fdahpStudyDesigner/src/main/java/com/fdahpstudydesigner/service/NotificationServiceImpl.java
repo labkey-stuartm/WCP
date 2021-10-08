@@ -8,6 +8,7 @@ import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.bo.NotificationLangBO;
 import com.fdahpstudydesigner.bo.NotificationLangPK;
+import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.dao.NotificationDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -28,6 +29,8 @@ public class NotificationServiceImpl implements NotificationService {
   @Autowired private NotificationDAO notificationDAO;
 
   @Autowired private StudyDAO studyDAO;
+
+  @Autowired private StudyService studyService;
 
   /**
    * Deleting detail of notification by Id.
@@ -226,6 +229,15 @@ public class NotificationServiceImpl implements NotificationService {
           notificationLangBO.setNotificationText(notificationBO.getNotificationText());
           notificationLangBO.setNotificationAction(notificationBO.isNotificationAction());
           studyDAO.saveOrUpdateObject(notificationLangBO);
+
+          StudySequenceLangBO studySequenceLangBO = studyService.getStudySequenceById(notificationBO.getStudyId(), language);
+          if (studySequenceLangBO!=null) {
+            if (FdahpStudyDesignerConstants.SAVE_BUTTON.equals(buttonType)) {
+              studySequenceLangBO.setMiscellaneousNotification(false);
+              studyDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
+
           notificationId = notificationBO.getNotificationId();
         } else {
           notificationId =
