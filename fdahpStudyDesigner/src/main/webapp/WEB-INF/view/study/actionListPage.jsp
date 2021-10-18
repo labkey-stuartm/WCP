@@ -193,7 +193,7 @@
 		$(".tenth").addClass('active');
 		$("#createStudyId").show();
 		$('.tenth').removeClass('cursor-none');
-		
+
 		var studyMode = "${studyMode}";
 		if(studyMode == "liveMode"){
 			$("#livemode").prop("checked", true);

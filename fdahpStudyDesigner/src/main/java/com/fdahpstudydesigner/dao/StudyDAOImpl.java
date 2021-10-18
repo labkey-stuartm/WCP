@@ -8434,9 +8434,11 @@ public class StudyDAOImpl implements StudyDAO {
           }
 
           // validating mark as completed for multiple languages
-          message = validateCompletionStatusFromLangTables(Integer.parseInt(studyId), false);
-          if (!FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-            return message;
+          if (studyBo.getMultiLanguageFlag() != null && studyBo.getMultiLanguageFlag()) {
+            message = validateCompletionStatusFromLangTables(Integer.parseInt(studyId), false);
+            if (!FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+              return message;
+            }
           }
 
           // 2-enrollment validation
@@ -8485,9 +8487,11 @@ public class StudyDAOImpl implements StudyDAO {
             }
           }
           // validating mark as completed for multiple languages
-          message = validateCompletionStatusFromLangTables(Integer.parseInt(studyId), true);
-          if (!FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-            return message;
+          if (studyBo.getMultiLanguageFlag() != null && studyBo.getMultiLanguageFlag()) {
+            message = validateCompletionStatusFromLangTables(Integer.parseInt(studyId), true);
+            if (!FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+              return message;
+            }
           }
         }
       } else {
@@ -9519,6 +9523,33 @@ public class StudyDAOImpl implements StudyDAO {
       }
     }
     logger.info("StudyDAOImpl - getStudySequenceLangBO() - Ends");
+    return studySequenceLangBO;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<StudySequenceLangBO> getStudySequenceByStudyId(int studyId) {
+    logger.info("StudyDAOImpl - getStudySequenceByStudyId() - Starts");
+    Session session = null;
+    List<StudySequenceLangBO> studySequenceLangBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (studyId != 0) {
+        studySequenceLangBO =
+                session
+                    .createQuery(
+                        "from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
+                    .setInteger("id", studyId)
+                    .list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudySequenceByStudyId() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudySequenceByStudyId() - Ends");
     return studySequenceLangBO;
   }
 

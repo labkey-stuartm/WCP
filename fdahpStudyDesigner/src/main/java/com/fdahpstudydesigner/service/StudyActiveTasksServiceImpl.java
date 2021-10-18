@@ -14,6 +14,7 @@ import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
+import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -34,6 +35,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
   private static Logger logger = Logger.getLogger(StudyActiveTasksServiceImpl.class);
 
   @Autowired private StudyActiveTasksDAO studyActiveTasksDAO;
+
+  @Autowired private StudyDAO studyDAO;
 
   @Autowired private StudyService studyService;
 
@@ -319,6 +322,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
                   ? ""
                   : activeTaskBo.getInstruction());
           updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
+
+          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(activeTaskBo.getStudyId());
+          for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+            studySequenceLangBO.setStudyExcActiveTask(false);
+            studyActiveTasksDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {

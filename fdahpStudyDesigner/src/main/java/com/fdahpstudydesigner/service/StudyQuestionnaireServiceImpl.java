@@ -26,6 +26,7 @@ import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudySequenceLangBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
+import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
@@ -49,6 +50,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   @Autowired private AuditLogDAO auditLogDAO;
 
   @Autowired private StudyQuestionnaireDAO studyQuestionnaireDAO;
+
+  @Autowired private StudyDAO studyDAO;
 
   @Autowired private StudyService studyService;
 
@@ -1148,6 +1151,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         } else {
           addQuestionnaireBo = new QuestionnaireBo();
           addQuestionnaireBo.setActive(true);
+
+          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(questionnaireBo.getStudyId());
+          for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+            studySequenceLangBO.setStudyExcQuestionnaries(false);
+            studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {

@@ -514,7 +514,6 @@
           if (!mark) {
             $('#markAsComp').addClass('cursor-none').prop('disabled', true);
             $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
-            $('.eighthResources').find('span').remove();
           } else {
             $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');

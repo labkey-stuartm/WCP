@@ -344,7 +344,6 @@
           if (!mark) {
             $('#markAsComp').addClass('cursor-none').prop('disabled', true);
             $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
-            $('.seventhTask').find('span').remove();
           } else {
             $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
             $('#spancomId').removeAttr('data-original-title');

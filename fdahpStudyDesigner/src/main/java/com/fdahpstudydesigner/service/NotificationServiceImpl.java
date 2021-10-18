@@ -240,6 +240,14 @@ public class NotificationServiceImpl implements NotificationService {
 
           notificationId = notificationBO.getNotificationId();
         } else {
+          if (notificationBO.getNotificationId() == null) {
+            List<StudySequenceLangBO> studySequenceLangBOS =
+                studyDAO.getStudySequenceByStudyId(notificationBO.getStudyId());
+            for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+              studySequenceLangBO.setMiscellaneousNotification(false);
+              studyDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
+          }
           notificationId =
               notificationDAO.saveOrUpdateOrResendNotification(
                   notificationBO, notificationType, buttonType, sessionObject);

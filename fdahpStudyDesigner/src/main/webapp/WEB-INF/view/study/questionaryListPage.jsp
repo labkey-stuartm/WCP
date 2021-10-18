@@ -400,7 +400,6 @@ function refreshAndFetchLanguageData(language) {
               if (!mark) {
                 $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
                 $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
-                $('.seventhQuestionnaires').find('span').remove();
               } else {
                 $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
                 $('#markAsTooltipId').removeAttr('data-original-title');

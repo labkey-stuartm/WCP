@@ -1490,6 +1490,13 @@ public class StudyServiceImpl implements StudyService {
         } else {
           updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
           updateComprehensionTestQuestionBo.setActive(true);
+
+          // if new comprehension then make a draft in sequence table
+          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(comprehensionTestQuestionBo.getStudyId());
+          for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+            studySequenceLangBO.setComprehensionTest(false);
+            studyDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
         }
 
         // saving in multi language tables
@@ -1623,6 +1630,13 @@ public class StudyServiceImpl implements StudyService {
         updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
         updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         updateConsentInfoBo.setActive(true);
+
+        // if new consent then make a draft in sequence table
+        List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(consentInfoBo.getStudyId());
+        for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+          studySequenceLangBO.setConsentEduInfo(false);
+          studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        }
       }
       if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
         ConsentInfoLangBO consentInfoLangBO =
@@ -1868,6 +1882,12 @@ public class StudyServiceImpl implements StudyService {
         resourceBO2.setCreatedBy(sesObj.getUserId());
         resourceBO2.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         resourceBO2.setStatus(true);
+
+        List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(resourceBO2.getStudyId());
+        for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+          studySequenceLangBO.setMiscellaneousResources(false);
+          studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        }
       } else {
         resourceBO2 = getResourceInfo(resourceBO.getId());
         resourceBO2.setModifiedBy(sesObj.getUserId());

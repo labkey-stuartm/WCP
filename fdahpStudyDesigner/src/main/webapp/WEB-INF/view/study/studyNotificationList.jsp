@@ -263,7 +263,6 @@
               markComplete.addClass('linkDis')
             }
             $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
-            $('.eigthNotification').find('span').remove();
           } else {
             let markComplete = $('.markCompleted');
             markComplete.prop('disabled', false);

@@ -272,6 +272,8 @@ public interface StudyDAO {
 
   StudySequenceLangBO getStudySequenceLangBO(int studyId, String language);
 
+  List<StudySequenceLangBO> getStudySequenceByStudyId(int studyId);
+
   ResourcesLangBO getResourceLangBO(int id, String language);
 
   String deleteAllLanguageData(int id, String language);
