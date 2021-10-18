@@ -31,4 +31,6 @@ public interface NotificationDAO {
   NotificationLangBO getNotificationLang(int notificationId, String lang);
 
   List<NotificationLangBO> getNotificationLangList(int studyId, String langCode);
+
+  List<NotificationLangBO> getNotificationLangByNotificationId(int notificationId);
 }

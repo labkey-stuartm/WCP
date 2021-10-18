@@ -1842,6 +1842,22 @@ public class StudyServiceImpl implements StudyService {
                     studyPageBean.getActionType()));
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
       } else {
+        StudyBo studyBo = studyDAO.getStudyBoById(studyPageBean.getStudyId());
+        if (studyBo.getMultiLanguageFlag()!=null && studyBo.getMultiLanguageFlag()) {
+          String selectedLanguages = studyBo.getSelectedLanguages();
+          if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)) {
+            for (String lang : selectedLanguages.split(",")) {
+              if (FdahpStudyDesignerUtil.isNotEmpty(lang)) {
+                List<StudyPageLanguageBO> studyPageLanguageBOS = studyDAO.getOverviewStudyPagesLangDataById(Integer.parseInt(studyPageBean.getStudyId()), lang);
+                if (studyPageBean.getPageId()!=null && studyPageBean.getPageId().length>(studyPageLanguageBOS!=null?studyPageLanguageBOS.size():0)){
+                  StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(Integer.parseInt(studyPageBean.getStudyId()), lang);
+                  studySequenceLangBO.setOverView(false);
+                  studyDAO.saveOrUpdateObject(studySequenceLangBO);
+                }
+              }
+            }
+          }
+        }
         message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
       }
 

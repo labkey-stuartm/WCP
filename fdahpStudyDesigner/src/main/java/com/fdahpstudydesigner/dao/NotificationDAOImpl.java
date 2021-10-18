@@ -566,4 +566,30 @@ public class NotificationDAOImpl implements NotificationDAO {
     logger.info("NotificationDAOImpl - getNotificationLangList - Ends");
     return notificationLangBOList;
   }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<NotificationLangBO> getNotificationLangByNotificationId(int notificationId) {
+    logger.info("NotificationDAOImpl - getNotificationLangByNotificationId() - Starts");
+    Session session = null;
+    List<NotificationLangBO> notificationLangBOList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      notificationLangBOList =
+          session
+              .createQuery(
+                  "from NotificationLangBO where notificationLangPK.notificationId = :notifId"
+                      + " and notificationStatus=true and notificationAction=true")
+              .setInteger("notifId", notificationId)
+              .list();
+    } catch (Exception e) {
+      logger.error("NotificationDAOImpl - getNotificationLangByNotificationId - ERROR", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
+    }
+    logger.info("NotificationDAOImpl - getNotificationLangByNotificationId - Ends");
+    return notificationLangBOList;
+  }
 }

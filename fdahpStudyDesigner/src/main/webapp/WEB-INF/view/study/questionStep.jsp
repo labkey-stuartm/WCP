@@ -7193,11 +7193,11 @@
               $('#descriptionId').val($('#mlDescription', htmlData).val());
               $('#chartTitleId').val($('#mlChartTitle', htmlData).val());
               let previousResponseType = $('#mlResponseTypeId', htmlData).val();
-
               // if response type mismatches
-              if (previousResponseType !== $('#responseTypeId').val()) {
+              if (previousResponseType!=='' && (previousResponseType !== $('#responseTypeId').val())) {
                 $('#statDisplayNameId').val('');
                 $('#statDisplayUnitsId').val('');
+                $('#chartTitleId').val('');
 
                 let respType = $('#responseTypeId').val();
                 if (respType === '1' || respType === '2') {
@@ -7350,7 +7350,7 @@
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId').attr(
                   'disabled', false);
               $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
-              $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', false);
+              $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
               responseTypeId.removeClass('ml-disabled').attr('disabled', false);
               if ($('#allowHealthKit').prop('checked') === true) {
