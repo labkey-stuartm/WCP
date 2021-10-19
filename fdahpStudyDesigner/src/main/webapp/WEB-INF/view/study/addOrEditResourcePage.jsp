@@ -406,7 +406,11 @@ $(document).ready(function(){
 	$('#embedPdfId').bind('contextmenu', function(e) {
 		alert("Right click has been disabled.");
 	    return false;
-	}); 
+	});
+
+	if ($('#inlineRadio4').prop('checked')===true) {
+		$('[data-id="anchorDateId"]').addClass('cursor-none');
+	}
 	
 	    $('.daysMask').mask('000');
 	
@@ -773,6 +777,7 @@ $(document).ready(function(){
 				$('.disBtn2').prop('disabled',true);
 				$('.disBtn1').selectpicker('refresh');
 			}
+			$('[data-id="anchorDateId"]').removeClass('cursor-none').prop('disabled', false);
 			resetValidation('.resetDate');
 			}
 		});
@@ -1094,7 +1099,7 @@ function refreshAndFetchLanguageData(language) {
           if (param.prop('checked')===true) {
             $('#inlineRadio5, #inlineRadio6').attr('disabled', true);
             if($('#inlineRadio5').prop('checked')===true) {
-              $('[data-id="anchorDateId"]').addClass('ml-disabled');
+              $('[data-id="anchorDateId"]').addClass('ml-disabled').prop('disabled', true);
               $('#xdays, #ydays, #inlineRadio6').attr('disabled', true);
             }
             else if($('#inlineRadio6').prop('checked')===true) {
@@ -1142,13 +1147,20 @@ function refreshAndFetchLanguageData(language) {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           let param = $('[name="resourceVisibilityParam"]');
-			$('[data-id="xSign"], [data-id="ySign"], [data-id="anchorDateId"]').prop('disabled', false).removeClass('cursor-none');
+			$('[data-id="xSign"], [data-id="ySign"]').prop('disabled', false).removeClass('cursor-none');
 			$('[name="textOrPdfParam"]').prop('disabled', false);
+
+			if ($('#inlineRadio4').prop('checked')===true) {
+				$('[data-id="anchorDateId"]').addClass('cursor-none').prop('disabled', true);
+			} else {
+				$('[data-id="anchorDateId"]').removeClass('cursor-none').prop('disabled', false);
+			}
+
           param.attr('disabled', false);
           if (param.prop('checked')===true) {
             $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
             if($('#inlineRadio5').prop('checked')===true) {
-              $('[data-id="anchorDateId"]').removeClass('ml-disabled');
+              $('[data-id="anchorDateId"]').removeClass('ml-disabled').prop('disabled', false);
               $('#xdays, #ydays, #inlineRadio6').attr('disabled', false);
             }
             else if($('#inlineRadio6').prop('checked')===true) {
