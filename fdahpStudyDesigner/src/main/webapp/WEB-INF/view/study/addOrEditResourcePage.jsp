@@ -1088,6 +1088,7 @@ function refreshAndFetchLanguageData(language) {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('[data-id="xSign"], [data-id="ySign"]').prop('disabled', true).addClass('cursor-none');
+          $('[name="textOrPdfParam"]').prop('disabled', true);
           let param = $('[name="resourceVisibilityParam"]');
           param.attr('disabled', true);
           if (param.prop('checked')===true) {
@@ -1114,19 +1115,27 @@ function refreshAndFetchLanguageData(language) {
 			if (tinymce.get('richText')!==undefined && tinymce.get('richText')!==null) {
 				tinymce.get('richText').setContent(richText);
 			}
-
-			if (textOrPdf==='false') {
+			if ($('#inlineRadio1').prop('checked')===true) {
 				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
 				$('.pdfDiv').hide();
 				$('#richEditor').removeClass('dis-none');
 				$('#inlineRadio1').prop('checked', true);
 			}
-			else if (textOrPdf==='true') {
+			else if ($('#inlineRadio2').prop('checked')===true) {
 				$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
 				$('.pdfDiv').show();
 				$('#richEditor').addClass('dis-none');
 				$('#inlineRadio2').prop('checked', true);
-				$('#pdf_name').text($('#mlPdfName', htmlData).val());
+				let pdfName=$('#mlPdfName', htmlData).val();
+				$('#pdf_name').text(pdfName);
+				if (pdfName==='') {
+					$('.pdfDiv').hide();
+					$('#uploadPdf').text('Upload PDF');
+				}
+				else {
+					$('.pdfDiv').show();
+					$('#uploadPdf').text('Change PDF');
+				}
 				$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
 				$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
 			}
@@ -1135,6 +1144,7 @@ function refreshAndFetchLanguageData(language) {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           let param = $('[name="resourceVisibilityParam"]');
 			$('[data-id="xSign"], [data-id="ySign"]').prop('disabled', false).removeClass('cursor-none');
+			$('[name="textOrPdfParam"]').prop('disabled', false);
           param.attr('disabled', false);
           if (param.prop('checked')===true) {
             $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
