@@ -1087,7 +1087,7 @@ function refreshAndFetchLanguageData(language) {
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('[data-id="xSign"], [data-id="ySign"]').prop('disabled', true).addClass('cursor-none');
+          $('[data-id="xSign"], [data-id="ySign"], [data-id="anchorDateId"]').prop('disabled', true).addClass('cursor-none');
           $('[name="textOrPdfParam"]').prop('disabled', true);
           let param = $('[name="resourceVisibilityParam"]');
           param.attr('disabled', true);
@@ -1106,7 +1106,6 @@ function refreshAndFetchLanguageData(language) {
 				$('#resourceTitle').val($('#mlTitle', htmlData).val());
 			}
 			$('#comment').val($('#mlResourceText', htmlData).val());
-			let textOrPdf = $('#mlTextOrPdf', htmlData).val();
 			let richText = $('#mlRichText', htmlData).val();
 			if (richText===undefined) {
 				richText = '';
@@ -1143,7 +1142,7 @@ function refreshAndFetchLanguageData(language) {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           let param = $('[name="resourceVisibilityParam"]');
-			$('[data-id="xSign"], [data-id="ySign"]').prop('disabled', false).removeClass('cursor-none');
+			$('[data-id="xSign"], [data-id="ySign"], [data-id="anchorDateId"]').prop('disabled', false).removeClass('cursor-none');
 			$('[name="textOrPdfParam"]').prop('disabled', false);
           param.attr('disabled', false);
           if (param.prop('checked')===true) {
