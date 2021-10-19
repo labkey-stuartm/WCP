@@ -2810,7 +2810,6 @@ public class StudyServiceImpl implements StudyService {
     List<EligibilityTestLangBo> eligibilityTestLangBOList = null;
     try {
       if (eligibilityTestList != null && eligibilityTestList.size() > 0) {
-        int eligibilityId = eligibilityTestList.get(0).getEligibilityId();
         for (EligibilityTestBo eligibilityTestBo : eligibilityTestList) {
           EligibilityTestLangBo eligibilityTestLangBo =
               studyDAO.getEligibilityTestLanguageDataById(eligibilityTestBo.getId(), language);
@@ -2823,6 +2822,12 @@ public class StudyServiceImpl implements StudyService {
                 FdahpStudyDesignerUtil.isNotEmpty(studyId) ? Integer.parseInt(studyId) : null);
             eligibilityTestLangBo.setSequenceNo(eligibilityTestBo.getSequenceNo());
             studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
+
+            StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(Integer.parseInt(studyId), language);
+            if (studySequenceLangBO!=null) {
+              studySequenceLangBO.setEligibility(false);
+              studyDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
           }
         }
         eligibilityTestLangBOList =

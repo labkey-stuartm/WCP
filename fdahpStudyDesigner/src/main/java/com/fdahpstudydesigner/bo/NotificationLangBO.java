@@ -114,12 +114,16 @@ public class NotificationLangBO implements Serializable {
     isActive = active;
   }
 
-  public boolean isNotificationAction() {
+  public Boolean isNotificationAction() {
     return notificationAction;
   }
 
-  public void setNotificationAction(boolean notificationAction) {
+  public void setNotificationAction(Boolean notificationAction) {
     this.notificationAction = notificationAction;
+  }
+
+  public Boolean getNotificationAction() {
+    return notificationAction;
   }
 
   public Boolean getNotificationSent() {

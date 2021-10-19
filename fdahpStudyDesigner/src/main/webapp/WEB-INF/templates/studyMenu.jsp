@@ -64,7 +64,7 @@
                        value="${studyBo.studySequenceBo.studyExcActiveTask}">
                 <input id="resources" type="hidden"
                        value="${studyBo.studySequenceBo.miscellaneousResources}">
-                <input id="notification" type="hidden"
+                <input id="notificationMenu" type="hidden"
                        value="${studyBo.studySequenceBo.miscellaneousNotification}">
 
                 <div class="mb-lg ${empty studyBo.status?'hide':''}">
@@ -439,7 +439,7 @@
     updateEnglishTicksByClassName('#studyExcQuestionnaries', '.seventhQuestionnaires');
     updateEnglishTicksByClassName('#studyExcActiveTask', '.seventhTask');
     updateEnglishTicksByClassName('#resources', '.eighthResources');
-    updateEnglishTicksByClassName('#notification', '.eigthNotification');
+    updateEnglishTicksByClassName('#notificationMenu', '.eigthNotification');
 
     if ($('#consentEduInfo').val() === 'true' && $('#comprehensionTest').val() === 'true'
         && $('#eConsent').val() === 'true') {

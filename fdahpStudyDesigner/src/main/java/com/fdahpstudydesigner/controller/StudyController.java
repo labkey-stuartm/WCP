@@ -1539,6 +1539,7 @@ public class StudyController {
             consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
           }
 
+          String currLang = request.getParameter("language");
           List<ConsentInfoLangBO> consentInfoLangList = new ArrayList<>();
           if ((consentInfoList != null) && !consentInfoList.isEmpty()) {
             for (ConsentInfoBo conInfoBo : consentInfoList) {
@@ -1547,14 +1548,16 @@ public class StudyController {
                 break;
               }
             }
-            String currLang = request.getParameter("language");
             if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
               consentInfoLangList =
                   studyService.syncConsentDataInLanguageTable(consentInfoList, currLang);
               this.setStudyLangData(studyId, currLang, map);
             }
-            map.addAttribute("currLanguage", currLang);
           }
+          if (FdahpStudyDesignerUtil.isNotEmpty(currLang) && !"en".equals(currLang)) {
+            this.setStudyLangData(studyId, currLang, map);
+          }
+          map.addAttribute("currLanguage", currLang);
           map.addAttribute("consentInfoLangList", consentInfoLangList);
           map.addAttribute("markAsComplete", markAsComplete);
           map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoList);
@@ -2378,6 +2381,7 @@ public class StudyController {
             studyService.markAsCompleted(
                 Integer.parseInt(studyId), markCompleted, sesObj, customStudyId, language);
         map.addAttribute("_S", sessionStudyCount);
+        map.addAttribute("language", language);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
               .getSession()
@@ -4814,6 +4818,7 @@ public class StudyController {
                   eligibilityBo.getStudyId() + "");
         }
         map.addAttribute("_S", sessionStudyCount);
+        map.put("language", language);
         if (FdahpStudyDesignerConstants.SUCCESS.equals(result)) {
           if ((eligibilityBo != null) && ("save").equals(eligibilityBo.getActionType())) {
             request
@@ -4821,7 +4826,6 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
-            map.put("language", language);
             mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
           } else {
             request
@@ -4829,7 +4833,6 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
-            map.put("language", language);
             mav = new ModelAndView("redirect:consentListPage.do", map);
           }
         } else {
@@ -4838,7 +4841,6 @@ public class StudyController {
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
                   "Error in set Eligibility.");
-          map.put("language", language);
           mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
         }
       }
@@ -6621,7 +6623,6 @@ public class StudyController {
           map.addAttribute("languageList", langMap);
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-            this.setStudyLangData(studyId, language, map);
             List<NotificationLangBO> notificationLangBOList =
                 notificationService.getNotificationLangList(
                     Integer.parseInt(studyId),
@@ -6629,6 +6630,7 @@ public class StudyController {
                     notificationList,
                     sessionObject.getUserId());
             map.addAttribute("notificationLangBOList", notificationLangBOList);
+            this.setStudyLangData(studyId, language, map);
           }
         }
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);

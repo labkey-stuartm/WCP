@@ -322,12 +322,6 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
                   ? ""
                   : activeTaskBo.getInstruction());
           updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
-
-          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(activeTaskBo.getStudyId());
-          for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
-            studySequenceLangBO.setStudyExcActiveTask(false);
-            studyActiveTasksDAO.saveOrUpdateObject(studySequenceLangBO);
-          }
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
@@ -705,6 +699,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
             activeTaskLangBO.setCreatedBy(activeTaskBo.getCreatedBy());
             activeTaskLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             studyActiveTasksDAO.saveOrUpdateObject(activeTaskLangBO);
+            StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(activeTaskBo.getStudyId(), language);
+            if (studySequenceLangBO != null) {
+              studySequenceLangBO.setStudyExcActiveTask(false);
+              studyActiveTasksDAO.saveOrUpdateObject(studySequenceLangBO);
+            }
           }
         }
       }

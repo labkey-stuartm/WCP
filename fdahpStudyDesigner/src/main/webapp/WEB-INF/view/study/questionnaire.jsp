@@ -64,6 +64,10 @@
         cursor: not-allowed;
       }
 
+      .static-width {
+        width:20% !important;
+      }
+
       /* .delete{
 	background-position: -113px -63px ;
 	width: 17px;
@@ -1996,7 +2000,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       ],
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
         if (actionPage != 'view') {
-          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+          $('td:eq(0)', nRow).addClass("cursonMove dd_icon static-width");
         }
         $('td:eq(0)', nRow).addClass("qs-items");
         $('td:eq(1)', nRow).addClass("qs-items");

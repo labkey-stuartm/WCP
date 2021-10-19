@@ -49,6 +49,10 @@
       .langSpecific > button {
         padding-left: 30px;
       }
+
+      .static-width {
+        width:20% !important;
+      }
     </style>
 </head>
 <!-- Start right Content here -->
@@ -533,7 +537,7 @@
       "columnDefs": [{orderable: false, targets: [0, 1, 2]}],
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
         if (actionPage != 'view') {
-          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+          $('td:eq(0)', nRow).addClass("cursonMove dd_icon static-width");
         }
         $('td:eq(0)', nRow).addClass("qs-items");
         $('td:eq(1)', nRow).addClass("qs-items");

@@ -95,6 +95,8 @@
         <input type="hidden" id="mlSignature0" value="${studyLanguageBO.signatureOne}">
         <input type="hidden" id="mlSignature1" value="${studyLanguageBO.signatureTwo}">
         <input type="hidden" id="mlSignature2" value="${studyLanguageBO.signatureThree}">
+        <input type="hidden" id="mlConsentCompleted" value="${studyLanguageBO.consentCompleted}">
+        <input type="hidden" id="studyLiveStatus" value="${studyLiveStatus}">
         <!-- End body tab section -->
         <div>
             <!--  Start top tab section-->
@@ -191,8 +193,7 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control requiredClass"
                                                placeholde="" id="titleId" name="title"
-                                               value="${consentBo.title}" maxlength="250"
-                                        / <c:if test="${studyLiveStatus}"> disabled</c:if>>
+                                               value="${consentBo.title}" maxlength="250" <c:if test="${studyLiveStatus}"> disabled</c:if>>
                                         <div class="help-block with-errors red-txt"></div>
                                     </div>
                                 </div>
@@ -1528,11 +1529,27 @@
               ' [name="additionalSignatureRadio"]').attr('disabled', true);
           $('.addbtn, .remBtn').addClass('cursor-none');
           if ($('#shareDataPermissionsYes').prop('checked') === true) {
-            $('#titleId').val($('#mlTitleId', htmlData).val());
-            $('#taglineDescriptionId').val($('#mlTagline', htmlData).val());
-            $('#shortDescriptionId').val($('#mlShortDesc', htmlData).val());
-            $('#longDescriptionId').val($('#mlLongDesc', htmlData).val());
-            $('#learnMoreTextId').val($('#mlLearnMore', htmlData).val());
+
+            let mlTitle = $('#mlTitleId', htmlData).val();
+            $('#titleId').val(mlTitle).prop('required', true);
+            $('#taglineDescriptionId').val($('#mlTagline', htmlData).val()).prop('required', true);
+            $('#shortDescriptionId').val($('#mlShortDesc', htmlData).val()).prop('required', true);
+            $('#longDescriptionId').val($('#mlLongDesc', htmlData).val()).prop('required', true);
+            $('#learnMoreTextId').val($('#mlLearnMore', htmlData).val()).prop('required', true);
+            if ($('#mlConsentCompleted', htmlData).val()==='true') {
+                $('#titleId').prop('disabled', true);
+                $('#taglineDescriptionId').prop('disabled', true);
+                $('#shortDescriptionId').prop('disabled', true);
+                $('#longDescriptionId').prop('disabled', true);
+                $('#learnMoreTextId').prop('disabled', true);
+            } else {
+              $('#titleId').prop('disabled', false);
+              $('#taglineDescriptionId').prop('disabled', false);
+              $('#shortDescriptionId').prop('disabled', false);
+              $('#longDescriptionId').prop('disabled', false);
+              $('#learnMoreTextId').prop('disabled', false).change();
+              tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'true');
+            }
             let editor1 = tinymce.get('learnMoreTextId');
             if (editor1 !== null)
               editor1.setContent($('#mlLearnMore', htmlData).val());
@@ -1577,6 +1594,14 @@
             $('#longDescriptionId').val($('#longDescriptionId', htmlData).val());
             $('#learnMoreTextId').val($('#learnMoreTextId', htmlData).val());
             tinymce.get('learnMoreTextId').setContent($('#learnMoreTextId', htmlData).val());
+            if ($('#studyLiveStatus').val()==='true') {
+              $('#titleId').prop('disabled', true);
+              $('#taglineDescriptionId').prop('disabled', true);
+              $('#shortDescriptionId').prop('disabled', true);
+              $('#longDescriptionId').prop('disabled', true);
+              $('#learnMoreTextId').prop('disabled', true);
+              tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'false');
+            }
           }
           let editor = tinymce.get('newDocumentDivId');
           if (editor !== undefined && editor !== null)

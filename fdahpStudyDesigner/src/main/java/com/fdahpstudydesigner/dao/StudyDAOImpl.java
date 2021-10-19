@@ -5879,6 +5879,15 @@ public class StudyDAOImpl implements StudyDAO {
             query.executeUpdate();
             logger.info("StudyDAOImpl - studyDraftCreation() updateStudyVersion- Ends");
 
+            if (studyBo.getMultiLanguageFlag()!=null && studyBo.getMultiLanguageFlag()) {
+              query =
+                  session
+                      .createQuery("UPDATE StudyLanguageBO SET live=2 WHERE studyLanguagePK.study_id=:studyId and live=1")
+                      .setInteger(
+                          "studyId", studyBo.getId());
+              query.executeUpdate();
+            }
+
             newstudyVersionBo = SerializationUtils.clone(studyVersionBo);
             newstudyVersionBo.setStudyVersion(studyVersionBo.getStudyVersion() + 0.1f);
             if (studyBo.getHasConsentDraft().equals(1)) {
@@ -5908,8 +5917,11 @@ public class StudyDAOImpl implements StudyDAO {
           List<StudyLanguageBO> studyLanguageBOList = session.createQuery("from StudyLanguageBO where studyLanguagePK.study_id=:studyId")
               .setInteger("studyId", studyBo.getId()).list();
           for (StudyLanguageBO studyLanguageBO : studyLanguageBOList) {
+            studyLanguageBO.setConsentCompleted(true);
+            session.update(studyLanguageBO);
             StudyLanguageBO studyLanguageBO1 = SerializationUtils.clone(studyLanguageBO);
             studyLanguageBO1.getStudyLanguagePK().setStudy_id(studyDreaftBo.getId());
+            studyLanguageBO1.setLive(1);
             session.save(studyLanguageBO1);
           }
 

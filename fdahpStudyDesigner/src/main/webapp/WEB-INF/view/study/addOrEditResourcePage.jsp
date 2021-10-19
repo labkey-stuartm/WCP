@@ -1087,6 +1087,7 @@ function refreshAndFetchLanguageData(language) {
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
+          $('[data-id="xSign"], [data-id="ySign"]').prop('disabled', true).addClass('cursor-none');
           let param = $('[name="resourceVisibilityParam"]');
           param.attr('disabled', true);
           if (param.prop('checked')===true) {
@@ -1133,6 +1134,7 @@ function refreshAndFetchLanguageData(language) {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           let param = $('[name="resourceVisibilityParam"]');
+			$('[data-id="xSign"], [data-id="ySign"]').prop('disabled', false).removeClass('cursor-none');
           param.attr('disabled', false);
           if (param.prop('checked')===true) {
             $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
