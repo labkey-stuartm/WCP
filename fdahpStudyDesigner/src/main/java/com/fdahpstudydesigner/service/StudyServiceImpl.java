@@ -1919,6 +1919,7 @@ public class StudyServiceImpl implements StudyService {
           resourcesLangBO.setResourcesLangPK(new ResourcesLangPK(resourceBO2.getId(), language));
           resourcesLangBO.setCreatedBy(sesObj.getUserId());
           resourcesLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          resourcesLangBO.setStatus(true);
         } else {
           resourcesLangBO.setModifiedBy(sesObj.getUserId());
           resourcesLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
