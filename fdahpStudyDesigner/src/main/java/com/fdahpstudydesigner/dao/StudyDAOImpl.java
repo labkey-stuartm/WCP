@@ -372,16 +372,15 @@ public class StudyDAOImpl implements StudyDAO {
               .setInteger("consentInfoId", consentInfoId);
       count = query.executeUpdate();
 
-      if (count > 0) {
-        query =
-            session
-                .createQuery(
-                    "Update ConsentInfoLangBO CIB set CIB.active=0,CIB.modifiedBy= :modifiedBy"
-                        + ",CIB.modifiedOn= :modifiedOn where CIB.consentInfoLangPK.id= :consentInfoId")
-                .setInteger("modifiedBy", sessionObject.getUserId())
-                .setString("modifiedOn", FdahpStudyDesignerUtil.getCurrentDateTime())
-                .setInteger("consentInfoId", consentInfoId);
-        count = query.executeUpdate();
+      List<ConsentInfoLangBO> consentInfoLangBOList = session.
+          createQuery("from ConsentInfoLangBO where consentInfoLangPK.id= :consentInfoId")
+          .setInteger("consentInfoId", consentInfoId)
+          .list();
+      for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
+        consentInfoLangBO.setActive(false);
+        consentInfoLangBO.setModifiedBy(sessionObject.getUserId());
+        consentInfoLangBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        session.update(consentInfoLangBO);
       }
 
       if (count > 0) {
@@ -437,12 +436,11 @@ public class StudyDAOImpl implements StudyDAO {
       String customStudyId) {
     logger.info("StudyDAOImpl - deleteEligibilityTestQusAnsById - Starts");
     Session session = null;
-    Integer eligibilityDeleteResult = 0;
+    int eligibilityDeleteResult = 0;
     Transaction trans = null;
     String result = FdahpStudyDesignerConstants.FAILURE;
     String reorderQuery;
     EligibilityTestBo eligibilityTestBo;
-    EligibilityTestLangBo eligibilityTestLangBo;
     List<EligibilityTestBo> eligibilityTestBos;
     StudyBo studyBo = null;
     try {
@@ -454,18 +452,23 @@ public class StudyDAOImpl implements StudyDAO {
                   .getNamedQuery("EligibilityTestBo.findById")
                   .setInteger("eligibilityTestId", eligibilityTestId)
                   .uniqueResult();
-      eligibilityTestLangBo =
-          (EligibilityTestLangBo)
-              session
-                  .getNamedQuery("EligibilityTestLangBo.findById")
-                  .setInteger("eligibilityTestId", eligibilityTestId)
-                  .uniqueResult();
+
+      List<EligibilityTestLangBo> eligibilityTestLangBoList = session.
+          createQuery("SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.eligibilityTestLangPK.id=:eligibilityTestId ORDER BY ETB.sequenceNo")
+          .setInteger("eligibilityTestId", eligibilityTestId)
+          .list();
       studyBo = this.getStudyById(String.valueOf(studyId), sessionObject.getUserId());
 
       if (null != studyBo
           && studyBo.getStatus().contains(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH)) {
         session.delete(eligibilityTestBo);
-        session.delete(eligibilityTestLangBo);
+        if (eligibilityTestLangBoList != null && eligibilityTestLangBoList.size() > 0) {
+          for (EligibilityTestLangBo eligibilityTestLangBo : eligibilityTestLangBoList) {
+            if (eligibilityTestLangBo != null) {
+              session.delete(eligibilityTestLangBo);
+            }
+          }
+        }
         eligibilityDeleteResult = 1;
       } else {
         eligibilityDeleteResult =
@@ -474,11 +477,12 @@ public class StudyDAOImpl implements StudyDAO {
                 .setInteger("eligibilityTestId", eligibilityTestId)
                 .executeUpdate();
 
-        eligibilityDeleteResult =
-            session
-                .getNamedQuery("EligibilityTestLangBo.deleteById")
-                .setInteger("eligibilityTestId", eligibilityTestId)
-                .executeUpdate();
+        if (eligibilityTestLangBoList != null && eligibilityTestLangBoList.size() > 0) {
+          for (EligibilityTestLangBo eligibilityTestLangBo : eligibilityTestLangBoList) {
+            eligibilityTestLangBo.setActive(false);
+            session.update(eligibilityTestLangBo);
+          }
+        }
       }
 
       eligibilityTestBos =
@@ -2185,10 +2189,6 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - getStudyBoById() - Starts");
     Session session = null;
     StudyBo studyBo = null;
-    StudySequenceBo studySequenceBo = null;
-    StudyPermissionBO permissionBO = null;
-    StudyVersionBo studyVersionBo = null;
-    StudyBo liveStudyBo = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       if (StringUtils.isNotEmpty(studyId)) {
@@ -9757,5 +9757,38 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getResourcesLangList() - Ends");
     return resourcesLangBOList;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public Map<String, Boolean> isLanguageDeletable(String customStudyId) {
+    logger.info("StudyDAOImpl - isLanguageDeletable() - Starts");
+    Session session = null;
+    boolean isDeletable = true;
+    Map<String, Boolean> map = new HashMap<>();
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      List<Integer> ids = session.createQuery("select id from StudyBo where customStudyId=:customStudyId")
+          .setString("customStudyId", customStudyId)
+          .list();
+
+      List<StudyLanguageBO> studyLanguageBOList = session.createQuery("from StudyLanguageBO where studyLanguagePK.study_id in (:ids) and live=1")
+          .setParameterList("ids", ids).list();
+
+      if (studyLanguageBOList!=null && studyLanguageBOList.size()>0) {
+        for (StudyLanguageBO studyLanguageBO : studyLanguageBOList) {
+          map.put(studyLanguageBO.getStudyLanguagePK().getLangCode(), false);
+        }
+      }
+
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - isLanguageDeletable() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - isLanguageDeletable() - Ends");
+    return map;
   }
 }

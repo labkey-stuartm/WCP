@@ -1566,9 +1566,7 @@
           if ($("#inlineRadio1").is(":checked")) {
             let consentDocumentDivContent = "";
             $("#autoConsentDocumentDivId").empty();
-            if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
-                && "${consentInfoLangList}"
-                !== undefined) {
+            if ($('#consentLangItems option', htmlData).length>0) {
               $('#consentLangItems option', htmlData).each(function (index, value) {
                 consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
                     + value.getAttribute('value')

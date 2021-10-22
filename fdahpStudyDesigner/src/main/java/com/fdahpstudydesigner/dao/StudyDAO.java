@@ -30,6 +30,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 import java.util.HashMap;
 /** @author BTC */
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -281,4 +282,6 @@ public interface StudyDAO {
   StudyBo getStudyBoById(String studyId);
 
   List<ResourcesLangBO> getResourcesLangList(int studyId, String language);
+
+  Map<String, Boolean> isLanguageDeletable(String customStudyId);
 }

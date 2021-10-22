@@ -257,4 +257,6 @@ public interface StudyService {
       List<StudyPageBo> studyPageBos, String language);
 
   ResourcesLangBO getResourceLangInfo(String resourceInfoId, String language);
+
+  Map<String, Boolean> isLanguageDeletable(String customStudyId);
 }

@@ -66,6 +66,11 @@
         <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
+        <select id="langDeletableMap" style="display: none">
+            <c:forEach items="${langDeletableMap}" var="langEntry">
+                <option id='lang_${langEntry.key}' value="${langEntry.value}"></option>
+            </c:forEach>
+        </select>
         <!-- Start top tab section-->
         <div class="right-content-head">
             <div class="text-right">
@@ -192,9 +197,12 @@
                     <c:forEach items="${selectedLanguages}" var="stdLang">
                         <input type="hidden" class="stdCls" id="${stdLang.key}"
                                value="${stdLang.key}">
-                        <span id="span-${stdLang.key}">${stdLang.value}<span
+                        <span id="span-${stdLang.key}">${stdLang.value}
+                            <span
                                 id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
-                                onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;</span></span>
+                                onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;
+                            </span>
+                        </span>
                     </c:forEach>
                 </div>
             </div>
@@ -553,13 +561,19 @@
       }
     });
     </c:if>
-    <c:if
-    test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
-    if ($('#mlYes').prop('checked')===true) {
-      $('[name="multiLanguageFlag"]').prop('disabled', true);
-      $('.removeLang').addClass('cursor-none');
+
+    let disableMLFlag = false;
+    $('#langDeletableMap option').each(function() {
+      let id = this.id.split('_')[1];
+      $('#innerSpan-'+id).addClass('cursor-none');
+      disableMLFlag = true;
+    })
+    if (disableMLFlag===true){
+      if ($('#mlYes').prop('checked')===true) {
+        $('#mlNo').prop('disabled', true);
+      }
     }
-    </c:if>
+
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
       $('#currentLanguage').val(currLang);
@@ -875,7 +889,8 @@
     }
 
   });
-  if ($('#mlYes').attr('checked') == 'checked') {
+
+  if ($('#mlYes').prop('checked')===true) {
     $("#langSelect").show();
   } else {
     $("#langSelect").hide();

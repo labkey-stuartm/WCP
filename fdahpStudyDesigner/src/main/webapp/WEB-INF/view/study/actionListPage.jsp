@@ -200,7 +200,12 @@
 			$("#testmode").attr('disabled', true);
 		}else{
 			$("#testmode").prop("checked", true);
-		} 
+		}
+
+		let currLang = $('#studyLanguage').val();
+		if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+			refreshAndFetchLanguageData(currLang);
+		}
 		
 	});
 	$('input[type="radio"]').change(function() {
@@ -412,5 +417,22 @@
 						}
 					});
 		}
+	}
+
+	function refreshAndFetchLanguageData(language) {
+		$.ajax({
+			url: '/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}',
+			type: "GET",
+			data: {
+				language: language,
+			},
+			success: function (data) {
+				let htmlData = document.createElement('html');
+				htmlData.innerHTML = data;
+				if (language !== 'en') {
+					updateCompletionTicks(htmlData);
+				}
+			}
+		})
 	}
 </script>

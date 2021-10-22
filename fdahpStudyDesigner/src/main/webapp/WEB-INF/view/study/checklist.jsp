@@ -158,7 +158,7 @@
 $(document).ready(function(){
 	    $(".menuNav li").removeClass('active');
 	    $(".nine").addClass('active'); 
-	    
+
 	    <c:if test="${not empty permission}">
 	    	$('.class').prop('disabled',true);
 	    </c:if>
@@ -167,6 +167,11 @@ $(document).ready(function(){
 			 $('#actionBut').val('save');
 		     $('#checklistForm').submit();
 		});
+
+  let currLang = $('#studyLanguage').val();
+  if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+    refreshAndFetchLanguageData(currLang);
+  }
 		
 		$("#doneChecklistId").on('click', function(){
 				 bootbox.confirm({
@@ -189,5 +194,22 @@ $(document).ready(function(){
 				    });
 		});
 });
+
+function refreshAndFetchLanguageData(language) {
+  $.ajax({
+    url: '/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}',
+    type: "GET",
+    data: {
+      language: language,
+    },
+    success: function (data) {
+      let htmlData = document.createElement('html');
+      htmlData.innerHTML = data;
+      if (language !== 'en') {
+        updateCompletionTicks(htmlData);
+      }
+    }
+  })
+}
 
 </script>

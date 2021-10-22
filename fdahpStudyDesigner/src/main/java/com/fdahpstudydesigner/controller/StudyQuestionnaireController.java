@@ -2097,7 +2097,8 @@ public class StudyQuestionnaireController {
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     "Form Question added successfully.");
           }
-          if (StringUtils.isNotEmpty(studyId)) {
+          if (StringUtils.isNotEmpty(studyId)
+              && (FdahpStudyDesignerUtil.isEmpty(language) || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
             studyService.markAsCompleted(
                 Integer.valueOf(studyId),
                 FdahpStudyDesignerConstants.QUESTIONNAIRE,
@@ -2314,7 +2315,8 @@ public class StudyQuestionnaireController {
                   instructionsBo, sesObj, customStudyId, language, studyId);
         }
         if (addInstructionsBo != null) {
-          if (StringUtils.isNotEmpty(studyId)) {
+          if (StringUtils.isNotEmpty(studyId) &&
+              (FdahpStudyDesignerUtil.isEmpty(language) || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
             studyService.markAsCompleted(
                 Integer.valueOf(studyId),
                 FdahpStudyDesignerConstants.QUESTIONNAIRE,
@@ -2764,7 +2766,8 @@ public class StudyQuestionnaireController {
                     "questionnaireFrequenceId",
                     updateQuestionnaireBo.getQuestionnairesFrequenciesBo().getId());
               }
-              if (StringUtils.isNotEmpty(studyId)) {
+              if (StringUtils.isNotEmpty(studyId) &&
+                  (FdahpStudyDesignerUtil.isEmpty(language) || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
                 studyService.markAsCompleted(
                     Integer.valueOf(studyId),
                     FdahpStudyDesignerConstants.QUESTIONNAIRE,

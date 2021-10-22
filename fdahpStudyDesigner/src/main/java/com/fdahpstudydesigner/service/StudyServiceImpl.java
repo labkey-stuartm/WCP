@@ -1228,8 +1228,22 @@ public class StudyServiceImpl implements StudyService {
               studyLanguageBO.setLongDescription(consentBo.getLongDescription());
             if (consentBo.getLearnMoreText() != null)
               studyLanguageBO.setLearnMoreText(consentBo.getLearnMoreText());
-            if (consentBo.getConsentDocContent() != null)
-              studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
+            if ("Auto".equals(consentBo.getConsentDocType())) {
+              List<ConsentInfoLangBO> consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(consentBo.getStudyId(), language);
+              if (consentInfoLangBOList != null && consentInfoLangBOList.size() > 0) {
+                StringBuilder content = new StringBuilder();
+                for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
+                  content.append("<span style=&#34;font-size:20px;&#34;><strong>")
+                      .append(consentInfoLangBO.getDisplayTitle()).append("</strong></span><br/>")
+                      .append(
+                          "<span style=&#34;display: block; overflow-wrap: break-word; width: 100%;&#34;>")
+                      .append(consentInfoLangBO.getElaborated()).append("</span><br/>");
+                }
+                studyLanguageBO.setConsentDocContent(content.toString());
+              }
+            } else {
+                studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
+            }
             if (consentBo.getAggrementOfTheConsent() != null)
               studyLanguageBO.setAgreementOfConsent(consentBo.getAggrementOfTheConsent());
             if (consentBo.getSignatures() != null && consentBo.getSignatures().length != 0) {
@@ -2896,5 +2910,23 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getResourceLangInfo() - Ends");
     return resourcesLangBO;
+  }
+
+  /**
+   *
+   * @param customStudyId
+   * @return
+   */
+  @Override
+  public Map<String, Boolean> isLanguageDeletable(String customStudyId){
+    logger.info("StudyServiceImpl - isLanguageDeletable() - Starts");
+    Map<String, Boolean> map = null;
+    try {
+      map = studyDAO.isLanguageDeletable(customStudyId);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - isLanguageDeletable() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - isLanguageDeletable() - Ends");
+    return map;
   }
 }

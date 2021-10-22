@@ -180,7 +180,11 @@ public class StudyController {
           map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
           map.addAttribute("liveStudyBo", liveStudyBo);
           map.addAttribute("studyPermissionBO", studyPermissionBO);
-          map.addAttribute("currLanguage", request.getParameter("language"));
+          String language = request.getParameter("language");
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            this.setStudyLangData(studyId, language, map);
+          }
+          map.addAttribute("currLanguage", language);
           mav = new ModelAndView("actionList", map);
         } else {
           return new ModelAndView("redirect:/adminStudies/studyList.do");
@@ -1107,14 +1111,18 @@ public class StudyController {
                   ? ""
                   : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
         }
+        String language = request.getParameter("language");
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
+          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+            this.setStudyLangData(studyId, language, map);
+          }
         }
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("checklist", checklist);
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
-        map.addAttribute("currLanguage", request.getParameter("language"));
+        map.addAttribute("currLanguage", language);
         mav = new ModelAndView("checklist", map);
       }
     } catch (Exception e) {
@@ -6089,6 +6097,10 @@ public class StudyController {
             }
           }
           map.addAttribute("selectedLanguages", langMap);
+
+          if (studyBo.getMultiLanguageFlag()!=null && studyBo.getMultiLanguageFlag()) {
+            map.addAttribute("langDeletableMap", studyService.isLanguageDeletable(studyBo.getCustomStudyId()));
+          }
 
           ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");
           String[] supportedLang = resourceBundle.getString("languageList").split(",");
