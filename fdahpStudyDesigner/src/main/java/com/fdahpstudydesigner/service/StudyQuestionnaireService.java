@@ -99,7 +99,7 @@ public interface StudyQuestionnaireService {
       Integer questionnaireId, int oldOrderNumber, int newOrderNumber);
 
   public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(
-      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId);
+      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId, String studyId);
 
   public InstructionsBo saveOrUpdateInstructionsBo(
       InstructionsBo instructionsBo,

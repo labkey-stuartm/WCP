@@ -5147,7 +5147,7 @@
           let previousResponseType = $('#mlResponseTypeId', htmlData).val();
 
           // if response type mismatches
-          if (previousResponseType !== $('#responseTypeId').val()) {
+          if (previousResponseType!=='' && previousResponseType !== $('#responseTypeId').val()) {
             $('#statDisplayNameId').val('');
             $('#statDisplayUnitsId').val('');
 

@@ -395,6 +395,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
               studyActiveTasksDAO.saveOrUpdateObject(studySequenceLangBO);
             }
           }
+          //marking study as draft
+          studyDAO.updateDraftStatusInStudyBo(sessionObject.getUserId(), activeTaskBo.getStudyId());
         } else {
           updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
           updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
@@ -452,6 +454,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
               studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
         } else {
           addActiveTaskeBo = new ActiveTaskBo();
+          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(activeTaskBo.getStudyId());
+          for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+            studySequenceLangBO.setStudyExcActiveTask(false);
+            studyDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
         }
         if (activeTaskBo.getStudyId() != null) {
           addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());

@@ -427,6 +427,7 @@
   }
 
   function goToBackPage(item) {
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     <c:if test="${actionPage ne 'view'}">
     $(item).prop('disabled', true);
     bootbox.confirm({
@@ -443,7 +444,6 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
               + lang;
           document.body.appendChild(a).click();
@@ -455,7 +455,8 @@
     </c:if>
     <c:if test="${actionPage eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+    a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }

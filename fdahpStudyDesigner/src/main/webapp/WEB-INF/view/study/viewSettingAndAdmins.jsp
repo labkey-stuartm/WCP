@@ -548,19 +548,11 @@
 <script>
   $(document).ready(function () {
 
-    <c:if test="${empty permission && fn:contains(permissions,5)}">
-
-    <c:if test="${user eq 'logout_login_user'}">
-    bootbox.alert({
-      closeButton: false,
-      message: 'Your user account details have been updated. Please sign in again to continue using the portal.',
-      callback: function (result) {
-        var a = document.createElement('a');
-        a.href = "/fdahpStudyDesigner/sessionOut.do";
-        document.body.appendChild(a).click();
-      }
-    });
-    </c:if>
+    let currLang = $('#studyLanguage').val();
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+      $('#currentLanguage').val(currLang);
+      refreshAndFetchLanguageData(currLang);
+    }
 
     let disableMLFlag = false;
     $('#langDeletableMap option').each(function() {
@@ -574,15 +566,23 @@
       }
     }
 
-    let currLang = $('#studyLanguage').val();
-    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
-      $('#currentLanguage').val(currLang);
-      refreshAndFetchLanguageData(currLang);
-    }
-
     $(document).on('click', '.removeLangNew', function () {
       removeLang(this.id, 'new', '');
     })
+
+    <c:if test="${empty permission && fn:contains(permissions,5)}">
+
+    <c:if test="${user eq 'logout_login_user'}">
+    bootbox.alert({
+      closeButton: false,
+      message: 'Your user account details have been updated. Please sign in again to continue using the portal.',
+      callback: function (result) {
+        var a = document.createElement('a');
+        a.href = "/fdahpStudyDesigner/sessionOut.do";
+        document.body.appendChild(a).click();
+      }
+    });
+    </c:if>
 
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -1190,6 +1190,18 @@
             $('.sprites_icon').removeAttr('style');
 
             $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
+
+            let disableMLFlag = false;
+            $('#langDeletableMap option', htmlData).each(function() {
+              let id = this.id.split('_')[1];
+              $('#innerSpan-'+id).addClass('cursor-none');
+              disableMLFlag = true;
+            })
+            if (disableMLFlag===true){
+              if ($('#mlYes').prop('checked')===true) {
+                $('#mlNo').prop('disabled', true);
+              }
+            }
             
             <c:if test="${permission == 'view'}">
             $('#settingfoFormId input,textarea').prop('disabled', true);

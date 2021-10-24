@@ -1999,10 +1999,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         {orderable: false, targets: [0, 1, 2, 3]},
       ],
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-        if (actionPage != 'view') {
-          $('td:eq(0)', nRow).addClass("cursonMove dd_icon static-width");
+        if (actionPage !== 'view') {
+          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
         }
-        $('td:eq(0)', nRow).addClass("qs-items");
+        $('td:eq(0)', nRow).addClass("qs-items static-width");
         $('td:eq(1)', nRow).addClass("qs-items");
         $('td:eq(2)', nRow).addClass("qs-items");
         $('td:eq(3)', nRow).addClass("qs-items");
@@ -3646,7 +3646,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             } else {
               $("#previousFrequency").val(frequency_text);
             }
-            $(".add-steps-btn").removeClass('cursor-none');
+            let studyLang=$('#studyLanguage').val();
+            if (studyLang !== undefined && studyLang !== null && studyLang !== '' && studyLang !== 'en') {
+              $(".add-steps-btn").addClass('cursor-none');
+            } else {
+              $(".add-steps-btn").removeClass('cursor-none');
+            }
             if (frequency_text == 'One time') {
               $("#oneTimeFreId").val(questionnaireFrequenceId);
             } else if (frequency_text == 'Weekly') {

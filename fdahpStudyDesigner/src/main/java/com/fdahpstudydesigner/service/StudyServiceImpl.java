@@ -1755,6 +1755,11 @@ public class StudyServiceImpl implements StudyService {
         if (null == eligibilityTestBo.getId()) {
           seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
           eligibilityTestBo.setSequenceNo(seqCount);
+          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(studyId);
+          for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
+            studySequenceLangBO.setEligibility(false);
+            studyDAO.saveOrUpdateObject(studySequenceLangBO);
+          }
         }
         if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
           EligibilityTestLangBo eligibilityTestLangBo =
@@ -1957,9 +1962,6 @@ public class StudyServiceImpl implements StudyService {
                   resourceBO.getPdfFile(), file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
           resourcesLangBO.setPdfUrl(fileName);
           resourcesLangBO.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
-        } else {
-          resourcesLangBO.setPdfUrl(resourceBO.getPdfUrl());
-          resourcesLangBO.setPdfName(resourceBO.getPdfName());
         }
         studyDAO.saveOrUpdateObject(resourcesLangBO);
 

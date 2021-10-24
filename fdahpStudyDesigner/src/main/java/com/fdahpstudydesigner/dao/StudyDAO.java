@@ -284,4 +284,6 @@ public interface StudyDAO {
   List<ResourcesLangBO> getResourcesLangList(int studyId, String language);
 
   Map<String, Boolean> isLanguageDeletable(String customStudyId);
+
+  String updateDraftStatusInStudyBo(int userId, int studyId);
 }

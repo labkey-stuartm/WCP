@@ -200,6 +200,11 @@ public class StudyQuestionnaireController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnairesId"))
                 ? ""
                 : request.getParameter("questionnairesId");
+        String studyId =
+            (String)
+                request
+                    .getSession()
+                    .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
         if (!formId.isEmpty() && !questionId.isEmpty()) {
           message =
               studyQuestionnaireService.deleteFromStepQuestion(
@@ -215,7 +220,7 @@ public class StudyQuestionnaireController {
             if (questionnairesStepsBo != null) {
               questionnairesStepsBo.setType(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE);
               studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
-                  questionnairesStepsBo, sesObj, customStudyId);
+                  questionnairesStepsBo, sesObj, customStudyId, studyId);
               qTreeMap = questionnairesStepsBo.getFormQuestionMap();
               questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
               jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
@@ -232,11 +237,6 @@ public class StudyQuestionnaireController {
                 jsonobject.put("isDone", isDone);
               }
             }
-            String studyId =
-                (String)
-                    request
-                        .getSession()
-                        .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
             if (StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
                   Integer.valueOf(studyId),
@@ -1906,7 +1906,7 @@ public class StudyQuestionnaireController {
             } else {
               addQuestionnairesStepsBo =
                   studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
-                      questionnairesStepsBo, sesObj, customStudyId);
+                      questionnairesStepsBo, sesObj, customStudyId, studyId);
               if (addQuestionnairesStepsBo != null) {
                 jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
                 jsonobject.put("formId", addQuestionnairesStepsBo.getInstructionFormId());
@@ -2205,7 +2205,7 @@ public class StudyQuestionnaireController {
           } else {
             addQuestionnairesStepsBo =
                 studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
-                    questionnairesStepsBo, sesObj, customStudyId);
+                    questionnairesStepsBo, sesObj, customStudyId, studyId);
             if (addQuestionnairesStepsBo != null) {
               if (StringUtils.isNotEmpty(studyId)) {
                 studyService.markAsCompleted(

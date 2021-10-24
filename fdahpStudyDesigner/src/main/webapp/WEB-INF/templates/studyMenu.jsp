@@ -133,7 +133,12 @@
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
             </li>
-            <li class="seventh commonCls" style="padding-left:18px;">Study Activities</li>
+            <li class="seventh commonCls" style="padding-left:18px;">Study Activities
+                <c:if
+                    test="${studyBo.studySequenceBo.studyExcQuestionnaries and studyBo.studySequenceBo.studyExcActiveTask}">
+                    <span class="sprites-icons-2 tick pull-right mt-xs"></span>
+                </c:if>
+            </li>
             <li class="sub seventhQuestionnaires commonCls">Questionnaires <c:if
                     test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
@@ -455,7 +460,9 @@
       if (seventh.find('span').length === 0) {
         seventh.append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    } else $('.seventh').find('span').remove();
+    } else {
+      $('.seventh').find('span').remove();
+    }
   }
 
   function updateEnglishTicksByClassName(id, className) {
@@ -463,7 +470,8 @@
       if ($(className).find('span').length === 0) {
         $(className).append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    } else
+    } else {
       $(className).find('span').remove();
+    }
   }
 </script>

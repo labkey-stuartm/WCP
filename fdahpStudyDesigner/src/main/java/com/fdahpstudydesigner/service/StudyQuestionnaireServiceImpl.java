@@ -751,13 +751,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    */
   @Override
   public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(
-      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId) {
+      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId, String studyId) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
     QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
     try {
       addOrUpdateQuestionnairesStepsBo =
           studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(
-              questionnairesStepsBo, sesObj, customStudyId);
+              questionnairesStepsBo, sesObj, customStudyId, studyId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error", e);
     }
@@ -794,6 +794,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         } else {
           addOrUpdateInstructionsBo = new InstructionsBo();
           addOrUpdateInstructionsBo.setActive(true);
+          this.updateStudyLangSequence(Integer.parseInt(studyId));
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -907,6 +908,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         } else {
           addQuestionsBo = new QuestionsBo();
           addQuestionsBo.setActive(true);
+          this.updateStudyLangSequence(Integer.parseInt(studyId));
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -1447,6 +1449,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             addQuestionsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
           }
           addQuestionsBo.setActive(true);
+          this.updateStudyLangSequence(Integer.parseInt(studyId));
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -1983,5 +1986,26 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     }
     logger.info("StudyServiceImpl - getInstructionLangByQuestionnaireId() - Ends");
     return instructionsLangBOS;
+  }
+
+  public void updateStudyLangSequence(int studyId) {
+    logger.info("StudyServiceImpl - updateStudyLangSequence() - Starts");
+    try {
+      List<StudySequenceLangBO> studySequenceLangBOList = studyDAO.getStudySequenceByStudyId(studyId);
+      if (studySequenceLangBOList != null && studySequenceLangBOList.size()>0) {
+        for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOList) {
+          studySequenceLangBO.setStudyExcQuestionnaries(false);
+          studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        }
+      }
+      List<QuestionnaireLangBO> questionnaireLangBOList = studyQuestionnaireDAO.getQuestionnaireLangByStudyId(studyId);
+      for (QuestionnaireLangBO questionnaireLangBO : questionnaireLangBOList) {
+        questionnaireLangBO.setStatus(false);
+        studyDAO.saveOrUpdateObject(questionnaireLangBO);
+      }
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - updateStudyLangSequence() - Error", e);
+    }
+    logger.info("StudyServiceImpl - updateStudyLangSequence() - Ends");
   }
 }
