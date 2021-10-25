@@ -4913,7 +4913,6 @@ public class StudyDAOImpl implements StudyDAO {
       studyLanguageBO.setStudyTagline(studyBo.getStudyTagLine());
       studyLanguageBO.setDescription(studyBo.getDescription());
       studyLanguageBO.setResearchSponsor(studyBo.getResearchSponsor());
-      studyLanguageBO.setCategory(studyBo.getCategory());
       session.saveOrUpdate(studyLanguageBO);
       transaction.commit();
       message = FdahpStudyDesignerConstants.SUCCESS;

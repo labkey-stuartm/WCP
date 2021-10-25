@@ -187,7 +187,7 @@
                     </div>
                     <div class="form-group">
                         <select
-                                class="selectpicker aq-select aq-select-form elaborateClass langSpecific"
+                                class="selectpicker aq-select aq-select-form elaborateClass"
                                 id="category" name="category" required title="Select">
                             <c:forEach items="${categoryList}" var="category">
                                 <option value="${category.id}"
@@ -902,8 +902,7 @@
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').css('background-color', '#eee');
-                  $('[data-id=' + id + ']').css('opacity', '1');
+                  $('[data-id=' + id + ']').addClass('cursor-none');
                 }
               }
             }
@@ -912,13 +911,12 @@
           $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
           $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
           $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
-          $('#category').val($('#mlCategory', htmlData).val()).change();
           $('#editor').val($('input#mlDescription', htmlData).val());
           let tinyMce = tinymce.activeEditor;
           if (tinyMce !== undefined) {
             tinyMce.setContent($('input#mlDescription', htmlData).val());
           }
-          $('#removeUrl').css('pointer-events', 'none');
+          $('#removeUrl').addClass('cursor-none');
           $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
               'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
           $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
@@ -932,7 +930,7 @@
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').removeAttr('style');
+                  $('[data-id=' + id + ']').removeClass('cursor-none');
                 }
               }
             }
@@ -941,17 +939,16 @@
           $('input[name="fullName"]').val($('input[name="fullName"]', htmlData).val());
           $('input[name="studyTagLine"]').val($('input[name="studyTagLine"]', htmlData).val());
           $('#researchSponsor').val($('#researchSponsor', htmlData).val());
-          $('#category').val($('#category', htmlData).val()).change();
           $('#editor').val($('#editor', htmlData).val());
           tinymce.activeEditor.setContent($('#editor', htmlData).val());
-          $('#removeUrl').removeAttr('style');
+          $('#removeUrl').removeClass('cursor-none');
           $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
           
           <c:if test="${permission == 'view' }">
           $('#basicInfoFormId input,textarea').prop('disabled', true);
-          $('#removeUrl').css('pointer-events', 'none');
+          $('#removeUrl').addClass('cursor-none');
           </c:if>
         }
       }
