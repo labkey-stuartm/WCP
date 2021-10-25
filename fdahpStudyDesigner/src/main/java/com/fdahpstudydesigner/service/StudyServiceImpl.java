@@ -1277,6 +1277,7 @@ public class StudyServiceImpl implements StudyService {
                   && "done".equals(consentBo.getComprehensionTest()));
           studyDAO.saveOrUpdateObject(studySequenceLangBO);
         }
+        studyDAO.updateDraftStatusInStudyBo(sesObj.getUserId(), consentBo.getStudyId());
       } else {
         if (consentBo.getNeedComprehensionTest() != null) {
           updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
@@ -1496,15 +1497,17 @@ public class StudyServiceImpl implements StudyService {
       ComprehensionTestQuestionBo comprehensionTestQuestionBo, String language) {
     logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
     ComprehensionTestQuestionBo updateComprehensionTestQuestionBo = null;
+    int userId = 0;
     try {
       if (comprehensionTestQuestionBo != null) {
         if (comprehensionTestQuestionBo.getId() != null) {
           updateComprehensionTestQuestionBo =
               studyDAO.getComprehensionTestQuestionById(comprehensionTestQuestionBo.getId());
+          userId = comprehensionTestQuestionBo.getModifiedBy();
         } else {
           updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
           updateComprehensionTestQuestionBo.setActive(true);
-
+          userId = comprehensionTestQuestionBo.getCreatedBy();
           // if new comprehension then make a draft in sequence table
           List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(comprehensionTestQuestionBo.getStudyId());
           for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
@@ -1564,6 +1567,7 @@ public class StudyServiceImpl implements StudyService {
               studyDAO.saveOrUpdateObject(studySequenceLangBO);
             }
           }
+          studyDAO.updateDraftStatusInStudyBo(userId, comprehensionTestQuestionBo.getStudyId());
         } else {
           if (comprehensionTestQuestionBo.getStatus() != null) {
             updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
@@ -1683,6 +1687,7 @@ public class StudyServiceImpl implements StudyService {
           }
         }
         studyDAO.saveOrUpdateConsentInfoLanguageData(consentInfoLangBO);
+        studyDAO.updateDraftStatusInStudyBo(sessionObject.getUserId(), consentInfoBo.getStudyId());
       } else {
         if (consentInfoBo.getConsentItemType() != null) {
           updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
@@ -1860,6 +1865,7 @@ public class StudyServiceImpl implements StudyService {
                 && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(
                     studyPageBean.getActionType()));
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        studyDAO.updateDraftStatusInStudyBo(sesObj.getUserId(), Integer.parseInt(studyPageBean.getStudyId()));
       } else {
         StudyBo studyBo = studyDAO.getStudyBoById(studyPageBean.getStudyId());
         if (studyBo.getMultiLanguageFlag()!=null && studyBo.getMultiLanguageFlag()) {
@@ -1972,7 +1978,7 @@ public class StudyServiceImpl implements StudyService {
             studyDAO.saveOrUpdateObject(studySequenceLangBO);
           }
         }
-
+        studyDAO.updateDraftStatusInStudyBo(sesObj.getUserId(), resourceBO.getStudyId());
         resourseId = resourcesLangBO.getResourcesLangPK().getId();
       } else {
 
@@ -2180,6 +2186,7 @@ public class StudyServiceImpl implements StudyService {
             FdahpStudyDesignerUtil.isNotEmpty(studyBo.getButtonText())
                 && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        studyDAO.updateDraftStatusInStudyBo(sessionObject.getUserId(), studyBo.getId());
       } else {
         String appId = studyBo.getAppId().toUpperCase();
         if (appId.equalsIgnoreCase(FdahpStudyDesignerConstants.APP_ID_FMSA001)
@@ -2368,6 +2375,7 @@ public class StudyServiceImpl implements StudyService {
             FdahpStudyDesignerUtil.isNotEmpty(studyBo.getButtonText())
                 && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(studyBo.getButtonText()));
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
+        studyDAO.updateDraftStatusInStudyBo(sesObj.getUserId(), studyBo.getId());
       } else {
         if (StringUtils.isNotBlank(newLanguages)) {
           String[] langArray = newLanguages.split(",");

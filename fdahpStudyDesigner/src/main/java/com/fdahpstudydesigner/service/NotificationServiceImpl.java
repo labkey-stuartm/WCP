@@ -245,7 +245,10 @@ public class NotificationServiceImpl implements NotificationService {
               studyDAO.saveOrUpdateObject(studySequenceLangBO);
             }
           }
-
+          if (notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)) {
+            studyDAO.updateDraftStatusInStudyBo(
+                sessionObject.getUserId(), notificationBO.getStudyId());
+          }
           notificationId = notificationBO.getNotificationId();
         } else {
           notificationId =

@@ -826,6 +826,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             }
           }
           studyQuestionnaireDAO.saveOrUpdateObject(instructionsLangBO);
+          studyDAO.updateDraftStatusInStudyBo(sessionObject.getUserId(), Integer.parseInt(studyId));
         } else {
           if (instructionsBo.getInstructionText() != null
               && !instructionsBo.getInstructionText().isEmpty()) {
@@ -977,7 +978,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
             }
           }
-
+          studyDAO.updateDraftStatusInStudyBo(sesObj.getUserId(), Integer.parseInt(studyId));
         } else {
           if (questionsBo.getShortTitle() != null) {
             addQuestionsBo.setShortTitle(questionsBo.getShortTitle());
@@ -1186,7 +1187,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
             }
           }
-
+          studyDAO.updateDraftStatusInStudyBo(sessionObject.getUserId(), questionnaireBo.getStudyId());
         } else {
           if (questionnaireBo.getStudyId() != null) {
             addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
@@ -1524,6 +1525,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
             }
           }
+          studyDAO.updateDraftStatusInStudyBo(sessionObject.getUserId(), Integer.parseInt(studyId));
         } else {
           if (questionnairesStepsBo.getQuestionsBo().getQuestion() != null) {
             addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
@@ -1800,6 +1802,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           studyQuestionnaireDAO.saveOrUpdateObject(studySequenceLangBO);
         }
       }
+      studyDAO.updateDraftStatusInStudyBo(questionnairesStepsBo.getCreatedBy(), Integer.parseInt(studyId));
       result = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {
       logger.error(
