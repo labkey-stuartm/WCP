@@ -885,11 +885,11 @@
               callback: function (result) {
                 if (result) {
                   var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-                  if (consentDocumentType == "Auto") {
+                  if (consentDocumentType === "Auto") {
                     saveConsentReviewAndEConsentInfo("doneId");
                   } else {
                     var content = tinymce.get('newDocumentDivId').getContent();
-                    if (content != null && content != '' && typeof content != 'undefined') {
+                    if (content != null && content !== '' && typeof content != 'undefined') {
                       saveConsentReviewAndEConsentInfo("doneId");
                     } else {
                       $("#newDocumentDivId").parent().find(".help-block").empty();

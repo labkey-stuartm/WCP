@@ -158,10 +158,9 @@
             <input type="hidden" id="type" name="type" value="complete"/> <input
                 type="hidden" name="id" id="questionId" value="${questionsBo.id}">
             <input type="hidden" id="fromId" name="fromId" value="${formId}"/>
-            <input type="hidden" name="questionnairesId" id="questionnairesId"
-                   value="${questionnaireBo.id}"> <input type="hidden"
-                                                         id="questionnaireShortId"
-                                                         value="${questionnaireBo.shortTitle}">
+            <input type="hidden" name="questionnaireId" id="questionnairesId"
+                   value="${questionnaireBo.id}">
+            <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
             <input type="hidden" id="anchorDateId" name="anchorDateId"
                    value="${questionnairesStepsBo.questionsBo.anchorDateId}"/> <input
                 type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
@@ -1461,7 +1460,7 @@
                                         title="Enter the applicable units for the numeric input"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control lang-specific"
+                                    <input type="text" class="form-control"
                                            name="questionReponseTypeBo.unit" id="numericUnitId"
                                            value="${fn:escapeXml(questionsBo.questionReponseTypeBo.unit)}"
                                            maxlength="15">
@@ -5187,7 +5186,7 @@
               let id = '';
               if (respType === '8') {
                 id = 'numericPlaceholderId';
-                $('#numericUnitId').val('');
+                // $('#numericUnitId').val('');
               } else if (respType === '11') {
                 id = 'textPlaceholderId';
                 $('#validationExceptTextId').val('');
@@ -5262,7 +5261,7 @@
               let id = '';
               if (respType === '8') {
                 id = 'numericPlaceholderId';
-                $('#numericUnitId').val($('#mlNumericUnitId', htmlData).val());
+                // $('#numericUnitId').val($('#mlNumericUnitId', htmlData).val());
               } else if (respType === '11') {
                 id = 'textPlaceholderId';
                 $('#validationExceptTextId').val($('#mlExceptText', htmlData).val());
@@ -5373,7 +5372,7 @@
                 $('#useStasticData').prop('disabled', true);
               }
               id = 'numericPlaceholderId';
-              $('#numericUnitId').val($('#numericUnitId', htmlData).val());
+              // $('#numericUnitId').val($('#numericUnitId', htmlData).val());
             } else if (respType === '11') {
               id = 'textPlaceholderId';
               $('#validationExceptTextId').val($('#validationExceptTextId', htmlData).val());

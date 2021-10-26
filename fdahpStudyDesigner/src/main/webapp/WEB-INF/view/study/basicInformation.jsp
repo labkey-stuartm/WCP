@@ -93,7 +93,6 @@
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
         <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
-        <input type="hidden" id="mlCategory" value="${studyLanguageBO.category}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">

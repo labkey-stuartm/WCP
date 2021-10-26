@@ -6187,6 +6187,11 @@ public class StudyDAOImpl implements StudyDAO {
                 logger.info(
                     "StudyDAOImpl - studyDraftCreation() Questionnarie update is_live=2- Ends");
               }
+
+              // setting live=-1 in all questionnaires as new records will be created for each row with live=1
+              session.getNamedQuery("updateStudyQuestionnaireVersion")
+                  .setString("customStudyId", studyBo.getCustomStudyId())
+                  .executeUpdate();
               // short title taking updating to archived which
               // have change end
               for (QuestionnaireBo questionnaireBo : questionnaires) {
@@ -6200,10 +6205,6 @@ public class StudyDAOImpl implements StudyDAO {
                 // is there any change in questionnarie
                 if (questionnaireBo.getIsChange() != null
                     && questionnaireBo.getIsChange().equals(1) || mlFlag) {
-
-                  session.getNamedQuery("updateStudyQuestionnaireVersion")
-                      .setString("customStudyId", studyBo.getCustomStudyId())
-                      .executeUpdate();
 
                   Float questionnarieversion = questionnaireBo.getVersion();
                   QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);

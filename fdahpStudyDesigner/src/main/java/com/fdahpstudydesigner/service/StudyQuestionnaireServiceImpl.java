@@ -794,7 +794,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         } else {
           addOrUpdateInstructionsBo = new InstructionsBo();
           addOrUpdateInstructionsBo.setActive(true);
-          this.updateStudyLangSequence(Integer.parseInt(studyId));
+          this.updateStudyLangSequence(instructionsBo.getQuestionnaireId(), Integer.parseInt(studyId));
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -909,7 +909,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         } else {
           addQuestionsBo = new QuestionsBo();
           addQuestionsBo.setActive(true);
-          this.updateStudyLangSequence(Integer.parseInt(studyId));
+          this.updateStudyLangSequence(questionsBo.getQuestionnaireId(), Integer.parseInt(studyId));
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -1450,7 +1450,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             addQuestionsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
           }
           addQuestionsBo.setActive(true);
-          this.updateStudyLangSequence(Integer.parseInt(studyId));
+          this.updateStudyLangSequence(questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -1848,10 +1848,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             }
           } else if (FdahpStudyDesignerConstants.FORM_STEP.equals(stepBean.getStepType())) {
             FormLangBO formLangBO =
-                studyQuestionnaireDAO.getFormLangBo(stepBean.getStepId(), language);
+                studyQuestionnaireDAO.getFormLangBo(stepBean.getQuestionInstructionId(), language);
             if (formLangBO == null) {
               formLangBO = new FormLangBO();
-              formLangBO.setFormLangPK(new FormLangPK(stepBean.getStepId(), language));
+              formLangBO.setFormLangPK(new FormLangPK(stepBean.getQuestionInstructionId(), language));
               formLangBO.setQuestionnaireId(questionnaireId);
               formLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
               formLangBO.setCreatedBy(userId);
@@ -1932,10 +1932,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     try {
 
       FormLangBO formLangBO =
-          studyQuestionnaireDAO.getFormLangBo(questionnairesStepsBo.getStepId(), language);
+          studyQuestionnaireDAO.getFormLangBo(questionnairesStepsBo.getInstructionFormId(), language);
       if (formLangBO == null) {
         formLangBO = new FormLangBO();
-        formLangBO.setFormLangPK(new FormLangPK(questionnairesStepsBo.getStepId(), language));
+        formLangBO.setFormLangPK(new FormLangPK(questionnairesStepsBo.getInstructionFormId(), language));
         formLangBO.setQuestionnaireId(questionnaireId);
         formLangBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         formLangBO.setCreatedBy(questionnairesStepsBo.getCreatedBy());
@@ -1991,7 +1991,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     return instructionsLangBOS;
   }
 
-  public void updateStudyLangSequence(int studyId) {
+  public void updateStudyLangSequence(int questionnaireId, int studyId) {
     logger.info("StudyServiceImpl - updateStudyLangSequence() - Starts");
     try {
       List<StudySequenceLangBO> studySequenceLangBOList = studyDAO.getStudySequenceByStudyId(studyId);
@@ -2001,7 +2001,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           studyDAO.saveOrUpdateObject(studySequenceLangBO);
         }
       }
-      List<QuestionnaireLangBO> questionnaireLangBOList = studyQuestionnaireDAO.getQuestionnaireLangByStudyId(studyId);
+      List<QuestionnaireLangBO> questionnaireLangBOList = studyQuestionnaireDAO.getQuestionnaireLangByQuestionnaireId(questionnaireId);
       for (QuestionnaireLangBO questionnaireLangBO : questionnaireLangBOList) {
         questionnaireLangBO.setStatus(false);
         studyDAO.saveOrUpdateObject(questionnaireLangBO);

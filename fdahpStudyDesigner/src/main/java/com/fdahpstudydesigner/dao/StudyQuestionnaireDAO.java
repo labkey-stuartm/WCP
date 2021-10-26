@@ -152,7 +152,7 @@ public interface StudyQuestionnaireDAO {
 
   List<QuestionnaireLangBO> getQuestionnaireLangByStudyId(Integer studyId, String language);
 
-  List<QuestionnaireLangBO> getQuestionnaireLangByStudyId(Integer studyId);
+  List<QuestionnaireLangBO> getQuestionnaireLangByQuestionnaireId(int studyId);
 
   List<QuestionLangBO> getQuestionLangByQuestionnaireId(Integer questionnaireId, String language);
 
