@@ -359,7 +359,4 @@
     <definition name="websitePolicies"
                 template="/WEB-INF/view/websitePolicies.jsp"/>
 
-    <definition name="websitePolicies"
-                template="/WEB-INF/view/websitePolicies.jsp"/>
-
 </tiles-definitions>

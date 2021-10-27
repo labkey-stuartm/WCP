@@ -154,7 +154,18 @@
 
 <p>Las cookies persistentes que se colocan en su computadora caducarán dos años después de su última visita a nuestro sitio web. Los datos recopilados a través de las cookies persistentes serán conservados por la oficina específica de la FDA asociada al sitio web que utiliza la cookie.</p>
 
+<p>La OMB define nuestro uso de cookies persistentes como "Uso de nivel 2: multisesión sin información de identificación personal (PII)". Esto se aplica a "cualquier uso de tecnologías de medición y personalización de sitios web multisesión cuando no se recopila información de identificación personal".</p>
 
+<h4>Cookies persistentes</h4>
+<p>Algunos servicios de nuestro sitio web utilizan cookies multisesión, también conocidas como cookies persistentes. Las cookies persistentes:</p>
+
+	<ul>
+		<li>Son pequeños fragmentos de texto almacenados temporalmente en su computadora.</li>
+		<li>Se colocan en la computadora durante más de una sesión.</li>
+		<li>Se utilizan para diferenciar entre visitantes nuevos y recurrentes del sitio, para personalizar nuestro sitio web para los visitantes frecuentes y para evaluar el diseño y el contenido del sitio.</li>
+	</ul>
+
+<p>Las cookies persistentes que se colocan en su computadora caducarán dos años después de su última visita a nuestro sitio web. Los datos recopilados a través de las cookies persistentes serán conservados por la oficina específica de la FDA asociada al sitio web que utiliza la cookie.</p>
 
 <p>La OMB define nuestro uso de cookies persistentes como "Uso de nivel 2: multisesión sin información de identificación personal (PII)". Esto se aplica a "cualquier uso de tecnologías de medición y personalización de sitios web multisesión cuando no se recopila información de identificación personal".</p>
 
@@ -167,8 +178,6 @@
 <p>
 Tanto las cookies de sesión como las persistentes correspondientes a nuestro sitio web están activadas por defecto debido que están integradas en el sitio. Si no desea que se coloquen cookies de sesión o persistentes en su computadora, puede desactivarlas en su navegador. Si decide no aceptar las cookies, seguirá teniendo acceso a toda la información y los recursos de FDA.gov. Las instrucciones para desactivar o rechazar las cookies en los navegadores más conocidos se encuentran en <a href="https://www.usa.gov/optout-instructions" target="_blank"> https://www.usa.gov/optout-instructions</a>.
 </p>
-
-<p>Both session and persistent cookies pertaining to our website are enabled by default because of their integration with our website. If you do not wish to have session or persistent cookies placed on your computer, you can disable them using your Web browser. If you opt out of cookies, you will still have access to all information and resources at FDA.gov. Instructions for disabling or opting out of cookies in the most popular browsers are located at <a href="https://www.usa.gov/optout-instructions" target="_blank">https://www.usa.gov/optout-instructions</a>.</p>
 
 <p>Nota: Si desactiva las cookies en su navegador, puede tener problemas con la búsqueda y la visualización de la información.</p>
 
