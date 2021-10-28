@@ -261,8 +261,7 @@ public interface StudyDAO {
 
   EligibilityTestLangBo getEligibilityTestLanguageDataById(int id, String language);
 
-  List<EligibilityTestLangBo> getEligibilityTestLangByStudyId(
-      int studyId, String language);
+  List<EligibilityTestLangBo> getEligibilityTestLangByStudyId(int studyId, String language);
 
   String saveOrUpdateOverviewLanguageStudyPages(
       StudyPageBean studyPageBean, SessionObject sesObj, String language);

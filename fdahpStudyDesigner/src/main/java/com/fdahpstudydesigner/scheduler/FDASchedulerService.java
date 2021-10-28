@@ -182,11 +182,13 @@ public class FDASchedulerService {
             }
           }
 
-          List<NotificationLangBO> notificationLangBOList = notificationDAO.getNotificationLangByNotificationId(p.getNotificationId());
-          if (notificationLangBOList!=null && notificationLangBOList.size()>0) {
+          List<NotificationLangBO> notificationLangBOList =
+              notificationDAO.getNotificationLangByNotificationId(p.getNotificationId());
+          if (notificationLangBOList != null && notificationLangBOList.size() > 0) {
             for (NotificationLangBO notificationLangBO : notificationLangBOList) {
               PushNotificationBean pushBean = new PushNotificationBean();
-              pushBean.setNotificationId(notificationLangBO.getNotificationLangPK().getNotificationId());
+              pushBean.setNotificationId(
+                  notificationLangBO.getNotificationLangPK().getNotificationId());
               pushBean.setCustomStudyId(p.getCustomStudyId());
               pushBean.setNotificationSubType(p.getNotificationSubType());
               pushBean.setNotificationText(notificationLangBO.getNotificationText());
@@ -198,7 +200,6 @@ public class FDASchedulerService {
               studyDAO.saveOrUpdateObject(notificationLangBO);
             }
           }
-
         }
         if (!pushNotificationBeanswithAppId.isEmpty()) {
           for (PushNotificationBean pushBean : pushNotificationBeanswithAppId) {

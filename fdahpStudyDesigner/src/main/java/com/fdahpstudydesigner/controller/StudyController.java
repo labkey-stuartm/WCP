@@ -181,7 +181,8 @@ public class StudyController {
           map.addAttribute("liveStudyBo", liveStudyBo);
           map.addAttribute("studyPermissionBO", studyPermissionBO);
           String language = request.getParameter("language");
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
@@ -1115,7 +1116,8 @@ public class StudyController {
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
-          if (FdahpStudyDesignerUtil.isNotEmpty(language) && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+          if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             this.setStudyLangData(studyId, language, map);
           }
         }
@@ -6098,8 +6100,9 @@ public class StudyController {
           }
           map.addAttribute("selectedLanguages", langMap);
 
-          if (studyBo.getMultiLanguageFlag()!=null && studyBo.getMultiLanguageFlag()) {
-            map.addAttribute("langDeletableMap", studyService.isLanguageDeletable(studyBo.getCustomStudyId()));
+          if (studyBo.getMultiLanguageFlag() != null && studyBo.getMultiLanguageFlag()) {
+            map.addAttribute(
+                "langDeletableMap", studyService.isLanguageDeletable(studyBo.getCustomStudyId()));
           }
 
           ResourceBundle resourceBundle = ResourceBundle.getBundle("messageResource");

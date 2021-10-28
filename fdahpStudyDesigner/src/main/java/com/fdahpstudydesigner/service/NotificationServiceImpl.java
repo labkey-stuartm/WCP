@@ -1,8 +1,5 @@
 package com.fdahpstudydesigner.service;
 
-import com.fdahpstudydesigner.bo.ConsentInfoBo;
-import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
-import com.fdahpstudydesigner.bo.ConsentInfoLangPK;
 import com.fdahpstudydesigner.bo.MultiLanguageCodes;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
@@ -177,8 +174,9 @@ public class NotificationServiceImpl implements NotificationService {
             notificationLangBO.setNotificationSent(false);
             studyDAO.saveOrUpdateObject(notificationLangBO);
 
-            StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(notificationBO.getStudyId(), langCode);
-            if (studySequenceLangBO!=null) {
+            StudySequenceLangBO studySequenceLangBO =
+                studyDAO.getStudySequenceLangBO(notificationBO.getStudyId(), langCode);
+            if (studySequenceLangBO != null) {
               studySequenceLangBO.setMiscellaneousNotification(false);
               studyDAO.saveOrUpdateObject(studySequenceLangBO);
             }
@@ -238,8 +236,9 @@ public class NotificationServiceImpl implements NotificationService {
           notificationLangBO.setNotificationAction(notificationBO.isNotificationAction());
           studyDAO.saveOrUpdateObject(notificationLangBO);
 
-          StudySequenceLangBO studySequenceLangBO = studyService.getStudySequenceById(notificationBO.getStudyId(), language);
-          if (studySequenceLangBO!=null) {
+          StudySequenceLangBO studySequenceLangBO =
+              studyService.getStudySequenceById(notificationBO.getStudyId(), language);
+          if (studySequenceLangBO != null) {
             if (FdahpStudyDesignerConstants.SAVE_BUTTON.equals(buttonType)) {
               studySequenceLangBO.setMiscellaneousNotification(false);
               studyDAO.saveOrUpdateObject(studySequenceLangBO);

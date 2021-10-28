@@ -22,7 +22,7 @@ public class InstructionsLangBO implements Serializable {
   private Integer questionnaireId;
 
   @Column(name = "active")
-  private Boolean active=true;
+  private Boolean active = true;
 
   @Column(name = "status")
   private Boolean status = false;

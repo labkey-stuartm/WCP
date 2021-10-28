@@ -265,8 +265,12 @@ public class StudyDAOImpl implements StudyDAO {
         comprehensionTestQuestionBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         session.saveOrUpdate(comprehensionTestQuestionBo);
 
-        List<ComprehensionQuestionLangBO> comprehensionQuestionLangBOList = session
-            .createQuery("from ComprehensionQuestionLangBO where comprehensionQuestionLangPK.id=:id").setInteger("id", questionId).list();
+        List<ComprehensionQuestionLangBO> comprehensionQuestionLangBOList =
+            session
+                .createQuery(
+                    "from ComprehensionQuestionLangBO where comprehensionQuestionLangPK.id=:id")
+                .setInteger("id", questionId)
+                .list();
         if (comprehensionQuestionLangBOList != null && comprehensionQuestionLangBOList.size() > 0) {
           for (ComprehensionQuestionLangBO comprehensionQuestionLangBO :
               comprehensionQuestionLangBOList) {
@@ -372,10 +376,11 @@ public class StudyDAOImpl implements StudyDAO {
               .setInteger("consentInfoId", consentInfoId);
       count = query.executeUpdate();
 
-      List<ConsentInfoLangBO> consentInfoLangBOList = session.
-          createQuery("from ConsentInfoLangBO where consentInfoLangPK.id= :consentInfoId")
-          .setInteger("consentInfoId", consentInfoId)
-          .list();
+      List<ConsentInfoLangBO> consentInfoLangBOList =
+          session
+              .createQuery("from ConsentInfoLangBO where consentInfoLangPK.id= :consentInfoId")
+              .setInteger("consentInfoId", consentInfoId)
+              .list();
       for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
         consentInfoLangBO.setActive(false);
         consentInfoLangBO.setModifiedBy(sessionObject.getUserId());
@@ -453,10 +458,12 @@ public class StudyDAOImpl implements StudyDAO {
                   .setInteger("eligibilityTestId", eligibilityTestId)
                   .uniqueResult();
 
-      List<EligibilityTestLangBo> eligibilityTestLangBoList = session.
-          createQuery("SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.eligibilityTestLangPK.id=:eligibilityTestId ORDER BY ETB.sequenceNo")
-          .setInteger("eligibilityTestId", eligibilityTestId)
-          .list();
+      List<EligibilityTestLangBo> eligibilityTestLangBoList =
+          session
+              .createQuery(
+                  "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.eligibilityTestLangPK.id=:eligibilityTestId ORDER BY ETB.sequenceNo")
+              .setInteger("eligibilityTestId", eligibilityTestId)
+              .list();
       studyBo = this.getStudyById(String.valueOf(studyId), sessionObject.getUserId());
 
       if (null != studyBo
@@ -704,11 +711,12 @@ public class StudyDAOImpl implements StudyDAO {
               .setInteger("resourceInfoId", resourceInfoId)
               .executeUpdate();
 
-      List<ResourcesLangBO> resourcesLangBOList = session
-          .createQuery(
-              "From ResourcesLangBO RBO where RBO.resourcesLangPK.id= :id and RBO.status=true order by RBO.sequenceNo asc")
-          .setInteger("id", resourceInfoId)
-          .list();
+      List<ResourcesLangBO> resourcesLangBOList =
+          session
+              .createQuery(
+                  "From ResourcesLangBO RBO where RBO.resourcesLangPK.id= :id and RBO.status=true order by RBO.sequenceNo asc")
+              .setInteger("id", resourceInfoId)
+              .list();
 
       if (resourcesLangBOList != null && resourcesLangBOList.size() > 0) {
         for (ResourcesLangBO resourcesLangBO : resourcesLangBOList) {
@@ -5862,7 +5870,8 @@ public class StudyDAOImpl implements StudyDAO {
         studyVersionBo = (StudyVersionBo) query.uniqueResult();
         logger.info("StudyDAOImpl - studyDraftCreation() getStudyByCustomStudyId- Ends");
 
-        boolean mlFlag = studyBo.getMultiLanguageFlag()!=null?studyBo.getMultiLanguageFlag():false;
+        boolean mlFlag =
+            studyBo.getMultiLanguageFlag() != null ? studyBo.getMultiLanguageFlag() : false;
         if (studyVersionBo != null && (studyBo.getHasStudyDraft().equals(0)) && !mlFlag) {
           flag = false;
         }
@@ -5884,9 +5893,9 @@ public class StudyDAOImpl implements StudyDAO {
             if (mlFlag) {
               query =
                   session
-                      .createQuery("UPDATE StudyLanguageBO SET live=2 WHERE studyLanguagePK.study_id=:studyId and live=1")
-                      .setInteger(
-                          "studyId", studyBo.getId());
+                      .createQuery(
+                          "UPDATE StudyLanguageBO SET live=2 WHERE studyLanguagePK.study_id=:studyId and live=1")
+                      .setInteger("studyId", studyBo.getId());
               query.executeUpdate();
             }
 
@@ -5916,8 +5925,11 @@ public class StudyDAOImpl implements StudyDAO {
           session.save(studyDreaftBo);
 
           // change id in language tables
-          List<StudyLanguageBO> studyLanguageBOList = session.createQuery("from StudyLanguageBO where studyLanguagePK.study_id=:studyId")
-              .setInteger("studyId", studyBo.getId()).list();
+          List<StudyLanguageBO> studyLanguageBOList =
+              session
+                  .createQuery("from StudyLanguageBO where studyLanguagePK.study_id=:studyId")
+                  .setInteger("studyId", studyBo.getId())
+                  .list();
           for (StudyLanguageBO studyLanguageBO : studyLanguageBOList) {
             studyLanguageBO.setConsentCompleted(true);
             session.update(studyLanguageBO);
@@ -5958,8 +5970,12 @@ public class StudyDAOImpl implements StudyDAO {
           session.save(newStudySequenceBo);
 
           // clone of Study Sequence Lang
-          List<StudySequenceLangBO> studySequenceLangBOS = session.createQuery("from StudySequenceLangBO where studySequenceLangPK.studyId=:studyId")
-              .setInteger("studyId", studyBo.getId()).list();
+          List<StudySequenceLangBO> studySequenceLangBOS =
+              session
+                  .createQuery(
+                      "from StudySequenceLangBO where studySequenceLangPK.studyId=:studyId")
+                  .setInteger("studyId", studyBo.getId())
+                  .list();
           for (StudySequenceLangBO sequenceLangBO : studySequenceLangBOS) {
             StudySequenceLangBO sequenceLangBO1 = SerializationUtils.clone(sequenceLangBO);
             sequenceLangBO1.getStudySequenceLangPK().setStudyId(studyDreaftBo.getId());
@@ -5983,7 +5999,8 @@ public class StudyDAOImpl implements StudyDAO {
                       .setInteger("pageId", pageBo.getPageId())
                       .list();
               for (StudyPageLanguageBO studyPageLanguageBO : studyPageLanguageBOS) {
-                StudyPageLanguageBO studyPageLanguageBO1 = SerializationUtils.clone(studyPageLanguageBO);
+                StudyPageLanguageBO studyPageLanguageBO1 =
+                    SerializationUtils.clone(studyPageLanguageBO);
                 studyPageLanguageBO1.getStudyPageLanguagePK().setPageId(subPageBo.getPageId());
                 studyPageLanguageBO1.setStudyId(studyDreaftBo.getId());
                 session.save(studyPageLanguageBO1);
@@ -6082,13 +6099,11 @@ public class StudyDAOImpl implements StudyDAO {
 
               List<ResourcesLangBO> resourcesLangBOList =
                   session
-                      .createQuery(
-                          "from ResourcesLangBO where resourcesLangPK.id=:id")
+                      .createQuery("from ResourcesLangBO where resourcesLangPK.id=:id")
                       .setInteger("id", bo.getId())
                       .list();
               for (ResourcesLangBO resourcesLangBO : resourcesLangBOList) {
-                ResourcesLangBO resourcesLangBO1 =
-                    SerializationUtils.clone(resourcesLangBO);
+                ResourcesLangBO resourcesLangBO1 = SerializationUtils.clone(resourcesLangBO);
                 resourcesLangBO1.getResourcesLangPK().setId(resourceBO.getId());
                 resourcesLangBO1.setStudyId(studyDreaftBo.getId());
                 session.save(resourcesLangBO1);
@@ -6157,7 +6172,8 @@ public class StudyDAOImpl implements StudyDAO {
           // If Questionnaire updated flag -1 then update(clone)
           if (studyVersionBo == null
               || (studyBo.getHasQuestionnaireDraft() != null
-                  && studyBo.getHasQuestionnaireDraft().equals(1)) || mlFlag) {
+                  && studyBo.getHasQuestionnaireDraft().equals(1))
+              || mlFlag) {
             // Questionarries
             query =
                 session
@@ -6188,8 +6204,10 @@ public class StudyDAOImpl implements StudyDAO {
                     "StudyDAOImpl - studyDraftCreation() Questionnarie update is_live=2- Ends");
               }
 
-              // setting live=-1 in all questionnaires as new records will be created for each row with live=1
-              session.getNamedQuery("updateStudyQuestionnaireVersion")
+              // setting live=-1 in all questionnaires as new records will be created for each row
+              // with live=1
+              session
+                  .getNamedQuery("updateStudyQuestionnaireVersion")
                   .setString("customStudyId", studyBo.getCustomStudyId())
                   .executeUpdate();
               // short title taking updating to archived which
@@ -6203,8 +6221,8 @@ public class StudyDAOImpl implements StudyDAO {
                 studyActivityVersionBo.setActivityType("Q");
                 studyActivityVersionBo.setShortTitle(questionnaireBo.getShortTitle());
                 // is there any change in questionnarie
-                if (questionnaireBo.getIsChange() != null
-                    && questionnaireBo.getIsChange().equals(1) || mlFlag) {
+                if (questionnaireBo.getIsChange() != null && questionnaireBo.getIsChange().equals(1)
+                    || mlFlag) {
 
                   Float questionnarieversion = questionnaireBo.getVersion();
                   QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
@@ -6244,8 +6262,7 @@ public class StudyDAOImpl implements StudyDAO {
 
                   List<QuestionnaireLangBO> questionnaireLangBOS =
                       session
-                          .createQuery(
-                              "from QuestionnaireLangBO where questionnaireLangPK.id=:id")
+                          .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
                           .setInteger("id", questionnaireBo.getId())
                           .list();
                   for (QuestionnaireLangBO questionnaireLangBO : questionnaireLangBOS) {
@@ -6392,7 +6409,9 @@ public class StudyDAOImpl implements StudyDAO {
                             for (InstructionsLangBO instructionsLangBO : instructionsLangBOS) {
                               InstructionsLangBO instructionsLangBO1 =
                                   SerializationUtils.clone(instructionsLangBO);
-                              instructionsLangBO1.getInstructionLangPK().setId(newInstructionsBo.getId());
+                              instructionsLangBO1
+                                  .getInstructionLangPK()
+                                  .setId(newInstructionsBo.getId());
                               instructionsLangBO1.setQuestionnaireId(newQuestionnaireBo.getId());
                               session.save(instructionsLangBO1);
                             }
@@ -6616,9 +6635,12 @@ public class StudyDAOImpl implements StudyDAO {
                                     for (QuestionLangBO questionLangBO : questionLangBOS) {
                                       QuestionLangBO questionLangBO1 =
                                           SerializationUtils.clone(questionLangBO);
-                                      questionLangBO1.getQuestionLangPK().setId(newQuestionsBo.getId());
+                                      questionLangBO1
+                                          .getQuestionLangPK()
+                                          .setId(newQuestionsBo.getId());
                                       questionLangBO1.setFormId(newFormBo.getFormId());
-                                      questionLangBO1.setQuestionnaireId(newQuestionnaireBo.getId());
+                                      questionLangBO1.setQuestionnaireId(
+                                          newQuestionnaireBo.getId());
                                       session.save(questionLangBO1);
                                     }
                                   }
@@ -6852,7 +6874,8 @@ public class StudyDAOImpl implements StudyDAO {
           // is there any change doing clone of active task
           if (studyVersionBo == null
               || (studyBo.getHasActivetaskDraft() != null
-                  && studyBo.getHasActivetaskDraft().equals(1)) || mlFlag) {
+                  && studyBo.getHasActivetaskDraft().equals(1))
+              || mlFlag) {
             // update all ActiveTasks to archive (live as 2)
             query =
                 session
@@ -6905,13 +6928,11 @@ public class StudyDAOImpl implements StudyDAO {
 
                 List<ActiveTaskLangBO> activeTaskLangBOS =
                     session
-                        .createQuery(
-                            "from ActiveTaskLangBO where activeTaskLangPK.id=:id")
+                        .createQuery("from ActiveTaskLangBO where activeTaskLangPK.id=:id")
                         .setInteger("id", activeTaskBo.getId())
                         .list();
                 for (ActiveTaskLangBO activeTaskLangBO : activeTaskLangBOS) {
-                  ActiveTaskLangBO activeTaskLangBO1 =
-                      SerializationUtils.clone(activeTaskLangBO);
+                  ActiveTaskLangBO activeTaskLangBO1 = SerializationUtils.clone(activeTaskLangBO);
                   activeTaskLangBO1.getActiveTaskLangPK().setId(newActiveTaskBo.getId());
                   activeTaskLangBO1.setStudyId(studyDreaftBo.getId());
                   session.save(activeTaskLangBO1);
@@ -7049,8 +7070,7 @@ public class StudyDAOImpl implements StudyDAO {
 
                 List<ConsentInfoLangBO> consentInfoLangBOS =
                     session
-                        .createQuery(
-                            "from ConsentInfoLangBO where consentInfoLangPK.id=:id")
+                        .createQuery("from ConsentInfoLangBO where consentInfoLangPK.id=:id")
                         .setInteger("id", consentInfoBo.getId())
                         .list();
                 for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOS) {
@@ -8597,16 +8617,16 @@ public class StudyDAOImpl implements StudyDAO {
         } else if (!studySequenceLangBO.iseConsent() && !publishFlag) {
           message = FdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
           return message;
-        } else if (!studySequenceLangBO.isStudyExcQuestionnaries()  && !publishFlag) {
+        } else if (!studySequenceLangBO.isStudyExcQuestionnaries() && !publishFlag) {
           message = FdahpStudyDesignerConstants.STUDYEXCQUESTIONNARIES_ERROR_MSG;
           return message;
-        } else if (!studySequenceLangBO.isStudyExcActiveTask()  && !publishFlag) {
+        } else if (!studySequenceLangBO.isStudyExcActiveTask() && !publishFlag) {
           message = FdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
           return message;
         } else if (!studySequenceLangBO.isMiscellaneousResources() && !publishFlag) {
-          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG ;
+          message = FdahpStudyDesignerConstants.RESOURCES_ERROR_MSG;
           return message;
-        } else if (!studySequenceLangBO.getParticipantProperties()  && !publishFlag) {
+        } else if (!studySequenceLangBO.getParticipantProperties() && !publishFlag) {
           message = FdahpStudyDesignerConstants.PARTICIPANT_PROPERTIES_ERROR_MSG;
           return message;
         }
@@ -9388,8 +9408,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<EligibilityTestLangBo> getEligibilityTestLangByStudyId(
-      int studyId, String language) {
+  public List<EligibilityTestLangBo> getEligibilityTestLangByStudyId(int studyId, String language) {
     logger.info("StudyDAOImpl - getEligibilityTestLangByEligibilityId() - Starts");
     Session session = null;
     List<EligibilityTestLangBo> dataList = null;
@@ -9587,11 +9606,10 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       if (studyId != 0) {
         studySequenceLangBO =
-                session
-                    .createQuery(
-                        "from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
-                    .setInteger("id", studyId)
-                    .list();
+            session
+                .createQuery("from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
+                .setInteger("id", studyId)
+                .list();
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getStudySequenceByStudyId() - ERROR ", e);
@@ -9807,14 +9825,20 @@ public class StudyDAOImpl implements StudyDAO {
     Map<String, Boolean> map = new HashMap<>();
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      List<Integer> ids = session.createQuery("select id from StudyBo where customStudyId=:customStudyId")
-          .setString("customStudyId", customStudyId)
-          .list();
+      List<Integer> ids =
+          session
+              .createQuery("select id from StudyBo where customStudyId=:customStudyId")
+              .setString("customStudyId", customStudyId)
+              .list();
 
-      List<StudyLanguageBO> studyLanguageBOList = session.createQuery("from StudyLanguageBO where studyLanguagePK.study_id in (:ids) and live=1")
-          .setParameterList("ids", ids).list();
+      List<StudyLanguageBO> studyLanguageBOList =
+          session
+              .createQuery(
+                  "from StudyLanguageBO where studyLanguagePK.study_id in (:ids) and live=1")
+              .setParameterList("ids", ids)
+              .list();
 
-      if (studyLanguageBOList!=null && studyLanguageBOList.size()>0) {
+      if (studyLanguageBOList != null && studyLanguageBOList.size() > 0) {
         for (StudyLanguageBO studyLanguageBO : studyLanguageBOList) {
           map.put(studyLanguageBO.getStudyLanguagePK().getLangCode(), false);
         }
@@ -9838,12 +9862,9 @@ public class StudyDAOImpl implements StudyDAO {
     try {
       Session session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      message = auditLogDAO.updateDraftToEditedStatus(
-          session,
-          transaction,
-          userId,
-          FdahpStudyDesignerConstants.DRAFT_STUDY,
-          studyId);
+      message =
+          auditLogDAO.updateDraftToEditedStatus(
+              session, transaction, userId, FdahpStudyDesignerConstants.DRAFT_STUDY, studyId);
       transaction.commit();
     } catch (Exception e) {
       transaction.rollback();
@@ -9852,5 +9873,4 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
     return message;
   }
-
 }

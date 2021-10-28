@@ -19,7 +19,7 @@ public class FormLangBO implements Serializable {
   private String repeatableText;
 
   @Column(name = "active")
-  private Boolean active=true;
+  private Boolean active = true;
 
   @Column(name = "status")
   private Boolean status = false;

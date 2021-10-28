@@ -676,8 +676,12 @@ public class StudyQuestionnaireController {
             FormLangBO formLangBO =
                 studyQuestionnaireService.getFormLangBO(Integer.parseInt(formId), language);
             map.addAttribute("formLangBO", formLangBO);
-            List<QuestionLangBO> questionLangBOList = studyQuestionnaireService
-                .syncAndGetQuestionLangByFormId(questionnairesStepsBo, Integer.parseInt(questionnaireId), Integer.parseInt(formId), language);
+            List<QuestionLangBO> questionLangBOList =
+                studyQuestionnaireService.syncAndGetQuestionLangByFormId(
+                    questionnairesStepsBo,
+                    Integer.parseInt(questionnaireId),
+                    Integer.parseInt(formId),
+                    language);
             map.addAttribute("questionLangBOList", questionLangBOList);
             this.setStudyLangData(studyId, language, map);
           }
@@ -1363,13 +1367,19 @@ public class StudyQuestionnaireController {
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             this.setStudyLangData(studyId, language, map);
-            studyQuestionnaireService.syncAndGetLangData(qTreeMap,
-                Integer.parseInt(questionnaireId), language, sesObj.getUserId());
-            List<QuestionLangBO> questionLangBOList = studyQuestionnaireService.getQuestionLangByQuestionnaireId(Integer.parseInt(questionnaireId), language);
+            studyQuestionnaireService.syncAndGetLangData(
+                qTreeMap, Integer.parseInt(questionnaireId), language, sesObj.getUserId());
+            List<QuestionLangBO> questionLangBOList =
+                studyQuestionnaireService.getQuestionLangByQuestionnaireId(
+                    Integer.parseInt(questionnaireId), language);
             map.addAttribute("questionLangBOList", questionLangBOList);
-            List<FormLangBO> formLangList = studyQuestionnaireService.getFormLangByQuestionnaireId(Integer.parseInt(questionnaireId), language);
+            List<FormLangBO> formLangList =
+                studyQuestionnaireService.getFormLangByQuestionnaireId(
+                    Integer.parseInt(questionnaireId), language);
             map.addAttribute("formLangList", formLangList);
-            List<InstructionsLangBO> instructionsLangBOList = studyQuestionnaireService.getInstructionLangByQuestionnaireId(Integer.parseInt(questionnaireId), language);
+            List<InstructionsLangBO> instructionsLangBOList =
+                studyQuestionnaireService.getInstructionLangByQuestionnaireId(
+                    Integer.parseInt(questionnaireId), language);
             map.addAttribute("instructionsLangBOList", instructionsLangBOList);
           }
 
@@ -2098,7 +2108,8 @@ public class StudyQuestionnaireController {
                     "Form Question added successfully.");
           }
           if (StringUtils.isNotEmpty(studyId)
-              && (FdahpStudyDesignerUtil.isEmpty(language) || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
+              && (FdahpStudyDesignerUtil.isEmpty(language)
+                  || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
             studyService.markAsCompleted(
                 Integer.valueOf(studyId),
                 FdahpStudyDesignerConstants.QUESTIONNAIRE,
@@ -2315,8 +2326,9 @@ public class StudyQuestionnaireController {
                   instructionsBo, sesObj, customStudyId, language, studyId);
         }
         if (addInstructionsBo != null) {
-          if (StringUtils.isNotEmpty(studyId) &&
-              (FdahpStudyDesignerUtil.isEmpty(language) || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
+          if (StringUtils.isNotEmpty(studyId)
+              && (FdahpStudyDesignerUtil.isEmpty(language)
+                  || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
             studyService.markAsCompleted(
                 Integer.valueOf(studyId),
                 FdahpStudyDesignerConstants.QUESTIONNAIRE,
@@ -2766,8 +2778,9 @@ public class StudyQuestionnaireController {
                     "questionnaireFrequenceId",
                     updateQuestionnaireBo.getQuestionnairesFrequenciesBo().getId());
               }
-              if (StringUtils.isNotEmpty(studyId) &&
-                  (FdahpStudyDesignerUtil.isEmpty(language) || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
+              if (StringUtils.isNotEmpty(studyId)
+                  && (FdahpStudyDesignerUtil.isEmpty(language)
+                      || MultiLanguageCodes.ENGLISH.getKey().equals(language))) {
                 studyService.markAsCompleted(
                     Integer.valueOf(studyId),
                     FdahpStudyDesignerConstants.QUESTIONNAIRE,

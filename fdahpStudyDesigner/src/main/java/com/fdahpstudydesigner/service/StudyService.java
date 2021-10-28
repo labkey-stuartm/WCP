@@ -97,7 +97,8 @@ public interface StudyService {
 
   public List<ResourceBO> getResourceList(Integer studyId);
 
-  List<ResourcesLangBO> syncAndGetResourceLangList(List<ResourceBO> resourceBOList, Integer studyId, String language);
+  List<ResourcesLangBO> syncAndGetResourceLangList(
+      List<ResourceBO> resourceBOList, Integer studyId, String language);
 
   public List<NotificationBO> getSavedNotification(Integer studyId);
 

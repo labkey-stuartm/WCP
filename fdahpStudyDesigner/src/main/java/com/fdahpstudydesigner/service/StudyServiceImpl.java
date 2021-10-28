@@ -1229,20 +1229,24 @@ public class StudyServiceImpl implements StudyService {
             if (consentBo.getLearnMoreText() != null)
               studyLanguageBO.setLearnMoreText(consentBo.getLearnMoreText());
             if ("Auto".equals(consentBo.getConsentDocType())) {
-              List<ConsentInfoLangBO> consentInfoLangBOList = studyDAO.getConsentLangInfoByStudyId(consentBo.getStudyId(), language);
+              List<ConsentInfoLangBO> consentInfoLangBOList =
+                  studyDAO.getConsentLangInfoByStudyId(consentBo.getStudyId(), language);
               if (consentInfoLangBOList != null && consentInfoLangBOList.size() > 0) {
                 StringBuilder content = new StringBuilder();
                 for (ConsentInfoLangBO consentInfoLangBO : consentInfoLangBOList) {
-                  content.append("<span style=&#34;font-size:20px;&#34;><strong>")
-                      .append(consentInfoLangBO.getDisplayTitle()).append("</strong></span><br/>")
+                  content
+                      .append("<span style=&#34;font-size:20px;&#34;><strong>")
+                      .append(consentInfoLangBO.getDisplayTitle())
+                      .append("</strong></span><br/>")
                       .append(
                           "<span style=&#34;display: block; overflow-wrap: break-word; width: 100%;&#34;>")
-                      .append(consentInfoLangBO.getElaborated()).append("</span><br/>");
+                      .append(consentInfoLangBO.getElaborated())
+                      .append("</span><br/>");
                 }
                 studyLanguageBO.setConsentDocContent(content.toString());
               }
             } else {
-                studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
+              studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
             }
             if (consentBo.getAggrementOfTheConsent() != null)
               studyLanguageBO.setAgreementOfConsent(consentBo.getAggrementOfTheConsent());
@@ -1509,7 +1513,8 @@ public class StudyServiceImpl implements StudyService {
           updateComprehensionTestQuestionBo.setActive(true);
           userId = comprehensionTestQuestionBo.getCreatedBy();
           // if new comprehension then make a draft in sequence table
-          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(comprehensionTestQuestionBo.getStudyId());
+          List<StudySequenceLangBO> studySequenceLangBOS =
+              studyDAO.getStudySequenceByStudyId(comprehensionTestQuestionBo.getStudyId());
           for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
             studySequenceLangBO.setComprehensionTest(false);
             studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -1560,8 +1565,9 @@ public class StudyServiceImpl implements StudyService {
           studyDAO.saveOrUpdateComprehensionQuestionLanguageData(
               comprehensionQuestionLangBO, false);
 
-          StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(comprehensionTestQuestionBo.getStudyId(), language);
-          if (studySequenceLangBO!=null) {
+          StudySequenceLangBO studySequenceLangBO =
+              this.getStudySequenceById(comprehensionTestQuestionBo.getStudyId(), language);
+          if (studySequenceLangBO != null) {
             if (!comprehensionTestQuestionBo.getStatus()) {
               studySequenceLangBO.setComprehensionTest(false);
               studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -1650,7 +1656,8 @@ public class StudyServiceImpl implements StudyService {
         updateConsentInfoBo.setActive(true);
 
         // if new consent then make a draft in sequence table
-        List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(consentInfoBo.getStudyId());
+        List<StudySequenceLangBO> studySequenceLangBOS =
+            studyDAO.getStudySequenceByStudyId(consentInfoBo.getStudyId());
         for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
           studySequenceLangBO.setConsentEduInfo(false);
           studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -1679,8 +1686,9 @@ public class StudyServiceImpl implements StudyService {
         consentInfoLangBO.setDisplayTitle(consentInfoBo.getDisplayTitle());
         consentInfoLangBO.setStatus(
             FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(consentInfoBo.getType()));
-        StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(consentInfoBo.getStudyId(), language);
-        if (studySequenceLangBO!=null) {
+        StudySequenceLangBO studySequenceLangBO =
+            this.getStudySequenceById(consentInfoBo.getStudyId(), language);
+        if (studySequenceLangBO != null) {
           if (!FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(consentInfoBo.getType())) {
             studySequenceLangBO.setConsentEduInfo(false);
             studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -1760,7 +1768,8 @@ public class StudyServiceImpl implements StudyService {
         if (null == eligibilityTestBo.getId()) {
           seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
           eligibilityTestBo.setSequenceNo(seqCount);
-          List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(studyId);
+          List<StudySequenceLangBO> studySequenceLangBOS =
+              studyDAO.getStudySequenceByStudyId(studyId);
           for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
             studySequenceLangBO.setEligibility(false);
             studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -1784,8 +1793,9 @@ public class StudyServiceImpl implements StudyService {
               studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
 
           StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(studyId, language);
-          if (studySequenceLangBO!=null) {
-            if (!FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(eligibilityTestBo.getType())) {
+          if (studySequenceLangBO != null) {
+            if (!FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(
+                eligibilityTestBo.getType())) {
               studySequenceLangBO.setEligibility(false);
               studyDAO.saveOrUpdateObject(studySequenceLangBO);
             }
@@ -1865,17 +1875,24 @@ public class StudyServiceImpl implements StudyService {
                 && FdahpStudyDesignerConstants.COMPLETED_BUTTON.equals(
                     studyPageBean.getActionType()));
         studyDAO.saveOrUpdateObject(studySequenceLangBO);
-        studyDAO.updateDraftStatusInStudyBo(sesObj.getUserId(), Integer.parseInt(studyPageBean.getStudyId()));
+        studyDAO.updateDraftStatusInStudyBo(
+            sesObj.getUserId(), Integer.parseInt(studyPageBean.getStudyId()));
       } else {
         StudyBo studyBo = studyDAO.getStudyBoById(studyPageBean.getStudyId());
-        if (studyBo.getMultiLanguageFlag()!=null && studyBo.getMultiLanguageFlag()) {
+        if (studyBo.getMultiLanguageFlag() != null && studyBo.getMultiLanguageFlag()) {
           String selectedLanguages = studyBo.getSelectedLanguages();
           if (FdahpStudyDesignerUtil.isNotEmpty(selectedLanguages)) {
             for (String lang : selectedLanguages.split(",")) {
               if (FdahpStudyDesignerUtil.isNotEmpty(lang)) {
-                List<StudyPageLanguageBO> studyPageLanguageBOS = studyDAO.getOverviewStudyPagesLangDataById(Integer.parseInt(studyPageBean.getStudyId()), lang);
-                if (studyPageBean.getPageId()!=null && studyPageBean.getPageId().length>(studyPageLanguageBOS!=null?studyPageLanguageBOS.size():0)){
-                  StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(Integer.parseInt(studyPageBean.getStudyId()), lang);
+                List<StudyPageLanguageBO> studyPageLanguageBOS =
+                    studyDAO.getOverviewStudyPagesLangDataById(
+                        Integer.parseInt(studyPageBean.getStudyId()), lang);
+                if (studyPageBean.getPageId() != null
+                    && studyPageBean.getPageId().length
+                        > (studyPageLanguageBOS != null ? studyPageLanguageBOS.size() : 0)) {
+                  StudySequenceLangBO studySequenceLangBO =
+                      studyDAO.getStudySequenceLangBO(
+                          Integer.parseInt(studyPageBean.getStudyId()), lang);
                   studySequenceLangBO.setOverView(false);
                   studyDAO.saveOrUpdateObject(studySequenceLangBO);
                 }
@@ -1924,7 +1941,8 @@ public class StudyServiceImpl implements StudyService {
         resourceBO2.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         resourceBO2.setStatus(true);
 
-        List<StudySequenceLangBO> studySequenceLangBOS = studyDAO.getStudySequenceByStudyId(resourceBO2.getStudyId());
+        List<StudySequenceLangBO> studySequenceLangBOS =
+            studyDAO.getStudySequenceByStudyId(resourceBO2.getStudyId());
         for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
           studySequenceLangBO.setMiscellaneousResources(false);
           studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -1971,8 +1989,9 @@ public class StudyServiceImpl implements StudyService {
         }
         studyDAO.saveOrUpdateObject(resourcesLangBO);
 
-        StudySequenceLangBO studySequenceLangBO = this.getStudySequenceById(resourceBO.getStudyId(), language);
-        if (studySequenceLangBO!=null) {
+        StudySequenceLangBO studySequenceLangBO =
+            this.getStudySequenceById(resourceBO.getStudyId(), language);
+        if (studySequenceLangBO != null) {
           if (!resourceBO.isAction()) {
             studySequenceLangBO.setMiscellaneousResources(false);
             studyDAO.saveOrUpdateObject(studySequenceLangBO);
@@ -2440,8 +2459,8 @@ public class StudyServiceImpl implements StudyService {
         if (FdahpStudyDesignerUtil.isNotEmpty(langToBeDeleted)) {
           String selectedLanguages =
               (existingStudy.getSelectedLanguages() != null
-                  ? existingStudy.getSelectedLanguages()
-                  : "")
+                      ? existingStudy.getSelectedLanguages()
+                      : "")
                   .concat(newLanguages);
           existingStudy.setSelectedLanguages(selectedLanguages);
           existingStudy.setMultiLanguageFlag(true);
@@ -2848,8 +2867,9 @@ public class StudyServiceImpl implements StudyService {
             eligibilityTestLangBo.setSequenceNo(eligibilityTestBo.getSequenceNo());
             studyDAO.saveOrUpdateStudyEligibiltyTestQusForOtherLanguages(eligibilityTestLangBo);
 
-            StudySequenceLangBO studySequenceLangBO = studyDAO.getStudySequenceLangBO(Integer.parseInt(studyId), language);
-            if (studySequenceLangBO!=null) {
+            StudySequenceLangBO studySequenceLangBO =
+                studyDAO.getStudySequenceLangBO(Integer.parseInt(studyId), language);
+            if (studySequenceLangBO != null) {
               studySequenceLangBO.setEligibility(false);
               studyDAO.saveOrUpdateObject(studySequenceLangBO);
             }
@@ -2923,12 +2943,11 @@ public class StudyServiceImpl implements StudyService {
   }
 
   /**
-   *
    * @param customStudyId
    * @return
    */
   @Override
-  public Map<String, Boolean> isLanguageDeletable(String customStudyId){
+  public Map<String, Boolean> isLanguageDeletable(String customStudyId) {
     logger.info("StudyServiceImpl - isLanguageDeletable() - Starts");
     Map<String, Boolean> map = null;
     try {

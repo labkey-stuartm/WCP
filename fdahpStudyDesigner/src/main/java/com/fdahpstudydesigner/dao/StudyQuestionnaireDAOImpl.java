@@ -558,8 +558,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         newQuestionnaireBo.setVersion(0f);
         session.save(newQuestionnaireBo);
 
-        List<StudySequenceLangBO> studySequenceLangBOS = session.createQuery("from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
-            .setInteger("id", questionnaireBo.getStudyId()).list();
+        List<StudySequenceLangBO> studySequenceLangBOS =
+            session
+                .createQuery("from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
+                .setInteger("id", questionnaireBo.getStudyId())
+                .list();
         if (studySequenceLangBOS != null && studySequenceLangBOS.size() > 0) {
           for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOS) {
             studySequenceLangBO.setStudyExcQuestionnaries(false);
@@ -3558,7 +3561,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @Override
   @SuppressWarnings("unchecked")
   public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(
-      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId, String studyId) {
+      QuestionnairesStepsBo questionnairesStepsBo,
+      SessionObject sesObj,
+      String customStudyId,
+      String studyId) {
     logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateFromQuestionnaireStep() - Starts");
     Session session = null;
     QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
@@ -3578,21 +3584,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           addOrUpdateQuestionnairesStepsBo.setDestinationStep(0);
 
           List<StudySequenceLangBO> studySequenceLangBOList =
-                  session.createQuery(
-                      "from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
+              session
+                  .createQuery("from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
                   .setInteger("id", Integer.parseInt(studyId))
                   .list();
-          if (studySequenceLangBOList != null && studySequenceLangBOList.size()>0) {
+          if (studySequenceLangBOList != null && studySequenceLangBOList.size() > 0) {
             for (StudySequenceLangBO studySequenceLangBO : studySequenceLangBOList) {
               studySequenceLangBO.setStudyExcQuestionnaries(false);
               session.update(studySequenceLangBO);
             }
           }
 
-          List<QuestionnaireLangBO> questionnaireLangBOList = session.createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
-              .setInteger("id", questionnairesStepsBo.getQuestionnairesId())
-              .list();
-          if (questionnaireLangBOList != null && questionnaireLangBOList.size()>0) {
+          List<QuestionnaireLangBO> questionnaireLangBOList =
+              session
+                  .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
+                  .setInteger("id", questionnairesStepsBo.getQuestionnairesId())
+                  .list();
+          if (questionnaireLangBOList != null && questionnaireLangBOList.size() > 0) {
             for (QuestionnaireLangBO questionnaireLangBO : questionnaireLangBOList) {
               questionnaireLangBO.setStatus(false);
               session.update(questionnaireLangBO);
@@ -5570,8 +5578,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         Session session = hibernateTemplate.getSessionFactory().openSession();
         questionnaireLangBOList =
             session
-                .createQuery(
-                    "from QuestionnaireLangBO where questionnaireLangPK.id=:id")
+                .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
                 .setInteger("id", questionnaireId)
                 .list();
       } else return null;
@@ -5607,18 +5614,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<QuestionLangBO> getQuestionLangByQuestionnaireId(Integer questionnaireId, String language) {
+  public List<QuestionLangBO> getQuestionLangByQuestionnaireId(
+      Integer questionnaireId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Starts");
     List<QuestionLangBO> questionLangBOList = null;
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      questionLangBOList = session
-          .createQuery(
-              "from QuestionLangBO where questionnaireId=:id and questionLangPK.langCode=:language and active=true")
-          .setInteger("id", questionnaireId)
-          .setString("language", language)
-          .list();
+      questionLangBOList =
+          session
+              .createQuery(
+                  "from QuestionLangBO where questionnaireId=:id and questionLangPK.langCode=:language and active=true")
+              .setInteger("id", questionnaireId)
+              .setString("language", language)
+              .list();
       session.close();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Error : ", e);
@@ -5629,19 +5638,21 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<QuestionLangBO> getQuestionLangByFormId(int questionnaireId, int formId, String language) {
+  public List<QuestionLangBO> getQuestionLangByFormId(
+      int questionnaireId, int formId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Starts");
     List<QuestionLangBO> questionLangBOList = null;
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      questionLangBOList = session
-          .createQuery(
-              "from QuestionLangBO where questionnaireId=:id and questionLangPK.langCode=:language and active=true and formId=:formId")
-          .setInteger("id", questionnaireId)
-          .setString("language", language)
-          .setInteger("formId", formId)
-          .list();
+      questionLangBOList =
+          session
+              .createQuery(
+                  "from QuestionLangBO where questionnaireId=:id and questionLangPK.langCode=:language and active=true and formId=:formId")
+              .setInteger("id", questionnaireId)
+              .setString("language", language)
+              .setInteger("formId", formId)
+              .list();
       session.close();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionLangByQuestionnaireId - Error : ", e);
@@ -5658,12 +5669,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      formLangBOS = session
-          .createQuery(
-              "from FormLangBO where questionnaireId=:id and formLangPK.langCode=:language and active=true")
-          .setInteger("id", questionnaireId)
-          .setString("language", language)
-          .list();
+      formLangBOS =
+          session
+              .createQuery(
+                  "from FormLangBO where questionnaireId=:id and formLangPK.langCode=:language and active=true")
+              .setInteger("id", questionnaireId)
+              .setString("language", language)
+              .list();
       session.close();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getFormLangByQuestionnaireId - Error : ", e);
@@ -5674,18 +5686,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<InstructionsLangBO> getInstructionLangByQuestionnaireId(Integer questionnaireId, String language) {
+  public List<InstructionsLangBO> getInstructionLangByQuestionnaireId(
+      Integer questionnaireId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getInstructionLangByQuestionnaireId - Starts");
     List<InstructionsLangBO> instructionsLangBOS = null;
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      instructionsLangBOS = session
-          .createQuery(
-              "from InstructionsLangBO where questionnaireId=:id and instructionLangPK.langCode=:language and active=true")
-          .setInteger("id", questionnaireId)
-          .setString("language", language)
-          .list();
+      instructionsLangBOS =
+          session
+              .createQuery(
+                  "from InstructionsLangBO where questionnaireId=:id and instructionLangPK.langCode=:language and active=true")
+              .setInteger("id", questionnaireId)
+              .setString("language", language)
+              .list();
       session.close();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getInstructionLangByQuestionnaireId - Error : ", e);
