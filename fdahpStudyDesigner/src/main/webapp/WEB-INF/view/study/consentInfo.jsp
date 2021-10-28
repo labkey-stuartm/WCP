@@ -6,6 +6,27 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+  .langSpecific{
+    position: relative;
+  }
+
+  .langSpecific > button::before{
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
+
+  .langSpecific > button{
+    padding-left: 30px;
+  }
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -67,7 +88,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -373,6 +394,7 @@
         success: function (data) {
           var message = data.message;
           if (message == "SUCCESS") {
+            $('.fifthConsent').find('span').remove();
             var consentInfoId = data.consentInfoId;
             $("#id").val(consentInfoId);
             $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
@@ -405,6 +427,7 @@
   }
 
   function goToBackPage(item) {
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     <c:if test="${actionPage ne 'view'}">
     $(item).prop('disabled', true);
     bootbox.confirm({
@@ -422,7 +445,7 @@
         if (result) {
           var a = document.createElement('a');
           a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -432,7 +455,8 @@
     </c:if>
     <c:if test="${actionPage eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+    a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }
@@ -558,7 +582,7 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          updateCompletionTicks(htmlData);
+          updateCompletionTicks(data);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#inlineRadio1').attr('disabled', true);
           $('#inlineRadio2').attr('disabled', true);
@@ -568,7 +592,10 @@
           $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
           $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          tinymce.activeEditor.setContent($('#elaboratedLang', htmlData).val());
+          let editor = tinymce.activeEditor;
+          if (editor!==undefined) {
+            editor.setContent($('#elaboratedLang', htmlData).val());
+          }
           if ($('#inlineRadio1').prop('checked') === true) {
             let title = $('[data-id="consentItemTitleId"]');
             title.attr('disabled', true);
@@ -592,7 +619,14 @@
           $('#briefSummary').val($('#briefSummary', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedRTE', htmlData).val());
           $('#displayTitle').val($('#displayTitle', htmlData).val());
-          tinymce.activeEditor.setContent($('#elaboratedRTE', htmlData).val());
+          let editor = tinymce.activeEditor;
+          if (editor!==undefined) {
+            editor.setContent($('#elaboratedRTE', htmlData).val());
+          }
+          
+          <c:if test="${actionPage eq 'view'}">
+          $('#consentInfoFormId input,textarea').prop('disabled', true);
+          </c:if>
         }
       }
     })

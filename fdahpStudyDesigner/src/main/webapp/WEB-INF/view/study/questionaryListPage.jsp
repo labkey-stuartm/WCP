@@ -14,6 +14,26 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -23,6 +43,12 @@
     <input type="hidden" name="studyId" value="${studyBo.id}" id="studyId">
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+    <select id="questionnaireLangBOS" style="display: none">
+        <c:forEach items="${questionnaireLangBOS}" var="questionnaireLang">
+            <option id='${questionnaireLang.questionnaireLangPK.id}' status="${questionnaireLang.status}"
+                    value="${questionnaireLang.title}">${questionnaireLang.title}</option>
+        </c:forEach>
+    </select>
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
@@ -89,9 +115,9 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${questionnaires}" var="questionnaryInfo">
-                    <tr>
+                    <tr id="row${questionnaryInfo.id}" status="${questionnaryInfo.status}">
                         <td>${questionnaryInfo.createdDate}</td>
-                        <td>
+                        <td class="title">
                             <div class="dis-ellipsis pr-100"
                                  title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div>
                         </td>
@@ -100,7 +126,7 @@
                                 class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                                 data-placement="top" title="View"
                                 onclick="viewQuestionnaires(${questionnaryInfo.id});"></span> <span
-                                class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                                 data-toggle="tooltip" data-placement="top" title="Edit"
                                 onclick="editQuestionnaires(${questionnaryInfo.id});"></span> <span
                                 class="sprites_icon copy  mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>"
@@ -296,10 +322,10 @@
         var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewQuestionnaires("
             + parseInt(obj.id) + ");'></span>";
         if (obj.status) {
-          actionDiv += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
+          actionDiv += "<span class='sprites_icon edit-inc editIcon mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
               + parseInt(obj.id) + ");'></span>";
         } else {
-          actionDiv += "<span class='edit-inc-draft mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
+          actionDiv += "<span class='edit-inc-draft editIcon mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
               + parseInt(obj.id) + ");'></span>";
         }
         actionDiv += "<span class='sprites_icon copy  mr-lg' data-toggle='tooltip' data-placement='top' title='Copy' onclick='copyQuestionnaire("
@@ -344,14 +370,81 @@ function refreshAndFetchLanguageData(language) {
               updateCompletionTicks(htmlData);
               $('.tit_wrapper').text($('#mlName', htmlData).val());
 				$('#addButton').attr('disabled', true);
+				$('.sorting').css('pointer-events', 'none');
 				$('.delete ').addClass('cursor-none');
 				$('.copy ').addClass('cursor-none');
+				let mark =true;
+              $('#questionnaireLangBOS option', htmlData).each(function (index, value) {
+                let id = '#row' + value.getAttribute('id');
+                $(id).find('td.title').text(value.getAttribute('value'));
+                if (value.getAttribute('status')==="true") {
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc')) {
+                    edit.addClass('edit-inc');
+                  }
+                  if (edit.hasClass('edit-inc-draft')) {
+                    edit.removeClass('edit-inc-draft');
+                  }
+                }
+                else {
+                  mark =false;
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc-draft')) {
+                    edit.addClass('edit-inc-draft');
+                  }
+                  if (edit.hasClass('edit-inc')) {
+                    edit.removeClass('edit-inc');
+                  }
+                }
+              });
+              if (!mark) {
+                $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+                $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+              } else {
+                $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+                $('#markAsTooltipId').removeAttr('data-original-title');
+              }
 			} else {
               updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 				$('#addButton').attr('disabled', false);
 				$('.delete ').removeClass('cursor-none');
-				$('.copy ').removeClass('cursor-none');
+				$('.copy ').removeClass('cursor-none');	
+				$('.sorting').removeAttr('style');
+				<c:if test="${not empty permission}">
+				$('.delete, .copy').addClass('cursor-none');
+				</c:if>
+              let mark=true;
+              $('tbody tr', htmlData).each(function (index, value) {
+                let id = '#'+value.getAttribute('id');
+                $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+                if (value.getAttribute('status')==="true") {
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc')) {
+                    edit.addClass('edit-inc');
+                  }
+                  if (edit.hasClass('edit-inc-draft')) {
+                    edit.removeClass('edit-inc-draft');
+                  }
+                }
+                else {
+                  mark=false;
+                  let edit = $(id).find('span.editIcon');
+                  if (!edit.hasClass('edit-inc-draft')) {
+                    edit.addClass('edit-inc-draft');
+                  }
+                  if (edit.hasClass('edit-inc')) {
+                    edit.removeClass('edit-inc');
+                  }
+                }
+              });
+              if (!mark) {
+                $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+                $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+              } else {
+                $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+                $('#markAsTooltipId').removeAttr('data-original-title');
+              }
 			}
 		}
 	});

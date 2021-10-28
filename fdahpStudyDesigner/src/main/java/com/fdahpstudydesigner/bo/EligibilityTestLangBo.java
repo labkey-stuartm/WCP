@@ -4,15 +4,22 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "eligibility_test_lang")
-@NamedQuery(
-    name = "EligibilityTestLangBo.findById",
-    query =
-        "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.id=:eligibilityTestId ORDER BY ETB.sequenceNo")
+@NamedQueries({
+  @NamedQuery(
+      name = "EligibilityTestLangBo.findById",
+      query =
+          "SELECT ETB FROM EligibilityTestLangBo ETB WHERE ETB.active = true AND ETB.eligibilityTestLangPK.id=:eligibilityTestId ORDER BY ETB.sequenceNo"),
+  @NamedQuery(
+      name = "EligibilityTestLangBo.deleteById",
+      query =
+          "UPDATE EligibilityTestLangBo SET active = false WHERE eligibilityTestLangPK.id=:eligibilityTestId")
+})
 public class EligibilityTestLangBo implements Serializable {
 
   @EmbeddedId private EligibilityTestLangPK eligibilityTestLangPK;

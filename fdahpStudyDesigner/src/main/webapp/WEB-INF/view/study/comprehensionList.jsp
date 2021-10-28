@@ -25,6 +25,26 @@
         position: relative;
         border-bottom: 1px solid #ddd;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 <script type="text/javascript">
@@ -138,7 +158,7 @@
                     <tbody>
                     <c:forEach items="${comprehensionTestQuestionList}"
                                var="comprehensionTestQuestion">
-                        <tr id="${comprehensionTestQuestion.id}">
+                        <tr id="${comprehensionTestQuestion.id}" status="${comprehensionTestQuestion.status}">
                             <td>${comprehensionTestQuestion.sequenceNo}</td>
                             <td class="title">
                                 <div class="dis-ellipsis"
@@ -148,7 +168,7 @@
                                       data-toggle="tooltip" data-placement="top" title="View"
                                       onclick="viewComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
                                 <span
-                                        class="${comprehensionTestQuestion.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                        class="${comprehensionTestQuestion.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                                         onclick="editComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
                                 <span
                                         class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
@@ -180,7 +200,7 @@
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
     <select id="comprehensionLangItems" style="display: none;">
         <c:forEach items="${comprehensionQuestionLangList}" var="comprehensionLang">
-            <option id='lang_${comprehensionLang.comprehensionQuestionLangPK.id}'
+            <option id='lang_${comprehensionLang.comprehensionQuestionLangPK.id}' status="${comprehensionLang.status}"
                     value="${comprehensionLang.questionText}">${comprehensionLang.questionText}</option>
         </c:forEach>
     </select>
@@ -467,7 +487,7 @@
         }
         var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewComprehensionQuestion("
             + parseInt(obj.id) + ");'></span>"
-            + "<span class='sprites_icon edit-g mr-lg' onclick='editComprehensionQuestion("
+            + "<span class='sprites_icon editIcon mr-lg' onclick='editComprehensionQuestion("
             + parseInt(obj.id) + ");'>"
             + "</span><span class='sprites_icon copy delete' onclick='deleteComprehensionQuestion("
             + parseInt(obj.id) + ");'>"
@@ -568,7 +588,8 @@
               $("#addQuestionId").attr("disabled", false);
               $("#addHelpNote").hide();
               if (type != "save") {
-                document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+$('#studyLanguage').val();
+                let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+lang;
                 document.comprehensionInfoForm.submit();
               } else {
                 $("body").removeClass("loading");
@@ -621,26 +642,86 @@
           $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
+          let mark = true;
           $('#comprehensionLangItems option', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id').split('_')[1];
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#'+value.getAttribute('id').split('_')[1];
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              mark = false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           })
-          $('#addQuestionId').attr('disabled', true);
+
+          if (!mark) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
+          $('#addQuestionId, #comprehensionTestYes, #comprehensionTestNo').attr('disabled', true);
           $('#comprehensionTestMinimumScore').attr('disabled', true);
           $('.delete').addClass('cursor-none');
+          $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+          let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
-            $('#' + id).find('td.visualStep').text(
-                $('#' + id, htmlData).find('td.visualStep').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              mark=false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
-          $('#addQuestionId').attr('disabled', false);
+          if (!mark) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
+          $('#addQuestionId , #comprehensionTestYes, #comprehensionTestNo').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
           $('#comprehensionTestMinimumScore').attr('disabled', false);
+          $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
+          
+          <c:if test="${permission eq 'view'}">
+          $('#comprehensionInfoForm input,textarea').prop('disabled', true);
+          $('.delete').addClass('cursor-none');
+          </c:if>
         }
       }
     });

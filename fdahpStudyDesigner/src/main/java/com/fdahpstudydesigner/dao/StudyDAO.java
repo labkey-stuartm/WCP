@@ -18,6 +18,7 @@ import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.ResourcesLangBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
@@ -29,6 +30,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 import java.util.HashMap;
 /** @author BTC */
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -259,8 +261,7 @@ public interface StudyDAO {
 
   EligibilityTestLangBo getEligibilityTestLanguageDataById(int id, String language);
 
-  List<EligibilityTestLangBo> getEligibilityTestLangByEligibilityId(
-      int eligibilityId, String language);
+  List<EligibilityTestLangBo> getEligibilityTestLangByStudyId(int studyId, String language);
 
   String saveOrUpdateOverviewLanguageStudyPages(
       StudyPageBean studyPageBean, SessionObject sesObj, String language);
@@ -271,7 +272,17 @@ public interface StudyDAO {
 
   StudySequenceLangBO getStudySequenceLangBO(int studyId, String language);
 
+  List<StudySequenceLangBO> getStudySequenceByStudyId(int studyId);
+
+  ResourcesLangBO getResourceLangBO(int id, String language);
+
   String deleteAllLanguageData(int id, String language);
 
   StudyBo getStudyBoById(String studyId);
+
+  List<ResourcesLangBO> getResourcesLangList(int studyId, String language);
+
+  Map<String, Boolean> isLanguageDeletable(String customStudyId);
+
+  String updateDraftStatusInStudyBo(int userId, int studyId);
 }

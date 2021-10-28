@@ -47,6 +47,26 @@
         margin-top: 30px;
         float: right;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 
@@ -90,7 +110,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -639,8 +659,9 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -716,13 +737,13 @@
             $('[data-id="dataSource"], [data-id="dataType"]').css(
                 'background-color',
                 '#eee').css('opacity', '1').addClass('cursor-none');
-            $('#saveId, #doneId').addClass('cursor-none');
+            $('#saveId, #doneId, #deactivateId').addClass('cursor-none');
           } else {
             updateCompletionTicksForEnglish();
             $('.tit_wrapper').text($('#customStudyName', htmlData).val());
             $('#shortTitleId, #propertyName, #inlineCheckbox1, #inlineCheckbox2, [name="typeOfProperty"], #dataType, #dataSource, #deleteId').attr(
                 'disabled', false);
-            $('[data-id="dataSource"], [data-id="dataType"], #saveId, #doneId').removeAttr(
+            $('[data-id="dataSource"], [data-id="dataType"], #saveId, #doneId, #deactivateId').removeAttr(
                 'style').removeClass('cursor-none');
           }
         }

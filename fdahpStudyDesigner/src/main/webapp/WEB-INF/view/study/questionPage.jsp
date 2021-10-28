@@ -25,6 +25,26 @@
         cursor: not-allowed;
         pointer-events: none;
       }
+
+      .langSpecific {
+        position: relative;
+      }
+
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
+        padding-left: 30px;
+      }
     </style>
 </head>
 <script type="text/javascript">
@@ -96,7 +116,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -138,10 +158,9 @@
             <input type="hidden" id="type" name="type" value="complete"/> <input
                 type="hidden" name="id" id="questionId" value="${questionsBo.id}">
             <input type="hidden" id="fromId" name="fromId" value="${formId}"/>
-            <input type="hidden" name="questionnairesId" id="questionnairesId"
-                   value="${questionnaireBo.id}"> <input type="hidden"
-                                                         id="questionnaireShortId"
-                                                         value="${questionnaireBo.shortTitle}">
+            <input type="hidden" name="questionnaireId" id="questionnairesId"
+                   value="${questionnaireBo.id}">
+            <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
             <input type="hidden" id="anchorDateId" name="anchorDateId"
                    value="${questionnairesStepsBo.questionsBo.anchorDateId}"/> <input
                 type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
@@ -157,7 +176,9 @@
             <input type="hidden" id="mlMinDesc" value="${questionLangBO.minDescription}">
             <input type="hidden" id="mlMaxDesc" value="${questionLangBO.maxDescription}">
             <input type="hidden" id="mlDisplayText" value="${questionLangBO.displayText}">
+            <input type="hidden" id="mlTextChoiceDescription" value="${questionLangBO.textChoiceDescription}">
             <input type="hidden" id="mlPlaceholderText" value="${questionLangBO.placeholderText}">
+            <input type="hidden" id="mlNumericUnitId" value="${questionLangBO.unit}">
             <input type="hidden" id="mlInvalidMessage" value="${questionLangBO.invalidMessage}">
             <input type="hidden" id="mlExceptText" value="${questionLangBO.exceptText}">
             <input type="hidden" id="mlChartTitle" value="${questionLangBO.chartTitle}">
@@ -2012,7 +2033,7 @@
                                             </div>
                                             <div class="form-group mb-none">
                                                 <input type="text"
-                                                       class="form-control TextChoiceRequired"
+                                                       class="form-control TextChoiceRequired lang-specific"
                                                        name="questionResponseSubTypeList[${subtype.index}].text"
                                                        id="displayTextChoiceText${subtype.index}"
                                                        value="${fn:escapeXml(questionResponseSubType.text)}"
@@ -2067,7 +2088,7 @@
                                                     characters)
                                                 </div>
                                                 <div class="form-group">
-														<textarea class="form-control"
+														<textarea class="form-control lang-specific"
                                                                   name="questionResponseSubTypeList[${subtype.index}].description"
                                                                   id="displayTextChoiceDescription${subtype.index}"
                                                                   value="${fn:escapeXml(questionResponseSubType.description)}"
@@ -2095,7 +2116,7 @@
                                         </div>
                                         <div class="form-group mb-none">
                                             <input type="text"
-                                                   class="form-control TextChoiceRequired"
+                                                   class="form-control TextChoiceRequired lang-specific"
                                                    name="questionResponseSubTypeList[0].text"
                                                    id="displayTextChoiceText0"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}"
@@ -2147,7 +2168,7 @@
                                                     class="requiredStar">*</span>
                                             </div>
                                             <div class="form-group">
-													<textarea class="form-control"
+													<textarea class="form-control lang-specific"
                                                               name="questionResponseSubTypeList[0].description"
                                                               id="displayTextChoiceDescription0"
                                                               value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
@@ -2171,9 +2192,9 @@
                                         </div>
                                         <div class="form-group mb-none">
                                             <input type="text"
-                                                   class="form-control TextChoiceRequired"
+                                                   class="form-control TextChoiceRequired lang-specific"
                                                    name="questionResponseSubTypeList[1].text"
-                                                   id="displayTextChoiceText0"
+                                                   id="displayTextChoiceText1"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}"
                                                    maxlength="100">
                                             <div class="help-block with-errors red-txt"></div>
@@ -2188,7 +2209,7 @@
                                             <input type="text"
                                                    class="form-control TextChoiceRequired textChoiceVal"
                                                    name="questionResponseSubTypeList[1].value"
-                                                   id="displayTextChoiceValue0"
+                                                   id="displayTextChoiceValue1"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].value)}"
                                                    maxlength="100">
                                             <div class="help-block with-errors red-txt"></div>
@@ -2223,7 +2244,7 @@
                                                     class="requiredStar">*</span>
                                             </div>
                                             <div class="form-group">
-													<textarea class="form-control"
+													<textarea class="form-control lang-specific"
                                                               name="questionResponseSubTypeList[1].description"
                                                               id="displayTextChoiceDescription1"
                                                               value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}"
@@ -2659,7 +2680,7 @@
     </c:if>
 
     $(".menuNav li.active").removeClass('active');
-    $(".sixthQuestionnaires").addClass('active');
+    $(".seventhQuestionnaires").addClass('active');
     $("#doneId").click(function () {
       $("#doneId").attr("disabled", true);
       var isValid = true;
@@ -4285,9 +4306,9 @@
             $('#alertMsg').show();
             if (callback)
               callback(true);
-            if ($('.sixthQuestionnaires').find('span').hasClass(
+            if ($('.seventhQuestionnaires').find('span').hasClass(
                 'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.sixthQuestionnaires').find('span').removeClass(
+              $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
             }
           } else {
@@ -4351,7 +4372,8 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}";
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -4361,7 +4383,8 @@
     </c:if>
     <c:if test="${actionTypeForFormStep eq 'view'}">
     var a = document.createElement('a');
-    a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}";
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+    a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language=" + lang;
     document.body.appendChild(a).click();
     </c:if>
   }
@@ -4521,17 +4544,15 @@
     }
   }
 
-  var choiceCount = $('.text-choice').length;
-
   function addTextChoice() {
-    choiceCount = choiceCount + 1;
+    let choiceCount = $('.text-choice').length;
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<div class='text-choice mt-xlg' id='" + choiceCount + "'>" +
         "<div class='col-md-3 pl-none'>" +
         "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group mb-none'>" +
-        "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["
+        "   <input type='text' class='form-control TextChoiceRequired lang-specific' name='questionResponseSubTypeList["
         + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
         + "'  maxlength='100' required>" +
         "      <div class='help-block with-errors red-txt'></div>" +
@@ -4572,7 +4593,7 @@
         "   <div class='gray-xs-f mb-xs'>Description(1 to 150 characters) <span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group'>					     " +
-        "      <textarea class='form-control' name='questionResponseSubTypeList[" + choiceCount
+        "      <textarea class='form-control lang-specific' name='questionResponseSubTypeList[" + choiceCount
         + "].description' id='displayTextChoiceDescription" + choiceCount
         + "' maxlength='150'></textarea>" +
         "   </div>" +
@@ -5074,18 +5095,22 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
-        console.log(data);
         let responseTypeId = $('[data-id="responseTypeId"]');
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
               'disabled', true);
-          $('#trailId, #removeUrl').addClass('cursor-none');
+          $('#trailId, .removeImageId').addClass('cursor-none');
           responseTypeId.addClass('ml-disabled').attr('disabled', true);
           if ($('#allowHealthKit').prop('checked') === true) {
             $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled').attr('disabled', true);
           }
+          if ($('#addLineChart').prop('checked') === true) {
+              $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled',
+                  true);
+              $('#allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
+            }
           if ($('#useStasticData').prop('checked') === true) {
             $('#statShortNameId').attr('disabled', true);
             $('[data-id="statTypeId"]').addClass('ml-disabled').attr('disabled', true);
@@ -5117,10 +5142,11 @@
           // setting ml data
           $('#questionTextId').val($('#mlQuestion', htmlData).val());
           $('#descriptionId').val($('#mlDescription', htmlData).val());
+          $('#chartTitleId').val($('#mlChartTitle', htmlData).val());
           let previousResponseType = $('#mlResponseTypeId', htmlData).val();
 
           // if response type mismatches
-          if (previousResponseType !== $('#responseTypeId').val()) {
+          if (previousResponseType!=='' && previousResponseType !== $('#responseTypeId').val()) {
             $('#statDisplayNameId').val('');
             $('#statDisplayUnitsId').val('');
 
@@ -5148,15 +5174,9 @@
                 className = '.image-choice';
               else if (respType === '6') {
                 className = '.text-choice';
-                $('[name="questionReponseTypeBo.otherText"]').val('');
               }
               let i = 0;
-              let displayText = $('#mlDisplayText', htmlData).val();
-              let dispArray = [];
-              if (displayText !== '') {
-                dispArray = displayText.split('|');
-              }
-              $(className).find('input.lang-specific').each(function (index, ele) {
+              $(className).find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
                 let id = ele.getAttribute('id');
                 $('#' + id).val('');
                 i++;
@@ -5166,6 +5186,7 @@
               let id = '';
               if (respType === '8') {
                 id = 'numericPlaceholderId';
+                // $('#numericUnitId').val('');
               } else if (respType === '11') {
                 id = 'textPlaceholderId';
                 $('#validationExceptTextId').val('');
@@ -5208,8 +5229,19 @@
                 className = '.image-choice';
               else if (respType === '6') {
                 className = '.text-choice';
-                $('[name="questionReponseTypeBo.otherText"]').val(
-                    $('#mlOtherText', htmlData).val());
+                let desc = $('#mlTextChoiceDescription', htmlData).val();
+                let descArray = [];
+                if (desc !== '') {
+                  descArray = desc.split('|');
+                }
+                let j=0;
+                $('.text-choice').find('textarea.lang-specific').each(function (index, ele) {
+                  let value = (descArray[j] !== undefined && descArray[j] != null
+                      && descArray[j] !== '') ? descArray[j] : '';
+                  let id = ele.getAttribute('id');
+                  $('#' + id).val(value);
+                  j++;
+                });
               }
               let i = 0;
               let displayText = $('#mlDisplayText', htmlData).val();
@@ -5229,6 +5261,7 @@
               let id = '';
               if (respType === '8') {
                 id = 'numericPlaceholderId';
+                // $('#numericUnitId').val($('#mlNumericUnitId', htmlData).val());
               } else if (respType === '11') {
                 id = 'textPlaceholderId';
                 $('#validationExceptTextId').val($('#mlExceptText', htmlData).val());
@@ -5251,12 +5284,17 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart').attr(
               'disabled', false);
-          $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
+          $('#trailId, .removeImageId').removeAttr('style').removeClass('cursor-none');
           responseTypeId.removeClass('ml-disabled').attr('disabled', false);
           if ($('#allowHealthKit').prop('checked') === true) {
             $('[data-id="healthkitDatatypeId"]').removeClass('ml-disabled').attr('disabled',
                 false);
           }
+          if ($('#addLineChart').prop('checked') === true) {
+              $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled',
+                  false);
+              $('#allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
+            }
           if ($('#useStasticData').prop('checked') === true) {
             $('#statShortNameId').attr('disabled', false);
             $('[data-id="statTypeId"]').removeClass('ml-disabled').attr('disabled', false);
@@ -5291,6 +5329,7 @@
           $('#descriptionId').val($('#descriptionId', htmlData).val());
           $('#statDisplayNameId').val($('#statDisplayNameId', htmlData).val());
           $('#statDisplayUnitsId').val($('#statDisplayUnitsId', htmlData).val());
+          $('#chartTitleId').val($('#chartTitleId', htmlData).val());
 
           let respType = $('#responseTypeId').val();
           if (respType === '1' || respType === '2') {
@@ -5319,10 +5358,8 @@
               className = '.image-choice';
             else if (respType === '6') {
               className = '.text-choice';
-              $('[name="questionReponseTypeBo.otherText"]').val(
-                  $('[name="questionReponseTypeBo.otherText"]', htmlData).val());
             }
-            $(className).find('input.lang-specific').each(function (index, ele) {
+            $(className).find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
               let id = ele.getAttribute('id');
               $('#' + id).val($('#' + id, htmlData).val());
               $('#' + id).text($('#' + id, htmlData).val());
@@ -5335,6 +5372,7 @@
                 $('#useStasticData').prop('disabled', true);
               }
               id = 'numericPlaceholderId';
+              // $('#numericUnitId').val($('#numericUnitId', htmlData).val());
             } else if (respType === '11') {
               id = 'textPlaceholderId';
               $('#validationExceptTextId').val($('#validationExceptTextId', htmlData).val());
@@ -5358,6 +5396,9 @@
               $('#useStasticData').prop('disabled', true);
             }
           }
+          <c:if test="${actionTypeForFormStep == 'view'}">
+          $('#questionStepId input,textarea ').prop('disabled', true);
+          </c:if>
         }
       }
     });

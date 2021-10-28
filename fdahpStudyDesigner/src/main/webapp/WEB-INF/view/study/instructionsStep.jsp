@@ -5,6 +5,27 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+  .langSpecific {
+    position: relative;
+  }
+
+  .langSpecific > button::before {
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
+
+  .langSpecific > button {
+    padding-left: 30px;
+  }
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -47,7 +68,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -184,7 +205,7 @@
     }
 
     $(".menuNav li.active").removeClass('active');
-    $(".sixthQuestionnaires").addClass('active');
+    $(".seventhQuestionnaires").addClass('active');
     $("#shortTitleId").blur(function () {
       validateShortTitle('', function (val) {
       });
@@ -340,11 +361,11 @@
             $(item).prop('disabled', false);
             $("#saveId").attr("disabled", false);
             $('#alertMsg').show();
-            if ($('.sixthQuestionnaires')
+            if ($('.seventhQuestionnaires')
             .find('span')
             .hasClass(
                 'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.sixthQuestionnaires')
+              $('.seventhQuestionnaires')
               .find('span')
               .removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
@@ -395,8 +416,9 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -406,8 +428,9 @@
     </c:if>
     <c:if test="${actionTypeForQuestionPage eq 'view'}">
     var a = document.createElement('a');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
-        + $('#studyLanguage').val();
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }
@@ -440,6 +463,10 @@
           $('#shortTitleId, #destinationStepId').attr('disabled', false);
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
+
+          <c:if test="${actionTypeForQuestionPage == 'view'}">
+          $('#basicInfoFormId input,textarea ').prop('disabled', true);
+          </c:if>
         }
       }
     })

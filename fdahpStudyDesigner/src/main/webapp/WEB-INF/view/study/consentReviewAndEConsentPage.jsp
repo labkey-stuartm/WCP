@@ -30,6 +30,26 @@
       .btm-marg {
         margin-bottom: 8px;
       }
+
+      .langSpecific {
+        position: relative;
+      }
+
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
+        padding-left: 30px;
+      }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -46,6 +66,12 @@
         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <input type="hidden" id="consentId" name="consentId"
                value="${consentBo.id}">
+        <select id="consentLangItems" style="display: none">
+            <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
+                <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
+                        value="${consentInfoLang.displayTitle}">${consentInfoLang.elaborated}</option>
+            </c:forEach>
+        </select>
     </form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}"
@@ -69,6 +95,8 @@
         <input type="hidden" id="mlSignature0" value="${studyLanguageBO.signatureOne}">
         <input type="hidden" id="mlSignature1" value="${studyLanguageBO.signatureTwo}">
         <input type="hidden" id="mlSignature2" value="${studyLanguageBO.signatureThree}">
+        <input type="hidden" id="mlConsentCompleted" value="${studyLanguageBO.consentCompleted}">
+        <input type="hidden" id="studyLiveStatus" value="${studyLiveStatus}">
         <!-- End body tab section -->
         <div>
             <!--  Start top tab section-->
@@ -165,8 +193,7 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control requiredClass"
                                                placeholde="" id="titleId" name="title"
-                                               value="${consentBo.title}" maxlength="250"
-                                        / <c:if test="${studyLiveStatus}"> disabled</c:if>>
+                                               value="${consentBo.title}" maxlength="250" <c:if test="${studyLiveStatus}"> disabled</c:if>>
                                         <div class="help-block with-errors red-txt"></div>
                                     </div>
                                 </div>
@@ -434,7 +461,7 @@
                                                        class="form-control mt-sm input-add-signature"
                                                        count='0'
                                                        placeholder="Enter Professional Title"
-                                                       name="sign0" value=""
+                                                       name="signature0" value=""
                                                        maxlength="30"
                                                        data-pattern-error="Please fill out this field."
                                                        required
@@ -460,7 +487,7 @@
                                                            class="form-control mt-sm input-add-signature"
                                                            count='${customVar.index}'
                                                            placeholder="Enter Professional Title"
-                                                           name="sign${customVar.index}"
+                                                           name="signature${customVar.index}"
                                                            value="${signature}"
                                                            maxlength="30" required
                                                            data-pattern-error="Please fill out this field."
@@ -788,6 +815,7 @@
     /* var isChek = "
 
 
+
     ${consentBo.consentDocType}";
 	if(isChek != null && isChek !='' && typeof isChek !=undefined){
 		if(isChek == 'New'){
@@ -857,11 +885,11 @@
               callback: function (result) {
                 if (result) {
                   var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-                  if (consentDocumentType == "Auto") {
+                  if (consentDocumentType === "Auto") {
                     saveConsentReviewAndEConsentInfo("doneId");
                   } else {
                     var content = tinymce.get('newDocumentDivId').getContent();
-                    if (content != null && content != '' && typeof content != 'undefined') {
+                    if (content != null && content !== '' && typeof content != 'undefined') {
                       saveConsentReviewAndEConsentInfo("doneId");
                     } else {
                       $("#newDocumentDivId").parent().find(".help-block").empty();
@@ -976,30 +1004,6 @@
       // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     }
 
-    function autoCreateConsentDocumentInOtherLanguages() {
-      var consentDocumentDivContent = "";
-      $("#autoConsentDocumentDivId").empty();
-      if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
-          && "${consentInfoLangList}"
-          !== undefined) {
-        if ($("#inlineRadio1").is(":checked")) {
-          <c:forEach items="${consentInfoLangList}" varStatus="i" var="consentInfo">
-          consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
-              + "${consentInfo.displayTitle}"
-              + "</strong></span><br/>"
-              + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-              + "${consentInfo.elaborated}"
-              + "</span><br/>";
-          </c:forEach>
-
-        }
-      }
-      $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
-      $("#newDocumentDivId").val('');
-      //apply custom scroll bar to the auto consent document type
-      // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-    }
-
     //createNewConsentDocument
     function createNewConsentDocument() {
       tinymce.init({
@@ -1029,6 +1033,7 @@
 
       /* tinymce.get('newDocumentDivId').setContent('');
       tinymce.get('newDocumentDivId').setContent('
+
 
 
       ${consentBo.consentDocContent}'); */
@@ -1222,8 +1227,9 @@
             }
             if (item == "doneId") {
               var a = document.createElement('a');
+              let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
               a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="
-                  + $('#studyLanguage').val();
+                  + lang;
               document.body.appendChild(a).click();
             } else {
               $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
@@ -1523,11 +1529,27 @@
               ' [name="additionalSignatureRadio"]').attr('disabled', true);
           $('.addbtn, .remBtn').addClass('cursor-none');
           if ($('#shareDataPermissionsYes').prop('checked') === true) {
-            $('#titleId').val($('#mlTitleId', htmlData).val());
-            $('#taglineDescriptionId').val($('#mlTagline', htmlData).val());
-            $('#shortDescriptionId').val($('#mlShortDesc', htmlData).val());
-            $('#longDescriptionId').val($('#mlLongDesc', htmlData).val());
-            $('#learnMoreTextId').val($('#mlLearnMore', htmlData).val());
+
+            let mlTitle = $('#mlTitleId', htmlData).val();
+            $('#titleId').val(mlTitle).prop('required', true);
+            $('#taglineDescriptionId').val($('#mlTagline', htmlData).val()).prop('required', true);
+            $('#shortDescriptionId').val($('#mlShortDesc', htmlData).val()).prop('required', true);
+            $('#longDescriptionId').val($('#mlLongDesc', htmlData).val()).prop('required', true);
+            $('#learnMoreTextId').val($('#mlLearnMore', htmlData).val()).prop('required', true);
+            if ($('#mlConsentCompleted', htmlData).val()==='true') {
+                $('#titleId').prop('disabled', true);
+                $('#taglineDescriptionId').prop('disabled', true);
+                $('#shortDescriptionId').prop('disabled', true);
+                $('#longDescriptionId').prop('disabled', true);
+                $('#learnMoreTextId').prop('disabled', true);
+            } else {
+              $('#titleId').prop('disabled', false);
+              $('#taglineDescriptionId').prop('disabled', false);
+              $('#shortDescriptionId').prop('disabled', false);
+              $('#longDescriptionId').prop('disabled', false);
+              $('#learnMoreTextId').prop('disabled', false).change();
+              tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'true');
+            }
             let editor1 = tinymce.get('learnMoreTextId');
             if (editor1 !== null)
               editor1.setContent($('#mlLearnMore', htmlData).val());
@@ -1537,25 +1559,22 @@
           if (editor2 !== null)
             editor2.setContent($('#mlConsentDocContent', htmlData).val());
           $('#aggrementOfTheConsentId').val($('#mlAgreement', htmlData).val());
+          $('.input-add-signature').val('');
           $('#signature0').val($('#mlSignature0', htmlData).val());
           $('#signature1').val($('#mlSignature1', htmlData).val());
           $('#signature2').val($('#mlSignature2', htmlData).val());
           if ($("#inlineRadio1").is(":checked")) {
-            var consentDocumentDivContent = "";
+            let consentDocumentDivContent = "";
             $("#autoConsentDocumentDivId").empty();
-            if (null != "${consentInfoLangList}" && "${consentInfoLangList}" != ''
-                && "${consentInfoLangList}"
-                !== undefined) {
-              if ($("#inlineRadio1").is(":checked")) {
-                <c:forEach items="${consentInfoLangList}" varStatus="i" var="consentInfo">
+            if ($('#consentLangItems option', htmlData).length>0) {
+              $('#consentLangItems option', htmlData).each(function (index, value) {
                 consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
-                    + "${consentInfo.displayTitle}"
+                    + value.getAttribute('value')
                     + "</strong></span><br/>"
                     + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-                    + "${consentInfo.elaborated}"
+                    + value.text
                     + "</span><br/>";
-                </c:forEach>
-              }
+              })
             }
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
@@ -1573,33 +1592,43 @@
             $('#longDescriptionId').val($('#longDescriptionId', htmlData).val());
             $('#learnMoreTextId').val($('#learnMoreTextId', htmlData).val());
             tinymce.get('learnMoreTextId').setContent($('#learnMoreTextId', htmlData).val());
+            if ($('#studyLiveStatus').val()==='true') {
+              $('#titleId').prop('disabled', true);
+              $('#taglineDescriptionId').prop('disabled', true);
+              $('#shortDescriptionId').prop('disabled', true);
+              $('#longDescriptionId').prop('disabled', true);
+              $('#learnMoreTextId').prop('disabled', true);
+              tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'false');
+            }
           }
           let editor = tinymce.get('newDocumentDivId');
           if (editor !== undefined && editor !== null)
             editor.setContent($('#newDocumentDivId', htmlData).val());
           $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
           $('#aggrementOfTheConsentId').val($('#aggrementOfTheConsentId', htmlData).val());
-          $('#signature0').val($('#signature0', htmlData).val());
-          $('#signature1').val($('#signature1', htmlData).val());
-          $('#signature2').val($('#signature2', htmlData).val());
+          $('.input-add-signature').each(function(index) {
+            $(this).val($('.input-add-signature', htmlData)[index].getAttribute('value'));
+          })
           if ($("#inlineRadio1").is(":checked")) {
             var consentDocumentDivContent = "";
             $("#autoConsentDocumentDivId").empty();
             if (null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}"
                 !== undefined) {
-              if ($("#inlineRadio1").is(":checked")) {
-                <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-                consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
-                    + "${consentInfo.displayTitle}"
-                    + "</strong></span><br/>"
-                    + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-                    + "${consentInfo.elaborated}"
-                    + "</span><br/>";
-                </c:forEach>
-              }
+              <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
+              consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+                  + "${consentInfo.displayTitle}"
+                  + "</strong></span><br/>"
+                  + "<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+                  + "${consentInfo.elaborated}"
+                  + "</span><br/>";
+              </c:forEach>
             }
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
+          }
+          if ('${permission}' == 'view') {
+            $('input[name="consentDocType"]').attr('disabled', 'disabled');
+            $('#consentReviewFormId input').prop('disabled', true);
           }
         }
       }

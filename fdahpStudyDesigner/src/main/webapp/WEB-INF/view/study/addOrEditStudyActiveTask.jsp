@@ -12,6 +12,26 @@
     cursor: not-allowed;
     pointer-events: none;
   }
+  
+  .globe{
+    	position: relative;
+  	  }
+
+  	  .globe > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .globe > button{
+        padding-left: 30px;
+  	  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -25,10 +45,13 @@
         <input type="hidden" id="mlInstructions" value="${activeTaskLangBO.instruction}">
         <input type="hidden" id="mlChartTitle" value="${activeTaskLangBO.chartTitle}">
         <input type="hidden" id="mlDisplayStat" value="${activeTaskLangBO.statName}">
+        <input type="hidden" id="mlDisplayUnitStat" value="${activeTaskLangBO.displayUnitStat}">
         <input type="hidden" id="mlChartTitle2" value="${activeTaskLangBO.chartTitle2}">
         <input type="hidden" id="mlDisplayStat2" value="${activeTaskLangBO.statName2}">
+        <input type="hidden" id="mlDisplayUnitStat2" value="${activeTaskLangBO.displayUnitStat2}">
         <input type="hidden" id="mlChartTitle3" value="${activeTaskLangBO.chartTitle3}">
         <input type="hidden" id="mlDisplayStat3" value="${activeTaskLangBO.statName3}">
+        <input type="hidden" id="mlDisplayUnitStat3" value="${activeTaskLangBO.displayUnitStat3}">
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
 
@@ -40,26 +63,36 @@
                    value="${activeTaskBo.taskAttributeValueBos[2].titleChat}">
             <input type="hidden" id="enFetalDisplayStat"
                    value="${activeTaskBo.taskAttributeValueBos[2].displayNameStat}">
+            <input type="hidden" id="enFetalDisplayUnitStat"
+                   value="${activeTaskBo.taskAttributeValueBos[2].displayUnitStat}">
         </c:if>
         <c:if test="${activeTaskBo.taskTypeId eq 2}">
             <input type="hidden" id="enTowerTitleChart"
                    value="${activeTaskBo.taskAttributeValueBos[1].titleChat}">
             <input type="hidden" id="enTowerDisplayStat"
                    value="${activeTaskBo.taskAttributeValueBos[1].displayNameStat}">
+            <input type="hidden" id="enTowerDisplayUnitStat"
+                   value="${activeTaskBo.taskAttributeValueBos[1].displayUnitStat}">
         </c:if>
         <c:if test="${activeTaskBo.taskTypeId eq 3}">
             <input type="hidden" id="enSpatialTitleChart1"
                    value="${activeTaskBo.taskAttributeValueBos[7].titleChat}">
             <input type="hidden" id="enSpatialDisplayStat1"
                    value="${activeTaskBo.taskAttributeValueBos[7].displayNameStat}">
+            <input type="hidden" id="enSpatialDisplayUnitStat1"
+                   value="${activeTaskBo.taskAttributeValueBos[7].displayUnitStat}">
             <input type="hidden" id="enSpatialTitleChart2"
                    value="${activeTaskBo.taskAttributeValueBos[8].titleChat}">
             <input type="hidden" id="enSpatialDisplayStat2"
                    value="${activeTaskBo.taskAttributeValueBos[8].displayNameStat}">
+            <input type="hidden" id="enSpatialDisplayUnitStat2"
+                   value="${activeTaskBo.taskAttributeValueBos[8].displayUnitStat}">
             <input type="hidden" id="enSpatialTitleChart3"
                    value="${activeTaskBo.taskAttributeValueBos[9].titleChat}">
             <input type="hidden" id="enSpatialDisplayStat3"
                    value="${activeTaskBo.taskAttributeValueBos[9].displayNameStat}">
+            <input type="hidden" id="enSpatialDisplayUnitStat3"
+                   value="${activeTaskBo.taskAttributeValueBos[9].displayUnitStat}">
         </c:if>
 
 
@@ -78,7 +111,7 @@
             <c:if test="${studyBo.multiLanguageFlag eq true and actionPage != 'add'}">
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
-                            class="selectpicker aq-select aq-select-form studyLanguage lang-specific"
+                            class="selectpicker aq-select aq-select-form studyLanguage globe lang-specific"
                             id="studyLanguage" name="studyLanguage" title="Select">
                         <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
                             English
@@ -96,7 +129,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage globe lang-specific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -251,9 +284,10 @@
 
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           $(".changeContent").load(
               "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}&language="
-              + $('#studyLanguage').val(), {
+              + lang, {
                 noncache: new Date().getTime(),
                 typeOfActiveTask: typeOfActiveTask,
                 activeTaskInfoId: activeTaskInfoId,
@@ -368,8 +402,9 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -379,8 +414,9 @@
     </c:if>
     <c:if test="${actionPage eq 'view'}">
     var a = document.createElement('a');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
-        + $('#studyLanguage').val();
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }
@@ -431,16 +467,22 @@
           if (targetOption === '3') {
             if ($('#Score_spatial_chart_id').prop('checked') === true)
               $('#lineChartId').val($('#mlChartTitle', htmlData).val());
-            if ($('#Score_spatial_stat_id').prop('checked') === true)
-              $('#displayStat4').val($('#mlDisplayStat', htmlData).val());
+            if ($('#Score_spatial_stat_id').prop('checked') === true){
+            	$('#displayStat4').val($('#mlDisplayStat', htmlData).val());
+            	 $('#displayUnitStat4').val($('#mlDisplayUnitStat', htmlData).val());
+            }
             if ($('#Number_of_Games_spatial_chart_id').prop('checked') === true)
               $('#lineChartId1').val($('#mlChartTitle2', htmlData).val());
-            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true)
-              $('#displayStat5').val($('#mlDisplayStat2', htmlData).val());
+            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true){
+            	 $('#displayStat5').val($('#mlDisplayStat2', htmlData).val());
+            	 $('#displayUnitStat5').val($('#mlDisplayUnitStat2', htmlData).val());
+            }
             if ($('#Number_of_Failures_spatial_chart_id').prop('checked') === true)
               $('#lineChartId2').val($('#mlChartTitle3', htmlData).val());
-            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true)
-              $('#displayStat6').val($('#mlDisplayStat3', htmlData).val());
+            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true){
+            	$('#displayStat6').val($('#mlDisplayStat3', htmlData).val());
+            	$('#displayUnitStat6').val($('#mlDisplayUnitStat3', htmlData).val());
+            }
           } else {
             let id1 = '';
             let id2 = '';
@@ -453,15 +495,17 @@
             }
             if ($(id1).prop('checked') === true)
               $('#lineChartId').val($('#mlChartTitle', htmlData).val());
-            if ($(id2).prop('checked') === true)
+            if ($(id2).prop('checked') === true){
               $('#displayStat').val($('#mlDisplayStat', htmlData).val());
+              $('#displayUnitStat').val($('#mlDisplayUnitStat', htmlData).val());
+            }
           }
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('.remBtnDis, .addBtnDis').removeClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('langSpecific')) {
+            if (!$(this).hasClass('lang-specific')) {
               $(this).attr('disabled', false);
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
@@ -478,16 +522,22 @@
           if (targetOption === '3') {
             if ($('#Score_spatial_chart_id').prop('checked') === true)
               $('#lineChartId').val($('#enSpatialTitleChart1', htmlData).val());
-            if ($('#Score_spatial_stat_id').prop('checked') === true)
-              $('#displayStat4').val($('#enSpatialDisplayStat1', htmlData).val());
+            if ($('#Score_spatial_stat_id').prop('checked') === true){
+            	$('#displayStat4').val($('#enSpatialDisplayStat1', htmlData).val());
+            	 $('#displayUnitStat4').val($('#enSpatialDisplayUnitStat1', htmlData).val());
+            }
             if ($('#Number_of_Games_spatial_chart_id').prop('checked') === true)
               $('#lineChartId1').val($('#enSpatialTitleChart2', htmlData).val());
-            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true)
-              $('#displayStat5').val($('#enSpatialDisplayStat2', htmlData).val());
+            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true){
+            	 $('#displayStat5').val($('#enSpatialDisplayStat2', htmlData).val());
+            	 $('#displayUnitStat5').val($('#enSpatialDisplayUnitStat2', htmlData).val());
+            }
             if ($('#Number_of_Failures_spatial_chart_id').prop('checked') === true)
               $('#lineChartId2').val($('#enSpatialTitleChart3', htmlData).val());
-            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true)
-              $('#displayStat6').val($('#enSpatialDisplayStat3', htmlData).val());
+            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true){
+            	 $('#displayStat6').val($('#enSpatialDisplayStat3', htmlData).val());
+            	 $('#displayUnitStat6').val($('#enSpatialDisplayUnitStat3', htmlData).val());
+            }
           } else {
             let id1 = '';
             let id2 = '';
@@ -506,9 +556,14 @@
             }
             if ($(id1).prop('checked') === true)
               $('#lineChartId').val($(id3, htmlData).val());
-            if ($(id2).prop('checked') === true)
+            if ($(id2).prop('checked') === true){
               $('#displayStat').val($(id4, htmlData).val());
+              $('#displayUnitStat').val($(id4, htmlData).val());
+            }
           }
+          <c:if test="${actionPage eq 'view'}">
+          $(document).find('input,textarea').prop('disabled', true);
+          </c:if>
         }
       }
     })

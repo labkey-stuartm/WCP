@@ -100,7 +100,10 @@ public interface StudyQuestionnaireDAO {
       Integer questionnaireId, int oldOrderNumber, int newOrderNumber);
 
   public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(
-      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId);
+      QuestionnairesStepsBo questionnairesStepsBo,
+      SessionObject sesObj,
+      String customStudyId,
+      String studyId);
 
   public InstructionsBo saveOrUpdateInstructionsBo(
       InstructionsBo instructionsBo, SessionObject sessionObject, String customStudyId);
@@ -149,6 +152,19 @@ public interface StudyQuestionnaireDAO {
   QuestionLangBO getQuestionLangBo(int id, String language);
 
   QuestionnaireLangBO getQuestionnaireLangById(Integer questionnaireId, String language);
+
+  List<QuestionnaireLangBO> getQuestionnaireLangByStudyId(Integer studyId, String language);
+
+  List<QuestionnaireLangBO> getQuestionnaireLangByQuestionnaireId(int studyId);
+
+  List<QuestionLangBO> getQuestionLangByQuestionnaireId(Integer questionnaireId, String language);
+
+  List<QuestionLangBO> getQuestionLangByFormId(int questionnaireId, int formId, String language);
+
+  List<FormLangBO> getFormLangByQuestionnaireId(Integer questionnaireId, String language);
+
+  List<InstructionsLangBO> getInstructionLangByQuestionnaireId(
+      Integer questionnaireId, String language);
 
   void deleteQuestionStep(int id, String language);
 }

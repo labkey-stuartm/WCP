@@ -3,10 +3,12 @@ package com.fdahpstudydesigner.scheduler;
 
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.AuditLogBO;
+import com.fdahpstudydesigner.bo.NotificationLangBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.LoginDAO;
 import com.fdahpstudydesigner.dao.NotificationDAO;
+import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.UsersDAO;
 import com.fdahpstudydesigner.service.NotificationService;
 import com.fdahpstudydesigner.util.EmailNotification;
@@ -54,6 +56,8 @@ public class FDASchedulerService {
   @Autowired private LoginDAO loginDAO;
 
   @Autowired private NotificationDAO notificationDAO;
+
+  @Autowired private StudyDAO studyDAO;
 
   @Autowired private UsersDAO usersDAO;
 
@@ -175,6 +179,25 @@ public class FDASchedulerService {
                 pushBean.setAppId(appId);
                 pushNotificationBeanswithAppId.add(pushBean);
               }
+            }
+          }
+
+          List<NotificationLangBO> notificationLangBOList =
+              notificationDAO.getNotificationLangByNotificationId(p.getNotificationId());
+          if (notificationLangBOList != null && notificationLangBOList.size() > 0) {
+            for (NotificationLangBO notificationLangBO : notificationLangBOList) {
+              PushNotificationBean pushBean = new PushNotificationBean();
+              pushBean.setNotificationId(
+                  notificationLangBO.getNotificationLangPK().getNotificationId());
+              pushBean.setCustomStudyId(p.getCustomStudyId());
+              pushBean.setNotificationSubType(p.getNotificationSubType());
+              pushBean.setNotificationText(notificationLangBO.getNotificationText());
+              pushBean.setNotificationTitle(p.getNotificationTitle());
+              pushBean.setNotificationType(p.getNotificationType());
+              pushBean.setAppId(p.getAppId());
+              pushNotificationBeanswithAppId.add(pushBean);
+              notificationLangBO.setNotificationSent(true);
+              studyDAO.saveOrUpdateObject(notificationLangBO);
             }
           }
         }

@@ -87,6 +87,13 @@ public class StudyLanguageBO implements Serializable {
 
   @Column(name = "signature_three")
   private String signatureThree;
+
+  @Column(name = "is_live")
+  private Integer live = 0;
+
+  @Column(name = "consent_completed")
+  private Boolean consentCompleted = false;
+
   // e-consent page columns ends
 
   public String getCustomStudyId() {
@@ -295,5 +302,21 @@ public class StudyLanguageBO implements Serializable {
 
   public void setSignatureThree(String signatureThree) {
     this.signatureThree = signatureThree;
+  }
+
+  public Integer getLive() {
+    return live;
+  }
+
+  public void setLive(Integer live) {
+    this.live = live;
+  }
+
+  public Boolean getConsentCompleted() {
+    return consentCompleted;
+  }
+
+  public void setConsentCompleted(Boolean consentCompleted) {
+    this.consentCompleted = consentCompleted;
   }
 }

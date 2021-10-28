@@ -22,6 +22,26 @@
         pointer-events: none;
         cursor: not-allowed;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -82,7 +102,7 @@
         <select id="eligibilityItems" style="display: none">
             <c:forEach items="${eligibilityTestLangList}" var="eligibilityLang">
                 <option id='lang_${eligibilityLang.eligibilityTestLangPK.id}'
-                        value="${eligibilityLang.question}">${eligibilityLang.question}</option>
+                      status="${eligibilityLang.status}"  value="${eligibilityLang.question}">${eligibilityLang.question}</option>
             </c:forEach>
         </select>
         <!-- Start body tab section -->
@@ -164,17 +184,19 @@
                     <tbody>
                     <c:set value="true" var="chkDone"/>
                     <c:forEach items="${eligibilityTestList}" var="etQusAns">
-                        <tr id="${etQusAns.id}">
+                        <tr id="${etQusAns.id}" status="${etQusAns.status}">
                             <td>${etQusAns.sequenceNo}</td>
                             <td class="title"><span class="dis-ellipsis"
                                                     title="${fn:escapeXml(etQusAns.question)}">${etQusAns.question}</span>
                             </td>
                             <td><span class=" preview-g mr-lg viewIcon"
                                       data-toggle="tooltip" data-placement="top" title="View"
-                                      etId="${etQusAns.id}"></span> <span
+                                      etId="${etQusAns.id}"></span>
+                                <span
                                     class="${etQusAns.status ? 'edit-inc' : 'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editIcon"
                                     data-toggle="tooltip" data-placement="top" title="Edit"
-                                    etId='${etQusAns.id}'></span> <span
+                                    etId='${etQusAns.id}'></span>
+                                <span
                                     class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteIcon"
                                     data-toggle="tooltip" data-placement="top" title="Delete"
                                     onclick="deleteEligibiltyTestQusAns('${etQusAns.id}', this);"></span>
@@ -710,12 +732,39 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', true);
           $('.sprites_icon').css('pointer-events', 'none');
+          let readyForComplete = true;
           $('#eligibilityItems option', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id').split('_')[1];
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#'+value.getAttribute('id').split('_')[1];
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              readyForComplete = false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           })
+          if (!readyForComplete) {
+            $('#doneBut').addClass('cursor-none').prop('disabled', true);
+            $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneBut').removeClass('cursor-none').prop('disabled', false);
+            $('#spancomId').removeAttr('data-original-title');
+          }
           if ($('#inlineRadio3').prop('checked') === true) {
-            $('#comment').removeAttr('required')
+            $('#comment').removeAttr('required');
           } else {
             $('#comment').val($('#mlInstText', htmlData).val());
           }
@@ -725,14 +774,47 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);
           $('.sprites_icon').removeAttr('style');
+          let mark = true;
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            let status = value.getAttribute('status');
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              mark=false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
+
+          if (!mark) {
+            $('#doneBut').addClass('cursor-none').prop('disabled', true);
+            $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.');
+          } else {
+            $('#doneBut').removeClass('cursor-none').prop('disabled', false);
+            $('#spancomId').removeAttr('data-original-title');
+          }
+
           if ($('#inlineRadio3').prop('checked') === true) {
             $('#comment').removeAttr('required')
           } else {
             $('#comment').val($('#comment', htmlData).val());
+          }
+          if (viewPermission == 'view') {
+          	$('#eleFormId input,textarea').prop('disabled',true);
           }
         }
       }

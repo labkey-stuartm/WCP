@@ -149,6 +149,15 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
           deleteQuery = "delete ActiveTaskBo where id=:activeTaskId";
           query = session.createQuery(deleteQuery).setInteger("activeTaskId", activeTaskBo.getId());
           result = query.executeUpdate();
+
+          if (result > 0) {
+            query =
+                session
+                    .createQuery("delete ActiveTaskLangBO where activeTaskLangPK.id=:activeTaskId")
+                    .setInteger("activeTaskId", activeTaskBo.getId());
+            result = query.executeUpdate();
+          }
+
           activity = "Active Task was deleted.";
           activityDetails =
               "Active Task was deleted. (Active Task Key = "

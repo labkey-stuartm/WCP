@@ -5,6 +5,27 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+  .langSpecific{
+    position: relative;
+  }
+
+  .langSpecific > button::before{
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
+
+  .langSpecific > button{
+    padding-left: 30px;
+  }
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -49,7 +70,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -310,6 +331,10 @@
 <script type="text/javascript">
   $(document).ready(
       function () {
+    	  $(".menuNav li").removeClass('active');
+    	  $(".fifthComre").addClass('active');
+    	  $("#createStudyId").show();
+    	    
         <c:if test="${actionPage eq 'view'}">
         $('#comprehensionFormId input,textarea,select').prop(
             'disabled', true);
@@ -430,8 +455,9 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -512,6 +538,7 @@
             }
           }
           setTimeout(hideDisplayMessage, 4000);
+          $('.fifthComre').find('span').remove();
         },
         error: function (xhr, status, error) {
           $(item).prop('disabled', false);
@@ -646,6 +673,11 @@
             $('#' + responseOptionId).val($('#' + responseOptionId, htmlData).val());
           });
           $('#questionText').val($('#questionText', htmlData).val());
+          
+          <c:if test="${actionPage eq 'view'}">
+          $('#comprehensionFormId input,textarea').prop('disabled', true);
+          $('.remBtnDis').addClass('cursor-none');
+          </c:if>
         }
       }
     })

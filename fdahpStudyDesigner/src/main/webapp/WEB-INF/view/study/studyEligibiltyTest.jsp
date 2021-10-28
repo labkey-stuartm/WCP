@@ -5,6 +5,27 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+  .langSpecific{
+    position: relative;
+  }
+
+  .langSpecific > button::before{
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
+
+  .langSpecific > button{
+    padding-left: 30px;
+  }
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -50,7 +71,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -237,8 +258,7 @@
                   });
             });
         $("#saveId")
-        .click(
-            function () {
+        .click(function () {
               $(this).prop("disabled", true);
               validateShortTitle(
                   "#shortTitleId",
@@ -287,6 +307,7 @@
                       return false;
                     }
                   });
+          $('.fourth').find('span').remove();
             });
       });
 
@@ -372,8 +393,9 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -444,6 +466,9 @@
           $('[data-id="resYesOptId"]').attr('disabled', false).removeAttr('style');
           $('[data-id="resNoOptId"]').attr('disabled', false).removeAttr('style');
           $('#question').val($('#question', htmlData).val());
+          <c:if test="${actionTypeForQuestionPage eq 'view'}">
+          $('#studyEligibiltyTestFormId input,textarea').prop('disabled', true);  
+          </c:if>
         }
       }
     });

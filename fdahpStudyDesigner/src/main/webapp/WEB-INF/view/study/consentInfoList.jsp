@@ -29,6 +29,26 @@
         pointer-events: none;
         cursor: not-allowed;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -40,7 +60,7 @@
 
         <select id="consentLangItems" style="display: none">
             <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
-                <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
+                <option id='lang_${consentInfoLang.consentInfoLangPK.id}' status="${consentInfoLang.status}"
                         value="${consentInfoLang.displayTitle}">${consentInfoLang.visualStep}</option>
             </c:forEach>
         </select>
@@ -112,7 +132,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${consentInfoList}" var="consentInfo">
-                    <tr id="${consentInfo.id}">
+                    <tr id="${consentInfo.id}" status="${consentInfo.status}">
                         <td>${consentInfo.sequenceNo}</td>
                         <td class="title">${consentInfo.displayTitle}</td>
                         <td class="visualStep">${consentInfo.visualStep}</td>
@@ -122,7 +142,7 @@
                                       onclick="viewConsentInfo(${consentInfo.id});">
 								</span>
                             <span
-                                    class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                    class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg editIcon<c:if test="${not empty permission}"> cursor-none </c:if>"
                                     data-toggle="tooltip" data-placement="top" title="Edit"
                                     onclick="editConsentInfo(${consentInfo.id});">
 								</span>
@@ -359,10 +379,10 @@
         var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("
             + parseInt(obj.id) + ");'></span>";
         if (obj.status) {
-          actions += "<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo(" + parseInt(
+          actions += "<span class='sprites_icon edit-inc editIcon mr-lg' onclick='editConsentInfo(" + parseInt(
               obj.id) + ");'></span>"
         } else {
-          actions += "<span class='sprites_icon edit-inc-draft mr-lg' onclick='editConsentInfo("
+          actions += "<span class='sprites_icon edit-inc-draft editIcon mr-lg' onclick='editConsentInfo("
               + parseInt(obj.id) + ");'></span>";
         }
         actions += "<span class='sprites_icon copy delete' onclick='deleteConsentInfo(" + parseInt(
@@ -450,24 +470,84 @@
           $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
+          let readyForComplete = true;
           $('#consentLangItems option', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id').split('_')[1];
-            $('#' + id).find('td.title').text(value.getAttribute('value'));
+            let id = '#'+value.getAttribute('id').split('_')[1];
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              readyForComplete = false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           })
+          if (!readyForComplete) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
+          $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
           $('#addConsent').attr('disabled', true);
           $('.delete').addClass('cursor-none');
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+          let readyForComplete = true;
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = value.getAttribute('id');
-            $('#' + id).find('td.title').text($('#' + id, htmlData).find('td.title').text());
-            $('#' + id).find('td.visualStep').text(
-                $('#' + id, htmlData).find('td.visualStep').text());
+            let id = '#'+value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            $(id).find('td.visualStep').text(
+                $(id, htmlData).find('td.visualStep').text());
+            if (value.getAttribute('status')==="true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              readyForComplete = false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
           });
+          if (!readyForComplete) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
+          $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
           $('#addConsent').attr('disabled', false);
           $('.delete').removeClass('cursor-none');
+          
+          if ('${permission}' == 'view') {
+        	  $('.delete').addClass('cursor-none');
+          }
         }
       }
     });

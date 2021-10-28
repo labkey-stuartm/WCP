@@ -18,6 +18,7 @@ import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.ResourcesLangBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyLanguageBO;
 import com.fdahpstudydesigner.bo.StudyPageBo;
@@ -96,6 +97,9 @@ public interface StudyService {
 
   public List<ResourceBO> getResourceList(Integer studyId);
 
+  List<ResourcesLangBO> syncAndGetResourceLangList(
+      List<ResourceBO> resourceBOList, Integer studyId, String language);
+
   public List<NotificationBO> getSavedNotification(Integer studyId);
 
   public StudyBo getStudyById(String studyId, Integer userId);
@@ -163,7 +167,7 @@ public interface StudyService {
   public String saveOrUpdateOverviewStudyPages(
       StudyPageBean studyPageBean, SessionObject sesObj, String language);
 
-  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
+  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj, String language);
 
   public String saveOrUpdateStudy(
       StudyBo studyBo, Integer userId, SessionObject sessionObject, String language);
@@ -200,7 +204,7 @@ public interface StudyService {
       SessionObject sesObj,
       String langToBeDeleted,
       String newLanguages,
-      int userId);
+      String mlFlag);
 
   public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 
@@ -252,4 +256,8 @@ public interface StudyService {
 
   List<StudyPageLanguageBO> getOverviewStudyPagesLangById(
       List<StudyPageBo> studyPageBos, String language);
+
+  ResourcesLangBO getResourceLangInfo(String resourceInfoId, String language);
+
+  Map<String, Boolean> isLanguageDeletable(String customStudyId);
 }

@@ -41,6 +41,10 @@
                        value="${sequenceLangBO.studyExcQuestionnaries}"/>
                 <input type="hidden" id="mlParticipantProp"
                        value="${sequenceLangBO.participantProperties}"/>
+                <input type="hidden" id="mlResources"
+                       value="${sequenceLangBO.miscellaneousResources}"/>
+                <input type="hidden" id="mlNotification"
+                       value="${sequenceLangBO.miscellaneousNotification}"/>
                 <%--    for english language--%>
                 <input id="basicInfo" type="hidden" value="${studyBo.studySequenceBo.basicInfo}">
                 <input id="settings" type="hidden" value="${studyBo.studySequenceBo.settingAdmins}">
@@ -58,6 +62,10 @@
                        value="${studyBo.studySequenceBo.studyExcQuestionnaries}">
                 <input id="studyExcActiveTask" type="hidden"
                        value="${studyBo.studySequenceBo.studyExcActiveTask}">
+                <input id="resources" type="hidden"
+                       value="${studyBo.studySequenceBo.miscellaneousResources}">
+                <input id="notificationMenu" type="hidden"
+                       value="${studyBo.studySequenceBo.miscellaneousNotification}">
 
                 <div class="mb-lg ${empty studyBo.status?'hide':''}">
 					<span
@@ -125,7 +133,12 @@
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
             </li>
-            <li class="seventh commonCls" style="padding-left:18px;">Study Activities</li>
+            <li class="seventh commonCls" style="padding-left:18px;">Study Activities
+                <c:if
+                    test="${studyBo.studySequenceBo.studyExcQuestionnaries and studyBo.studySequenceBo.studyExcActiveTask}">
+                    <span class="sprites-icons-2 tick pull-right mt-xs"></span>
+                </c:if>
+            </li>
             <li class="sub seventhQuestionnaires commonCls">Questionnaires <c:if
                     test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
@@ -233,64 +246,68 @@
 
     var a = document.createElement('a');
     $('.first').click(function () {
-      a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}&language=" + $(
-          '#studyLanguage').val();
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}&language=" + lang;
       document.body.appendChild(a).click();
     });
     <c:if test="${not empty studyBo.studySequenceBo && studyBo.studySequenceBo.basicInfo}">
     $('.second').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
     <c:if test="${studyBo.studySequenceBo.settingAdmins}">
     $('.third').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
     $('.fourth').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
     $('.fifth').click(function () {
-      a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language=" + $(
-          '#studyLanguage').val();
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language=" + lang
       document.body.appendChild(a).click();
     });
     $('.fifthConsent').click(function () {
-      a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language=" + $(
-          '#studyLanguage').val();
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language=" + lang
       document.body.appendChild(a).click();
     });
     $('.fifthComre').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
     $('.fifthConsentReview').click(function () {
-      a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}&language=" + $(
-          '#studyLanguage').val();
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}&language=" + lang;
       document.body.appendChild(a).click();
     });
     $('.sixth').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}&language="
-          + $(
-              '#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
     $('.seventh , .seventhQuestionnaires').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}&language="
-          + $(
-              '#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
 
     });
     $('.seventhTask').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
-          + $(
-              '#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
 
@@ -299,24 +316,30 @@
       document.body.appendChild(a).click();
     });
     $('.eighthResources').click(function () {
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       $('.eighthResources').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}";
+      a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}&language=" + lang;
       document.body.appendChild(a).click();
     });
     $('.eigthNotification').click(function () {
       $('.eigthNotification').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}";
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}&language="
+          + lang;
       document.body.appendChild(a).click();
     });
     $('.nine').click(function () {
       $('.nine').addClass('cursor-none');
-      a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}";
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}&language="
+          + lang;
       document.body.appendChild(a).click();
     });
     $('.tenth').click(function () {
       $('.tenth').addClass('cursor-none');
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
       a.href = "/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.body.appendChild(a).click();
     });
     </c:if>
@@ -381,6 +404,8 @@
     updateTicksByClassName(htmlData, '#mlParticipantProp', '.sixth');
     updateTicksByClassName(htmlData, '#mlQuestionnaire', '.seventhQuestionnaires');
     updateTicksByClassName(htmlData, '#mlActiveTask', '.seventhTask');
+    updateTicksByClassName(htmlData, '#mlResources', '.eighthResources');
+    updateTicksByClassName(htmlData, '#mlNotification', '.eigthNotification');
     if ($('#mlConsent', htmlData).val() === 'true' && $('#mlCompre', htmlData).val() === 'true'
         && $('#mlConsentEduInfo', htmlData).val() === 'true') {
       let fifth = $('.fifth');
@@ -418,6 +443,8 @@
     updateEnglishTicksByClassName('#participantProperties', '.sixth');
     updateEnglishTicksByClassName('#studyExcQuestionnaries', '.seventhQuestionnaires');
     updateEnglishTicksByClassName('#studyExcActiveTask', '.seventhTask');
+    updateEnglishTicksByClassName('#resources', '.eighthResources');
+    updateEnglishTicksByClassName('#notificationMenu', '.eigthNotification');
 
     if ($('#consentEduInfo').val() === 'true' && $('#comprehensionTest').val() === 'true'
         && $('#eConsent').val() === 'true') {
@@ -433,7 +460,9 @@
       if (seventh.find('span').length === 0) {
         seventh.append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    } else $('.seventh').find('span').remove();
+    } else {
+      $('.seventh').find('span').remove();
+    }
   }
 
   function updateEnglishTicksByClassName(id, className) {
@@ -441,7 +470,8 @@
       if ($(className).find('span').length === 0) {
         $(className).append('<span class="sprites-icons-2 tick pull-right mt-xs"></span>');
       }
-    } else
+    } else {
       $(className).find('span').remove();
+    }
   }
 </script>

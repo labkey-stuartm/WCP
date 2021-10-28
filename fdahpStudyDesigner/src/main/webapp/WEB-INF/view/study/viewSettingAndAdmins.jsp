@@ -14,8 +14,28 @@
         width: 100px !important;
       }
 
-      .mlselect {
-        text-transform: none;
+      .text-normal > button > .filter-option{
+        text-transform: inherit !important;
+      }
+
+      .langSpecific{
+        position: relative;
+      }
+
+      .langSpecific > button::before{
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button{
+        padding-left: 30px;
       }
     </style>
 </head>
@@ -26,6 +46,7 @@
         <input type="hidden" id="deletedLanguage" name="deletedLanguage"/>
         <input type="hidden" id="newSelLanguages" name="newLanguages">
         <input type="hidden" name="studyId" value="${studyBo.id}">
+        <input type="hidden" id="mlFlag" name="mlFlag"/>
     </form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}"
@@ -45,6 +66,11 @@
         <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
+        <select id="langDeletableMap" style="display: none">
+            <c:forEach items="${langDeletableMap}" var="langEntry">
+                <option id='lang_${langEntry.key}' value="${langEntry.value}"></option>
+            </c:forEach>
+        </select>
         <!-- Start top tab section-->
         <div class="right-content-head">
             <div class="text-right">
@@ -150,9 +176,9 @@
             <!-- End Section-->
 
             <div id="langSelect" style="display: none">
-                <div class="mt-md study-list mb-md addHide" style="margin-left: -15px;">
+                <div class="mt-md study-list mb-md addHide" >
                     <select
-                            class="selectpicker col-md-6 aq-select aq-select-form mlselect"
+                            class="selectpicker col-md-6 pl-none pr-none aq-select aq-select-form text-normal"
                             title="- Select and add languages -" id="multiple">
                         <c:forEach items="${supportedLanguages}" var="lang">
                             <option class="langOption" value="${lang.key}"
@@ -171,10 +197,12 @@
                     <c:forEach items="${selectedLanguages}" var="stdLang">
                         <input type="hidden" class="stdCls" id="${stdLang.key}"
                                value="${stdLang.key}">
-                        <span id="span-${stdLang.key}">${stdLang.value}<span <c:if
-                                test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }"> disabled</c:if>
+                        <span id="span-${stdLang.key}">${stdLang.value}
+                            <span
                                 id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
-                                onclick="removeLang(this.id, '${stdLang.value}')"> X&nbsp;&nbsp;</span></span>
+                                onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;
+                            </span>
+                        </span>
                     </c:forEach>
                 </div>
             </div>
@@ -520,6 +548,28 @@
 <script>
   $(document).ready(function () {
 
+    let currLang = $('#studyLanguage').val();
+    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+      $('#currentLanguage').val(currLang);
+      refreshAndFetchLanguageData(currLang);
+    }
+
+    let disableMLFlag = false;
+    $('#langDeletableMap option').each(function() {
+      let id = this.id.split('_')[1];
+      $('#innerSpan-'+id).addClass('cursor-none');
+      disableMLFlag = true;
+    })
+    if (disableMLFlag===true){
+      if ($('#mlYes').prop('checked')===true) {
+        $('#mlNo').prop('disabled', true);
+      }
+    }
+
+    $(document).on('click', '.removeLangNew', function () {
+      removeLang(this.id, 'new', '');
+    })
+
     <c:if test="${empty permission && fn:contains(permissions,5)}">
 
     <c:if test="${user eq 'logout_login_user'}">
@@ -533,16 +583,6 @@
       }
     });
     </c:if>
-
-    let currLang = $('#studyLanguage').val();
-    if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
-      $('#currentLanguage').val(currLang);
-      refreshAndFetchLanguageData(currLang);
-    }
-
-    $(document).on('click', '.removeLangNew', function () {
-      removeLang(this.id, 'new');
-    })
 
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -849,7 +889,8 @@
     }
 
   });
-  if ($('#mlYes').attr('checked') == 'checked') {
+
+  if ($('#mlYes').prop('checked')===true) {
     $("#langSelect").show();
   } else {
     $("#langSelect").hide();
@@ -857,6 +898,26 @@
 
   $('input[name="multiLanguageFlag"]').change(function (e) {
     if (this.value === 'No') {
+      let message = '';
+      let languages = '';
+      let allLang = $('#selectedLanguages').find('span.removeLang');
+      let size = allLang.length;
+      allLang.each(function (index){
+        let langName = $(this).parent().text().split(' ')[0];
+        if (message==='') {
+          message=langName;
+        } else {
+          if (index === size-1) {
+            message += (' and '+langName);
+          } else {
+            message += (', '+langName);
+          }
+        }
+        languages === '' ? languages=this.id.split('-')[1] : languages += (','+this.id.split('-')[1]);
+      })
+      if (languages!=='') {
+        removeLang('', message, languages);
+      }
       $("#langSelect").slideUp('slow');
     } else {
       $("#langSelect").slideDown('slow');
@@ -1010,7 +1071,7 @@
 
   var removedLanguages = '';
 
-  function removeLang(langObject, fullName) {
+  function removeLang(langObject, fullName, allLang) {
     if (fullName === 'new') {
       let text = $('#' + langObject).parent().text();
       if (text !== undefined) {
@@ -1032,10 +1093,19 @@
       },
       callback: function (result) {
         if (result) {
-          let targetStr = langObject.split('-')[1];
-          $('#deletedLanguage').val(targetStr);
+          if (langObject==='') {
+            $('#mlFlag').val('Y');
+            $('#deletedLanguage').val(allLang);
+          } else {
+            let targetStr = langObject.split('-')[1];
+            $('#deletedLanguage').val(targetStr);
+          }
           $('#newSelLanguages').val(newSelectedLang)
           $('#removeLangFormId').submit();
+        } else {
+          if (langObject==='') {
+            $('#mlYes').prop('checked', true).change();
+          }
         }
       }
     });
@@ -1120,6 +1190,22 @@
             $('.sprites_icon').removeAttr('style');
 
             $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
+
+            let disableMLFlag = false;
+            $('#langDeletableMap option', htmlData).each(function() {
+              let id = this.id.split('_')[1];
+              $('#innerSpan-'+id).addClass('cursor-none');
+              disableMLFlag = true;
+            })
+            if (disableMLFlag===true){
+              if ($('#mlYes').prop('checked')===true) {
+                $('#mlNo').prop('disabled', true);
+              }
+            }
+            
+            <c:if test="${permission == 'view'}">
+            $('#settingfoFormId input,textarea').prop('disabled', true);
+            </c:if>
           }
         }
       }

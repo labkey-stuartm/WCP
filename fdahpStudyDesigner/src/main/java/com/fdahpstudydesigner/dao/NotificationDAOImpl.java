@@ -3,6 +3,7 @@ package com.fdahpstudydesigner.dao;
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
+import com.fdahpstudydesigner.bo.NotificationLangBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -59,6 +60,15 @@ public class NotificationDAOImpl implements NotificationDAO {
         if (i > 0) {
           message = FdahpStudyDesignerConstants.SUCCESS;
         }
+
+        // delete for other languages
+        session
+            .createQuery(
+                "update NotificationLangBO set modifiedBy = :userId, modifiedOn = now(), notificationStatus = false  "
+                    + "where notificationLangPK.notificationId = :idForDelete")
+            .setInteger("idForDelete", notificationIdForDelete)
+            .setInteger("userId", sessionObject.getUserId())
+            .executeUpdate();
       }
       if (!notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)) {
         activitydetails =
@@ -501,5 +511,85 @@ public class NotificationDAOImpl implements NotificationDAO {
     }
     logger.info("NotificationDAOImpl - getGatwayAppList - Ends");
     return gatewayAppList;
+  }
+
+  @Override
+  public NotificationLangBO getNotificationLang(int notificationId, String lang) {
+    logger.info("NotificationDAOImpl - getNotificationLang() - Starts");
+    Session session = null;
+    NotificationLangBO notificationBO = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      notificationBO =
+          (NotificationLangBO)
+              session
+                  .createQuery(
+                      "from NotificationLangBO where notificationLangPK.notificationId = :notificationId"
+                          + " and notificationLangPK.langCode=:lang and notificationStatus=true")
+                  .setInteger("notificationId", notificationId)
+                  .setString("lang", lang)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("NotificationDAOImpl - getNotificationLang - ERROR", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
+    }
+    logger.info("NotificationDAOImpl - getNotificationLang - Ends");
+    return notificationBO;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<NotificationLangBO> getNotificationLangList(int studyId, String langCode) {
+    logger.info("NotificationDAOImpl - getNotificationLangList() - Starts");
+    Session session = null;
+    List<NotificationLangBO> notificationLangBOList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      notificationLangBOList =
+          session
+              .createQuery(
+                  "from NotificationLangBO where studyId = :studyId"
+                      + " and notificationLangPK.langCode=:lang and notificationStatus=true")
+              .setInteger("studyId", studyId)
+              .setString("lang", langCode)
+              .list();
+    } catch (Exception e) {
+      logger.error("NotificationDAOImpl - getNotificationLangList - ERROR", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
+    }
+    logger.info("NotificationDAOImpl - getNotificationLangList - Ends");
+    return notificationLangBOList;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<NotificationLangBO> getNotificationLangByNotificationId(int notificationId) {
+    logger.info("NotificationDAOImpl - getNotificationLangByNotificationId() - Starts");
+    Session session = null;
+    List<NotificationLangBO> notificationLangBOList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      notificationLangBOList =
+          session
+              .createQuery(
+                  "from NotificationLangBO where notificationLangPK.notificationId = :notifId"
+                      + " and notificationStatus=true and notificationAction=true")
+              .setInteger("notifId", notificationId)
+              .list();
+    } catch (Exception e) {
+      logger.error("NotificationDAOImpl - getNotificationLangByNotificationId - ERROR", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
+    }
+    logger.info("NotificationDAOImpl - getNotificationLangByNotificationId - Ends");
+    return notificationLangBOList;
   }
 }

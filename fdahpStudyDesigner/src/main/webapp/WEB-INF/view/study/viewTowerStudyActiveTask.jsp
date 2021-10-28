@@ -507,7 +507,7 @@
                             </div>
                             <div class="add_notify_option">
                                 <div class="form-group">
-                                    <input type="text" class="form-control requireClass"
+                                    <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat"
                                            name="taskAttributeValueBos[1].displayUnitStat"
                                            maxlength="15"
                                            value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>

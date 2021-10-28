@@ -64,6 +64,10 @@
         cursor: not-allowed;
       }
 
+      .static-width {
+        width:20% !important;
+      }
+
       /* .delete{
 	background-position: -113px -63px ;
 	width: 17px;
@@ -87,6 +91,26 @@
       .display__inline-block {
         display: inline-block !important;
       }
+      
+      .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
     </style>
 </head>
 
@@ -143,7 +167,7 @@
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
-						<select class="selectpicker aq-select aq-select-form studyLanguage"
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 title="Select" disabled>
                         <option selected>English</option>
                     </select>
@@ -228,6 +252,27 @@
                     <!-- <input type="hidden" id="actionType" name="actionType"> -->
                     <input type="hidden" id="actionTypeForQuestionPage"
                            name="actionTypeForQuestionPage">
+
+                    <select id="questionLangBOList" style="display: none">
+                        <c:forEach items="${questionLangBOList}" var="questionLang">
+                            <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
+                                    formId="${questionLang.formId}" value="${questionLang.question}">${questionLang.question}</option>
+                        </c:forEach>
+                    </select>
+
+                    <select id="formLangList" style="display: none">
+                        <c:forEach items="${formLangList}" var="formLang">
+                            <option id='${formLang.formLangPK.formId}' status="${formLang.status}"></option>
+                        </c:forEach>
+                    </select>
+
+                    <select id="instructionsLangBOList" style="display: none">
+                        <c:forEach items="${instructionsLangBOList}" var="instructionLang">
+                            <option id='${instructionLang.instructionLangPK.id}' status="${instructionLang.status}"
+                                    value="${instructionLang.instructionTitle}">${instructionLang.instructionTitle}</option>
+                        </c:forEach>
+                    </select>
+
                     <div class="gray-xs-f mb-xs">
                         Activity Short Title or Key (1 to 50 characters)<span
                             class="requiredStar">*</span><span
@@ -286,7 +331,7 @@
                         <thead style="display: none;"></thead>
                         <tbody>
                         <c:forEach items="${qTreeMap}" var="entry">
-                            <tr>
+                            <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}" status="${entry.value.status}">
                                 <c:choose>
                                     <c:when test="${entry.value.stepType eq 'Instruction'}">
                                         <td><span id="${entry.key}" data="round blue-round"
@@ -304,10 +349,10 @@
 							 </c:forEach> --%>
                                     </c:otherwise>
                                 </c:choose>
-                                <td><c:choose>
+                                <td class="title"><c:choose>
                                     <c:when test="${entry.value.stepType eq 'Form'}">
                                         <c:forEach items="${entry.value.fromMap}" var="subentry">
-                                            <div class="dis-ellipsis"
+                                            <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
                                                  title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
                                             <div class="clearfix"></div>
                                         </c:forEach>
@@ -352,7 +397,7 @@
 													<span class="sprites_icon preview-g mr-sm"
                                                           onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
                                                 <span
-                                                        class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
+                                                        class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
                                                         <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
                                                 <span
                                                         class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
@@ -1954,10 +1999,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         {orderable: false, targets: [0, 1, 2, 3]},
       ],
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-        if (actionPage != 'view') {
+        if (actionPage !== 'view') {
           $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
         }
-        $('td:eq(0)', nRow).addClass("qs-items");
+        $('td:eq(0)', nRow).addClass("qs-items static-width");
         $('td:eq(1)', nRow).addClass("qs-items");
         $('td:eq(2)', nRow).addClass("qs-items");
         $('td:eq(3)', nRow).addClass("qs-items");
@@ -3601,7 +3646,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             } else {
               $("#previousFrequency").val(frequency_text);
             }
-            $(".add-steps-btn").removeClass('cursor-none');
+            let studyLang=$('#studyLanguage').val();
+            if (studyLang !== undefined && studyLang !== null && studyLang !== '' && studyLang !== 'en') {
+              $(".add-steps-btn").addClass('cursor-none');
+            } else {
+              $(".add-steps-btn").removeClass('cursor-none');
+            }
             if (frequency_text == 'One time') {
               $("#oneTimeFreId").val(questionnaireFrequenceId);
             } else if (frequency_text == 'Weekly') {
@@ -3942,10 +3992,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             '  <span class="sprites_icon preview-g mr-sm" onclick="viewStep(' + parseInt(
                 value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
         if (value.status) {
-          dynamicAction += '<span class="sprites_icon edit-g mr-sm" onclick="editStep(' + parseInt(
+          dynamicAction += '<span class="sprites_icon edit-inc editIcon mr-sm" onclick="editStep(' + parseInt(
               value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
         } else {
-          dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editStep(' + parseInt(
+          dynamicAction += '<span class="edit-inc-draft editIcon mr-md mr-sm" onclick="editStep(' + parseInt(
               value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
         }
         dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('
@@ -4026,20 +4076,21 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 
   function viewStep(stepId, stepType) {
     $("#actionTypeForQuestionPage").val('view');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     if (stepType == 'Instruction') {
       $("#instructionId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/instructionsStep.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.contentFormId.submit();
     } else if (stepType == 'Form') {
       $("#formId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.contentFormId.submit();
     } else if (stepType == 'Question') {
       $("#questionId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}&language="
-          + $('#studyLanguage').val();
+          + lang;
       document.contentFormId.submit();
     }
   }
@@ -4061,8 +4112,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}&language="
-              + $('#studyLanguage').val();
+              + lang;
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -4072,8 +4124,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     </c:if>
     <c:if test="${actionType eq 'view'}">
     var a = document.createElement('a');
+    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}&language="
-        + $('#studyLanguage').val();
+        + lang;
     document.body.appendChild(a).click();
     </c:if>
   }
@@ -4649,7 +4702,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       url: '/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}',
       type: "GET",
       data: {
-        language: language
+        language: language,
+        questionnaireId : $('#questionnaireId').val()
       },
       success: function (data) {
         let htmlData = document.createElement('html');
@@ -4663,6 +4717,109 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               'disabled', true);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
+          let mark=true;
+          $('tbody tr', htmlData).each(function (index, value) {
+            let id = value.getAttribute('id').split('_')[1];
+            let type = value.getAttribute('type');
+            if (type==='Instruction') {
+              $('#instructionsLangBOList option', htmlData).each(function (index, langEle) {
+                let langId = langEle.getAttribute('id');
+                if (id===langId) {
+                  $('#row_'+id).find('td.title').text(langEle.getAttribute('value'));
+                  if (langEle.getAttribute('status')==="true") {
+                    let edit = $('#row_'+id).find('span.editIcon');
+                    if (!edit.hasClass('edit-inc')) {
+                      edit.addClass('edit-inc');
+                    }
+                    if (edit.hasClass('edit-inc-draft')) {
+                      edit.removeClass('edit-inc-draft');
+                    }
+                  }
+                  else {
+                    mark=false;
+                    let edit = $('#row_'+id).find('span.editIcon');
+                    if (!edit.hasClass('edit-inc-draft')) {
+                      edit.addClass('edit-inc-draft');
+                    }
+                    if (edit.hasClass('edit-inc')) {
+                      edit.removeClass('edit-inc');
+                    }
+                  }
+                  return false;
+                }
+              })
+            } else if (type==='Question') {
+              $('#questionLangBOList option', htmlData).each(function (index, langEle) {
+                let langId = langEle.getAttribute('id');
+                if (id===langId) {
+                  $('#row_'+id).find('td.title').text(langEle.getAttribute('value'));
+                  if (langEle.getAttribute('status')==="true") {
+                    let edit = $('#row_'+id).find('span.editIcon');
+                    if (!edit.hasClass('edit-inc')) {
+                      edit.addClass('edit-inc');
+                    }
+                    if (edit.hasClass('edit-inc-draft')) {
+                      edit.removeClass('edit-inc-draft');
+                    }
+                  }
+                  else {
+                    mark=false;
+                    let edit = $('#row_'+id).find('span.editIcon');
+                    if (!edit.hasClass('edit-inc-draft')) {
+                      edit.addClass('edit-inc-draft');
+                    }
+                    if (edit.hasClass('edit-inc')) {
+                      edit.removeClass('edit-inc');
+                    }
+                  }
+                  return false;
+                }
+              })
+            } else if (type==='Form') {
+              $('#formLangList option', htmlData).each(function (index, langEle) {
+                let formId = langEle.getAttribute('id');
+                if (id===formId) {
+                  if (langEle.getAttribute('status')==="true") {
+                    let edit = $('#row_'+id).find('span.editIcon');
+                    if (!edit.hasClass('edit-inc')) {
+                      edit.addClass('edit-inc');
+                    }
+                    if (edit.hasClass('edit-inc-draft')) {
+                      edit.removeClass('edit-inc-draft');
+                    }
+                  }
+                  else {
+                    mark=false;
+                    let edit = $('#row_'+id).find('span.editIcon');
+                    if (!edit.hasClass('edit-inc-draft')) {
+                      edit.addClass('edit-inc-draft');
+                    }
+                    if (edit.hasClass('edit-inc')) {
+                      edit.removeClass('edit-inc');
+                    }
+                  }
+                  $('#row_'+id).find('td.title div.dis-ellipsis').each(function (index, value){
+                    let divId = value.getAttribute('id').split('_')[1];
+                    $('#questionLangBOList option', htmlData).each(function (index, ele) {
+                      let langId = ele.getAttribute('id');
+                      if (langId===divId) {
+                        $('#row_'+id).find('td.title div#div_'+divId).text(ele.getAttribute('value'));
+                        return false;
+                      }
+                    })
+                  });
+                  return false;
+                }
+              })
+            }
+          });
+          if (!mark) {
+            $('#doneId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
         } else {
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
@@ -4672,6 +4829,53 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               'disabled', false);
           $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());
+          
+          <c:if test="${actionType == 'view'}">
+          $(".blue-bg, .green-bg, .skyblue-bg").addClass('cursor-none');
+          $('#branchingId').attr('disabled', true);
+          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, #inlineRadio6, #isLaunchStudy, #isStudyLifeTime').attr(
+                  'disabled', true);
+          </c:if>
+          let mark=true;
+          $('tbody tr', htmlData).each(function (index, value) {
+            let id = value.getAttribute('id').split('_')[1];
+            if (value.getAttribute('status')==="true") {
+              let edit = $('#row_'+id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            }
+            else {
+              mark=false;
+              let edit = $('#row_'+id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
+
+            let type = value.getAttribute('type');
+            if (type!=='Form') {
+              $('#row_'+id).find('td.title').text($('#row_'+id, htmlData).find('td.title').text());
+            } else {
+              $('#row_'+id).find('td.title div.dis-ellipsis').each(function (index, value){
+                let divId = value.getAttribute('id').split('_')[1];
+                $('#row_'+id).find('td.title div#div_'+divId).text($('#row_'+id, htmlData).find('td.title div#div_'+divId).text());
+              });
+            }
+          });
+          if (!mark) {
+            $('#doneId').addClass('cursor-none').prop('disabled', true);
+            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#doneId').removeClass('cursor-none').prop('disabled', false);
+            $('#helpNote').removeAttr('data-original-title');
+          }
         }
       }
     });

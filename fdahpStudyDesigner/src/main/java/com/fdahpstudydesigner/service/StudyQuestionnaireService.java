@@ -99,16 +99,24 @@ public interface StudyQuestionnaireService {
       Integer questionnaireId, int oldOrderNumber, int newOrderNumber);
 
   public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(
-      QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId);
+      QuestionnairesStepsBo questionnairesStepsBo,
+      SessionObject sesObj,
+      String customStudyId,
+      String studyId);
 
   public InstructionsBo saveOrUpdateInstructionsBo(
       InstructionsBo instructionsBo,
       SessionObject sessionObject,
       String customStudyId,
-      String language);
+      String language,
+      String studyId);
 
   public QuestionsBo saveOrUpdateQuestion(
-      QuestionsBo questionsBo, SessionObject sesObj, String customStudyId, String language);
+      QuestionsBo questionsBo,
+      SessionObject sesObj,
+      String customStudyId,
+      String language,
+      String studyId);
 
   public QuestionnaireBo saveOrUpdateQuestionnaire(
       QuestionnaireBo questionnaireBo,
@@ -123,7 +131,8 @@ public interface StudyQuestionnaireService {
       QuestionnairesStepsBo questionnairesStepsBo,
       SessionObject sessionObject,
       String customStudyId,
-      String language);
+      String language,
+      String studyId);
 
   public String validateLineChartSchedule(Integer questionnaireId, String frequency);
 
@@ -146,11 +155,27 @@ public interface StudyQuestionnaireService {
   QuestionLangBO getQuestionLangBO(int id, String language);
 
   String saveOrUpdateFormStepForOtherLanguages(
-      QuestionnairesStepsBo questionnairesStepsBo, String language);
+      QuestionnairesStepsBo questionnairesStepsBo, String language, String studyId);
 
   List<String> syncAndGetLangData(
       Map<Integer, QuestionnaireStepBean> qTreeMap,
       int questionnaireId,
       String language,
       int userId);
+
+  List<QuestionnaireLangBO> syncAndGetQuestionnaireLangList(
+      List<QuestionnaireBo> boList, Integer studyId, String language);
+
+  List<QuestionLangBO> getQuestionLangByQuestionnaireId(int questionnaireId, String language);
+
+  List<QuestionLangBO> syncAndGetQuestionLangByFormId(
+      QuestionnairesStepsBo questionnairesStepsBo,
+      int questionnaireId,
+      int formId,
+      String language);
+
+  List<FormLangBO> getFormLangByQuestionnaireId(int questionnaireId, String language);
+
+  List<InstructionsLangBO> getInstructionLangByQuestionnaireId(
+      int questionnaireId, String language);
 }

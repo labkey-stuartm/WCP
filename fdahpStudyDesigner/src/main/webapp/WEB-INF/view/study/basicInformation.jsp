@@ -7,6 +7,27 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+  .langSpecific{
+    position: relative;
+  }
+
+  .studyLanguage > button::before{
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
+
+  .studyLanguage > button{
+    padding-left: 30px;
+  }
+</style>
 
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -880,8 +901,7 @@
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').css('background-color', '#eee');
-                  $('[data-id=' + id + ']').css('opacity', '1');
+                  $('[data-id=' + id + ']').addClass('cursor-none');
                 }
               }
             }
@@ -892,10 +912,11 @@
           $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
           $('#editor').val($('input#mlDescription', htmlData).val());
           let tinyMce = tinymce.activeEditor;
-          if (tinyMce !== undefined)
+          if (tinyMce !== undefined) {
             tinyMce.setContent($('input#mlDescription', htmlData).val());
-          $('#removeUrl').css('pointer-events', 'none');
-          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
+          }
+          $('#removeUrl').addClass('cursor-none');
+          $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
               'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
           $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
               'cursor-none');
@@ -908,7 +929,7 @@
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').removeAttr('style');
+                  $('[data-id=' + id + ']').removeClass('cursor-none');
                 }
               }
             }
@@ -919,10 +940,15 @@
           $('#researchSponsor').val($('#researchSponsor', htmlData).val());
           $('#editor').val($('#editor', htmlData).val());
           tinymce.activeEditor.setContent($('#editor', htmlData).val());
-          $('#removeUrl').removeAttr('style');
-          $('[data-id="category"], [data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
+          $('#removeUrl').removeClass('cursor-none');
+          $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
+          
+          <c:if test="${permission == 'view' }">
+          $('#basicInfoFormId input,textarea').prop('disabled', true);
+          $('#removeUrl').addClass('cursor-none');
+          </c:if>
         }
       }
     });

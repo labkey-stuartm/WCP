@@ -7,6 +7,27 @@
 <head>
 <meta charset="UTF-8">
 </head>
+<style>
+  .langSpecific{
+    position: relative;
+  }
+
+  .langSpecific > button::before{
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
+
+  .langSpecific > button{
+    padding-left: 30px;
+  }
+</style>
 <c:set var="tz" value="America/Los_Angeles" />
 
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -21,7 +42,12 @@
 		<input type="hidden" name="actionPage"
 			value="${notificationBO.actionPage}">
 		<input type="hidden" name="appId" value="${appId}">
-		<div class="right-content-head">
+        <input type="hidden" name="language" value="${currLanguage}">
+        <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+        <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+		<input type="hidden" id="mlNotificationText" value="${fn:escapeXml(notificationLangBO.notificationText)}"/>
+
+        <div class="right-content-head">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">
 					<span class="pr-sm"> <a href="javascript:void(0)"
@@ -33,6 +59,35 @@
 					<c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
 					<c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
 				</div>
+
+                <c:if test="${studyBo.multiLanguageFlag eq true and notificationBO.actionPage != 'addOrCopy'}">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                        <select
+                                class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                id="studyLanguage" name="studyLanguage" title="Select">
+                            <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+                                English
+                            </option>
+                            <c:forEach items="${languageList}" var="language">
+                                <option value="${language.key}"
+                                    ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:if>
+
+				<c:if test="${studyBo.multiLanguageFlag eq true and notificationBO.actionPage == 'addOrCopy'}">
+					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+						  data-placement="bottom"
+						  title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+								title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+					</div>
+				</c:if>
 
 				<div class="dis-line form-group mb-none">
 					<button type="button"
@@ -122,8 +177,7 @@
 				</div>
 				<div class="form-group date">
 					<input id='datetimepicker' type="text"
-						class="form-control calendar datepicker resetVal"
-						id="scheduleDate" name="scheduleDate"
+						class="form-control calendar datepicker resetVal" name="scheduleDate"
 						value="${notificationBO.scheduleDate}"
 						oldValue="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY"
 						disabled />
@@ -154,6 +208,7 @@
 	action="/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}"
 	id="viewStudyNotificationListPage" name="viewStudyNotificationListPage"
 	method="post">
+	<input type="hidden" name="language" value="${currLanguage}">
 </form:form>
 
 <form:form
@@ -174,7 +229,13 @@
          $(".menuNav li").removeClass('active');
          $(".eigthNotification").addClass('active'); 
          $("#createStudyId").show();
-         $('.eigthNotification').removeClass('cursor-none'); 
+         $('.eigthNotification').removeClass('cursor-none');
+
+       let currLang = $('#studyLanguage').val();
+       if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+         $('[name="language"]').val(currLang);
+         refreshAndFetchLanguageData(currLang);
+       }
          
          $('[data-toggle="tooltip"]').tooltip();
          
@@ -396,12 +457,14 @@
                 	  		if(result){
                 	  			$('#saveStudyId').prop('disabled',true);
               					$('#studyNotificationFormId').submit();
+              					$('.eigthNotification').find('span').remove();
                 	  		}
                 	  	  });
       				} else if($('#inlineRadio1').prop('checked')){
         			  if(validateTime()){
         				  $('#saveStudyId').prop('disabled',true);
         				  $('#studyNotificationFormId').submit();
+						  $('.eigthNotification').find('span').remove();
       	  			}
         		  }
               }else{
@@ -475,5 +538,51 @@
     			}
     		}
     		return valid;
-    	} 
+    	}
+
+     $('#studyLanguage').on('change', function () {
+       let currLang = $('#studyLanguage').val();
+       $('[name="language"]').val(currLang);
+       refreshAndFetchLanguageData($('#studyLanguage').val());
+     })
+
+     function refreshAndFetchLanguageData(language) {
+		 $.ajax({
+			 url: '/fdahpStudyDesigner/adminStudies/getStudyNotification.do?_S=${param._S}',
+			 type: "GET",
+			 data: {
+				 language: language,
+				 notificationId : $('[name="notificationId"]').val(),
+				 notificationText : $('#notificationText').val(),
+				 actionType : $('[name="actionType"]').val(),
+				 chkRefreshflag : 'y',
+				 appId : $('[name="appId"]').val()
+			 },
+         success: function (data) {
+           let htmlData = document.createElement('html');
+           htmlData.innerHTML = data;
+           if (language !== 'en') {
+			   updateCompletionTicks(htmlData);
+			   $('.tit_wrapper').text($('#mlName', htmlData).val());
+			   $('[name="currentDateTime"]').prop('disabled', true);
+			   $('#deleteStudyNotification').addClass('cursor-none');
+			   if ($('#inlineRadio1').prop('checked')===true) {
+				   $('#datetimepicker').prop('disabled', true);
+				   $('#timepicker1').prop('disabled', true);
+			   }
+			   $('#notificationText').val($('#mlNotificationText', htmlData).val());
+           } else {
+			   updateCompletionTicksForEnglish();
+			   $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+			   $('[name="currentDateTime"], #deleteStudyNotification').prop('disabled', false);
+			   if ($('#inlineRadio1').prop('checked')===true) {
+				   $('#datetimepicker').prop('disabled', false);
+				   $('#timepicker1').prop('disabled', false);
+			   }
+			   $('#deleteStudyNotification').removeClass('cursor-none');
+			   $('#notificationText').val($('#notificationText', htmlData).val());
+           }
+         }
+       });
+     }
 </script>

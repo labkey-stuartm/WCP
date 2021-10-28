@@ -280,7 +280,7 @@ public class NotificationController {
       }
       notificationId =
           notificationService.saveOrUpdateOrResendNotification(
-              notificationBO, notificationType, buttonType, sessionObject, "");
+              notificationBO, notificationType, buttonType, sessionObject, "", null);
       if (!notificationId.equals(0)) {
         if (notificationBO.getNotificationId() == null && "add".equalsIgnoreCase(buttonType)) {
           request

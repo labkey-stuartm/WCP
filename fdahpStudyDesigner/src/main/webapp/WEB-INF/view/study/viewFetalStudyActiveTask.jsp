@@ -19,6 +19,7 @@
     <input type="hidden" id="mlInstructions" value="${activeTaskLangBO.instruction}">
     <input type="hidden" id="mlChartTitle" value="${activeTaskLangBO.chartTitle}">
     <input type="hidden" id="mlDisplayStat" value="${activeTaskLangBO.statName}">
+    <input type="hidden" id="mlDisplayUnitStat" value="${activeTaskLangBO.displayUnitStat}">
     <input type="hidden" value="${actionPage}" id="actionPage" name="actionPage">
     <input type="hidden" value="${currentPage}" id="currentPageId" name="currentPage">
     <div class="pt-lg">
@@ -460,8 +461,8 @@
                             characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="add_notify_option">
                             <div class="form-group">
-                                <input type="text" class="form-control requireClass"
-                                       name="taskAttributeValueBos[2].displayUnitStat"
+                                <input type="text" class="form-control requireClass lang-specific"
+                                       id="displayUnitStat" name="taskAttributeValueBos[2].displayUnitStat"
                                        maxlength="15"
                                        value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
                                 <div class="help-block with-errors red-txt"></div>
