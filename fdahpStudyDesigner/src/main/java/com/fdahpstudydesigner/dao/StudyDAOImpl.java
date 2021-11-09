@@ -6221,8 +6221,9 @@ public class StudyDAOImpl implements StudyDAO {
                 studyActivityVersionBo.setActivityType("Q");
                 studyActivityVersionBo.setShortTitle(questionnaireBo.getShortTitle());
                 // is there any change in questionnarie
-                if (questionnaireBo.getIsChange() != null && questionnaireBo.getIsChange().equals(1)
-                    || mlFlag) {
+//                if (questionnaireBo.getIsChange() != null && questionnaireBo.getIsChange().equals(1)
+//                    || mlFlag) {
+                // commenting this condition as we are already updating live flags to -1 earlier
 
                   Float questionnarieversion = questionnaireBo.getVersion();
                   QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
@@ -6818,9 +6819,9 @@ public class StudyDAOImpl implements StudyDAO {
                   /** * end ** */
                   studyActivityVersionBo.setActivityVersion(newQuestionnaireBo.getVersion());
                   /** Content purpose creating draft End * */
-                } else {
-                  studyActivityVersionBo.setActivityVersion(questionnaireBo.getVersion());
-                }
+//                } else {
+//                  studyActivityVersionBo.setActivityVersion(questionnaireBo.getVersion());
+//                }
                 session.save(studyActivityVersionBo);
                 logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Ends");
               }
